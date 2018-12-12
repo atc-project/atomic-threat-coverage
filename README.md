@@ -189,6 +189,12 @@ Ideally, this kind of mapping could provide organizations ability to connect Thr
 
 The project is currently in Proof Of Concept stage, it was developed in a few evenings. It doesn't work for all Sigma rules. We will rewrite most of scripts in a proper way, cover all original [Sigma](https://github.com/Neo23x0/sigma) rules and add other entities (like Playbooks). We want to show working example of data processing to discuss it with community, receive feedback and suggestions.
 
+## Requirements
+
+- Python 3.7.1
+- [jinja2](https://pypi.org/project/Jinja2/) python library
+- [Render Markdown](https://marketplace.atlassian.com/apps/1212654/render-markdown) app for Confluence (free open source)
+
 ## Authors
 
 - Daniil Yugoslavskiy, [@yugoslavskiy](https://github.com/yugoslavskiy)
