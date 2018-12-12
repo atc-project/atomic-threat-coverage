@@ -154,7 +154,7 @@ This entity needed to test specific technical controls and detections. Detailed 
 
 #### Analytics.csv
 
-Atomic Threat Coverage generates `analytics.csv` with list of all data mapped to each other for filtering and simple analytics. This file suppose to answer these questions:
+Atomic Threat Coverage generates [analytics.csv](analytics.csv) with list of all data mapped to each other for filtering and simple analytics. This file suppose to answer these questions:
 
 - What data I need to collect to detect specific threats?
 - Which Logging Policies I need to implement to collect data I need to detect specific threats?
