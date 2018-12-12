@@ -40,7 +40,7 @@ Everything started from Sigma rule. Atomic Threat Coverage parses it and:
 3. Maps Detection Rule to Data Needed using `logsource` and `detection` sections from Sigma rule
 4. Maps Detection Rule to Triggering (Atomic Red Team tests) using `tags` from Sigma rule
 5. Maps Logging Policies to Data Needed using existing mapping inside Data Needed
-6. Push all data to local repo and confluence (according to configuration provided in `config/config.py`)
+6. Push all data to local repo and confluence (according to configuration provided in `scripts/config.py`)
 
 ### Under the hood
 
@@ -182,7 +182,7 @@ Ideally, this kind of mapping could provide organizations ability to connect Thr
 2. Add directory with your own, custom [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) detection tests (if you have any) to `triggering` directory
 3. Add Data Needed entities related to Sigma rules into `dataneeded` directory (you can create new using `dataneeded/dataneeded_template.yml`)
 4. Add Logging Policies related to Data Needed into `loggingpolicies` directory (you can create new using `loggingpolicies/loggingpolicy_template.yml`)
-5. Configure your export settings using `config/config.py`
+5. Configure your export settings using `scripts/config.py`
 6. Execute `make` in root directory of the repository
 
 ## Current Status: Proof Of Concept
