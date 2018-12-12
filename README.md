@@ -29,7 +29,7 @@ Atomic Threat Coverage is a tool which will allow you to create and maintain **y
 1. [Atlassian Confluence](https://www.atlassian.com/software/confluence) wiki pages (demo space with anonymous access [here](https://atomicthreatcoverage.atlassian.net/wiki/spaces/DEMO/))
 2. Here in [this repo](Atomic_Threat_Coverage) in Markdown format
 
-In other words, you don't have to work on data representation layer manually, you work on meaningful atomic pieces of information (like Sigma rule yaml files), and Atomic Threat Coverage will create analytics data base with all mappings, automatically mapped to all meaningful, actionable metrics, ready to use, ready to share and show to leadership, customers and colleagues.
+In other words, you don't have to work on data representation layer manually, you work on meaningful atomic pieces of information (like Sigma rule yaml files), and Atomic Threat Coverage will create analytics database with all entities, automatically mapped to all meaningful, actionable metrics, ready to use, ready to share and show to leadership, customers and colleagues.
 
 ### How it works
 
