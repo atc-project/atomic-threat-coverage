@@ -107,7 +107,7 @@ All queries automatically generated and all mappings added.
 </details>
 
 <br>
-This entity needed to explain SIEM/LM/Data Engineering teams what kind of data they could expect to receive/collect (sample). Detailed description of data type (platform/type/channel) needed for proper calculation of mappings with Detection Rules and general description. List of fields also needed for calculation of mappings and for list in analytics, so in case of triage/incident response (identification stage) analytics could easily define where they could find some specific data type (like domain name, username, hash etc).
+This entity expected to explain SIEM/LM/Data Engineering teams what kind of data they could expect to receive/collect (sample). Detailed description of data type (platform/type/channel) needed for proper calculation of mappings with Detection Rules and general description. List of fields also needed for calculation of mappings and for list in analytics, so in case of triage/incident response (identification stage) analytics could easily define where they could find some specific data type (like domain name, username, hash etc).
 
 #### Logging Policies
 
@@ -127,7 +127,7 @@ This entity needed to explain SIEM/LM/Data Engineering teams what kind of data t
 </details>
 
 <br>
-This entity needed to explain SIEM/LM/Data Engineering teams and IT departments which logging policies have to be configured to have proper Data Needed to have some specific Detection of specific Threat. It also explains how exactly this policy can be configured.
+This entity expected to explain SIEM/LM/Data Engineering teams and IT departments which logging policies have to be configured to have proper Data Needed to have some specific Detection of specific Threat. It also explains how exactly this policy can be configured.
 
 #### Triggers
 
@@ -154,15 +154,15 @@ This entity needed to test specific technical controls and detections. Detailed 
 
 #### Analytics.csv
 
-Atomic Threat Coverage generates [analytics.csv](analytics.csv) with list of all data mapped to each other for filtering and simple analytics. This file suppose to answer these questions:
+Atomic Threat Coverage generates [analytics.csv](analytics.csv) with list of all data mapped to each other for filtering and simple analytics. This file is suppose to answer these questions:
 
-- What data I need to collect to detect specific threats?
-- Which Logging Policies I need to implement to collect data I need to detect specific threats?
+- What data do I need to collect to detect specific threats?
+- Which Logging Policies do I need to implement to collect the data I need for detection of specific threats?
 - Which Logging Policies I can install everywhere (event volume low/medium) and which only on critical hosts (high/extremely high)?
-- Which data provide me most of high fidelity alerts? (prioritisation of data collection implementation)
+- Which data provided me most of the high fidelity alerts? (prioritisation of data collection implementation)
 - etc
 
-Ideally, this kind of mapping could provide organizations ability to connect Threat Coverage from detection perspective to *money*. Like:
+Ideally, this kind of mapping could provide organizations with the ability to connect Threat Coverage from detection perspective to *money*. Like:
 
 - if we will collect all Data Needed from all hosts for all Detection Rules we have it would be X Events Per Second (EPS) (do calculation for a couple of weeks or so) with these resources for storage/processing (some more or less concrete number)
 - if we will collect Data Needed only for high fidelity alerts and only on critical hosts, it will be Y EPS with these resources for storage/processing (again, more or less concrete number)
@@ -187,7 +187,7 @@ Ideally, this kind of mapping could provide organizations ability to connect Thr
 
 ## Current Status: Proof Of Concept
 
-The project is currently in Proof Of Concept stage, it was developed in a few evenings. It doesn't work for all Sigma rules. We will rewrite most of scripts in a proper way, cover all original [Sigma](https://github.com/Neo23x0/sigma) rules and add other entities (like Playbooks). We want to show working example of data processing to discuss it with community, receive feedback and suggestions.
+The project is currently in Proof Of Concept stage and it was developed in a few evenings. It doesn't work for all Sigma rules. We will rewrite most of scripts in a proper way, cover all original [Sigma](https://github.com/Neo23x0/sigma) rules and add other entities (like Playbooks). We want to show working example of data processing to discuss it with the community, receive feedback and suggestions.
 
 ## Requirements
 
