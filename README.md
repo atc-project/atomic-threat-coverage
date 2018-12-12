@@ -149,7 +149,8 @@ Triggers are unmodified [Atomic Red Team tests](https://github.com/redcanaryco/a
 </details>
 
 <br>
-This entity needed to test specific technical controls and detections. Detailed description could be found in [official repo](https://github.com/redcanaryco/atomic-red-team).
+
+This entity needed to test specific technical controls and detections. Detailed description could be found in official [site](https://atomicredteam.io).
 
 #### Analytics.csv
 
