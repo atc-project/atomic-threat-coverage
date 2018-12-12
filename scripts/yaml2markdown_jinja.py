@@ -46,7 +46,7 @@ def yaml2markdown_jinja(file, type):
         ## Wait for date to terminate. Get return returncode ##
         p_status = p.wait()
         ## have to remove '-' due to problems with Jinja2 variable naming,e.g es-qs throws error 'no es variable'
-        alert.update({output.replace("-", ""):str(query)})
+        alert.update({output.replace("-", ""):str(query)[2:-3]})
 
       ###Data Needed
       data_needed = main_dn_calculatoin_func(file)

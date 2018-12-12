@@ -24,23 +24,23 @@
 {% else %}
 {% endif %}
 
-{% if es_qs is defined and es_qs|length %}
+{% if esqs is defined and esqs|length %}
 
 ### Kibana query
 
 ```
-{{ es_qs }}
+{{ esqs }}
 ```
 
 {% else %}
 {% endif %}
 
-{% if xpack_watcher is defined and xpack_watcher|length %}
+{% if xpackwatcher is defined and xpackwatcher|length %}
 
 ### X-Pack Watcher
 
 ```
-{{ xpack_watcher }}
+{{ xpackwatcher }}
 ```
 
 {% else %}
@@ -48,7 +48,7 @@
 
 {% if graylog is defined and graylog|length %}
 
-Graylog
+### Graylog
 
 ```
 {{ graylog }}

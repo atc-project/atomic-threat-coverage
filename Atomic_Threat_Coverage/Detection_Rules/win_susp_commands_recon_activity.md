@@ -83,12 +83,12 @@ detection:
 
 
 
-
-
-
-Graylog
+### X-Pack Watcher
 
 ```
-b''
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Reconnaissance-Activity-with-Net-Command <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "15s"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND CommandLine:(\\"tasklist\\" \\"net time\\" \\"systeminfo\\" \\"whoami\\" \\"nbtstat\\" \\"net start\\" \\"*\\\\\\\\net1 start\\" \\"qprocess\\" \\"nslookup\\" \\"hostname.exe\\" \\"*\\\\\\\\net1 user \\\\/domain\\" \\"*\\\\\\\\net1 group \\\\/domain\\" \\"*\\\\\\\\net1 group \\\\\\"domain admins\\\\\\" \\\\/domain\\" \\"*\\\\\\\\net1 group \\\\\\"Exchange Trusted Subsystem\\\\\\" \\\\/domain\\" \\"*\\\\\\\\net1 accounts \\\\/domain\\" \\"*\\\\\\\\net1 user net localgroup administrators\\" \\"netstat \\\\-an\\"))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "gt": 4\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Reconnaissance Activity with Net Command\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Reconnaissance-Activity-with-Net-Command-2 <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "15s"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4688\\" AND CommandLine:(\\"tasklist\\" \\"net time\\" \\"systeminfo\\" \\"whoami\\" \\"nbtstat\\" \\"net start\\" \\"*\\\\\\\\net1 start\\" \\"qprocess\\" \\"nslookup\\" \\"hostname.exe\\" \\"*\\\\\\\\net1 user \\\\/domain\\" \\"*\\\\\\\\net1 group \\\\/domain\\" \\"*\\\\\\\\net1 group \\\\\\"domain admins\\\\\\" \\\\/domain\\" \\"*\\\\\\\\net1 group \\\\\\"Exchange Trusted Subsystem\\\\\\" \\\\/domain\\" \\"*\\\\\\\\net1 accounts \\\\/domain\\" \\"*\\\\\\\\net1 user net localgroup administrators\\" \\"netstat \\\\-an\\"))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "gt": 4\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Reconnaissance Activity with Net Command\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
+
+
+
 
