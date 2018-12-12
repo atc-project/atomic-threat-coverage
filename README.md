@@ -210,7 +210,7 @@ The project is currently in Proof Of Concept stage and it was developed in a few
 - [ ] Implement consistent Data Model (fields naming)
 - [ ] Add the rest of Data Needed for default Sigma rules
 - [ ] Add the rest of Logging Policies for all Data Needed
-- [ ] Define new Detection Rule naming scheme (Events from Alerts)
+- [ ] Define new Detection Rule naming scheme (separate Events and Alerts)
 - [ ] Create developer guide (how to create custom fields)
 - [ ] Create [MITRE ATT&CK Navigator](https://mitre.github.io/attack-navigator/enterprise/) profile generator per data type
 - [ ] Create new entity called "Enrichments" which will define how to enrich specific Data Needed
