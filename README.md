@@ -26,7 +26,7 @@ There are plenty [1][2][3][4] of analytics/detections repositories, which you ha
 How to not create yet another analytics repository? Don't!
 Atomic Threat Coverage is a tool which will allow you to create and maintain **your own** analytics repository, import analytics from other projects (or from your private forks) and export data into two possible (for now) directions:
 
-1. [Atlassian Confluence](https://www.atlassian.com/software/confluence) wiki pages
+1. [Atlassian Confluence](https://www.atlassian.com/software/confluence) wiki pages (demo space with anonymous access [here](https://atomicthreatcoverage.atlassian.net/wiki/spaces/DEMO/))
 2. Here in [this repo](Atomic_Threat_Coverage) in Markdown format
 
 In other words, you don't have to work on data representation layer manually, you work on meaningful atomic pieces of information (like Sigma rule yaml files), and Atomic Threat Coverage will create analytics data base with all mappings, automatically mapped to all meaningful, actionable metrics, ready to use, ready to share and show to leadership, customers and colleagues.
@@ -149,11 +149,12 @@ Triggers are unmodified [Atomic Red Team tests](https://github.com/redcanaryco/a
 </details>
 
 <br>
-This entity needed to test specific technical controls and detections. Detailed description could be found in [official repo](https://github.com/redcanaryco/atomic-red-team).
+
+This entity needed to test specific technical controls and detections. Detailed description could be found in official [site](https://atomicredteam.io).
 
 #### Analytics.csv
 
-Atomic Threat Coverage generates `analytics.csv` with list of all data mapped to each other for filtering and simple analytics. This file suppose to answer these questions:
+Atomic Threat Coverage generates [analytics.csv](analytics.csv) with list of all data mapped to each other for filtering and simple analytics. This file suppose to answer these questions:
 
 - What data I need to collect to detect specific threats?
 - Which Logging Policies I need to implement to collect data I need to detect specific threats?
@@ -190,10 +191,10 @@ The project is currently in Proof Of Concept stage, it was developed in a few ev
 
 ## Authors
 
-- Daniil Yugoslavskiy, @yugoslavskiy
-- Jakob Weinzettl, @mrblacyk
-- Mateusz Wydra, @sn0w0tter
-- Mikhail Aksenov, @AverageS
+- Daniil Yugoslavskiy, [@yugoslavskiy](https://github.com/yugoslavskiy)
+- Jakob Weinzettl, [@mrblacyk](https://github.com/mrblacyk)
+- Mateusz Wydra, [@sn0w0tter](https://github.com/sn0w0tter)
+- Mikhail Aksenov, [@AverageS](https://github.com/AverageS)
 
 ## TODO
 
