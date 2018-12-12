@@ -1,0 +1,25 @@
+title: LP_0004_windows_audit_logon
+default: Partially (Success)
+volume: Medium
+description:  >
+  Audit Logon determines whether the operating system generates audit 
+  events when a user attempts to log on to a computer.
+eventID:
+  - 4624
+  - 4625
+  - 4648
+  - 4675
+references:
+    - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-logon.md
+configuration: |
+  Steps to implement logging policy with Advanced Audit Configuration:
+  ```
+  Computer Configuration > 
+  Policies > 
+  Windows Settings > 
+  Security Settings > 
+  Advanced Audit Policies Configuration > 
+  Audit Policies > 
+  Logon/Logoff
+  Audit logon (Success,Failure)
+  ```

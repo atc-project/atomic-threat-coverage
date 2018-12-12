@@ -1,0 +1,96 @@
+{%if false%}
+<p class="auto-cursor-target"><br /></p>
+<ac:structured-macro ac:name="details" ac:schema-version="1" ac:macro-id="28b7d879-550c-4376-96ff-fdbdfddf710b">
+    <fab:placeholder-url>/wiki/plugins/servlet/confluence/placeholder/macro?definition=e2RldGFpbHN9&amp;locale=en_GB&amp;version=2</fab:placeholder-url>
+    <fab:display-type>BLOCK</fab:display-type>
+    <ac:rich-text-body>
+        <p class="auto-cursor-target"><br /></p>
+        <table class="wrapped confluenceTable">
+            <colgroup>
+                <col />
+                <col />
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th class="confluenceTh">Attack Technique</th>
+                    <td class="confluenceTd">{{ attack_technique }}<br /></td>
+                </tr>
+                <tr>
+                    <th class="confluenceTh">Display Name</th>
+                    <td class="confluenceTd">{{ display_name }}<br /></td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="auto-cursor-target"><br /></p>
+    </ac:rich-text-body>
+</ac:structured-macro>
+{% for test in atomic_tests %}
+<h1>{{test.name}}</h1>
+<div>
+	<p>{{test.description|e}}</p>
+</div>
+<ac:structured-macro ac:name="details" ac:schema-version="1" ac:macro-id="28b7d879-550c-4376-96ff-fdbdfddf710b">
+    <fab:placeholder-url>/wiki/plugins/servlet/confluence/placeholder/macro?definition=e2RldGFpbHN9&amp;locale=en_GB&amp;version=2</fab:placeholder-url>
+    <fab:display-type>BLOCK</fab:display-type>
+    <ac:rich-text-body>
+        <p class="auto-cursor-target"><br /></p>
+        <table class="wrapped confluenceTable">
+            <colgroup>
+                <col />
+                <col />
+            </colgroup>
+            <tbody>
+        {% for key, value in test.items() %}
+                <tr>
+                    <th class="confluenceTh">1{{key}}</th>
+                    {% if value is mapping %}
+                    	<tr>
+	                    {% for key2, value2 in value.items() %}
+                    		<th class="confluenceTh">2{{key2}}</th>
+                    		{% if value2 is mapping %}
+                    		<tr>
+                    			{% for key3, value3 in value2.items() %}
+                    			<th class="confluenceTh">3{{key3}}</th>
+                    			<td class="confluenceTd">3{{value3|e}}<br /></td>
+                    			{% endfor %}
+                    		</tr>
+                    		{% else %}
+                    		<td class="confluenceTd">2{{value2|e}}<br /></td>
+                    		{% endif %}
+	                    {% endfor %}
+	                	</tr>
+	                {% else %}
+	                	<td class="confluenceTd">1{{value|e}}<br /></td>
+                    {% endif %}
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+        <p class="auto-cursor-target"><br /></p>
+    </ac:rich-text-body>
+</ac:structured-macro>
+{% endfor %}
+{%endif%}
+{% if atomic_trigger_md is defined and atomic_trigger_md|length %}
+<h1>Atomic Trigger</h1>
+<pre><br/></pre>
+<ac:structured-macro ac:name="markdown"><ac:plain-text-body>
+    <![CDATA[{{ atomic_trigger_md }}]]>
+</ac:plain-text-body></ac:structured-macro>
+{% else %}
+{% endif %}
+{% if atomic_trigger is defined and atomic_trigger|length %}
+<h1>Atomic Trigger</h1>
+<pre><br/></pre>
+<ac:structured-macro ac:name="expand">
+    <ac:parameter ac:name="title">Atomic Trigge</ac:parameter>
+    <ac:rich-text-body>
+        <ac:structured-macro ac:name="code">
+            <ac:parameter ac:name="language">yml</ac:parameter>
+            <ac:plain-text-body>
+                <![CDATA[{{ atomic_trigger }}]]>
+            </ac:plain-text-body>
+        </ac:structured-macro>
+    </ac:rich-text-body>
+</ac:structured-macro>
+{% endif %}

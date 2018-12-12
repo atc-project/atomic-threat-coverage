@@ -1,0 +1,58 @@
+| Title        | {{ title }} |
+|:-------------------|:------------------|
+| Description        | {{ description }} |
+| Tags               | {% for tag in other_tags -%}{{ tag }}{{ ", " if not loop.last }}{% endfor %}  |
+| ATT&amp;CK Tactic | {% for tactic in tactics -%}{{ tactic }}{{ ", " if not loop.last }}{% endfor %}  |
+| ATT&amp;CK Technique | {% for technique in techniques -%}{{ technique }}{{ ", " if not loop.last }}{% endfor %}  |
+| Dataneeded         | {% for data in data_needed -%}{{ data }}{{ ", " if not loop.last }}{% endfor %} |
+| Triggering         | {% for trigger in triggers -%}{{ trigger }}{{ ", " if not loop.last }}{% endfor %} |
+| Severity Level     | {{ level }}       |
+| False Positives    | {% for falsepositive in falsepositives -%}{{ falsepositive }}{{ ", " if not loop.last }}{% endfor %} |
+| Development Status | {{ status }}      |
+| References         | {% for reference in references -%}{{ reference }}{{ ", " if not loop.last }}{% endfor %} |
+| Author             | {{ author }}      |
+
+{% if sigma_rule is defined and sigma_rule|length %}
+## Detection Rules
+
+### Sigma rule
+
+```
+{{ sigma_rule }}
+```
+
+{% else %}
+{% endif %}
+
+{% if es_qs is defined and es_qs|length %}
+
+### Kibana query
+
+```
+{{ es_qs }}
+```
+
+{% else %}
+{% endif %}
+
+{% if xpack_watcher is defined and xpack_watcher|length %}
+
+### X-Pack Watcher
+
+```
+{{ xpack_watcher }}
+```
+
+{% else %}
+{% endif %}
+
+{% if graylog is defined and graylog|length %}
+
+Graylog
+
+```
+{{ graylog }}
+```
+
+{% else %}
+{% endif %}

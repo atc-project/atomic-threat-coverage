@@ -1,0 +1,6 @@
+[submodule "triggering/atomic-red-team"]
+	path = triggering/atomic-red-team
+	url = https://github.com/redcanaryco/atomic-red-team.git
+[submodule "detectionrules/sigma"]
+	path = detectionrules/sigma
+	url = https://github.com/Neo23x0/sigma.git

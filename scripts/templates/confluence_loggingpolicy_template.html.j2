@@ -1,0 +1,63 @@
+<p class="auto-cursor-target"><br /></p>
+<ac:structured-macro ac:name="details" ac:schema-version="1" ac:macro-id="28b7d879-550c-4376-96ff-fdbdfddf710b">
+   <fab:placeholder-url>/wiki/plugins/servlet/confluence/placeholder/macro?definition=e2RldGFpbHN9&amp;locale=en_GB&amp;version=2</fab:placeholder-url>
+   <fab:display-type>BLOCK</fab:display-type>
+   <ac:rich-text-body>
+      <p class="auto-cursor-target"><br /></p>
+      <table class="wrapped confluenceTable">
+         <colgroup>
+            <col />
+            <col />
+         </colgroup>
+         <tbody>
+            <tr>
+               <th class="confluenceTh">Title</th>
+               <td class="confluenceTd">{{ title|e}}<br /></td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">Description</th>
+               <td class="confluenceTd">{{ description|e }}<br /></td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">Default</th>
+               <td class="confluenceTd">{{ default|e }}<br /></td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">Event Volume</th>
+               <td class="confluenceTd">{{ volume|e }}<br /></td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">EventID</th>
+               <td class="confluenceTd">
+               {%- if eventID |length > 1 -%}<ul>{%endif%}
+                     {% for eventid in eventID %}
+                     {%- if eventID |length > 1 -%}<li>{%endif%}{{ eventid|e }}{%- if eventID |length > 1 -%}</li>{%endif%}
+                     {% endfor %}
+               {%- if eventID |length > 1 -%}</ul>{%endif%}
+                  <br />
+               </td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">References</th>
+               <td class="confluenceTd">
+                  {%- if references |length > 1 -%}<ul>{%endif%}
+                     {% for ref in references %}
+                     {%- if references |length > 1 -%}<li>{%endif%}<a href="{{ ref }}">{{ ref }}</a>{%- if references |length > 1 -%}</li>{%endif%}
+                     {% endfor %}
+                  {%- if references |length > 1 -%}</ul>{%endif%}
+                  <br />
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <p class="auto-cursor-target"><br /></p>
+   </ac:rich-text-body>
+</ac:structured-macro>
+{% if configuration is defined and configuration|length %}
+<h1>Configuration</h1>
+<pre><br/></pre>
+<ac:structured-macro ac:name="markdown"><ac:plain-text-body>
+	<![CDATA[{{ configuration }}]]>
+</ac:plain-text-body></ac:structured-macro>
+{% else %}
+{% endif %}

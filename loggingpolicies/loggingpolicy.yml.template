@@ -1,0 +1,13 @@
+title: LP_0000_some_name_here
+default: Not configured # Not configured | Partially (Success) | Partially (Failure) | Partially (Other) | Configured
+volume: Low             # Low | Medium | High | Extremely High
+description:  >
+  Some text description here. It will be merged into one line.
+eventID: 
+  - 4624
+  - 4625
+references:
+    - https://car.mitre.org/wiki/CAR-2016-04-005
+configuration: |
+  Detailed description of configuratoin in markdown format. 
+  Here newlines will be saved.
