@@ -192,6 +192,7 @@ The project is currently in Proof Of Concept stage and it was developed in a few
 
 ## Requirements
 
+- Unix-like OS or [Windows Subsystem for Linux (WSL)](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (it required to execute `make`)
 - Python 3.7.1
 - [jinja2](https://pypi.org/project/Jinja2/) python library
 - [Render Markdown](https://marketplace.atlassian.com/apps/1212654/render-markdown) app for Confluence (free open source)
