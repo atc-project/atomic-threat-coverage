@@ -1,11 +1,11 @@
 
 # Atomic Threat Coverage
 
-Knowledge base of analytics designed to cover threats based on MITRE's ATT&CK.
+Automatically generated knowledge base of analytics designed to cover threats based on MITRE's ATT&CK.
 
 ![](images/atc_description.png)
 
-Atomic Threat Coverage is a knowledge base of analytics designed to cover threats (based on the [MITRE ATT&CK](https://attack.mitre.org/) adversary model) from Detection, Response, Mitigation and Simulation perspectives:
+Atomic Threat Coverage is tool with allows you to automatically generate knowledge base of analytics, designed to cover threats (based on the [MITRE ATT&CK](https://attack.mitre.org/) adversary model) from Detection, Response, Mitigation and Simulation perspectives:
 
 - **Detection Rules** based on [Sigma](https://github.com/Neo23x0/sigma) — Generic Signature Format for SIEM Systems
 - **Data Needed** to be collected to produce detection of specific Threat
@@ -33,14 +33,15 @@ In other words, you don't have to work on data representation layer manually, yo
 
 ### How it works
 
-Everything started from Sigma rule. Atomic Threat Coverage parses it and:
+Everything starts from Sigma rule and ends up with human-readable wiki-style pages. Atomic Threat Coverage parses it and:
 
 1. Maps Detection Rule to ATT&CK Tactic using `tags` from Sigma rule
 2. Maps Detection Rule to ATT&CK Technique using `tags` from Sigma rule
 3. Maps Detection Rule to Data Needed using `logsource` and `detection` sections from Sigma rule
 4. Maps Detection Rule to Triggering (Atomic Red Team tests) using `tags` from Sigma rule
 5. Maps Logging Policies to Data Needed using existing mapping inside Data Needed
-6. Push all data to local repo and confluence (according to configuration provided in `scripts/config.py`)
+6. Convert everything into Confluence and Markdown wiki-style pages using jinja templates (`scripts/templates`)
+7. Push all pages to local repo and Confluence server (according to configuration provided in `scripts/config.py`)
 
 ### Under the hood
 
