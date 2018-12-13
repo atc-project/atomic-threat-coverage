@@ -5,7 +5,7 @@ Automatically generated knowledge base of analytics designed to cover threats ba
 
 ![](images/atc_description.png)
 
-Atomic Threat Coverage is tool with allows you to automatically generate knowledge base of analytics, designed to cover threats (based on the [MITRE ATT&CK](https://attack.mitre.org/) adversary model) from Detection, Response, Mitigation and Simulation perspectives:
+Atomic Threat Coverage is tool which allows you to automatically generate knowledge base of analytics, designed to cover threats (based on the [MITRE ATT&CK](https://attack.mitre.org/) adversary model) from Detection, Response, Mitigation and Simulation perspectives:
 
 - **Detection Rules** based on [Sigma](https://github.com/Neo23x0/sigma) — Generic Signature Format for SIEM Systems
 - **Data Needed** to be collected to produce detection of specific Threat
