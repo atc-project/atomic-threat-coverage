@@ -40,8 +40,8 @@ Everything starts from Sigma rule and ends up with human-readable wiki-style pag
 3. Maps Detection Rule to Data Needed using `logsource` and `detection` sections from Sigma rule
 4. Maps Detection Rule to Triggering (Atomic Red Team tests) using `tags` from Sigma rule
 5. Maps Logging Policies to Data Needed using existing mapping inside Data Needed
-6. Convert everything into Confluence and Markdown wiki-style pages using jinja templates (`scripts/templates`)
-7. Push all pages to local repo and Confluence server (according to configuration provided in `scripts/config.py`)
+6. Converts everything into Confluence and Markdown wiki-style pages using jinja templates (`scripts/templates`)
+7. Pushes all pages to local repo and Confluence server (according to configuration provided in `scripts/config.py`)
 
 ### Under the hood
 
