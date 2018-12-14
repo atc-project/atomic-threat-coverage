@@ -1,8 +1,8 @@
 | Title          | {{ title }}       |
 |:---------------|:------------------|
 | Description    | {{ description }} |
-| Logging Policy | <ul>{% for policy in loggingpolicy %}<li>{{ policy }}</li>{% endfor %}</ul> |
-| References     | <ul>{% for ref in references %}<li>{{ ref }}</li>{% endfor %}</ul> |
+| Logging Policy | <ul>{% for policy in loggingpolicy %}<li>[{{ policy }}](../Logging_Policies/{{policy}}.md)</li>{% endfor %}</ul> |
+| References     | <ul>{% for ref in references %}<li>[{{ ref }}]({{ ref }})</li>{% endfor %}</ul> |
 | Platform       | {{ platform }}    |
 | Type           | {{ type }}        |
 | Channel        | {{ channel }}     |

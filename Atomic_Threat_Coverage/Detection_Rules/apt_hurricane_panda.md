@@ -1,15 +1,15 @@
 | Title        | Hurricane Panda Activity |
 |:-------------------|:------------------|
 | Description        | Detects Hurricane Panda Activity |
-| Tags               | attack.g0009  |
-| ATT&amp;CK Tactic | ('Privilege Escalation', 'TA0004')  |
-| ATT&amp;CK Technique | T1068  |
-| Dataneeded         | DN_0003_windows_sysmon_process_creation_1, DN_0002_windows_process_creation_with_commandline_4688 |
-| Triggering         | T1068: No atomics trigger for this technique |
+| ATT&amp;CK Tactic | <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul> |
+| ATT&amp;CK Technique | <ul><li>[T1068](https://attack.mitre.org/tactics/T1068)</li></ul> |
+| Other Tags | <ul><li>attack.g0009</li></ul>  |
+| Dataneeded         | <ul><li>[DN_0003_windows_sysmon_process_creation_1](../Data_Needed/DN_0003_windows_sysmon_process_creation_1.md)</li><li>[DN_0002_windows_process_creation_with_commandline_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688.md)</li></ul> |
+| Triggering         | <ul><li>[T1068: No atomics trigger for this technique](../Triggering/T1068: No atomics trigger for this technique.md)</li></ul> |
 | Severity Level     | high       |
-| False Positives    | Unknown |
+| False Positives    | <ul><li>Unknown</li></ul> |
 | Development Status | experimental      |
-| References         | https://www.crowdstrike.com/blog/crowdstrike-discovers-use-64-bit-zero-day-privilege-escalation-exploit-cve-2014-4113-hurricane-panda/ |
+| References         | [https://www.crowdstrike.com/blog/crowdstrike-discovers-use-64-bit-zero-day-privilege-escalation-exploit-cve-2014-4113-hurricane-panda/](https://www.crowdstrike.com/blog/crowdstrike-discovers-use-64-bit-zero-day-privilege-escalation-exploit-cve-2014-4113-hurricane-panda/) |
 | Author             | Florian Roth      |
 
 

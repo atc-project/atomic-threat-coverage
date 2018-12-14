@@ -4,7 +4,7 @@
 | Default        | Partially (Other)     |
 | Event Volume   | Medium     |
 | EventID        | <ul><li>1</li></ul> |
-| References     | <ul><li>https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon</li></ul> |
+| References     | <ul><li>[https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon)</li></ul> |
 
 
 

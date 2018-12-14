@@ -1,15 +1,15 @@
 | Title        | {{ title }} |
 |:-------------------|:------------------|
 | Description        | {{ description }} |
-| Tags               | {% for tag in other_tags -%}{{ tag }}{{ ", " if not loop.last }}{% endfor %}  |
-| ATT&amp;CK Tactic | {% for tactic in tactics -%}{{ tactic }}{{ ", " if not loop.last }}{% endfor %}  |
-| ATT&amp;CK Technique | {% for technique in techniques -%}{{ technique }}{{ ", " if not loop.last }}{% endfor %}  |
-| Dataneeded         | {% for data in data_needed -%}{{ data }}{{ ", " if not loop.last }}{% endfor %} |
-| Triggering         | {% for trigger in triggers -%}{{ trigger }}{{ ", " if not loop.last }}{% endfor %} |
+| ATT&amp;CK Tactic | <ul>{%  for tactic_name, tactic_id in tactics  %}<li>[{{tactic_id}}: {{tactic_name}}](https://attack.mitre.org/tactics/{{tactic_id}})</li>{% endfor %}</ul> |
+| ATT&amp;CK Technique | <ul>{%  for technique in techniques  %}<li>[{{technique}}](https://attack.mitre.org/tactics/{{technique}})</li>{% endfor %}</ul> |
+| Other Tags | <ul>{% for tag in other_tags %}<li>{{ tag }}</li>{% endfor %}</ul>  |
+| Dataneeded         | <ul>{% for data in data_needed %}<li>[{{ data }}](../Data_Needed/{{data}}.md)</li>{% endfor %}</ul> |
+| Triggering         | <ul>{% for trigger in triggers %}<li>[{{ trigger }}](../Triggering/{{trigger}}.md)</li>{% endfor %}</ul> |
 | Severity Level     | {{ level }}       |
-| False Positives    | {% for falsepositive in falsepositives -%}{{ falsepositive }}{{ ", " if not loop.last }}{% endfor %} |
+| False Positives    | <ul>{% for falsepositive in falsepositives %}<li>{{ falsepositive }}</li>{% endfor %}</ul> |
 | Development Status | {{ status }}      |
-| References         | {% for reference in references -%}{{ reference }}{{ ", " if not loop.last }}{% endfor %} |
+| References         | {% for reference in references -%}[{{ reference }}]({{ reference }}){{ ", " if not loop.last }}{% endfor %} |
 | Author             | {{ author }}      |
 
 {% if sigma_rule is defined and sigma_rule|length %}
