@@ -9,7 +9,7 @@
 | Severity Level     | high       |
 | False Positives    | <ul><li>Penetration tests</li></ul> |
 | Development Status | experimental      |
-| References         | [http://www.leeholmes.com/blog/2017/09/21/searching-for-content-in-base-64-strings/](http://www.leeholmes.com/blog/2017/09/21/searching-for-content-in-base-64-strings/) |
+| References         | <ul><li>[http://www.leeholmes.com/blog/2017/09/21/searching-for-content-in-base-64-strings/](http://www.leeholmes.com/blog/2017/09/21/searching-for-content-in-base-64-strings/)</li></ul> |
 | Author             | John Lambert (rule)      |
 
 

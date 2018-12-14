@@ -9,7 +9,7 @@
 | Severity Level     | {{ level }}       |
 | False Positives    | <ul>{% for falsepositive in falsepositives %}<li>{{ falsepositive }}</li>{% endfor %}</ul> |
 | Development Status | {{ status }}      |
-| References         | {% for reference in references -%}[{{ reference }}]({{ reference }}){{ ", " if not loop.last }}{% endfor %} |
+| References         | <ul>{% for reference in references -%}<li>[{{ reference }}]({{ reference }})</li>{% endfor %}</ul> |
 | Author             | {{ author }}      |
 
 {% if sigma_rule is defined and sigma_rule|length %}

@@ -9,7 +9,7 @@
 | Severity Level     | medium       |
 | False Positives    | <ul><li>Unknown as it may vary from organisation to arganisation how admins use to install IIS modules</li></ul> |
 | Development Status | experimental      |
-| References         | [https://researchcenter.paloaltonetworks.com/2018/01/unit42-oilrig-uses-rgdoor-iis-backdoor-targets-middle-east/](https://researchcenter.paloaltonetworks.com/2018/01/unit42-oilrig-uses-rgdoor-iis-backdoor-targets-middle-east/) |
+| References         | <ul><li>[https://researchcenter.paloaltonetworks.com/2018/01/unit42-oilrig-uses-rgdoor-iis-backdoor-targets-middle-east/](https://researchcenter.paloaltonetworks.com/2018/01/unit42-oilrig-uses-rgdoor-iis-backdoor-targets-middle-east/)</li></ul> |
 | Author             | Florian Roth      |
 
 

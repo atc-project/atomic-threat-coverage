@@ -9,7 +9,7 @@
 | Severity Level     | low       |
 | False Positives    | <ul><li>Legitimate administrative activity</li></ul> |
 | Development Status | experimental      |
-| References         | [https://car.mitre.org/wiki/CAR-2016-04-005](https://car.mitre.org/wiki/CAR-2016-04-005) |
+| References         | <ul><li>[https://car.mitre.org/wiki/CAR-2016-04-005](https://car.mitre.org/wiki/CAR-2016-04-005)</li></ul> |
 | Author             | juju4      |
 
 

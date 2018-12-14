@@ -9,7 +9,7 @@
 | Severity Level     | high       |
 | False Positives    | <ul><li>NTDS maintenance</li></ul> |
 | Development Status | experimental      |
-| References         | [https://jpcertcc.github.io/ToolAnalysisResultSheet/details/ntdsutil.htm](https://jpcertcc.github.io/ToolAnalysisResultSheet/details/ntdsutil.htm) |
+| References         | <ul><li>[https://jpcertcc.github.io/ToolAnalysisResultSheet/details/ntdsutil.htm](https://jpcertcc.github.io/ToolAnalysisResultSheet/details/ntdsutil.htm)</li></ul> |
 | Author             | Thomas Patzke      |
 
 

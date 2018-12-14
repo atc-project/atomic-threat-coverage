@@ -9,7 +9,7 @@
 | Severity Level     | high       |
 | False Positives    | <ul><li>Legitimate event consumers</li></ul> |
 | Development Status | experimental      |
-| References         | [https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/](https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/) |
+| References         | <ul><li>[https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/](https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/)</li></ul> |
 | Author             | Thomas Patzke      |
 
 

@@ -9,7 +9,7 @@
 | Severity Level     | medium       |
 | False Positives    | <ul><li>administrative activity</li></ul> |
 | Development Status | experimental      |
-| References         | [https://adsecurity.org/?p=2288](https://adsecurity.org/?p=2288), [https://www.hybrid-analysis.com/sample/f2943f5e45befa52fb12748ca7171d30096e1d4fc3c365561497c618341299d5?environmentId=100](https://www.hybrid-analysis.com/sample/f2943f5e45befa52fb12748ca7171d30096e1d4fc3c365561497c618341299d5?environmentId=100) |
+| References         | <ul><li>[https://adsecurity.org/?p=2288](https://adsecurity.org/?p=2288)</li><li>[https://www.hybrid-analysis.com/sample/f2943f5e45befa52fb12748ca7171d30096e1d4fc3c365561497c618341299d5?environmentId=100](https://www.hybrid-analysis.com/sample/f2943f5e45befa52fb12748ca7171d30096e1d4fc3c365561497c618341299d5?environmentId=100)</li></ul> |
 | Author             | Markus Neis      |
 
 

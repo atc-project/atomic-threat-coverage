@@ -9,7 +9,7 @@
 | Severity Level     | medium       |
 | False Positives    | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul> |
 | Development Status | experimental      |
-| References         | [https://car.mitre.org/wiki/CAR-2013-05-002](https://car.mitre.org/wiki/CAR-2013-05-002) |
+| References         | <ul><li>[https://car.mitre.org/wiki/CAR-2013-05-002](https://car.mitre.org/wiki/CAR-2013-05-002)</li></ul> |
 | Author             | juju4      |
 
 
