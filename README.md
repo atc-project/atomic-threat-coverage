@@ -3,7 +3,7 @@
 
 Automatically generated knowledge base of analytics designed to cover threats based on MITRE's ATT&CK.
 
-![](images/atc_description.png)
+![](images/atc_description_v01.png)
 
 Atomic Threat Coverage is tool which allows you to automatically generate knowledge base of analytics, designed to cover threats (based on the [MITRE ATT&CK](https://attack.mitre.org/) adversary model) from Detection, Response, Mitigation and Simulation perspectives:
 
