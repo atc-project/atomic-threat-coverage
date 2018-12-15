@@ -1,15 +1,15 @@
 | Title        | Malicious Base64 encoded PowerShell Keywords in command lines |
 |:-------------------|:------------------|
 | Description        | Detects base64 encoded strings used in hidden malicious PowerShell command lines |
-| Tags               |   |
-| ATT&amp;CK Tactic | ('Execution', 'TA0002')  |
-| ATT&amp;CK Technique | T1086  |
-| Dataneeded         | DN_0002_windows_process_creation_with_commandline_4688 |
-| Triggering         | T1086 |
+| ATT&amp;CK Tactic | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul> |
+| ATT&amp;CK Technique | <ul><li>[T1086](https://attack.mitre.org/tactics/T1086)</li></ul> |
+| Other Tags | <ul></ul>  |
+| Dataneeded         | <ul><li>[DN_0002_windows_process_creation_with_commandline_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688.md)</li></ul> |
+| Triggering         | <ul><li>[T1086](../Triggering/T1086.md)</li></ul> |
 | Severity Level     | high       |
-| False Positives    | Penetration tests |
+| False Positives    | <ul><li>Penetration tests</li></ul> |
 | Development Status | experimental      |
-| References         | http://www.leeholmes.com/blog/2017/09/21/searching-for-content-in-base-64-strings/ |
+| References         | <ul><li>[http://www.leeholmes.com/blog/2017/09/21/searching-for-content-in-base-64-strings/](http://www.leeholmes.com/blog/2017/09/21/searching-for-content-in-base-64-strings/)</li></ul> |
 | Author             | John Lambert (rule)      |
 
 

@@ -1,15 +1,15 @@
 | Title        | Suspicious SYSVOL Domain Group Policy Access |
 |:-------------------|:------------------|
 | Description        | Detects Access to Domain Group Policies stored in SYSVOL |
-| Tags               |   |
-| ATT&amp;CK Tactic | ('Credential Access', 'TA0006')  |
-| ATT&amp;CK Technique | T1003  |
-| Dataneeded         | DN_0003_windows_sysmon_process_creation_1, DN_0002_windows_process_creation_with_commandline_4688 |
-| Triggering         | T1003 |
+| ATT&amp;CK Tactic | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul> |
+| ATT&amp;CK Technique | <ul><li>[T1003](https://attack.mitre.org/tactics/T1003)</li></ul> |
+| Other Tags | <ul></ul>  |
+| Dataneeded         | <ul><li>[DN_0003_windows_sysmon_process_creation_1](../Data_Needed/DN_0003_windows_sysmon_process_creation_1.md)</li><li>[DN_0002_windows_process_creation_with_commandline_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688.md)</li></ul> |
+| Triggering         | <ul><li>[T1003](../Triggering/T1003.md)</li></ul> |
 | Severity Level     | medium       |
-| False Positives    | administrative activity |
+| False Positives    | <ul><li>administrative activity</li></ul> |
 | Development Status | experimental      |
-| References         | https://adsecurity.org/?p=2288, https://www.hybrid-analysis.com/sample/f2943f5e45befa52fb12748ca7171d30096e1d4fc3c365561497c618341299d5?environmentId=100 |
+| References         | <ul><li>[https://adsecurity.org/?p=2288](https://adsecurity.org/?p=2288)</li><li>[https://www.hybrid-analysis.com/sample/f2943f5e45befa52fb12748ca7171d30096e1d4fc3c365561497c618341299d5?environmentId=100](https://www.hybrid-analysis.com/sample/f2943f5e45befa52fb12748ca7171d30096e1d4fc3c365561497c618341299d5?environmentId=100)</li></ul> |
 | Author             | Markus Neis      |
 
 

@@ -4,7 +4,7 @@
 | Default        | Partially (Success)     |
 | Event Volume   | Medium     |
 | EventID        | <ul><li>4624</li><li>4625</li><li>4648</li><li>4675</li></ul> |
-| References     | <ul><li>https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-logon.md</li></ul> |
+| References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-logon.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-logon.md)</li></ul> |
 
 
 

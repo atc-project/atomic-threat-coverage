@@ -1,8 +1,8 @@
 | Title          | DN_0003_windows_sysmon_process_creation_1       |
 |:---------------|:------------------|
 | Description    | Windows process creation log, including command line. |
-| Logging Policy | <ul><li>LP_0001_windows_audit_process_creation</li><li>LP_0002_windows_audit_process_creation_with_commandline</li></ul> |
-| References     | <ul><li>https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90001</li></ul> |
+| Logging Policy | <ul><li>[LP_0001_windows_audit_process_creation](../Logging_Policies/LP_0001_windows_audit_process_creation.md)</li><li>[LP_0002_windows_audit_process_creation_with_commandline](../Logging_Policies/LP_0002_windows_audit_process_creation_with_commandline.md)</li></ul> |
+| References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90001](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90001)</li></ul> |
 | Platform       | Windows    |
 | Type           | Windows Log        |
 | Channel        | Microsoft-Windows-Sysmon/Operational     |

@@ -1,15 +1,15 @@
 | Title        | Suspicious Commandline Escape |
 |:-------------------|:------------------|
 | Description        | Detects suspicious process that use escape characters |
-| Tags               |   |
-| ATT&amp;CK Tactic | ('Defense Evasion', 'TA0005')  |
-| ATT&amp;CK Technique | T1140  |
-| Dataneeded         | DN_0002_windows_process_creation_with_commandline_4688, DN_0003_windows_sysmon_process_creation_1 |
-| Triggering         | T1140 |
+| ATT&amp;CK Tactic | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul> |
+| ATT&amp;CK Technique | <ul><li>[T1140](https://attack.mitre.org/tactics/T1140)</li></ul> |
+| Other Tags | <ul></ul>  |
+| Dataneeded         | <ul><li>[DN_0002_windows_process_creation_with_commandline_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688.md)</li><li>[DN_0003_windows_sysmon_process_creation_1](../Data_Needed/DN_0003_windows_sysmon_process_creation_1.md)</li></ul> |
+| Triggering         | <ul><li>[T1140](../Triggering/T1140.md)</li></ul> |
 | Severity Level     | low       |
-| False Positives    | False positives depend on scripts and administrative tools used in the monitored environment |
+| False Positives    | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul> |
 | Development Status | experimental      |
-| References         | https://twitter.com/vysecurity/status/885545634958385153, https://twitter.com/Hexacorn/status/885553465417756673, https://twitter.com/Hexacorn/status/885570278637678592, https://www.fireeye.com/blog/threat-research/2017/06/obfuscation-in-the-wild.html, http://www.windowsinspired.com/understanding-the-command-line-string-and-arguments-received-by-a-windows-program/ |
+| References         | <ul><li>[https://twitter.com/vysecurity/status/885545634958385153](https://twitter.com/vysecurity/status/885545634958385153)</li><li>[https://twitter.com/Hexacorn/status/885553465417756673](https://twitter.com/Hexacorn/status/885553465417756673)</li><li>[https://twitter.com/Hexacorn/status/885570278637678592](https://twitter.com/Hexacorn/status/885570278637678592)</li><li>[https://www.fireeye.com/blog/threat-research/2017/06/obfuscation-in-the-wild.html](https://www.fireeye.com/blog/threat-research/2017/06/obfuscation-in-the-wild.html)</li><li>[http://www.windowsinspired.com/understanding-the-command-line-string-and-arguments-received-by-a-windows-program/](http://www.windowsinspired.com/understanding-the-command-line-string-and-arguments-received-by-a-windows-program/)</li></ul> |
 | Author             | juju4      |
 
 

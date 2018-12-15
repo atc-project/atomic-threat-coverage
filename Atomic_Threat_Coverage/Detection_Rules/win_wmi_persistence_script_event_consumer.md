@@ -1,15 +1,15 @@
 | Title        | WMI Persistence - Script Event Consumer |
 |:-------------------|:------------------|
 | Description        | Detects WMI script event consumers |
-| Tags               |   |
-| ATT&amp;CK Tactic | ('Execution', 'TA0002'), ('Persistence', 'TA0003')  |
-| ATT&amp;CK Technique | T1047  |
-| Dataneeded         | , , DN_0002_windows_process_creation_with_commandline_4688DN_0001_windows_process_creation_4688, DN_0002_windows_process_creation_with_commandline_4688DN_0001_windows_process_creation_4688 |
-| Triggering         | T1047 |
+| ATT&amp;CK Tactic | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul> |
+| ATT&amp;CK Technique | <ul><li>[T1047](https://attack.mitre.org/tactics/T1047)</li></ul> |
+| Other Tags | <ul></ul>  |
+| Dataneeded         | <ul><li>[](../Data_Needed/.md)</li><li>[](../Data_Needed/.md)</li><li>[DN_0002_windows_process_creation_with_commandline_4688DN_0001_windows_process_creation_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688DN_0001_windows_process_creation_4688.md)</li><li>[DN_0002_windows_process_creation_with_commandline_4688DN_0001_windows_process_creation_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688DN_0001_windows_process_creation_4688.md)</li></ul> |
+| Triggering         | <ul><li>[T1047](../Triggering/T1047.md)</li></ul> |
 | Severity Level     | high       |
-| False Positives    | Legitimate event consumers |
+| False Positives    | <ul><li>Legitimate event consumers</li></ul> |
 | Development Status | experimental      |
-| References         | https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/ |
+| References         | <ul><li>[https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/](https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/)</li></ul> |
 | Author             | Thomas Patzke      |
 
 

@@ -1,8 +1,8 @@
 | Title          | DN_0004_windows_account_logon_4624       |
 |:---------------|:------------------|
 | Description    | An account was successfully logged on. |
-| Logging Policy | <ul><li>LP_0004_windows_audit_logon</li></ul> |
-| References     | <ul><li>https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4688.md</li></ul> |
+| Logging Policy | <ul><li>[LP_0004_windows_audit_logon](../Logging_Policies/LP_0004_windows_audit_logon.md)</li></ul> |
+| References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4688.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4688.md)</li></ul> |
 | Platform       | Windows    |
 | Type           | Windows Log        |
 | Channel        | Security     |
