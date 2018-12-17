@@ -11,7 +11,7 @@ Atomic Threat Coverage is tool which allows you to automatically generate knowle
 - **Data Needed** to be collected to produce detection of specific Threat
 - **Logging Policies** need to be configured on data source to be able to collect Data Needed
 - **Triggers** based on [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) — detection tests based on MITRE's ATT&CK
-- **Response Playbooks** for reacting on Detection Rules triggered by specific Threat
+- **Response Playbooks** for reacting on Alerts triggered by specific Threat
 - **Hardening Policies** need to be implemented to mitigate specific Threat
 - **Mitigation Systems** need to be deployed and configured to mitigate specific Threat
 
