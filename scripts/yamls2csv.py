@@ -4,7 +4,7 @@ import getopt
 from os import listdir
 from os.path import isfile, join
 
-from utils import read_yaml_file, main_dn_calculatoin_func
+from .utils import read_yaml_file, main_dn_calculatoin_func
 from yaml.scanner import ScannerError
 
 HELP_MESSAGE = """Usage: python3 yamls2csv.py [OPTIONS]\n\n\n
@@ -13,6 +13,20 @@ HELP_MESSAGE = """Usage: python3 yamls2csv.py [OPTIONS]\n\n\n
         alerts_path = ../alerts/;
         dataneeded_path = ../dataneeded/;
         loggingpolicies_path=../loggingpolicies/"""
+
+ta_mapping = {
+  "attack.initial_access": ("Initial Access","TA0001"),
+  "attack.execution": ("Execution","TA0002"),
+  "attack.persistence": ("Persistence","TA0003"),
+  "attack.privilege_escalation": ("Privilege Escalation","TA0004"),
+  "attack.defense_evasion": ("Defense Evasion","TA0005"),
+  "attack.credential_access": ("Credential Access","TA0006"),
+  "attack.discovery": ("Discovery","TA0007"),
+  "attack.lateral_movement": ("Lateral Movement","TA0008"),
+  "attack.collection": ("Collection","TA0009"),
+  "attack.exfiltration": ("Exfiltration","TA0010"),
+  "attack.command_and_control": ("Command and Control","TA0011"),
+}
 
 def load_yamls(path):
     yamls = [join(path, f) for f in listdir(path) if isfile(join(path, f)) if f.endswith('.yaml') or f.endswith('.yml')]
@@ -44,22 +58,24 @@ def main(**kwargs):
                     if len(logging_policy) > 0:
                         logging_policy = logging_policy[0]
                     else:
-                        logging_policy = {'description': "-", 'eventID': [-1,]}
+                        logging_policy = {'title': "-", 'eventID': [-1,]}
                 dn['loggingpolicy'] = logging_policy
-
-            for threat in threats:
-                for dn in alert_dns:
-                    lp = dn['loggingpolicy']
-                    for field in dn['fields']:
-                        for eventID in lp['eventID']:
-                            eventID = str(eventID)
-                            result.append(
-                                [threat,alert['title'],field,
-                                          dn['platform'],dn['type'],dn['channel'],eventID, lp['description'].replace('\n','')])
-    with open('alerts.csv', 'w', newline='') as csvfile:
-        alertswriter = csv.writer(csvfile, delimiter=';') # maybe need some quoting
-        alertswriter.writerow(['threat', 'title', 'field', 'logging_policy_OS', 'logging_policy_type',
-                               'logging_policy_channel', 'logging_policy_event_id', 'logging_policy_description '])
+            tactics = [f'{ta_mapping[threat][1]}: {ta_mapping[threat][0]}'  for threat in threats if threat in ta_mapping.keys() ]
+            techniques = [threat for threat in threats if threat.startswith('attack.t')]
+            for tactic in tactics:
+                for technique in techniques:
+                    for dn in alert_dns:
+                        lp = dn['loggingpolicy']
+                        for field in dn['fields']:
+                            for eventID in lp['eventID']:
+                                eventID = str(eventID)
+                                result.append(
+                                    [tactic,technique, alert['title'],field,
+                                              dn['platform'],dn['type'],dn['channel'],eventID, lp['title'].replace('\n','')])
+    with open('../analytics.csv', 'w', newline='') as csvfile:
+        alertswriter = csv.writer(csvfile, delimiter=',') # maybe need some quoting
+        alertswriter.writerow(['tactic','technique', 'title', 'field', 'dn_PLATFORM', 'dn_TYPE',
+                               'dn_channel', 'dn_event_id', 'logging_policy_title '])
         for row in result:
             alertswriter.writerow(row)
     print('Export succesfull')
