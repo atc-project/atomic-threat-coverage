@@ -15,7 +15,7 @@ Atomic Threat Coverage is tool which allows you to automatically generate knowle
 - **Hardening Policies** need to be implemented to mitigate specific Threat
 - **Mitigation Systems** need to be deployed and configured to mitigate specific Threat
 
-Atomic Threat Coverage provide security teams highly automatable framework for accumulation, developing, explanation and sharing actionable analytics both internally and externally.
+Atomic Threat Coverage provide security teams highly automatable framework for accumulation, developing, explanation and sharing actionable analytics.
 
 ## Description
 
