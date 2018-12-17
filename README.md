@@ -10,7 +10,7 @@ Atomic Threat Coverage is tool which allows you to automatically generate knowle
 - **Detection Rules** based on [Sigma](https://github.com/Neo23x0/sigma) — Generic Signature Format for SIEM Systems
 - **Data Needed** to be collected to produce detection of specific Threat
 - **Logging Policies** need to be configured on data source to be able to collect Data Needed
-- **Triggering** based on [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) — detection tests based on MITRE's ATT&CK
+- **Triggers** based on [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) — detection tests based on MITRE's ATT&CK
 - **Response Playbooks** for reacting on Detection Rules triggered by specific Threat
 - **Hardening Policies** need to be implemented to mitigate specific Threat
 - **Mitigation Systems** need to be deployed and configured to mitigate specific Threat
@@ -38,7 +38,7 @@ Everything starts from Sigma rule and ends up with human-readable wiki-style pag
 1. Maps Detection Rule to ATT&CK Tactic using `tags` from Sigma rule
 2. Maps Detection Rule to ATT&CK Technique using `tags` from Sigma rule
 3. Maps Detection Rule to Data Needed using `logsource` and `detection` sections from Sigma rule
-4. Maps Detection Rule to Triggering (Atomic Red Team tests) using `tags` from Sigma rule
+4. Maps Detection Rule to Triggers (Atomic Red Team tests) using `tags` from Sigma rule
 5. Maps Logging Policies to Data Needed using existing mapping inside Data Needed
 6. Converts everything into Confluence and Markdown wiki-style pages using jinja templates (`scripts/templates`)
 7. Pushes all pages to local repo and Confluence server (according to configuration provided in `scripts/config.py`)
