@@ -4,7 +4,7 @@ import getopt
 from os import listdir
 from os.path import isfile, join
 
-from .utils import read_yaml_file, main_dn_calculatoin_func
+from utils import read_yaml_file, main_dn_calculatoin_func
 from yaml.scanner import ScannerError
 
 HELP_MESSAGE = """Usage: python3 yamls2csv.py [OPTIONS]\n\n\n

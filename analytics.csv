@@ -1,4 +1,669 @@
 tactic,technique,title,field,dn_PLATFORM,dn_TYPE,dn_channel,dn_event_id,logging_policy_title 
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,EventID,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,Hostname,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,Username,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,UserSid,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,ProcessPid,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,ProcessName,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,NewProcessName,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,Image,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,CommandLine,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,ProcessCommandLine,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,ProcesssCommandLine,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,ParentProcessPid,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,ParentImage,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,ParentProcessName,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,MandatoryLabel,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,TokenElevationType,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0002: Execution,attack.t1086,Malicious Base64 encoded PowerShell Keywords in command lines,LogonId,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,EventID,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Hostname,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Username,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,UserSid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Image,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,CommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentImage,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonId,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,EventID,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Hostname,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Username,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,UserSid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Image,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,CommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentImage,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonId,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,EventID,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Hostname,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Username,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,UserSid,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ProcessName,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Image,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,CommandLine,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ParentImage,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,LogonId,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,EventID,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Hostname,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Username,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,UserSid,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ProcessName,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,Image,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,CommandLine,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ParentImage,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Suspicious SYSVOL Domain Group Policy Access,LogonId,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,EventID,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Hostname,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Username,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,UserSid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Image,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,CommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentImage,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonId,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,EventID,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Hostname,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Username,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,UserSid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Image,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,CommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentImage,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonId,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,EventID,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Hostname,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Username,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,UserSid,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ProcessName,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Image,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,CommandLine,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ParentImage,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,LogonId,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,EventID,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Hostname,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Username,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,UserSid,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ProcessName,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Image,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,CommandLine,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ParentImage,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,LogonId,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,EventID,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Hostname,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Username,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,UserSid,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ProcessName,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,Image,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,CommandLine,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ParentImage,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1073,Reconnaissance Activity with Net Command,LogonId,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,EventID,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Hostname,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Username,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,UserSid,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ProcessName,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,Image,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,CommandLine,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ParentImage,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0007: Discovery,attack.t1012,Reconnaissance Activity with Net Command,LogonId,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,EventID,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Hostname,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Username,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,UserSid,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ProcessName,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Image,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,CommandLine,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ParentImage,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,LogonId,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,EventID,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Hostname,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Username,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,UserSid,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ProcessName,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,Image,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,CommandLine,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ParentImage,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0004: Privilege Escalation,attack.t1068,Hurricane Panda Activity,LogonId,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,EventID,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Hostname,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Username,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,UserSid,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ProcessName,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Image,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,CommandLine,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ParentImage,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,LogonId,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,EventID,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Hostname,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Username,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,UserSid,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ProcessName,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,Image,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,CommandLine,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ParentImage,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0003: Persistence,attack.t1100,IIS Native-Code Module Command Line Installation,LogonId,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),EventID,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Hostname,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Username,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),UserSid,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ProcessPid,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ProcessName,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),NewProcessName,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Image,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),CommandLine,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ParentImage,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),LogonId,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),EventID,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Hostname,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Username,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),UserSid,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ProcessPid,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ProcessName,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),NewProcessName,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),Image,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),CommandLine,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ParentImage,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0006: Credential Access,attack.t1003,Invocation of Active Directory Diagnostic Tool (ntdsutil.exe),LogonId,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,EventID,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Hostname,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Username,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,UserSid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Image,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,CommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ParentImage,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,LogonId,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,EventID,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Hostname,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Username,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,UserSid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,Image,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,CommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ParentImage,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1140,Suspicious Commandline Escape,LogonId,Windows,Windows Log,Security,-1,-
 TA0008: Lateral Movement,attack.t1078,Admin User Remote Logon,EventID,Windows,Windows Log,Security,4624,LP_0004_windows_audit_logon
 TA0008: Lateral Movement,attack.t1078,Admin User Remote Logon,EventID,Windows,Windows Log,Security,4625,LP_0004_windows_audit_logon
 TA0008: Lateral Movement,attack.t1078,Admin User Remote Logon,EventID,Windows,Windows Log,Security,4648,LP_0004_windows_audit_logon
@@ -123,73 +788,147 @@ TA0008: Lateral Movement,attack.t1078,Admin User Remote Logon,ElevatedToken,Wind
 TA0008: Lateral Movement,attack.t1078,Admin User Remote Logon,ElevatedToken,Windows,Windows Log,Security,4625,LP_0004_windows_audit_logon
 TA0008: Lateral Movement,attack.t1078,Admin User Remote Logon,ElevatedToken,Windows,Windows Log,Security,4648,LP_0004_windows_audit_logon
 TA0008: Lateral Movement,attack.t1078,Admin User Remote Logon,ElevatedToken,Windows,Windows Log,Security,4675,LP_0004_windows_audit_logon
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,EventID,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Hostname,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Username,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,UserSid,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessPid,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessName,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,NewProcessName,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Image,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,CommandLine,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessCommandLine,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcesssCommandLine,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessPid,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessName,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,MandatoryLabel,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,TokenElevationType,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonId,Windows,Windows Log,Security,4688,LP_0002_windows_audit_process_creation_with_commandline
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,EventID,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Hostname,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Username,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,UserSid,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessPid,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessName,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,NewProcessName,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,Image,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,CommandLine,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcessCommandLine,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessPid,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,ParentProcessName,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,MandatoryLabel,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,TokenElevationType,Windows,Windows Log,Security,-1,-
-TA0005: Defense Evasion,attack.t1036,Suspicious Process Start Locations,LogonId,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,EventID,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Hostname,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Username,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,UserSid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Image,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,CommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ParentImage,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,LogonId,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,EventID,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Hostname,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Username,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,UserSid,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ProcessName,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Image,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,CommandLine,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ParentImage,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,LogonId,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,EventID,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Hostname,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Username,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,UserSid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,Image,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,CommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ParentImage,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0005: Defense Evasion,attack.t1085,Suspicious Rundll32 Activity,LogonId,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,EventID,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Hostname,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Username,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,CommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,LogonGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,LogonId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,TerminalSessionid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,IntegrityLevel,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Imphash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Sha256hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Sha1hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Md5hash,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ParentProcessGuid,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ParentProcessId,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ParentProcessName,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ParentCommandLine,Windows,Windows Log,Microsoft-Windows-Sysmon/Operational,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,EventID,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Hostname,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Username,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,UserSid,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ProcessPid,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ProcessName,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,NewProcessName,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,Image,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,CommandLine,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ProcessCommandLine,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ProcesssCommandLine,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ParentProcessPid,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ParentImage,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,ParentProcessName,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,MandatoryLabel,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,TokenElevationType,Windows,Windows Log,Security,-1,-
+TA0002: Execution,attack.t1085,Suspicious Rundll32 Activity,LogonId,Windows,Windows Log,Security,-1,-
