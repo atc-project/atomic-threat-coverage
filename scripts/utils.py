@@ -234,8 +234,8 @@ def calculate_dn_for_dr(dict_of_dn_files, dict_of_logsource_fields_from_dr, dr_l
   logsource = dr_logsource_dict
 
   list_of_DN_matched_by_fields = []
-  list_of_DN_matched_by_fields_and_logsource = ""
-  list_of_DN_matched_by_fields_and_logsource_and_eventid = ""
+  list_of_DN_matched_by_fields_and_logsource = []
+  list_of_DN_matched_by_fields_and_logsource_and_eventid = []
 
   for dn in dn_list:
     list_of_DR_fields = [*dr_dn] # will create a list of keys from Detection Rule fields dictionary
@@ -255,7 +255,7 @@ def calculate_dn_for_dr(dict_of_dn_files, dict_of_logsource_fields_from_dr, dr_l
         # превозмогая трудности!
         shared_items = {k: x[k] for k in x if k in y and x[k] == y[k]}
         if len(shared_items) == amount_of_fields_in_logsource:
-          list_of_DN_matched_by_fields_and_logsource += dn.get('title')
+          list_of_DN_matched_by_fields_and_logsource.append(dn.get('title'))
 
   # and only in the last step we check EventID
   if dr_dn['EventID'] != None:
@@ -263,7 +263,7 @@ def calculate_dn_for_dr(dict_of_dn_files, dict_of_logsource_fields_from_dr, dr_l
     for dn in dn_list:
       if dn['title'] in list_of_DN_matched_by_fields_and_logsource:
         if dn['title'].endswith(str(eventID)):
-          list_of_DN_matched_by_fields_and_logsource_and_eventid += dn.get('title')
+          list_of_DN_matched_by_fields_and_logsource_and_eventid.append(dn.get('title'))
     return list_of_DN_matched_by_fields_and_logsource_and_eventid
   else:
     return list_of_DN_matched_by_fields_and_logsource
@@ -286,7 +286,6 @@ def main_dn_calculatoin_func(dr_file_path):
     no_extra_logsources = True
 
   logsource = {}
-  dn_fields = {}
   if no_extra_logsources is True:
     final_list = []
     # we work only with one logsource. let's add it to our dict
@@ -323,7 +322,9 @@ def main_dn_calculatoin_func(dr_file_path):
           #dr_dn.update(logsource)
           for field in common_fields:
             dr_dn.update([(field, 'placeholder')])
-            final_list.append(calculate_dn_for_dr(dn_list, dr_dn, logsource))
+            result_of_dn_caclulation = calculate_dn_for_dr(dn_list, dr_dn, logsource)
+            for dn in result_of_dn_caclulation:
+              if dn not in final_list:
+                final_list.append(dn)
 
     return final_list
-
