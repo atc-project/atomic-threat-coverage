@@ -23,7 +23,7 @@ fields:
   - ProcessCommandLine  # redundant, inconsistent
   - ProcesssCommandLine # redundant, inconsistent
   - ParentProcessPid
-  - ParentImage
+  - ParentImage         # redundant, inconsistent
   - ParentProcessName
   - MandatoryLabel
   - TokenElevationType

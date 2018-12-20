@@ -18,7 +18,7 @@ fields:
   - ProcessName
   - NewProcessName      # redundant, inconsistent
   - Image               # redundant, inconsistent
-  - ParentImage
+  - ParentImage         # redundant, inconsistent
   - ParentProcessPid
   - ParentProcessName
   - MandatoryLabel

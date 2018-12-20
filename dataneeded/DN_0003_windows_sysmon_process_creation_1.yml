@@ -26,6 +26,8 @@ fields:
   - Sha256hash
   - Sha1hash
   - Md5hash
+  - Image
+  - ParentImage
   - ParentProcessGuid
   - ParentProcessId
   - ParentProcessName
