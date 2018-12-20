@@ -1,5 +1,5 @@
 title: DN_0003_windows_sysmon_process_creation_1
-description:  >
+description: >
   Windows process creation log, including command line.
 loggingpolicy: 
   - LP_0001_windows_audit_process_creation

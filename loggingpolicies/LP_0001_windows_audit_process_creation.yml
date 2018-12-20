@@ -1,7 +1,7 @@
 title: LP_0001_windows_audit_process_creation
 default: Not configured
 volume: Medium
-description:  >
+description: >
   Audit Process Creation determines whether the operating 
   system generates audit events when a process is created (starts). 
   These audit events can help you track user activity and understand 
@@ -23,5 +23,3 @@ configuration: |
   Detailed Tracking >
   Audit Process Creation (Success,Failure)
   ```
-
-

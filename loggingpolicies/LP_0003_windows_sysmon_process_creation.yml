@@ -1,7 +1,7 @@
 title: LP_0003_windows_sysmon_process_creation
 default: Partially (Other)
 volume: Medium
-description:  >
+description: >
   The process creation event provides extended information 
   about a newly created process. The full command line provides 
   context on the process execution. The ProcessGUID field is a 

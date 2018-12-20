@@ -1,5 +1,5 @@
 title: DN_0000_some_name_here
-description:  >
+description: >
   Some text description here. It will be merged into one line.
 loggingpolicy: LP_0000_some_logging_policy_name_here
 references:

@@ -1,7 +1,7 @@
 title: LP_0000_some_name_here
 default: Not configured # Not configured | Partially (Success) | Partially (Failure) | Partially (Other) | Configured
 volume: Low             # Low | Medium | High | Extremely High
-description:  >
+description: >
   Some text description here. It will be merged into one line.
 eventID: 
   - 4624

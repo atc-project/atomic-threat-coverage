@@ -1,7 +1,7 @@
 title: LP_0004_windows_audit_logon
 default: Partially (Success)
 volume: Medium
-description:  >
+description: >
   Audit Logon determines whether the operating system generates audit 
   events when a user attempts to log on to a computer.
 eventID:

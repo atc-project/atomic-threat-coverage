@@ -1,5 +1,5 @@
 title: DN_0004_windows_account_logon_4624
-description:  >
+description: >
   An account was successfully logged on.
 loggingpolicy:
   - LP_0004_windows_audit_logon
