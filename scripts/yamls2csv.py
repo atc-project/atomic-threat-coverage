@@ -43,47 +43,61 @@ def main(**kwargs):
     lp_list = load_yamls(kwargs['lp_path'])[0]
     alerts, path_to_alerts = load_yamls(kwargs['alerts_path'])
     result = []
+
+    # Iterate through alerts and pathes to them
     for alert, path in zip(alerts, path_to_alerts):
         threats = [tag for tag in alert['tags'] if tag.startswith('attack')]
         # For every dataNeeded file we do that - for every DN_ID in alert check if its in DataNeeded Title
         if alert.get('additions') is None:
             alert['additions'] = [alert]
         for addition in alert['additions']:
-            eventID = str(addition['detection']['selection']['EventID'])
-            dn_titles = main_dn_calculatoin_func(path)
-            alert_dns = [data for data in dn_list if data['title'] in dn_titles]
-            for dn in alert_dns:
-                logging_policy = [l for l in lp_list if l['title'] in dn['loggingpolicy'] ]
-                if isinstance(logging_policy, list):
-                    if len(logging_policy) > 0:
-                        logging_policy = logging_policy[0]
-                    else:
-                        logging_policy = {'title': "-", 'eventID': [-1,]}
-                dn['loggingpolicy'] = logging_policy
-            tactics = [f'{ta_mapping[threat][1]}: {ta_mapping[threat][0]}'  for threat in threats if threat in ta_mapping.keys() ]
-            techniques = [threat for threat in threats if threat.startswith('attack.t')]
-            for tactic in tactics:
-                for technique in techniques:
-                    for dn in alert_dns:
-                        lp = dn['loggingpolicy']
+            pass
+
+
+        dn_titles = main_dn_calculatoin_func(path)
+        alert_dns = [data for data in dn_list if data['title'] in dn_titles]
+        logging_policies = []
+
+
+        for dn in alert_dns:
+            # If there are logging policies in DN that we havent added yet - add them
+            logging_policies.extend([l for l in lp_list if l['title'] in dn['loggingpolicy'] and l not in logging_policies ])
+            # If there are no logging policices at all - make an empty one just to make one row in csv
+            if not isinstance(logging_policies, list) or len(logging_policies) == 0:
+                logging_policies = [{'title': "-", 'eventID': [-1, ]}]
+
+        # Name tactics and threats correctly
+        tactics = [f'{ta_mapping[threat][1]}: {ta_mapping[threat][0]}'  for threat in threats if threat in ta_mapping.keys() ]
+        techniques = [threat for threat in threats if threat.startswith('attack.t')]
+
+        # Append alert data to a result array
+        for tactic in tactics:
+            for technique in techniques:
+                for dn in alert_dns:
+                    for lp in logging_policies:
                         for field in dn['fields']:
                             for eventID in lp['eventID']:
                                 eventID = str(eventID)
                                 result.append(
                                     [tactic,technique, alert['title'],field,
                                               dn['platform'],dn['type'],dn['channel'],eventID, lp['title'].replace('\n','')])
+
+    # Write a result array as csv
     with open('../analytics.csv', 'w', newline='') as csvfile:
         alertswriter = csv.writer(csvfile, delimiter=',') # maybe need some quoting
         alertswriter.writerow(['tactic','technique', 'title', 'field', 'dn_PLATFORM', 'dn_TYPE',
                                'dn_channel', 'dn_event_id', 'logging_policy_title '])
         for row in result:
             alertswriter.writerow(row)
+
+
     print('Export succesfull')
 
 
 
 if __name__ == '__main__':
     opts, args = getopt.getopt(sys.argv[1:], "", ["alerts_path=", "dataneeded_path=", "loggingpolicies_path=", "help"])
+
     # complex check in case '--help' would be in some path
     if len(sys.argv) > 1 and '--help' in sys.argv[1] and len(sys.argv[1]) < 7:
         print(HELP_MESSAGE)
