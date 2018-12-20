@@ -51,6 +51,10 @@ def yaml2markdown_jinja(file, type):
       ###Data Needed
       data_needed = main_dn_calculatoin_func(file)
 
+      # if there is only 1 element in the list, print it as a string, without quotes
+      if len(data_needed) == 1:
+        [data_needed] = data_needed
+
       alert.update({'data_needed':data_needed})
 
       tactic = []
