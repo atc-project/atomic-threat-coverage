@@ -1,0 +1,15 @@
+title: EN_0000_some_name_here
+description: >
+  Some text description here. It will be merged into one line.
+references:
+  - http://something.com
+author: Some Author
+requirements: name of other enrichment if needed  # Optional
+new_fields: # optional
+  - hostname 
+  - ip_address
+  - username
+  - etc
+config: |
+  Detailed description of configuratoin in markdown format.
+  Here newlines will be saved.
