@@ -1,16 +1,16 @@
-| Title        | {{ title }} |
-|:-------------------|:------------------|
-| Description        | {{ description }} |
-| ATT&amp;CK Tactic | <ul>{%  for tactic_name, tactic_id in tactics  %}<li>[{{tactic_id}}: {{tactic_name}}](https://attack.mitre.org/tactics/{{tactic_id}})</li>{% endfor %}</ul> |
-| ATT&amp;CK Technique | <ul>{%  for technique in techniques  %}<li>[{{technique}}](https://attack.mitre.org/tactics/{{technique}})</li>{% endfor %}</ul> |
-| Other Tags | <ul>{% for tag in other_tags %}<li>{{ tag }}</li>{% endfor %}</ul>  |
-| Dataneeded         | <ul>{% for data in data_needed %}<li>[{{ data }}](../Data_Needed/{{data}}.md)</li>{% endfor %}</ul> |
-| Triggering         | <ul>{% for trigger in triggers %}<li>[{{ trigger }}](../Triggering/{{trigger}}.md)</li>{% endfor %}</ul> |
-| Severity Level     | {{ level }}       |
-| False Positives    | <ul>{% for falsepositive in falsepositives %}<li>{{ falsepositive }}</li>{% endfor %}</ul> |
-| Development Status | {{ status }}      |
-| References         | <ul>{% for reference in references -%}<li>[{{ reference }}]({{ reference }})</li>{% endfor %}</ul> |
-| Author             | {{ author }}      |
+| Title                | {{ title }}                                                                                                                                                 |
+|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Description          | {{ description }}                                                                                                                                           |
+| ATT&amp;CK Tactic    | <ul>{%  for tactic_name, tactic_id in tactics  %}<li>[{{tactic_id}}: {{tactic_name}}](https://attack.mitre.org/tactics/{{tactic_id}})</li>{% endfor %}</ul> |
+| ATT&amp;CK Technique | <ul>{%  for technique in techniques  %}<li>[{{technique}}](https://attack.mitre.org/tactics/{{technique}})</li>{% endfor %}</ul>                            |
+| Other Tags           | <ul>{% for tag in other_tags %}<li>{{ tag }}</li>{% endfor %}</ul>                                                                                          |
+| Data Needed          | <ul>{% for data in data_needed %}<li>[{{ data }}](../Data_Needed/{{data}}.md)</li>{% endfor %}</ul>                                                         |
+| Trigger              | <ul>{% for trigger in triggers %}<li>[{{ trigger }}](../Triggering/{{trigger}}.md)</li>{% endfor %}</ul>                                                    |
+| Severity Level       | {{ level }}                                                                                                                                                 |
+| False Positives      | <ul>{% for falsepositive in falsepositives %}<li>{{ falsepositive }}</li>{% endfor %}</ul>                                                                  |
+| Development Status   | {{ status }}                                                                                                                                                |
+| References           | <ul>{% for reference in references -%}<li>[{{ reference }}]({{ reference }})</li>{% endfor %}</ul>                                                          |
+| Author               | {{ author }}                                                                                                                                                |
 
 {% if sigma_rule is defined and sigma_rule|length %}
 ## Detection Rules
