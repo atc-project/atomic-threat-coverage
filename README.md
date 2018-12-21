@@ -79,12 +79,12 @@ Detection Rules are unmodified [Sigma rules](https://github.com/Neo23x0/sigma/tr
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/dr_confluence.png" />
+  <img src="images/dr_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown (GitLab) page (click to expand)</summary>
-  <img src="images/dr_markdown.png" />
+  <img src="images/dr_markdown_v1.png" />
 </details>
 
 <br>
@@ -94,17 +94,17 @@ All queries automatically generated and all mappings added.
 
 <details>
   <summary>Data Needed yaml (click to expand)</summary>
-  <img src="images/dataneeded.png" />
+  <img src="images/dataneeded_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/dn_confluence.png" />
+  <img src="images/dn_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown (GitLab) page (click to expand)</summary>
-  <img src="images/dn_markdown.png" />
+  <img src="images/dn_markdown_v1.png" />
 </details>
 
 <br>
@@ -119,12 +119,12 @@ This entity expected to explain SIEM/LM/Data Engineering teams what kind of data
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/lp_confluence.png" />
+  <img src="images/lp_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown (GitLab) page (click to expand)</summary>
-  <img src="images/lp_markdown.png" />
+  <img src="images/lp_markdown_v1.png" />
 </details>
 
 <br>
@@ -141,12 +141,12 @@ Triggers are unmodified [Atomic Red Team tests](https://github.com/redcanaryco/a
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/trigger_confluence.png" />
+  <img src="images/trigger_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created (by Atomic Red Team) markdown (GitLab) page (click to expand)</summary>
-  <img src="images/tg_markdown.png" />
+  <img src="images/tg_markdown_v1.png" />
 </details>
 
 <br>
