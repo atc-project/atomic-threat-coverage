@@ -1,16 +1,16 @@
-| Title        | Reconnaissance Activity with Net Command |
-|:-------------------|:------------------|
-| Description        | Detects a set of commands often used in recon stages by different attack groups |
-| ATT&amp;CK Tactic | <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul> |
-| ATT&amp;CK Technique | <ul><li>[T1073](https://attack.mitre.org/tactics/T1073)</li><li>[T1012](https://attack.mitre.org/tactics/T1012)</li></ul> |
-| Other Tags | <ul></ul>  |
-| Dataneeded         | <ul><li>[DN_0003_windows_sysmon_process_creation_1](../Data_Needed/DN_0003_windows_sysmon_process_creation_1.md)</li><li>[DN_0002_windows_process_creation_with_commandline_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688.md)</li></ul> |
-| Triggering         | <ul><li>[T1073: No atomics trigger for this technique](../Triggering/T1073: No atomics trigger for this technique.md)</li><li>[T1012](../Triggering/T1012.md)</li></ul> |
-| Severity Level     | medium       |
-| False Positives    | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul> |
-| Development Status | experimental      |
-| References         | <ul><li>[https://twitter.com/haroonmeer/status/939099379834658817](https://twitter.com/haroonmeer/status/939099379834658817)</li><li>[https://twitter.com/c_APT_ure/status/939475433711722497](https://twitter.com/c_APT_ure/status/939475433711722497)</li><li>[https://www.fireeye.com/blog/threat-research/2016/05/targeted_attacksaga.html](https://www.fireeye.com/blog/threat-research/2016/05/targeted_attacksaga.html)</li></ul> |
-| Author             | Florian Roth, Markus Neis      |
+| Title                | Reconnaissance Activity with Net Command                                                                                                                                                 |
+|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Description          | Detects a set of commands often used in recon stages by different attack groups                                                                                                                                           |
+| ATT&amp;CK Tactic    | <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul> |
+| ATT&amp;CK Technique | <ul><li>[T1073](https://attack.mitre.org/tactics/T1073)</li><li>[T1012](https://attack.mitre.org/tactics/T1012)</li></ul>                            |
+| Other Tags           | <ul></ul>                                                                                          |
+| Data Needed          | <ul><li>[DN_0003_windows_sysmon_process_creation_1](../Data_Needed/DN_0003_windows_sysmon_process_creation_1.md)</li><li>[DN_0002_windows_process_creation_with_commandline_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688.md)</li></ul>                                                         |
+| Trigger              | <ul><li>[T1073: No atomics trigger for this technique](../Triggering/T1073: No atomics trigger for this technique.md)</li><li>[T1012](../Triggering/T1012.md)</li></ul>                                                    |
+| Severity Level       | medium                                                                                                                                                 |
+| False Positives      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul>                                                                  |
+| Development Status   | experimental                                                                                                                                                |
+| References           | <ul><li>[https://twitter.com/haroonmeer/status/939099379834658817](https://twitter.com/haroonmeer/status/939099379834658817)</li><li>[https://twitter.com/c_APT_ure/status/939475433711722497](https://twitter.com/c_APT_ure/status/939475433711722497)</li><li>[https://www.fireeye.com/blog/threat-research/2016/05/targeted_attacksaga.html](https://www.fireeye.com/blog/threat-research/2016/05/targeted_attacksaga.html)</li></ul>                                                          |
+| Author               | Florian Roth, Markus Neis                                                                                                                                                |
 
 
 ## Detection Rules

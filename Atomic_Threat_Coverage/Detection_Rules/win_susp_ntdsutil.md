@@ -1,16 +1,16 @@
-| Title        | Invocation of Active Directory Diagnostic Tool (ntdsutil.exe) |
-|:-------------------|:------------------|
-| Description        | Detects execution of ntdsutil.exe, which can be used for various attacks against the NTDS database (NTDS.DIT) |
-| ATT&amp;CK Tactic | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul> |
-| ATT&amp;CK Technique | <ul><li>[T1003](https://attack.mitre.org/tactics/T1003)</li></ul> |
-| Other Tags | <ul></ul>  |
-| Dataneeded         | <ul><li>[DN_0003_windows_sysmon_process_creation_1](../Data_Needed/DN_0003_windows_sysmon_process_creation_1.md)</li><li>[DN_0002_windows_process_creation_with_commandline_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688.md)</li></ul> |
-| Triggering         | <ul><li>[T1003](../Triggering/T1003.md)</li></ul> |
-| Severity Level     | high       |
-| False Positives    | <ul><li>NTDS maintenance</li></ul> |
-| Development Status | experimental      |
-| References         | <ul><li>[https://jpcertcc.github.io/ToolAnalysisResultSheet/details/ntdsutil.htm](https://jpcertcc.github.io/ToolAnalysisResultSheet/details/ntdsutil.htm)</li></ul> |
-| Author             | Thomas Patzke      |
+| Title                | Invocation of Active Directory Diagnostic Tool (ntdsutil.exe)                                                                                                                                                 |
+|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Description          | Detects execution of ntdsutil.exe, which can be used for various attacks against the NTDS database (NTDS.DIT)                                                                                                                                           |
+| ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul> |
+| ATT&amp;CK Technique | <ul><li>[T1003](https://attack.mitre.org/tactics/T1003)</li></ul>                            |
+| Other Tags           | <ul></ul>                                                                                          |
+| Data Needed          | <ul><li>[DN_0003_windows_sysmon_process_creation_1](../Data_Needed/DN_0003_windows_sysmon_process_creation_1.md)</li><li>[DN_0002_windows_process_creation_with_commandline_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688.md)</li></ul>                                                         |
+| Trigger              | <ul><li>[T1003](../Triggering/T1003.md)</li></ul>                                                    |
+| Severity Level       | high                                                                                                                                                 |
+| False Positives      | <ul><li>NTDS maintenance</li></ul>                                                                  |
+| Development Status   | experimental                                                                                                                                                |
+| References           | <ul><li>[https://jpcertcc.github.io/ToolAnalysisResultSheet/details/ntdsutil.htm](https://jpcertcc.github.io/ToolAnalysisResultSheet/details/ntdsutil.htm)</li></ul>                                                          |
+| Author               | Thomas Patzke                                                                                                                                                |
 
 
 ## Detection Rules
