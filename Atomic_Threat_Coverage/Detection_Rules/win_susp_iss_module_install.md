@@ -1,11 +1,10 @@
 | Title                | IIS Native-Code Module Command Line Installation                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects suspicious IIS native-code module installations via command line                                                                                                                                           |
-| ATT&amp;CK Tactic    | <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul> |
-| ATT&amp;CK Technique | <ul><li>[T1100](https://attack.mitre.org/tactics/T1100)</li></ul>                            |
-| Other Tags           | <ul></ul>                                                                                          |
+| ATT&amp;CK Tactic    | <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| ATT&amp;CK Technique | <ul><li>[T1100](https://attack.mitre.org/tactics/T1100)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0003_windows_sysmon_process_creation_1](../Data_Needed/DN_0003_windows_sysmon_process_creation_1.md)</li><li>[DN_0002_windows_process_creation_with_commandline_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1100: No atomics trigger for this technique](../Triggering/T1100: No atomics trigger for this technique.md)</li></ul>                                                    |
+| Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown as it may vary from organisation to arganisation how admins use to install IIS modules</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

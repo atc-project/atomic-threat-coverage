@@ -1,11 +1,10 @@
 | Title                | Hurricane Panda Activity                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects Hurricane Panda Activity                                                                                                                                           |
-| ATT&amp;CK Tactic    | <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul> |
-| ATT&amp;CK Technique | <ul><li>[T1068](https://attack.mitre.org/tactics/T1068)</li></ul>                            |
-| Other Tags           | <ul><li>attack.g0009</li></ul>                                                                                          |
+| ATT&amp;CK Tactic    | <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
+| ATT&amp;CK Technique | <ul><li>[T1068](https://attack.mitre.org/tactics/T1068)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0003_windows_sysmon_process_creation_1](../Data_Needed/DN_0003_windows_sysmon_process_creation_1.md)</li><li>[DN_0002_windows_process_creation_with_commandline_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1068: No atomics trigger for this technique](../Triggering/T1068: No atomics trigger for this technique.md)</li></ul>                                                    |
+| Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

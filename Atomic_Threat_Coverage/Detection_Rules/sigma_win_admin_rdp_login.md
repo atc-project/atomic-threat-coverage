@@ -1,11 +1,10 @@
 | Title                | Admin User Remote Logon                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detect remote login by Administrator user depending on internal pattern                                                                                                                                           |
-| ATT&amp;CK Tactic    | <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul> |
-| ATT&amp;CK Technique | <ul><li>[T1078](https://attack.mitre.org/tactics/T1078)</li></ul>                            |
-| Other Tags           | <ul></ul>                                                                                          |
+| ATT&amp;CK Tactic    | <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
+| ATT&amp;CK Technique | <ul><li>[T1078](https://attack.mitre.org/tactics/T1078)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0004_windows_account_logon_4624](../Data_Needed/DN_0004_windows_account_logon_4624.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1078: No atomics trigger for this technique](../Triggering/T1078: No atomics trigger for this technique.md)</li></ul>                                                    |
+| Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | low                                                                                                                                                 |
 | False Positives      | <ul><li>Legitimate administrative activity</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

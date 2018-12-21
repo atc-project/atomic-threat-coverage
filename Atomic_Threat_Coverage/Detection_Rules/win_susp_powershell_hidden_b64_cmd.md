@@ -1,11 +1,10 @@
 | Title                | Malicious Base64 encoded PowerShell Keywords in command lines                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects base64 encoded strings used in hidden malicious PowerShell command lines                                                                                                                                           |
-| ATT&amp;CK Tactic    | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul> |
-| ATT&amp;CK Technique | <ul><li>[T1086](https://attack.mitre.org/tactics/T1086)</li></ul>                            |
-| Other Tags           | <ul></ul>                                                                                          |
+| ATT&amp;CK Tactic    | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| ATT&amp;CK Technique | <ul><li>[T1086](https://attack.mitre.org/tactics/T1086)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0002_windows_process_creation_with_commandline_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1086](../Triggering/T1086.md)</li></ul>                                                    |
+| Trigger              | <ul><li>[T1086](../Triggering/T1086.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Penetration tests</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

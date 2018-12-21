@@ -86,7 +86,7 @@ def yaml2markdown_jinja(file, type):
           triggers.append(trigger)
         except FileNotFoundError:
           print(trigger+": No atomics trigger for this technique")
-          triggers.append(trigger+": No atomics trigger for this technique")
+          #triggers.append(trigger+": No atomics trigger for this technique")
 
       alert.update({'description':alert.get('description').strip()}) 
       alert.update({'triggers':triggers})
