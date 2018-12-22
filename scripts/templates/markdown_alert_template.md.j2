@@ -10,7 +10,7 @@
 | Development Status   | {{ status }}                                                                                                                                                |
 | References           | <ul>{% for reference in references -%}<li>[{{ reference }}]({{ reference }})</li>{% endfor %}</ul>                                                          |
 | Author               | {{ author }}                                                                                                                                                |
-
+{% if other_tags is defined and other_tags|length %}| Other Tags           | <ul>{% for tag in other_tags %}<li>{{ tag }}</li>{% endfor %}</ul> | {% else %}{% endif %}
 {% if sigma_rule is defined and sigma_rule|length %}
 ## Detection Rules
 

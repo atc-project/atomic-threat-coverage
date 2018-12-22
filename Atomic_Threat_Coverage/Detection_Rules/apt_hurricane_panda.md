@@ -10,7 +10,7 @@
 | Development Status   | experimental                                                                                                                                                |
 | References           | <ul><li>[https://www.crowdstrike.com/blog/crowdstrike-discovers-use-64-bit-zero-day-privilege-escalation-exploit-cve-2014-4113-hurricane-panda/](https://www.crowdstrike.com/blog/crowdstrike-discovers-use-64-bit-zero-day-privilege-escalation-exploit-cve-2014-4113-hurricane-panda/)</li></ul>                                                          |
 | Author               | Florian Roth                                                                                                                                                |
-
+| Other Tags           | <ul><li>attack.g0009</li></ul> | 
 
 ## Detection Rules
 
