@@ -15,6 +15,8 @@ fields:
   - Username
   - UserSid
   - ProcessPid
+  - ProcessId
+  - ThreadID
   - ProcessName
   - NewProcessName      # redundant, inconsistent
   - Image               # redundant, inconsistent

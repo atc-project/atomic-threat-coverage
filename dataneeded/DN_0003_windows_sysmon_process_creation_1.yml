@@ -15,6 +15,7 @@ fields:
   - Username
   - ProcessGuid
   - ProcessId
+  - ThreadID
   - ProcessName
   - CommandLine
   - LogonGuid
