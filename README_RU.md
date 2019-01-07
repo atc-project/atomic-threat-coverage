@@ -34,7 +34,7 @@ Atomic Threat Coverage является автоматизированным ф�
 - Отсутствие простого метода выражения своих потребностей
 - Разница в компетенциях (как в плане глубины, так и в плане различия предметных областей)
 
-Именно поэтому мы решили разработать Atomic Threat Coverage — проект, который призван связать разные функции под единой "Threat Centric" методологий ([Lockheed Martin Intelligence Driven Defense®](https://www.lockheedmartin.com/en-us/capabilities/cyber/intelligence-driven-defense.html) aka [MITRE Threat-based Security](https://mitre.github.io/unfetter/about/)), моделью угроз ([MITRE ATT&CK](https://attack.mitre.org/)) и предоставить подразделениям информационной безопасности эффективный инструмент для совместной работы над одной задачей — противодействию угрозам.
+Именно поэтому мы решили разработать Atomic Threat Coverage — проект, который призван связать разные функции под единой "Threat Centric" методологией ([Lockheed Martin Intelligence Driven Defense®](https://www.lockheedmartin.com/en-us/capabilities/cyber/intelligence-driven-defense.html) aka [MITRE Threat-based Security](https://mitre.github.io/unfetter/about/)), моделью угроз ([MITRE ATT&CK](https://attack.mitre.org/)) и предоставить подразделениям информационной безопасности эффективный инструмент для совместной работы над одной задачей — противодействию угрозам.
 
 ### Почему Atomic Threat Coverage
 
@@ -101,12 +101,12 @@ Detection Rules — Правила Обнаружения — оригиналь
 
 <details>
   <summary>Автоматически сгенерированная страница в Confluence (кликните чтобы раскрыть)</summary>
-  <img src="images/dr_confluence.png" />
+  <img src="images/dr_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Markdown (кликните чтобы раскрыть)</summary>
-  <img src="images/dr_markdown.png" />
+  <img src="images/dr_markdown_v1.png" />
 </details>
 
 <br>
@@ -117,17 +117,17 @@ Sigma правило, запросы для Kibana, X-Pack Watcher и запро
 
 <details>
   <summary>Data Needed yaml (кликните чтобы раскрыть)</summary>
-  <img src="images/dataneeded.png" />
+  <img src="images/dataneeded_v1.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Confluence (кликните чтобы раскрыть)</summary>
-  <img src="images/dn_confluence.png" />
+  <img src="images/dn_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Markdown (кликните чтобы раскрыть)</summary>
-  <img src="images/dn_markdown.png" />
+  <img src="images/dn_markdown_v1.png" />
 </details>
 
 <br>
@@ -147,12 +147,12 @@ Sigma правило, запросы для Kibana, X-Pack Watcher и запро
 
 <details>
   <summary>Автоматически сгенерированная страница в Confluence (кликните чтобы раскрыть)</summary>
-  <img src="images/lp_confluence.png" />
+  <img src="images/lp_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Markdown (кликните чтобы раскрыть)</summary>
-  <img src="images/lp_markdown.png" />
+  <img src="images/lp_markdown_v1.png" />
 </details>
 
 <br>
@@ -172,12 +172,12 @@ Triggers — сценарии имитации атак — оригинальн
 
 <details>
   <summary>Автоматически сгенерированная страница в Confluence (кликните чтобы раскрыть)</summary>
-  <img src="images/trigger_confluence.png" />
+  <img src="images/trigger_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Markdown (кликните чтобы раскрыть)</summary>
-  <img src="images/tg_markdown.png" />
+  <img src="images/tg_markdown_v1.png" />
 </details>
 
 <br>
