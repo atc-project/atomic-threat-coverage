@@ -110,6 +110,7 @@ Detection Rules are unmodified [Sigma rules](https://github.com/Neo23x0/sigma/tr
 </details>
 
 <br>
+
 Links to Data Needed, Trigger, and articles in ATT&CK are generated automatically.
 Sigma rule, Kibana query, X-Pack Watcher and GrayLog query generated and added automatically (this list could be expanded and depends on [Sigma Supported Targets](https://github.com/Neo23x0/sigma#supported-targets))
 
@@ -131,6 +132,7 @@ Sigma rule, Kibana query, X-Pack Watcher and GrayLog query generated and added a
 </details>
 
 <br>
+
 This entity expected to simplify communication with SIEM/LM/Data Engineering teams. It includes the next data:
 
 - Sample of the raw log to describe what data they could expect to receive/collect
@@ -155,6 +157,7 @@ This entity expected to simplify communication with SIEM/LM/Data Engineering tea
 </details>
 
 <br>
+
 This entity expected to explain SIEM/LM/Data Engineering teams and IT departments which logging policies have to be configured to have proper Data Needed for Detection and Response to specific Threat. It also explains how exactly this policy can be configured.
 
 #### Triggers
@@ -177,6 +180,7 @@ Triggers are unmodified [Atomic Red Team tests](https://github.com/redcanaryco/a
 </details>
 
 <br>
+
 This entity needed to test specific technical controls and detections. Detailed description could be found in official [site](https://atomicredteam.io).
 
 #### analytics.csv
