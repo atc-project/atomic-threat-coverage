@@ -8,9 +8,12 @@ author: Teymur Kheirkhabarov
 requirements:
   - EN_0001_cache_sysmon_event_id_1_info
 new_fields:
-  - event_data.ParentIntegrityLevel
-  - event_data.ParentUser
-  - event_data.ParentOfParentImage
+  - event_data.ParentIntegrityLevel  # redundant, inconsistent
+  - event_data.ParentUser            # redundant, inconsistent
+  - event_data.ParentOfParentImage   # redundant, inconsistent
+  - ParentIntegrityLevel
+  - ParentUser
+  - ParentOfParentImage
 config: |
   We can use Logstash to enrich Sysmon Event ID 1 with data cached in Memcached. 
   Here is the config example:
