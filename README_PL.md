@@ -23,7 +23,7 @@ Atomic Threat Coverage jest wysoko zautomatyzowanym frameworkiem służącym do 
 
 ### Motywacja
 
-Istnieje wiele projektów, które dostarczają analizy (lub funkcjonalność) skupiającą się na konkretnych zagadnieniach ([Sigma](https://github.com/Neo23x0/sigma), [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team), [MITRE CAR](https://car.mitre.org). Wszystkie z nich posiadają jedną słabość - istnieją we własnej przestrzeni. W rzeczywistości wszystko jest ściśle powiązane - dane do alertów nie biorą się znikąd, wygnerowane alerty nie idą w próżnię. Każda funkcja, jak dla przykładu zbieranie danych, administracja systemów, detekcji zagrożeń, reakcji na incydent itp są częścią kompleksowego procesu implementowanego przez wiele działów oraz wymagającego ich ścisłej współpracy.
+Istnieje wiele projektów, które dostarczają analizy (lub funkcjonalność) skupiającą się na konkretnych zagadnieniach ([Sigma](https://github.com/Neo23x0/sigma), [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team), [MITRE CAR](https://car.mitre.org)). Wszystkie z nich posiadają jedną słabość - istnieją we własnej przestrzeni. W rzeczywistości wszystko jest ściśle powiązane - dane do alertów nie biorą się znikąd, wygnerowane alerty nie idą w próżnię. Każda funkcja, jak dla przykładu zbieranie danych, administracja systemów, detekcji zagrożeń, reakcji na incydent itp są częścią kompleksowego procesu implementowanego przez wiele działów oraz wymagającego ich ścisłej współpracy.
 
 Zdarza się, że problemy jednej funkcji mogą być w tańszy, prostszy i bardziej efektywny sposób rozwiązane przy pomocy metod stosowanych dla innej funkcji. Większość zadań nie może być rozwiązanych jedynie przy pomocy wyłącznie jednej funkcji. Każda z funkcji opiera się na możliwościach oraz jakości drugiej. Nie jest możliwa efektywna detekcja zagrożeń bez poprawnej kolekcji danych i wzbogacania ich. Nie możliwa jest także prawidłowa odpowiedź na zagrożenia bez zrozumienia, których technologii/systemów/środków można użyć do zablokowania konkretnego zagrożenia. Przeprowadzanie testów penetracyjnych lub ćwiczeń Red Team nie przynosi korzyści, jeśli nieznane są możliwości procesów, personelu i systemów do blokowania, wykrywania oraz reagowania na incydenty. Wszystko to wymaga bliskiej interakcji i zrozumienia między działami.
 
@@ -110,6 +110,7 @@ Detection Rules — Reguły Wykrywania są niezmodyfikowanymi [regułami Sigma](
 </details>
 
 <br>
+
 Linki do Wymaganych Danych, Wyzwalaczy oraz artykułów na stronie ATT&CK są generowane automatycznie.  
 Reguła Sigma, zapytanie dla Kibany, X-Pack Watcher oraz GrayLog są generowane oraz dodawane automatycznie (istnieje możliwość rozszerzenia generowanych zapytań na podstawie wspieranych przez projekt Sigma platform [Sigma Supported Targets](https://github.com/Neo23x0/sigma#supported-targets) )
 
@@ -131,6 +132,7 @@ Reguła Sigma, zapytanie dla Kibany, X-Pack Watcher oraz GrayLog są generowane 
 </details>
 
 <br>
+
 Ten moduł ma na celu ułatwienie komunikacji z zespołami SIEM/LM/Data Engineering. Zawiera następujęce dane:
 
 - Przykładowy czysty log aby opisać jakich danych należy się spodziewać lub zbierać
@@ -155,9 +157,10 @@ Ten moduł ma na celu ułatwienie komunikacji z zespołami SIEM/LM/Data Engineer
 </details>
 
 <br>
+
 Ten moduł ma na celu wyjaśnienie zespołom SIEM/LM/Data Engineering, lub ogólnie działom IT jakie polityki logowania muszą być skonfigurowane, aby odpowiednie dane (Wymagane Dane) były wysyłane w celu poprawnego działania Reguł Wykrywania by wykryć konkretne Zagrożenia. Dodatkowo zawarto w nim instrukcje jak krok po kroku należy takie polityki skonfigurować.
 
-#### Wyzwalacze
+#### Triggers
 
 Wyzwalacze to niezmodyfikowane [testy Atomic Red Team](https://github.com/redcanaryco/atomic-red-team/tree/master/atomics). Domyślnie Atomic Threat Coverage używa "atomics" z oficjalnego repozytorium, ale nic nie stoi na przeszkodzie by dodać "atomics" z własnego repozytorium.
 
@@ -177,9 +180,10 @@ Wyzwalacze to niezmodyfikowane [testy Atomic Red Team](https://github.com/redcan
 </details>
 
 <br>
+
 Ten moduł pozwala na techniczne przetestowanie systemu. Szczegółowy opis można znaleźć na oficjalnej [stronie](https://atomicredteam.io). 
 
-#### Analytics.csv
+#### analytics.csv
 
 Atomic Threat Coverage generuje plik [analytics.csv](analytics.csv) z listą wszystkich zmapowanych danych do filtrowania i prostej analizy. Ten plik powinien odpowiedzień na następujące pytania:
 
@@ -233,8 +237,8 @@ Ten projekt jest aktualnie w fazie Proof of Concept i został napisany w kilka w
 
 ## TODO
 
-- [ ] Fix `analytics.csv` generation
-- [ ] Develop Polish and Russian version of the README
+- [x] Fix `analytics.csv` generation
+- [x] Develop Polish and Russian version of the README
 - [ ] Rewrite `make` and all bash scripts in python for compatibility with Windows
 - [ ] Rewrite main codebase in a proper way
 - [ ] Add contribution description
@@ -245,7 +249,7 @@ Ten projekt jest aktualnie w fazie Proof of Concept i został napisany w kilka w
 - [ ] Define new Detection Rule naming scheme (separate Events and Alerts)
 - [ ] Develop docker container for the tool
 - [ ] Create [MITRE ATT&CK Navigator](https://mitre.github.io/attack-navigator/enterprise/) profile generator per data type
-- [ ] Create new entity called "Enrichments" which will define how to enrich specific Data Needed
+- [x] Create new entity called "Enrichments" which will define how to enrich specific Data Needed
 - [ ] Implement new entity — "Visualisation" with Kibana visualisations/dashboards stored in yaml files and option to convert them into curl commands for uploading them into Elasticsearch
 - [ ] Implement "Playbook" entity (based on Detection Rule and Data Needed) with automatic TheHive Case Templates generation (actionable Playbook)
 

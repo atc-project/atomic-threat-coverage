@@ -110,6 +110,7 @@ Detection Rules are unmodified [Sigma rules](https://github.com/Neo23x0/sigma/tr
 </details>
 
 <br>
+
 Links to Data Needed, Trigger, and articles in ATT&CK are generated automatically.
 Sigma rule, Kibana query, X-Pack Watcher and GrayLog query generated and added automatically (this list could be expanded and depends on [Sigma Supported Targets](https://github.com/Neo23x0/sigma#supported-targets))
 
@@ -131,6 +132,7 @@ Sigma rule, Kibana query, X-Pack Watcher and GrayLog query generated and added a
 </details>
 
 <br>
+
 This entity expected to simplify communication with SIEM/LM/Data Engineering teams. It includes the next data:
 
 - Sample of the raw log to describe what data they could expect to receive/collect
@@ -155,6 +157,7 @@ This entity expected to simplify communication with SIEM/LM/Data Engineering tea
 </details>
 
 <br>
+
 This entity expected to explain SIEM/LM/Data Engineering teams and IT departments which logging policies have to be configured to have proper Data Needed for Detection and Response to specific Threat. It also explains how exactly this policy can be configured.
 
 #### Triggers
@@ -177,6 +180,7 @@ Triggers are unmodified [Atomic Red Team tests](https://github.com/redcanaryco/a
 </details>
 
 <br>
+
 This entity needed to test specific technical controls and detections. Detailed description could be found in official [site](https://atomicredteam.io).
 
 #### analytics.csv
@@ -233,8 +237,8 @@ The project is currently in Proof Of Concept stage and it was developed in a few
 
 ## TODO
 
-- [ ] Fix `analytics.csv` generation
-- [ ] Develop Polish and Russian version of the README
+- [x] Fix `analytics.csv` generation
+- [x] Develop Polish and Russian version of the README
 - [ ] Rewrite `make` and all bash scripts in python for compatibility with Windows
 - [ ] Rewrite main codebase in a proper way
 - [ ] Add contribution description
@@ -245,7 +249,7 @@ The project is currently in Proof Of Concept stage and it was developed in a few
 - [ ] Define new Detection Rule naming scheme (separate Events and Alerts)
 - [ ] Develop docker container for the tool
 - [ ] Create [MITRE ATT&CK Navigator](https://mitre.github.io/attack-navigator/enterprise/) profile generator per data type
-- [ ] Create new entity called "Enrichments" which will define how to enrich specific Data Needed
+- [x] Create new entity called "Enrichments" which will define how to enrich specific Data Needed
 - [ ] Implement new entity — "Visualisation" with Kibana visualisations/dashboards stored in yaml files and option to convert them into curl commands for uploading them into Elasticsearch
 - [ ] Implement "Playbook" entity (based on Detection Rule and Data Needed) with automatic TheHive Case Templates generation (actionable Playbook)
 
