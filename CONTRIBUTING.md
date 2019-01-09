@@ -1,5 +1,7 @@
 We use following schema 
+
 develop branch - Release candidate
+
 master branch -  Release
 
 It means that scheduled releases should be in master branch, and current prototype is in develop 
