@@ -1,12 +1,32 @@
-We use following schema 
+# How to submit an issue?
 
-develop branch - Release candidate
+First, please see [contribution-guide.org](http://www.contribution-guide.org/) for the steps we expect from contributors before submitting an issue or bug report. Be as concrete as possible, include relevant logs, package versions etc.
 
-master branch -  Release
+Also, please check the **FAQ ????????????**
 
-It means that scheduled releases should be in master branch, and current prototype is in develop 
+**The proper place for open-ended questions is the WHAT.** Github is not the right place for research discussions or feature requests.
 
-To add a new feature or fix a bug you should 
-1. Create a branch from develop with name that would represent new feature or bug fixing
-2. Push your changes into that branch
-3. Create a merge request to develop branch
+# How to add a new feature or create a pull request?
+
+1. <a href="https://gitlab.com/krakow2600/atomic-threat-coverage/forks/new">Fork the Gensim repository</a>
+2. Clone your fork: `git clone git clone https://gitlab.com/<YOUR GITLAB USERNAME>/atomic-threat-coverage.git`
+3. Create a new branch based on `develop`: `git checkout -b my-feature develop`
+4. Setup your Python enviroment
+   - Create a new [virtual environment](https://virtualenv.pypa.io/en/stable/): `pip install virtualenv; virtualenv atc_env` and activate it:
+      - For linux: `source atc_env/bin/activate` 
+      - For windows: `atc_env\Scripts\activate`
+   - Install Gensim and its test dependencies in [editable mode](https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs): 
+      - For linux: `pip install -r requirements.txt`
+      - For windows: `pip install -r requirements.txt`
+5. Implement your changes
+6. Check that everything's OK in your branch:
+   - Check it for PEP8: 
+7. Add files, commit and push: `git add ... ; git commit -m "my commit message"; git push origin my-feature`
+8. [Create a PR](https://help.github.com/articles/creating-a-pull-request/) on Github. Write a **clear description** for your PR, including all the context and relevant information, such as:
+   - The issue that you fixed, e.g. `Fixes #123`
+   - Motivation: why did you create this PR? What functionality did you set out to improve? What was the problem + an overview of how you fixed it? Whom does it affect and how should people use it?
+   - Any other useful information: links to other related Github or mailing list issues and discussions, benchmark graphs, academic papers…
+
+P.S. for developers: see our [Developer Page](https://gitlab.com/krakow2600/atomic-threat-coverage/wikis/Developer-guide) for details on the Gensim code style, CI, testing and similar.
+
+**Thanks and let's improve the open source world together!**
