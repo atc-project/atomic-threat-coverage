@@ -1,0 +1,27 @@
+title: LP_0025_audit_directory_service_changes
+default: Partially (Other)
+volume: High on domain controllers
+description: >
+  Audit Directory Service Changes determines whether 
+  the operating system generates audit events when changes 
+  are made to objects in Active Directory Domain Services (AD DS).
+eventID:
+  - 5136
+  - 5137
+  - 5138
+  - 5139
+  - 5141
+references:
+    - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/audit-directory-service-changes.md
+configuration: |
+  Steps to implement logging policy with Advanced Audit Configuration:
+  ```
+  Computer Configuration > 
+  Policies > 
+  Windows Settings > 
+  Security Settings > 
+  Advanced Audit Policies Configuration > 
+  Audit Policies > 
+  DS Access > 
+  Audit Directory Service Changes (Success,Failure)
+  ```
