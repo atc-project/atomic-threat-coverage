@@ -1,0 +1,39 @@
+title: LP_0026_windows_audit_user_account_management
+default: Not configured
+volume: Low
+description: >
+  Audit User Account Management determines whether the operating 
+  system generates audit events when specific user account 
+  management tasks are performed.
+eventID:
+  - 4720
+  - 4722
+  - 4723
+  - 4724
+  - 4725
+  - 4726
+  - 4738
+  - 4740
+  - 4765
+  - 4766
+  - 4767
+  - 4780
+  - 4781
+  - 4794
+  - 4798
+  - 5376
+  - 5377
+references:
+    - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/audit-user-account-management.md
+configuration: |
+  Steps to implement logging policy with Advanced Audit Configuration:
+  ```
+  Computer Configuration > 
+  Policies > 
+  Windows Settings > 
+  Security Settings > 
+  Advanced Audit Policies Configuration > 
+  Audit Policies > 
+  Account Management > 
+  Audit User Account Management (Success,Failure)
+  ```

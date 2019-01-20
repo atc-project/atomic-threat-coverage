@@ -6,7 +6,7 @@ references: None
 platform: Windows
 type: Windows Log
 channel: System
-provider: "Service Control Manager"
+provider: Service Control Manager
 fields:
   - EventID
   - ProcessID
