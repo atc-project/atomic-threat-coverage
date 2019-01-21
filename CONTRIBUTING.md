@@ -8,14 +8,14 @@ Also, please check the **FAQ ????????????**
 
 # How to add a new feature or create a pull request?
 
-1. <a href="https://gitlab.com/krakow2600/atomic-threat-coverage/forks/new">Fork the Gensim repository</a>
+1. <a href="https://gitlab.com/krakow2600/atomic-threat-coverage/forks/new">Fork the ATC repository</a>
 2. Clone your fork: `git clone git clone https://gitlab.com/<YOUR GITLAB USERNAME>/atomic-threat-coverage.git`
 3. Create a new branch based on `develop`: `git checkout -b my-feature develop`
 4. Setup your Python enviroment
    - Create a new [virtual environment](https://virtualenv.pypa.io/en/stable/): `pip install virtualenv; virtualenv atc_env` and activate it:
       - For linux: `source atc_env/bin/activate` 
       - For windows: `atc_env\Scripts\activate`
-   - Install Gensim and its test dependencies in [editable mode](https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs): 
+   - Install ATC and its test dependencies in [editable mode](https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs): 
       - For linux: `pip install -r requirements.txt`
       - For windows: `pip install -r requirements.txt`
 5. Implement your changes
@@ -27,6 +27,6 @@ Also, please check the **FAQ ????????????**
    - Motivation: why did you create this PR? What functionality did you set out to improve? What was the problem + an overview of how you fixed it? Whom does it affect and how should people use it?
    - Any other useful information: links to other related Github or mailing list issues and discussions, benchmark graphs, academic papers…
 
-P.S. for developers: see our [Developer Page](https://gitlab.com/krakow2600/atomic-threat-coverage/wikis/Developer-guide) for details on the Gensim code style, CI, testing and similar.
+P.S. for developers: see our [Developer Page](https://gitlab.com/krakow2600/atomic-threat-coverage/wikis/Developer-guide) for details on the code style, CI, testing and similar.
 
 **Thanks and let's improve the open source world together!**
