@@ -2,9 +2,9 @@
 
 First, please see [contribution-guide.org](http://www.contribution-guide.org/) for the steps we expect from contributors before submitting an issue or bug report. Be as concrete as possible, include relevant logs, package versions etc.
 
-Also, please check the **FAQ ????????????**
+Also, please check [FAQ](https://gitlab.com/krakow2600/atomic-threat-coverage/wikis/FAQ) 
 
-**The proper place for open-ended questions is the WHAT.** Github is not the right place for research discussions or feature requests.
+<b> The proper place for open-ended questions is <a href="https://join.slack.com/t/atomicthreatcoverage/shared_invite/enQtNTMwNDUyMjY2MTE5LTk1ZTY4NTBhYjFjNjhmN2E3OTMwYzc4MTEyNTVlMTVjMDZmMDg2OWYzMWRhMmViMjM5YmM1MjhkOWFmYjE5MjA"> Slack</a> or <a href="https://t.me/atomic_threat_coverage">Telegram</a> </b> Github is not the right place for research discussions or feature requests.
 
 # How to add a new feature or create a pull request?
 
