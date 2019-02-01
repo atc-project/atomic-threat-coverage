@@ -3,7 +3,7 @@
 | Description          | Detects suspicious process that use escape characters                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1140](https://attack.mitre.org/tactics/T1140)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0002_windows_process_creation_with_commandline_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688.md)</li><li>[DN_0003_windows_sysmon_process_creation_1](../Data_Needed/DN_0003_windows_sysmon_process_creation_1.md)</li></ul>                                                         |
+| Data Needed          | <ul></ul>                                                         |
 | Trigger              | <ul><li>[T1140](../Triggering/T1140.md)</li></ul>  |
 | Severity Level       | low                                                                                                                                                 |
 | False Positives      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul>                                                                  |
