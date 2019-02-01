@@ -1,0 +1,49 @@
+| Title          | DN_0010_6_windows_sysmon_driver_loaded                                                                                                      |
+|:---------------|:-----------------------------------------------------------------------------------------------------------------|
+| Description    | The driver loaded events provides information about a driver being loaded on the system. The configured hashes are provided as well as signature information                                                                                                |
+| Logging Policy | <ul><li>[None](../Logging_Policies/None.md)</li></ul> |
+| References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90006](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90006)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-6.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-6.md)</li></ul>                                  |
+| Platform       | Windows    																																															  |
+| Type           | Windows Log        																																															  |
+| Channel        | Microsoft-Windows-Sysmon/Operational     																																															  |
+| Provider       | Microsoft-Windows-Sysmon    																																															  |
+| Fields         | <ul><li>EventID</li><li>Computer</li><li>UtcTime</li><li>ImageLoaded</li><li>Hashes</li><li>Signed</li><li>Signature</li><li>SignatureStatus</li></ul>                                               |
+
+
+## Log Samples
+
+### Raw Log
+
+```
+- <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+- <System>
+    <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385F-C22A-43E0-BF4C-06F5698FFBD9}" />
+    <EventID>6</EventID>
+    <Version>3</Version>
+    <Level>4</Level>
+    <Task>6</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8000000000000000</Keywords>
+    <TimeCreated SystemTime="2017-04-28T21:33:47.350855600Z" />
+    <EventRecordID>2864</EventRecordID>
+    <Correlation />
+    <Execution ProcessID="3216" ThreadID="3980" />
+    <Channel>Microsoft-Windows-Sysmon/Operational</Channel>
+    <Computer>rfsH.lab.local</Computer>
+    <Security UserID="S-1-5-18" />
+    </System>
+- <EventData>
+    <Data Name="UtcTime">2017-04-28 21:33:47.345</Data>
+    <Data Name="ImageLoaded">C:\Windows\System32\drivers\usbscan.sys</Data>
+    <Data Name="Hashes">SHA256=D97DB59C9CAE2B8B33C707E8CEA7A65BF88712842CC715D270F7432A99D21BB6</Data>
+    <Data Name="Signed">true</Data>
+    <Data Name="Signature">Microsoft Windows</Data>
+    <Data Name="SignatureStatus">Valid</Data>
+  </EventData>
+  </Event>
+
+```
+
+
+
+
