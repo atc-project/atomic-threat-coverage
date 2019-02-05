@@ -16,30 +16,31 @@
 
 ```
 - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
-- <System>
-    <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385F-C22A-43E0-BF4C-06F5698FFBD9}" />
-    <EventID>6</EventID>
-    <Version>3</Version>
-    <Level>4</Level>
-    <Task>6</Task>
-    <Opcode>0</Opcode>
-    <Keywords>0x8000000000000000</Keywords>
-    <TimeCreated SystemTime="2017-04-28T21:33:47.350855600Z" />
-    <EventRecordID>2864</EventRecordID>
-    <Correlation />
-    <Execution ProcessID="3216" ThreadID="3980" />
-    <Channel>Microsoft-Windows-Sysmon/Operational</Channel>
-    <Computer>rfsH.lab.local</Computer>
-    <Security UserID="S-1-5-18" />
+  - <System>
+      <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385F-C22A-43E0-BF4C-06F5698FFBD9}" /> 
+      <EventID>6</EventID> 
+      <Version>3</Version> 
+      <Level>4</Level> 
+      <Task>6</Task> 
+      <Opcode>0</Opcode> 
+      <Keywords>0x8000000000000000</Keywords> 
+      <TimeCreated SystemTime="2018-12-09T21:41:44.778524700Z" /> 
+      <EventRecordID>4565</EventRecordID> 
+      <Correlation /> 
+      <Execution ProcessID="2996" ThreadID="3992" /> 
+      <Channel>Microsoft-Windows-Sysmon/Operational</Channel> 
+      <Computer>atc-win-10.atc.local</Computer> 
+      <Security UserID="S-1-5-18" /> 
     </System>
-- <EventData>
-    <Data Name="UtcTime">2017-04-28 21:33:47.345</Data>
-    <Data Name="ImageLoaded">C:\Windows\System32\drivers\usbscan.sys</Data>
-    <Data Name="Hashes">SHA256=D97DB59C9CAE2B8B33C707E8CEA7A65BF88712842CC715D270F7432A99D21BB6</Data>
-    <Data Name="Signed">true</Data>
-    <Data Name="Signature">Microsoft Windows</Data>
-    <Data Name="SignatureStatus">Valid</Data>
-  </EventData>
+  - <EventData>
+      <Data Name="RuleName" /> 
+      <Data Name="UtcTime">2018-12-09 21:41:41.091</Data> 
+      <Data Name="ImageLoaded">C:\Windows\System32\drivers\PROCEXP152.SYS</Data> 
+      <Data Name="Hashes">MD5=8213C5972C91A56BE78CD02A4DE4E3FC,SHA256=95D07C3B8DF26790AC43BB4259F65D1E90B03EA31D66F1B3961D85E21C5FF590</Data> 
+      <Data Name="Signed">true</Data> 
+      <Data Name="Signature">Sysinternals</Data> 
+      <Data Name="SignatureStatus">Valid</Data> 
+    </EventData>
   </Event>
 
 ```

@@ -1,4 +1,4 @@
-| Title          | DN_0015_14_windows_sysmon_RegistryEvent                                                                                                      |
+| Title          | DN_0018_14_windows_sysmon_RegistryEvent                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | Registry key and value rename operations map to this event type, recording the new name of the key or value that was renamed.                                                                                                |
 | Logging Policy | <ul><li>[None](../Logging_Policies/None.md)</li></ul> |
