@@ -1,15 +1,18 @@
 | Title          | RA_0013_lessons_learned_develop_incident_report                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Stage    | lessons_learned                                                            |
-| Automation | <ul></ul> |
+| Automation | None |
 | Author    | Daniil Yugoslavskiy                                                          |
 | Creation Date    | 31.01.2019                                            |
 | References     | <ul><li>[https://attack.mitre.org/tactics/enterprise/](https://attack.mitre.org/tactics/enterprise/)</li><li>[https://en.wikipedia.org/wiki/Kill_chain](https://en.wikipedia.org/wiki/Kill_chain)</li></ul>                                  |
 | Description    | Develop Incident Report                                                               |
+| Linked Response Actions | None |
+| Linked Analytics | None |
 
 
 ### Workflow
 
+```
 Develop Incident Report using your corporate template.
 
 It should include:
@@ -19,3 +22,5 @@ It should include:
 3. Detailed timeline of actions taken by Incident Responders
 4. Root Cause Analysis and Recommendations for improvements based on its conclusion
 5. List of specialists involved into Incident Response with their roles
+
+```

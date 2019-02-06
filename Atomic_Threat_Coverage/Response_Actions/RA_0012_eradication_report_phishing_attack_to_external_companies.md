@@ -1,15 +1,18 @@
 | Title          | RA_0012_eradication_report_phishing_attack_to_external_companies                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Stage    | eradication                                                            |
-| Automation | <ul><li>thehive</li></ul> |
+| Automation |<ul><li>thehive</li></ul> |
 | Author    | Daniil Yugoslavskiy                                                          |
 | Creation Date    | 31.01.2019                                            |
 | References     | <ul><li>[https://www.antiphishing.org/report-phishing/](https://www.antiphishing.org/report-phishing/)</li><li>[https://safebrowsing.google.com/safebrowsing/report_phish/?hl=en](https://safebrowsing.google.com/safebrowsing/report_phish/?hl=en)</li><li>[https://www.ic3.gov/default.aspx](https://www.ic3.gov/default.aspx)</li><li>[http://www.us-cert.gov/nav/report_phishing.html](http://www.us-cert.gov/nav/report_phishing.html)</li><li>[https://blog.thehive-project.org/2017/06/19/thehive-cortex-and-misp-how-they-all-fit-together/](https://blog.thehive-project.org/2017/06/19/thehive-cortex-and-misp-how-they-all-fit-together/)</li><li>[https://www.sei.cmu.edu/education-outreach/computer-security-incident-response-teams/national-csirts/](https://www.sei.cmu.edu/education-outreach/computer-security-incident-response-teams/national-csirts/)</li></ul>                                  |
 | Description    | Report phishing attack to external companies                                                               |
+| Linked Response Actions | None |
+| Linked Analytics | None |
 
 
 ### Workflow
 
+```
 Report phishing attack to external companites:
 
 1. [National Computer Security Incident Response Teams (CSIRTs)](https://www.sei.cmu.edu/education-outreach/computer-security-incident-response-teams/national-csirts/)
@@ -19,3 +22,5 @@ Report phishing attack to external companites:
 5. [The FBI's Intenet Crime Complaint Center (IC3)](https://www.ic3.gov/default.aspx)
 
 This Response Action could be automated with [TheHive and MISP integration](https://blog.thehive-project.org/2017/06/19/thehive-cortex-and-misp-how-they-all-fit-together/).
+
+```

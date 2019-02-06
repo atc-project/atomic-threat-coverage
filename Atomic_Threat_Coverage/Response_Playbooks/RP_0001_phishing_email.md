@@ -12,3 +12,13 @@
 | Eradication | <ul><li>[RA_0010_eradication_delete_malicious_emails](../Response_Actions/RA_0010_eradication_delete_malicious_emails.md)</li><li>[RA_0011_eradication_revoke_compromised_credentials](../Response_Actions/RA_0011_eradication_revoke_compromised_credentials.md)</li><li>[RA_0012_eradication_report_phishing_attack_to_external_companies](../Response_Actions/RA_0012_eradication_report_phishing_attack_to_external_companies.md)</li></ul> |
 | Recovery | <ul></ul> |
 | Lessons Learned | <ul><li>[RA_0013_lessons_learned_develop_incident_report](../Response_Actions/RA_0013_lessons_learned_develop_incident_report.md)</li><li>[RA_0014_lessons_learned_conduct_lessons_learned_exercise](../Response_Actions/RA_0014_lessons_learned_conduct_lessons_learned_exercise.md)</li></ul> |
+
+### Workflow
+
+```
+1. Execute Response Actions step by step. Some of them directly connected, which means you will not be able to move forward not finishing previous step
+2. Start executing containment and eradication stages concurrently with next identification steps, as soon as you will receive infomration about malicious hosts
+3. If phishing led to code execution or remote access to victim host, immediately start executing Generic Post Exploitation Incident Response Playbook
+4. Save all timestamps of implemented actions in Incident Report draft on the fly, it will save a lot of time
+
+```
