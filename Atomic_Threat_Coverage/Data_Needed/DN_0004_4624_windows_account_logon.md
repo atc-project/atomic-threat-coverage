@@ -1,4 +1,4 @@
-| Title          | DN_0004_windows_account_logon_4624                                                                                                      |
+| Title          | DN_0004_4624_windows_account_logon                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | An account was successfully logged on.                                                                                                |
 | Logging Policy | <ul><li>[LP_0004_windows_audit_logon](../Logging_Policies/LP_0004_windows_audit_logon.md)</li></ul> |
@@ -7,7 +7,7 @@
 | Type           | Windows Log        																																															  |
 | Channel        | Security     																																															  |
 | Provider       | Microsoft-Windows-Security-Auditing    																																															  |
-| Fields         | <ul><li>EventID</li><li>AccountName</li><li>Hostname</li><li>Computer</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>TargetUserSid</li><li>TargetUserName</li><li>TargetDomainName</li><li>TargetLogonId</li><li>LogonType</li><li>LogonProcessName</li><li>AuthenticationPackageName</li><li>WorkstationName</li><li>LogonGuid</li><li>TransmittedServices</li><li>LmPackageName</li><li>KeyLength</li><li>ProcessId</li><li>ProcessName</li><li>IpAddress</li><li>IpPort</li><li>ImpersonationLevel</li><li>RestrictedAdminMode</li><li>TargetOutboundUserName</li><li>TargetOutboundDomainName</li><li>VirtualAccount</li><li>TargetLinkedLogonId</li><li>ElevatedToken</li></ul>                                               |
+| Fields         | <ul><li>EventID</li><li>AccountName</li><li>Hostname</li><li>Computer</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>TargetUserSid</li><li>TargetUserName</li><li>TargetDomainName</li><li>TargetLogonId</li><li>LogonType</li><li>LogonProcessName</li><li>AuthenticationPackageName</li><li>WorkstationName</li><li>LogonGuid</li><li>TransmittedServices</li><li>LmPackageName</li><li>KeyLength</li><li>ProcessId</li><li>ThreadID</li><li>ProcessName</li><li>IpAddress</li><li>IpPort</li><li>ImpersonationLevel</li><li>RestrictedAdminMode</li><li>TargetOutboundUserName</li><li>TargetOutboundDomainName</li><li>VirtualAccount</li><li>TargetLinkedLogonId</li><li>ElevatedToken</li></ul>                                               |
 
 
 ## Log Samples

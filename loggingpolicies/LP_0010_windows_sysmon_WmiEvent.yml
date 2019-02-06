@@ -1,0 +1,23 @@
+title: LP_0010_windows_sysmon_WmiEvent
+default: Not configured
+volume: Low
+description: >
+  Enables logging of events related to usage of windows management interface.
+  Possible events are:
+    - WmiEventFilter activity detected
+    - WmiEventConsumer activity detected
+    - WmiEventConsumerToFilter activity detected
+eventID: 
+  - 19
+  - 20
+  - 21
+references:
+    - https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon
+configuration: |
+  This configuration should be further tunned according to baseline
+
+  Sample configuration:
+  ```
+    <WmiEvent onmatch="exclude">
+    </WmiEvent>
+  ```

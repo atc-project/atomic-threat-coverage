@@ -258,7 +258,8 @@ def calculate_dn_for_dr(dict_of_dn_files, dict_of_logsource_fields_from_dr, dr_l
           list_of_DN_matched_by_fields_and_logsource.append(dn.get('title'))
 
   # and only in the last step we check EventID
-  if dr_dn['EventID'] != None:
+  
+  if 'EventID' in dr_dn:
     eventID = dr_dn['EventID']
     for dn in dn_list:
       if dn['title'] in list_of_DN_matched_by_fields_and_logsource:

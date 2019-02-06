@@ -1,4 +1,4 @@
-| Title          | DN_0001_windows_process_creation_4688                                                                                                      |
+| Title          | DN_0001_4688_windows_process_creation                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | Windows process creation log, not including command line.                                                                                                |
 | Logging Policy | <ul><li>[LP_0001_windows_audit_process_creation](../Logging_Policies/LP_0001_windows_audit_process_creation.md)</li></ul> |
@@ -7,7 +7,7 @@
 | Type           | Windows Log        																																															  |
 | Channel        | Security     																																															  |
 | Provider       | Microsoft-Windows-Security-Auditing    																																															  |
-| Fields         | <ul><li>EventID</li><li>Hostname</li><li>Username</li><li>UserSid</li><li>ProcessPid</li><li>ProcessName</li><li>NewProcessName</li><li>Image</li><li>ParentImage</li><li>ParentProcessPid</li><li>ParentProcessName</li><li>MandatoryLabel</li><li>TokenElevationType</li><li>LogonId</li></ul>                                               |
+| Fields         | <ul><li>EventID</li><li>Hostname</li><li>Username</li><li>UserSid</li><li>ProcessPid</li><li>ProcessId</li><li>ThreadID</li><li>ProcessName</li><li>NewProcessName</li><li>Image</li><li>ParentImage</li><li>ParentProcessPid</li><li>ParentProcessName</li><li>MandatoryLabel</li><li>TokenElevationType</li><li>LogonId</li></ul>                                               |
 
 
 ## Log Samples
