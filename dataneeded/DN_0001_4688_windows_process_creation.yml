@@ -1,4 +1,4 @@
-title: DN_0001_windows_process_creation_4688
+title: DN_0001_4688_windows_process_creation
 description: >
   Windows process creation log, not including command line.
 loggingpolicy: 

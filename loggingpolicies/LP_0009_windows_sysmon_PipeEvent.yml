@@ -1,0 +1,18 @@
+title: LP_0009_windows_sysmon_PipeEvent
+default: Not configured
+volume: Low
+description: >
+  Enables logging of events related to usage or creation of pipes.
+eventID: 
+  - 17
+  - 18
+references:
+    - https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon
+configuration: |
+  This configuration should be further tunned according to baseline
+
+  Sample configuration:
+  ```
+    <PipeEvent onmatch="exclude">
+    </PipeEvent>
+  ```

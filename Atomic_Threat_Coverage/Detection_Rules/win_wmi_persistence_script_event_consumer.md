@@ -3,7 +3,7 @@
 | Description          | Detects WMI script event consumers                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1047](https://attack.mitre.org/tactics/T1047)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0003_windows_sysmon_process_creation_1](../Data_Needed/DN_0003_windows_sysmon_process_creation_1.md)</li><li>[DN_0002_windows_process_creation_with_commandline_4688](../Data_Needed/DN_0002_windows_process_creation_with_commandline_4688.md)</li><li>[DN_0001_windows_process_creation_4688](../Data_Needed/DN_0001_windows_process_creation_4688.md)</li></ul>                                                         |
+| Data Needed          | <ul></ul>                                                         |
 | Trigger              | <ul><li>[T1047](../Triggering/T1047.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Legitimate event consumers</li></ul>                                                                  |
