@@ -3,6 +3,7 @@ description: >
   Service entered the running/stopped state.
 loggingpolicy: None
 references: http://www.eventid.net/display-eventid-7036-source-Service%20Control%20Manager-eventno-1529-phase-1.htm
+category: OS Logs
 platform: Windows
 type: Windows Log
 channel: System

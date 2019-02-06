@@ -3,6 +3,7 @@ description: >
   An operation was performed on an Active Directory object.
 loggingpolicy: LP_0027_windows_audit_directory_service_access
 references: https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4662.md
+category: OS Logs
 platform: Windows
 type: Windows Log
 channel: Security
