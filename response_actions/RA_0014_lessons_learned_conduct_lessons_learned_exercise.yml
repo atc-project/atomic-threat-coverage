@@ -1,12 +1,21 @@
 title: RA_0014_lessons_learned_conduct_lessons_learned_exercise
 stage: lessons_learned
-author: Name Surname
-creation_date: DD.MM.YYYY
+author: Daniil Yugoslavskiy
+creation_date: 31.01.2019
 references: 
-  - https://example.com
+  - http://shop.oreilly.com/product/0636920043614.do
+  - https://www.amazon.com/Incident-Response-Computer-Forensics-Third/dp/0071798684
 description: >
-  Response Action for 
+  Conduct lessons learned exercise
 workflow: |
-  Description of how to handle multiple Response Actions (if it is an aggregated Response Action) or workflow for single Response Action in markdown format.
-  Here newlines will be saved.  
+  This Lessons Learned phase evaluates the team's performance through each step. 
+  Basically, this takes the incident report and answers some basic questions:
 
+  - What happened?
+  - What did we do well?
+  - What could we have done better?
+  - What will we do differently next time?
+
+  The goal of the Lessons Learned phase is to discover how to make the next incident response go faster, smoother, or ideally never happen at all.
+  Keep in mind that incident report is a key. If, for example, Time To Respond looks horrible, it was caused by some problem.
+  The only way to solve it is to bring it up and start working on it.

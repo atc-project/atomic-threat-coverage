@@ -19,13 +19,14 @@ identification:
   - RA_0003_identification_make_sure_email_is_a_phising
   - RA_0004_identification_analyse_obtained_indicators_of_compromise
   - RA_0005_identification_find_all_phising_attack_victims
+  - RA_0040_identification_put_on_monitoring_compromised_accounts
 containment:
   - RA_0006_containment_block_domain_on_email
   - RA_0028_containment_block_threat_on_network_level
 eradication:
   - RA_0010_eradication_delete_malicious_emails
   - RA_0011_eradication_revoke_compromised_credentials
-  - RA_0012_eradication_report_source_of_malicious_activity_to_external_companies
+  - RA_0012_eradication_report_phishing_attack_to_external_companies
 lessons_learned:
   - RA_0013_lessons_learned_develop_incident_report
   - RA_0014_lessons_learned_conduct_lessons_learned_exercise

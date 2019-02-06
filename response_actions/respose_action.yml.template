@@ -10,7 +10,7 @@ creation_date: DD.MM.YYYY
 references: 
   - https://example.com
 description: >
-  Aggregated Response Action for blocking threats on Network Level.
+  (Aggregated) Response Action for blocking threats on Network Level.
 linked_ra: # could be empty in case of single Response Action
   - RA_0006_containment_block_domain_on_email         # Response Actions could be aggregated 
   - RA_0009_containment_block_url_on_proxy            # and contain links to multiple Response Actions
