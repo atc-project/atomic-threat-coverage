@@ -4,10 +4,11 @@ description: >
 loggingpolicy: LP_0000_some_logging_policy_name_here
 references:
   - http://something.com
-platform: Windows                               # Windows | Linux | Unix | macOS | Network
-type: Windows Log                               # Windows Log | Authentication and Service | access.log
-channel: Security                               # Security | System | Microsoft-Windows-Sysmon/Operational | None
-provider: Microsoft-Windows-Security-Auditing   # Microsoft-Windows-Security-Auditing | Microsoft-Windows-Eventlog | None
+category: OS Logs                               # HTTP Logs | DNS Logs | IDS/IPS/NGFW Alerts | Antivirus Alerts | Network Flows | etc
+platform: Windows                               # Linux | Unix | macOS | Network
+type: Windows Log                               # Authentication and Service | queries log |  None
+channel: Security                               # System | Microsoft-Windows-Sysmon/Operational | queries_log | None
+provider: Microsoft-Windows-Security-Auditing   # Microsoft-Windows-Eventlog | BIND | <exact service/deamon name> | None
 fields:
   - hostname
   - ip_address
@@ -15,4 +16,3 @@ fields:
   - etc
 sample: |
   raw log sample here
-
