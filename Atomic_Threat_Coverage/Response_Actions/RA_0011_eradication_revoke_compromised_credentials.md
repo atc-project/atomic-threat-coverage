@@ -12,10 +12,7 @@
 
 ### Workflow
 
-```
 On this step you supposed to know what kind of credentials have beed compromised.
 You need to revoke them in your Identity and Access Management system where they were created (like, Windows AD) using native functionality.
 Warning:
 - If adversary has generated Golden Ticket in Windows Domain/forest, you have to revoke KRBTGT Account password **twice** for each domain in a forest and proceed monitor malicious activity for next 20 minutes (Domain Controller KDC service doesn’t perform validate the user account until the TGT is older than 20 minutes old)
-
-```

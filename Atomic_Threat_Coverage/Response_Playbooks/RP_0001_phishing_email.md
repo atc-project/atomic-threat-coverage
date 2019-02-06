@@ -1,7 +1,9 @@
 | Title          | RP_0001_phishing_email                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | Response playbook for Phishing Email case.                                        	|
-| Tags    | <ul><li>attack.initial_access</li><li>attack.t1193</li><li>attack.t1192</li><li>phishinng</li></ul>    	|
+| ATT&amp;CK Tactic    |<ul><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul></ul>  |
+| ATT&amp;CK Technique |<ul><li>[T1193](https://attack.mitre.org/tactics/T1193)</li><li>[T1192](https://attack.mitre.org/tactics/T1192)</li></ul></ul>                             |
+| Tags    |<ul><li>phishinng</li></ul></ul>    	|
 | Severity    | M                                             		|
 | TLP    | AMBER                                                            |
 | PAP    | WHITE                                                            |
@@ -15,10 +17,7 @@
 
 ### Workflow
 
-```
 1. Execute Response Actions step by step. Some of them directly connected, which means you will not be able to move forward not finishing previous step
 2. Start executing containment and eradication stages concurrently with next identification steps, as soon as you will receive infomration about malicious hosts
 3. If phishing led to code execution or remote access to victim host, immediately start executing Generic Post Exploitation Incident Response Playbook
 4. Save all timestamps of implemented actions in Incident Report draft on the fly, it will save a lot of time
-
-```

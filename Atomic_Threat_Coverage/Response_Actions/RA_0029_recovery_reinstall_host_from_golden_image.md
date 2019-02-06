@@ -12,8 +12,5 @@
 
 ### Workflow
 
-```
 Description of how to handle multiple Response Actions (if it is an aggregated Response Action) or workflow for single Response Action in markdown format.
 Here newlines will be saved.  
-
-```

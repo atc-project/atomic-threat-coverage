@@ -12,7 +12,6 @@
 
 ### Workflow
 
-```
 Report phishing attack to external companites:
 
 1. [National Computer Security Incident Response Teams (CSIRTs)](https://www.sei.cmu.edu/education-outreach/computer-security-incident-response-teams/national-csirts/)
@@ -22,5 +21,3 @@ Report phishing attack to external companites:
 5. [The FBI's Intenet Crime Complaint Center (IC3)](https://www.ic3.gov/default.aspx)
 
 This Response Action could be automated with [TheHive and MISP integration](https://blog.thehive-project.org/2017/06/19/thehive-cortex-and-misp-how-they-all-fit-together/).
-
-```

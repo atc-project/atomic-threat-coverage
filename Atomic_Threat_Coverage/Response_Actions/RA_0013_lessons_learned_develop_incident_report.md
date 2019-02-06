@@ -12,7 +12,6 @@
 
 ### Workflow
 
-```
 Develop Incident Report using your corporate template.
 
 It should include:
@@ -22,5 +21,3 @@ It should include:
 3. Detailed timeline of actions taken by Incident Responders
 4. Root Cause Analysis and Recommendations for improvements based on its conclusion
 5. List of specialists involved into Incident Response with their roles
-
-```

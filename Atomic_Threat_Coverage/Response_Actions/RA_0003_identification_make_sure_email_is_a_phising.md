@@ -12,7 +12,6 @@
 
 ### Workflow
 
-```
 Check email and its metadata for evidences of phishing attack:
 
 - **Impersonalisation attempts**: sender is trying to identify himself as somebody he is not
@@ -21,5 +20,3 @@ Check email and its metadata for evidences of phishing attack:
 - **Spelling mistakes**: legitimate messages usually don't have spelling mistakes or poor grammar
 
 Explore references of the article to make yourself familiar with phishing attacks history and examples.
-
-```

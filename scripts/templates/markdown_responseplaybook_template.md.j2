@@ -1,7 +1,9 @@
 | Title          | {{ title }}                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | {{ description }}                                        	|
-| Tags    | <ul>{% for tag in tags %}<li>{{ tag }}</li>{% endfor %}</ul>    	|
+| ATT&amp;CK Tactic    | {%- if tactics is defined and tactics|length %}<ul>{% for tactic_name, tactic_id in tactics  %}<li>[{{tactic_id}}: {{tactic_name}}](https://attack.mitre.org/tactics/{{tactic_id}})</li>{% endfor %}</ul>{% else %} None{%endif%}</ul>  |
+| ATT&amp;CK Technique | {%- if techniques is defined and techniques|length %}<ul>{% for technique in techniques  %}<li>[{{technique}}](https://attack.mitre.org/tactics/{{technique}})</li>{% endfor %}</ul>{% else %} None{%endif%}</ul>                             |
+| Tags    | {%- if other_tags is defined and other_tags|length %}<ul>{% for tag in other_tags %}<li>{{ tag }}</li>{% endfor %}</ul>{% else %} None{%endif%}</ul>    	|
 | Severity    | {{ severity }}                                             		|
 | TLP    | {{ tlp }}                                                            |
 | PAP    | {{ pap }}                                                            |
@@ -15,6 +17,4 @@
 
 ### Workflow
 
-```
 {{ workflow }}
-```

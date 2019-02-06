@@ -12,7 +12,6 @@
 
 ### Workflow
 
-```
 Obtain original phishing email from on of the available/fastest options:
 
 - Email Team/Email server: if there is such option
@@ -23,5 +22,3 @@ Ask for email in `.EML` format. Instructions:
 
   1. Drug and drop email from Email client to Desktop
   2. Send to IR specialists by <email>
-
-```

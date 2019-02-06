@@ -12,7 +12,6 @@
 
 ### Workflow
 
-```
 Identify victims of the attack based on results of indicators of compromise analysis:
 
 1. If phishing led to password harvesting form, you have to identify all users who opened malicious link with harvesting form using linked Response Actions
@@ -20,5 +19,3 @@ Identify victims of the attack based on results of indicators of compromise anal
 - Better to check all available sources of information to be 100% sure that you've identified a potential victims
 - Sometimes phising alerts could be found in AV, IPS, NGFW etc logs. Check it as well
 2. If phishing led to code execution on victim host, immediately start using Generic Post Exploitation Incident Response Playbook
-
-```

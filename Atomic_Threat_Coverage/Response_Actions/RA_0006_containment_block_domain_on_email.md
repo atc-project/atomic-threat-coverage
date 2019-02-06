@@ -12,7 +12,4 @@
 
 ### Workflow
 
-```
 Block malicious sender (or entire domain, if possible) on Email Server using native filtering functionality.
-
-```

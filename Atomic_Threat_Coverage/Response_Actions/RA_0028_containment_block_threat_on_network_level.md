@@ -12,7 +12,4 @@
 
 ### Workflow
 
-```
 Develop plan of containment depends on connditions and network architecture, execute it and make sure you have fully blocked threat on network level.
-
-```

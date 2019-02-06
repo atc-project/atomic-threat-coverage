@@ -12,10 +12,7 @@
 
 ### Workflow
 
-```
 1. Analyse obtained indicators of compromise. Proof that they are malicious
 2. Find out what exactly attacker was targeting (password harvesting, remote control etc)
 
 This Response Action could be automated with [TheHive Analyzers](https://github.com/TheHive-Project/Cortex-Analyzers).
-
-```

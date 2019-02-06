@@ -118,6 +118,24 @@ def yaml2markdown_jinja(file, type):
       template = env.get_template('markdown_responseplaybook_template.md.j2')
       parent_title="Response_Playbooks"
 
+      tactic = []
+      tactic_re = re.compile(r'attack\.\w\D+$')
+      technique = []
+      technique_re = re.compile(r'attack\.t\d{1,5}$')
+      other_tags = []
+
+      for tag in fields.get('tags'):
+        if tactic_re.match(tag):
+          tactic.append(ta_mapping.get(tag))
+        elif technique_re.match(tag):
+          technique.append(tag.upper()[7:])
+        else:
+          other_tags.append(tag)
+
+      fields.update({'tactics':tactic})
+      fields.update({'techniques':technique})
+      fields.update({'other_tags':other_tags})
+
       fields.update({'description':fields.get('description').strip()}) 
       content = template.render(fields)
 
