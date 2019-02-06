@@ -4,7 +4,7 @@
 | Automation | None |
 | Author    | Daniil Yugoslavskiy                                                          |
 | Creation Date    | 31.01.2019                                            |
-| References     | <ul><li>[https://attack.mitre.org/tactics/enterprise/](https://attack.mitre.org/tactics/enterprise/)</li><li>[https://en.wikipedia.org/wiki/Kill_chain](https://en.wikipedia.org/wiki/Kill_chain)</li></ul>                                  |
+| References     |<ul><li>[https://attack.mitre.org/tactics/enterprise/](https://attack.mitre.org/tactics/enterprise/)</li><li>[https://en.wikipedia.org/wiki/Kill_chain](https://en.wikipedia.org/wiki/Kill_chain)</li></ul>                                  |
 | Description    | Develop Incident Report                                                               |
 | Linked Response Actions | None |
 | Linked Analytics | None |

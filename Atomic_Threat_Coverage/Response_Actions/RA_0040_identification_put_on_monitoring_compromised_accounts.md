@@ -4,7 +4,7 @@
 | Automation | None |
 | Author    | Daniil Yugoslavskiy                                                          |
 | Creation Date    | 31.01.2019                                            |
-| References     | <ul></ul>                                  |
+| References     | None</ul>                                  |
 | Description    | Put (potentially) compromised accounts on monitoring                                                               |
 | Linked Response Actions | None |
 | Linked Analytics | None |

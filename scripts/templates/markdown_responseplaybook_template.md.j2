@@ -7,11 +7,11 @@
 | PAP    | {{ pap }}                                                            |
 | Author    | {{ author }}                                        				|
 | Creation Date    | {{ creation_date }}                                       	|
-| Identification | <ul>{% for action in identification %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul> |
-| Containment | <ul>{% for action in containment %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul> |
-| Eradication | <ul>{% for action in eradication %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul> |
-| Recovery | <ul>{% for action in recovery %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul> |
-| Lessons Learned | <ul>{% for action in lessons_learned %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul> |
+| Identification | {%- if identification is defined and identification|length %}<ul>{% for action in identification %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}{% else %} None{%endif%}</ul> |
+| Containment | {%- if containment is defined and containment|length %}<ul>{% for action in containment %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}{% else %} None{%endif%}</ul> |
+| Eradication | {%- if eradication is defined and eradication|length %}<ul>{% for action in eradication %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}{% else %} None{%endif%}</ul> |
+| Recovery | {%- if recovery is defined and recovery|length %}<ul>{% for action in recovery %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}{% else %} None{%endif%}</ul> |
+| Lessons Learned | {%- if lessons_learned is defined and lessons_learned|length %}<ul>{% for action in lessons_learned %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}{% else %} None{%endif%}</ul> |
 
 ### Workflow
 

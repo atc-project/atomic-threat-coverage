@@ -4,7 +4,7 @@
 | Automation | None |
 | Author    | Daniil Yugoslavskiy                                                          |
 | Creation Date    | 31.01.2019                                            |
-| References     | <ul><li>[https://en.wikipedia.org/wiki/Phishing](https://en.wikipedia.org/wiki/Phishing)</li><li>[http://www.phishing.org/phishing-examples](http://www.phishing.org/phishing-examples)</li></ul>                                  |
+| References     |<ul><li>[https://en.wikipedia.org/wiki/Phishing](https://en.wikipedia.org/wiki/Phishing)</li><li>[http://www.phishing.org/phishing-examples](http://www.phishing.org/phishing-examples)</li></ul>                                  |
 | Description    | Make sure this email is a phising attack                                                               |
 | Linked Response Actions | None |
 | Linked Analytics | None |

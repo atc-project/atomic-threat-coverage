@@ -4,7 +4,7 @@
 | Automation | None |
 | Author    | Daniil Yugoslavskiy                                                          |
 | Creation Date    | 31.01.2019                                            |
-| References     | <ul><li>[https://adsecurity.org/?p=556](https://adsecurity.org/?p=556)</li><li>[https://adsecurity.org/?p=483](https://adsecurity.org/?p=483)</li></ul>                                  |
+| References     |<ul><li>[https://adsecurity.org/?p=556](https://adsecurity.org/?p=556)</li><li>[https://adsecurity.org/?p=483](https://adsecurity.org/?p=483)</li></ul>                                  |
 | Description    | Response Action for revokation of compromised credentials.                                                               |
 | Linked Response Actions | None |
 | Linked Analytics | None |
