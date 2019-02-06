@@ -1,0 +1,26 @@
+title: RA_0004_identification_analyse_obtained_indicators_of_compromise
+stage: identification
+automation:
+  - thehive
+author: Daniil Yugoslavskiy
+creation_date: 31.01.2019
+references:
+  - https://github.com/TheHive-Project/Cortex-Analyzers
+description: >
+  Aggregated Response Action for analysis of indicators of compromise
+linked_ra:
+  - RA_0015_identification_analyse_domain_name
+  - RA_0016_identification_analyse_filehash
+  - RA_0017_identification_analyse_ip
+  - RA_0018_identification_analyse_macos_macho
+  - RA_0019_identification_analyse_ms_office_file
+  - RA_0020_identification_analyse_pdf
+  - RA_0021_identification_analyse_unix_elf
+  - RA_0022_identification_analyse_uri
+  - RA_0023_identification_analyse_windows_pe
+workflow: |
+  1. Analyse obtained indicators of compromise. Proof that they are malicious
+  2. Find out what exactly attacker was targeting (password harvesting, remote control etc)
+
+  This Response Action could be automated with [TheHive Analyzers](https://github.com/TheHive-Project/Cortex-Analyzers).
+
