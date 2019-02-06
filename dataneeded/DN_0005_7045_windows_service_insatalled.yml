@@ -3,6 +3,7 @@ description: >
   A service was installed in the system.
 loggingpolicy: None
 references: None
+category: OS Logs
 platform: Windows
 type: Windows Log
 channel: System

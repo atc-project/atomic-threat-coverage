@@ -3,6 +3,7 @@ description: >
   User object is changed.
 loggingpolicy: LP_0026_windows_audit_user_account_management
 references: https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4738.md
+category: OS Logs
 platform: Windows
 type: Windows Log
 channel: Security
