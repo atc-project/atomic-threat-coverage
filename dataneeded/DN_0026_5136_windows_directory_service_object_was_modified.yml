@@ -1,4 +1,4 @@
-title: DN_0026_windows_directory_service_object_was_modified_5136
+title: DN_0026_5136_windows_directory_service_object_was_modified
 description: >
   A directory service object was modified.
 loggingpolicy: LP_0025_windows_audit_directory_service_changes

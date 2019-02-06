@@ -1,4 +1,4 @@
-title: DN_0030_operation_was_performed_on_an_object_4662
+title: DN_0030_4662_operation_was_performed_on_an_object
 description: >
   An operation was performed on an Active Directory object.
 loggingpolicy: LP_0027_windows_audit_directory_service_access

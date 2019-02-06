@@ -23,6 +23,7 @@ fields:
   - Image               # redundant, inconsistent
   - CommandLine
   - ProcessCommandLine  # redundant, inconsistent
+  - ProcesssCommandLine # redundant, inconsistent
   - ParentProcessPid
   - ParentImage         # redundant, inconsistent
   - ParentProcessName

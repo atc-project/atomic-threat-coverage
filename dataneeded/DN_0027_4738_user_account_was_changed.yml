@@ -1,4 +1,4 @@
-title: DN_0027_user_account_was_changed_4738
+title: DN_0027_4738_user_account_was_changed
 description: >
   User object is changed.
 loggingpolicy: LP_0026_windows_audit_user_account_management

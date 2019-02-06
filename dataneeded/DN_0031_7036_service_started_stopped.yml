@@ -1,4 +1,4 @@
-title: DN_0031_service_started_stopped_7036
+title: DN_0031_7036_service_started_stopped
 description: >
   Service entered the running/stopped state.
 loggingpolicy: None
