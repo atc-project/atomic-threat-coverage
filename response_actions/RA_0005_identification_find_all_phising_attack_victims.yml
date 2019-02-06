@@ -13,6 +13,9 @@ linked_ra:
   - RA_0032_identification_find_all_hosts_communicated_with_url
   - RA_0033_identification_find_files_created
   - RA_0034_identification_find_all_victims_in_security_alerts
+linked_analytics:
+  - test
+  - test2
 workflow: |
   Identify victims of the attack based on results of indicators of compromise analysis:
 

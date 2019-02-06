@@ -1,0 +1,23 @@
+| Title          | {{ title }}                                                                                                      |
+|:---------------|:-----------------------------------------------------------------------------------------------------------------|
+| Stage    | {{ stage }}                                                            |
+| Automation | <ul>{% for auto in automation %}<li>{{ auto }}</li>{% endfor %}</ul> |
+| Author    | {{ author }}                                                          |
+| Creation Date    | {{ creation_date }}                                            |
+| References     | <ul>{% for ref in references %}<li>[{{ ref }}]({{ ref }})</li>{% endfor %}</ul>                                  |
+| Description    | {{ description }}                                                               |
+
+{%- if linked_ra is defined and linked_ra|length %}
+| Linked Response Actions | <ul>{% for action in linked_ra %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul> |
+|:---------------|:-----------------------------------------------------------------------------------------------------------------|
+{%- endif %}
+
+{%- if linked_analytics is defined and linked_analytics|length %}
+| Linked Analytics | <ul>{% for analytic in linked_analytics %}<li>{{ analytic }}</li>{% endfor %}</ul> |
+|:---------------|:-----------------------------------------------------------------------------------------------------------------|
+{%- endif %}
+
+
+### Workflow
+
+{{ workflow }}

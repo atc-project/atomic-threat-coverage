@@ -107,6 +107,20 @@ def yaml2markdown_jinja(file, type):
       fields.update({'description':fields.get('description').strip()}) 
       content = template.render(fields)
 
+    elif type=="responseaction" or type=="RA":
+      template = env.get_template('markdown_responseaction_template.md.j2')
+      parent_title="Response_Actions"
+
+      fields.update({'description':fields.get('description').strip()}) 
+      content = template.render(fields)
+
+    elif type=="responseplaybook" or type=="RP":
+      template = env.get_template('markdown_responseplaybook_template.md.j2')
+      parent_title="Response_Playbooks"
+
+      fields.update({'description':fields.get('description').strip()}) 
+      content = template.render(fields)
+
     elif type=="triggering" or type=="TG":
       pass
 

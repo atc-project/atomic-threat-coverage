@@ -1,0 +1,14 @@
+| Title          | {{ title }}                                                                                                      |
+|:---------------|:-----------------------------------------------------------------------------------------------------------------|
+| Description    | {{ description }}                                        	|
+| Tags    | <ul>{% for tag in tags %}<li>{{ tag }}</li>{% endfor %}</ul>    	|
+| Severity    | {{ severity }}                                             		|
+| TLP    | {{ tlp }}                                                            |
+| PAP    | {{ pap }}                                                            |
+| Author    | {{ author }}                                        				|
+| Creation Date    | {{ creation_date }}                                       	|
+| Identification | <ul>{% for action in identification %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul> |
+| Containment | <ul>{% for action in containment %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul> |
+| Eradication | <ul>{% for action in eradication %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul> |
+| Recovery | <ul>{% for action in recovery %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul> |
+| Lessons Learned | <ul>{% for action in lessons_learned %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul> |
