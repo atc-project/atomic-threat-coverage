@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 title: DN_0007_windows_sysmon_sysmon_service_state_changed_4
+=======
+title: DN_0008_4_windows_sysmon_sysmon_service_state_changed
+>>>>>>> updated DNs naming scheme
 description: >
   Sysmon service changed status
 loggingpolicy: 
@@ -6,7 +10,10 @@ loggingpolicy:
 references:
   - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90004
   - https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-4.md
+<<<<<<< HEAD
 category: OS Logs
+=======
+>>>>>>> updated DNs naming scheme
 platform: Windows
 type: Windows Log
 channel: Microsoft-Windows-Sysmon/Operational
@@ -18,6 +25,7 @@ fields:
   - State
 sample: |
   - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+<<<<<<< HEAD
     - <System>
         <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385F-C22A-43E0-BF4C-06F5698FFBD9}" /> 
         <EventID>4</EventID> 
@@ -40,6 +48,30 @@ sample: |
         <Data Name="Version">8.00</Data> 
         <Data Name="SchemaVersion">4.10</Data> 
       </EventData>
+=======
+  - <System>
+        <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385F-C22A-43E0-BF4C-06F5698FFBD9}" />
+        <EventID>4</EventID>
+        <Version>3</Version>
+        <Level>4</Level>
+        <Task>4</Task>
+        <Opcode>0</Opcode>
+        <Keywords>0x8000000000000000</Keywords>
+        <TimeCreated SystemTime="2017-04-28T22:52:20.883759300Z" />
+        <EventRecordID>16761</EventRecordID>
+        <Correlation />
+        <Execution ProcessID="3216" ThreadID="3220" />
+        <Channel>Microsoft-Windows-Sysmon/Operational</Channel>
+        <Computer>rfsH.lab.local</Computer>
+        <Security UserID="S-1-5-18" />
+    </System>
+  - <EventData>
+        <Data Name="UtcTime">2017-04-28 22:52:20.883</Data>
+        <Data Name="State">Stopped</Data>
+        <Data Name="Version">6.01</Data>
+        <Data Name="SchemaVersion">3.30</Data>
+    </EventData>
+>>>>>>> updated DNs naming scheme
     </Event>
 
 
