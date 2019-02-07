@@ -1,6 +1,8 @@
 title: DN_0016_12_windows_sysmon_RegistryEvent
 description: >
-  Registry key and value create and delete operations map to this event type, which can be useful for monitoring for changes to Registry autostart locations, or specific malware registry modifications.
+  Registry key and value create and delete operations map to this event type, 
+  which can be useful for monitoring for changes to Registry autostart 
+  locations, or specific malware registry modifications
 loggingpolicy: 
   - None
 references:
@@ -22,7 +24,7 @@ fields:
   - TargetObject
 sample: |
   - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
-  - <System>
+    - <System>
       <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385F-C22A-43E0-BF4C-06F5698FFBD9}" /> 
       <EventID>12</EventID> 
       <Version>2</Version> 
@@ -38,7 +40,7 @@ sample: |
       <Computer>atc-win-10.atc.local</Computer> 
       <Security UserID="S-1-5-18" /> 
     </System>
-  - <EventData>
+    - <EventData>
       <Data Name="RuleName" /> 
       <Data Name="EventType">DeleteKey</Data> 
       <Data Name="UtcTime">2019-01-30 17:05:28.023</Data> 
@@ -47,5 +49,4 @@ sample: |
       <Data Name="Image">C:\Windows\regedit.exe</Data> 
       <Data Name="TargetObject">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce\New Key #1</Data> 
     </EventData>
-    </Event>
-
+  </Event>

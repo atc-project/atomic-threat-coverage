@@ -33,7 +33,7 @@ fields:
   - DestinationPortName
 sample: |
   - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
-  - <System>
+    - <System>
       <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385F-C22A-43E0-BF4C-06F5698FFBD9}" />
       <EventID>3</EventID>
       <Version>5</Version>
@@ -49,7 +49,7 @@ sample: |
       <Computer>rfsH.lab.local</Computer>
       <Security UserID="S-1-5-18" />
     </System>
-  - <EventData>
+    - <EventData>
       <Data Name="UtcTime">2017-04-28 22:12:22.557</Data>
       <Data Name="ProcessGuid">{A23EAE89-BD28-5903-0000-00102F345D00}</Data>
       <Data Name="ProcessId">13220</Data>
@@ -61,15 +61,13 @@ sample: |
       <Data Name="SourceIp">192.168.1.250</Data>
       <Data Name="SourceHostname">rfsH.lab.local</Data>
       <Data Name="SourcePort">3328</Data>
-      <Data Name="SourcePortName">
-      </Data>
+      <Data Name="SourcePortName"></Data>
       <Data Name="DestinationIsIpv6">false</Data>
       <Data Name="DestinationIp">104.130.229.150</Data>
-      <Data Name="DestinationHostname">
-      </Data>
+      <Data Name="DestinationHostname"></Data>
       <Data Name="DestinationPort">443</Data>
       <Data Name="DestinationPortName">https</Data>
     </EventData>
-    </Event>
+  </Event>
 
 

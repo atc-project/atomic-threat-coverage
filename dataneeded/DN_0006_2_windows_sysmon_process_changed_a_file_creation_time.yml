@@ -23,7 +23,7 @@ fields:
   - PreviousCreationUtcTime
 sample: |
   - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
-  - <System>
+    - <System>
       <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385F-C22A-43E0-BF4C-06F5698FFBD9}" />
       <EventID>2</EventID>
       <Version>4</Version>
@@ -38,8 +38,8 @@ sample: |
       <Channel>Microsoft-Windows-Sysmon/Operational</Channel>
       <Computer>rfsH.lab.local</Computer>
       <Security UserID="S-1-5-18" />
-  </System>
-  - <EventData>
+    </System>
+    - <EventData>
       <Data Name="UtcTime">2017-07-30 23:26:47.321</Data>
       <Data Name="ProcessGuid">{A23EAE89-EF48-5978-0000-00104832B112}</Data>
       <Data Name="ProcessId">25968</Data>
