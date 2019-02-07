@@ -1,6 +1,9 @@
 title: DN_0015_11_windows_sysmon_FileCreate
 description: >
-  File create operations are logged when a file is created or overwritten. This event is useful for monitoring autostart locations, like the Startup folder, as well as temporary and download directories, which are common places malware drops during initial infection.
+  File create operations are logged when a file is created or overwritten. This 
+  event is useful for monitoring autostart locations, like the Startup folder, 
+  as well as temporary and download directories, which are common places 
+  malware drops during initial infection
 loggingpolicy: 
   - LP_0008_windows_sysmon_FileCreate
 references:
@@ -22,7 +25,7 @@ fields:
   - CreationUtcTime
 sample: |
   - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
-  - <System>
+    - <System>
       <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385F-C22A-43E0-BF4C-06F5698FFBD9}" /> 
       <EventID>11</EventID> 
       <Version>2</Version> 
@@ -38,7 +41,7 @@ sample: |
       <Computer>atc-win-10.atc.local</Computer> 
       <Security UserID="S-1-5-18" /> 
     </System>
-  - <EventData>
+    - <EventData>
       <Data Name="RuleName" /> 
       <Data Name="UtcTime">2019-01-30 15:08:51.287</Data> 
       <Data Name="ProcessGuid">{9683FBB1-9A3F-5C51-0000-0010EB030000}</Data> 
@@ -47,5 +50,4 @@ sample: |
       <Data Name="TargetFilename">C:\Windows\PSEXESVC.exe</Data> 
       <Data Name="CreationUtcTime">2019-01-30 15:08:51.287</Data> 
     </EventData>
-    </Event>
-
+  </Event>

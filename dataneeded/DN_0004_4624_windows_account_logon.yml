@@ -1,6 +1,6 @@
 title: DN_0004_4624_windows_account_logon
 description: >
-  An account was successfully logged on.
+  An account was successfully logged on
 loggingpolicy:
   - LP_0004_windows_audit_logon
 references:
@@ -12,9 +12,9 @@ channel: Security
 provider: Microsoft-Windows-Security-Auditing
 fields:
   - EventID
-  - AccountName         # redundant, inconsistent
+  - AccountName         # redundant
   - Hostname
-  - Computer            # redundant, inconsistent
+  - Computer            # redundant
   - SubjectUserSid
   - SubjectUserName
   - SubjectDomainName
@@ -60,7 +60,7 @@ sample: |
       <Channel>Security</Channel> 
       <Computer>WIN-GG82ULGC9GO</Computer> 
       <Security /> 
-      </System>
+    </System>
     - <EventData>
       <Data Name="SubjectUserSid">S-1-5-18</Data> 
       <Data Name="SubjectUserName">WIN-GG82ULGC9GO$</Data> 
@@ -89,6 +89,5 @@ sample: |
       <Data Name="VirtualAccount">%%1843</Data> 
       <Data Name="TargetLinkedLogonId">0x0</Data> 
       <Data Name="ElevatedToken">%%1842</Data> 
-      </EventData>
-   </Event>
-  
+    </EventData>
+  </Event>

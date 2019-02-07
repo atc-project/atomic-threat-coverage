@@ -1,6 +1,7 @@
 title: DN_0016_13_windows_sysmon_RegistryEvent
 description: >
-  This Registry event type identifies Registry value modifications. The event records the value written for Registry values of type DWORD and QWORD.
+  This Registry event type identifies Registry value modifications. The event 
+  records the value written for Registry values of type DWORD and QWORD
 loggingpolicy: 
   - None
 references:
@@ -23,7 +24,7 @@ fields:
   - Details
 sample: |
   - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
-  - <System>
+    - <System>
       <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385F-C22A-43E0-BF4C-06F5698FFBD9}" /> 
       <EventID>13</EventID> 
       <Version>2</Version> 
@@ -39,7 +40,7 @@ sample: |
       <Computer>atc-win-10.atc.local</Computer> 
       <Security UserID="S-1-5-18" /> 
     </System>
-  - <EventData>
+    - <EventData>
       <Data Name="RuleName" /> 
       <Data Name="EventType">SetValue</Data> 
       <Data Name="UtcTime">2019-01-30 17:06:11.673</Data> 
@@ -49,5 +50,4 @@ sample: |
       <Data Name="TargetObject">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce\New Value #1</Data> 
       <Data Name="Details">C:\Program Files\Sublime Text 3\sublime_text.exe</Data> 
     </EventData>
-    </Event>
-
+  </Event>

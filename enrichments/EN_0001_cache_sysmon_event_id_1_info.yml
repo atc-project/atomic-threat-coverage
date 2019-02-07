@@ -1,6 +1,8 @@
 title: EN_0001_cache_sysmon_event_id_1_info
 description: >
   Cache Sysmon Event ID 1 (Process Create) data for further enrichments.
+data_needed:
+  - DN_0003_1_windows_sysmon_process_creation
 references:
   - https://www.slideshare.net/heirhabarov/hunting-for-privilege-escalation-in-windows-environment
 author: Teymur Kheirkhabarov

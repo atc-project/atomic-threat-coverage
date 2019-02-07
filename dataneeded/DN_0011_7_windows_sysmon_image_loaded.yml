@@ -1,6 +1,6 @@
 title: DN_0011_7_windows_sysmon_image_loaded
 description: >
-  The image loaded event logs when a module is loaded in a specific process.
+  The image loaded event logs when a module is loaded in a specific process
 loggingpolicy: 
   - LP_0006_windows_sysmon_image_loaded
 references:
@@ -25,7 +25,7 @@ fields:
   - SignatureStatus
 sample: |
   - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
-  - <System>
+    - <System>
       <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385F-C22A-43E0-BF4C-06F5698FFBD9}" />
       <EventID>7</EventID>
       <Version>3</Version>
@@ -41,7 +41,7 @@ sample: |
       <Computer>rfsH.lab.local</Computer>
       <Security UserID="S-1-5-18" />
     </System>
-  - <EventData>
+    - <EventData>
       <Data Name="UtcTime">2017-04-28 22:45:16.662</Data>
       <Data Name="ProcessGuid">{A23EAE89-C5FA-5903-0000-0010BF439000}</Data>
       <Data Name="ProcessId">12536</Data>
@@ -52,5 +52,4 @@ sample: |
       <Data Name="Signature">Microsoft Windows</Data>
       <Data Name="SignatureStatus">Valid</Data>
     </EventData>
-    </Event>
-
+  </Event>
