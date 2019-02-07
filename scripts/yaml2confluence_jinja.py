@@ -148,14 +148,14 @@ def yaml2confluence_jinja(file, type, url, mail, password):
       parent_title="Response Actions"
       linked_ra = fields.get("linked_ra")
 
-      linked_ra_with_id = []
+      if linked_ra:
+        linked_ra_with_id = []
+        for ra in linked_ra:
+          linked_ra_id = str(get_page_id(url, auth, space, ra))
+          ra = (ra, linked_ra_id)
+          linked_ra_with_id.append(ra)
 
-      for ra in linked_ra:
-        linked_ra_id = str(get_page_id(url, auth, space, ra))
-        ra = (ra, linked_ra_id)
-        linked_ra_with_id.append(ra)
-
-      fields.update({'linkedra':linked_ra_with_id})
+        fields.update({'linkedra':linked_ra_with_id})
 
       fields.update({'description':fields.get('description').strip()}) 
       content = template.render(fields)
