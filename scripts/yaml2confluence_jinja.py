@@ -9,6 +9,7 @@ from requests.auth import HTTPBasicAuth
 import json
 from utils import read_yaml_file, push_to_confluence, get_page_id, main_dn_calculatoin_func, map_sigma_logsource_fields_to_real_world_names, calculate_dn_for_dr
 import subprocess
+import getpass
 
 
 def read_rule_file(path):
@@ -140,6 +141,48 @@ def yaml2confluence_jinja(file, type, url, mail, password):
         logging_policies_with_id.append(lp)
 
       fields.update({'loggingpolicy':logging_policies_with_id})
+      content = template.render(fields)
+
+    elif type=="responseaction" or type=="RA":
+      template = env.get_template('confluence_responseaction_template.md.j2')
+      parent_title="Response Actions"
+      linked_ra = fields.get("linked_ra")
+
+      linked_ra_with_id = []
+
+      for ra in linked_ra:
+        linked_ra_id = str(get_page_id(url, auth, space, ra))
+        ra = (ra, linked_ra_id)
+        linked_ra_with_id.append(ra)
+
+      fields.update({'linkedra':linked_ra_with_id})
+
+      fields.update({'description':fields.get('description').strip()}) 
+      content = template.render(fields)
+
+    elif type=="responseplaybook" or type=="RP":
+      template = env.get_template('confluence_responseplaybook_template.md.j2')
+      parent_title="Response Playbooks"
+
+      tactic = []
+      tactic_re = re.compile(r'attack\.\w\D+$')
+      technique = []
+      technique_re = re.compile(r'attack\.t\d{1,5}$')
+      other_tags = []
+
+      for tag in fields.get('tags'):
+        if tactic_re.match(tag):
+          tactic.append(ta_mapping.get(tag))
+        elif technique_re.match(tag):
+          technique.append(tag.upper()[7:])
+        else:
+          other_tags.append(tag)
+
+      fields.update({'tactics':tactic})
+      fields.update({'techniques':technique})
+      fields.update({'other_tags':other_tags})
+
+      fields.update({'description':fields.get('description').strip()}) 
       content = template.render(fields)
 
     elif type=="triggering" or type=="TG":
