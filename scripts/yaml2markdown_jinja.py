@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from IPython.core.debugger import Tracer; bp = Tracer()
+
 from jinja2 import Environment, FileSystemLoader
 import yaml
 import os

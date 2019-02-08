@@ -40,41 +40,41 @@ def main(**kwargs):
     url = confluence_rest_api_url
     password = getpass.getpass(prompt='Password: ', stream=None)
 
-    # for lp in lp_list:
-    #     try:
-    #         yaml2confluence_jinja.yaml2confluence_jinja(lp, 'LP', url, mail, password)
-    #     except:
-    #         print(lp+" failed")
-    #         pass
+    for lp in lp_list:
+        try:
+            yaml2confluence_jinja.yaml2confluence_jinja(lp, 'LP', url, mail, password)
+        except:
+            print(lp+" failed")
+            pass
 
-    # for tg in tg_list:
-    #     try:
-    #         #pass
-    #         yaml2confluence_jinja.yaml2confluence_jinja(tg, 'TG', url, mail, password)
-    #     except:
-    #         print(tg+" failed")
-    #         pass
+    for tg in tg_list:
+        try:
+            #pass
+            yaml2confluence_jinja.yaml2confluence_jinja(tg, 'TG', url, mail, password)
+        except:
+            print(tg+" failed")
+            pass
 
-    # for dn in dn_list:
-    #     try:
-    #         yaml2confluence_jinja.yaml2confluence_jinja(dn, 'DN', url, mail, password)
-    #     except:
-    #         print(dn+" failed")
-    #         pass
+    for dn in dn_list:
+        try:
+            yaml2confluence_jinja.yaml2confluence_jinja(dn, 'DN', url, mail, password)
+        except:
+            print(dn+" failed")
+            pass
 
-    # for dr in dr_list:
-    #     try:
-    #         yaml2confluence_jinja.yaml2confluence_jinja(dr, 'DR', url, mail, password)
-    #     except:
-    #         print(dr+" failed")
-    #         pass
+    for dr in dr_list:
+        try:
+            yaml2confluence_jinja.yaml2confluence_jinja(dr, 'DR', url, mail, password)
+        except:
+            print(dr+" failed")
+            pass
 
-    # for ra in ra_list:
-    #     try:
-    #         yaml2confluence_jinja.yaml2confluence_jinja(ra, 'RA', url, mail, password)
-    #     except:
-    #         print(ra+" failed")
-    #         pass
+    for ra in ra_list:
+        try:
+            yaml2confluence_jinja.yaml2confluence_jinja(ra, 'RA', url, mail, password)
+        except:
+            print(ra+" failed")
+            pass
 
     for rp in rp_list:
         try:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from IPython.core.debugger import Tracer; bp = Tracer()
+
 from jinja2 import Environment, FileSystemLoader
 import os
 import sys
@@ -158,6 +158,7 @@ def yaml2confluence_jinja(file, type, url, mail, password):
         fields.update({'linkedra':linked_ra_with_id})
 
       fields.update({'description':fields.get('description').strip()}) 
+      fields.update({'workflow':fields.get('workflow')+'  \n\n.'})
       content = template.render(fields)
 
     elif type=="responseplaybook" or type=="RP":
@@ -225,7 +226,7 @@ def yaml2confluence_jinja(file, type, url, mail, password):
         try:
           for task in fields.get(stage_name):
             action = read_yaml_file('../response_actions/'+task+'.yml')
-            stage_list.append( (action.get('description'), action.get('workflow')) )
+            stage_list.append( (action.get('description'), action.get('workflow')+'  \n\n.') )
         except TypeError:
           pass
 
