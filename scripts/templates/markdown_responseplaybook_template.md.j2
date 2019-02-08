@@ -18,3 +18,14 @@
 ### Workflow
 
 {{ workflow }}
+
+{% for stage_name, stage_actions in stages %}
+
+#### {{ stage_name }}
+{% for action_description, action_workflow in stage_actions%}
+##### {{ action_description }}
+
+{{ action_workflow }}
+
+{%- endfor %}
+{%- endfor %}

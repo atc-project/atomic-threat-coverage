@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+from IPython.core.debugger import Tracer; bp = Tracer()
 from jinja2 import Environment, FileSystemLoader
 import yaml
 import os
@@ -135,6 +135,30 @@ def yaml2markdown_jinja(file, type):
       fields.update({'tactics':tactic})
       fields.update({'techniques':technique})
       fields.update({'other_tags':other_tags})
+
+      identification = []
+      containment = []
+      eradication = []
+      recovery = []
+      lessons_learned = []
+
+      stages = [('identification', identification), ('containment', containment), 
+                ('eradication', eradication), ('recovery', recovery), 
+                ('lessons_learned', lessons_learned)]
+
+      # grab workflow per action in each IR stages, error handling for playbooks with empty stages
+      for stage_name, stage_list in stages:
+        try:
+          for task in fields.get(stage_name):
+            action = read_yaml_file('../response_actions/'+task+'.yml')
+            stage_list.append( (action.get('description'), action.get('workflow')) )
+        except TypeError:
+          pass
+
+      # change stages name to more pretty format
+      stages = [ (stage_name.replace('_',' ').capitalize(), stage_list) for stage_name, stage_list in stages ]
+      
+      fields.update({'stages': stages})
 
       fields.update({'description':fields.get('description').strip()}) 
       content = template.render(fields)
