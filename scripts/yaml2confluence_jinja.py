@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+from IPython.core.debugger import Tracer; bp = Tracer()
 from jinja2 import Environment, FileSystemLoader
 import os
 import sys
@@ -181,6 +181,58 @@ def yaml2confluence_jinja(file, type, url, mail, password):
       fields.update({'tactics':tactic})
       fields.update({'techniques':technique})
       fields.update({'other_tags':other_tags})
+
+      # get links to response action
+
+      identification = []
+      containment = []
+      eradication = []
+      recovery = []
+      lessons_learned = []
+
+      stages = [('identification', identification), ('containment', containment), 
+                ('eradication', eradication), ('recovery', recovery), 
+                ('lessons_learned', lessons_learned)]
+
+      for stage_name, stage_list in stages:
+        try:
+          for task in fields.get(stage_name):
+            action = read_yaml_file('../response_actions/'+task+'.yml')
+            action_title = action.get('title')
+            stage_list.append( (action_title, str(get_page_id(url, auth, space, action_title))) )
+        except TypeError:
+          pass
+
+      # change stages name to more pretty format
+      stages = [ (stage_name.replace('_',' ').capitalize(), stage_list) for stage_name, stage_list in stages ]
+
+      fields.update({'stages_with_id': stages})
+
+      # get descriptions for response actions
+
+      identification = []
+      containment = []
+      eradication = []
+      recovery = []
+      lessons_learned = []
+
+      stages = [('identification', identification), ('containment', containment), 
+                ('eradication', eradication), ('recovery', recovery), 
+                ('lessons_learned', lessons_learned)]
+
+      # grab workflow per action in each IR stages, error handling for playbooks with empty stages
+      for stage_name, stage_list in stages:
+        try:
+          for task in fields.get(stage_name):
+            action = read_yaml_file('../response_actions/'+task+'.yml')
+            stage_list.append( (action.get('description'), action.get('workflow')) )
+        except TypeError:
+          pass
+
+      # change stages name to more pretty format
+      stages = [ (stage_name.replace('_',' ').capitalize(), stage_list) for stage_name, stage_list in stages ]
+      
+      fields.update({'stages': stages})
 
       fields.update({'description':fields.get('description').strip()}) 
       content = template.render(fields)
