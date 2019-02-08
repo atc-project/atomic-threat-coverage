@@ -323,13 +323,17 @@ No. Only to your confluence node, according to configuration provided in `script
 
 #### What do you mean saying "evangelize threat information sharing" then?
 
-We mean that you will use community compatable formats for (at least) Detection Rules ([Sigma](https://github.com/Neo23x0/sigma)) and Triggers ([Atomic Red Team](https://github.com/redcanaryco/atomic-red-team)), and on some maturity level you will (hopefully) have wilingness to share some interesting analytics with community. It's totally up to you.
+We mean that you will use community compatible formats for (at least) Detection Rules ([Sigma](https://github.com/Neo23x0/sigma)) and Triggers ([Atomic Red Team](https://github.com/redcanaryco/atomic-red-team)), and on some maturity level you will (hopefully) have willingness to share some interesting analytics with community. It's totally up to you.
 
 #### How can I add new Trigger, Detection Rule, or anything else to my private fork of Atomic Threat Coverage?
 
-Simplest way is to follow [workflow](#workflow) chapter, just adding your rules into pre-configured folers for specific type of analytics.
+Simplest way is to follow [workflow](#workflow) chapter, just adding your rules into pre-configured folders for specific type of analytics.
 
 More "production" way is to configure your private forks of [Sigma](https://github.com/Neo23x0/sigma) and [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) projects as [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) of your Atomic Threat Coverage private fork. After that you only will need to configure path to them in `scripts/config.py`, this way Atomic Threat Coverage will start using it for knowledge base generation.
+
+#### Sigma doesn't support some of my Detection Rules. Does it still make sense to use Atomic Threat Coverage?
+
+Absolutely. We also have some Detection Rules which couldn't be automatically converted to SIEM/LM queries by Sigma. We still use Sigma format for such rules putting unsupported detection logic into "condition" section. Later SIEM/LM teams manually create rules based on description in this field. ATC is not only about automatic queries generation/documentation, there are still a lot of advantages for analysis. You wouldn't be able to utilise them without Detection Rules in Sigma format.
 
 ## Authors
 
@@ -347,10 +351,11 @@ More "production" way is to configure your private forks of [Sigma](https://gith
 
 ## TODO
 
-- [ ] Implement consistent Data Model (fields naming)
+- [ ] Develop TheHive Case Templates generation based on Response Playbooks
 - [ ] Develop docker container for the tool
 - [ ] Implement "Mitigation Systems" entity
 - [ ] Implement "Hardening Policies" entity
+- [ ] Implement consistent Data Model (fields naming)
 - [ ] Implement new entity — "Visualisation" with Kibana visualisations/dashboards stored in yaml files and option to convert them into curl commands for uploading them into Elasticsearch
 
 ## Links
