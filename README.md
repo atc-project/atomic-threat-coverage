@@ -74,8 +74,8 @@ Data in the repository:
 ├── analytics.csv
 ├── pivoting.csv
 ├── data_needed
-│   ├── DN_0001_windows_process_creation_4688.yml
-│   ├── DN_0002_windows_process_creation_with_commandline_4688.yml
+│   ├── DN_0001_4688_windows_process_creation.yml
+│   ├── DN_0002_4688_windows_process_creation_with_commandline.yml
 │   └── dataneeded.yml.template
 ├── detection_rules
 │   └── sigma/
@@ -319,7 +319,7 @@ The project is currently in an alpha stage. It doesn't support all existing Sigm
 
 #### Will my private analytics (Detection Rules, Logging Policies, etc) be transferred somewhere?
 
-No. Only to your confluence node, according to configuration provided in `scripts/config.py`. Atomic Threat Coverage doesn't connects to any other remote hosts, you can easily check it.
+No. Only to your confluence node, according to configuration provided in `scripts/config.py`. Atomic Threat Coverage doesn't connect to any other remote hosts, you can easily check it.
 
 #### What do you mean saying "evangelize threat information sharing" then?
 

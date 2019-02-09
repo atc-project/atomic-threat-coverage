@@ -71,8 +71,8 @@ Atomic Threat Coverage это фреймворк для создания **ва�
 ├── analytics.csv
 ├── pivoting.csv
 ├── data_needed
-│   ├── DN_0001_windows_process_creation_4688.yml
-│   ├── DN_0002_windows_process_creation_with_commandline_4688.yml
+│   ├── DN_0001_4688_windows_process_creation.yml
+│   ├── DN_0002_4688_windows_process_creation_with_commandline.yml
 │   └── dataneeded.yml.template
 ├── detection_rules
 │   └── sigma/

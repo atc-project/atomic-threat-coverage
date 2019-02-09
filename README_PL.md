@@ -5,17 +5,18 @@
 Automatycznie generowana analityczna baza wiedzy zaprojektowana, aby zwalczać zagrożenia na podstawie MITRE ATT&CK.
 
 ![](images/logo_v1.png)
-<!-- ![](images/atc_description_v01.png) -->
 
 Atomic Threat Coverage jest narzędziem, które pozwala na automatyczne generowanie analitycznej bazy wiedzy zaprojektowanej, aby zwalczać zagrożenia (na podstawie modelu "przeciwnika" przygotowanego przez [MITRE ATT&CK](https://attack.mitre.org/)) poprzez Detekcje, Reakcje, Przeciwdziałanie oraz Symulacje:
 
 - **Detection Rules** — Reguły Wykrywania w oparciu o [Sigme](https://github.com/Neo23x0/sigma) — Generic Signature Format for SIEM Systems
 - **Data Needed** — Wymagane Dane w celu odtworzenia konkretnego Zagrożenia
 - **Logging Policies** — Polityki Logowania jakie muszą być skonfigurowane na urządzeniach wysyłające logi, aby móc zbierać Wymagane Dane
+- **Enrichments** — Wzbogacenia dla konkretnych Wymaganych Danych, które wymagane są dla niektórych Reguł Wykrywania
 - **Triggers** — Wyzwalacze na podstawie [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) — testy wykrywające Zagrożenie na podstawie MITRE ATT&CK
-- **Response Playbooks** — Playbooki Reakcyjne aby reagować, gdy Reguła Wyzwalania zostanie wyzwolona przez konkretne Zagrożenie
-- **Hardening Policies** — Polityki Hardeningu które muszą zostać zaimplementowane, aby przeciwdziałać konkretnemu Zagrożeniu
-- **Mitigation Systems** — Systemy do Przeciwdziałania które muszą zostać wdrożone, aby przeciwdziałać konkretnemu Zagrożeniu
+- **Response Actions** — Akcje, które zostają wykonane podczas incydent bezpieczeństwa
+- **Response Playbooks** — Playbooki Reakcyjne, aby reagować, gdy Reguła Wyzwalania zostanie wyzwolona przez konkretne Zagrożenie
+- **Hardening Policies** — Polityki Hardeningu, które muszą zostać zaimplementowane, aby przeciwdziałać konkretnemu Zagrożeniu
+- **Mitigation Systems** — Systemy do Przeciwdziałania, które muszą zostać wdrożone, aby przeciwdziałać konkretnemu Zagrożeniu
 
 Atomic Threat Coverage jest wysoko zautomatyzowanym frameworkiem służącym do gromadzenia, rozwijania, wyjaśniania oraz dzielenia się odpowiednią analizą.
 
@@ -53,14 +54,17 @@ Innymi słowy, nie potrzeba już samodzielenie pracować nad warstwą prezentacj
 
 Wszystko zaczyna się od reguł Sigma, a kończy na czytelnym dla człowieka formacie w stylu wiki. Atomic Threat Coverage parsuje regułe oraz:
 
-1. Mapuje Regułe Wykrywania do taktyki ATT&CK używając `tags` z reguły Sigma
-2. Mapuje Regułe Wykrywania do tachniki ATT&CK używając `tags` z reguły Sigma
-3. Mapuje Regułe Wykrywania do Wymaganych Danych używając `logsource` i sekcji `detection` z reguły Sigma
-4. Mapuje Regułe Wykrywania do Wyzwalania (testy od Atomic Read Team) używając `tags` z reguły Sigma
-5. Mapuje Politykę Logowania do Wymaganych Danych używając istniejącej już mapy w Wymaganych Danych
-6. Za pomocą szablonów jinja (`scripts/templates`) konwertuje wszystko w strony Confluence oraz pliki Markdown
-7. Zapisuje wszystkie pliki do lokalnego repozytorium oraz na serwer Confluence (w zależności od konfiguracji w `scripts/config.py`)
-8. Tworzy plik `analytics.csv` do prostej analizy istniejących danych
+1. Mapuje **Regułe Wykrywania** do taktyki i techniki ATT&CK używając `tags` z reguły Sigma
+2. Mapuje **Regułe Wykrywania** do **Wymaganych Danych** używając `logsource` i sekcji `detection` z reguły Sigma
+3. Mapuje **Regułe Wykrywania** do **Wyzwalania** (testy od Atomic Read Team) używając `tags` z reguły Sigma
+4. Mapuje **Regułe Wykrywania** do **Wzbogacenia** używając istniejącego już mapowania wewnątrz **Reguły Wykrywania**
+5. Mapuje **Playbooki Reakcyjne** do taktyki i techniki ATT&CK używając istniejącego już mapowania wewnątrz **Reguły Wykrywania**
+6. Mapuje **Playbooki Reakcyjne** do **Akcji** używając istniejącego już mapowania wewnątrz **Reguły Wykrywania**
+7. Mapuje **Politykę Logowania** do **Wymaganych Danych** używając istniejącej już mapy w Wymaganych Danych
+8. Za pomocą szablonów jinja (`scripts/templates`) konwertuje wszystko w strony Confluence oraz pliki Markdown
+9. Zapisuje wszystkie pliki do lokalnego repozytorium oraz na serwer Confluence (w zależności od konfiguracji w `scripts/config.py`)
+10. Tworzy pliki `analytics.csv` oraz `pivoting.csv` do prostej analizy istniejących danych
+11. Tworzy plik `atc_export.json` - profil [ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/enterprise/) do wizualizacji aktualnie zdolności wykrywania zagrożeń
 
 ### Od zaplecza
 
@@ -68,26 +72,31 @@ Dane w repozytorium:
 
 ```
 ├── analytics.csv
-├── dataneeded
-│   ├── DN_0001_windows_process_creation_4688.yml
-│   ├── DN_0002_windows_process_creation_with_commandline_4688.yml
-│   ├── DN_0003_windows_sysmon_process_creation_1.yml
-│   ├── DN_0004_windows_account_logon_4624.yml
-│   └── dataneeded_template.yml
-├── detectionrules
-│   └── sigma
+├── pivoting.csv
+├── data_needed
+│   ├── DN_0001_4688_windows_process_creation.yml
+│   ├── DN_0002_4688_windows_process_creation_with_commandline.yml
+│   └── dataneeded.yml.template
+├── detection_rules
+│   └── sigma/
 ├── enrichments
 │   ├── EN_0001_cache_sysmon_event_id_1_info.yml
 │   ├── EN_0002_enrich_sysmon_event_id_1_with_parent_info.yaml
-│   └── EN_0003_enrich_other_sysmon_events_with_event_id_1_data.yml
-├── loggingpolicies
+│   └── enrichment.yml.template
+├── logging_policies
 │   ├── LP_0001_windows_audit_process_creation.yml
 │   ├── LP_0002_windows_audit_process_creation_with_commandline.yml
-│   ├── LP_0003_windows_sysmon_process_creation.yml
-│   ├── LP_0004_windows_audit_logon.yml
 │   └── loggingpolicy_template.yml
+├── response_actions
+│   ├── RA_0001_identification_get_original_email.yml
+│   ├── RA_0002_identification_extract_observables_from_email.yml
+│   └── respose_action.yml.template
+├── response_playbooks
+│   ├── RP_0001_phishing_email.yml
+│   ├── RP_0002_generic_response_playbook_for_postexploitation_activities.yml
+│   └── respose_playbook.yml.template
 └── triggering
-    └── atomic-red-team
+    └── atomic-red-team/
 ```
 
 #### Detection Rules
@@ -160,6 +169,33 @@ Ten moduł ma na celu ułatwienie komunikacji z zespołami SIEM/LM/Data Engineer
 
 Ten moduł ma na celu wyjaśnienie zespołom SIEM/LM/Data Engineering, lub ogólnie działom IT jakie polityki logowania muszą być skonfigurowane, aby odpowiednie dane (Wymagane Dane) były wysyłane w celu poprawnego działania Reguł Wykrywania by wykryć konkretne Zagrożenia. Dodatkowo zawarto w nim instrukcje jak krok po kroku należy takie polityki skonfigurować.
 
+#### Enrichments
+
+<details>
+  <summary>Plik Wzbogaceń (kliknij aby rozwinąć)</summary>
+  <img src="images/enrichment.png" />
+</details>
+
+<details>
+  <summary>Automatycznie wygenerowana strona confluence (kliknij aby rozwinąć)</summary>
+  <img src="images/enrichment_confluence.png" />
+</details>
+
+<details>
+  <summary>Automatycznie wygenerowana strona markdown (kliknij aby rozwinąć)</summary>
+  <img src="images/enrichment_markdown.png" />
+</details>
+
+<br>
+
+Ten moduł ma za zadanie uprościć komunikacje z zespołami SIEM/LM/Data Engineering lub ogólnie z działami IT. Zawiera następujące informacje:
+
+- Lista Wymaganych Danych, które mogłby by być "wzbogacone"
+- Opis Wzbogacenia (nowe pola, tłumaczenie/zmiana nazw pól, rozwiązywanie nazw DNS, itd)
+- Przykład implementacji (na przykład, konfiguracja Logstash)
+
+W ten sposób będzie można w prosty sposób wyjaśnić dlaczego wzbogacenie (logów/danych) jest potrzebne (mapowanie do Reguł Wykrywania) jak i wskazanie konkretnych platform do wzbogacania danych (na przykład Logstash).
+
 #### Triggers
 
 Wyzwalacze to niezmodyfikowane [testy Atomic Red Team](https://github.com/redcanaryco/atomic-red-team/tree/master/atomics). Domyślnie Atomic Threat Coverage używa "atomics" z oficjalnego repozytorium, ale nic nie stoi na przeszkodzie by dodać "atomics" z własnego repozytorium.
@@ -183,12 +219,53 @@ Wyzwalacze to niezmodyfikowane [testy Atomic Red Team](https://github.com/redcan
 
 Ten moduł pozwala na techniczne przetestowanie systemu. Szczegółowy opis można znaleźć na oficjalnej [stronie](https://atomicredteam.io). 
 
+#### Response Actions
+
+<details>
+  <summary>Plik yaml Akcji (kliknij aby rozwinąć)</summary>
+  <img src="images/response_action.png" />
+</details>
+
+<details>
+  <summary>Automatycznie wygenerowana strona confluence (kliknij aby rozwinąć)</summary>
+  <img src="images/response_action.png" />
+</details>
+
+<details>
+  <summary>Automatycznie wygenerowana strona markdown (kliknij aby rozwinąć)</summary>
+  <img src="images/response_action.png" />
+</details>
+
+<br>
+
+Ten moduł używany jest do budowania Playbooków Reakcyjnych
+
+#### Response Playbooks
+
+<details>
+  <summary>Plik yaml Playbooka Reakcyjnego (kliknij aby rozwinąć)</summary>
+  <img src="images/response_playbook.png" />
+</details>
+
+<details>
+  <summary>Automatycznie wygenerowana strona confluence (kliknij aby rozwinąć)</summary>
+  <img src="images/response_playbook.png" />
+</details>
+
+<details>
+  <summary>Automatycznie wygenerowana strona markdown (kliknij aby rozwinąć)</summary>
+  <img src="images/response_playbook.png" />
+</details>
+
+<br>
+
+Ten moduł używany jest jako plan reakcji na incydent bezpieczeństwa dla konkretnego zagrożenia.
+
 #### analytics.csv
 
 Atomic Threat Coverage generuje plik [analytics.csv](analytics.csv) z listą wszystkich zmapowanych danych do filtrowania i prostej analizy. Ten plik powinien odpowiedzień na następujące pytania:
 
 - W jakich zródłach danych można znaleźć konkrente typy danych (przykładowo nazwa domeny, nazwa użytkownika, hash etc.) podczas fazy identyfikacji?
-- Jakie dane potrzebuje zbierać, aby wykryć konkretne zagrożenie?
 - Które Polityki Logowania potrzebuję wdrożyć, aby zbierać dane do wykrywania konkretnego zagrożenia?
 - Które Polityki Logowania mogę wdrożyć wszędzie, a które tylko na urządzeniach "krytycznych"?
 - Które dane pozwalają mi na alarmy high-fidelity? (Priorytetyzacja wdrażania polityk logowania, itd.)
@@ -200,10 +277,14 @@ Takie mapowanie powinno pomóc organizacji priorytetyzować wykrywanie zagroże�
 - Jeśli zbieramy Wymagane Dane tylko dla alarmów high-fidelity i tylko na "krytycznych" urządzeniach, oznacza to _Y_ EPS (Events Per Second) z określonymi środkami na magazynowanie danych i ich procesowanie
 - itd
 
+#### pivoting.csv
+
+Atomic Threat Coverage generuje plik [pivoting.csv](pivoting.csv) z listą wszystkich pól (z Wymaganych Danych) zmapowane do opisu Wymaganych Danych dla konkretnego zastosowania - dostarcza to informacje na temat urządzeń końcowych, gdzie można znaleźć jakieś konkretne dane, na przykład nazwa domenowa, nazwa użytkownika, hash, itd.
+
 ## Nasze cele
 
-1. Zachęcenie społeczności do używania formatu plików [Sigma](https://github.com/Neo23x0/sigma)
-2. Zachęcenie społeczności do używania formatu testów [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) 
+1. Zachęcenie społeczności do używania formatu plików [Sigma](https://github.com/Neo23x0/sigma) (więcej osób wnoszących wkład, więcej i lepsze konwertery)
+2. Zachęcenie społeczności do używania formatu testów [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) (więcej osób wnoszących wkład - więcej testów)
 3. Promować dzielenie się informacją na temat zagrożeń
 4. Zautomatyzować większość ręcznej pracy
 5. Dostarczenie społeczności bezpieczeństwa informacji framework, który poprawi komunikacje z innymi działami, ogólną analizę, dewelopowanie i udostępnianie workflow'u
@@ -212,14 +293,17 @@ Takie mapowanie powinno pomóc organizacji priorytetyzować wykrywanie zagroże�
 
 1. Dodaj swoje własne reguły [Sigma](https://github.com/Neo23x0/sigma) (jeśli posiadasz) do folderu `detectionrules`
 2. Dodac folder z własnymi testami [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) (jeśli posiadasz) do folderu `triggering`
-3. Dodaj odpowiednie Wymagane Dane związane z regułami Sigma do folderu `dataneeded` (szablon dostępny jest w `dataneeded/dataneeded_template.yml`)
-4. Dodaj odpowiednie Polityki Logowania związane z Wymaganymi Danymi do folderu `loggingpolicies` (szablon dostępny jest w `loggingpolicies/loggingpolicy_template.yml`)
-5. Skonfiguruj ustawienia eksportowania (markdown/confluence) - `scripts/config.py`
-6. Wykonaj polecenie `make` w głównym katalogu repozytorium
+3. Dodaj odpowiednie Wymagane Dane związane z regułami Sigma do folderu `dataneeded` (szablon do tworzenia nowych dostępny jest w [tutaj](dataneeded/dataneeded_template.yml))
+4. Dodaj odpowiednie Polityki Logowania związane z Wymaganymi Danymi do folderu `loggingpolicies` (szablon do tworzenia nowych dostępny jest [tutaj](loggingpolicies/loggingpolicy_template.yml`))
+5. Dodaj odpowiednie Wzbogacenia do folderu `enrichments` (szablon do tworzenia nowych dostępny jest [tutaj](enrichments/enrichment.yml.template))
+6. Dodaj odpowiednie Akcje do folderu `response_actions` (szablon do tworzenia nowych dostępny jest [tutaj](response_actions/respose_action.yml.template))
+7. Dodaje odpowiednie Playbooki Reakcyjne do folderu `response_playbooks` (szablon do tworzenia nowych dostępny jest [tutaj](response_playbooks/respose_playbook.yml.template))
+8. Skonfiguruj ustawienia eksportowania (markdown/confluence) - `scripts/config.py`
+9. Wykonaj polecenie `make` w głównym katalogu repozytorium
 
-## Aktualny status: Proof of Concept
+## Aktualny status: Alfa
 
-Ten projekt jest aktualnie w fazie Proof of Concept i został napisany w kilka wieczorów. Nie działa dla wszystkich reguł Sigma. Przepiszemy większość skryptów, dopiszemy obsługę wszytkich oryginalnych reguł [Sigma](https://github.com/Neo23x0/sigma) oraz dodamy inne moduły (jak Playbook'i). Aktualnie chcemy pokazać dzaiałający przykład procesowania danych (reguł, itd), aby podyskutować ze społecznością, otrzymać feedback i jakiekolwiek sugestie.
+Projekt aktualnie jest w fazie Alfa. Nie wspiera wszystkich istniejących reguł Sigma (aktualne pokrycie to ~80%). Są też inne moduły, które muszą zostać wydewelopowane (na przykład Systemy do Przeciwdziałania). Ciepło przyjmujemy jakikolwiek feedback i sugestie w celu udoskonalenia projektu.
 
 ## Wymagania
 
@@ -228,6 +312,26 @@ Ten projekt jest aktualnie w fazie Proof of Concept i został napisany w kilka w
 - Biblioteka python - [jinja2](https://pypi.org/project/Jinja2/)
 - (Darmowy) Plugin do Confluence'a - [Render Markdown](https://marketplace.atlassian.com/apps/1212654/render-markdown) (open-source)
 
+## FAQ
+
+#### Czy moje prywatne reguły (Reguły Wykrywania, Polityki Logowania, itd) są gdzieś wysyłane?
+
+Nie. Jedynie do instancji confluence, która została wskazana w pliku konfiguracyjnym `scripts/config.py`. Atomic Threat Coverage nie łączy się do żadnego innego zdalnego urządzenia. Jest to łatwo weryfikowalne - kod w całości udostępniony.
+
+#### Co macie na myśli pisząc "promować dzielenie się informacją na temat zagrożeń"?
+
+Chcemy, żeby używane były formaty promowane przez społeczeństwo dla (przynajmniej) Reguł Wykrywania ([Sigma](https://github.com/Neo23x0/sigma)) oraz Wyzwalaczy ([Atomic Red Team](https://github.com/redcanaryco/atomic-red-team)). W przyszłości mamy nadzieje, że użytkownicy będą skłonni i chętni, aby podzielić się ze społeczeństwem ciekawymi informacjami na temat zagrożeń. Natomiast zero presji, to tylko i wyłącznie Twoja decyzja.
+
+#### Jak mogę dodać nowy Wyzwalacz, Regułę Wykrywania lub czegokolwiek do mojego prywatnego repozytorium Atomic Threat Coverage?
+
+Najprościej jest podążać krokami zdefiniowanymi w [workflow](#workflow). Po prostu dodaj swoje reguły do już skonfigurowanych folderów dla danego typu informacji.
+
+Bardziej "produkcyjnym" podejściem jest skonfigurowanie prywatnych repozytoriów [Sigma](https://github.com/Neo23x0/sigma) i [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) jako projektów [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) prywatnego repozytorium Atomic Threat Coverage. Po zrobieniu tego pozostaje jedynie skonfigurowanie odpowiednio ścieżek do nich w `scripts/config.py`. Po skonfigurowaniu, Atomic Threat Coverage zacznie korzystać z nich do tworzenia bazy wiedzy.
+
+#### Sigma nie wspiera paru moich Reguł Wykrywania. Czy używać w takim razie Atomic Threat Coverage?
+
+Oczywiście. My również mamy pare Reguł Wykrywania, które nie są automatycznie konwertowane przez Sigma do zapytań SIEM/LM. Dalej używamy formatu Sigma dla takich Reguł używając niewspieranej logiki detekcji w sekcji "condition". Następnie zespoły SIEM/LM manulanie tworzą reguły bazując na opisie tego pola. Atomic Threat Coverage to nie tylko automatyczne generowania zapytań oraz dokumentacji, Atomic Threat Coverage dalej przynosi parę pozytywów dla analizy, których nie dałoby się wykorzystać z regułami w innym formacie niż Sigma.
+
 ## Autorzy
 
 - Daniil Yugoslavskiy, [@yugoslavskiy](https://github.com/yugoslavskiy)
@@ -235,23 +339,21 @@ Ten projekt jest aktualnie w fazie Proof of Concept i został napisany w kilka w
 - Mateusz Wydra, [@sn0w0tter](https://github.com/sn0w0tter)
 - Mikhail Aksenov, [@AverageS](https://github.com/AverageS)
 
+## Podziękowania
+
+- Igor Ivanov, [@lctrcl](https://github.com/lctrcl) za współpracę nad początkowymi typami danych oraz regułami mapowania
+- Andrey, [Polar_Letters](https://www.behance.net/Polar_Letters) za logo
+- [Sigma](https://github.com/Neo23x0/sigma), [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team), [TheHive](https://blog.thehive-project.org) oraz [Elastic Common Schema](https://github.com/elastic/ecs) za inspitacje do stworzenia tego projektu
+- MITRE [ATT&CK](https://attack.mitre.org/) za umożliwienie stworzenia tego wszystkiego
+
 ## TODO
 
-- [x] Fix `analytics.csv` generation
-- [x] Develop Polish and Russian version of the README
-- [ ] Rewrite `make` and all bash scripts in python for compatibility with Windows
-- [ ] Rewrite main codebase in a proper way
-- [ ] Add contribution description
-- [ ] Create developer guide (how to create custom fields)
-- [ ] Implement consistent Data Model (fields naming)
-- [ ] Add the rest of Data Needed for default Sigma rules
-- [ ] Add the rest of Logging Policies for all Data Needed
-- [ ] Define new Detection Rule naming scheme (separate Events and Alerts)
-- [ ] Develop docker container for the tool
-- [ ] Create [MITRE ATT&CK Navigator](https://mitre.github.io/attack-navigator/enterprise/) profile generator per data type
-- [x] Create new entity called "Enrichments" which will define how to enrich specific Data Needed
-- [ ] Implement new entity — "Visualisation" with Kibana visualisations/dashboards stored in yaml files and option to convert them into curl commands for uploading them into Elasticsearch
-- [ ] Implement "Playbook" entity (based on Detection Rule and Data Needed) with automatic TheHive Case Templates generation (actionable Playbook)
+- [ ] Wydewelopowanie generowania szablonów TheHive Case bazując na Playbookach Reakcyjnych
+- [ ] Wydewelopowanie kontenera docker dla tego narzędzia
+- [ ] Implementacja modułu "Mitigation Systems"
+- [ ] Implementacja modułu "Hardening Policies" 
+- [ ] Implementacja jednolitego Modelu Danych (nazwy pól)
+- [ ] Implementacja nowego modułu - "Visualisation" jako pliki yaml z wizaulizacją/dashboardami Kibana z możliwością przekonwertowania do komend curl w celu wrzucenia ich do Elasticsearch
 
 ## Linki
 
