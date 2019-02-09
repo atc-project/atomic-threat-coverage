@@ -8,7 +8,7 @@ Automatycznie generowana analityczna baza wiedzy zaprojektowana, aby zwalczać z
 
 Atomic Threat Coverage jest narzędziem, które pozwala na automatyczne generowanie analitycznej bazy wiedzy zaprojektowanej, aby zwalczać zagrożenia (na podstawie modelu "przeciwnika" przygotowanego przez [MITRE ATT&CK](https://attack.mitre.org/)) poprzez Detekcje, Reakcje, Przeciwdziałanie oraz Symulacje:
 
-- **Detection Rules** — Reguły Wykrywania w oparciu o [Sigme](https://github.com/Neo23x0/sigma) — Generic Signature Format for SIEM Systems
+- **Detection Rules** — Reguły Wykrywania w oparciu o [Sigma](https://github.com/Neo23x0/sigma) — Generic Signature Format for SIEM Systems
 - **Data Needed** — Wymagane Dane w celu odtworzenia konkretnego Zagrożenia
 - **Logging Policies** — Polityki Logowania jakie muszą być skonfigurowane na urządzeniach wysyłające logi, aby móc zbierać Wymagane Dane
 - **Enrichments** — Wzbogacenia dla konkretnych Wymaganych Danych, które wymagane są dla niektórych Reguł Wykrywania
@@ -54,13 +54,13 @@ Innymi słowy, nie potrzeba już samodzielenie pracować nad warstwą prezentacj
 
 Wszystko zaczyna się od reguł Sigma, a kończy na czytelnym dla człowieka formacie w stylu wiki. Atomic Threat Coverage parsuje regułe oraz:
 
-1. Mapuje **Regułe Wykrywania** do taktyki i techniki ATT&CK używając `tags` z reguły Sigma
-2. Mapuje **Regułe Wykrywania** do **Wymaganych Danych** używając `logsource` i sekcji `detection` z reguły Sigma
-3. Mapuje **Regułe Wykrywania** do **Wyzwalania** (testy od Atomic Read Team) używając `tags` z reguły Sigma
-4. Mapuje **Regułe Wykrywania** do **Wzbogacenia** używając istniejącego już mapowania wewnątrz **Reguły Wykrywania**
-5. Mapuje **Playbooki Reakcyjne** do taktyki i techniki ATT&CK używając istniejącego już mapowania wewnątrz **Reguły Wykrywania**
-6. Mapuje **Playbooki Reakcyjne** do **Akcji** używając istniejącego już mapowania wewnątrz **Reguły Wykrywania**
-7. Mapuje **Politykę Logowania** do **Wymaganych Danych** używając istniejącej już mapy w Wymaganych Danych
+1. Mapuje **Detection Rule** do taktyki i techniki ATT&CK używając `tags` z reguły Sigma
+2. Mapuje **Detection Rule** do **Data Needed** używając `logsource` i sekcji `detection` z reguły Sigma
+3. Mapuje **Detection Rule** do **Triggers** (testy od Atomic Read Team) używając `tags` z reguły Sigma
+4. Mapuje **Detection Rule** do **Enrichments** używając istniejącego już mapowania wewnątrz **Detection Rule**
+5. Mapuje **Playbooki Reakcyjne** do taktyki i techniki ATT&CK używając istniejącego już mapowania wewnątrz **Detection Rule**
+6. Mapuje **Playbooki Reakcyjne** do **Response Actions** używając istniejącego już mapowania wewnątrz **Detection Rule**
+7. Mapuje **Logging Policies** do **Data Needed** używając istniejącej już mapy w Wymaganych Danych
 8. Za pomocą szablonów jinja (`scripts/templates`) konwertuje wszystko w strony Confluence oraz pliki Markdown
 9. Zapisuje wszystkie pliki do lokalnego repozytorium oraz na serwer Confluence (w zależności od konfiguracji w `scripts/config.py`)
 10. Tworzy pliki `analytics.csv` oraz `pivoting.csv` do prostej analizy istniejących danych
@@ -120,7 +120,7 @@ Detection Rules — Reguły Wykrywania są niezmodyfikowanymi [regułami Sigma](
 
 <br>
 
-Linki do Wymaganych Danych, Wyzwalaczy oraz artykułów na stronie ATT&CK są generowane automatycznie.  
+Linki do Data Needed, Trigger oraz artykułów na stronie ATT&CK są generowane automatycznie.  
 Reguła Sigma, zapytanie dla Kibany, X-Pack Watcher oraz GrayLog są generowane oraz dodawane automatycznie (istnieje możliwość rozszerzenia generowanych zapytań na podstawie wspieranych przez projekt Sigma platform [Sigma Supported Targets](https://github.com/Neo23x0/sigma#supported-targets) )
 
 #### Data Needed
@@ -145,13 +145,13 @@ Reguła Sigma, zapytanie dla Kibany, X-Pack Watcher oraz GrayLog są generowane 
 Ten moduł ma na celu ułatwienie komunikacji z zespołami SIEM/LM/Data Engineering. Zawiera następujęce dane:
 
 - Przykładowy czysty log aby opisać jakich danych należy się spodziewać lub zbierać
-- Opis danych do zebrania (Platform/Type/Channel/etc) - wymagany do wyznaczenia mapowania Polityk Logowania
-- Listę pól wymaganą do wyznaczenia mapowania Reguł Wykrywania, Playbooki Reakcyjnych oraz wygenerowania pliku `analytics.csv`
+- Opis danych do zebrania (Platform/Type/Channel/etc) - wymagany do mapowania Detection Rules
+- Listę pól wymaganą do mapowania Detection Rules, Response Playbooks oraz wygenerowania pliku `analytics.csv`
 
 #### Logging Policies
 
 <details>
-  <summary>Plik yaml Polityki Logowania (kliknij aby rozwinąć)</summary>
+  <summary>Plik yaml Logging Policy (kliknij aby rozwinąć)</summary>
   <img src="images/loggingpolicy.png" />
 </details>
 
@@ -167,12 +167,12 @@ Ten moduł ma na celu ułatwienie komunikacji z zespołami SIEM/LM/Data Engineer
 
 <br>
 
-Ten moduł ma na celu wyjaśnienie zespołom SIEM/LM/Data Engineering, lub ogólnie działom IT jakie polityki logowania muszą być skonfigurowane, aby odpowiednie dane (Wymagane Dane) były wysyłane w celu poprawnego działania Reguł Wykrywania by wykryć konkretne Zagrożenia. Dodatkowo zawarto w nim instrukcje jak krok po kroku należy takie polityki skonfigurować.
+Ten moduł ma na celu wyjaśnienie zespołom SIEM/LM/Data Engineering, lub ogólnie działom IT jakie polityki logowania muszą być skonfigurowane, aby odpowiednie dane (Data Needed) były wysyłane w celu poprawnego działania reguł (Detection Rules) by wykryć konkretne Zagrożenia. Dodatkowo zawarto w nim instrukcje jak krok po kroku należy takie polityki skonfigurować.
 
 #### Enrichments
 
 <details>
-  <summary>Plik Wzbogaceń (kliknij aby rozwinąć)</summary>
+  <summary>Plik yaml Enrichments (kliknij aby rozwinąć)</summary>
   <img src="images/enrichment.png" />
 </details>
 
@@ -190,18 +190,18 @@ Ten moduł ma na celu wyjaśnienie zespołom SIEM/LM/Data Engineering, lub ogól
 
 Ten moduł ma za zadanie uprościć komunikacje z zespołami SIEM/LM/Data Engineering lub ogólnie z działami IT. Zawiera następujące informacje:
 
-- Lista Wymaganych Danych, które mogłby by być "wzbogacone"
-- Opis Wzbogacenia (nowe pola, tłumaczenie/zmiana nazw pól, rozwiązywanie nazw DNS, itd)
+- Lista danych (Data Needed), które mogłby by być "wzbogacone"
+- Opis wzbogacenia (nowe pola, tłumaczenie/zmiana nazw pól, rozwiązywanie nazw DNS, itd)
 - Przykład implementacji (na przykład, konfiguracja Logstash)
 
-W ten sposób będzie można w prosty sposób wyjaśnić dlaczego wzbogacenie (logów/danych) jest potrzebne (mapowanie do Reguł Wykrywania) jak i wskazanie konkretnych platform do wzbogacania danych (na przykład Logstash).
+W ten sposób będzie można w prosty sposób wyjaśnić dlaczego wzbogacenie (logów/danych) jest potrzebne (mapowanie do Detection Rules) jak i wskazanie konkretnych platform do wzbogacania danych (na przykład Logstash).
 
 #### Triggers
 
 Wyzwalacze to niezmodyfikowane [testy Atomic Red Team](https://github.com/redcanaryco/atomic-red-team/tree/master/atomics). Domyślnie Atomic Threat Coverage używa "atomics" z oficjalnego repozytorium, ale nic nie stoi na przeszkodzie by dodać "atomics" z własnego repozytorium.
 
 <details>
-  <summary>Plik yaml Wyzwalacza (kliknij aby rozwinąć)</summary>
+  <summary>Plik yaml Trigger (kliknij aby rozwinąć)</summary>
   <img src="images/trigger.png" />
 </details>
 
@@ -222,7 +222,7 @@ Ten moduł pozwala na techniczne przetestowanie systemu. Szczegółowy opis moż
 #### Response Actions
 
 <details>
-  <summary>Plik yaml Akcji (kliknij aby rozwinąć)</summary>
+  <summary>Plik yaml Response Actions (kliknij aby rozwinąć)</summary>
   <img src="images/response_action.png" />
 </details>
 
@@ -238,12 +238,12 @@ Ten moduł pozwala na techniczne przetestowanie systemu. Szczegółowy opis moż
 
 <br>
 
-Ten moduł używany jest do budowania Playbooków Reakcyjnych
+Ten moduł używany jest do budowania Response Playbooks.
 
 #### Response Playbooks
 
 <details>
-  <summary>Plik yaml Playbooka Reakcyjnego (kliknij aby rozwinąć)</summary>
+  <summary>Plik yaml Response Playbooks (kliknij aby rozwinąć)</summary>
   <img src="images/response_playbook.png" />
 </details>
 
@@ -266,20 +266,20 @@ Ten moduł używany jest jako plan reakcji na incydent bezpieczeństwa dla konkr
 Atomic Threat Coverage generuje plik [analytics.csv](analytics.csv) z listą wszystkich zmapowanych danych do filtrowania i prostej analizy. Ten plik powinien odpowiedzień na następujące pytania:
 
 - W jakich zródłach danych można znaleźć konkrente typy danych (przykładowo nazwa domeny, nazwa użytkownika, hash etc.) podczas fazy identyfikacji?
-- Które Polityki Logowania potrzebuję wdrożyć, aby zbierać dane do wykrywania konkretnego zagrożenia?
-- Które Polityki Logowania mogę wdrożyć wszędzie, a które tylko na urządzeniach "krytycznych"?
+- Które polityki logowania (Logging Policies) potrzebuję wdrożyć, aby zbierać dane do wykrywania konkretnego zagrożenia?
+- Które polityki logowania (Logging Policies) mogę wdrożyć wszędzie, a które tylko na urządzeniach "krytycznych"?
 - Które dane pozwalają mi na alarmy high-fidelity? (Priorytetyzacja wdrażania polityk logowania, itd.)
 - itd
 
 Takie mapowanie powinno pomóc organizacji priorytetyzować wykrywanie zagrożeń w przełożeniu na *pieniądze*, np:
 
-- Jeśli zbieramy wszystkie Wymagane Dane ze wszystkich urządzen dla wszystkich Reguł Wykrywania, oznacza to _X_ EPS (Events Per Second) z określonymi środkami na magazynowanie danych i ich procesowanie. 
-- Jeśli zbieramy Wymagane Dane tylko dla alarmów high-fidelity i tylko na "krytycznych" urządzeniach, oznacza to _Y_ EPS (Events Per Second) z określonymi środkami na magazynowanie danych i ich procesowanie
+- Jeśli zbieramy wszystkie dane (Data Needed) ze wszystkich urządzen dla wszystkich reguł (Detection Rules), oznacza to _X_ EPS (Events Per Second) z określonymi środkami na magazynowanie danych i ich procesowanie. 
+- Jeśli zbieramy dane (Data Needed) tylko dla alarmów high-fidelity i tylko na "krytycznych" urządzeniach, oznacza to _Y_ EPS (Events Per Second) z określonymi środkami na magazynowanie danych i ich procesowanie
 - itd
 
 #### pivoting.csv
 
-Atomic Threat Coverage generuje plik [pivoting.csv](pivoting.csv) z listą wszystkich pól (z Wymaganych Danych) zmapowane do opisu Wymaganych Danych dla konkretnego zastosowania - dostarcza to informacje na temat urządzeń końcowych, gdzie można znaleźć jakieś konkretne dane, na przykład nazwa domenowa, nazwa użytkownika, hash, itd.
+Atomic Threat Coverage generuje plik [pivoting.csv](pivoting.csv) z listą wszystkich pól (z Data Needed) zmapowane do opisu Data Needed dla konkretnego zastosowania - dostarcza to informacje na temat urządzeń końcowych, gdzie można znaleźć jakieś konkretne dane, na przykład nazwa domenowa, nazwa użytkownika, hash, itd.
 
 ## Nasze cele
 
@@ -292,12 +292,12 @@ Atomic Threat Coverage generuje plik [pivoting.csv](pivoting.csv) z listą wszys
 ## Workflow
 
 1. Dodaj swoje własne reguły [Sigma](https://github.com/Neo23x0/sigma) (jeśli posiadasz) do folderu `detectionrules`
-2. Dodac folder z własnymi testami [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) (jeśli posiadasz) do folderu `triggering`
-3. Dodaj odpowiednie Wymagane Dane związane z regułami Sigma do folderu `dataneeded` (szablon do tworzenia nowych dostępny jest w [tutaj](dataneeded/dataneeded_template.yml))
-4. Dodaj odpowiednie Polityki Logowania związane z Wymaganymi Danymi do folderu `loggingpolicies` (szablon do tworzenia nowych dostępny jest [tutaj](loggingpolicies/loggingpolicy_template.yml`))
-5. Dodaj odpowiednie Wzbogacenia do folderu `enrichments` (szablon do tworzenia nowych dostępny jest [tutaj](enrichments/enrichment.yml.template))
-6. Dodaj odpowiednie Akcje do folderu `response_actions` (szablon do tworzenia nowych dostępny jest [tutaj](response_actions/respose_action.yml.template))
-7. Dodaje odpowiednie Playbooki Reakcyjne do folderu `response_playbooks` (szablon do tworzenia nowych dostępny jest [tutaj](response_playbooks/respose_playbook.yml.template))
+2. Dodaj folder z własnymi testami [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) (jeśli posiadasz) do folderu `triggering`
+3. Dodaj odpowiednie Data Needed związane z regułami Sigma do folderu `dataneeded` (szablon do tworzenia nowych dostępny jest w [tutaj](dataneeded/dataneeded_template.yml))
+4. Dodaj odpowiednie Logging Policies związane z Data Needed do folderu `loggingpolicies` (szablon do tworzenia nowych dostępny jest [tutaj](loggingpolicies/loggingpolicy_template.yml`))
+5. Dodaj odpowiednie Enrichments do folderu `enrichments` (szablon do tworzenia nowych dostępny jest [tutaj](enrichments/enrichment.yml.template))
+6. Dodaj odpowiednie Response Actions do folderu `response_actions` (szablon do tworzenia nowych dostępny jest [tutaj](response_actions/respose_action.yml.template))
+7. Dodaje odpowiednie Response Playbooks do folderu `response_playbooks` (szablon do tworzenia nowych dostępny jest [tutaj](response_playbooks/respose_playbook.yml.template))
 8. Skonfiguruj ustawienia eksportowania (markdown/confluence) - `scripts/config.py`
 9. Wykonaj polecenie `make` w głównym katalogu repozytorium
 
@@ -314,23 +314,23 @@ Projekt aktualnie jest w fazie Alfa. Nie wspiera wszystkich istniejących reguł
 
 ## FAQ
 
-#### Czy moje prywatne reguły (Reguły Wykrywania, Polityki Logowania, itd) są gdzieś wysyłane?
+#### Czy moje prywatne dane (Detection Rules, Logging Policies, itd) są gdzieś wysyłane?
 
 Nie. Jedynie do instancji confluence, która została wskazana w pliku konfiguracyjnym `scripts/config.py`. Atomic Threat Coverage nie łączy się do żadnego innego zdalnego urządzenia. Jest to łatwo weryfikowalne - kod w całości udostępniony.
 
 #### Co macie na myśli pisząc "promować dzielenie się informacją na temat zagrożeń"?
 
-Chcemy, żeby używane były formaty promowane przez społeczeństwo dla (przynajmniej) Reguł Wykrywania ([Sigma](https://github.com/Neo23x0/sigma)) oraz Wyzwalaczy ([Atomic Red Team](https://github.com/redcanaryco/atomic-red-team)). W przyszłości mamy nadzieje, że użytkownicy będą skłonni i chętni, aby podzielić się ze społeczeństwem ciekawymi informacjami na temat zagrożeń. Natomiast zero presji, to tylko i wyłącznie Twoja decyzja.
+Chcemy, żeby używane były formaty promowane przez społeczeństwo dla (przynajmniej) Detection Rules ([Sigma](https://github.com/Neo23x0/sigma)) oraz Triggers ([Atomic Red Team](https://github.com/redcanaryco/atomic-red-team)). W przyszłości mamy nadzieje, że użytkownicy będą skłonni i chętni, aby podzielić się ze społeczeństwem ciekawymi informacjami na temat zagrożeń. Natomiast zero presji, to tylko i wyłącznie Twoja decyzja.
 
-#### Jak mogę dodać nowy Wyzwalacz, Regułę Wykrywania lub czegokolwiek do mojego prywatnego repozytorium Atomic Threat Coverage?
+#### Jak mogę dodać nowy Trigger, Detection Rule lub czegokolwiek innego do mojego prywatnego repozytorium Atomic Threat Coverage?
 
 Najprościej jest podążać krokami zdefiniowanymi w [workflow](#workflow). Po prostu dodaj swoje reguły do już skonfigurowanych folderów dla danego typu informacji.
 
 Bardziej "produkcyjnym" podejściem jest skonfigurowanie prywatnych repozytoriów [Sigma](https://github.com/Neo23x0/sigma) i [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) jako projektów [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) prywatnego repozytorium Atomic Threat Coverage. Po zrobieniu tego pozostaje jedynie skonfigurowanie odpowiednio ścieżek do nich w `scripts/config.py`. Po skonfigurowaniu, Atomic Threat Coverage zacznie korzystać z nich do tworzenia bazy wiedzy.
 
-#### Sigma nie wspiera paru moich Reguł Wykrywania. Czy używać w takim razie Atomic Threat Coverage?
+#### Sigma nie wspiera paru moich reguł (Detection Rules). Czy używać w takim razie Atomic Threat Coverage?
 
-Oczywiście. My również mamy pare Reguł Wykrywania, które nie są automatycznie konwertowane przez Sigma do zapytań SIEM/LM. Dalej używamy formatu Sigma dla takich Reguł używając niewspieranej logiki detekcji w sekcji "condition". Następnie zespoły SIEM/LM manulanie tworzą reguły bazując na opisie tego pola. Atomic Threat Coverage to nie tylko automatyczne generowania zapytań oraz dokumentacji, Atomic Threat Coverage dalej przynosi parę pozytywów dla analizy, których nie dałoby się wykorzystać z regułami w innym formacie niż Sigma.
+Oczywiście. My również mamy kilka reguł, które nie są automatycznie konwertowane przez Sigma do zapytań SIEM/LM. Dalej używamy formatu Sigma dla takich reguł używając niewspieranej logiki detekcji w sekcji "condition". Następnie zespoły SIEM/LM manulanie tworzą reguły bazując na opisie tego pola. Atomic Threat Coverage to nie tylko automatyczne generowania zapytań oraz dokumentacji, Atomic Threat Coverage dalej przynosi parę pozytywów dla analizy, których nie dałoby się wykorzystać z regułami w innym formacie niż Sigma.
 
 ## Autorzy
 
@@ -348,7 +348,7 @@ Oczywiście. My również mamy pare Reguł Wykrywania, które nie są automatycz
 
 ## TODO
 
-- [ ] Wydewelopowanie generowania szablonów TheHive Case bazując na Playbookach Reakcyjnych
+- [ ] Wydewelopowanie generowania szablonów TheHive Case bazując na Response Playbooks
 - [ ] Wydewelopowanie kontenera docker dla tego narzędzia
 - [ ] Implementacja modułu "Mitigation Systems"
 - [ ] Implementacja modułu "Hardening Policies" 
