@@ -9,19 +9,20 @@ references:
   - https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-14.md
 category: OS Logs
 platform: Windows
-type: Windows Log
+type: Applications and Services Logs
 channel: Microsoft-Windows-Sysmon/Operational
 provider: Microsoft-Windows-Sysmon
 fields:
   - EventID
   - Computer
+  - Hostname # redundant
   - EventType
   - UtcTime
   - ProcessGuid
   - ProcessId
   - Image
   - TargetObject
-  - Details
+  - NewName
 sample: |
   - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
     - <System>

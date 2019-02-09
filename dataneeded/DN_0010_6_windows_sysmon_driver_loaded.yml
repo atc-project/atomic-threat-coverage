@@ -10,15 +10,18 @@ references:
   - https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-6.md
 category: OS Logs
 platform: Windows
-type: Windows Log
+type: Applications and Services Logs
 channel: Microsoft-Windows-Sysmon/Operational
 provider: Microsoft-Windows-Sysmon
 fields:
   - EventID
   - Computer
+  - Hostname # redundant
   - UtcTime
   - ImageLoaded
   - Hashes
+  - Sha256hash
+  - Md5hash
   - Signed
   - Signature
   - SignatureStatus

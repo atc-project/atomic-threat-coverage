@@ -13,8 +13,8 @@ provider: Microsoft-Windows-Security-Auditing
 fields:
   - EventID
   - AccountName         # redundant
-  - Hostname
-  - Computer            # redundant
+  - Hostname            # redundant
+  - Computer
   - SubjectUserSid
   - SubjectUserName
   - SubjectDomainName
@@ -32,7 +32,6 @@ fields:
   - LmPackageName
   - KeyLength
   - ProcessId
-  - ThreadID
   - ProcessName
   - IpAddress
   - IpPort

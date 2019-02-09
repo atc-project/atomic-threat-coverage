@@ -10,9 +10,8 @@ channel: System
 provider: Service Control Manager
 fields:
   - EventID
-  - ProcessID
-  - ThreadID
   - Computer
+  - Hostname # redundant
   - param1
   - param2
   #- Sha256hash it's not a hash of executable, it's just piece of it in hex

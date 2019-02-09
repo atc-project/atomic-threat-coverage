@@ -1,0 +1,18 @@
+title: DN_0036_150_dns_server_could_not_load_dll
+description: >
+  Windows DNS server could not load or initialize the plug-in DLL
+loggingpolicy:
+  - None
+references:
+  - https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc735829(v=ws.10)
+category: OS Logs
+platform: Windows
+type: Applications and Services Logs
+channel: DNS Server
+provider: Microsoft-Windows-DNS-Server-Service
+fields:
+  - EventID
+  - Hostname # redundant
+  - Computer
+sample: |
+  todo

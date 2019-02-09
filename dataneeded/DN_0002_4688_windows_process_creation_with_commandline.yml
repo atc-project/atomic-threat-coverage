@@ -13,24 +13,28 @@ channel: Security
 provider: Microsoft-Windows-Security-Auditing
 fields:
   - EventID
-  - Hostname
-  - Username
-  - UserSid
-  - ProcessPid
+  - Hostname            # redundant
+  - SubjectUserSid
+  - SubjectUserName
+  - SubjectDomainName
+  - SubjectLogonId
+  - NewProcessId
   - ProcessId
-  - ThreadID
-  - ProcessName
+  - NewProcessName
+  - ProcessName         # redundant
   - NewProcessName      # redundant
   - Image               # redundant
+  - TokenElevationType
   - CommandLine
   - ProcessCommandLine  # redundant
   - ProcesssCommandLine # redundant
-  - ParentProcessPid
-  - ParentImage         # redundant
+  - TargetUserSid
+  - TargetUserName
+  - TargetDomainName
+  - TargetLogonId
   - ParentProcessName
+  - ParentImage         # redundant
   - MandatoryLabel
-  - TokenElevationType
-  - LogonId
 sample: |
   - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
     - <System>
