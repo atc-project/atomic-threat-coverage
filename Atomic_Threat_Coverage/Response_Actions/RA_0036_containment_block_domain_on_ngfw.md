@@ -4,7 +4,7 @@
 | Automation | None |
 | Author    | Daniil Yugoslavskiy                                                          |
 | Creation Date    | 31.01.2019                                            |
-| References     | None</ul>                                  |
+| References     | None                                  |
 | Description    | Block domain on NGFW.                                                               |
 | Linked Response Actions | None |
 | Linked Analytics |<ul><li>MS_ngfw</li></ul> |

@@ -14,7 +14,8 @@ HELP_MESSAGE = """Usage: python3 populate_markdown.py [OPTIONS]\n\n\n
         loggingpolicies_path=../loggingpolicies/
         triggering_path=../triggering/atomic-red-team/atomics/
         responseactions_path=../response_actions/
-        responseplaybooks_path=../response_playbooks/"""
+        responseplaybooks_path=../response_playbooks/
+        enrichments_path=../enrichments/"""
 
 def main(**kwargs):
 
@@ -24,6 +25,8 @@ def main(**kwargs):
     dr_list = glob.glob(kwargs['dr_path']+'*.yml')
     ra_list = glob.glob(kwargs['ra_path']+'*.yml')
     rp_list = glob.glob(kwargs['rp_path']+'*.yml')
+    en_list = glob.glob(kwargs['en_path']+'*.yml')
+
 
     for lp in lp_list:
         try:
@@ -63,8 +66,16 @@ def main(**kwargs):
             print(rp+" failed")
             pass
 
+    for en in en_list:
+        try:
+            yaml2markdown_jinja.yaml2markdown_jinja(en, 'EN')
+        except:
+            print(en+" failed")
+            pass
+
 if __name__ == '__main__':
-    opts, args = getopt.getopt(sys.argv[1:], "", ["detectionrules_path=", "dataneeded_path=", "loggingpolicies_path=", "triggering_path=", "responseactions_path=", "responseplaybooks_path=", "help"])
+    opts, args = getopt.getopt(sys.argv[1:], "", ["detectionrules_path=", "dataneeded_path=", "loggingpolicies_path=", 
+        "triggering_path=", "responseactions_path=", "responseplaybooks_path=", "enrichments_path", "help"])
     # complex check in case '--help' would be in some path
     if len(sys.argv) > 1 and '--help' in sys.argv[1] and len(sys.argv[1]) < 7:
         print(HELP_MESSAGE)
@@ -77,5 +88,6 @@ if __name__ == '__main__':
             'tg_path': opts_dict.get('--triggering_path', '../triggering/atomic-red-team/atomics/'),
             'ra_path': opts_dict.get('--responseactions_path', '../response_actions/'),
             'rp_path': opts_dict.get('--responseplaybooks_path', '../response_playbooks/'),
+            'en_path': opts_dict.get('--enrichments_path', '../enrichments/'),
         }
         main(**kwargs)

@@ -1,12 +1,12 @@
 | Title          | DN_0015_11_windows_sysmon_FileCreate                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | File create operations are logged when a file is created or overwritten. This event is useful for monitoring autostart locations, like the Startup folder, as well as temporary and download directories, which are common places malware drops during initial infection.                                                                                                |
+| Description    | File create operations are logged when a file is created or overwritten. This  event is useful for monitoring autostart locations, like the Startup folder,  as well as temporary and download directories, which are common places  malware drops during initial infection                                                                                                |
 | Logging Policy | <ul><li>[LP_0008_windows_sysmon_FileCreate](../Logging_Policies/LP_0008_windows_sysmon_FileCreate.md)</li></ul> |
 | References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90011](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90011)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-11.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-11.md)</li></ul>                                  |
-| Platform       | Windows    																																															  |
-| Type           | Windows Log        																																															  |
-| Channel        | Microsoft-Windows-Sysmon/Operational     																																															  |
-| Provider       | Microsoft-Windows-Sysmon    																																															  |
+| Platform       | Windows   |
+| Type           | Windows Log 		|
+| Channel        | Microsoft-Windows-Sysmon/Operational    |
+| Provider       | Microsoft-Windows-Sysmon   |
 | Fields         | <ul><li>EventID</li><li>Computer</li><li>UtcTime</li><li>ProcessGuid</li><li>ProcessId</li><li>Image</li><li>TargetFilename</li><li>CreationUtcTime</li></ul>                                               |
 
 
@@ -16,7 +16,7 @@
 
 ```
 - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
-- <System>
+  - <System>
     <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385F-C22A-43E0-BF4C-06F5698FFBD9}" /> 
     <EventID>11</EventID> 
     <Version>2</Version> 
@@ -32,7 +32,7 @@
     <Computer>atc-win-10.atc.local</Computer> 
     <Security UserID="S-1-5-18" /> 
   </System>
-- <EventData>
+  - <EventData>
     <Data Name="RuleName" /> 
     <Data Name="UtcTime">2019-01-30 15:08:51.287</Data> 
     <Data Name="ProcessGuid">{9683FBB1-9A3F-5C51-0000-0010EB030000}</Data> 
@@ -41,7 +41,7 @@
     <Data Name="TargetFilename">C:\Windows\PSEXESVC.exe</Data> 
     <Data Name="CreationUtcTime">2019-01-30 15:08:51.287</Data> 
   </EventData>
-  </Event>
+</Event>
 
 ```
 

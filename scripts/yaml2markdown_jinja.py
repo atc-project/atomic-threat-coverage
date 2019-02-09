@@ -163,6 +163,13 @@ def yaml2markdown_jinja(file, type):
       fields.update({'description':fields.get('description').strip()}) 
       content = template.render(fields)
 
+    elif type=="enrichment" or type=="EN":
+      template = env.get_template('markdown_enrichments_template.md.j2')
+      parent_title="Enrichments"
+
+      fields.update({'description':fields.get('description').strip()}) 
+      content = template.render(fields)
+
     elif type=="triggering" or type=="TG":
       pass
 

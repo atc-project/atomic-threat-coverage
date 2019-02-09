@@ -1,12 +1,12 @@
 | Title          | DN_0013_9_windows_sysmon_RawAccessRead                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | The RawAccessRead event detects when a process conducts reading operations from the drive using the \\.\ denotation.                                                                                                |
+| Description    | The RawAccessRead event detects when a process conducts reading operations  from the drive using the \\.\ denotation                                                                                                |
 | Logging Policy | <ul><li>[None](../Logging_Policies/None.md)</li></ul> |
 | References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90009](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90009)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-9.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-9.md)</li></ul>                                  |
-| Platform       | Windows    																																															  |
-| Type           | Windows Log        																																															  |
-| Channel        | Microsoft-Windows-Sysmon/Operational     																																															  |
-| Provider       | Microsoft-Windows-Sysmon    																																															  |
+| Platform       | Windows   |
+| Type           | Windows Log 		|
+| Channel        | Microsoft-Windows-Sysmon/Operational    |
+| Provider       | Microsoft-Windows-Sysmon   |
 | Fields         | <ul><li>EventID</li><li>Computer</li><li>UtcTime</li><li>ProcessGuid</li><li>ProcessId</li><li>Image</li><li>Device</li></ul>                                               |
 
 
@@ -16,7 +16,7 @@
 
 ```
 - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
-- <System>
+  - <System>
     <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385F-C22A-43E0-BF4C-06F5698FFBD9}" />
     <EventID>9</EventID>
     <Version>2</Version>
@@ -32,14 +32,14 @@
     <Computer>rfsH.lab.local</Computer>
     <Security UserID="S-1-5-18" />
   </System>
-- <EventData>
+  - <EventData>
     <Data Name="UtcTime">2018-03-22 20:32:22.332</Data>
     <Data Name="ProcessGuid">{A23EAE89-C65F-5AB2-0000-0010EB030000}</Data>
     <Data Name="ProcessId">4</Data>
     <Data Name="Image">System</Data>
     <Data Name="Device">\Device\HarddiskVolume2</Data>
   </EventData>
- </Event>
+</Event>
 
 ```
 
