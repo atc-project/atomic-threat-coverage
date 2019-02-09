@@ -3,10 +3,10 @@
 | Description    | {{ description }}                                                                                                |
 | Logging Policy | <ul>{% for policy in loggingpolicy %}<li>[{{ policy }}](../Logging_Policies/{{policy}}.md)</li>{% endfor %}</ul> |
 | References     | <ul>{% for ref in references %}<li>[{{ ref }}]({{ ref }})</li>{% endfor %}</ul>                                  |
-| Platform       | {{ platform }}    																																															  |
-| Type           | {{ type }}        																																															  |
-| Channel        | {{ channel }}     																																															  |
-| Provider       | {{ provider }}    																																															  |
+| Platform       | {{ platform }}   |
+| Type           | {{ type }} 		|
+| Channel        | {{ channel }}    |
+| Provider       | {{ provider }}   |
 | Fields         | <ul>{% for field in fields %}<li>{{ field }}</li>{% endfor %}</ul>                                               |
 
 {% if sample is defined and sample|length %}

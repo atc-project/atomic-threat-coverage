@@ -136,7 +136,9 @@ def yaml2confluence_jinja(file, type, url, mail, password):
       logging_policies_with_id = [] 
 
       for lp in logging_policies:
-        logging_policies_id = str(get_page_id(url, auth, space, lp))
+        if lp != "None":
+          logging_policies_id = str(get_page_id(url, auth, space, lp))
+        logging_policies_id = ""
         lp = (lp, logging_policies_id)
         logging_policies_with_id.append(lp)
 
@@ -234,6 +236,43 @@ def yaml2confluence_jinja(file, type, url, mail, password):
       stages = [ (stage_name.replace('_',' ').capitalize(), stage_list) for stage_name, stage_list in stages ]
       
       fields.update({'stages': stages})
+
+      fields.update({'description':fields.get('description').strip()}) 
+      content = template.render(fields)
+
+    elif type=="enrichment" or type=="EN":
+      template = env.get_template('confluence_enrichments_template.md.j2')
+      parent_title="Enrichments"
+      
+      data_needed = fields.get('data_needed')
+      if data_needed:
+        data_needed_with_id = []
+        for dn in data_needed:
+          data_needed_id = str(get_page_id(url, auth, space, dn))
+          dn = (dn, data_needed_id)
+          data_needed_with_id.append(dn)
+
+        fields.update({'data_needed':data_needed_with_id})
+
+      data_to_enrich = fields.get('data_to_enrich')
+      if data_to_enrich:
+        data_to_enrich_with_id = []
+        for de in data_to_enrich:
+          data_to_enrich_id = str(get_page_id(url, auth, space, de))
+          de = (de, data_to_enrich_id)
+          data_to_enrich_with_id.append(de)
+
+        fields.update({'data_to_enrich':data_to_enrich_with_id})
+
+      requirements = fields.get('requirements')
+      if requirements:
+        requirements_with_id = []
+        for req in requirements:
+          requirements_id = str(get_page_id(url, auth, space, req))
+          req = (req, requirements_id)
+          requirements_with_id.append(req)
+
+        fields.update({'requirements':requirements_with_id})
 
       fields.update({'description':fields.get('description').strip()}) 
       content = template.render(fields)

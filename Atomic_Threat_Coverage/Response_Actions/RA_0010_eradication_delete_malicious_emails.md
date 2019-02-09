@@ -4,7 +4,7 @@
 | Automation | None |
 | Author    | Daniil Yugoslavskiy                                                          |
 | Creation Date    | 31.01.2019                                            |
-| References     | None</ul>                                  |
+| References     | None                                  |
 | Description    | Delete malicious emails from Email Server and users' email boxes.                                                               |
 | Linked Response Actions | None |
 | Linked Analytics |<ul><li>MS_email_server</li></ul> |
