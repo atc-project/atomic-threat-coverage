@@ -1,8 +1,10 @@
 title: DN_0033_5140_network_share_object_was_accessed
 description: >
   Network share object (file or folder) was accessed
-loggingpolicy: LP_0030_windows_audit_file_share
-references: https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-5140.md
+loggingpolicy: 
+  - LP_0030_windows_audit_file_share
+references: 
+  - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-5140.md
 category: OS Logs
 platform: Windows
 type: Windows Log
