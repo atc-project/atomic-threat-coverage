@@ -12,10 +12,9 @@ channel: Security
 provider: Microsoft-Windows-Security-Auditing
 fields:
   - EventID
-  - ProcessID
-  - ThreadID
   - Computer
   - TargetUserName
+  - Hostname # redundant
   - TargetDomainName
   - TargetSid
   - SubjectUserSid

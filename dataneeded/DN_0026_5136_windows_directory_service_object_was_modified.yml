@@ -12,9 +12,8 @@ channel: Security
 provider: Microsoft-Windows-Security-Auditing
 fields:
   - EventID
-  - ProcessID
-  - ThreadID
   - Computer
+  - Hostname # redundant
   - OpCorrelationID
   - AppCorrelationID
   - SubjectUserSid

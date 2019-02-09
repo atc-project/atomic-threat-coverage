@@ -8,12 +8,13 @@ references:
   - https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-7.md
 category: OS Logs
 platform: Windows
-type: Windows Log
+type: Applications and Services Logs
 channel: Microsoft-Windows-Sysmon/Operational
 provider: Microsoft-Windows-Sysmon
 fields:
   - EventID
   - Computer
+  - Hostname # redundant
   - UtcTime
   - ProcessGuid
   - ProcessId
@@ -38,7 +39,7 @@ sample: |
       <Correlation />
       <Execution ProcessID="3216" ThreadID="3964" />
       <Channel>Microsoft-Windows-Sysmon/Operational</Channel>
-      <Computer>rfsH.lab.local</Computer>
+      <Computer>atc-win-10.atc.local</Computer>
       <Security UserID="S-1-5-18" />
     </System>
     - <EventData>

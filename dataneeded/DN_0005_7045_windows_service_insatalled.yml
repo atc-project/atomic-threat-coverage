@@ -12,8 +12,9 @@ channel: System
 provider: Service Control Manager
 fields:
   - EventID
+  - Hostname # redundant
+  - Computer
   - ProcessID
-  - ThreadID
   - ServiceName
   - ImagePath
   - ServiceFileName     # redundant, inconsistent
@@ -21,7 +22,6 @@ fields:
   - StartType
   - AccountName
   - UserSid
-  - Computer
 sample: |
   - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
     - <System>
