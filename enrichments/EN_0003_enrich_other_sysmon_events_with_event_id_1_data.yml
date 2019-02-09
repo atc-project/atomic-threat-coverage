@@ -12,7 +12,7 @@ data_to_enrich:
   - DN_0013_9_windows_sysmon_RawAccessRead
   - DN_0015_11_windows_sysmon_FileCreate
   - DN_0016_12_windows_sysmon_RegistryEvent
-  - DN_0016_13_windows_sysmon_RegistryEvent
+  - DN_0017_13_windows_sysmon_RegistryEvent
   - DN_0018_14_windows_sysmon_RegistryEvent
   - DN_0019_15_windows_sysmon_FileCreateStreamHash
   - DN_0020_17_windows_sysmon_PipeEvent
