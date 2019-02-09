@@ -1,8 +1,8 @@
 | Title          | DN_0005_7045_windows_service_insatalled                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | A service was installed in the system                                                                                                |
-| Logging Policy | <ul><li>[N](../Logging_Policies/N.md)</li><li>[o](../Logging_Policies/o.md)</li><li>[n](../Logging_Policies/n.md)</li><li>[e](../Logging_Policies/e.md)</li></ul> |
-| References     | <ul><li>[N](N)</li><li>[o](o)</li><li>[n](n)</li><li>[e](e)</li></ul>                                  |
+| Logging Policy | <ul><li>[None](../Logging_Policies/None.md)</li></ul> |
+| References     | <ul><li>[None](None)</li></ul>                                  |
 | Platform       | Windows   |
 | Type           | Windows Log 		|
 | Channel        | System    |
