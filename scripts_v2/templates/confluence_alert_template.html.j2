@@ -1,0 +1,179 @@
+<p class="auto-cursor-target"><br /></p>
+<ac:structured-macro ac:name="details" ac:schema-version="1" ac:macro-id="28b7d879-550c-4376-96ff-fdbdfddf710b">
+    <fab:placeholder-url>/wiki/plugins/servlet/confluence/placeholder/macro?definition=e2RldGFpbHN9&amp;locale=en_GB&amp;version=2</fab:placeholder-url>
+    <fab:display-type>BLOCK</fab:display-type>
+    <ac:rich-text-body>
+        <p class="auto-cursor-target"><br /></p>
+        <table class="wrapped confluenceTable">
+            <colgroup>
+                <col />
+                <col />
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th class="confluenceTh">Title</th>
+                    <td class="confluenceTd">{{ title }}<br /></td>
+                </tr>
+                <tr>
+                    <th class="confluenceTh">Description</th>
+                    <td class="confluenceTd">{{ description }}<br /></td>
+                </tr>
+{% if tactics is defined and tactics|length %}
+                <tr>
+                    <th class="confluenceTh">ATT&amp;CK Tactic</th>
+                    <td class="confluenceTd">
+                        {%- if tactics |length > 1 -%}<ul>{%endif%}
+                        {%- for tactic_name, tactic_id in tactics %}
+                            {%- if tactics |length > 1 -%}<li>{%endif%}<a href="https://attack.mitre.org/tactics/{{tactic_id}}">{{tactic_id}}: {{ tactic_name }}</a>{%- if tactics |length > 1 -%}</li>{%endif%}
+                        {%- endfor %}
+                        {%- if tactics |length > 1 -%}</ul>{%endif%}
+                        <br />
+                    </td>
+                </tr>
+{% endif %}
+{% if techniques is defined and techniques|length %}
+                <tr>
+                    <th class="confluenceTh">ATT&amp;CK Technique</th>
+                    <td class="confluenceTd">
+                        {%- if techniques |length > 1 -%}<ul>{%endif%}
+                        {%- for technique in techniques %}
+                            {%- if techniques |length > 1 -%}<li>{%endif%}<a href="https://attack.mitre.org/techniques/{{technique}}">{{ technique }}</a>{%- if techniques |length > 1 -%}</li>{%endif%}
+                        {%- endfor %}
+                        {%- if techniques |length > 1 -%}</ul>{%endif%}
+                        <br />
+                    </td>
+                </tr>
+{% endif %}
+{% if other_tags is defined and other_tags|length %}
+                <tr>
+                    <th class="confluenceTh">Tags</th>
+                    <td class="confluenceTd">
+                        {%- if other_tags |length > 1 -%}<ul>{%endif%}
+                        {%- for tag in other_tags %}
+                            {%- if other_tags |length > 1 -%}<li>{%endif%}{{ tag }}{%- if other_tags |length > 1 -%}</li>{%endif%}
+                        {%- endfor %}
+                        {%- if other_tags |length > 1 -%}</ul>{%endif%}
+                        <br />
+                    </td>
+                </tr>
+{% endif %}
+                <tr>
+                    <th class="confluenceTh">Data Needed</th>
+                    <td class="confluenceTd">
+                        {%- if data_needed |length > 1 -%}<ul>{%endif%}
+                        {%- for data_name, data_id in data_needed %}
+                            {%- if data_needed |length > 1 -%}<li>{%endif%}<a href="/wiki/spaces/SOC/pages/{{data_id}}">{{ data_name }}</a>{%- if data_needed |length > 1 -%}</li>{%endif%}
+                        {%- endfor %}
+                        {%- if data_needed |length > 1 -%}</ul>{%endif%}
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="confluenceTh">Trigger</th>
+                    <td class="confluenceTd">
+                        {%- if triggers |length > 1 -%}<ul>{%endif%}
+                        {%- for trigger_name, trigger_id in triggers %}
+                            {%- if triggers |length > 1 -%}<li>{%endif%}<a href="/wiki/spaces/SOC/pages/{{trigger_id}}">{{ trigger_name }}</a>{%- if triggers |length > 1 -%}</li>{%endif%}
+                        {%- endfor %}
+                        {%- if triggers |length > 1 -%}</ul>{%endif%}
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="confluenceTh">Severity Level</th>
+                    <td class="confluenceTd">{{ level }}<br /></td>
+                </tr>
+                <tr>
+                    <th class="confluenceTh">False Positives</th>
+                    <td class="confluenceTd">
+                        {%- if falsepositives |length > 1 -%}<ul>{%endif%}
+                        {%- for falsepositive in falsepositives %}
+                            {%- if falsepositives |length > 1 -%}<li>{%endif%}{{ falsepositive }}{%- if falsepositives |length > 1 -%}</li>{%endif%}
+                        {%- endfor %}
+                        {%- if falsepositives |length > 1 -%}</ul>{%endif%}
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="confluenceTh">Development Status</th>
+                    <td class="confluenceTd">{{ status }}<br /></td>
+                </tr>                
+                <tr>
+                    <th class="confluenceTh">References</th>
+                    <td class="confluenceTd">
+                        {%- if references |length > 1 -%}<ul>{%endif%}
+                        {%- for reference in references %}
+                            {%- if references |length > 1 -%}<li>{%endif%}<a href="{{ reference }}">{{ reference }}</a>{%- if references |length > 1 -%}</li>{%endif%}
+                        {%- endfor %}
+                        {%- if references |length > 1 -%}</ul>{%endif%}
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="confluenceTh">Author</th>
+                    <td class="confluenceTd">{{ author }}<br /></td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="auto-cursor-target"><br /></p>
+    </ac:rich-text-body>
+</ac:structured-macro>
+<p class="auto-cursor-target"><br /></p>
+{% if sigma_rule is defined and sigma_rule|length %}
+<h1>Detection Rules</h1>
+<pre><br/></pre>
+<ac:structured-macro ac:name="expand">
+    <ac:parameter ac:name="title">Sigma rule</ac:parameter>
+    <ac:rich-text-body>
+        <ac:structured-macro ac:name="code">
+            <ac:parameter ac:name="language">yml</ac:parameter>
+            <ac:plain-text-body>
+                <![CDATA[{{ sigma_rule }}]]>
+            </ac:plain-text-body>
+        </ac:structured-macro>
+    </ac:rich-text-body>
+</ac:structured-macro>
+{% else %}
+{% endif %}
+{% if esqs is defined and esqs|length %}
+<ac:structured-macro ac:name="expand">
+    <ac:parameter ac:name="title">Kibana query</ac:parameter>
+    <ac:rich-text-body>
+        <ac:structured-macro ac:name="code">
+            <ac:parameter ac:name="language">text</ac:parameter>
+            <ac:plain-text-body>
+                <![CDATA[{{ esqs }}]]>
+            </ac:plain-text-body>
+        </ac:structured-macro>
+    </ac:rich-text-body>
+</ac:structured-macro>
+{% else %}
+{% endif %}
+{% if xpackwatcher is defined and xpackwatcher|length %}
+<ac:structured-macro ac:name="expand">
+    <ac:parameter ac:name="title">X-Pack Watcher</ac:parameter>
+    <ac:rich-text-body>
+        <ac:structured-macro ac:name="code">
+            <ac:parameter ac:name="language">text</ac:parameter>
+            <ac:plain-text-body>
+                <![CDATA[{{ xpackwatcher }}]]>
+            </ac:plain-text-body>
+        </ac:structured-macro>
+    </ac:rich-text-body>
+</ac:structured-macro>
+{% else %}
+{% endif %}
+{% if graylog is defined and graylog|length %}
+<ac:structured-macro ac:name="expand">
+    <ac:parameter ac:name="title">Graylog</ac:parameter>
+    <ac:rich-text-body>
+        <ac:structured-macro ac:name="code">
+            <ac:parameter ac:name="language">text</ac:parameter>
+            <ac:plain-text-body>
+                <![CDATA[{{ graylog }}]]>
+            </ac:plain-text-body>
+        </ac:structured-macro>
+    </ac:rich-text-body>
+</ac:structured-macro>
+{% else %}
+{% endif %}
