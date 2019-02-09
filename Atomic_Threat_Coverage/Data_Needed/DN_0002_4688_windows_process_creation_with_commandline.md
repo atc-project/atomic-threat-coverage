@@ -7,7 +7,7 @@
 | Type           | Windows Log        																																															  |
 | Channel        | Security     																																															  |
 | Provider       | Microsoft-Windows-Security-Auditing    																																															  |
-| Fields         | <ul><li>EventID</li><li>Hostname</li><li>Username</li><li>UserSid</li><li>ProcessPid</li><li>ProcessId</li><li>ThreadID</li><li>ProcessName</li><li>NewProcessName</li><li>Image</li><li>CommandLine</li><li>ProcessCommandLine</li><li>ProcesssCommandLine</li><li>ParentProcessPid</li><li>ParentImage</li><li>ParentProcessName</li><li>MandatoryLabel</li><li>TokenElevationType</li><li>LogonId</li></ul>                                               |
+| Fields         | <ul><li>EventID</li><li>Hostname</li><li>Username</li><li>UserSid</li><li>ProcessPid</li><li>ProcessId</li><li>ThreadID</li><li>ProcessName</li><li>NewProcessName</li><li>Image</li><li>CommandLine</li><li>ProcessCommandLine</li><li>ParentProcessPid</li><li>ParentImage</li><li>ParentProcessName</li><li>MandatoryLabel</li><li>TokenElevationType</li><li>LogonId</li></ul>                                               |
 
 
 ## Log Samples
@@ -16,39 +16,40 @@
 
 ```
 - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
-- <System>
-    <Provider Name="Microsoft-Windows-Security-Auditing" Guid="{54849625-5478-4994-A5BA-3E3B0328C30D}" /> 
-    <EventID>4688</EventID> 
-    <Version>2</Version> 
-    <Level>0</Level> 
-    <Task>13312</Task> 
-    <Opcode>0</Opcode> 
-    <Keywords>0x8020000000000000</Keywords> 
-    <TimeCreated SystemTime="2015-11-12T02:24:52.377352500Z" /> 
-    <EventRecordID>2814</EventRecordID> 
-    <Correlation /> 
-    <Execution ProcessID="4" ThreadID="400" /> 
-    <Channel>Security</Channel> 
-    <Computer>WIN-GG82ULGC9GO.contoso.local</Computer> 
-    <Security /> 
-  </System>
-- <EventData>
-    <Data Name="SubjectUserSid">S-1-5-18</Data> 
-    <Data Name="SubjectUserName">WIN-GG82ULGC9GO$</Data> 
-    <Data Name="SubjectDomainName">CONTOSO</Data> 
-    <Data Name="SubjectLogonId">0x3e7</Data> 
-    <Data Name="NewProcessId">0x2bc</Data> 
-    <Data Name="NewProcessName">C:\\Windows\\System32\\rundll32.exe</Data> 
-    <Data Name="TokenElevationType">%%1938</Data> 
-    <Data Name="ProcessId">0xe74</Data> 
-    <Data Name="TargetUserSid">S-1-5-21-1377283216-344919071-3415362939-1104</Data> 
-    <Data Name="TargetUserName">dadmin</Data> 
-    <Data Name="TargetDomainName">CONTOSO</Data> 
-    <Data Name="TargetLogonId">0x4a5af0</Data> 
-    <Data Name="ParentProcessName">C:\\Windows\\explorer.exe</Data> 
-    <Data Name="MandatoryLabel">S-1-16-8192</Data> 
-  </EventData>
-</Event>
+  - <System>
+      <Provider Name="Microsoft-Windows-Security-Auditing" Guid="{54849625-5478-4994-A5BA-3E3B0328C30D}" /> 
+      <EventID>4688</EventID> 
+      <Version>2</Version> 
+      <Level>0</Level> 
+      <Task>13312</Task> 
+      <Opcode>0</Opcode> 
+      <Keywords>0x8020000000000000</Keywords> 
+      <TimeCreated SystemTime="2019-02-06T20:34:57.910980700Z" /> 
+      <EventRecordID>3542561</EventRecordID> 
+      <Correlation /> 
+      <Execution ProcessID="4" ThreadID="92" /> 
+      <Channel>Security</Channel> 
+      <Computer>atc-win-10.atc.local</Computer> 
+      <Security /> 
+    </System>
+  - <EventData>
+      <Data Name="SubjectUserSid">S-1-5-21-540864798-2899685673-3651185163-500</Data> 
+      <Data Name="SubjectUserName">user1</Data> 
+      <Data Name="SubjectDomainName">atc-win-10</Data> 
+      <Data Name="SubjectLogonId">0xcdd96</Data> 
+      <Data Name="NewProcessId">0x12d0</Data> 
+      <Data Name="NewProcessName">C:\Users\user1\Desktop\PSTools\PsExec64.exe</Data> 
+      <Data Name="TokenElevationType">%%1936</Data> 
+      <Data Name="ProcessId">0x21d4</Data> 
+      <Data Name="CommandLine">PsExec64.exe -i -s -d cmd</Data> 
+      <Data Name="TargetUserSid">S-1-0-0</Data> 
+      <Data Name="TargetUserName">-</Data> 
+      <Data Name="TargetDomainName">-</Data> 
+      <Data Name="TargetLogonId">0x0</Data> 
+      <Data Name="ParentProcessName">C:\Windows\System32\cmd.exe</Data> 
+      <Data Name="MandatoryLabel">S-1-16-12288</Data> 
+    </EventData>
+  </Event>
 
 ```
 

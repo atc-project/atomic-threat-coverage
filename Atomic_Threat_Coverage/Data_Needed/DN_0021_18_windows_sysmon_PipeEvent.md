@@ -1,7 +1,7 @@
 | Title          | DN_0021_18_windows_sysmon_PipeEvent                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | This event logs when a named pipe connection is made between a client and a server.                                                                                                |
-| Logging Policy | <ul><li>[None](../Logging_Policies/None.md)</li></ul> |
+| Logging Policy | <ul><li>[LP_0009_windows_sysmon_PipeEvent](../Logging_Policies/LP_0009_windows_sysmon_PipeEvent.md)</li></ul> |
 | References     | <ul><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-18.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-18.md)</li><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90018](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90018)</li></ul>                                  |
 | Platform       | Windows    																																															  |
 | Type           | Windows Log        																																															  |
@@ -29,7 +29,7 @@
       <Correlation /> 
       <Execution ProcessID="3172" ThreadID="4192" /> 
       <Channel>Microsoft-Windows-Sysmon/Operational</Channel> 
-      <Computer>tdl-win-10.tdl.local</Computer> 
+      <Computer>atc-win-10.atc.local</Computer> 
       <Security UserID="S-1-5-18" /> 
     </System>
   - <EventData>
@@ -37,7 +37,7 @@
       <Data Name="UtcTime">2019-02-05 13:37:34.455</Data> 
       <Data Name="ProcessGuid">{9683FBB1-8B5F-5C59-0000-0010EB030000}</Data> 
       <Data Name="ProcessId">4</Data> 
-      <Data Name="PipeName">\PSEXESVC-TDL-WIN-7-2728-stdin</Data> 
+      <Data Name="PipeName">\PSEXESVC-ATC-WIN-7-2728-stdin</Data> 
       <Data Name="Image">System</Data> 
     </EventData>
   </Event>
