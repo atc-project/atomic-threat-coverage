@@ -66,7 +66,7 @@ class DataNeeded:
         """
 
         if template_type not in ["markdown", "confluence"]:
-            raise Exception("Bad template_type. Available values:" + \
+            raise Exception("Bad template_type. Available values:" +
                             " [\"markdown\", \"confluence\"]")
 
         # Point to the templates directory
@@ -85,6 +85,10 @@ class DataNeeded:
             refs = self.dn_fields.get("references")
 
             self.dn_fields.update({'loggingpolicy': logging_policies})
+
+            self.dn_fields.update(
+                {'description': self.dn_fields.get('description').strip()}
+            )
 
             if isinstance(refs, str):
                 self.dn_fields.update({'references': [refs]})

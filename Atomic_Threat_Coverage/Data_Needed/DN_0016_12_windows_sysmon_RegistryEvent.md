@@ -1,7 +1,6 @@
 | Title          | DN_0016_12_windows_sysmon_RegistryEvent                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | Registry key and value create and delete operations map to this event type,  which can be useful for monitoring for changes to Registry autostart  locations, or specific malware registry modifications
-                                                                                                |
+| Description    | Registry key and value create and delete operations map to this event type,  which can be useful for monitoring for changes to Registry autostart  locations, or specific malware registry modifications                                                                                                |
 | Logging Policy | <ul><li>[None](../Logging_Policies/None.md)</li></ul> |
 | References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90012](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90012)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-12.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-12.md)</li></ul>                                  |
 | Platform       | Windows   |
