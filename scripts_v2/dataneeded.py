@@ -102,6 +102,9 @@ class DataNeeded:
 
             logging_policies = self.dn_fields.get("loggingpolicy")
 
+            if not logging_policies:
+                logging_policies = ["None", ]
+
             logging_policies_with_id = []
 
             for lp in logging_policies:

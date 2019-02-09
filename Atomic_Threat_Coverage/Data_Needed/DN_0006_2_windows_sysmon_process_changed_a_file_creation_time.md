@@ -1,7 +1,7 @@
 | Title          | DN_0006_2_windows_sysmon_process_changed_a_file_creation_time                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | Explicit modification of file creation timestamp by a process                                                                                                |
-| Logging Policy | <ul><li>[None](../Logging_Policies/None.md)</li></ul> |
+| Logging Policy | <ul><li>[None](</li></ul> |
 | References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90002](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90002)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-2.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-2.md)</li></ul>                                  |
 | Platform       | Windows   |
 | Type           | Applications and Services Logs 		|

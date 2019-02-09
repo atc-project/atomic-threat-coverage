@@ -1,7 +1,7 @@
 | Title          | DN_0013_9_windows_sysmon_RawAccessRead                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | The RawAccessRead event detects when a process conducts reading operations  from the drive using the \\.\ denotation                                                                                                |
-| Logging Policy | <ul><li>[None](../Logging_Policies/None.md)</li></ul> |
+| Logging Policy | <ul><li>[None](</li></ul> |
 | References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90009](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90009)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-9.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-9.md)</li></ul>                                  |
 | Platform       | Windows   |
 | Type           | Applications and Services Logs 		|

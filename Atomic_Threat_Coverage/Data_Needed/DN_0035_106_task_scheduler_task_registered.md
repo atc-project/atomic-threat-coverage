@@ -1,7 +1,7 @@
 | Title          | DN_0035_106_task_scheduler_task_registered                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | General Windows Task Registration                                                                                                |
-| Logging Policy | <ul><li>[None](../Logging_Policies/None.md)</li></ul> |
+| Logging Policy | <ul><li>[None](</li></ul> |
 | References     | <ul><li>[https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc774938(v=ws.10)](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc774938(v=ws.10))</li></ul>                                  |
 | Platform       | Windows   |
 | Type           | Applications and Services Logs 		|
