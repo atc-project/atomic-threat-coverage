@@ -3,7 +3,7 @@
 | Description          | Detection of processes spawned under SYSTEM by processes started with Network or Local service accounts                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1134](https://attack.mitre.org/tactics/T1134)</li></ul>                             |
-| Data Needed          | <ul><li>[[]](../Data_Needed/[].md)</li><li>[['DN_0003_1_windows_sysmon_process_creation']](../Data_Needed/['DN_0003_1_windows_sysmon_process_creation'].md)</li><li>[['DN_0003_1_windows_sysmon_process_creation']](../Data_Needed/['DN_0003_1_windows_sysmon_process_creation'].md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1134](../Triggering/T1134.md)</li></ul>  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>Todo</li></ul>                                                                  |

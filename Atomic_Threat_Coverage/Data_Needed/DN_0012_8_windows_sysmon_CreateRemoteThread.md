@@ -1,13 +1,14 @@
 | Title          | DN_0012_8_windows_sysmon_CreateRemoteThread                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | The CreateRemoteThread event detects when a process creates a thread in  another process                                                                                                |
+| Description    | The CreateRemoteThread event detects when a process creates a thread in  another process
+                                                                                                |
 | Logging Policy | <ul><li>[None](../Logging_Policies/None.md)</li></ul> |
 | References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90008](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90008)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-8.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-8.md)</li></ul>                                  |
 | Platform       | Windows   |
-| Type           | Windows Log 		|
+| Type           | Applications and Services Logs 		|
 | Channel        | Microsoft-Windows-Sysmon/Operational    |
 | Provider       | Microsoft-Windows-Sysmon   |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>UtcTime</li><li>SourceProcessGuid</li><li>SourceProcessId</li><li>SourceImage</li><li>TargetProcessGuid</li><li>TargetProcessId</li><li>TargetImage</li><li>NewThreadId</li><li>StartAddress</li><li>StartModule</li><li>StartFunction</li></ul>                                               |
+| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>SourceProcessGuid</li><li>SourceProcessId</li><li>SourceImage</li><li>TargetProcessGuid</li><li>TargetProcessId</li><li>TargetImage</li><li>NewThreadId</li><li>StartAddress</li><li>StartModule</li><li>StartFunction</li></ul>                                               |
 
 
 ## Log Samples
@@ -29,7 +30,7 @@
     <Correlation />
     <Execution ProcessID="2848" ThreadID="3520" />
     <Channel>Microsoft-Windows-Sysmon/Operational</Channel>
-    <Computer>rfsH.lab.local</Computer>
+    <Computer>atc-win-10.atc.local</Computer>
     <Security UserID="S-1-5-18" />
   </System>
   - <EventData>

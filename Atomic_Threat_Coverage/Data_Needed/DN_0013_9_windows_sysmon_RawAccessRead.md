@@ -1,13 +1,14 @@
 | Title          | DN_0013_9_windows_sysmon_RawAccessRead                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | The RawAccessRead event detects when a process conducts reading operations  from the drive using the \\.\ denotation                                                                                                |
+| Description    | The RawAccessRead event detects when a process conducts reading operations  from the drive using the \\.\ denotation
+                                                                                                |
 | Logging Policy | <ul><li>[None](../Logging_Policies/None.md)</li></ul> |
 | References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90009](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90009)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-9.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-9.md)</li></ul>                                  |
 | Platform       | Windows   |
-| Type           | Windows Log 		|
+| Type           | Applications and Services Logs 		|
 | Channel        | Microsoft-Windows-Sysmon/Operational    |
 | Provider       | Microsoft-Windows-Sysmon   |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>UtcTime</li><li>ProcessGuid</li><li>ProcessId</li><li>Image</li><li>Device</li></ul>                                               |
+| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>ProcessGuid</li><li>ProcessId</li><li>Image</li><li>Device</li></ul>                                               |
 
 
 ## Log Samples
@@ -29,7 +30,7 @@
     <Correlation />
     <Execution ProcessID="19572" ThreadID="21888" />
     <Channel>Microsoft-Windows-Sysmon/Operational</Channel>
-    <Computer>rfsH.lab.local</Computer>
+    <Computer>atc-win-10.atc.local</Computer>
     <Security UserID="S-1-5-18" />
   </System>
   - <EventData>

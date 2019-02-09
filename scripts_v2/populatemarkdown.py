@@ -21,7 +21,7 @@ import sys
 class PopulateMarkdown:
     """Class for populating markdown repo"""
 
-    def __init__(self, auth, lp=False, dn=False, dr=False, en=False, tg=False,
+    def __init__(self, lp=False, dn=False, dr=False, en=False, tg=False,
                  ra=False, rp=False, auto=False, art_dir=False, atc_dir=False,
                  lp_path=False, dn_path=False, dr_path=False, en_path=False,
                  tg_path=False, ra_path=False, rp_path=False):
@@ -72,7 +72,7 @@ class PopulateMarkdown:
         if tg:
             self.triggering(tg_path)
 
-    def triggering(self):
+    def triggering(self, tg_path):
         """Populate triggering"""
 
         if self.art_dir and self.atc_dir:

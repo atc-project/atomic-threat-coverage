@@ -1,13 +1,14 @@
 | Title          | DN_0015_11_windows_sysmon_FileCreate                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | File create operations are logged when a file is created or overwritten. This  event is useful for monitoring autostart locations, like the Startup folder,  as well as temporary and download directories, which are common places  malware drops during initial infection                                                                                                |
+| Description    | File create operations are logged when a file is created or overwritten. This  event is useful for monitoring autostart locations, like the Startup folder,  as well as temporary and download directories, which are common places  malware drops during initial infection
+                                                                                                |
 | Logging Policy | <ul><li>[LP_0008_windows_sysmon_FileCreate](../Logging_Policies/LP_0008_windows_sysmon_FileCreate.md)</li></ul> |
 | References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90011](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90011)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-11.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-11.md)</li></ul>                                  |
 | Platform       | Windows   |
-| Type           | Windows Log 		|
+| Type           | Applications and Services Logs 		|
 | Channel        | Microsoft-Windows-Sysmon/Operational    |
 | Provider       | Microsoft-Windows-Sysmon   |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>UtcTime</li><li>ProcessGuid</li><li>ProcessId</li><li>Image</li><li>TargetFilename</li><li>CreationUtcTime</li></ul>                                               |
+| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>ProcessGuid</li><li>ProcessId</li><li>Image</li><li>TargetFilename</li><li>CreationUtcTime</li></ul>                                               |
 
 
 ## Log Samples

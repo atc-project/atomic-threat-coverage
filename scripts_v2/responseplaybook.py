@@ -21,7 +21,7 @@ class ResponsePlaybook:
         # Init vars
         self.yaml_file = yaml_file
         # The name of the directory containing future markdown LogginPolicy
-        self.parent_title = "Response_Playbook"
+        self.parent_title = "Response_Playbooks"
 
         self.apipath = apipath
         self.auth = auth

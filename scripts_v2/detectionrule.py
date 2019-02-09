@@ -61,7 +61,8 @@ class DetectionRule:
 
         if template_type not in ["markdown", "confluence"]:
             raise Exception(
-                "Bad template_type. Available values: [\"markdown\", \"confluence\"]")
+                "Bad template_type. Available values: " +
+                "[\"markdown\", \"confluence\"]")
 
         # Point to the templates directory
         env = Environment(loader=FileSystemLoader('templates'))
@@ -69,7 +70,7 @@ class DetectionRule:
         # Get proper template
         if template_type == "markdown":
             template = env.get_template(
-                'markdown_detectionrule_template.md.j2')
+                'markdown_alert_template.md.j2')
 
             # Read raw sigma rule
             sigma_rule = ATCutils.read_rule_file(self.yaml_file)
@@ -101,12 +102,13 @@ class DetectionRule:
             # Data Needed
             data_needed = ATCutils.main_dn_calculatoin_func(self.yaml_file)
 
-            # if there is only 1 element in the list, print it as a string, without quotes
+            # if there is only 1 element in the list, print it as a string,
+            # without quotes
             # if isistance(data_needed, list) and len(data_needed) == 1:
             #     [data_needed] = data_needed
 
-            print("%s || Dataneeded: \n%s\n" %
-                  (self.fields.get("title"), data_needed))
+            # print("%s || Dataneeded: \n%s\n" %
+            #       (self.fields.get("title"), data_needed))
 
             self.fields.update({'data_needed': data_needed})
 
@@ -132,8 +134,8 @@ class DetectionRule:
 
             for trigger in technique:
                 # trigger = re.search('t\d{1,5}', trigger).group(0).upper()
-                path = '../triggering/atomic-red-team/atomics/' + trigger + '/' + \
-                    trigger + '.yaml'
+                path = '../triggering/atomic-red-team/atomics/' + trigger + \
+                       '/' + trigger + '.yaml'
 
                 try:
                     trigger_yaml = ATCutils.read_yaml_file(path)
@@ -219,7 +221,6 @@ class DetectionRule:
                         self.apipath, self.auth, self.space, trigger))
 
                     trigger = (trigger, trigger_id)
-                    print(trigger)
 
                     triggers.append(trigger)
                 except FileNotFoundError:

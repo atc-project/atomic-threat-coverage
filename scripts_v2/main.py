@@ -12,17 +12,18 @@ import getpass
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(description='Main function of ATC. ' + \
-        'This function is handling generating markdown files and/or ' + \
-        'populating confluence')
+    parser = argparse.ArgumentParser(description='Main function of ATC. ' +
+                                     'This function is handling generating' +
+                                     'markdown files and/or ' +
+                                     'populating confluence')
 
     # Mutually exclusive group for chosing the output of the script
     group = parser.add_mutually_exclusive_group(required=True)
 
     group.add_argument('-C', '--confluence', action='store_true',
-                        help='Set the output to be a Confluence')
+                       help='Set the output to be a Confluence')
     group.add_argument('-M', '--markdown', action='store_true',
-                        help='Set the output to be markdown files')
+                       help='Set the output to be markdown files')
 
     # Mutually exclusive group for chosing type of data
     group2 = parser.add_mutually_exclusive_group(required=True)
@@ -39,14 +40,18 @@ if __name__ == '__main__':
                         help='Build enrichment part')
     group2.add_argument('-TG', '--triggering', action='store_true',
                         help='Build triggering part')
-
+    group2.add_argument('-RA', '--responseactions', action='store_true',
+                        help='Build response action part')
+    group2.add_argument('-RP', '--responseplaybook', action='store_true',
+                        help='Build response playbook part')
 
     args = parser.parse_args()
 
     if args.markdown:
-        PopulateMarkdown(auto=args.auto, lp=args.loggingpolicy, 
-            dn=args.dataneeded, dr=args.detectionrule,
-            tg=args.triggering, en=args.enrichment)
+        PopulateMarkdown(auto=args.auto, lp=args.loggingpolicy,
+                         dn=args.dataneeded, dr=args.detectionrule,
+                         tg=args.triggering, en=args.enrichment,
+                         ra=args.responseactions, rp=args.responseplaybook)
 
     elif args.confluence:
         print("Provide confluence credentials\n")
@@ -56,7 +61,7 @@ if __name__ == '__main__':
 
         auth = HTTPBasicAuth(mail, password)
 
-        PopulateConfluence(auth=auth, auto=args.auto, lp=args.loggingpolicy, 
-            dn=args.dataneeded, dr=args.detectionrule,
-            tg=args.triggering, en=args.enrichment)
-        
+        PopulateConfluence(auth=auth, auto=args.auto, lp=args.loggingpolicy,
+                           dn=args.dataneeded, dr=args.detectionrule,
+                           tg=args.triggering, en=args.enrichment,
+                           ra=args.responseactions, rp=args.responseplaybook)

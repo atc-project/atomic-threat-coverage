@@ -227,7 +227,7 @@ class ATCutils:
 
     @staticmethod
     def sigma_lgsrc_fields_to_names(logsource_dict):
-        """Get sigma logsource dict and rename key/values into our model, 
+        """Get sigma logsource dict and rename key/values into our model,
         so we could use it for Data Needed calculation"""
 
         sigma_to_real_world_mapping = {
@@ -335,16 +335,16 @@ class ATCutils:
             # service = detectionrule['logsource']['service']
             # logsource.update([('product', product), ('service', service)])
 
-            """ then we need to collect all eventIDs 
+            """ then we need to collect all eventIDs
             and calculate Data Needed PER SELECTION
             """
 
             for _field in detectionrule['detection']:
                 dr_dn = {}
-              # if it is selection field
+                # if it is selection field
                 if str(_field) not in ["condition", "timeframe"]:
                     dr_dn.update(detectionrule['detection'][_field])
-                    """ we don't check if it's already here 
+                    """ we don't check if it's already here
                     we do that in the return statement
                     """
 
@@ -356,7 +356,8 @@ class ATCutils:
 
         else:
             """ if there are multiple logsources, let's work with them separately.
-            first grab general field from first yaml document (usually, commandline)
+            first grab general field from first yaml document
+            (usually, commandline)
             """
             common_fields = []
             final_list = []
@@ -386,7 +387,7 @@ class ATCutils:
 
                 logsource.update(_temp_list)
 
-                """ then we need to collect all eventIDs 
+                """ then we need to collect all eventIDs
                 and calculate Data Needed PER SELECTION
                 """
 
@@ -456,6 +457,7 @@ class ATCutils:
                 # divided into two lines due to char limit
                 list_of_DN_matched_by_fields_and_logsource\
                     .append(matched_dn)
+
         # and only in the last step we check EventID
         if dr_dn.get('EventID'):
             eventID = dr_dn.get('EventID')
@@ -463,7 +465,7 @@ class ATCutils:
             for dn in list_of_DN_matched_by_fields_and_logsource:
 
                 try:
-                    eventID_from_title = str(int(dn['title'].split("_")[-1]))
+                    eventID_from_title = str(int(dn['title'].split("_")[2]))
                 except ValueError:
                     eventID_from_title = "None"
 

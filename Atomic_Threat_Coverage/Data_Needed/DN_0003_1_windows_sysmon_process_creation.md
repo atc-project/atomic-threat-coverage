@@ -1,13 +1,14 @@
 | Title          | DN_0003_1_windows_sysmon_process_creation                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | Windows process creation log, including command line                                                                                                |
+| Description    | Windows process creation log, including command line
+                                                                                                |
 | Logging Policy | <ul><li>[LP_0003_windows_sysmon_process_creation](../Logging_Policies/LP_0003_windows_sysmon_process_creation.md)</li></ul> |
 | References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90001](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90001)</li></ul>                                  |
 | Platform       | Windows   |
-| Type           | Windows Log 		|
+| Type           | Applications and Services Logs 		|
 | Channel        | Microsoft-Windows-Sysmon/Operational    |
 | Provider       | Microsoft-Windows-Sysmon   |
-| Fields         | <ul><li>EventID</li><li>Hostname</li><li>Username</li><li>ProcessGuid</li><li>ProcessId</li><li>ThreadID</li><li>ProcessName</li><li>CommandLine</li><li>LogonGuid</li><li>LogonId</li><li>TerminalSessionid</li><li>IntegrityLevel</li><li>Imphash</li><li>Sha256hash</li><li>Sha1hash</li><li>Md5hash</li><li>Image</li><li>ParentImage</li><li>ParentProcessGuid</li><li>ParentProcessId</li><li>ParentProcessName</li><li>ParentCommandLine</li></ul>                                               |
+| Fields         | <ul><li>EventID</li><li>Hostname</li><li>Computer</li><li>UtcTime</li><li>Username</li><li>User</li><li>ProcessGuid</li><li>ProcessId</li><li>ProcessName</li><li>CommandLine</li><li>LogonGuid</li><li>LogonId</li><li>TerminalSessionid</li><li>IntegrityLevel</li><li>Hashes</li><li>Imphash</li><li>Sha256hash</li><li>Sha1hash</li><li>Md5hash</li><li>Image</li><li>ParentImage</li><li>ParentProcessGuid</li><li>ParentProcessId</li><li>ParentProcessName</li><li>ParentCommandLine</li></ul>                                               |
 
 
 ## Log Samples
@@ -29,7 +30,7 @@
     <Correlation />
     <Execution ProcessID="3216" ThreadID="3964" />
     <Channel>Microsoft-Windows-Sysmon/Operational</Channel>
-    <Computer>test.lab.local</Computer>
+    <Computer>atc-win-10.atc.local</Computer>
     <Security UserID="S-1-5-18" />
   </System>
   - <EventData>
