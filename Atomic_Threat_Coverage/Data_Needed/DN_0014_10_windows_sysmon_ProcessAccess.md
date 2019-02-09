@@ -4,7 +4,7 @@
 | Logging Policy | <ul><li>[LP_0007_windows_sysmon_ProcessAccess](../Logging_Policies/LP_0007_windows_sysmon_ProcessAccess.md)</li></ul> |
 | References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90010](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90010)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-10.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-10.md)</li></ul>                                  |
 | Platform       | Windows   |
-| Type           | Applications and Services Logs 		|
+| Type           | Applications and Services Logs 		| 
 | Channel        | Microsoft-Windows-Sysmon/Operational    |
 | Provider       | Microsoft-Windows-Sysmon   |
 | Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>SourceProcessGUID</li><li>SourceProcessId</li><li>SourceThreadId</li><li>SourceImage</li><li>TargetProcessGUID</li><li>TargetProcessId</li><li>TargetImage</li><li>GrantedAccess</li><li>CallTrace</li></ul>                                               |

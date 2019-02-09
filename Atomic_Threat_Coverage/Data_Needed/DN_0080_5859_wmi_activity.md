@@ -1,10 +1,10 @@
 | Title          | DN_0080_5859_wmi_activity                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | WMI Event which provide ability to catch Timer-based WMI Events and provide  usefult information for identification of suspicious WMI activity                                                                                                |
-| Logging Policy | <ul><li>[None](</li></ul> |
+| Logging Policy | <ul><li> Not existing </li></ul> |
 | References     | <ul><li>[https://www.darkoperator.com/blog/2017/10/14/basics-of-tracking-wmi-activity](https://www.darkoperator.com/blog/2017/10/14/basics-of-tracking-wmi-activity)</li><li>[https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/](https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/)</li></ul>                                  |
 | Platform       | Windows   |
-| Type           | Applications and Services Logs 		|
+| Type           | Applications and Services Logs 		| 
 | Channel        | Microsoft-Windows-WMI-Activity/Operational    |
 | Provider       | Microsoft-Windows-WMI-Activity   |
 | Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>NamespaceName</li><li>Query</li><li>ProcessID</li><li>Provider</li><li>queryid</li><li>PossibleCause</li><li>CorrelationActivityID</li></ul>                                               |

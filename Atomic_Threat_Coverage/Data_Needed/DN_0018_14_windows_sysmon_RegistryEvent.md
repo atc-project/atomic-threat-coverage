@@ -1,10 +1,10 @@
 | Title          | DN_0018_14_windows_sysmon_RegistryEvent                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | Registry key and value rename operations map to this event type, recording  the new name of the key or value that was renamed                                                                                                |
-| Logging Policy | <ul><li>[None](</li></ul> |
+| Logging Policy | <ul><li> Not existing </li></ul> |
 | References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90014](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90014)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-14.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-14.md)</li></ul>                                  |
 | Platform       | Windows   |
-| Type           | Applications and Services Logs 		|
+| Type           | Applications and Services Logs 		| 
 | Channel        | Microsoft-Windows-Sysmon/Operational    |
 | Provider       | Microsoft-Windows-Sysmon   |
 | Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>EventType</li><li>UtcTime</li><li>ProcessGuid</li><li>ProcessId</li><li>Image</li><li>TargetObject</li><li>NewName</li></ul>                                               |

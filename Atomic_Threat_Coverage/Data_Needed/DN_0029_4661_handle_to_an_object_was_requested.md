@@ -4,7 +4,7 @@
 | Logging Policy | <ul><li>[LP_0027_windows_audit_directory_service_access](../Logging_Policies/LP_0027_windows_audit_directory_service_access.md)</li><li>[LP_0028_windows_audit_sam](../Logging_Policies/LP_0028_windows_audit_sam.md)</li></ul> |
 | References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4794.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4794.md)</li></ul>                                  |
 | Platform       | Windows   |
-| Type           | Windows Log 		|
+| Type           | Windows Log 		| 
 | Channel        | Security    |
 | Provider       | Microsoft-Windows-Security-Auditing   |
 | Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>ObjectServer</li><li>ObjectType</li><li>ObjectName</li><li>HandleId</li><li>TransactionId</li><li>AccessList</li><li>AccessMask</li><li>PrivilegeList</li><li>Properties</li><li>RestrictedSidCount</li><li>ProcessId</li><li>ProcessName</li></ul>                                               |

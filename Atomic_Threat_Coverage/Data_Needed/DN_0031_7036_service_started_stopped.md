@@ -1,10 +1,10 @@
 | Title          | DN_0031_7036_service_started_stopped                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | Service entered the running/stopped state                                                                                                |
-| Logging Policy | <ul><li>[None](</li></ul> |
+| Logging Policy | <ul><li> Not existing </li></ul> |
 | References     | <ul><li>[http://www.eventid.net/display-eventid-7036-source-Service%20Control%20Manager-eventno-1529-phase-1.htm](http://www.eventid.net/display-eventid-7036-source-Service%20Control%20Manager-eventno-1529-phase-1.htm)</li></ul>                                  |
 | Platform       | Windows   |
-| Type           | Windows Log 		|
+| Type           | Windows Log 		| 
 | Channel        | System    |
 | Provider       | Service Control Manager   |
 | Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>param1</li><li>param2</li></ul>                                               |

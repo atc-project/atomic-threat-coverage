@@ -4,7 +4,7 @@
 | Logging Policy | <ul><li>[LP_0030_windows_audit_file_share](../Logging_Policies/LP_0030_windows_audit_file_share.md)</li></ul> |
 | References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-5140.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-5140.md)</li></ul>                                  |
 | Platform       | Windows   |
-| Type           | Windows Log 		|
+| Type           | Windows Log 		| 
 | Channel        | Security    |
 | Provider       | Microsoft-Windows-Security-Auditing   |
 | Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>ObjectType</li><li>IpAddress</li><li>IpPort</li><li>ShareName</li><li>ShareLocalPath</li><li>AccessMask</li><li>AccessList</li></ul>                                               |
