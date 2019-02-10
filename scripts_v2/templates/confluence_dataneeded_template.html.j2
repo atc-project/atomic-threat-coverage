@@ -34,7 +34,7 @@
                <td class="confluenceTd">
                   {%- if references |length > 1 -%}<ul>{%endif%}
                      {% for ref in references %}
-                     {%- if references |length > 1 -%}<li>{%endif%}<a href="{{ ref }}">{{ ref }}</a>{%- if references |length > 1 -%}</li>{%endif%}
+                     {%- if references |length > 1 -%}<li>{%endif%}<a href="{{ ref |e }}">{{ ref |e }}</a>{%- if references |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if references |length > 1 -%}</ul>{%endif%}
                   <br />

@@ -216,7 +216,6 @@ class DetectionRule:
 
             if self.fields.get('tags'):
                 for tag in self.fields.get('tags'):
-                    print(tag)
                     if tactic_re.match(tag):
                         if self.ta_mapping.get(tag):
                             tactic.append(self.ta_mapping.get(tag))
@@ -231,13 +230,10 @@ class DetectionRule:
                             technique_re.match(tag):
                         other_tags.append(tag)
 
-                print("Tactic", tactic)
                 if len(tactic):
                     self.fields.update({'tactics': tactic})
-                print("Technique", technique)
                 if len(technique):
                     self.fields.update({'techniques': technique})
-                print("other_tags", other_tags)
                 if len(other_tags):
                     self.fields.update({'other_tags': other_tags})
 
@@ -266,6 +262,10 @@ class DetectionRule:
             self.fields.update({'triggers': triggers})
 
         self.content = template.render(self.fields)
+        # Need to convert ampersand into HTML "save" format
+        # Otherwise confluence throws an error
+        # self.content = self.content.replace("&", "&amp;")
+        # Done in the template itself
 
         return True
 

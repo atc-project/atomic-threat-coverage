@@ -304,7 +304,7 @@ class ATCutils:
         """Desc"""
 
         if not isinstance(detection_dict, dict):
-            return "Not supported - not a dictionary type"
+            raise Exception("Not supported - not a dictionary type")
 
         dictionary_of_fields = {}
 
@@ -349,7 +349,8 @@ class ATCutils:
 
         logsource = {}
 
-        if not detectionrule.get('additions'):
+        # if not multiple logsources defined
+        if not detectionrule.get('action'):
 
             detectionrule['additions'] = [detectionrule]
 
@@ -389,7 +390,7 @@ class ATCutils:
 
             return list(set(final_list))
 
-        else:
+        elif detectionrule.get('action') == "global":
             """ if there are multiple logsources, let's work with them separately.
             first grab general field from first yaml document
             (usually, commandline)
@@ -397,13 +398,23 @@ class ATCutils:
             common_fields = []
             final_list = []
 
-            for key in detectionrule['detection'].keys():
+            # for key in detectionrule['detection'].keys():
+            #
+            #     if key in ["condition", "timeframe"]:
+            #         continue
 
-                if key in ["condition", "timeframe"]:
-                    continue
+            try:
+                common_fields += ATCutils.search_for_fields(
+                    detectionrule.get('detection')
+                )
+            except Exception as e:
+                pass
 
-                for fields in detectionrule['detection'][key]:
-                    common_fields += ATCutils.search_for_fields(fields)
+            # for fields in detectionrule['detection'][key]:
+            #     try:
+            #         common_fields += ATCutils.search_for_fields(fields)
+            #     except Exception as e:
+            #         pass
 
             # then let's calculate Data Needed per different logsources
             for addition in detectionrule['additions']:
@@ -432,11 +443,14 @@ class ATCutils:
                 # detection_fields += common_fields
                 for key in common_fields:
                     if not key in [*detection_fields]:
-                        detection_fields[key] = common_fields[key]
+                        detection_fields[key] = 'placeholder'
 
                 final_list += ATCutils.calculate_dn_for_dr(
                     dn_list, detection_fields, logsource
                 )
+        else:
+            print("ATC | Unsupported rule type")
+            return []
 
         return list(set(final_list))
 
@@ -488,10 +502,10 @@ class ATCutils:
             y = matched_dn
             x = proper_logsource
             # превозмогая трудности!
-            shared_items \
-                = {k: x[k] for k in x if k in y and x[k] == y[k]}
+            # shared_items \
+            #     = {k: x[k] for k in x if k in y and x[k] == y[k]}
             # bp()
-            if len(shared_items) == amount_of_fields_in_logsource:
+            if x.get('platform') == y.get('platform') and x.get('channel') == y.get('channel'):
 
                 # divided into two lines due to char limit
                 list_of_DN_matched_by_fields_and_logsource\
