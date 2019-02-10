@@ -76,16 +76,28 @@ def main(**kwargs):
             for tactic in tactics:
                 for technique in techniques:
                     for lp in logging_policies:
-                        lp['title'] = lp['title'].replace('\n','')
-                        result.append([tactic,technique, alert['title'],dn['category'],
-                                              dn['platform'],dn['type'],dn['channel'],dn['provider'],dn['title'], lp['title'], '',''])
+                        rps = [rp for rp in rp_list if technique in rp['tags'] or tactic in rp['tags']]
+                        if len(rps) < 1:
+                            rps = [{'title': '-'}]
+                        for rp in rps:
+                            ras_buf = []
+                            [ras_buf.extend(l) for l in rp.values() if isinstance(l, list)]
+                            ras = [ra for ra in ras_buf if ra.startswith('RA') ]
+                            if len(ras) < 1:
+                                ras = ['title']
+                            if len(rp) > 1:
+                                print('kek')
+                            for ra in ras:
+                                lp['title'] = lp['title'].replace('\n','')
+                                result.append([tactic,technique, alert['title'],dn['category'],
+                                                      dn['platform'],dn['type'],dn['channel'],dn['provider'],
+                                               dn['title'], lp['title'], '','', rp['title'], ra])
 
             #pivoting.append(pivot)
             for field in dn['fields']:
                 analytics.append([field] + pivot)
 
         for er in enrichments:
-            print(er.get('data_to_enrich', []))
             for dn in [dnn for dnn in dn_list if dnn['title'] in er.get('data_to_enrich', [])]:
                 pivot = [dn['category'], dn['platform'], dn['type'], dn['channel'], dn['provider'], dn['title'],
                          er['title'], ';'.join(er.get('requirements', []))]
@@ -95,7 +107,7 @@ def main(**kwargs):
                             lp['title'] = lp['title'].replace('\n', '')
                             result.append([tactic, technique, alert['title'],dn['category'],
                                            dn['platform'], dn['type'], dn['channel'],dn['provider'],dn['title'], lp['title'],
-                                           er['title'], ';'.join(er.get('requirements', []))])
+                                           er['title'], ';'.join(er.get('requirements', [])),'-','-'])
 
                 #pivoting.append(pivot)
                 for field in er['new_fields']:
@@ -104,7 +116,8 @@ def main(**kwargs):
         with open('../analytics.csv', 'w', newline='') as csvfile:
             alertswriter = csv.writer(csvfile, delimiter=',')  # maybe need some quoting
             alertswriter.writerow(['tactic','technique','alert','category', 'platform', 'type', 'channel', 'provider',
-                                   'data_needed','logging policy', 'enrichment', 'enrichment requirements'])
+                                   'data_needed','logging policy', 'enrichment',
+                                   'enrichment requirements','response playbook', 'response action'])
             for row in result:
                 alertswriter.writerow(row)
         with open('../pivoting.csv', 'w', newline='') as csvfile:
