@@ -50,10 +50,11 @@ class Triggering:
         if template_type == "markdown":
             raise Exception(
                 "Triggering should be copied from Atomic " +
-                "Red Team atomics folder instead!")
+                "Red Team atomics folder instead!"
+            )
         elif template_type == "confluence":
             template = env.get_template(
-                'confluence_trigger_template_simplified.html.j2')
+                'confluence_trigger_template.html.j2')
 
             base = os.path.basename(self.yaml_file)
             trigger = os.path.splitext(base)[0]

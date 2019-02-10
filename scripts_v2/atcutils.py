@@ -330,6 +330,36 @@ class ATCutils:
         return dictionary_of_fields
 
     @staticmethod
+    def search_for_fields2(detection_dict):
+        """Desc"""
+
+        if not isinstance(detection_dict, dict):
+            raise Exception("Not supported - not a dictionary type")
+
+        dictionary_of_fields = {}
+
+        for _field in detection_dict:
+            if str(_field) in ["condition", "timeframe"]:
+                continue
+
+            # list = ["1","3","4"]
+            # list["1"]
+            # "1" in list
+
+        
+            if isinstance(detection_dict[_field], list):
+                for val2 in detection_dict[_field]:
+                    if isinstance(val2, str) or isinstance(val2, int):
+                        break
+                    else:
+                        for val3 in val2:
+                            dictionary_of_fields[val3] = val2[val3]
+            else:
+                dictionary_of_fields[_field] = detection_dict[_field]
+
+        return dictionary_of_fields
+
+    @staticmethod
     def main_dn_calculatoin_func(dr_file_path):
         """you need to execute this function to calculate DN for DR file"""
 
@@ -378,15 +408,22 @@ class ATCutils:
             and calculate Data Needed PER SELECTION
             """
 
-            # for _field in detectionrule['detection']:
+            for _field in detectionrule['detection']:
             #     # if it is selection field
+                if str(_field) in ["condition", "timeframe"]:
+                    continue
 
-            detecion_fields = ATCutils\
-                .search_for_fields(detectionrule['detection'])
+                try:
+                    detecion_fields = ATCutils\
+                        .search_for_fields2(detectionrule['detection'][_field])
+                except Exception as e:
+                    detecion_fields = ATCutils\
+                        .search_for_fields(detectionrule['detection'])
 
-            final_list += ATCutils.calculate_dn_for_dr(
-                dn_list, detecion_fields, logsource
-            )
+
+                final_list += ATCutils.calculate_dn_for_dr(
+                    dn_list, detecion_fields, logsource
+                )
 
             return list(set(final_list))
 

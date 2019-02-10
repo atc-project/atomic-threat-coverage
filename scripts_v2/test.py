@@ -1,4 +1,4 @@
-from atcutils import ATCutils
+# from atcutils import ATCutils
 from requests.auth import HTTPBasicAuth
 import getpass
 from detectionrule import DetectionRule

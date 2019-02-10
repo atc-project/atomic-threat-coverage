@@ -59,11 +59,11 @@ class PopulateConfluence:
         if auto:
             self.logging_policy(lp_path)
             self.data_needed(dn_path)
-            self.detection_rule(dr_path)
+            self.enrichment(en_path)
             self.triggering(tg_path)
             self.response_action(ra_path)
             self.response_playbook(rp_path)
-            self.enrichment(en_path)
+            self.detection_rule(dr_path)
 
         if lp:
             self.logging_policy(lp_path)
@@ -110,7 +110,6 @@ class PopulateConfluence:
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
-
                 print("Done: ", tg.fields["attack_technique"])
             except Exception as err:
                 print(tg_file + " failed")
@@ -118,6 +117,7 @@ class PopulateConfluence:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
+
         print("Triggering populated!")
 
     def logging_policy(self, lp_path):
@@ -144,7 +144,7 @@ class PopulateConfluence:
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
-                print("Done: ", lp.fields['fields'])
+                print("Done: ", lp.fields['title'])
             except Exception as err:
                 print(lp_file + " failed")
                 print("Err message: %s" % err)
