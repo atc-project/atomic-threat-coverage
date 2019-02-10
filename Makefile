@@ -5,7 +5,7 @@ all2: setup setup_confluence setup_markdown push_to_confuence push_to_markdown c
 update: push_to_confuence create_analytics_csv push_to_markdown
 markdown: setup_markdown push_to_markdown
 markdown2: setup_markdown2 push_to_markdown2
-confluence: setup_confluence push_to_confuence
+confluence: setup_confluence push_to_confluence
 analytics: create_analytics_csv
 
 setup:

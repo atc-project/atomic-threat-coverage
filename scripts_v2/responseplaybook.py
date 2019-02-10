@@ -173,7 +173,7 @@ class ResponsePlaybook:
                         if self.apipath and self.auth and self.space:
                             stage_list.append(
                                 (action_title,
-                                 str(ATCutils.get_page_id(
+                                 str(ATCutils.confluence_get_page_id(
                                      self.apipath, self.auth,
                                      self.space, action_title)
                                      )
@@ -224,7 +224,11 @@ class ResponsePlaybook:
                       for stage_name, stage_list in stages]
 
             self.rp_parsed_file.update({'stages': stages})
-
+            self.rp_parsed_file.update(
+                {'workflow':
+                 self.rp_parsed_file.get('workflow') + '    \n\n.'
+                 }
+            )
             self.rp_parsed_file.update(
                 {'description': self.rp_parsed_file
                     .get('description').strip()}

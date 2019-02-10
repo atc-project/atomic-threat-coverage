@@ -69,20 +69,19 @@ class ResponseAction:
 
             if linked_ra:
                 linked_ra_with_id = []
+                for ra in linked_ra:
+                    if self.apipath and self.auth and self.space:
+                        linked_ra_id = str(ATCutils.confluence_get_page_id(
+                            self.apipath, self.auth, self.space, ra)
+                        )
+                    else:
+                        linked_ra_id = ""
+                    ra = (ra, linked_ra_id)
+                    linked_ra_with_id.append(ra)
 
-            for ra in linked_ra:
-                if self.apipath and self.auth and self.space:
-                    linked_ra_id = str(ATCutils.get_page_id(
-                        self.apipath, self.auth, self.space, ra)
-                    )
-                else:
-                    linked_ra_id = ""
-                ra = (ra, linked_ra_id)
-                linked_ra_with_id.append(ra)
-
-            self.ra_parsed_file.update(
-                {'linkedra': linked_ra_with_id}
-            )
+                self.ra_parsed_file.update(
+                    {'linkedra': linked_ra_with_id}
+                )
 
             self.ra_parsed_file.update(
                 {'description': self.ra_parsed_file.get('description').strip()}

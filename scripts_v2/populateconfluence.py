@@ -59,11 +59,11 @@ class PopulateConfluence:
         if auto:
             self.logging_policy(lp_path)
             self.data_needed(dn_path)
-            self.enrichment(en_path)
+            self.detection_rule(dr_path)
             self.triggering(tg_path)
             self.response_action(ra_path)
             self.response_playbook(rp_path)
-            self.detection_rule(dr_path)
+            self.enrichment(en_path)
 
         if lp:
             self.logging_policy(lp_path)
@@ -111,6 +111,7 @@ class PopulateConfluence:
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
 
+                print("Done: ", tg.fields["attack_technique"])
             except Exception as err:
                 print(tg_file + " failed")
                 print("Err message: %s" % err)
@@ -137,12 +138,13 @@ class PopulateConfluence:
                     "spacekey": self.space,
                     "parentid": str(ATCutils.confluence_get_page_id(
                         self.apipath, self.auth, self.space,
-                        "Logging+Policies")),
+                        "Logging Policies")),
                     "confluencecontent": lp.content,
                 }
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                print("Done: ", lp.fields['fields'])
             except Exception as err:
                 print(lp_file + " failed")
                 print("Err message: %s" % err)
@@ -169,13 +171,14 @@ class PopulateConfluence:
                     "title": dn.dn_fields["title"],
                     "spacekey": self.space,
                     "parentid": str(ATCutils.confluence_get_page_id(
-                        self.apipath, self.auth, self.space, "Data+Needed")),
+                        self.apipath, self.auth, self.space, "Data Needed")),
                     "confluencecontent": dn.content,
                 }
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
 
+                print("Done: ", dn.dn_fields['title'])
             except Exception as err:
                 print(dn_file + " failed")
                 print("Err message: %s" % err)
@@ -200,18 +203,17 @@ class PopulateConfluence:
                                    )
                 dr.render_template("confluence")
 
-                base = os.path.basename(dr_file)
-
                 confluence_data = {
-                    "title": base,
+                    "title": dr.fields['title'],
                     "spacekey": self.space,
                     "parentid": str(ATCutils.confluence_get_page_id(
                         self.apipath, self.auth, self.space,
-                        "Detection+Rules")), "confluencecontent": dr.content,
+                        "Detection Rules")), "confluencecontent": dr.content,
                 }
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                print("Done: ", dr.fields['title'])
             except Exception as err:
                 print(dr_file + " failed")
                 print("Err message: %s" % err)
@@ -235,18 +237,17 @@ class PopulateConfluence:
                                 auth=self.auth, space=self.space)
                 en.render_template("confluence")
 
-                base = os.path.basename(en_file)
-
                 confluence_data = {
-                    "title": base,
+                    "title": en.en_parsed_file['title'],
                     "spacekey": self.space,
                     "parentid": str(ATCutils.confluence_get_page_id(
                         self.apipath, self.auth, self.space,
-                        "Detection+Rules")), "confluencecontent": en.content,
+                        "Enrichments")), "confluencecontent": en.content,
                 }
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                print("Done: ", en.en_parsed_file['title'])
             except Exception as err:
                 print(en_file + " failed")
                 print("Err message: %s" % err)
@@ -270,24 +271,24 @@ class PopulateConfluence:
                                     auth=self.auth, space=self.space)
                 ra.render_template("confluence")
 
-                base = os.path.basename(ra_file)
-
                 confluence_data = {
-                    "title": base,
+                    "title": ra.ra_parsed_file['title'],
                     "spacekey": self.space,
                     "parentid": str(ATCutils.confluence_get_page_id(
                         self.apipath, self.auth, self.space,
-                        "Detection+Rules")), "confluencecontent": ra.content,
+                        "Response Actions")), "confluencecontent": ra.content,
                 }
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                print("Done: ", ra.ra_parsed_file['title'])
             except Exception as err:
                 print(ra_file + " failed")
                 print("Err message: %s" % err)
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
+
         print("Response Actions populated!")
 
     def response_playbook(self, rp_path):
@@ -301,9 +302,9 @@ class PopulateConfluence:
 
         for rp_file in rp_list:
             try:
-                ra = ResponsePlaybook(rp_file, apipath=self.apipath,
+                rp = ResponsePlaybook(rp_file, apipath=self.apipath,
                                       auth=self.auth, space=self.space)
-                ra.render_template("confluence")
+                rp.render_template("confluence")
 
                 base = os.path.basename(rp_file)
 
@@ -312,11 +313,13 @@ class PopulateConfluence:
                     "spacekey": self.space,
                     "parentid": str(ATCutils.confluence_get_page_id(
                         self.apipath, self.auth, self.space,
-                        "Detection+Rules")), "confluencecontent": ra.content,
+                        "Response Playbooks")),
+                    "confluencecontent": rp.content,
                 }
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                print("Done: ", rp.rp_parsed_file['title'])
             except Exception as err:
                 print(rp_file + " failed")
                 print("Err message: %s" % err)

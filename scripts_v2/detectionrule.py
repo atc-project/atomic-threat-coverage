@@ -8,9 +8,9 @@ import os
 import subprocess
 import re
 
-###############################################################################
-############################# Detection Rule ##################################
-###############################################################################
+# ########################################################################### #
+# ########################### Detection Rule ################################ #
+# ########################################################################### #
 
 
 class DetectionRule:
@@ -156,7 +156,7 @@ class DetectionRule:
 
         elif template_type == "confluence":
             template = env.get_template(
-                'confluence_detectionrule_template.html.j2')
+                'confluence_alert_template.html.j2')
 
             sigma_rule = ATCutils.read_rule_file(self.yaml_file)
             self.fields.update({'sigma_rule': sigma_rule})

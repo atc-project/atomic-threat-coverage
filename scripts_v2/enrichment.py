@@ -66,7 +66,7 @@ class Enrichment:
             if data_needed:
                 data_needed_with_id = []
                 for dn in data_needed:
-                    data_needed_id = str(ATCutils.get_page_id(
+                    data_needed_id = str(ATCutils.confluence_get_page_id(
                         self.apipath, self.auth, self.space, dn)
                     )
                     dn = (dn, data_needed_id)
@@ -80,7 +80,7 @@ class Enrichment:
             if data_to_enrich:
                 data_to_enrich_with_id = []
                 for de in data_to_enrich:
-                    data_to_enrich_id = str(ATCutils.get_page_id(
+                    data_to_enrich_id = str(ATCutils.confluence_get_page_id(
                         self.apipath, self.auth, self.space, de)
                     )
                     de = (de, data_to_enrich_id)
@@ -94,7 +94,7 @@ class Enrichment:
             if requirements:
                 requirements_with_id = []
                 for req in requirements:
-                    requirements_id = str(ATCutils.get_page_id(
+                    requirements_id = str(ATCutils.confluence_get_page_id(
                         self.apipath, self.auth, self.space, req)
                     )
                     req = (req, requirements_id)
