@@ -33,7 +33,7 @@ class DetectionRule:
             "attack.initial_access": ("Initial Access", "TA0001"),
             "attack.execution": ("Execution", "TA0002"),
             "attack.persistence": ("Persistence", "TA0003"),
-            "attack.privilege_escalation": ("Privilege Escalation", "TA0004"),
+            "attack.privelege_escalation": ("Privelege Escalation", "TA0004"),
             "attack.defense_evasion": ("Defense Evasion", "TA0005"),
             "attack.credential_access": ("Credential Access", "TA0006"),
             "attack.discovery": ("Discovery", "TA0007"),
@@ -92,9 +92,11 @@ class DetectionRule:
                 (query2, err) = p.communicate()
 
                 # Wait for date to terminate. Get return returncode
-                p_status = p.wait()
+                # p_status = p.wait()
+                p.wait()
 
-                """ Had to remove '-' due to problems with Jinja2 variable naming,
+                """ Had to remove '-' due to problems with
+                Jinja2 variable naming,
                 e.g es-qs throws error 'no es variable'
                 """
                 self.fields.update({query.replace("-", ""): str(query2)[2:-3]})
@@ -118,27 +120,40 @@ class DetectionRule:
             technique_re = re.compile(r'attack\.t\d{1,5}$')
             other_tags = []
 
-            for tag in self.fields.get('tags'):
-                if tactic_re.match(tag):
-                    tactic.append(self.ta_mapping.get(tag))
-                elif technique_re.match(tag):
-                    technique.append(tag.upper()[7:])
-                else:
-                    other_tags.append(tag)
+            if self.fields.get('tags'):
+                for tag in self.fields.get('tags'):
+                    if tactic_re.match(tag):
+                        if self.ta_mapping.get(tag):
+                            tactic.append(self.ta_mapping.get(tag))
+                        else:
+                            other_tags.append(tag)
+                    elif technique_re.match(tag):
+                        technique.append(tag.upper()[7:])
+                    else:
+                        other_tags.append(tag)
 
-            self.fields.update({'tactics': tactic})
-            self.fields.update({'techniques': technique})
-            self.fields.update({'other_tags': other_tags})
+                    if not tactic_re.match(tag) and not \
+                            technique_re.match(tag):
+                        other_tags.append(tag)
+
+                if len(tactic):
+                    self.fields.update({'tactics': tactic})
+                if len(technique):
+                    self.fields.update({'techniques': technique})
+                if len(other_tags):
+                    self.fields.update({'other_tags': other_tags})
 
             triggers = []
 
             for trigger in technique:
+                if trigger is "None":
+                    continue
                 # trigger = re.search('t\d{1,5}', trigger).group(0).upper()
-                path = '../triggering/atomic-red-team/atomics/' + trigger + \
-                       '/' + trigger + '.yaml'
+                # path = '../triggering/atomic-red-team/atomics/' + trigger + \
+                #        '/' + trigger + '.yaml'
 
                 try:
-                    trigger_yaml = ATCutils.read_yaml_file(path)
+                    # trigger_yaml = ATCutils.read_yaml_file(path)
 
                     triggers.append(trigger)
 
@@ -168,9 +183,12 @@ class DetectionRule:
                     output + " --ignore-backend-errors " + self.yaml_file
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
                 (query, err) = p.communicate()
-                ## Wait for date to terminate. Get return returncode ##
-                p_status = p.wait()
-                # have to remove '-' due to problems with Jinja2 variable naming,e.g es-qs throws error 'no es variable'
+                # Wait for date to terminate. Get return returncode ##
+                # p_status = p.wait()
+                p.wait()
+                # have to remove '-' due to problems with
+                # Jinja2 variable naming,e.g es-qs throws error
+                # 'no es variable'
                 self.fields.update({output.replace("-", ""): str(query)[2:-3]})
 
             # Data Needed
@@ -178,8 +196,9 @@ class DetectionRule:
 
             data_needed_with_id = []
 
-            if len(data_needed) == 1:
-                [data_needed] = data_needed
+            # Dan, please take a look at it, it took 5 minutes to debug at 4am
+            # if len(data_needed) == 1:
+            #     [data_needed] = data_needed
 
             for data in data_needed:
                 data_needed_id = str(ATCutils.confluence_get_page_id(
@@ -195,26 +214,44 @@ class DetectionRule:
             technique_re = re.compile(r'attack\.t\d{1,5}$')
             other_tags = []
 
-            for tag in self.fields.get('tags'):
-                if tactic_re.match(tag):
-                    tactic.append(self.ta_mapping.get(tag))
-                elif technique_re.match(tag):
-                    technique.append(tag.upper()[7:])
-                else:
-                    other_tags.append(tag)
+            if self.fields.get('tags'):
+                for tag in self.fields.get('tags'):
+                    print(tag)
+                    if tactic_re.match(tag):
+                        if self.ta_mapping.get(tag):
+                            tactic.append(self.ta_mapping.get(tag))
+                        else:
+                            other_tags.append(tag)
+                    elif technique_re.match(tag):
+                        technique.append(tag.upper()[7:])
+                    else:
+                        other_tags.append(tag)
 
-            self.fields.update({'tactics': tactic})
-            self.fields.update({'techniques': technique})
-            self.fields.update({'other_tags': other_tags})
+                    if not tactic_re.match(tag) and not \
+                            technique_re.match(tag):
+                        other_tags.append(tag)
+
+                print("Tactic", tactic)
+                if len(tactic):
+                    self.fields.update({'tactics': tactic})
+                print("Technique", technique)
+                if len(technique):
+                    self.fields.update({'techniques': technique})
+                print("other_tags", other_tags)
+                if len(other_tags):
+                    self.fields.update({'other_tags': other_tags})
+
             triggers = []
 
             for trigger in technique:
-                #trigger = re.search('t\d{1,5}', trigger).group(0).upper()
-                path = '../triggering/atomic-red-team/atomics/' + \
-                    trigger + '/' + trigger + '.yaml'
+                if trigger is "None":
+                    continue
+                # trigger = re.search('t\d{1,5}', trigger).group(0).upper()
+                # path = '../triggering/atomic-red-team/atomics/' + \
+                #     trigger + '/' + trigger + '.yaml'
 
                 try:
-                    trigger_yaml = ATCutils.read_yaml_file(path)
+                    # trigger_yaml = ATCutils.read_yaml_file(path)
                     # main(path,'triggering')
 
                     trigger_id = str(ATCutils.confluence_get_page_id(

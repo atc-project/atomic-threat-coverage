@@ -235,7 +235,16 @@ class ATCutils:
             'system': 'System',
             'product': 'platform',
             'windows': 'Windows',
-            'service': 'channel'
+            'service': 'channel',
+            'dns-server': 'DNS Server',
+            'taskscheduler': 'Microsoft-Windows-TaskScheduler/Operational',
+            'wmi': 'Microsoft-Windows-WMI-Activity/Operational',
+            'driver-framework':
+                'Microsoft-Windows-DriverFrameworks-UserMode/Operational',
+            'dhcp': 'Microsoft-Windows-DHCP-Server/Operational',
+            'powershell': 'Microsoft-Windows-PowerShell/Operational',
+            'ntlm': 'Microsoft-Windows-NTLM/Operational',
+            'dns-server-audit': 'Microsoft-Windows-DNS-Server/Audit',
         }
 
         sigma_keys = [*sigma_to_real_world_mapping]
@@ -291,6 +300,36 @@ class ATCutils:
         return proper_logsource_dict
 
     @staticmethod
+    def search_for_fields(detection_dict):
+        """Desc"""
+
+        if not isinstance(detection_dict, dict):
+            return "Not supported - not a dictionary type"
+
+        dictionary_of_fields = {}
+
+        for _field in detection_dict:
+            if str(_field) in ["condition", "timeframe"]:
+                continue
+
+            # list = ["1","3","4"]
+            # list["1"]
+            # "1" in list
+
+            for val in detection_dict[_field]:
+                if isinstance(detection_dict[_field], list):
+                    for val2 in detection_dict[_field]:
+                        if isinstance(val2, str) or isinstance(val2, int):
+                            break
+                        else:
+                            for val3 in val2:
+                                dictionary_of_fields[val3] = val2[val3]
+                else:
+                    dictionary_of_fields[val] = detection_dict[_field][val]
+
+        return dictionary_of_fields
+
+    @staticmethod
     def main_dn_calculatoin_func(dr_file_path):
         """you need to execute this function to calculate DN for DR file"""
 
@@ -338,18 +377,15 @@ class ATCutils:
             and calculate Data Needed PER SELECTION
             """
 
-            for _field in detectionrule['detection']:
-                dr_dn = {}
-                # if it is selection field
-                if str(_field) not in ["condition", "timeframe"]:
-                    dr_dn.update(detectionrule['detection'][_field])
-                    """ we don't check if it's already here
-                    we do that in the return statement
-                    """
+            # for _field in detectionrule['detection']:
+            #     # if it is selection field
 
-                    final_list += ATCutils.calculate_dn_for_dr(
-                        dn_list, dr_dn, logsource
-                    )
+            detecion_fields = ATCutils\
+                .search_for_fields(detectionrule['detection'])
+
+            final_list += ATCutils.calculate_dn_for_dr(
+                dn_list, detecion_fields, logsource
+            )
 
             return list(set(final_list))
 
@@ -367,7 +403,7 @@ class ATCutils:
                     continue
 
                 for fields in detectionrule['detection'][key]:
-                    common_fields.append(fields)
+                    common_fields += ATCutils.search_for_fields(fields)
 
             # then let's calculate Data Needed per different logsources
             for addition in detectionrule['additions']:
@@ -390,31 +426,35 @@ class ATCutils:
                 and calculate Data Needed PER SELECTION
                 """
 
-                for _field in addition['detection']:
-                    # if it is selection field
-                    dr_dn = {}
-                    if not _field in ["condition", "timeframe"]:
+                detection_fields = ATCutils\
+                    .search_for_fields(addition['detection'])
 
-                        dr_dn = addition['detection'][_field]
-                        # dr_dn.update(logsource)
+                # detection_fields += common_fields
+                for key in common_fields:
+                    if not key in [*detection_fields]:
+                        detection_fields[key] = common_fields[key]
 
-                        for field in common_fields:
-                            dr_dn.update([(field, 'placeholder')])
-
-                            final_list += ATCutils.calculate_dn_for_dr(
-                                dn_list, dr_dn, logsource
-                            )
+                final_list += ATCutils.calculate_dn_for_dr(
+                    dn_list, detection_fields, logsource
+                )
 
         return list(set(final_list))
 
     @staticmethod
-    def calculate_dn_for_dr(dn_list, dr_dn, logsource):
+    def calculate_dn_for_dr(dn_list, detection_fields, logsource):
         """Meaning of the fields:
 
         dn_list - list of dataneeded objects (all dataneeded!)
-        dr_dn - dictionary of detection fields from the logsource
+        detection_fields - list of strings (names of the fields)
         logsource - dictionary of logsource fields
 
+        detection_fields = {
+            "CommandLine": 4738,
+            "EventID": 1234
+        }
+
+        list_of_DR_fields = ["CommandLine", "EventID"]
+    
         """
 
         list_of_DN_matched_by_fields = []
@@ -423,7 +463,7 @@ class ATCutils:
 
         for dn in dn_list:
             # Will create a list of keys from Detection Rule fields dictionary
-            list_of_DR_fields = [*dr_dn]
+            list_of_DR_fields = [*detection_fields]
             list_of_DN_fields = dn['fields']
             amount_of_fields_in_DR = len(list_of_DR_fields)
 
@@ -458,8 +498,8 @@ class ATCutils:
                     .append(matched_dn)
 
         # and only in the last step we check EventID
-        if dr_dn.get('EventID'):
-            eventID = dr_dn.get('EventID')
+        if detection_fields.get('EventID'):
+            eventID = detection_fields.get('EventID')
 
             for dn in list_of_DN_matched_by_fields_and_logsource:
 
