@@ -4,7 +4,7 @@ import getopt
 from os import listdir
 from os.path import isfile, join
 
-from utils import read_yaml_file, main_dn_calculatoin_func
+from atcutils import ATCutils
 from yaml.scanner import ScannerError
 
 HELP_MESSAGE = """Usage: python3 yamls2csv.py [OPTIONS]\n\n\n
@@ -33,7 +33,7 @@ def load_yamls(path):
     result = []
     for yaml in yamls:
         try:
-            result.append(read_yaml_file(yaml))
+            result.append(ATCutils.read_yaml_file(yaml))
         except ScannerError:
             raise ScannerError('yaml is bad! %s' % yaml)
     return result, yamls
@@ -41,23 +41,26 @@ def load_yamls(path):
 def main(**kwargs):
     dn_list = load_yamls(kwargs['dn_path'])[0]
     lp_list = load_yamls(kwargs['lp_path'])[0]
+    ra_list = load_yamls(kwargs['ra_path'])[0]
+    rp_list = load_yamls(kwargs['rp_path'])[0]
+    enrichments_list = load_yamls(kwargs['er_path'])[0]
     alerts, path_to_alerts = load_yamls(kwargs['alerts_path'])
+    pivoting = []
+    analytics = []
     result = []
 
     # Iterate through alerts and pathes to them
     for alert, path in zip(alerts, path_to_alerts):
         threats = [tag for tag in alert['tags'] if tag.startswith('attack')]
-        # For every dataNeeded file we do that - for every DN_ID in alert check if its in DataNeeded Title
-        if alert.get('additions') is None:
-            alert['additions'] = [alert]
-        for addition in alert['additions']:
-            pass
+        tactics = [f'{ta_mapping[threat][1]}: {ta_mapping[threat][0]}'  for threat in threats if threat in ta_mapping.keys() ]
+        techniques = [threat for threat in threats if threat.startswith('attack.t')]
 
-
-        dn_titles = main_dn_calculatoin_func(path)
+        enrichments  = [er for er in enrichments_list if er['title'] in alert.get('enrichment', [])]
+        dn_titles = ATCutils.main_dn_calculatoin_func(path)
+        print(dn_titles)
         alert_dns = [data for data in dn_list if data['title'] in dn_titles]
-        logging_policies = []
 
+        logging_policies = []
 
         for dn in alert_dns:
             # If there are logging policies in DN that we havent added yet - add them
@@ -66,32 +69,63 @@ def main(**kwargs):
             if not isinstance(logging_policies, list) or len(logging_policies) == 0:
                 logging_policies = [{'title': "-", 'eventID': [-1, ]}]
 
-        # Name tactics and threats correctly
-        tactics = [f'{ta_mapping[threat][1]}: {ta_mapping[threat][0]}'  for threat in threats if threat in ta_mapping.keys() ]
-        techniques = [threat for threat in threats if threat.startswith('attack.t')]
 
-        # Append alert data to a result array
-        for tactic in tactics:
-            for technique in techniques:
-                for dn in alert_dns:
+        for dn in alert_dns:
+            pivot = [dn['category'], dn['platform'], dn['type'], dn['channel'], dn['provider'], dn['title'], '','']
+
+            for tactic in tactics:
+                for technique in techniques:
                     for lp in logging_policies:
-                        for field in dn['fields']:
-                            for eventID in lp['eventID']:
-                                eventID = str(eventID)
-                                result.append(
-                                    [tactic,technique, alert['title'],field,
-                                              dn['platform'],dn['type'],dn['channel'],eventID, lp['title'].replace('\n','')])
+                        rps = [rp for rp in rp_list if technique in rp['tags'] or tactic in rp['tags']]
+                        if len(rps) < 1:
+                            rps = [{'title': '-'}]
+                        for rp in rps:
+                            ras_buf = []
+                            [ras_buf.extend(l) for l in rp.values() if isinstance(l, list)]
+                            ras = [ra for ra in ras_buf if ra.startswith('RA') ]
+                            if len(ras) < 1:
+                                ras = ['title']
+                            if len(rp) > 1:
+                                print('kek')
+                            for ra in ras:
+                                lp['title'] = lp['title'].replace('\n','')
+                                result.append([tactic,technique, alert['title'],dn['category'],
+                                                      dn['platform'],dn['type'],dn['channel'],dn['provider'],
+                                               dn['title'], lp['title'], '','', rp['title'], ra])
 
-    # Write a result array as csv
-    with open('../analytics.csv', 'w', newline='') as csvfile:
-        alertswriter = csv.writer(csvfile, delimiter=',') # maybe need some quoting
-        alertswriter.writerow(['tactic','technique', 'title', 'field', 'dn_PLATFORM', 'dn_TYPE',
-                               'dn_channel', 'dn_event_id', 'logging_policy_title '])
-        for row in result:
-            alertswriter.writerow(row)
+            #pivoting.append(pivot)
+            for field in dn['fields']:
+                analytics.append([field] + pivot)
 
+        for er in enrichments:
+            for dn in [dnn for dnn in dn_list if dnn['title'] in er.get('data_to_enrich', [])]:
+                pivot = [dn['category'], dn['platform'], dn['type'], dn['channel'], dn['provider'], dn['title'],
+                         er['title'], ';'.join(er.get('requirements', []))]
+                for tactic in tactics:
+                    for technique in techniques:
+                        for lp in logging_policies:
+                            lp['title'] = lp['title'].replace('\n', '')
+                            result.append([tactic, technique, alert['title'],dn['category'],
+                                           dn['platform'], dn['type'], dn['channel'],dn['provider'],dn['title'], lp['title'],
+                                           er['title'], ';'.join(er.get('requirements', [])),'-','-'])
 
-    print('Export succesfull')
+                #pivoting.append(pivot)
+                for field in er['new_fields']:
+                    analytics.append([field] + pivot)
+
+        with open('../analytics.csv', 'w', newline='') as csvfile:
+            alertswriter = csv.writer(csvfile, delimiter=',')  # maybe need some quoting
+            alertswriter.writerow(['tactic','technique','alert','category', 'platform', 'type', 'channel', 'provider',
+                                   'data_needed','logging policy', 'enrichment',
+                                   'enrichment requirements','response playbook', 'response action'])
+            for row in result:
+                alertswriter.writerow(row)
+        with open('../pivoting.csv', 'w', newline='') as csvfile:
+            alertswriter = csv.writer(csvfile, delimiter=',')  # maybe need some quoting
+            alertswriter.writerow(['field', 'category', 'platform', 'type', 'channel', 'provider', 'data_needed',
+                                   'enrichment', 'enrichment requirements'])
+            for row in analytics:
+                alertswriter.writerow(row)
 
 
 
@@ -106,6 +140,9 @@ if __name__ == '__main__':
         kwargs = {
             'alerts_path': opts_dict.get('--alerts_path', '../detectionrules/'),
             'dn_path': opts_dict.get('--dataneeded_path', '../dataneeded/'),
-            'lp_path': opts_dict.get('--loggingpolicies_path', '../loggingpolicies/')
+            'lp_path': opts_dict.get('--loggingpolicies_path', '../loggingpolicies/'),
+            'er_path': opts_dict.get('--enrichments_path', '../enrichments/'),
+            'rp_path': opts_dict.get('--response playbooks path', '../response_playbooks/'),
+            'ra_path': opts_dict.get('--response actions path', '../response_actions/')
         }
         main(**kwargs)
