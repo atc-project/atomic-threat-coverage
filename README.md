@@ -335,6 +335,11 @@ More "production" way is to configure your private forks of [Sigma](https://gith
 
 Absolutely. We also have some Detection Rules which couldn't be automatically converted to SIEM/LM queries by Sigma. We still use Sigma format for such rules putting unsupported detection logic into "condition" section. Later SIEM/LM teams manually create rules based on description in this field. ATC is not only about automatic queries generation/documentation, there are still a lot of advantages for analysis. You wouldn't be able to utilise them without Detection Rules in Sigma format.
 
+## Contacts
+
+- Folow us on [Twitter](https://twitter.com/atc_project) for updates
+- Join discussions in [Slack](https://join.slack.com/t/atomicthreatcoverage/shared_invite/enQtNTMwNDUyMjY2MTE5LTk1ZTY4NTBhYjFjNjhmN2E3OTMwYzc4MTEyNTVlMTVjMDZmMDg2OWYzMWRhMmViMjM5YmM1MjhkOWFmYjE5MjA) or [Telegram](https://t.me/atomic_threat_coverage) 
+
 ## Authors
 
 - Daniil Yugoslavskiy, [@yugoslavskiy](https://github.com/yugoslavskiy)
@@ -352,7 +357,8 @@ Absolutely. We also have some Detection Rules which couldn't be automatically co
 ## TODO
 
 - [ ] Develop TheHive Case Templates generation based on Response Playbooks
-- [ ] Develop docker container for the tool
+- [ ] Develop specification for custom ATC data entities (Data Needed, Logging Policies etc)
+- [ ] Develop docker container for the project
 - [ ] Implement "Mitigation Systems" entity
 - [ ] Implement "Hardening Policies" entity
 - [ ] Implement consistent Data Model (fields naming)
