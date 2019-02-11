@@ -62,7 +62,7 @@ Everything starts from Sigma rule and ends up with human-readable wiki-style pag
 6. Maps **Response Playbooks** to **Response Actions** using existing mapping inside **Response Playbooks**
 7. Maps **Logging Policies** to **Data Needed** using existing mapping inside **Data Needed**
 8. Converts everything into Confluence and Markdown wiki-style pages using jinja templates (`scripts/templates`)
-9. Pushes all pages to local repo and Confluence server (according to configuration provided in `scripts/config.py`)
+9. Pushes all pages to local repo and Confluence server (according to configuration provided in `scripts/config.yml`)
 10. Creates `analytics.csv` and `pivoting.csv` files for simple analysis of existing data
 11. Creates `atc_export.json` — [ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/enterprise/) profile for visualisation of current detection abilities
 
@@ -173,17 +173,17 @@ This entity expected to explain SIEM/LM/Data Engineering teams and IT department
 
 <details>
   <summary>Enrichments yaml (click to expand)</summary>
-  <img src="images/enrichment.png" />
+  <img src="images/en_yaml_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/enrichment_confluence.png" />
+  <img src="images/en_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/enrichment_markdown.png" />
+  <img src="images/en_markdown_v1.png" />
 </details>
 
 <br>
@@ -223,17 +223,17 @@ This entity needed to test specific technical controls and detections. Detailed 
 
 <details>
   <summary>Response Action yaml (click to expand)</summary>
-  <img src="images/response_action.png" />
+  <img src="images/ra_yaml_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/response_action.png" />
+  <img src="images/ra_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/response_action.png" />
+  <img src="images/ra_markdown_v1.png" />
 </details>
 
 <br>
@@ -244,17 +244,17 @@ This entity used to build Response Playbooks.
 
 <details>
   <summary>Response Playbook yaml (click to expand)</summary>
-  <img src="images/response_playbook.png" />
+  <img src="images/rp_yaml_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/response_playbook.png" />
+  <img src="images/rp_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/response_playbook.png" />
+  <img src="images/rp_markdown_v1.png" />
 </details>
 
 <br>
@@ -266,6 +266,7 @@ This entity used as an Incident Response plan for specific threat.
 Atomic Threat Coverage generates [analytics.csv](analytics.csv) with list of all data mapped to each other for simple analysis. This file is suppose to answer these questions:
 
 - What data do I need to collect to detect specific threats?
+- What threats can I respond to with existing Response Playbooks?
 - Which Logging Policies do I need to implement to collect the data I need for detection of specific threats?
 - Which Logging Policies I can install everywhere (event volume low/medium) and which only on critical hosts (high/extremely high)?
 - Which data provided me most of the high fidelity alerts? (prioritisation of data collection implementation)
@@ -298,10 +299,10 @@ Atomic Threat Coverage generates [pivoting.csv](pivoting.csv) with list of all f
 5. Add Enrichments into `enrichments` directory (you can create new one using [template](enrichments/enrichment.yml.template))
 6. Add Response Actions into `response_actions` directory (you can create new one using [template](response_actions/respose_action.yml.template))
 7. Add Response Playbooks into `response_playbooks` directory (you can create new one using [template](response_playbooks/respose_playbook.yml.template))
-8. Configure your export settings using `scripts/config.py`
+8. Configure your export settings using `scripts/config.yml`
 9. Execute `make` in root directory of the repository
 
-You don't have to add anything to make it work in your environment, you can just configure export settings using `scripts/config.py` and utilise default dataset.
+You don't have to add anything to make it work in your environment, you can just configure export settings using `scripts/config.yml` and utilise default dataset.
 At the same time you can access [demo](https://atomicthreatcoverage.atlassian.net/wiki/spaces/DEMO/pages/10944874/win+susp+powershell+hidden+b64+cmd) of automatically generated knowledge base in Confluence to make yourself familiar with final result with default dataset.
 
 ## Current Status: Alpha
@@ -312,14 +313,14 @@ The project is currently in an alpha stage. It doesn't support all existing Sigm
 
 - Unix-like OS or [Windows Subsystem for Linux (WSL)](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (it required to execute `make`)
 - Python 3.7.1
-- [jinja2](https://pypi.org/project/Jinja2/) python library
+- [requests](https://pypi.org/project/requests/), [PyYAML](https://pypi.org/project/PyYAML/) and [jinja2](https://pypi.org/project/Jinja2/) Python libraries
 - [Render Markdown](https://marketplace.atlassian.com/apps/1212654/render-markdown) app for Confluence (free open source)
 
 ## FAQ
 
 #### Will my private analytics (Detection Rules, Logging Policies, etc) be transferred somewhere?
 
-No. Only to your confluence node, according to configuration provided in `scripts/config.py`. Atomic Threat Coverage doesn't connect to any other remote hosts, you can easily check it.
+No. Only to your confluence node, according to configuration provided in `scripts/config.yml`. Atomic Threat Coverage doesn't connect to any other remote hosts, you can easily check it.
 
 #### What do you mean saying "evangelize threat information sharing" then?
 
@@ -329,7 +330,7 @@ We mean that you will use community compatible formats for (at least) Detection 
 
 Simplest way is to follow [workflow](#workflow) chapter, just adding your rules into pre-configured folders for specific type of analytics.
 
-More "production" way is to configure your private forks of [Sigma](https://github.com/Neo23x0/sigma) and [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) projects as [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) of your Atomic Threat Coverage private fork. After that you only will need to configure path to them in `scripts/config.py`, this way Atomic Threat Coverage will start using it for knowledge base generation.
+More "production" way is to configure your private forks of [Sigma](https://github.com/Neo23x0/sigma) and [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) projects as [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) of your Atomic Threat Coverage private fork. After that you only will need to configure path to them in `scripts/config.yml`, this way Atomic Threat Coverage will start using it for knowledge base generation.
 
 #### Sigma doesn't support some of my Detection Rules. Does it still make sense to use Atomic Threat Coverage?
 
@@ -352,7 +353,7 @@ Absolutely. We also have some Detection Rules which couldn't be automatically co
 - Igor Ivanov, [@lctrcl](https://github.com/lctrcl) for collaboration on initial data types and mapping rules development
 - Andrey, [Polar_Letters](https://www.behance.net/Polar_Letters) for the logo
 - [Sigma](https://github.com/Neo23x0/sigma), [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team), [TheHive](https://blog.thehive-project.org) and [Elastic Common Schema](https://github.com/elastic/ecs) projects for inspiration
-- MITRE [ATT&CK](https://attack.mitre.org/) for making all of this possible
+- MITRE [ATT&CK](https://attack.mitre.org/) for making this possible
 
 ## TODO
 
