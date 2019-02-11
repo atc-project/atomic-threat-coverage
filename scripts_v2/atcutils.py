@@ -243,6 +243,7 @@ class ATCutils:
                 'Microsoft-Windows-DriverFrameworks-UserMode/Operational',
             'dhcp': 'Microsoft-Windows-DHCP-Server/Operational',
             'powershell': 'Microsoft-Windows-PowerShell/Operational',
+            'powershell-classic': 'Windows PowerShell',
             'ntlm': 'Microsoft-Windows-NTLM/Operational',
             'dns-server-audit': 'Microsoft-Windows-DNS-Server/Audit',
         }
@@ -317,7 +318,7 @@ class ATCutils:
             # "1" in list
 
             for val in detection_dict[_field]:
-                if isinstance(detection_dict[_field], list):
+                if isinstance(detection_dict[_field], list) and _field != 'EventID':
                     for val2 in detection_dict[_field]:
                         if isinstance(val2, str) or isinstance(val2, int):
                             break
@@ -347,7 +348,7 @@ class ATCutils:
             # "1" in list
 
         
-            if isinstance(detection_dict[_field], list):
+            if isinstance(detection_dict[_field], list) and _field != 'EventID':
                 for val2 in detection_dict[_field]:
                     if isinstance(val2, str) or isinstance(val2, int):
                         break
