@@ -51,6 +51,8 @@ def main(**kwargs):
 
     # Iterate through alerts and pathes to them
     for alert, path in zip(alerts, path_to_alerts):
+        if not isinstance(alert.get('tags'), list):
+            continue
         threats = [tag for tag in alert['tags'] if tag.startswith('attack')]
         tactics = [f'{ta_mapping[threat][1]}: {ta_mapping[threat][0]}'  for threat in threats if threat in ta_mapping.keys() ]
         techniques = [threat for threat in threats if threat.startswith('attack.t')]
