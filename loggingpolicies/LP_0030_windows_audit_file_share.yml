@@ -1,6 +1,6 @@
 title: LP_0030_windows_audit_file_share
 default: Not configured
-volume: High on file servers and domain controllers
+volume: High # on file servers and domain controllers
 description: >
   Audit File Share allows you to audit events related to file 
   shares: creation, deletion, modification, and access attempts. 

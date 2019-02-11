@@ -366,19 +366,21 @@ class ATCutils:
 
         dn_list = ATCutils.load_yamls('../dataneeded')
 
-        # detectionrule \
-        # = read_yaml_file("../detectionrules/sigma_win_susp_run_locations.yml")
         detectionrule = ATCutils.read_yaml_file(dr_file_path)
 
-        # no_extra_logsources = bool
+
 
         """For every DataNeeded file we do:
-        * for every DN_ID in detectionrule check if its in DataNeeded Title
-        * if there is no "additions" (extra log sources), make entire alert an
-        "addition" (to process it in the same way)
+            * if there is no "additions" (extra log sources), make entire alert an
+              "addition" (to process it in the same way)
+            * if Detection Rule has EventID field, we calculate Data Needed by
+              logsource and EventID
+            * if Detection Rule has no EventID field, we calculate Data Needed by
+              logsource and fields in detection secsion
         """
 
         logsource = {}
+        event_id_based_dr = False
 
         # if not multiple logsources defined
         if not detectionrule.get('action'):
@@ -401,13 +403,15 @@ class ATCutils:
 
             logsource.update(_temp_list)
 
-            # product = detectionrule['logsource']['product']
-            # service = detectionrule['logsource']['service']
-            # logsource.update([('product', product), ('service', service)])
-
-            """ then we need to collect all eventIDs
-            and calculate Data Needed PER SELECTION
+            """ then we calculate Data Needed PER SELECTION
             """
+
+            for _field in detectionrule['detection']:
+                for __field in detectionrule['detection'][_field]:
+                    if __field == 'EventID':
+                        event_id_based_dr = True
+                        break
+
 
             for _field in detectionrule['detection']:
             #     # if it is selection field
@@ -415,21 +419,25 @@ class ATCutils:
                     continue
 
                 try:
-                    detecion_fields = ATCutils\
+                    detection_fields = ATCutils\
                         .search_for_fields2(detectionrule['detection'][_field])
                 except Exception as e:
-                    detecion_fields = ATCutils\
+                    detection_fields = ATCutils\
                         .search_for_fields(detectionrule['detection'])
 
-
-                final_list += ATCutils.calculate_dn_for_dr(
-                    dn_list, detecion_fields, logsource
-                )
+                if event_id_based_dr:
+                    final_list += ATCutils.calculate_dn_for_eventid_based_dr(
+                        dn_list, detection_fields, logsource
+                    )
+                else:
+                    final_list += ATCutils.calculate_dn_for_non_eventid_based_dr(
+                        dn_list, detection_fields, logsource
+                    )
 
             return list(set(final_list))
 
         elif detectionrule.get('action') == "global":
-            """ if there are multiple logsources, let's work with them separately.
+            """ if there are multiple logsources, we handle with them separately.
             first grab general field from first yaml document
             (usually, commandline)
             """
@@ -448,6 +456,9 @@ class ATCutils:
             except Exception as e:
                 pass
 
+            if 'EventID' in common_fields:
+                event_id_based_dr = True
+
             # for fields in detectionrule['detection'][key]:
             #     try:
             #         common_fields += ATCutils.search_for_fields(fields)
@@ -455,7 +466,14 @@ class ATCutils:
             #         pass
 
             # then let's calculate Data Needed per different logsources
+
             for addition in detectionrule['additions']:
+
+                for _field in addition['detection']:
+                    for __field in addition['detection'][_field]:
+                        if __field == 'EventID':
+                            event_id_based_dr = True
+                            break
 
                 logsource_optional_fields = [
                     'category', 'product', 'service', 'definition',
@@ -483,9 +501,20 @@ class ATCutils:
                     if not key in [*detection_fields]:
                         detection_fields[key] = 'placeholder'
 
-                final_list += ATCutils.calculate_dn_for_dr(
-                    dn_list, detection_fields, logsource
-                )
+
+                if event_id_based_dr:
+                    final_list += ATCutils.calculate_dn_for_eventid_based_dr(
+                        dn_list, detection_fields, logsource
+                    )
+                else:
+                    final_list += ATCutils.calculate_dn_for_non_eventid_based_dr(
+                        dn_list, detection_fields, logsource
+                    )
+
+                #final_list += ATCutils.calculate_dn_for_dr(
+                #    dn_list, detection_fields, logsource
+                #)
+
         else:
             print("ATC | Unsupported rule type")
             return []
@@ -493,25 +522,95 @@ class ATCutils:
         return list(set(final_list))
 
     @staticmethod
-    def calculate_dn_for_dr(dn_list, detection_fields, logsource):
-        """Meaning of the fields:
+    def calculate_dn_for_eventid_based_dr(dn_list, detection_fields, logsource):
 
-        dn_list - list of dataneeded objects (all dataneeded!)
-        detection_fields - list of strings (names of the fields)
-        logsource - dictionary of logsource fields
+        """Meaning of the arguments:
+
+        dn_list - list of Data Needed objects (all dataneeded!)
+        detection_fields - dictionary of fields from detection section of
+                           Detection Rule
+        logsource - dictionary of logsource fields of Detection Rule
 
         detection_fields = {
             "CommandLine": 4738,
             "EventID": 1234
         }
 
-        list_of_DR_fields = ["CommandLine", "EventID"]
-    
+        logsource = {
+            "product": "windows",
+            "service": "sysmon"
+        }
+        """
+
+        list_of_DN_matched_by_logsource = []
+        list_of_DN_matched_by_logsource_and_eventid = []
+
+        # find all Data Needed which matched by logsource section from
+        # Detection Rule
+        for dn in dn_list:
+
+            proper_logsource \
+                = ATCutils.sigma_lgsrc_fields_to_names(logsource)
+
+            amount_of_fields_in_logsource = len([*proper_logsource])
+            y = dn
+            x = proper_logsource
+
+            if x.get('platform') == y.get('platform') and x.get('channel') == y.get('channel'):
+
+                # divided into two lines due to char limit
+                list_of_DN_matched_by_logsource.append(dn)
+
+        # find all Data Needed which matched by logsource section from
+        # Detection Rule AND EventID
+
+        #if detection_fields.get('EventID'):
+
+        eventID = detection_fields.get('EventID')
+
+        for dn in list_of_DN_matched_by_logsource:
+
+            try:
+                eventID_from_title = str(int(dn['title'].split("_")[2]))
+            except ValueError:
+                eventID_from_title = "None"
+
+            if isinstance(eventID, list):
+                for eid in eventID:
+                    if eventID_from_title == str(eid):
+                        list_of_DN_matched_by_logsource_and_eventid\
+                            .append(dn)
+            elif eventID_from_title == str(eventID):
+                # divided into two lines due to char limit
+                list_of_DN_matched_by_logsource_and_eventid.append(dn)
+
+        y = list_of_DN_matched_by_logsource_and_eventid
+        return [x['title'] for x in y if x.get('title')]
+
+
+    @staticmethod
+    def calculate_dn_for_non_eventid_based_dr(dn_list, detection_fields, logsource):
+        """Meaning of the arguments:
+
+        dn_list - list of Data Needed objects (all dataneeded!)
+        detection_fields - dictionary of fields from detection section of
+                           Detection Rule
+        logsource - dictionary of logsource fields of Detection Rule
+
+        detection_fields = {
+            "CommandLine": 4738,
+            "EventID": 1234
+        }
+
+        logsource = {
+            "product": "windows",
+            "service": "sysmon"
+        }
         """
 
         list_of_DN_matched_by_fields = []
         list_of_DN_matched_by_fields_and_logsource = []
-        list_of_DN_matched_by_fields_and_logsource_and_eventid = []
+        #list_of_DN_matched_by_fields_and_logsource_and_eventid = []
 
         for dn in dn_list:
             # Will create a list of keys from Detection Rule fields dictionary
@@ -533,8 +632,7 @@ class ATCutils:
             # if dn['title'] == matched_dn:
 
             # divided into two lines due to char limit
-            proper_logsource \
-                = ATCutils.sigma_lgsrc_fields_to_names(logsource)
+            proper_logsource = ATCutils.sigma_lgsrc_fields_to_names(logsource)
 
             amount_of_fields_in_logsource = len([*proper_logsource])
             y = matched_dn
@@ -550,28 +648,32 @@ class ATCutils:
                     .append(matched_dn)
 
         # and only in the last step we check EventID
-        if detection_fields.get('EventID'):
-            eventID = detection_fields.get('EventID')
+        # if detection_fields.get('EventID'):
+        #     eventID = detection_fields.get('EventID')
+				#
+        #     for dn in list_of_DN_matched_by_fields_and_logsource:
+				#
+        #         try:
+        #             eventID_from_title = str(int(dn['title'].split("_")[2]))
+        #         except ValueError:
+        #             eventID_from_title = "None"
+				#
+        #         if isinstance(eventID, list):
+        #             for eid in eventID:
+        #                 if eventID_from_title == str(eid):
+        #                     list_of_DN_matched_by_fields_and_logsource_and_eventid\
+        #                         .append(dn)
+        #         elif eventID_from_title == str(eventID):
+        #             # divided into two lines due to char limit
+        #             list_of_DN_matched_by_fields_and_logsource_and_eventid\
+        #                 .append(dn)
+				#
+        #     y = list_of_DN_matched_by_fields_and_logsource_and_eventid
+        #     return [x['title'] for x in y if x.get('title')]
 
-            for dn in list_of_DN_matched_by_fields_and_logsource:
-
-                try:
-                    eventID_from_title = str(int(dn['title'].split("_")[2]))
-                except ValueError:
-                    eventID_from_title = "None"
-
-                if eventID_from_title == str(eventID):
-
-                    # divided into two lines due to char limit
-                    list_of_DN_matched_by_fields_and_logsource_and_eventid\
-                        .append(dn)
-
-            y = list_of_DN_matched_by_fields_and_logsource_and_eventid
-            return [x['title'] for x in y if x.get('title')]
-
-        else:
-            y = list_of_DN_matched_by_fields_and_logsource
-            return [x['title'] for x in y if x.get('title')]
+        #else:
+        y = list_of_DN_matched_by_fields_and_logsource
+        return [x['title'] for x in y if x.get('title')]
 
     @staticmethod
     def write_file(path, content, options="w+"):
@@ -592,3 +694,6 @@ class ATCutils:
             return True
         else:
             return False
+
+lol = ATCutils.main_dn_calculatoin_func("../detectionrules/win_susp_svchost.yml")
+print(lol)
