@@ -2,7 +2,7 @@
 |:---------------|:--------------------------------------------------------------------------------|
 | Description    | Audit Detailed File Share allows you to audit attempts to  access files and folders on a shared folder.                                                               |
 | Default        | Not configured                                                                   |
-| Event Volume   | High on file servers and domain controllers                                                                    |
+| Event Volume   | High                                                                    |
 | EventID        | <ul><li>5145</li></ul>         |
 | References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/audit-detailed-file-share.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/audit-detailed-file-share.md)</li></ul> |
 

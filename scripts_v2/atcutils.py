@@ -26,7 +26,6 @@ class ATCutils:
 
     def __init__(self):
         """Init method"""
-
         pass
 
     @staticmethod
@@ -686,14 +685,12 @@ class ATCutils:
         return True
 
     @staticmethod
-    def populate_tg_markdown(art_dir='../triggering/atomic-red-team/',
-                             atc_dir='../Atomic_Threat_Coverage/'):
-        cmd = ('find \'%satomics/\' -name "T*.md" -exec' +
+    def populate_tg_markdown(art_dir='../'+read_yaml_file.__func__('config.yml').get('triggering_directory'),
+                            atc_dir='../'+read_yaml_file.__func__('config.yml').get('md_name_of_root_directory')):
+        cmd = ('find \'%s/\' -name "T*.md" -exec' +
                ' cp {} \'%sTriggering/\' \;') % (art_dir, atc_dir)
         if subprocess.run(cmd, shell=True, check=True).returncode == 0:
             return True
         else:
             return False
 
-lol = ATCutils.main_dn_calculatoin_func("../detectionrules/win_susp_svchost.yml")
-print(lol)

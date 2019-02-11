@@ -7,10 +7,13 @@ from jinja2 import Environment, FileSystemLoader
 import os
 import subprocess
 import re
+from pdb import set_trace as bp
 
 # ########################################################################### #
 # ########################### Detection Rule ################################ #
 # ########################################################################### #
+
+ATCconfig = ATCutils.read_yaml_file("config.yml")
 
 
 class DetectionRule:
@@ -84,7 +87,7 @@ class DetectionRule:
             # Convert sigma rule into queries (for instance, graylog query)
             for query in queries:
                 # prepare command to execute from shell
-                cmd = "../detectionrules/sigma/tools/sigmac -t " + \
+                cmd = ATCconfig.get('sigmac_path') + " -t " + \
                     query + " --ignore-backend-errors " + self.yaml_file
 
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
@@ -179,7 +182,7 @@ class DetectionRule:
             outputs = ["es-qs", "xpack-watcher", "graylog"]
 
             for output in outputs:
-                cmd = "../detectionrules/sigma/tools/sigmac -t " + \
+                cmd = ATCconfig.get('sigmac_path') + " -t " + \
                     output + " --ignore-backend-errors " + self.yaml_file
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
                 (query, err) = p.communicate()
@@ -269,9 +272,8 @@ class DetectionRule:
 
         return True
 
-    def save_markdown_file(self, atc_dir='../Atomic_Threat_Coverage/'):
+    def save_markdown_file(self, atc_dir='../' + ATCconfig.get('md_name_of_root_directory') + '/'):
         """Write content (md template filled with data) to a file"""
-
         base = os.path.basename(self.yaml_file)
         title = os.path.splitext(base)[0]
 

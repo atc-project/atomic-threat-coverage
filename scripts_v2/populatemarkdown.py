@@ -8,6 +8,7 @@ from loggingpolicy import LoggingPolicy
 from enrichment import Enrichment
 from responseaction import ResponseAction
 from responseplaybook import ResponsePlaybook
+from pdb import set_trace as bp
 
 # Import ATC Utils
 from atcutils import ATCutils
@@ -17,6 +18,7 @@ import glob
 import traceback
 import sys
 
+ATCconfig = ATCutils.read_yaml_file("config.yml")
 
 class PopulateMarkdown:
     """Class for populating markdown repo"""
@@ -32,14 +34,14 @@ class PopulateMarkdown:
             self.atc_dir = atc_dir
 
         else:
-            self.atc_dir = '../Atomic_Threat_Coverage/'
+            self.atc_dir = '../'+ATCconfig.get('md_name_of_root_directory')+'/'
 
         # Check if art_dir provided
         if art_dir:
             self.art_dir = art_dir
 
         else:
-            self.art_dir = '../triggering/atomic-red-team/'
+            self.art_dir = ATCconfig.get('triggering_directory')
 
         # Main logic
         if auto:
@@ -132,11 +134,11 @@ class PopulateMarkdown:
 
     def detection_rule(self, dr_path):
         """Desc"""
-
         if dr_path:
             dr_list = glob.glob(dr_path + '*.yml')
         else:
-            dr_list = glob.glob('../detectionrules/*.yml')
+            dr_list = glob.glob(ATCconfig.get('detection_rules_directory') +'/*.yml')
+
 
         for dr_file in dr_list:
             try:

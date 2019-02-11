@@ -1,0 +1,76 @@
+| Title                | PowerShell Credential Prompt                                                                                                                                                 |
+|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Description          | Detects PowerShell calling a credential prompt                                                                                                                                           |
+| ATT&amp;CK Tactic    | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
+| ATT&amp;CK Technique | <ul><li>[T1086](https://attack.mitre.org/tactics/T1086)</li></ul>                             |
+| Data Needed          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li></ul>                                                         |
+| Trigger              | <ul><li>[T1086](../Triggering/T1086.md)</li></ul>  |
+| Severity Level       | high                                                                                                                                                 |
+| False Positives      | <ul><li>Unknown</li></ul>                                                                  |
+| Development Status   | experimental                                                                                                                                                |
+| References           | <ul><li>[https://twitter.com/JohnLaTwC/status/850381440629981184](https://twitter.com/JohnLaTwC/status/850381440629981184)</li><li>[https://t.co/ezOTGy1a1G](https://t.co/ezOTGy1a1G)</li></ul>                                                          |
+| Author               | John Lambert (idea), Florian Roth (rule)                                                                                                                                                |
+
+
+## Detection Rules
+
+### Sigma rule
+
+```
+title: PowerShell Credential Prompt
+status: experimental
+description: Detects PowerShell calling a credential prompt
+references:
+    - https://twitter.com/JohnLaTwC/status/850381440629981184
+    - https://t.co/ezOTGy1a1G
+tags:
+    - attack.execution
+    - attack.credential_access    
+    - attack.t1086
+author: John Lambert (idea), Florian Roth (rule)
+logsource:
+    product: windows
+    service: powershell
+    definition: 'Script block logging must be enabled'
+detection:
+    selection:
+        EventID: 4104
+    keyword:
+        - 'PromptForCredential'
+    condition: all of them
+falsepositives:
+    - Unknown
+level: high
+
+```
+
+
+
+
+
+### Kibana query
+
+```
+(EventID:"4104" AND "PromptForCredential")
+```
+
+
+
+
+
+### X-Pack Watcher
+
+```
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/PowerShell-Credential-Prompt <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4104\\" AND \\"PromptForCredential\\")",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'PowerShell Credential Prompt\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+```
+
+
+
+
+
+### Graylog
+
+```
+(EventID:"4104" AND "PromptForCredential")
+```
+

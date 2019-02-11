@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1078](https://attack.mitre.org/tactics/T1078)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li></ul>                                                         |
-| Trigger              |  There is no Trigger for this technique yet.  |
+| Trigger              | <ul><li>[T1078](../Triggering/T1078.md)</li></ul>  |
 | Severity Level       | low                                                                                                                                                 |
 | False Positives      | <ul><li>Legitimate administrative activity</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |
@@ -29,7 +29,7 @@ author: juju4
 logsource:
     product: windows
     service: security
-    description: 'Requirements: Identifiable administrators usernames (pattern or special unique character. ex: "Admin-*"), internal policy mandating use only as secondary account'
+    definition: 'Requirements: Identifiable administrators usernames (pattern or special unique character. ex: "Admin-*"), internal policy mandating use only as secondary account'
 detection:
     selection:
         EventID: 4624
