@@ -115,19 +115,33 @@ def main(**kwargs):
                 for field in er['new_fields']:
                     analytics.append([field] + pivot)
 
-        with open('../analytics.csv', 'w', newline='') as csvfile:
-            alertswriter = csv.writer(csvfile, delimiter=',')  # maybe need some quoting
-            alertswriter.writerow(['tactic','technique','alert','category', 'platform', 'type', 'channel', 'provider',
-                                   'data_needed','logging policy', 'enrichment',
-                                   'enrichment requirements','response playbook', 'response action'])
-            for row in result:
-                alertswriter.writerow(row)
-        with open('../pivoting.csv', 'w', newline='') as csvfile:
-            alertswriter = csv.writer(csvfile, delimiter=',')  # maybe need some quoting
-            alertswriter.writerow(['field', 'category', 'platform', 'type', 'channel', 'provider', 'data_needed',
-                                   'enrichment', 'enrichment requirements'])
-            for row in analytics:
-                alertswriter.writerow(row)
+    analytics = []
+
+    for dn in dn_list:
+        pivot = [dn['category'], dn['platform'], dn['type'], dn['channel'], dn['provider'], dn['title'], '', '']
+        for field in dn['fields']:
+            analytics.append([field] + pivot)
+
+    for er in enrichments_list:
+        for dn in [dnn for dnn in dn_list if dnn['title'] in er.get('data_to_enrich', [])]:
+            pivot = [dn['category'], dn['platform'], dn['type'], dn['channel'], dn['provider'], dn['title'],
+                     er['title'], ';'.join(er.get('requirements', []))]
+            for field in er['new_fields']:
+                analytics.append([field] + pivot)
+
+    with open('../analytics.csv', 'w', newline='') as csvfile:
+        alertswriter = csv.writer(csvfile, delimiter=',')  # maybe need some quoting
+        alertswriter.writerow(['tactic','technique','alert','category', 'platform', 'type', 'channel', 'provider',
+                               'data_needed','logging policy', 'enrichment',
+                               'enrichment requirements','response playbook', 'response action'])
+        for row in result:
+            alertswriter.writerow(row)
+    with open('../pivoting.csv', 'w', newline='') as csvfile:
+        alertswriter = csv.writer(csvfile, delimiter=',')  # maybe need some quoting
+        alertswriter.writerow(['field', 'category', 'platform', 'type', 'channel', 'provider', 'data_needed',
+                               'enrichment', 'enrichment requirements'])
+        for row in analytics:
+            alertswriter.writerow(row)
 
 
 
