@@ -7,10 +7,16 @@ from os.path import isfile, join
 from atcutils import ATCutils
 from yaml.scanner import ScannerError
 
+try:
+    ATCconfig = ATCutils.read_yaml_file("config.yml")
+    dr_dir = ATCconfig.get('detection_rules_directory')
+except:
+    dr_dir = "../detectionrules/"
+
 HELP_MESSAGE = """Usage: python3 yamls2csv.py [OPTIONS]\n\n\n
-        Possible options are --alerts_path, --dataneeded_path --loggingpolicies path
+        Possible options are --detectionrules_path, --dataneeded_path --loggingpolicies path
         Defaults are 
-        alerts_path = ../alerts/;
+        detectionrules_path = """ + dr_dir + """;
         dataneeded_path = ../dataneeded/;
         loggingpolicies_path=../loggingpolicies/"""
 
@@ -43,8 +49,8 @@ def main(**kwargs):
     lp_list = load_yamls(kwargs['lp_path'])[0]
     ra_list = load_yamls(kwargs['ra_path'])[0]
     rp_list = load_yamls(kwargs['rp_path'])[0]
-    enrichments_list = load_yamls(kwargs['er_path'])[0]
-    alerts, path_to_alerts = load_yamls(kwargs['alerts_path'])
+    enrichments_list = load_yamls(kwargs['en_path'])[0]
+    alerts, path_to_alerts = load_yamls(kwargs['dr_path'])
     pivoting = []
     analytics = []
     result = []
@@ -146,7 +152,7 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    opts, args = getopt.getopt(sys.argv[1:], "", ["alerts_path=", "dataneeded_path=", "loggingpolicies_path=", "help"])
+    opts, args = getopt.getopt(sys.argv[1:], "", ["dr_path=", "dataneeded_path=", "loggingpolicies_path=", "help"])
 
     # complex check in case '--help' would be in some path
     if len(sys.argv) > 1 and '--help' in sys.argv[1] and len(sys.argv[1]) < 7:
@@ -154,10 +160,10 @@ if __name__ == '__main__':
     else:
         opts_dict = dict(opts)
         kwargs = {
-            'alerts_path': opts_dict.get('--alerts_path', '../detectionrules/'),
+            'dr_path': opts_dict.get('--detectionrules_path', dr_dir),
             'dn_path': opts_dict.get('--dataneeded_path', '../dataneeded/'),
             'lp_path': opts_dict.get('--loggingpolicies_path', '../loggingpolicies/'),
-            'er_path': opts_dict.get('--enrichments_path', '../enrichments/'),
+            'en_path': opts_dict.get('--enrichments_path', '../enrichments/'),
             'rp_path': opts_dict.get('--response playbooks path', '../response_playbooks/'),
             'ra_path': opts_dict.get('--response actions path', '../response_actions/')
         }
