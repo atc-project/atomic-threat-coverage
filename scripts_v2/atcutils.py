@@ -76,6 +76,23 @@ class ATCutils:
         return result
 
     @staticmethod
+    def get_attack_technique_name_by_id(attack_technique_id):
+        """Get ATT&CK Technique ID and return name of the technique
+            * Input: t0000 (sigma tag)
+            * Output: Name, string"""
+
+        id = attack_technique_id.replace('t', 'T')
+
+        with open('enterprise-attack.json') as f:
+          data = json.load(f)
+
+        for object in data["objects"]:
+          if object['type'] == "attack-pattern":
+            if object['external_references'][0]['external_id'] == id:
+              name = object['name']
+              return name
+
+    @staticmethod
     def confluence_get_page_id(apipath, auth, space, title):
         """Get confluence page ID based on title and space"""
 

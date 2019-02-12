@@ -63,6 +63,7 @@ def main(**kwargs):
         tactics = [f'{ta_mapping[threat][1]}: {ta_mapping[threat][0]}'  for threat in threats if threat in ta_mapping.keys() ]
         techniques = [threat for threat in threats if threat.startswith('attack.t')]
 
+
         enrichments  = [er for er in enrichments_list if er['title'] in alert.get('enrichment', [])]
         dn_titles = ATCutils.main_dn_calculatoin_func(path)
         print(dn_titles)
@@ -83,6 +84,8 @@ def main(**kwargs):
 
             for tactic in tactics:
                 for technique in techniques:
+                    technique_name = technique.replace('attack.t', 'T') + ': ' +\
+                        ATCutils.get_attack_technique_name_by_id(technique.replace('attack.', ''))
                     for lp in logging_policies:
                         rps = [rp for rp in rp_list if technique in rp['tags'] or tactic in rp['tags']]
                         if len(rps) < 1:
@@ -97,7 +100,7 @@ def main(**kwargs):
                                 print('kek')
                             for ra in ras:
                                 lp['title'] = lp['title'].replace('\n','')
-                                result.append([tactic,technique, alert['title'],dn['category'],
+                                result.append([tactic, technique_name, alert['title'],dn['category'],
                                                       dn['platform'],dn['type'],dn['channel'],dn['provider'],
                                                dn['title'], lp['title'], '','', rp['title'], ra])
 
@@ -111,9 +114,11 @@ def main(**kwargs):
                          er['title'], ';'.join(er.get('requirements', []))]
                 for tactic in tactics:
                     for technique in techniques:
+                        technique_name = technique.replace('attack.t', 'T') + ': ' + \
+                          ATCutils.get_attack_technique_name_by_id(technique.replace('attack.', ''))
                         for lp in logging_policies:
                             lp['title'] = lp['title'].replace('\n', '')
-                            result.append([tactic, technique, alert['title'],dn['category'],
+                            result.append([tactic, technique_name, alert['title'], dn['category'],
                                            dn['platform'], dn['type'], dn['channel'],dn['provider'],dn['title'], lp['title'],
                                            er['title'], ';'.join(er.get('requirements', [])),'-','-'])
 
@@ -137,7 +142,7 @@ def main(**kwargs):
 
     with open('../analytics.csv', 'w', newline='') as csvfile:
         alertswriter = csv.writer(csvfile, delimiter=',')  # maybe need some quoting
-        alertswriter.writerow(['tactic','technique','alert','category', 'platform', 'type', 'channel', 'provider',
+        alertswriter.writerow(['tactic','technique','detection_rule','category', 'platform', 'type', 'channel', 'provider',
                                'data_needed','logging policy', 'enrichment',
                                'enrichment requirements','response playbook', 'response action'])
         for row in result:
