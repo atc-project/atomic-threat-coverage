@@ -1,8 +1,16 @@
 from os import listdir
 from os.path import isfile, join
 import json
-from utils import read_yaml_file
+from atcutils import ATCutils
 from yaml.scanner import ScannerError
+
+
+try:
+    ATCconfig = ATCutils.read_yaml_file("config.yml")
+    dr_dir = ATCconfig.get('detection_rules_directory')
+except:
+    dr_dir = "../detectionrules/"
+
 
 NAVIGATOR_TEMPLATE = {
 	"name": "ATC-Export",
@@ -43,7 +51,7 @@ def load_yamls(path):
     result = []
     for yaml in yamls:
         try:
-            result.append(read_yaml_file(yaml))
+            result.append(ATCutils.read_yaml_file(yaml))
         except ScannerError:
             raise ScannerError('yaml is bad! %s' % yaml)
     return result, yamls
@@ -52,6 +60,8 @@ def load_yamls(path):
 def get_techniques(threats):
     techniques = []
     for threat in threats:
+        if not isinstance(threat.get('tags'), list):
+            continue
         tags = threat['tags']
 
         # iterate over all tags finding the one which starts from attack and has all digits after attack.t
@@ -74,17 +84,17 @@ def get_techniques(threats):
 
 
 def main():
-    dn_list = load_yamls('../detectionrules/')[0]
+    dn_list = load_yamls(dr_dir)[0]
     techniques = get_techniques(dn_list)
     NAVIGATOR_TEMPLATE['techniques'] = techniques
-    print(json.dumps(NAVIGATOR_TEMPLATE))
+    #print(json.dumps(NAVIGATOR_TEMPLATE))
 
 
 
 if __name__ == '__main__':
     main()
-    filename = 'ATC_Export.json'
-    with open(filename, 'w') as fp:
+    filename = 'atc_export.json'
+    with open('../' + filename, 'w') as fp:
         json.dump(NAVIGATOR_TEMPLATE, fp)
     print(f'Exported to {filename}')
 
