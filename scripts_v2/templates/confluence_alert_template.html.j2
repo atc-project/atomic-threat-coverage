@@ -34,8 +34,8 @@
                     <th class="confluenceTh">ATT&amp;CK Technique</th>
                     <td class="confluenceTd">
                         {%- if techniques |length > 1 -%}<ul>{%endif%}
-                        {%- for technique in techniques %}
-                            {%- if techniques |length > 1 -%}<li>{%endif%}<a href="https://attack.mitre.org/techniques/{{technique}}">{{ technique }}</a>{%- if techniques |length > 1 -%}</li>{%endif%}
+                        {%- for for technique_name, technique_id in techniques %}
+                            {%- if techniques |length > 1 -%}<li>{%endif%}<a href="https://attack.mitre.org/techniques/{{technique_id}}">{{ technique_id }}: {{technique_name}}</a>{%- if techniques |length > 1 -%}</li>{%endif%}
                         {%- endfor %}
                         {%- if techniques |length > 1 -%}</ul>{%endif%}
                         <br />

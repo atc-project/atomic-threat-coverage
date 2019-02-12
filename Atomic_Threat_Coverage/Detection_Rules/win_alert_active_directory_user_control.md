@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects scenario where if a user is assigned the SeEnableDelegationPrivilege right in Active Directory it would allow control of other AD user objects.                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1078](https://attack.mitre.org/tactics/T1078)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1078: Valid Accounts](https://attack.mitre.org/tactics/T1078)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[T1078](../Triggers/T1078.md)</li></ul>  |
+| Trigger              | <ul><li>[('Valid Accounts', 'T1078')](../Triggers/('Valid Accounts', 'T1078').md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
 | Development Status   |                                                                                                                                                 |

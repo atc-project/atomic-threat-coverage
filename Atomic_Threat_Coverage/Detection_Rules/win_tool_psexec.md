@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects PsExec service installation and execution events (service and Sysmon)                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1035](https://attack.mitre.org/tactics/T1035)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1035: Service Execution](https://attack.mitre.org/tactics/T1035)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[T1035](../Triggers/T1035.md)</li></ul>  |
+| Trigger              | <ul><li>[('Service Execution', 'T1035')](../Triggers/('Service Execution', 'T1035').md)</li></ul>  |
 | Severity Level       | low                                                                                                                                                 |
 | False Positives      | <ul><li>unknown</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

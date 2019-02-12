@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects writing data into NTFS alternate data streams from powershell. Needs Script Block Logging.                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1096](https://attack.mitre.org/tactics/T1096)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1096: NTFS File Attributes](https://attack.mitre.org/tactics/T1096)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li><li>[DN_0037_4103_windows_powershell_executing_pipeline](../Data_Needed/DN_0037_4103_windows_powershell_executing_pipeline.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1096](../Triggers/T1096.md)</li></ul>  |
+| Trigger              | <ul><li>[('NTFS File Attributes', 'T1096')](../Triggers/('NTFS File Attributes', 'T1096').md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>unknown</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

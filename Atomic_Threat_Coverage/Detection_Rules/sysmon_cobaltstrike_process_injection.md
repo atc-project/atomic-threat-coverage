@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects a possible remote threat creation with certain characteristics which are typical for Cobalt Strike beacons                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1055](https://attack.mitre.org/tactics/T1055)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1055: Process Injection](https://attack.mitre.org/tactics/T1055)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0012_8_windows_sysmon_CreateRemoteThread](../Data_Needed/DN_0012_8_windows_sysmon_CreateRemoteThread.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1055](../Triggers/T1055.md)</li></ul>  |
+| Trigger              | <ul><li>[('Process Injection', 'T1055')](../Triggers/('Process Injection', 'T1055').md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>unknown</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

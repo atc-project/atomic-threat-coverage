@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects the creation of scheduled tasks in user session                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privelege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1053](https://attack.mitre.org/tactics/T1053)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1053: Scheduled Task](https://attack.mitre.org/tactics/T1053)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1053](../Triggers/T1053.md)</li></ul>  |
+| Trigger              | <ul><li>[('Scheduled Task', 'T1053')](../Triggers/('Scheduled Task', 'T1053').md)</li></ul>  |
 | Severity Level       | low                                                                                                                                                 |
 | False Positives      | <ul><li>Administrative activity</li><li>Software installation</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

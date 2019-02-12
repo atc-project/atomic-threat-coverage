@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects service ticket requests using RC4 encryption type                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1208](https://attack.mitre.org/tactics/T1208)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1208: Kerberoasting](https://attack.mitre.org/tactics/T1208)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[T1208](../Triggers/T1208.md)</li></ul>  |
+| Trigger              | <ul><li>[('Kerberoasting', 'T1208')](../Triggers/('Kerberoasting', 'T1208').md)</li></ul>  |
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul><li>Service accounts used on legacy systems (e.g. NetApp)</li><li>Windows Domains with DFL 2003 and legacy systems</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

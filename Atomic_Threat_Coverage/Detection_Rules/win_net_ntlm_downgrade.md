@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects post exploitation using NetNTLM downgrade attacks                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1212](https://attack.mitre.org/tactics/T1212)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1212: Exploitation for Credential Access](https://attack.mitre.org/tactics/T1212)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1212](../Triggers/T1212.md)</li></ul>  |
+| Trigger              | <ul><li>[('Exploitation for Credential Access', 'T1212')](../Triggers/('Exploitation for Credential Access', 'T1212').md)</li></ul>  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
 | Development Status   |                                                                                                                                                 |

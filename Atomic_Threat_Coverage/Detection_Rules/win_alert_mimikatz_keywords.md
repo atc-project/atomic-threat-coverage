@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | This method detects mimikatz keywords in different Eventlogs (some of them only appear in older Mimikatz version that are however still used by different threat groups)                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1003](https://attack.mitre.org/tactics/T1003)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/tactics/T1003)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[T1003](../Triggers/T1003.md)</li></ul>  |
+| Trigger              | <ul><li>[('Credential Dumping', 'T1003')](../Triggers/('Credential Dumping', 'T1003').md)</li></ul>  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>Naughty administrators</li><li>Penetration test</li></ul>                                                                  |
 | Development Status   |                                                                                                                                                 |

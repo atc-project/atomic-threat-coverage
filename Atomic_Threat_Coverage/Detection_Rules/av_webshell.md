@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects a highly relevant Antivirus alert that reports a web shell                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1100](https://attack.mitre.org/tactics/T1100)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1100: Web Shell](https://attack.mitre.org/tactics/T1100)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[T1100](../Triggers/T1100.md)</li></ul>  |
+| Trigger              | <ul><li>[('Web Shell', 'T1100')](../Triggers/('Web Shell', 'T1100').md)</li></ul>  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>Unlikely</li></ul>                                                                  |
 | Development Status   |                                                                                                                                                 |
