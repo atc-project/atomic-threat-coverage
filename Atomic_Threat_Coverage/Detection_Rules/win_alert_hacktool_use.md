@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1087](https://attack.mitre.org/tactics/T1087)</li><li>[T1075](https://attack.mitre.org/tactics/T1075)</li><li>[T1114](https://attack.mitre.org/tactics/T1114)</li><li>[T1059](https://attack.mitre.org/tactics/T1059)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1087](../Triggering/T1087.md)</li><li>[T1075](../Triggering/T1075.md)</li><li>[T1114](../Triggering/T1114.md)</li><li>[T1059](../Triggering/T1059.md)</li></ul>  |
+| Trigger              | <ul><li>[T1087](../Triggers/T1087.md)</li><li>[T1075](../Triggers/T1075.md)</li><li>[T1114](../Triggers/T1114.md)</li><li>[T1059](../Triggers/T1059.md)</li></ul>  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>Unlikely</li></ul>                                                                  |
 | Development Status   |                                                                                                                                                 |

@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1098](https://attack.mitre.org/tactics/T1098)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0027_4738_user_account_was_changed](../Data_Needed/DN_0027_4738_user_account_was_changed.md)</li><li>[DN_0026_5136_windows_directory_service_object_was_modified](../Data_Needed/DN_0026_5136_windows_directory_service_object_was_modified.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1098](../Triggering/T1098.md)</li></ul>  |
+| Trigger              | <ul><li>[T1098](../Triggers/T1098.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
 | Development Status   |                                                                                                                                                 |

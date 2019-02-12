@@ -38,8 +38,8 @@ if __name__ == '__main__':
                         help='Build detection rule part')
     group2.add_argument('-EN', '--enrichment', action='store_true',
                         help='Build enrichment part')
-    group2.add_argument('-TG', '--triggering', action='store_true',
-                        help='Build triggering part')
+    group2.add_argument('-TG', '--triggers', action='store_true',
+                        help='Build triggers part')
     group2.add_argument('-RA', '--responseactions', action='store_true',
                         help='Build response action part')
     group2.add_argument('-RP', '--responseplaybook', action='store_true',
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     if args.markdown:
         PopulateMarkdown(auto=args.auto, lp=args.loggingpolicy,
                          dn=args.dataneeded, dr=args.detectionrule,
-                         tg=args.triggering, en=args.enrichment,
+                         tg=args.triggers, en=args.enrichment,
                          ra=args.responseactions, rp=args.responseplaybook)
 
     elif args.confluence:
@@ -63,5 +63,5 @@ if __name__ == '__main__':
 
         PopulateConfluence(auth=auth, auto=args.auto, lp=args.loggingpolicy,
                            dn=args.dataneeded, dr=args.detectionrule,
-                           tg=args.triggering, en=args.enrichment,
+                           tg=args.triggers, en=args.enrichment,
                            ra=args.responseactions, rp=args.responseplaybook)

@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1088](https://attack.mitre.org/tactics/T1088)</li><li>[T1191](https://attack.mitre.org/tactics/T1191)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1088](../Triggering/T1088.md)</li><li>[T1191](../Triggering/T1191.md)</li></ul>  |
+| Trigger              | <ul><li>[T1088](../Triggers/T1088.md)</li><li>[T1191](../Triggers/T1191.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Legitimate CMSTP use (unlikely in modern enterprise environments)</li></ul>                                                                  |
 | Development Status   | stable                                                                                                                                                |
@@ -61,7 +61,7 @@ level: high
 ### Kibana query
 
 ```
-(EventID:"1" AND ParentCommandLine:"*\\\\DllHost.exe" AND ParentCommandLine:("*\\\\\\{3E5FC7F9\\-9A51\\-4367\\-9063\\-A120244FBEC7\\}" "*\\\\\\{3E000D72\\-A845\\-4CD9\\-BD83\\-80C07C3B881F\\}"))
+(EventID:"1" AND ParentCommandLine.keyword:*\\\\DllHost.exe AND ParentCommandLine.keyword:(*\\\\\\{3E5FC7F9\\-9A51\\-4367\\-9063\\-A120244FBEC7\\} *\\\\\\{3E000D72\\-A845\\-4CD9\\-BD83\\-80C07C3B881F\\}))
 ```
 
 
@@ -71,7 +71,7 @@ level: high
 ### X-Pack Watcher
 
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/CMSTP-UAC-Bypass-via-COM-Object-Access <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND ParentCommandLine:\\"*\\\\\\\\DllHost.exe\\" AND ParentCommandLine:(\\"*\\\\\\\\\\\\{3E5FC7F9\\\\-9A51\\\\-4367\\\\-9063\\\\-A120244FBEC7\\\\}\\" \\"*\\\\\\\\\\\\{3E000D72\\\\-A845\\\\-4CD9\\\\-BD83\\\\-80C07C3B881F\\\\}\\"))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'CMSTP UAC Bypass via COM Object Access\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}\\n           Hashes = {{_source.Hashes}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/CMSTP-UAC-Bypass-via-COM-Object-Access <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND ParentCommandLine.keyword:*\\\\\\\\DllHost.exe AND ParentCommandLine.keyword:(*\\\\\\\\\\\\{3E5FC7F9\\\\-9A51\\\\-4367\\\\-9063\\\\-A120244FBEC7\\\\} *\\\\\\\\\\\\{3E000D72\\\\-A845\\\\-4CD9\\\\-BD83\\\\-80C07C3B881F\\\\}))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'CMSTP UAC Bypass via COM Object Access\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}\\n           Hashes = {{_source.Hashes}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 

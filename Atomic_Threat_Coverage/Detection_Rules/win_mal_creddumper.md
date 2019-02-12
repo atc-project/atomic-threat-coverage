@@ -3,8 +3,8 @@
 | Description          | This method detects well-known keywords of malicious services in the Windows System Eventlog                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1003](https://attack.mitre.org/tactics/T1003)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li><li>[DN_0083_16_access_history_in_hive_was_cleared](../Data_Needed/DN_0083_16_access_history_in_hive_was_cleared.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1003](../Triggering/T1003.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0083_16_access_history_in_hive_was_cleared](../Data_Needed/DN_0083_16_access_history_in_hive_was_cleared.md)</li><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li></ul>                                                         |
+| Trigger              | <ul><li>[T1003](../Triggers/T1003.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unlikely</li></ul>                                                                  |
 | Development Status   |                                                                                                                                                 |
@@ -53,7 +53,7 @@ level: high
 ### Kibana query
 
 ```
-((EventID:("7045" "4697") AND ("WCE SERVICE" OR "WCESERVICE" OR "DumpSvc")) OR (EventID:"16" AND HiveName:"*\\\\AppData\\\\Local\\\\Temp\\\\SAM*.dmp"))
+((EventID:("7045" "4697") AND ("WCE\\ SERVICE" OR "WCESERVICE" OR "DumpSvc")) OR (EventID:"16" AND HiveName.keyword:*\\\\AppData\\\\Local\\\\Temp\\\\SAM*.dmp))
 ```
 
 
@@ -63,7 +63,7 @@ level: high
 ### X-Pack Watcher
 
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Malicious-Service-Install <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "((EventID:(\\"7045\\" \\"4697\\") AND (\\"WCE SERVICE\\" OR \\"WCESERVICE\\" OR \\"DumpSvc\\")) OR (EventID:\\"16\\" AND HiveName:\\"*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\SAM*.dmp\\"))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Malicious Service Install\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Malicious-Service-Install <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "((EventID:(\\"7045\\" \\"4697\\") AND (\\"WCE\\\\ SERVICE\\" OR \\"WCESERVICE\\" OR \\"DumpSvc\\")) OR (EventID:\\"16\\" AND HiveName.keyword:*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\SAM*.dmp))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Malicious Service Install\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 

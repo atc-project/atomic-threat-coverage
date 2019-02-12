@@ -11,14 +11,14 @@ try:
     ATCconfig = ATCutils.read_yaml_file("config.yml")
     dr_dir = ATCconfig.get('detection_rules_directory')
 except:
-    dr_dir = "../detectionrules/"
+    dr_dir = "../detection_rules/"
 
 HELP_MESSAGE = """Usage: python3 yamls2csv.py [OPTIONS]\n\n\n
         Possible options are --detectionrules_path, --dataneeded_path --loggingpolicies path
         Defaults are 
         detectionrules_path = """ + dr_dir + """;
-        dataneeded_path = ../dataneeded/;
-        loggingpolicies_path=../loggingpolicies/"""
+        dataneeded_path = ../data_needed/;
+        loggingpolicies_path=../logging_policies/"""
 
 ta_mapping = {
   "attack.initial_access": ("Initial Access","TA0001"),
@@ -166,8 +166,8 @@ if __name__ == '__main__':
         opts_dict = dict(opts)
         kwargs = {
             'dr_path': opts_dict.get('--detectionrules_path', dr_dir),
-            'dn_path': opts_dict.get('--dataneeded_path', '../dataneeded/'),
-            'lp_path': opts_dict.get('--loggingpolicies_path', '../loggingpolicies/'),
+            'dn_path': opts_dict.get('--dataneeded_path', '../data_needed/'),
+            'lp_path': opts_dict.get('--loggingpolicies_path', '../logging_policies/'),
             'en_path': opts_dict.get('--enrichments_path', '../enrichments/'),
             'rp_path': opts_dict.get('--response playbooks path', '../response_playbooks/'),
             'ra_path': opts_dict.get('--response actions path', '../response_actions/')

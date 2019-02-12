@@ -4,7 +4,7 @@
 from dataneeded import DataNeeded
 from detectionrule import DetectionRule
 from loggingpolicy import LoggingPolicy
-from triggering import Triggering
+from triggers import Triggers
 from enrichment import Enrichment
 from responseaction import ResponseAction
 from responseplaybook import ResponsePlaybook
@@ -52,14 +52,14 @@ class PopulateConfluence:
             self.art_dir = art_dir
 
         else:
-            self.art_dir = ATCconfig.get('triggering_directory')
+            self.art_dir = ATCconfig.get('triggers_directory')
 
         # Main logic
         if auto:
             self.logging_policy(lp_path)
             self.data_needed(dn_path)
             self.enrichment(en_path)
-            self.triggering(tg_path)
+            self.triggers(tg_path)
             self.response_action(ra_path)
             self.response_playbook(rp_path)
             self.detection_rule(dr_path)
@@ -83,27 +83,27 @@ class PopulateConfluence:
             self.response_playbook(rp_path)
 
         if tg:
-            self.triggering(tg_path)
+            self.triggers(tg_path)
 
-    def triggering(self, tg_path):
-        """Populate triggering"""
+    def triggers(self, tg_path):
+        """Populate Triggers"""
 
-        print("Populating Triggering..")
+        print("Populating Triggers..")
         if tg_path:
             tg_list = glob.glob(tg_path + '*.yml')
         else:
-            tg_list = glob.glob(ATCconfig.get("triggering_directory") +
+            tg_list = glob.glob(ATCconfig.get("triggers_directory") +
                                 '/T*/*.yaml')
 
         for tg_file in tg_list:
             try:
-                tg = Triggering(tg_file)
+                tg = triggers(tg_file)
                 tg.render_template("confluence")
                 confluence_data = {
                     "title": tg.fields["attack_technique"],
                     "spacekey": self.space,
                     "parentid": str(ATCutils.confluence_get_page_id(
-                        self.apipath, self.auth, self.space, "Triggering")),
+                        self.apipath, self.auth, self.space, "Triggers")),
                     "confluencecontent": tg.content,
                 }
 
@@ -117,7 +117,7 @@ class PopulateConfluence:
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
 
-        print("Triggering populated!")
+        print("Triggers populated!")
 
     def logging_policy(self, lp_path):
         """Desc"""
@@ -126,7 +126,7 @@ class PopulateConfluence:
         if lp_path:
             lp_list = glob.glob(lp_path + '*.yml')
         else:
-            lp_list = glob.glob('../loggingpolicies/*.yml')
+            lp_list = glob.glob('../logging_policies/*.yml')
 
         for lp_file in lp_list:
             try:
@@ -159,7 +159,7 @@ class PopulateConfluence:
         if dn_path:
             dn_list = glob.glob(dn_path + '*.yml')
         else:
-            dn_list = glob.glob('../dataneeded/*.yml')
+            dn_list = glob.glob('../data_needed/*.yml')
 
         for dn_file in dn_list:
             try:

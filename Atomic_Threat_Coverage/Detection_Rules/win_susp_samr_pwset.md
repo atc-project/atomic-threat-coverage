@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1212](https://attack.mitre.org/tactics/T1212)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0027_4738_user_account_was_changed](../Data_Needed/DN_0027_4738_user_account_was_changed.md)</li><li>[DN_0032_5145_network_share_object_was_accessed_detailed](../Data_Needed/DN_0032_5145_network_share_object_was_accessed_detailed.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1212](../Triggering/T1212.md)</li></ul>  |
+| Trigger              | <ul><li>[T1212](../Triggers/T1212.md)</li></ul>  |
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul></ul>                                                                  |
 | Development Status   |                                                                                                                                                 |

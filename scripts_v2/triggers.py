@@ -7,12 +7,12 @@ from jinja2 import Environment, FileSystemLoader
 import os
 
 # ########################################################################### #
-# ########################### Triggering #################################### #
+# ############################ Triggers ##################################### #
 # ########################################################################### #
 
 
-class Triggering:
-    """Class for the Triggering entity"""
+class Triggers:
+    """Class for the Triggers entity"""
 
     def __init__(self, yaml_file):
         """Init method"""
@@ -20,7 +20,7 @@ class Triggering:
         # Init vars
         self.yaml_file = yaml_file
         # The name of the directory containing future markdown LogginPolicy
-        self.parent_title = "Triggering"
+        self.parent_title = "Triggers"
 
         # Init methods
         self.parse_into_fields(self.yaml_file)
@@ -49,7 +49,7 @@ class Triggering:
         # Get proper template
         if template_type == "markdown":
             raise Exception(
-                "Triggering should be copied from Atomic " +
+                "Triggers should be copied from Atomic " +
                 "Red Team atomics folder instead!"
             )
         elif template_type == "confluence":
@@ -58,7 +58,7 @@ class Triggering:
 
             base = os.path.basename(self.yaml_file)
             trigger = os.path.splitext(base)[0]
-            path_md = '../triggering/atomic-red-team/atomics/' + \
+            path_md = '../triggers/atomic-red-team/atomics/' + \
                 trigger + '/' + trigger + '.md'
 
             with open(path_md, 'r') as myfile:

@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1070](https://attack.mitre.org/tactics/T1070)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[T1070](../Triggering/T1070.md)</li></ul>  |
+| Trigger              | <ul><li>[T1070](../Triggers/T1070.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Rollout of log collection agents (the setup routine often includes a reset of the local Eventlog)</li><li>System provisioning (system reset before the golden image creation)</li></ul>                                                                  |
 | Development Status   |                                                                                                                                                 |

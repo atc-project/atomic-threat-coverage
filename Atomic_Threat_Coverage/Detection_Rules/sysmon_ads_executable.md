@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1027](https://attack.mitre.org/tactics/T1027)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0019_15_windows_sysmon_FileCreateStreamHash](../Data_Needed/DN_0019_15_windows_sysmon_FileCreateStreamHash.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1027](../Triggering/T1027.md)</li></ul>  |
+| Trigger              | <ul><li>[T1027](../Triggers/T1027.md)</li></ul>  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>unknown</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

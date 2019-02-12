@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1003](https://attack.mitre.org/tactics/T1003)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[T1003](../Triggering/T1003.md)</li></ul>  |
+| Trigger              | <ul><li>[T1003](../Triggers/T1003.md)</li></ul>  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>Unlikely</li></ul>                                                                  |
 | Development Status   |                                                                                                                                                 |
@@ -54,7 +54,7 @@ level: critical
 ### Kibana query
 
 ```
-Signature:("*DumpCreds*" "*Mimikatz*" "*PWCrack*" "HTool\\/WCE" "*PSWtool*" "*PWDump*")
+Signature.keyword:(*DumpCreds* *Mimikatz* *PWCrack* HTool\\/WCE *PSWtool* *PWDump*)
 ```
 
 
@@ -64,7 +64,7 @@ Signature:("*DumpCreds*" "*Mimikatz*" "*PWCrack*" "HTool\\/WCE" "*PSWtool*" "*PW
 ### X-Pack Watcher
 
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Antivirus-Password-Dumper-Detection <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "Signature:(\\"*DumpCreds*\\" \\"*Mimikatz*\\" \\"*PWCrack*\\" \\"HTool\\\\/WCE\\" \\"*PSWtool*\\" \\"*PWDump*\\")",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Antivirus Password Dumper Detection\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nFileName = {{_source.FileName}}\\n    User = {{_source.User}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Antivirus-Password-Dumper-Detection <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "Signature.keyword:(*DumpCreds* *Mimikatz* *PWCrack* HTool\\\\/WCE *PSWtool* *PWDump*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Antivirus Password Dumper Detection\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nFileName = {{_source.FileName}}\\n    User = {{_source.User}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 

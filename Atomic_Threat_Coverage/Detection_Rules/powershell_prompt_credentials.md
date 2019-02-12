@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1086](https://attack.mitre.org/tactics/T1086)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1086](../Triggering/T1086.md)</li></ul>  |
+| Trigger              | <ul><li>[T1086](../Triggers/T1086.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

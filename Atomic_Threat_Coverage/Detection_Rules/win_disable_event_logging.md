@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1054](https://attack.mitre.org/tactics/T1054)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[T1054](../Triggering/T1054.md)</li></ul>  |
+| Trigger              | <ul><li>[T1054](../Triggers/T1054.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
 | Development Status   |                                                                                                                                                 |

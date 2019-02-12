@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1047](https://attack.mitre.org/tactics/T1047)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0080_5859_wmi_activity](../Data_Needed/DN_0080_5859_wmi_activity.md)</li><li>[DN_0081_5861_wmi_activity](../Data_Needed/DN_0081_5861_wmi_activity.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1047](../Triggering/T1047.md)</li></ul>  |
+| Trigger              | <ul><li>[T1047](../Triggers/T1047.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown (data set is too small; further testing needed)</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |
@@ -56,7 +56,7 @@ level: high
 ### Kibana query
 
 ```
-((EventID:"5861" AND ("ActiveScriptEventConsumer" OR "CommandLineEventConsumer" OR "CommandLineTemplate" OR "Binding EventFilter")) OR EventID:"5859")
+((EventID:"5861" AND ("ActiveScriptEventConsumer" OR "CommandLineEventConsumer" OR "CommandLineTemplate" OR "Binding\\ EventFilter")) OR EventID:"5859")
 ```
 
 
@@ -66,7 +66,7 @@ level: high
 ### X-Pack Watcher
 
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/WMI-Persistence <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "((EventID:\\"5861\\" AND (\\"ActiveScriptEventConsumer\\" OR \\"CommandLineEventConsumer\\" OR \\"CommandLineTemplate\\" OR \\"Binding EventFilter\\")) OR EventID:\\"5859\\")",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'WMI Persistence\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/WMI-Persistence <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "((EventID:\\"5861\\" AND (\\"ActiveScriptEventConsumer\\" OR \\"CommandLineEventConsumer\\" OR \\"CommandLineTemplate\\" OR \\"Binding\\\\ EventFilter\\")) OR EventID:\\"5859\\")",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'WMI Persistence\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 

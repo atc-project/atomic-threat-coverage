@@ -45,7 +45,7 @@ def main(c_auth=None):
     ATCutils.push_to_confluence(data, url, auth)
 
     spaces = ["Detection Rules", "Logging Policies",
-              "Data Needed", "Triggering", "Response Actions",
+              "Data Needed", "Triggers", "Response Actions",
               "Response Playbooks", "Enrichments"]
 
     for space in spaces:

@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1053](https://attack.mitre.org/tactics/T1053)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[T1053](../Triggering/T1053.md)</li></ul>  |
+| Trigger              | <ul><li>[T1053](../Triggers/T1053.md)</li></ul>  |
 | Severity Level       | low                                                                                                                                                 |
 | False Positives      | <ul><li>Software installation</li><li>Software updates</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

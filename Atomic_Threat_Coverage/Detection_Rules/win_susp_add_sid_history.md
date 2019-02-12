@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1178](https://attack.mitre.org/tactics/T1178)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[T1178](../Triggering/T1178.md)</li></ul>  |
+| Trigger              | <ul><li>[T1178](../Triggers/T1178.md)</li></ul>  |
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul><li>Migration of an account into a new domain</li></ul>                                                                  |
 | Development Status   | stable                                                                                                                                                |

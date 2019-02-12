@@ -12,7 +12,7 @@ space = "CLASSES"
 title = "Logging Policies"
 api = "https://atomicthreatcoverage.atlassian.net/wiki/rest/api/"
 
-dr = DetectionRule('../detectionrules/sysmon_exploit_cve_2017_11882.yml',
+dr = DetectionRule('../detection_rules/sysmon_exploit_cve_2017_11882.yml',
                    apipath=api, auth=auth, space=space)
 dr.render_template("confluence")
 

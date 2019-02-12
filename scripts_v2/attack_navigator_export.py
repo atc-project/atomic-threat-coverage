@@ -9,7 +9,7 @@ try:
     ATCconfig = ATCutils.read_yaml_file("config.yml")
     dr_dir = ATCconfig.get('detection_rules_directory')
 except:
-    dr_dir = "../detectionrules/"
+    dr_dir = "../detection_rules/"
 
 
 NAVIGATOR_TEMPLATE = {

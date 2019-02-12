@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1089](https://attack.mitre.org/tactics/T1089)</li><li>[T1211](https://attack.mitre.org/tactics/T1211)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[T1089](../Triggering/T1089.md)</li><li>[T1211](../Triggering/T1211.md)</li></ul>  |
+| Trigger              | <ul><li>[T1089](../Triggers/T1089.md)</li><li>[T1211](../Triggers/T1211.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>MsMpEng.exe can crash when C:\ is full</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |
@@ -56,7 +56,7 @@ level: high
 ### Kibana query
 
 ```
-(((Source:"Application Error" AND EventID:"1000") OR (Source:"Windows Error Reporting" AND EventID:"1001")) AND ("MsMpEng.exe" AND "mpengine.dll"))
+(((Source:"Application\\ Error" AND EventID:"1000") OR (Source:"Windows\\ Error\\ Reporting" AND EventID:"1001")) AND ("MsMpEng.exe" AND "mpengine.dll"))
 ```
 
 
@@ -66,7 +66,7 @@ level: high
 ### X-Pack Watcher
 
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Microsoft-Malware-Protection-Engine-Crash <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(((Source:\\"Application Error\\" AND EventID:\\"1000\\") OR (Source:\\"Windows Error Reporting\\" AND EventID:\\"1001\\")) AND (\\"MsMpEng.exe\\" AND \\"mpengine.dll\\"))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Microsoft Malware Protection Engine Crash\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Microsoft-Malware-Protection-Engine-Crash <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(((Source:\\"Application\\\\ Error\\" AND EventID:\\"1000\\") OR (Source:\\"Windows\\\\ Error\\\\ Reporting\\" AND EventID:\\"1001\\")) AND (\\"MsMpEng.exe\\" AND \\"mpengine.dll\\"))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Microsoft Malware Protection Engine Crash\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 

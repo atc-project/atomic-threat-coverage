@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1078](https://attack.mitre.org/tactics/T1078)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[T1078](../Triggering/T1078.md)</li></ul>  |
+| Trigger              | <ul><li>[T1078](../Triggers/T1078.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
 | Development Status   |                                                                                                                                                 |

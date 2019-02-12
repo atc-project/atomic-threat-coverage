@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1075](https://attack.mitre.org/tactics/T1075)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1075](../Triggering/T1075.md)</li></ul>  |
+| Trigger              | <ul><li>[T1075](../Triggers/T1075.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Runas command-line tool using /netonly parameter</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

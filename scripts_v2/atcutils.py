@@ -380,7 +380,7 @@ class ATCutils:
     def main_dn_calculatoin_func(dr_file_path):
         """you need to execute this function to calculate DN for DR file"""
 
-        dn_list = ATCutils.load_yamls('../dataneeded')
+        dn_list = ATCutils.load_yamls('../data_needed')
 
         detectionrule = ATCutils.read_yaml_file(dr_file_path)
 
@@ -702,10 +702,10 @@ class ATCutils:
         return True
 
     @staticmethod
-    def populate_tg_markdown(art_dir='../'+read_yaml_file.__func__('config.yml').get('triggering_directory'),
+    def populate_tg_markdown(art_dir='../'+read_yaml_file.__func__('config.yml').get('triggers_directory'),
                             atc_dir='../'+read_yaml_file.__func__('config.yml').get('md_name_of_root_directory')):
         cmd = ('find \'%s/\' -name "T*.md" -exec' +
-               ' cp {} \'%sTriggering/\' \;') % (art_dir, atc_dir)
+               ' cp {} \'%sTriggers/\' \;') % (art_dir, atc_dir)
         if subprocess.run(cmd, shell=True, check=True).returncode == 0:
             return True
         else:

@@ -4,7 +4,7 @@
 from dataneeded import DataNeeded
 from detectionrule import DetectionRule
 from loggingpolicy import LoggingPolicy
-# from triggering import Triggering
+# from triggers import Triggers
 from enrichment import Enrichment
 from responseaction import ResponseAction
 from responseplaybook import ResponsePlaybook
@@ -41,14 +41,14 @@ class PopulateMarkdown:
             self.art_dir = art_dir
 
         else:
-            self.art_dir = ATCconfig.get('triggering_directory')
+            self.art_dir = ATCconfig.get('triggers_directory')
 
         # Main logic
         if auto:
             self.logging_policy(lp_path)
             self.data_needed(dn_path)
             self.enrichment(en_path)
-            self.triggering(tg_path)
+            self.triggers(tg_path)
             self.response_action(ra_path)
             self.response_playbook(rp_path)
             self.detection_rule(dr_path)
@@ -72,10 +72,10 @@ class PopulateMarkdown:
             self.response_playbook(rp_path)
 
         if tg:
-            self.triggering(tg_path)
+            self.triggers(tg_path)
 
-    def triggering(self, tg_path):
-        """Populate triggering"""
+    def triggers(self, tg_path):
+        """Populate triggers"""
 
         if self.art_dir and self.atc_dir:
             r = ATCutils.populate_tg_markdown(art_dir=self.art_dir,
@@ -98,7 +98,7 @@ class PopulateMarkdown:
         if lp_path:
             lp_list = glob.glob(lp_path + '*.yml')
         else:
-            lp_list = glob.glob('../loggingpolicies/*.yml')
+            lp_list = glob.glob('../logging_policies/*.yml')
 
         for lp_file in lp_list:
             try:
@@ -118,7 +118,7 @@ class PopulateMarkdown:
         if dn_path:
             dn_list = glob.glob(dn_path + '*.yml')
         else:
-            dn_list = glob.glob('../dataneeded/*.yml')
+            dn_list = glob.glob('../data_needed/*.yml')
 
         for dn_file in dn_list:
             try:

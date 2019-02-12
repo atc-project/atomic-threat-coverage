@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1047](https://attack.mitre.org/tactics/T1047)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1047](../Triggering/T1047.md)</li></ul>  |
+| Trigger              | <ul><li>[T1047](../Triggers/T1047.md)</li></ul>  |
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |
@@ -63,7 +63,7 @@ detection:
 ### Kibana query
 
 ```
-(EventID:"1" AND ((Image:("*\\\\wmic.exe") AND CommandLine:("wmic * *format\\:\\\\\\"http*" "wmic * \\/format\\:\'http" "wmic * \\/format\\:http*")) OR (Imphash:("1B1A3F43BF37B5BFE60751F2EE2F326E" "37777A96245A3C74EB217308F3546F4C" "9D87C9D67CE724033C0B40CC4CA1B206") AND CommandLine:("* *format\\:\\\\\\"http*" "* \\/format\\:\'http" "* \\/format\\:http*"))))
+(EventID:"1" AND ((Image.keyword:(*\\\\wmic.exe) AND CommandLine.keyword:(wmic\\ *\\ *format\\:\\\\\\"http* wmic\\ *\\ \\/format\\:\'http wmic\\ *\\ \\/format\\:http*)) OR (Imphash:("1B1A3F43BF37B5BFE60751F2EE2F326E" "37777A96245A3C74EB217308F3546F4C" "9D87C9D67CE724033C0B40CC4CA1B206") AND CommandLine.keyword:(*\\ *format\\:\\\\\\"http* *\\ \\/format\\:\'http *\\ \\/format\\:http*))))
 ```
 
 
@@ -73,7 +73,7 @@ detection:
 ### X-Pack Watcher
 
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/SquiblyTwo <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND ((Image:(\\"*\\\\\\\\wmic.exe\\") AND CommandLine:(\\"wmic * *format\\\\:\\\\\\\\\\\\\\"http*\\" \\"wmic * \\\\/format\\\\:\'http\\" \\"wmic * \\\\/format\\\\:http*\\")) OR (Imphash:(\\"1B1A3F43BF37B5BFE60751F2EE2F326E\\" \\"37777A96245A3C74EB217308F3546F4C\\" \\"9D87C9D67CE724033C0B40CC4CA1B206\\") AND CommandLine:(\\"* *format\\\\:\\\\\\\\\\\\\\"http*\\" \\"* \\\\/format\\\\:\'http\\" \\"* \\\\/format\\\\:http*\\"))))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'SquiblyTwo\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/SquiblyTwo <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND ((Image.keyword:(*\\\\\\\\wmic.exe) AND CommandLine.keyword:(wmic\\\\ *\\\\ *format\\\\:\\\\\\\\\\\\\\"http* wmic\\\\ *\\\\ \\\\/format\\\\:\'http wmic\\\\ *\\\\ \\\\/format\\\\:http*)) OR (Imphash:(\\"1B1A3F43BF37B5BFE60751F2EE2F326E\\" \\"37777A96245A3C74EB217308F3546F4C\\" \\"9D87C9D67CE724033C0B40CC4CA1B206\\") AND CommandLine.keyword:(*\\\\ *format\\\\:\\\\\\\\\\\\\\"http* *\\\\ \\\\/format\\\\:\'http *\\\\ \\\\/format\\\\:http*))))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'SquiblyTwo\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 

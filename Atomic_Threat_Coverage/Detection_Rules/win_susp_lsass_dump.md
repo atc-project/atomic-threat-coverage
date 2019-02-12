@@ -4,7 +4,7 @@
 | ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1003](https://attack.mitre.org/tactics/T1003)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[T1003](../Triggering/T1003.md)</li></ul>  |
+| Trigger              | <ul><li>[T1003](../Triggers/T1003.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unkown</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |
