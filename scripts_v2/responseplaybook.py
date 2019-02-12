@@ -11,6 +11,7 @@ import re
 # ########################### Response Playboo ############################## #
 # ########################################################################### #
 
+ATCconfig = ATCutils.read_yaml_file("config.yml")
 
 class ResponsePlaybook:
     """Class for the Playbook Actions entity"""

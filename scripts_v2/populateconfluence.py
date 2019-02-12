@@ -18,6 +18,7 @@ import sys
 import traceback
 import os
 
+ATCconfig = ATCutils.read_yaml_file("config.yml")
 
 class PopulateConfluence:
     """Desc"""
@@ -29,8 +30,6 @@ class PopulateConfluence:
         """Desc"""
 
         self.auth = auth
-
-        ATCconfig = ATCutils.read_yaml_file("config.yml")
 
         self.space = ATCconfig.get('confluence_space_name')
 
@@ -46,14 +45,14 @@ class PopulateConfluence:
             self.atc_dir = atc_dir
 
         else:
-            self.atc_dir = '../Atomic_Threat_Coverage/'
+            self.atc_dir = "../" + ATCconfig.get('md_name_of_root_directory')+'/'
 
         # Check if art_dir provided
         if art_dir:
             self.art_dir = art_dir
 
         else:
-            self.art_dir = '../triggering/atomic-red-team/'
+            self.art_dir = ATCconfig.get('triggering_directory')
 
         # Main logic
         if auto:
@@ -93,8 +92,8 @@ class PopulateConfluence:
         if tg_path:
             tg_list = glob.glob(tg_path + '*.yml')
         else:
-            tg_list = glob.glob('../triggering/atomic-red-team/' +
-                                'atomics/T*/*.yaml')
+            tg_list = glob.glob(ATCconfig.get("triggering_directory") +
+                                '/T*/*.yaml')
 
         for tg_file in tg_list:
             try:
@@ -194,7 +193,7 @@ class PopulateConfluence:
         if dr_path:
             dr_list = glob.glob(dr_path + '*.yml')
         else:
-            dr_list = glob.glob('../detectionrules/*.yml')
+            dr_list = glob.glob(ATCconfig.get('detection_rules_directory') +'/*.yml')
 
         for dr_file in dr_list:
             try:

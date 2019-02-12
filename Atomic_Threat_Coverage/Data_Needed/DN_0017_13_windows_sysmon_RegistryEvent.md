@@ -1,4 +1,4 @@
-| Title          | DN_0016_13_windows_sysmon_RegistryEvent                                                                                                      |
+| Title          | DN_0017_13_windows_sysmon_RegistryEvent                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | This Registry event type identifies Registry value modifications. The event  records the value written for Registry values of type DWORD and QWORD                                                                                                |
 | Logging Policy | <ul><li> Not existing </li></ul> |

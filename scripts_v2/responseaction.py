@@ -10,13 +10,15 @@ import os
 # ########################### Response Action ############################### #
 # ########################################################################### #
 
+ATCconfig = ATCutils.read_yaml_file("config.yml")
+
 
 class ResponseAction:
     """Class for the Playbook Actions entity"""
 
     def __init__(self, yaml_file, apipath=None, auth=None, space=None):
         """Init method"""
-
+        
         # Init vars
         self.yaml_file = yaml_file
         # The name of the directory containing future markdown LogginPolicy
@@ -93,9 +95,9 @@ class ResponseAction:
 
         self.content = template.render(self.ra_parsed_file)
 
-    def save_markdown_file(self, atc_dir='../Atomic_Threat_Coverage/'):
+    def save_markdown_file(self, atc_dir='../'+ ATCconfig.get('md_name_of_root_directory')):
         """Write content (md template filled with data) to a file"""
-
+        
         base = os.path.basename(self.yaml_file)
         title = os.path.splitext(base)[0]
 

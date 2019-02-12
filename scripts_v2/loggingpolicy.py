@@ -5,6 +5,7 @@ from atcutils import ATCutils
 from jinja2 import Environment, FileSystemLoader
 
 import os
+from pdb import set_trace as bp
 
 # ########################################################################### #
 # ########################### Logging Policy ################################ #
@@ -64,7 +65,6 @@ class LoggingPolicy:
 
     def save_markdown_file(self, atc_dir='../Atomic_Threat_Coverage/'):
         """Write content (md template filled with data) to a file"""
-
         base = os.path.basename(self.yaml_file)
         title = os.path.splitext(base)[0]
 

@@ -1,0 +1,45 @@
+title: DN_0083_16_access_history_in_hive_was_cleared
+description: >
+  The access history in hive was cleared updating X keys and creating Y modified pages
+loggingpolicy:
+  - None
+references:
+  - http://www.eventid.net/display-eventid-16-source-Microsoft-Windows-Kernel-General-eventno-11563-phase-1.htm
+category: OS Logs
+platform: Windows
+type: Windows Log
+channel: System
+provider: Microsoft-Windows-Kernel-General
+fields:
+  - EventID
+  - Hostname # redundant
+  - Computer
+  - HiveNameLength
+  - HiveName
+  - KeysUpdated
+  - DirtyPages
+sample: |
+  - <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+    - <System>
+        <Provider Name="Microsoft-Windows-Kernel-General" Guid="{A68CA8B7-004F-D7B6-A698-07E2DE0F1F5D}" />
+        <EventID>16</EventID>
+        <Version>0</Version>
+        <Level>4</Level>
+        <Task>0</Task>
+        <Opcode>0</Opcode>
+        <Keywords>0x8000000000000000</Keywords>
+        <TimeCreated SystemTime="2018-01-12T03:18:59.347973200Z" />
+        <EventRecordID>1705</EventRecordID>
+        <Correlation />
+        <Execution ProcessID="4" ThreadID="540" />
+        <Channel>System</Channel>
+        <Computer>atc-win-10.atc.local</Computer>
+        <Security UserID="S-1-5-18" />
+      </System>
+    - <EventData>
+        <Data Name="HiveNameLength">31</Data>
+        <Data Name="HiveName">\SystemRoot\System32\Config\SAM</Data>
+        <Data Name="KeysUpdated">65</Data>
+        <Data Name="DirtyPages">7</Data>
+      </EventData>
+    </Event>

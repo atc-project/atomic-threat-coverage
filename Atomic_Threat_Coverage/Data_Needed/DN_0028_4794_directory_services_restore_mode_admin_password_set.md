@@ -1,4 +1,4 @@
-| Title          | DN_0028_directory_services_restore_mode_admin_password_set_4794                                                                                                      |
+| Title          | DN_0028_4794_directory_services_restore_mode_admin_password_set                                                                                                      |
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description    | Directory Services Restore Mode (DSRM) administrator password is changed                                                                                                |
 | Logging Policy | <ul><li>[LP_0026_windows_audit_user_account_management](../Logging_Policies/LP_0026_windows_audit_user_account_management.md)</li></ul> |
