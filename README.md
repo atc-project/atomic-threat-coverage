@@ -272,6 +272,13 @@ Atomic Threat Coverage generates [analytics.csv](analytics.csv) with list of all
 - Which data provided me most of the high fidelity alerts? (prioritisation of data collection implementation)
 - etc
 
+<details>
+  <summary>Example of lookup for "pass the hash" technique (click to expand)</summary>
+  <img src="images/analytics_pth_v1.png" />
+</details>
+
+<br>
+
 Ideally, this kind of mapping could provide organizations with the ability to connect Threat Coverage from detection perspective to *money*. Like:
 
 - if we will collect all Data Needed from all hosts for all Detection Rules we have it would be X Events Per Second (EPS) (do calculation for a couple of weeks or so) with these resources for storage/processing (some more or less concrete number)
@@ -280,7 +287,21 @@ Ideally, this kind of mapping could provide organizations with the ability to co
 
 #### pivoting.csv
 
-Atomic Threat Coverage generates [pivoting.csv](pivoting.csv) with list of all fields (from Data Needed) mapped to description of Data Needed for very specific purpose — it provides information about data sources where some specific data type could be found, for example domain name, username, hash etc.
+Atomic Threat Coverage generates [pivoting.csv](pivoting.csv) with list of all fields (from Data Needed) mapped to description of Data Needed for very specific purpose — it provides information about data sources where some specific data type could be found, for example domain name, username, hash etc:
+
+<details>
+  <summary>Example of lookup for "hash" field (click to expand)</summary>
+  <img src="images/pivoting_hash_v1.png" />
+</details>
+
+<br>
+
+At the same time it highlights which fields could be found only with specific enrichments:
+
+<details>
+  <summary>Example of lookup for "ParentImage" field (click to expand)</summary>
+  <img src="images/pivoting_parent_v1.png" />
+</details>
 
 ## Goals
 
