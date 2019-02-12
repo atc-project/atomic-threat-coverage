@@ -1,0 +1,29 @@
+title: RP_0000_some_name_here
+description: >
+  Some text description here. It will be merged into one line.
+tags:
+    - attack.initial_access
+    - attack.t1193
+    - attack.t1192
+    - phishinng              # could be custom tags as well
+severity: M                  # L M H
+tlp: AMBER                   # WHITE GREEN AMBER RED
+pap: WHITE                   # WHITE GREEN AMBER RED
+author: Name Surname
+creation_date: DD.MM.YYYY
+references: 
+  - https://example.com
+identification:
+  - RA_0001_identification_get_original_email         # links to atomit Response Actions.
+containment:
+  - RA_0006_containment_block_domain_on_email         # Response Actions could be aggregated 
+  - RA_0009_containment_block_url_on_proxy            # and contain links to multiple Response Actions
+eradication:
+  - RA_0010_eradication_delete_malicious_emails
+recovery:
+  - RA_0029_recovery_reinstall_host_from_golden_image
+lessons_learned:
+  - RA_0013_lessons_learned_develop_incident_report
+workflow: |
+    Response Playbook in markdown format.
+    Here newlines will be saved.

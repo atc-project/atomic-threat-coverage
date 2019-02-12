@@ -1,0 +1,92 @@
+<p class="auto-cursor-target"><br /></p>
+<ac:structured-macro ac:name="details" ac:schema-version="1" ac:macro-id="28b7d879-550c-4376-96ff-fdbdfddf710b">
+   <ac:rich-text-body>
+      <p class="auto-cursor-target"><br /></p>
+      <table class="wrapped confluenceTable">
+         <colgroup>
+            <col />
+            <col />
+         </colgroup>
+         <tbody>
+            <tr>
+               <th class="confluenceTh">Title</th>
+               <td class="confluenceTd">{{ title|e}}<br /></td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">Stage</th>
+               <td class="confluenceTd">{{ stage|e }}<br /></td>
+            </tr>
+{% if automation is defined and automation|length %}
+            <tr>
+               <th class="confluenceTh">Automation</th>
+               <td class="confluenceTd">
+                  {%- if automation |length > 1 -%}<ul>{%endif%}
+                     {% for auto in automation %}
+                     {%- if automation |length > 1 -%}<li>{%endif%}{{ auto }}{%- if automation |length > 1 -%}</li>{%endif%}
+                     {% endfor %}
+                  {%- if automation |length > 1 -%}</ul>{%endif%}
+                  <br />
+               </td>
+            </tr>
+{% endif %}
+            <tr>
+               <th class="confluenceTh">Author</th>
+               <td class="confluenceTd">{{ author|e }}<br /></td>
+            </tr>
+{% if references is defined and references|length %}
+            <tr>
+               <th class="confluenceTh">References</th>
+               <td class="confluenceTd">
+                  {%- if references |length > 1 -%}<ul>{%endif%}
+                     {% for ref in references %}
+                     {%- if references |length > 1 -%}<li>{%endif%}<a href="{{ ref |e }}">{{ ref |e }}</a>{%- if references |length > 1 -%}</li>{%endif%}
+                     {% endfor %}
+                  {%- if references |length > 1 -%}</ul>{%endif%}
+                  <br />
+               </td>
+            </tr>
+{% endif %}
+{% if linkedra is defined and linkedra|length %}
+            <tr>
+               <th class="confluenceTh">Linked Response Actions</th>
+               <td class="confluenceTd">
+                  {%- if linkedra |length > 1 -%}<ul>{%endif%}
+                     {% for action_name, action_id in linkedra %}
+                     {%- if linkedra |length > 1 -%}<li>{%endif%}<a href="/wiki/spaces/SOC/pages/{{action_id}}">{{ action_name }}</a>{%- if linkedra |length > 1 -%}</li>{%endif%}
+                     {% endfor %}
+                  {%- if linkedra |length > 1 -%}</ul>{%endif%}
+                  <br />
+               </td>
+            </tr>
+{% endif %}
+{% if linked_analytics is defined and linked_analytics|length %}
+            <tr>
+               <th class="confluenceTh">Linked Analytics</th>
+               <td class="confluenceTd">
+                  {%- if linked_analytics |length > 1 -%}<ul>{%endif%}
+                     {% for analytic in linked_analytics %}
+                     {%- if linked_analytics |length > 1 -%}<li>{%endif%}<a href="{{ analytic }}">{{ analytic }}</a>{%- if linked_analytics |length > 1 -%}</li>{%endif%}
+                     {% endfor %}
+                  {%- if linked_analytics |length > 1 -%}</ul>{%endif%}
+                  <br />
+               </td>
+            </tr>
+{% endif %}
+            <tr>
+               <th class="confluenceTh">Description</th>
+               <td class="confluenceTd">{{  description|e }}<br /></td>
+            </tr>
+         </tbody>
+      </table>
+      <p class="auto-cursor-target"><br /></p>
+   </ac:rich-text-body>
+</ac:structured-macro>
+{% if workflow is defined and workflow|length %}
+<h1>Workflow</h1>
+<pre><br/></pre>
+<ac:structured-macro ac:name="markdown"><ac:plain-text-body>
+	<![CDATA[{{ workflow }}]]>
+   <br/>
+</ac:plain-text-body></ac:structured-macro>
+{% else %}
+{% endif %}

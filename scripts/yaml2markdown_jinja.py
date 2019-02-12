@@ -107,6 +107,69 @@ def yaml2markdown_jinja(file, type):
       fields.update({'description':fields.get('description').strip()}) 
       content = template.render(fields)
 
+    elif type=="responseaction" or type=="RA":
+      template = env.get_template('markdown_responseaction_template.md.j2')
+      parent_title="Response_Actions"
+
+      fields.update({'description':fields.get('description').strip()}) 
+      content = template.render(fields)
+
+    elif type=="responseplaybook" or type=="RP":
+      template = env.get_template('markdown_responseplaybook_template.md.j2')
+      parent_title="Response_Playbooks"
+
+      tactic = []
+      tactic_re = re.compile(r'attack\.\w\D+$')
+      technique = []
+      technique_re = re.compile(r'attack\.t\d{1,5}$')
+      other_tags = []
+
+      for tag in fields.get('tags'):
+        if tactic_re.match(tag):
+          tactic.append(ta_mapping.get(tag))
+        elif technique_re.match(tag):
+          technique.append(tag.upper()[7:])
+        else:
+          other_tags.append(tag)
+
+      fields.update({'tactics':tactic})
+      fields.update({'techniques':technique})
+      fields.update({'other_tags':other_tags})
+
+      identification = []
+      containment = []
+      eradication = []
+      recovery = []
+      lessons_learned = []
+
+      stages = [('identification', identification), ('containment', containment), 
+                ('eradication', eradication), ('recovery', recovery), 
+                ('lessons_learned', lessons_learned)]
+
+      # grab workflow per action in each IR stages, error handling for playbooks with empty stages
+      for stage_name, stage_list in stages:
+        try:
+          for task in fields.get(stage_name):
+            action = read_yaml_file('../response_actions/'+task+'.yml')
+            stage_list.append( (action.get('description'), action.get('workflow')) )
+        except TypeError:
+          pass
+
+      # change stages name to more pretty format
+      stages = [ (stage_name.replace('_',' ').capitalize(), stage_list) for stage_name, stage_list in stages ]
+      
+      fields.update({'stages': stages})
+
+      fields.update({'description':fields.get('description').strip()}) 
+      content = template.render(fields)
+
+    elif type=="enrichment" or type=="EN":
+      template = env.get_template('markdown_enrichments_template.md.j2')
+      parent_title="Enrichments"
+
+      fields.update({'description':fields.get('description').strip()}) 
+      content = template.render(fields)
+
     elif type=="triggering" or type=="TG":
       pass
 

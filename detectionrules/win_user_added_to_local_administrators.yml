@@ -1,0 +1,19 @@
+title: User Added to Local Administrators
+description: This rule triggers on user accounts that are added to the local Administrators group, which could be legitimate activity or a sign of privilege escalation activity 
+status: stable
+author: Florian Roth
+tags:
+    - attack.privilege_escalation
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 4732
+        GroupName: Administrators
+    filter:
+        SubjectUserName: '*$'
+    condition: selection and not filter
+falsepositives: 
+    - Legitimate administrative activity
+level: low

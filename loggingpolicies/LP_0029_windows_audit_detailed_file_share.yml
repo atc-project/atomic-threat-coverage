@@ -1,6 +1,6 @@
 title: LP_0029_windows_audit_detailed_file_share
 default: Not configured
-volume: High on file servers and domain controllers
+volume: High # on file servers and domain controllers
 description: >
   Audit Detailed File Share allows you to audit attempts to 
   access files and folders on a shared folder.

@@ -1,0 +1,15 @@
+title: RA_0029_recovery_reinstall_host_from_golden_image
+stage: recovery
+automation:
+  - thehive
+author: Name Surname
+creation_date: DD.MM.YYYY
+references: 
+  - https://example.com
+description: >
+  Response Action for 
+workflow: |
+  Description of how to handle multiple Response Actions (if it is an aggregated Response Action) or workflow for single Response Action in markdown format.
+  Here newlines will be saved.  
+
+

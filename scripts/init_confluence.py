@@ -33,7 +33,7 @@ def main():
     #print(push_to_confluence(data, url, auth))
     push_to_confluence(data, url, auth)
     
-    spaces = ["Detection Rules", "Logging Policies", "Data Needed", "Triggering"]
+    spaces = ["Detection Rules", "Logging Policies", "Data Needed", "Triggering" ,"Response Actions", "Response Playbooks", "Enrichments"]
 
     for space in spaces:
         data = {

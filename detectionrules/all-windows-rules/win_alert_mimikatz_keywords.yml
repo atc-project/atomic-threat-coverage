@@ -1,0 +1,25 @@
+title: Mimikatz Use
+description: This method detects mimikatz keywords in different Eventlogs (some of them only appear in older Mimikatz version that are however still used by different threat groups)
+author: Florian Roth
+tags:
+    - attack.s0002
+    - attack.t1003
+    - attack.lateral_movement
+    - attack.credential_access
+logsource:
+    product: windows
+detection:
+    keywords:
+        - mimikatz
+        - mimilib
+        - <3 eo.oe
+        - eo.oe.kiwi
+        - privilege::debug
+        - sekurlsa::logonpasswords
+        - lsadump::sam
+        - mimidrv.sys
+    condition: keywords
+falsepositives:
+    - Naughty administrators
+    - Penetration test
+level: critical
