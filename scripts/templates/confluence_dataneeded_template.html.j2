@@ -1,7 +1,5 @@
 <p class="auto-cursor-target"><br /></p>
 <ac:structured-macro ac:name="details" ac:schema-version="1" ac:macro-id="28b7d879-550c-4376-96ff-fdbdfddf710b">
-   <fab:placeholder-url>/wiki/plugins/servlet/confluence/placeholder/macro?definition=e2RldGFpbHN9&amp;locale=en_GB&amp;version=2</fab:placeholder-url>
-   <fab:display-type>BLOCK</fab:display-type>
    <ac:rich-text-body>
       <p class="auto-cursor-target"><br /></p>
       <table class="wrapped confluenceTable">
@@ -23,7 +21,7 @@
                <td class="confluenceTd">
                   {%- if loggingpolicy |length > 1 -%}<ul>{%endif%}
                      {% for policy_name, policy_id in loggingpolicy %}
-                     {%- if loggingpolicy |length > 1 -%}<li>{%endif%}<a href="/wiki/spaces/SOC/pages/{{policy_id}}">{{ policy_name }}</a>{%- if loggingpolicy |length > 1 -%}</li>{%endif%}
+                     {%- if loggingpolicy |length > 1 -%}<li>{%endif%}<a href="{{confluence_viewpage_url}}{{policy_id}}">{{ policy_name }}</a>{%- if loggingpolicy |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if loggingpolicy |length > 1 -%}</ul>{%endif%}
                   <br />
@@ -34,7 +32,7 @@
                <td class="confluenceTd">
                   {%- if references |length > 1 -%}<ul>{%endif%}
                      {% for ref in references %}
-                     {%- if references |length > 1 -%}<li>{%endif%}<a href="{{ ref }}">{{ ref }}</a>{%- if references |length > 1 -%}</li>{%endif%}
+                     {%- if references |length > 1 -%}<li>{%endif%}<a href="{{ ref |e }}">{{ ref |e }}</a>{%- if references |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if references |length > 1 -%}</ul>{%endif%}
                   <br />
