@@ -35,7 +35,7 @@ In practice there are difficulties in collaboration due to:
 - Absence of simple and straightforward way to explain specific requirements
 - Difference in competence level (from both depth and areas perspectives)
 
-That's why we decided to create Atomic Threat Coverage — project which connects different functions on the same Threat Centric methodology ([Lockheed Martin Intelligence Driven Defense®](https://www.lockheedmartin.com/en-us/capabilities/cyber/intelligence-driven-defense.html) aka [MITRE Threat-based Security](https://mitre.github.io/unfetter/about/)), threat model ([MITRE ATT&CK](https://attack.mitre.org/)) and provide security teams an efficient tool for collaboration on one main challenge — combating threats.
+That's why we decided to create Atomic Threat Coverage — project which connects different functions/processes under unified Threat Centric methodology ([Lockheed Martin Intelligence Driven Defense®](https://www.lockheedmartin.com/en-us/capabilities/cyber/intelligence-driven-defense.html) aka [MITRE Threat-based Security](https://mitre.github.io/unfetter/about/)), threat model ([MITRE ATT&CK](https://attack.mitre.org/)) and provide security teams an efficient tool for collaboration on one main challenge — combating threats.
 
 ### Why Atomic Threat Coverage 
 
