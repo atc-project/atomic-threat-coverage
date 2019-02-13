@@ -503,6 +503,23 @@ TargetLogonId,OS Logs,Windows,Windows Log,Security,Microsoft-Windows-Security-Au
 ParentProcessName,OS Logs,Windows,Windows Log,Security,Microsoft-Windows-Security-Auditing,DN_0002_4688_windows_process_creation_with_commandline,,
 ParentImage,OS Logs,Windows,Windows Log,Security,Microsoft-Windows-Security-Auditing,DN_0002_4688_windows_process_creation_with_commandline,,
 MandatoryLabel,OS Logs,Windows,Windows Log,Security,Microsoft-Windows-Security-Auditing,DN_0002_4688_windows_process_creation_with_commandline,,
+Hostname,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+Signature,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+AlertTitle,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+Category,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+Severity,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+Sha1,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+FileName,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+FilePath,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+IpAddress,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+UserName,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+UserDomain,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+FileHash,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+Hashes,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+Imphash,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+Sha256hash,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+Sha1hash,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
+Md5hash,AV Alerts,antivirus,None,None,None,DN_0084_av_alert,,
 event_data.ParentIntegrityLevel,OS Logs,Windows,Applications and Services Logs,Microsoft-Windows-Sysmon/Operational,Microsoft-Windows-Sysmon,DN_0003_1_windows_sysmon_process_creation,EN_0002_enrich_sysmon_event_id_1_with_parent_info,EN_0001_cache_sysmon_event_id_1_info
 event_data.ParentUser,OS Logs,Windows,Applications and Services Logs,Microsoft-Windows-Sysmon/Operational,Microsoft-Windows-Sysmon,DN_0003_1_windows_sysmon_process_creation,EN_0002_enrich_sysmon_event_id_1_with_parent_info,EN_0001_cache_sysmon_event_id_1_info
 event_data.ParentOfParentImage,OS Logs,Windows,Applications and Services Logs,Microsoft-Windows-Sysmon/Operational,Microsoft-Windows-Sysmon,DN_0003_1_windows_sysmon_process_creation,EN_0002_enrich_sysmon_event_id_1_with_parent_info,EN_0001_cache_sysmon_event_id_1_info
