@@ -227,7 +227,7 @@ ta_mapping = {
     "attack.initial_access": ("Initial Access", "TA0001"),
     "attack.execution": ("Execution", "TA0002"),
     "attack.persistence": ("Persistence", "TA0003"),
-    "attack.privelege_escalation": ("Privelege Escalation", "TA0004"),
+    "attack.privilege_escalation": ("Privilege Escalation", "TA0004"),
     "attack.defense_evasion": ("Defense Evasion", "TA0005"),
     "attack.credential_access": ("Credential Access", "TA0006"),
     "attack.discovery": ("Discovery", "TA0007"),
