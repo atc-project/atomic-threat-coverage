@@ -50,7 +50,8 @@ def main(**kwargs):
         if not isinstance(alert.get('tags'), list):
             continue
         threats = [tag for tag in alert['tags'] if tag.startswith('attack')]
-        tactics = [f'{ta_mapping[threat][1]}: {ta_mapping[threat][0]}'  for threat in threats if threat in ta_mapping.keys() ]
+        tactics = [f'{ta_mapping[threat][1]}: {ta_mapping[threat][0]}'  for threat in threats
+                   if threat in ta_mapping.keys() ]
         techniques = [threat for threat in threats if threat.startswith('attack.t')]
 
         enrichments  = [er for er in enrichments_list if er['title'] in alert.get('enrichment', [{'title':'-'}])]
@@ -70,7 +71,8 @@ def main(**kwargs):
         logging_policies = []
         for dn in alert_dns:
             # If there are logging policies in DN that we havent added yet - add them
-            logging_policies.extend([l for l in lp_list if l['title'] in dn['loggingpolicy'] and l not in logging_policies ])
+            logging_policies.extend([l for l in lp_list if l['title'] in dn['loggingpolicy']
+                                     and l not in logging_policies ])
             # If there are no logging policices at all - make an empty one just to make one row in csv
             if not isinstance(logging_policies, list) or len(logging_policies) == 0:
                 logging_policies = [{'title': "-", 'eventID': [-1, ]}]
@@ -82,13 +84,14 @@ def main(**kwargs):
                 for dn in alert_dns:
                     for lp in logging_policies:
                         for er in enrichments:
-                            result.append([tactic, technique_name, alert['title'], dn['category'], dn['platform'], dn['type'],
-                                           dn['channel'], dn['provider'], dn['title'],lp['title'],
+                            result.append([tactic, technique_name, alert['title'], dn['category'], dn['platform'],
+                                           dn['type'],dn['channel'], dn['provider'], dn['title'],lp['title'],
                                            er['title'], ';'.join(er.get('requirements', [])), '-', '-'])
     print("[*] Iterating through Response Playbooks")
     for rp in rp_list:
         threats = [tag for tag in rp['tags'] if tag.startswith('attack')]
-        tactics = [f'{ta_mapping[threat][1]}: {ta_mapping[threat][0]}'  for threat in threats if threat in ta_mapping.keys() ]
+        tactics = [f'{ta_mapping[threat][1]}: {ta_mapping[threat][0]}'
+                   for threat in threats if threat in ta_mapping.keys() ]
         techniques = [threat for threat in threats if threat.startswith('attack.t')]
         ras_buf = []
         [ras_buf.extend(l) for l in rp.values() if isinstance(l, list)]
@@ -126,8 +129,8 @@ def main(**kwargs):
 
     with open('../analytics.csv', 'w', newline='') as csvfile:
         alertswriter = csv.writer(csvfile, delimiter=',')  # maybe need some quoting
-        alertswriter.writerow(['tactic', 'technique', 'detection rule', 'category', 'platform', 'type', 'channel', 'provider',
-                               'data needed','logging policy', 'enrichment',
+        alertswriter.writerow(['tactic', 'technique', 'detection rule', 'category', 'platform', 'type', 'channel',
+                               'provider','data needed','logging policy', 'enrichment',
                                'enrichment requirements','response playbook', 'response action'])
         for row in result:
             alertswriter.writerow(row)
@@ -144,7 +147,8 @@ def main(**kwargs):
     print("[+] Created pivoting.csv")
 
 if __name__ == '__main__':
-    opts, args = getopt.getopt(sys.argv[1:], "", ["detectionrules_path=", "dataneeded_path=", "loggingpolicies_path=", "help"])
+    opts, args = getopt.getopt(sys.argv[1:], "",
+                               ["detectionrules_path=", "dataneeded_path=", "loggingpolicies_path=", "help"])
 
     # complex check in case '--help' would be in some path
     if len(sys.argv) > 1 and '--help' in sys.argv[1] and len(sys.argv[1]) < 7:

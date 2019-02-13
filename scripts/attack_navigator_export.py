@@ -68,7 +68,8 @@ def get_techniques(threats):
         technique_ids = [f'T{tag[8:]}' for tag in tags if tag.startswith('attack') and tag[8:].isdigit()]
 
         # iterate again finding all techniques and removing attack. part from them
-        tactics = [tag.replace('attack.', '').replace('_', '-') for tag in tags if tag.startswith('attack') and not tag[8:].isdigit()]
+        tactics = [tag.replace('attack.', '').replace('_', '-')
+                   for tag in tags if tag.startswith('attack') and not tag[8:].isdigit()]
         for technique_id in technique_ids:
             for tactic in tactics:
                 techniques.append({
