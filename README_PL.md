@@ -2,7 +2,7 @@
 
 # Atomic Threat Coverage
 
-Automatycznie generowana analityczna baza wiedzy zaprojektowana, aby zwalczać zagrożenia na podstawie MITRE ATT&CK.
+Automatycznie generowana analityczna baza wiedzy zaprojektowana, aby zwalczać zagrożenia na podstawie [MITRE ATT&CK](https://attack.mitre.org/).
 
 ![](images/logo_v1.png)
 
@@ -35,7 +35,7 @@ W praktyce problemy w kolaboracji wynikają z:
 - Braku prostego wyjaśnienia konkretnych wymogów
 - Różnicy w kompetencjach 
 
-Dlatego zdecydowaliśmy się stworzyć Atomic Threat Coverage - projekt mający na celu połączenie różnych funkcji w ramach jednej metodologii ([Lockheed Martin Intelligence Driven Defense®](https://www.lockheedmartin.com/en-us/capabilities/cyber/intelligence-driven-defense.html) lub [MITRE Threat-based Security](https://mitre.github.io/unfetter/about/)), modelu zagrożenia ([MITRE ATT&CK](https://attack.mitre.org/)) oraz dostarczenie efektywnego narzędzia do kolaboracji nad wspólnym wyzwaniem - zwalczaniem zagrożeń. 
+Dlatego zdecydowaliśmy się stworzyć Atomic Threat Coverage - projekt mający na celu połączenie różnych funkcji/procesów w ramach jednej metodologii ([Lockheed Martin Intelligence Driven Defense®](https://www.lockheedmartin.com/en-us/capabilities/cyber/intelligence-driven-defense.html) lub [MITRE Threat-based Security](https://mitre.github.io/unfetter/about/)), modelu zagrożenia ([MITRE ATT&CK](https://attack.mitre.org/)) oraz dostarczenie efektywnego narzędzia do kolaboracji nad wspólnym wyzwaniem - zwalczaniem zagrożeń. 
 
 ### Dlaczego Atomic Threat Coverage 
 
@@ -146,7 +146,7 @@ Ten moduł ma na celu ułatwienie komunikacji z zespołami SIEM/LM/Data Engineer
 
 - Przykładowy czysty log aby opisać jakich danych należy się spodziewać lub zbierać
 - Opis danych do zebrania (Platform/Type/Channel/etc) - wymagany do mapowania Detection Rules
-- Listę pól wymaganą do mapowania Detection Rules, Response Playbooks oraz wygenerowania pliku `analytics.csv`
+- Listę pól wymaganą do mapowania Detection Rules, Response Playbooks oraz wygenerowania pliku `pivoting.csv`
 
 #### Logging Policies
 
@@ -263,9 +263,10 @@ Ten moduł używany jest jako plan reakcji na incydent bezpieczeństwa dla konkr
 
 #### analytics.csv
 
-Atomic Threat Coverage generuje plik [analytics.csv](analytics.csv) z listą wszystkich zmapowanych danych do filtrowania i prostej analizy. Ten plik powinien odpowiedzień na następujące pytania:
+Atomic Threat Coverage generuje plik [analytics.csv](analytics.csv) z listą wszystkich zmapowanych danych w celu prostej analizy. Ten plik powinien odpowiedzień na następujące pytania:
 
 - W jakich zródłach danych można znaleźć konkrente typy danych (przykładowo nazwa domeny, nazwa użytkownika, hash etc.) podczas fazy identyfikacji?
+- Na jakie zagrożenia jestem w stanie zareagować z istniejącymi Response Playbookami?
 - Które polityki logowania (Logging Policies) potrzebuję wdrożyć, aby zbierać dane do wykrywania konkretnego zagrożenia?
 - Które polityki logowania (Logging Policies) mogę wdrożyć wszędzie, a które tylko na urządzeniach "krytycznych"?
 - Które dane pozwalają mi na alarmy high-fidelity? (Priorytetyzacja wdrażania polityk logowania, itd.)
@@ -280,6 +281,20 @@ Takie mapowanie powinno pomóc organizacji priorytetyzować wykrywanie zagroże�
 #### pivoting.csv
 
 Atomic Threat Coverage generuje plik [pivoting.csv](pivoting.csv) z listą wszystkich pól (z Data Needed) zmapowane do opisu Data Needed dla konkretnego zastosowania - dostarcza to informacje na temat urządzeń końcowych, gdzie można znaleźć jakieś konkretne dane, na przykład nazwa domenowa, nazwa użytkownika, hash, itd.
+
+<details>
+  <summary>Przykład zapytania o wiersze zawierające pole "hash" (kliknij aby rozwinąć)</summary>
+  <img src="images/pivoting_hash_v1.png" />
+</details>
+
+<br>
+
+Jednocześnie wskazuje, które pola mogą być znalezione przy konkretnym Enrichments:  
+
+<details>
+  <summary>Przykład zapytania o wiersze zawierające pole "ParentImage" (kliknij aby rozwinąć)</summary>
+  <img src="images/pivoting_parent_v1.png" />
+</details>
 
 ## Nasze cele
 
@@ -300,6 +315,10 @@ Atomic Threat Coverage generuje plik [pivoting.csv](pivoting.csv) z listą wszys
 7. Dodaje odpowiednie Response Playbooks do folderu `response_playbooks` (szablon do tworzenia nowych dostępny jest [tutaj](response_playbooks/respose_playbook.yml.template))
 8. Skonfiguruj ustawienia eksportowania (markdown/confluence) - `scripts/config.py`
 9. Wykonaj polecenie `make` w głównym katalogu repozytorium
+
+Nie musisz tworzyć niczego, aby framework zadziałał w danym środowisku. Wystarczy skonfigurować polityke eksportowania w `scripts/config.yml` i użyć domyślnych ustawień.
+
+Dostępne też jest publicznie dostępne [demo](https://atomicthreatcoverage.atlassian.net/wiki/spaces/DEMO/pages/10944874/win+susp+powershell+hidden+b64+cmd) automatycznie wygenerowanej bazy wiedzy w Confluence, aby móc zapoznać się z wynikiem działania frameworku z domyślnymi danymi.
 
 ## Aktualny status: Alfa
 
@@ -349,6 +368,7 @@ Oczywiście. My również mamy kilka reguł, które nie są automatycznie konwer
 ## TODO
 
 - [ ] Wydewelopowanie generowania szablonów TheHive Case bazując na Response Playbooks
+- [ ] wydewelopowanie dokumentacji dla customowego modułu danych ATC (Data Needed, Logging Policies, etc)
 - [ ] Wydewelopowanie kontenera docker dla tego narzędzia
 - [ ] Implementacja modułu "Mitigation Systems"
 - [ ] Implementacja modułu "Hardening Policies" 
