@@ -1,5 +1,5 @@
 confluence_space_name: "CLASSES" # SPACE KEY. GO TO: SPACE TOOLS -> Overview -> Space Details -> Key
-confluence_space_home_page_name: 'classes Home'
+confluence_space_home_page_name: 'classes Home' # SPACE HOME. GO TO: SPACE TOOLS -> Overview -> Space Details -> Home page
 confluence_name_of_root_directory: 'Atomic Threat Coverage'
 md_name_of_root_directory: 'Atomic_Threat_Coverage'
 detection_rules_directory: '../detection_rules'
