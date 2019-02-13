@@ -96,5 +96,5 @@ if __name__ == '__main__':
     filename = 'atc_export.json'
     with open('../' + filename, 'w') as fp:
         json.dump(NAVIGATOR_TEMPLATE, fp)
-    print(f'Exported to {filename}')
+    print(f'[+] Created {filename}')
 
