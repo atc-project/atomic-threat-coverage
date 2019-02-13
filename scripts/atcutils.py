@@ -215,30 +215,59 @@ class ATCutils:
 
             i = 0
 
-            for item in resp["results"]:
-                if int(item["number"]) > i:
-                    i = int(item["number"])
+            try:
+                for item in resp["results"]:
+                    if int(item["number"]) > i:
+                        i = int(item["number"])
 
-            i += 1  # update by one
+                i += 1  # update by one
 
-            dict_payload["version"] = {"number": "%s" % str(i)}
-            payload = json.dumps(dict_payload)
+                dict_payload["version"] = {"number": "%s" % str(i)}
+                payload = json.dumps(dict_payload)
 
-            response = requests.request(
-                "PUT",
-                url + "/%s" % str(cid),
+                response = requests.request(
+                    "PUT",
+                    url + "/%s" % str(cid),
+                    data=payload,
+                    headers=headers,
+                    auth=auth
+                )
+
+                return "Page updated"
+            except KeyError:
+                response = requests.request(
+                "GET",
+                url + "/%s/" % str(cid),
                 data=payload,
                 headers=headers,
                 auth=auth
-            )
+                )
 
-            return "Page updated"
+                resp = json.loads(response.text)
 
+                try:
+                    resp["version"]["number"] += 1
+
+                    dict_payload["version"] = resp["version"]
+                    payload = json.dumps(dict_payload)
+
+                    response = requests.request(
+                        "PUT",
+                        url + "/%s" % str(cid),
+                        data=payload,
+                        headers=headers,
+                        auth=auth
+                    )
+
+                    return "Page updated"
+
+                except:
+                    return "Page update failed"
         elif "status" in resp.keys():
             if resp["status"] == "current":
                 return "Page created"
 
-        return "Something unexpected happened.."
+        return None
 
     @staticmethod
     def sigma_lgsrc_fields_to_names(logsource_dict):

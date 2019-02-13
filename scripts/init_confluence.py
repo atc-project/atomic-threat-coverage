@@ -42,7 +42,9 @@ def main(c_auth=None):
     }
 
     # print(push_to_confluence(data, url, auth))
-    ATCutils.push_to_confluence(data, url, auth)
+    if not ATCutils.push_to_confluence(data, url, auth):
+        raise Exception("Could not create or update the page. " +
+                        "Is the parent name correct?")
 
     spaces = ["Detection Rules", "Logging Policies",
               "Data Needed", "Triggers", "Response Actions",
@@ -59,7 +61,9 @@ def main(c_auth=None):
             "confluencecontent": content,
         }
         # print(push_to_confluence(data, url, auth))
-        ATCutils.push_to_confluence(data, url, auth)
+        if not ATCutils.push_to_confluence(data, url, auth):
+            raise Exception("Could not create or update the page. " +
+                            "Is the parent name correct?")
     print("Done!")
 
 
