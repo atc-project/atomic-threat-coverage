@@ -45,7 +45,7 @@ Postanowiliśmy zrobić to inaczej.
 
 Atomic Threat Coverage jest narzędziem, które pozwala na stworzenie i utrzymywania **własnego** repozytorium analitycznego, importowanie danych z innych projektów (przykładowo [Sigma](https://github.com/Neo23x0/sigma), [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) jak również z prywantej kopii tych projektów z **własnymi** analizami, oraz wyeksportowanie wszystkich informacje do czytelnego dla człowieka formatu, w stylu wiki, na dwa (jak dotąd) sposoby:
 
-1. [Atlassian Confluence](https://www.atlassian.com/software/confluence) ([tutaj](https://atomicthreatcoverage.atlassian.net/wiki/spaces/DEMO/pages/10944874/win+susp+powershell+hidden+b64+cmd) znajduje się demo bazy wiedzy automatycznie wygenerowanej przez Atomic Threat Coverage)
+1. [Atlassian Confluence](https://www.atlassian.com/software/confluence) ([tutaj](https://atomicthreatcoverage.atlassian.net/wiki/spaces/ATC/pages/126025996/WMI+Persistence+-+Script+Event+Consumer) znajduje się demo bazy wiedzy automatycznie wygenerowanej przez Atomic Threat Coverage)
 2. [To repozytorium samo w sobie](Atomic_Threat_Coverage) — wiki stworzona przy użyciu plików markdown
 
 Innymi słowy, nie potrzeba już samodzielenie pracować nad warstwą prezentacji manualnie. Wystarczy skupić się na wartościowej pracy (np. tworzenie reguł Sigma), a Atomic Threat Coverage automatycznie wygeneruje analityczną bazę danych ze wszystkimi danymi, mapując wszystkie wartościowe metryki. Gotowe do użycia, udostępniania i prezentowania kierownictwu, klientowi i kolegom repozytorium.
@@ -318,7 +318,7 @@ Jednocześnie wskazuje, które pola mogą być znalezione przy konkretnym Enrich
 
 Nie musisz tworzyć niczego, aby framework zadziałał w danym środowisku. Wystarczy skonfigurować polityke eksportowania w `scripts/config.yml` i użyć domyślnych ustawień.
 
-Dostępne też jest publicznie dostępne [demo](https://atomicthreatcoverage.atlassian.net/wiki/spaces/DEMO/pages/10944874/win+susp+powershell+hidden+b64+cmd) automatycznie wygenerowanej bazy wiedzy w Confluence, aby móc zapoznać się z wynikiem działania frameworku z domyślnymi danymi.
+Dostępne też jest publicznie dostępne [demo](https://atomicthreatcoverage.atlassian.net/wiki/spaces/ATC/pages/126025996/WMI+Persistence+-+Script+Event+Consumer) automatycznie wygenerowanej bazy wiedzy w Confluence, aby móc zapoznać się z wynikiem działania frameworku z domyślnymi danymi.
 
 ## Aktualny status: Alfa
 
