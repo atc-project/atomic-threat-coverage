@@ -97,7 +97,7 @@ class PopulateConfluence:
 
         for tg_file in tg_list:
             try:
-                tg = triggers(tg_file)
+                tg = Triggers(tg_file)
                 tg.render_template("confluence")
                 confluence_data = {
                     "title": tg.fields["attack_technique"],
