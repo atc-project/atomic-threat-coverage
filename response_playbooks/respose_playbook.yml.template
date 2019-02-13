@@ -24,6 +24,3 @@ recovery:
   - RA_0029_recovery_reinstall_host_from_golden_image
 lessons_learned:
   - RA_0013_lessons_learned_develop_incident_report
-workflow: |
-    Response Playbook in markdown format.
-    Here newlines will be saved.
