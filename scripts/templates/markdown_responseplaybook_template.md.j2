@@ -1,0 +1,31 @@
+| Title          | {{ title }}                                                                                                      |
+|:---------------|:-----------------------------------------------------------------------------------------------------------------|
+| Description    | {{ description }}                                        	|
+| ATT&amp;CK Tactic    | {%- if tactics is defined and tactics|length %}<ul>{% for tactic_name, tactic_id in tactics  %}<li>[{{tactic_id}}: {{tactic_name}}](https://attack.mitre.org/tactics/{{tactic_id}})</li>{% endfor %}</ul>{% else %} None{%endif%}  |
+| ATT&amp;CK Technique | {%- if techniques is defined and techniques|length %}<ul>{% for technique_name, technique_id in techniques  %}<li>[{{technique_id}}: {{technique_name}}](https://attack.mitre.org/tactics/{{technique_id}})</li>{% endfor %}</ul>{% else %} None{%endif%}                             |
+| Tags    | {%- if other_tags is defined and other_tags|length %}<ul>{% for tag in other_tags %}<li>{{ tag }}</li>{% endfor %}</ul>{% else %} None{%endif%}    	|
+| Severity    | {{ severity }}                                             		|
+| TLP    | {{ tlp }}                                                            |
+| PAP    | {{ pap }}                                                            |
+| Author    | {{ author }}                                        				|
+| Creation Date    | {{ creation_date }}                                       	|
+| Identification | {%- if identification is defined and identification|length %}<ul>{% for action in identification %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul>{% else %} None{%endif%} |
+| Containment | {%- if containment is defined and containment|length %}<ul>{% for action in containment %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul>{% else %} None{%endif%} |
+| Eradication | {%- if eradication is defined and eradication|length %}<ul>{% for action in eradication %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul>{% else %} None{%endif%} |
+| Recovery | {%- if recovery is defined and recovery|length %}<ul>{% for action in recovery %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul>{% else %} None{%endif%} |
+| Lessons Learned | {%- if lessons_learned is defined and lessons_learned|length %}<ul>{% for action in lessons_learned %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul>{% else %} None{%endif%} |
+
+### Workflow
+
+{{ workflow }}
+
+{% for stage_name, stage_actions in stages %}
+
+#### {{ stage_name }}
+{% for action_description, action_workflow in stage_actions%}
+##### {{ action_description }}
+
+{{ action_workflow }}
+
+{%- endfor %}
+{%- endfor %}
