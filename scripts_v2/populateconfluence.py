@@ -8,6 +8,7 @@ from triggers import Triggers
 from enrichment import Enrichment
 from responseaction import ResponseAction
 from responseplaybook import ResponsePlaybook
+from pdb import set_trace as bp
 
 # Import ATC Utils
 from atcutils import ATCutils
@@ -121,7 +122,7 @@ class PopulateConfluence:
 
     def logging_policy(self, lp_path):
         """Desc"""
-
+        
         print("Populating Logging Policies..")
         if lp_path:
             lp_list = glob.glob(lp_path + '*.yml')

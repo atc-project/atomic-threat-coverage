@@ -60,7 +60,7 @@
                     <td class="confluenceTd">
                         {%- if data_needed |length > 1 -%}<ul>{%endif%}
                         {%- for data_name, data_id in data_needed %}
-                            {%- if data_needed |length > 1 -%}<li>{%endif%}{% if data_id != "None" %}<a href="/wiki/spaces/SOC/pages/{{data_id}}">{{ data_name }}</a>{% else %}{{ data_name }}{% endif %}{%- if data_needed |length > 1 -%}</li>{%endif%}
+                            {%- if data_needed |length > 1 -%}<li>{%endif%}{% if data_id != "None" %}<a href="{{confluence_viewpage_url}}{{data_id}}">{{ data_name }}</a>{% else %}{{ data_name }}{% endif %}{%- if data_needed |length > 1 -%}</li>{%endif%}
                         {%- endfor %}
                         {%- if data_needed |length > 1 -%}</ul>{%endif%}
                         <br />
@@ -71,7 +71,7 @@
                     <td class="confluenceTd">
                         {%- if triggers |length > 1 -%}<ul>{%endif%}
                         {%- for trigger_name, trigger_id, trigger_page_id in triggers %}
-                            {%- if triggers |length > 1 -%}<li>{%endif%}{% if trigger_id != "None" %}<a href="/wiki/spaces/SOC/pages/{{trigger_page_id}}">{{trigger_id}}: {{ trigger_name }}</a>{% else %}{{trigger_id}}: {{ trigger_name }}{% endif %}{%- if triggers |length > 1 -%}</li>{%endif%}
+                            {%- if triggers |length > 1 -%}<li>{%endif%}{% if trigger_id != "None" %}<a href="{{confluence_viewpage_url}}{{trigger_page_id}}">{{trigger_id}}: {{ trigger_name }}</a>{% else %}{{trigger_id}}: {{ trigger_name }}{% endif %}{%- if triggers |length > 1 -%}</li>{%endif%}
                         {%- endfor %}
                         {%- if triggers |length > 1 -%}</ul>{%endif%}
                         <br />

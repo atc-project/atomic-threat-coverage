@@ -163,6 +163,8 @@ class DetectionRule:
         elif template_type == "confluence":
             template = env.get_template(
                 'confluence_alert_template.html.j2')
+            
+            self.fields.update({'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
 
             sigma_rule = ATCutils.read_rule_file(self.yaml_file)
             self.fields.update({'sigma_rule': sigma_rule})
@@ -252,7 +254,7 @@ class DetectionRule:
                     print(trigger + ": No atomics trigger for this technique")
 
             self.fields.update({'triggers': triggers})
-
+                    
         self.content = template.render(self.fields)
         # Need to convert ampersand into HTML "save" format
         # Otherwise confluence throws an error

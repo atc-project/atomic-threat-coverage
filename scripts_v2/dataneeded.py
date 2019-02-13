@@ -10,6 +10,7 @@ import os
 ############################# Data Needed #####################################
 ###############################################################################
 
+ATCconfig = ATCutils.read_yaml_file("config.yml")
 
 class DataNeeded:
     """Class for the Data Needed entity"""
@@ -96,6 +97,8 @@ class DataNeeded:
         elif template_type == "confluence":
             template = env\
                 .get_template('confluence_dataneeded_template.html.j2')
+
+            self.dn_fields.update({'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
 
             self.dn_fields.update({'description': self.dn_fields
                                    .get('description').strip()})

@@ -52,7 +52,7 @@
                <td class="confluenceTd">
                   {%- if linkedra |length > 1 -%}<ul>{%endif%}
                      {% for action_name, action_id in linkedra %}
-                     {%- if linkedra |length > 1 -%}<li>{%endif%}<a href="/wiki/spaces/SOC/pages/{{action_id}}">{{ action_name }}</a>{%- if linkedra |length > 1 -%}</li>{%endif%}
+                     {%- if linkedra |length > 1 -%}<li>{%endif%}<a href="{{confluence_viewpage_url}}{{action_id}}">{{ action_name }}</a>{%- if linkedra |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if linkedra |length > 1 -%}</ul>{%endif%}
                   <br />

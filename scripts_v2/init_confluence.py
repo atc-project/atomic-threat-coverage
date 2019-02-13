@@ -20,7 +20,7 @@ def main(c_auth=None):
         pass
 
     if not c_auth:
-        mail = input("Email for access to confluence: ")
+        mail = input("Login: ")
         password = getpass.getpass(prompt='Password: ', stream=None)
         auth = HTTPBasicAuth(mail, password)
     else:

@@ -78,7 +78,7 @@
                   {%- if stage_actions is defined and stage_actions|length %}
                      {%- if stage_actions |length > 1 -%}<ul>{%endif%}
                      {%- for action, action_id in stage_actions %}
-                         {%- if stage_actions |length > 1 -%}<li>{%endif%}<a href="/wiki/spaces/SOC/pages/{{action_id}}">{{ action }}</a>{%- if stage_actions |length > 1 -%}</li>{%endif%}
+                         {%- if stage_actions |length > 1 -%}<li>{%endif%}<a href="{{confluence_viewpage_url}}{{action_id}}">{{ action }}</a>{%- if stage_actions |length > 1 -%}</li>{%endif%}
                      {%- endfor %}
                      {%- if stage_actions |length > 1 -%}</ul>{%endif%}
                   {%else%}

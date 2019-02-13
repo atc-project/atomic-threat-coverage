@@ -119,6 +119,8 @@ class ResponsePlaybook:
                 'confluence_responseplaybook_template.html.j2'
             )
 
+            self.rp_parsed_file.update({'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
+
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')
             technique = []

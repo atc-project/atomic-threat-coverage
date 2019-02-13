@@ -12,7 +12,6 @@ import os
 
 ATCconfig = ATCutils.read_yaml_file("config.yml")
 
-
 class ResponseAction:
     """Class for the Playbook Actions entity"""
 
@@ -66,6 +65,8 @@ class ResponseAction:
             template = env.get_template(
                 'confluence_responseaction_template.html.j2'
             )
+
+            self.ra_parsed_file.update({'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
 
             linked_ra = self.ra_parsed_file.get("linked_ra")
 
