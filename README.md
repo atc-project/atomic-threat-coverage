@@ -2,18 +2,19 @@
 
 # Atomic Threat Coverage
 
-Automatically generated knowledge base of analytics designed to combat threats based on MITRE's ATT&CK.
+Automatically generated knowledge base of analytics designed to combat threats based on MITRE's [ATT&CK](https://attack.mitre.org/).
 
 ![](images/logo_v1.png)
-<!-- ![](images/atc_description_v01.png) -->
 
 Atomic Threat Coverage is tool which allows you to automatically generate knowledge base of analytics, designed to combat threats (based on the [MITRE ATT&CK](https://attack.mitre.org/) adversary model) from Detection, Response, Mitigation and Simulation perspectives:
 
 - **Detection Rules** based on [Sigma](https://github.com/Neo23x0/sigma) — Generic Signature Format for SIEM Systems
 - **Data Needed** to be collected to produce detection of specific Threat
 - **Logging Policies** need to be configured on data source to be able to collect Data Needed
+- **Enrichments** for specific Data Needed which required for some Detection Rules
 - **Triggers** based on [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) — detection tests based on MITRE's ATT&CK
-- **Response Playbooks** for reacting on Alerts triggered by specific Threat
+- **Response Actions** which executed during Incident Response
+- **Response Playbooks** for reacting on specific threat, constructed from atomic Response Actions
 - **Hardening Policies** need to be implemented to mitigate specific Threat
 - **Mitigation Systems** need to be deployed and configured to mitigate specific Threat
 
@@ -34,7 +35,7 @@ In practice there are difficulties in collaboration due to:
 - Absence of simple and straightforward way to explain specific requirements
 - Difference in competence level (from both depth and areas perspectives)
 
-That's why we decided to create Atomic Threat Coverage — project which connects different functions on the same Threat Centric methodology ([Lockheed Martin Intelligence Driven Defense®](https://www.lockheedmartin.com/en-us/capabilities/cyber/intelligence-driven-defense.html) aka [MITRE Threat-based Security](https://mitre.github.io/unfetter/about/)), threat model ([MITRE ATT&CK](https://attack.mitre.org/)) and provide security teams an efficient tool for collaboration on one main challenge — combating threats.
+That's why we decided to create Atomic Threat Coverage — project which connects different functions/processes under unified Threat Centric methodology ([Lockheed Martin Intelligence Driven Defense®](https://www.lockheedmartin.com/en-us/capabilities/cyber/intelligence-driven-defense.html) aka [MITRE Threat-based Security](https://mitre.github.io/unfetter/about/)), threat model ([MITRE ATT&CK](https://attack.mitre.org/)) and provide security teams an efficient tool for collaboration on one main challenge — combating threats.
 
 ### Why Atomic Threat Coverage 
 
@@ -53,14 +54,17 @@ In other words, you don't have to work on data representation layer manually, yo
 
 Everything starts from Sigma rule and ends up with human-readable wiki-style pages. Atomic Threat Coverage parses it and:
 
-1. Maps Detection Rule to ATT&CK Tactic using `tags` from Sigma rule
-2. Maps Detection Rule to ATT&CK Technique using `tags` from Sigma rule
-3. Maps Detection Rule to Data Needed using `logsource` and `detection` sections from Sigma rule
-4. Maps Detection Rule to Triggers (Atomic Red Team tests) using `tags` from Sigma rule
-5. Maps Logging Policies to Data Needed using existing mapping inside Data Needed
-6. Converts everything into Confluence and Markdown wiki-style pages using jinja templates (`scripts/templates`)
-7. Pushes all pages to local repo and Confluence server (according to configuration provided in `scripts/config.py`)
-8. Creates `analytics.csv` file for simple analytics of existing data
+1. Maps **Detection Rule** to ATT&CK Tactic and Technique using `tags` from Sigma rule
+2. Maps **Detection Rule** to **Data Needed** using `logsource` and `detection` sections from Sigma rule
+3. Maps **Detection Rule** to **Triggers** (Atomic Red Team tests) using `tags` from Sigma rule
+4. Maps **Detection Rule** to **Enrichments** using existing mapping inside **Detection Rule**
+5. Maps **Response Playbooks** to ATT&CK Tactic and and Technique using existing mapping inside **Response Playbooks**
+6. Maps **Response Playbooks** to **Response Actions** using existing mapping inside **Response Playbooks**
+7. Maps **Logging Policies** to **Data Needed** using existing mapping inside **Data Needed**
+8. Converts everything into Confluence and Markdown wiki-style pages using jinja templates (`scripts/templates`)
+9. Pushes all pages to local repo and Confluence server (according to configuration provided in `scripts/config.yml`)
+10. Creates `analytics.csv` and `pivoting.csv` files for simple analysis of existing data
+11. Creates `atc_export.json` — [ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/enterprise/) profile for visualisation of current detection abilities
 
 ### Under the hood
 
@@ -68,26 +72,31 @@ Data in the repository:
 
 ```
 ├── analytics.csv
-├── dataneeded
-│   ├── DN_0001_windows_process_creation_4688.yml
-│   ├── DN_0002_windows_process_creation_with_commandline_4688.yml
-│   ├── DN_0003_windows_sysmon_process_creation_1.yml
-│   ├── DN_0004_windows_account_logon_4624.yml
-│   └── dataneeded_template.yml
-├── detectionrules
-│   └── sigma
+├── pivoting.csv
+├── data_needed
+│   ├── DN_0001_4688_windows_process_creation.yml
+│   ├── DN_0002_4688_windows_process_creation_with_commandline.yml
+│   └── dataneeded.yml.template
+├── detection_rules
+│   └── sigma/
 ├── enrichments
 │   ├── EN_0001_cache_sysmon_event_id_1_info.yml
 │   ├── EN_0002_enrich_sysmon_event_id_1_with_parent_info.yaml
-│   └── EN_0003_enrich_other_sysmon_events_with_event_id_1_data.yml
-├── loggingpolicies
+│   └── enrichment.yml.template
+├── logging_policies
 │   ├── LP_0001_windows_audit_process_creation.yml
 │   ├── LP_0002_windows_audit_process_creation_with_commandline.yml
-│   ├── LP_0003_windows_sysmon_process_creation.yml
-│   ├── LP_0004_windows_audit_logon.yml
 │   └── loggingpolicy_template.yml
+├── response_actions
+│   ├── RA_0001_identification_get_original_email.yml
+│   ├── RA_0002_identification_extract_observables_from_email.yml
+│   └── respose_action.yml.template
+├── response_playbooks
+│   ├── RP_0001_phishing_email.yml
+│   ├── RP_0002_generic_response_playbook_for_postexploitation_activities.yml
+│   └── respose_playbook.yml.template
 └── triggering
-    └── atomic-red-team
+    └── atomic-red-team/
 ```
 
 #### Detection Rules
@@ -137,7 +146,7 @@ This entity expected to simplify communication with SIEM/LM/Data Engineering tea
 
 - Sample of the raw log to describe what data they could expect to receive/collect
 - Description of data to collect (Platform/Type/Channel/etc) — needed for calculation of mappings to Detection Rules and general description
-- List of fields also needed for calculation of mappings to Detection Rules and Response PLaybooks, as well as for `analytics.csv` generation
+- List of fields also needed for calculation of mappings to Detection Rules and Response Playbooks, as well as for `pivoting.csv` generation
 
 #### Logging Policies
 
@@ -159,6 +168,33 @@ This entity expected to simplify communication with SIEM/LM/Data Engineering tea
 <br>
 
 This entity expected to explain SIEM/LM/Data Engineering teams and IT departments which logging policies have to be configured to have proper Data Needed for Detection and Response to specific Threat. It also explains how exactly this policy can be configured.
+
+#### Enrichments
+
+<details>
+  <summary>Enrichments yaml (click to expand)</summary>
+  <img src="images/en_yaml_v1.png" />
+</details>
+
+<details>
+  <summary>Automatically created confluence page (click to expand)</summary>
+  <img src="images/en_confluence_v1.png" />
+</details>
+
+<details>
+  <summary>Automatically created markdown page (click to expand)</summary>
+  <img src="images/en_markdown_v1.png" />
+</details>
+
+<br>
+
+This entity expected to simplify communication with SIEM/LM/Data Engineering teams. It includes the next data:
+
+- List of Data Needed which could be enriched
+- Description of the goal of the specific Enrichment (new fields, translation, renaming etc)
+- Example of implementation (for example, Logstash config)
+
+This way you will be able to simply explain why you need specific enrichments (mapping to Detection Rules) and specific systems for data enrichment (for example, Logstash).
 
 #### Triggers
 
@@ -183,22 +219,89 @@ Triggers are unmodified [Atomic Red Team tests](https://github.com/redcanaryco/a
 
 This entity needed to test specific technical controls and detections. Detailed description could be found in official [site](https://atomicredteam.io).
 
+#### Response Actions
+
+<details>
+  <summary>Response Action yaml (click to expand)</summary>
+  <img src="images/ra_yaml_v1.png" />
+</details>
+
+<details>
+  <summary>Automatically created confluence page (click to expand)</summary>
+  <img src="images/ra_confluence_v1.png" />
+</details>
+
+<details>
+  <summary>Automatically created markdown page (click to expand)</summary>
+  <img src="images/ra_markdown_v1.png" />
+</details>
+
+<br>
+
+This entity used to build Response Playbooks.
+
+#### Response Playbooks
+
+<details>
+  <summary>Response Playbook yaml (click to expand)</summary>
+  <img src="images/rp_yaml_v1.png" />
+</details>
+
+<details>
+  <summary>Automatically created confluence page (click to expand)</summary>
+  <img src="images/rp_confluence_v1.png" />
+</details>
+
+<details>
+  <summary>Automatically created markdown page (click to expand)</summary>
+  <img src="images/rp_markdown_v1.png" />
+</details>
+
+<br>
+
+This entity used as an Incident Response plan for specific threat.
+
 #### analytics.csv
 
-Atomic Threat Coverage generates [analytics.csv](analytics.csv) with list of all data mapped to each other for filtering and simple analytics. This file is suppose to answer these questions:
+Atomic Threat Coverage generates [analytics.csv](analytics.csv) with list of all data mapped to each other for simple analysis. This file is suppose to answer these questions:
 
-- In which data sources I can find some specific data type (like domain name, username, hash etc), for example, during triage/incident response (identification stage)
 - What data do I need to collect to detect specific threats?
+- What threats can I respond to with existing Response Playbooks?
 - Which Logging Policies do I need to implement to collect the data I need for detection of specific threats?
 - Which Logging Policies I can install everywhere (event volume low/medium) and which only on critical hosts (high/extremely high)?
 - Which data provided me most of the high fidelity alerts? (prioritisation of data collection implementation)
 - etc
+
+<details>
+  <summary>Example of lookup for "pass the hash" technique (click to expand)</summary>
+  <img src="images/analytics_pth_v1.png" />
+</details>
+
+<br>
 
 Ideally, this kind of mapping could provide organizations with the ability to connect Threat Coverage from detection perspective to *money*. Like:
 
 - if we will collect all Data Needed from all hosts for all Detection Rules we have it would be X Events Per Second (EPS) (do calculation for a couple of weeks or so) with these resources for storage/processing (some more or less concrete number)
 - if we will collect Data Needed only for high fidelity alerts and only on critical hosts, it will be Y EPS with these resources for storage/processing (again, more or less concrete number)
 - etc
+
+#### pivoting.csv
+
+Atomic Threat Coverage generates [pivoting.csv](pivoting.csv) with list of all fields (from Data Needed) mapped to description of Data Needed for very specific purpose — it provides information about data sources where some specific data type could be found, for example domain name, username, hash etc:
+
+<details>
+  <summary>Example of lookup for "hash" field (click to expand)</summary>
+  <img src="images/pivoting_hash_v1.png" />
+</details>
+
+<br>
+
+At the same time it highlights which fields could be found only with specific enrichments:
+
+<details>
+  <summary>Example of lookup for "ParentImage" field (click to expand)</summary>
+  <img src="images/pivoting_parent_v1.png" />
+</details>
 
 ## Goals
 
@@ -210,23 +313,54 @@ Ideally, this kind of mapping could provide organizations with the ability to co
 
 ## Workflow
 
-1. Add your own custom [Sigma](https://github.com/Neo23x0/sigma) rules (if you have any) to `detectionrules` directory
-2. Add directory with your own, custom [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) detection tests (if you have any) to `triggering` directory
-3. Add Data Needed entities related to Sigma rules into `dataneeded` directory (you can create new using `dataneeded/dataneeded_template.yml`)
-4. Add Logging Policies related to Data Needed into `loggingpolicies` directory (you can create new using `loggingpolicies/loggingpolicy_template.yml`)
-5. Configure your export settings using `scripts/config.py`
-6. Execute `make` in root directory of the repository
+1. Add your own custom [Sigma](https://github.com/Neo23x0/sigma) rules/fork (if you have any) to `detection_rules` directory
+2. Add your own custom [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) tests/fork (if you have any) to `triggering` directory
+3. Add Data Needed into `data_needed` directory (you can create new one using [template](data_needed/dataneeded.yml.template))
+4. Add Logging Policies into `logging_policies` directory (you can create new one using [template](logging_policies/loggingpolicy.yml.template))
+5. Add Enrichments into `enrichments` directory (you can create new one using [template](enrichments/enrichment.yml.template))
+6. Add Response Actions into `response_actions` directory (you can create new one using [template](response_actions/respose_action.yml.template))
+7. Add Response Playbooks into `response_playbooks` directory (you can create new one using [template](response_playbooks/respose_playbook.yml.template))
+8. Configure your export settings using `scripts/config.yml`
+9. Execute `make` in root directory of the repository
 
-## Current Status: Proof Of Concept
+You don't have to add anything to make it work in your environment, you can just configure export settings using `scripts/config.yml` and utilise default dataset.
+At the same time you can access [demo](https://atomicthreatcoverage.atlassian.net/wiki/spaces/DEMO/pages/10944874/win+susp+powershell+hidden+b64+cmd) of automatically generated knowledge base in Confluence to make yourself familiar with final result with default dataset.
 
-The project is currently in Proof Of Concept stage and it was developed in a few evenings. It doesn't work for all Sigma rules. We will rewrite most of scripts in a proper way, cover all original [Sigma](https://github.com/Neo23x0/sigma) rules and add other entities (like Playbooks). We want to show working example of data processing to discuss it with the community, receive feedback and suggestions.
+## Current Status: Alpha
+
+The project is currently in an alpha stage. It doesn't support all existing Sigma rules (current coverage is ~80%), also have some entities to develop (like Mitigation Systems). We warmly welcome any feedback and suggestions to improve the project.
 
 ## Requirements
 
 - Unix-like OS or [Windows Subsystem for Linux (WSL)](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (it required to execute `make`)
 - Python 3.7.1
-- [jinja2](https://pypi.org/project/Jinja2/) python library
+- [requests](https://pypi.org/project/requests/), [PyYAML](https://pypi.org/project/PyYAML/) and [jinja2](https://pypi.org/project/Jinja2/) Python libraries
 - [Render Markdown](https://marketplace.atlassian.com/apps/1212654/render-markdown) app for Confluence (free open source)
+
+## FAQ
+
+#### Will my private analytics (Detection Rules, Logging Policies, etc) be transferred somewhere?
+
+No. Only to your confluence node, according to configuration provided in `scripts/config.yml`. Atomic Threat Coverage doesn't connect to any other remote hosts, you can easily check it.
+
+#### What do you mean saying "evangelize threat information sharing" then?
+
+We mean that you will use community compatible formats for (at least) Detection Rules ([Sigma](https://github.com/Neo23x0/sigma)) and Triggers ([Atomic Red Team](https://github.com/redcanaryco/atomic-red-team)), and on some maturity level you will (hopefully) have willingness to share some interesting analytics with community. It's totally up to you.
+
+#### How can I add new Trigger, Detection Rule, or anything else to my private fork of Atomic Threat Coverage?
+
+Simplest way is to follow [workflow](#workflow) chapter, just adding your rules into pre-configured folders for specific type of analytics.
+
+More "production" way is to configure your private forks of [Sigma](https://github.com/Neo23x0/sigma) and [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) projects as [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) of your Atomic Threat Coverage private fork. After that you only will need to configure path to them in `scripts/config.yml`, this way Atomic Threat Coverage will start using it for knowledge base generation.
+
+#### Sigma doesn't support some of my Detection Rules. Does it still make sense to use Atomic Threat Coverage?
+
+Absolutely. We also have some Detection Rules which couldn't be automatically converted to SIEM/LM queries by Sigma. We still use Sigma format for such rules putting unsupported detection logic into "condition" section. Later SIEM/LM teams manually create rules based on description in this field. ATC is not only about automatic queries generation/documentation, there are still a lot of advantages for analysis. You wouldn't be able to utilise them without Detection Rules in Sigma format.
+
+## Contacts
+
+- Folow us on [Twitter](https://twitter.com/atc_project) for updates
+- Join discussions in [Slack](https://join.slack.com/t/atomicthreatcoverage/shared_invite/enQtNTMwNDUyMjY2MTE5LTk1ZTY4NTBhYjFjNjhmN2E3OTMwYzc4MTEyNTVlMTVjMDZmMDg2OWYzMWRhMmViMjM5YmM1MjhkOWFmYjE5MjA) or [Telegram](https://t.me/atomic_threat_coverage) 
 
 ## Authors
 
@@ -235,23 +369,22 @@ The project is currently in Proof Of Concept stage and it was developed in a few
 - Mateusz Wydra, [@sn0w0tter](https://github.com/sn0w0tter)
 - Mikhail Aksenov, [@AverageS](https://github.com/AverageS)
 
+## Thanks to
+
+- Igor Ivanov, [@lctrcl](https://github.com/lctrcl) for collaboration on initial data types and mapping rules development
+- Andrey, [Polar_Letters](https://www.behance.net/Polar_Letters) for the logo
+- [Sigma](https://github.com/Neo23x0/sigma), [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team), [TheHive](https://blog.thehive-project.org) and [Elastic Common Schema](https://github.com/elastic/ecs) projects for inspiration
+- MITRE [ATT&CK](https://attack.mitre.org/) for making this possible
+
 ## TODO
 
-- [x] Fix `analytics.csv` generation
-- [x] Develop Polish and Russian version of the README
-- [ ] Rewrite `make` and all bash scripts in python for compatibility with Windows
-- [ ] Rewrite main codebase in a proper way
-- [ ] Add contribution description
-- [ ] Create developer guide (how to create custom fields)
+- [ ] Develop TheHive Case Templates generation based on Response Playbooks
+- [ ] Develop specification for custom ATC data entities (Data Needed, Logging Policies etc)
+- [ ] Develop docker container for the project
+- [ ] Implement "Mitigation Systems" entity
+- [ ] Implement "Hardening Policies" entity
 - [ ] Implement consistent Data Model (fields naming)
-- [ ] Add the rest of Data Needed for default Sigma rules
-- [ ] Add the rest of Logging Policies for all Data Needed
-- [ ] Define new Detection Rule naming scheme (separate Events and Alerts)
-- [ ] Develop docker container for the tool
-- [ ] Create [MITRE ATT&CK Navigator](https://mitre.github.io/attack-navigator/enterprise/) profile generator per data type
-- [x] Create new entity called "Enrichments" which will define how to enrich specific Data Needed
 - [ ] Implement new entity — "Visualisation" with Kibana visualisations/dashboards stored in yaml files and option to convert them into curl commands for uploading them into Elasticsearch
-- [ ] Implement "Playbook" entity (based on Detection Rule and Data Needed) with automatic TheHive Case Templates generation (actionable Playbook)
 
 ## Links
 

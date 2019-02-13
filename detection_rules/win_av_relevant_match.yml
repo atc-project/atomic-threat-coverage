@@ -1,0 +1,35 @@
+title: Relevant Anti-Virus Event
+description: This detection method points out highly relevant Antivirus events
+author: Florian Roth
+logsource:
+    product: windows
+    service: application
+detection:
+    keywords:
+        - HTool
+        - Hacktool
+        - ASP/Backdoor
+        - JSP/Backdoor
+        - PHP/Backdoor
+        - Backdoor.ASP
+        - Backdoor.JSP
+        - Backdoor.PHP
+        - Webshell
+        - Portscan
+        - Mimikatz
+        - WinCred
+        - PlugX
+        - Korplug
+        - Pwdump
+        - Chopper
+        - WmiExec
+        - Xscan
+        - Clearlog
+        - ASPXSpy
+    filters:
+        - Keygen
+        - Crack
+    condition: keywords and not 1 of filters
+falsepositives:
+    - Some software piracy tools (key generators, cracks) are classified as hack tools
+level: high

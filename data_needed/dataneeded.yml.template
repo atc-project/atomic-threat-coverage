@@ -1,0 +1,19 @@
+title: DN_0000_some_name_here
+description: >
+  Some text description here. It will be merged into one line.
+loggingpolicy: 
+  - LP_0000_some_logging_policy_name_here
+references:
+  - http://something.com
+category: OS Logs                               # HTTP Logs | DNS Logs | IDS/IPS/NGFW Alerts | Antivirus Alerts | Network Flows | etc
+platform: Windows                               # Linux | Unix | macOS | Network
+type: Windows Log                               # Applications and Services Logs | queries log |  None
+channel: Security                               # System | Microsoft-Windows-Sysmon/Operational | queries_log | None
+provider: Microsoft-Windows-Security-Auditing   # Microsoft-Windows-Eventlog | BIND | <exact service/deamon name> | None
+fields:
+  - hostname
+  - ip_address
+  - username
+  - etc
+sample: |
+  raw log sample here
