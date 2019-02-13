@@ -1,0 +1,21 @@
+title: Password Dumper Activity on LSASS
+description: Detects process handle on LSASS process with certain access mask and object type SAM_DOMAIN
+status: experimental
+references:
+    - https://twitter.com/jackcr/status/807385668833968128
+tags:
+    - attack.credential_access
+    - attack.t1003
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 4656
+        ProcessName: 'C:\Windows\System32\lsass.exe'
+        AccessMask: '0x705'
+        ObjectType: 'SAM_DOMAIN'
+    condition: selection
+falsepositives:
+    - Unkown
+level: high
