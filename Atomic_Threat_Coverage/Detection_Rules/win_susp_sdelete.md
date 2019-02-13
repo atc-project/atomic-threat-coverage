@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects renaming of file while deletion with SDelete tool                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1107](https://attack.mitre.org/tactics/T1107)</li><li>[T1116](https://attack.mitre.org/tactics/T1116)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1107: File Deletion](https://attack.mitre.org/techniques/T1107)</li><li>[T1116: Code Signing](https://attack.mitre.org/techniques/T1116)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[T1107](../Triggers/T1107.md)</li><li>[T1116](../Triggers/T1116.md)</li></ul>  |
+| Trigger              | <ul><li>[T1107: File Deletion](../Triggers/T1107.md)</li><li>[T1116: Code Signing](../Triggers/T1116.md)</li></ul>  |
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul><li>Legitime usage of SDelete</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

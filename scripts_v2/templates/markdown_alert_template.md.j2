@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | {{ description }}                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul>{% for tactic_name, tactic_id in tactics  %}<li>[{{tactic_id}}: {{tactic_name}}](https://attack.mitre.org/tactics/{{tactic_id}})</li>{% endfor %}</ul>  |
-| ATT&amp;CK Technique | <ul>{% for technique in techniques  %}<li>[{{technique}}](https://attack.mitre.org/tactics/{{technique}})</li>{% endfor %}</ul>                             |
+| ATT&amp;CK Technique | <ul>{% for technique_name, technique_id in techniques  %}<li>[{{technique_id}}: {{technique_name}}](https://attack.mitre.org/techniques/{{technique_id}})</li>{% endfor %}</ul>                             |
 | Data Needed          | <ul>{% for data in data_needed %}<li>[{{ data }}](../Data_Needed/{{data}}.md)</li>{% endfor %}</ul>                                                         |
-| Trigger              | {% if triggers is defined and triggers|length %}<ul>{% for trigger in triggers %}<li>[{{ trigger }}](../Triggers/{{trigger}}.md)</li>{% endfor %}</ul> {% else %} There is no Trigger for this technique yet. {% endif %} |
+| Trigger              | {% if triggers is defined and triggers|length %}<ul>{% for trigger_name, trigger_id in triggers %}<li>[{{trigger_id}}: {{ trigger_name }}](../Triggers/{{trigger_id}}.md)</li>{% endfor %}</ul> {% else %} There is no Trigger for this technique yet. {% endif %} |
 | Severity Level       | {{ level }}                                                                                                                                                 |
 | False Positives      | <ul>{% for falsepositive in falsepositives %}<li>{{ falsepositive }}</li>{% endfor %}</ul>                                                                  |
 | Development Status   | {{ status }}                                                                                                                                                |

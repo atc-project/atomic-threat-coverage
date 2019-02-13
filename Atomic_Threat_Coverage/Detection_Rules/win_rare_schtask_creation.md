@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | This rule detects rare scheduled task creations. Typically software gets installed on multiple systems and not only on a few. The aggregation and count function selects tasks with rare names.                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1053](https://attack.mitre.org/tactics/T1053)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1053: Scheduled Task](https://attack.mitre.org/techniques/T1053)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0035_106_task_scheduler_task_registered](../Data_Needed/DN_0035_106_task_scheduler_task_registered.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[T1053](../Triggers/T1053.md)</li></ul>  |
+| Trigger              | <ul><li>[T1053: Scheduled Task](../Triggers/T1053.md)</li></ul>  |
 | Severity Level       | low                                                                                                                                                 |
 | False Positives      | <ul><li>Software installation</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

@@ -6,6 +6,8 @@ from os.path import isfile, join
 
 from atcutils import ATCutils
 from yaml.scanner import ScannerError
+from attack_mapping import te_mapping, ta_mapping
+
 
 try:
     ATCconfig = ATCutils.read_yaml_file("config.yml")
@@ -19,20 +21,6 @@ HELP_MESSAGE = """Usage: python3 yamls2csv.py [OPTIONS]\n\n\n
         detectionrules_path = """ + dr_dir + """;
         dataneeded_path = ../data_needed/;
         loggingpolicies_path=../logging_policies/"""
-
-ta_mapping = {
-  "attack.initial_access": ("Initial Access","TA0001"),
-  "attack.execution": ("Execution","TA0002"),
-  "attack.persistence": ("Persistence","TA0003"),
-  "attack.privilege_escalation": ("Privilege Escalation","TA0004"),
-  "attack.defense_evasion": ("Defense Evasion","TA0005"),
-  "attack.credential_access": ("Credential Access","TA0006"),
-  "attack.discovery": ("Discovery","TA0007"),
-  "attack.lateral_movement": ("Lateral Movement","TA0008"),
-  "attack.collection": ("Collection","TA0009"),
-  "attack.exfiltration": ("Exfiltration","TA0010"),
-  "attack.command_and_control": ("Command and Control","TA0011"),
-}
 
 def load_yamls(path):
     yamls = [join(path, f) for f in listdir(path) if isfile(join(path, f)) if f.endswith('.yaml') or f.endswith('.yml')]

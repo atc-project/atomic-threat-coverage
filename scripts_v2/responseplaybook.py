@@ -3,6 +3,7 @@
 from atcutils import ATCutils
 
 from jinja2 import Environment, FileSystemLoader
+from attack_mapping import te_mapping, ta_mapping
 
 import os
 import re
@@ -30,20 +31,6 @@ class ResponsePlaybook:
 
         # Init methods
         self.parse_into_fields(self.yaml_file)
-
-        self.ta_mapping = {
-            "attack.initial_access": ("Initial Access", "TA0001"),
-            "attack.execution": ("Execution", "TA0002"),
-            "attack.persistence": ("Persistence", "TA0003"),
-            "attack.privilege_escalation": ("Privilege Escalation", "TA0004"),
-            "attack.defense_evasion": ("Defense Evasion", "TA0005"),
-            "attack.credential_access": ("Credential Access", "TA0006"),
-            "attack.discovery": ("Discovery", "TA0007"),
-            "attack.lateral_movement": ("Lateral Movement", "TA0008"),
-            "attack.collection": ("Collection", "TA0009"),
-            "attack.exfiltration": ("Exfiltration", "TA0010"),
-            "attack.command_and_control": ("Command and Control", "TA0011"),
-        }
 
     def parse_into_fields(self, yaml_file):
         """Description"""
@@ -79,7 +66,7 @@ class ResponsePlaybook:
 
             for tag in self.rp_parsed_file.get('tags'):
                 if tactic_re.match(tag):
-                    tactic.append(self.ta_mapping.get(tag))
+                    tactic.append(ta_mapping.get(tag))
                 elif technique_re.match(tag):
                     technique.append(tag.upper()[7:])
                 else:
@@ -140,7 +127,7 @@ class ResponsePlaybook:
 
             for tag in self.rp_parsed_file.get('tags'):
                 if tactic_re.match(tag):
-                    tactic.append(self.ta_mapping.get(tag))
+                    tactic.append(ta_mapping.get(tag))
                 elif technique_re.match(tag):
                     technique.append(tag.upper()[7:])
                 else:

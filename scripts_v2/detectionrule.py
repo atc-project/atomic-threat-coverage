@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from atcutils import ATCutils
+from attack_mapping import te_mapping, ta_mapping
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -31,20 +32,6 @@ class DetectionRule:
         self.apipath = apipath
         self.auth = auth
         self.space = space
-
-        self.ta_mapping = {
-            "attack.initial_access": ("Initial Access", "TA0001"),
-            "attack.execution": ("Execution", "TA0002"),
-            "attack.persistence": ("Persistence", "TA0003"),
-            "attack.privelege_escalation": ("Privelege Escalation", "TA0004"),
-            "attack.defense_evasion": ("Defense Evasion", "TA0005"),
-            "attack.credential_access": ("Credential Access", "TA0006"),
-            "attack.discovery": ("Discovery", "TA0007"),
-            "attack.lateral_movement": ("Lateral Movement", "TA0008"),
-            "attack.collection": ("Collection", "TA0009"),
-            "attack.exfiltration": ("Exfiltration", "TA0010"),
-            "attack.command_and_control": ("Command and Control", "TA0011"),
-        }
 
         # Init methods
         self.parse_into_fields()
@@ -126,12 +113,13 @@ class DetectionRule:
             if self.fields.get('tags'):
                 for tag in self.fields.get('tags'):
                     if tactic_re.match(tag):
-                        if self.ta_mapping.get(tag):
-                            tactic.append(self.ta_mapping.get(tag))
+                        if ta_mapping.get(tag):
+                            tactic.append(ta_mapping.get(tag))
                         else:
                             other_tags.append(tag)
                     elif technique_re.match(tag):
-                        technique.append(tag.upper()[7:])
+                        te = tag.upper()[7:].upper()
+                        technique.append((te_mapping.get(te), te))
                     else:
                         other_tags.append(tag)
 
@@ -220,12 +208,13 @@ class DetectionRule:
             if self.fields.get('tags'):
                 for tag in self.fields.get('tags'):
                     if tactic_re.match(tag):
-                        if self.ta_mapping.get(tag):
-                            tactic.append(self.ta_mapping.get(tag))
+                        if ta_mapping.get(tag):
+                            tactic.append(ta_mapping.get(tag))
                         else:
                             other_tags.append(tag)
                     elif technique_re.match(tag):
-                        technique.append(tag.upper()[7:])
+                        te = tag.upper()[7:].upper()
+                        technique.append((te_mapping.get(te), te))
                     else:
                         other_tags.append(tag)
 
@@ -242,8 +231,8 @@ class DetectionRule:
 
             triggers = []
 
-            for trigger in technique:
-                if trigger is "None":
+            for trigger_name, trigger_id in technique:
+                if trigger_id is "None":
                     continue
                 # trigger = re.search('t\d{1,5}', trigger).group(0).upper()
                 # path = '../triggering/atomic-red-team/atomics/' + \
@@ -253,10 +242,10 @@ class DetectionRule:
                     # trigger_yaml = ATCutils.read_yaml_file(path)
                     # main(path,'triggering')
 
-                    trigger_id = str(ATCutils.confluence_get_page_id(
-                        self.apipath, self.auth, self.space, trigger))
+                    trigger_page_id = str(ATCutils.confluence_get_page_id(
+                        self.apipath, self.auth, self.space, trigger_id))
 
-                    trigger = (trigger, trigger_id)
+                    trigger = (trigger_name, trigger_id, trigger_page_id)
 
                     triggers.append(trigger)
                 except FileNotFoundError:
