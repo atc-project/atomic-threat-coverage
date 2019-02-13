@@ -9,6 +9,7 @@ from enrichment import Enrichment
 from responseaction import ResponseAction
 from responseplaybook import ResponsePlaybook
 from pdb import set_trace as bp
+from attack_mapping import te_mapping, ta_mapping
 
 # Import ATC Utils
 from atcutils import ATCutils
@@ -100,8 +101,9 @@ class PopulateConfluence:
             try:
                 tg = Triggers(tg_file)
                 tg.render_template("confluence")
+                title = tg.fields["attack_technique"] + ": " + te_mapping.get(tg.fields["attack_technique"])
                 confluence_data = {
-                    "title": tg.fields["attack_technique"],
+                    "title": title,
                     "spacekey": self.space,
                     "parentid": str(ATCutils.confluence_get_page_id(
                         self.apipath, self.auth, self.space, "Triggers")),
@@ -326,4 +328,4 @@ class PopulateConfluence:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
-        print("Response Actions populated!")
+        print("Response Playbooks populated!")

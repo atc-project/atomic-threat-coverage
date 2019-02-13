@@ -1,7 +1,7 @@
 | Title                | Multiple Failed Logins with Different Accounts from Single Source System                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects suspicious failed logins with different user accounts from a single source system                                                                                                                                           |
-| ATT&amp;CK Tactic    | <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| ATT&amp;CK Tactic    | <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1078: Valid Accounts](https://attack.mitre.org/techniques/T1078)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
 | Trigger              | <ul><li>[T1078: Valid Accounts](../Triggers/T1078.md)</li></ul>  |
@@ -10,7 +10,7 @@
 | Development Status   |                                                                                                                                                 |
 | References           | <ul></ul>                                                          |
 | Author               | Florian Roth                                                                                                                                                |
-| Other Tags           | <ul><li>attack.privilege_escalation</li></ul> | 
+
 
 ## Detection Rules
 

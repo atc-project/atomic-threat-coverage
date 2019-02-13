@@ -1,7 +1,7 @@
 | Title                | User Added to Local Administrators                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | This rule triggers on user accounts that are added to the local Administrators group, which could be legitimate activity or a sign of privilege escalation activity                                                                                                                                           |
-| ATT&amp;CK Tactic    | <ul></ul>  |
+| ATT&amp;CK Tactic    | <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
 | ATT&amp;CK Technique | <ul></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
 | Trigger              |  There is no Trigger for this technique yet.  |
@@ -10,7 +10,7 @@
 | Development Status   | stable                                                                                                                                                |
 | References           | <ul></ul>                                                          |
 | Author               | Florian Roth                                                                                                                                                |
-| Other Tags           | <ul><li>attack.privilege_escalation</li></ul> | 
+
 
 ## Detection Rules
 

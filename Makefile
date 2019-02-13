@@ -15,27 +15,27 @@ setup:
 	
 setup_confluence:
 	@echo "[*] Setting up confluecne"
-	@cd scripts_v2 && python3 init_confluence.py
+	@cd scripts && python3 init_confluence.py
 
 setup_markdown:
 	@echo "[*] Setting up markdown"
-	@cd scripts_v2 && bash init_markdown.sh
+	@cd scripts && bash init_markdown.sh
 
 push_to_confluence:
 	@echo "[*] Pushing data to confluecne"
-	@cd scripts_v2 && python3 main.py -C -A
+	@cd scripts && python3 main.py -C -A
 
 push_to_markdown:
 	@echo "[*] Pushing data to markdown"
-	@cd scripts_v2 && python3 main.py -M -A
+	@cd scripts && python3 main.py -M -A
 
 create_analytics_and_pivoting_csv:
 	@echo "[*] Creating analytics.csv and pivoting.csv"
-	@cd scripts_v2 && python3 yamls2csv.py
+	@cd scripts && python3 yamls2csv.py
 
 create_attack_navigator_profile:
 	@echo "[*] Creating ATT&CK Navigator profile"
-	@cd scripts_v2 && python3 attack_navigator_export.py
+	@cd scripts && python3 attack_navigator_export.py
 
 clean:
 	@echo "[*] Cleaning up..."

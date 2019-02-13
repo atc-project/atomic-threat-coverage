@@ -24,7 +24,6 @@
                      {%- if loggingpolicy |length > 1 -%}<li>{%endif%}<a href="{{confluence_viewpage_url}}{{policy_id}}">{{ policy_name }}</a>{%- if loggingpolicy |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if loggingpolicy |length > 1 -%}</ul>{%endif%}
-                  <br />
                </td>
             </tr>
             <tr>
@@ -35,7 +34,6 @@
                      {%- if references |length > 1 -%}<li>{%endif%}<a href="{{ ref |e }}">{{ ref |e }}</a>{%- if references |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if references |length > 1 -%}</ul>{%endif%}
-                  <br />
                </td>
             </tr>
             <tr>
@@ -62,7 +60,6 @@
                      <li>{{ field|e }}</li>
                      {% endfor %}
                   </ul>
-                  <br />
                </td>
             </tr>
          </tbody>

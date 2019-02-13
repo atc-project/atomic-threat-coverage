@@ -32,7 +32,6 @@
                      {%- if eventID |length > 1 -%}<li>{%endif%}{{ eventid|e }}{%- if eventID |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                {%- if eventID |length > 1 -%}</ul>{%endif%}
-                  <br />
                </td>
             </tr>
             <tr>
@@ -43,7 +42,6 @@
                      {%- if references |length > 1 -%}<li>{%endif%}<a href="{{ ref |e }}">{{ ref |e }}</a>{%- if references |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if references |length > 1 -%}</ul>{%endif%}
-                  <br />
                </td>
             </tr>
          </tbody>

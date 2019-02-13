@@ -25,7 +25,6 @@
                      {%- if automation |length > 1 -%}<li>{%endif%}{{ auto }}{%- if automation |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if automation |length > 1 -%}</ul>{%endif%}
-                  <br />
                </td>
             </tr>
 {% endif %}
@@ -42,7 +41,6 @@
                      {%- if references |length > 1 -%}<li>{%endif%}<a href="{{ ref |e }}">{{ ref |e }}</a>{%- if references |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if references |length > 1 -%}</ul>{%endif%}
-                  <br />
                </td>
             </tr>
 {% endif %}
@@ -55,7 +53,6 @@
                      {%- if linkedra |length > 1 -%}<li>{%endif%}<a href="{{confluence_viewpage_url}}{{action_id}}">{{ action_name }}</a>{%- if linkedra |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if linkedra |length > 1 -%}</ul>{%endif%}
-                  <br />
                </td>
             </tr>
 {% endif %}
@@ -68,7 +65,6 @@
                      {%- if linked_analytics |length > 1 -%}<li>{%endif%}<a href="{{ analytic }}">{{ analytic }}</a>{%- if linked_analytics |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if linked_analytics |length > 1 -%}</ul>{%endif%}
-                  <br />
                </td>
             </tr>
 {% endif %}

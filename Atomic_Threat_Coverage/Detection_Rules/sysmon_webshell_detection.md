@@ -1,7 +1,7 @@
 | Title                | Webshell Detection With Command Line Keywords                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects certain command line parameters often used during reconnaissance activity via web shells                                                                                                                                           |
-| ATT&amp;CK Tactic    | <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| ATT&amp;CK Tactic    | <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1100: Web Shell](https://attack.mitre.org/techniques/T1100)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1100: Web Shell](../Triggers/T1100.md)</li></ul>  |
@@ -10,7 +10,7 @@
 | Development Status   |                                                                                                                                                 |
 | References           | <ul></ul>                                                          |
 | Author               | Florian Roth                                                                                                                                                |
-| Other Tags           | <ul><li>attack.privilege_escalation</li></ul> | 
+
 
 ## Detection Rules
 

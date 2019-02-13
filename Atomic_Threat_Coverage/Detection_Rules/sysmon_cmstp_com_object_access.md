@@ -1,7 +1,7 @@
 | Title                | CMSTP UAC Bypass via COM Object Access                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects UAC Bypass Attempt Using Microsoft Connection Manager Profile Installer Autoelevate-capable COM Objects                                                                                                                                           |
-| ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1088: Bypass User Account Control](https://attack.mitre.org/techniques/T1088)</li><li>[T1191: CMSTP](https://attack.mitre.org/techniques/T1191)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1088: Bypass User Account Control](../Triggers/T1088.md)</li><li>[T1191: CMSTP](../Triggers/T1191.md)</li></ul>  |
@@ -10,7 +10,7 @@
 | Development Status   | stable                                                                                                                                                |
 | References           | <ul><li>[http://www.endurant.io/cmstp/detecting-cmstp-enabled-code-execution-and-uac-bypass-with-sysmon/](http://www.endurant.io/cmstp/detecting-cmstp-enabled-code-execution-and-uac-bypass-with-sysmon/)</li><li>[https://twitter.com/hFireF0X/status/897640081053364225](https://twitter.com/hFireF0X/status/897640081053364225)</li></ul>                                                          |
 | Author               | Nik Seetharaman                                                                                                                                                |
-| Other Tags           | <ul><li>attack.privilege_escalation</li><li>attack.g0069</li><li>attack.g0069</li></ul> | 
+| Other Tags           | <ul><li>attack.g0069</li><li>attack.g0069</li></ul> | 
 
 ## Detection Rules
 

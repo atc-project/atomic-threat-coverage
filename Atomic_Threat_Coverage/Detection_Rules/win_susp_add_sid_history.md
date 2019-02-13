@@ -1,7 +1,7 @@
 | Title                | Addition of SID History to Active Directory Object                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | An attacker can use the SID history attribute to gain additional privileges.                                                                                                                                           |
-| ATT&amp;CK Tactic    | <ul></ul>  |
+| ATT&amp;CK Tactic    | <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1178: SID-History Injection](https://attack.mitre.org/techniques/T1178)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
 | Trigger              | <ul><li>[T1178: SID-History Injection](../Triggers/T1178.md)</li></ul>  |
@@ -10,7 +10,7 @@
 | Development Status   | stable                                                                                                                                                |
 | References           | <ul><li>[https://adsecurity.org/?p=1772](https://adsecurity.org/?p=1772)</li></ul>                                                          |
 | Author               | Thomas Patzke                                                                                                                                                |
-| Other Tags           | <ul><li>attack.privilege_escalation</li></ul> | 
+
 
 ## Detection Rules
 

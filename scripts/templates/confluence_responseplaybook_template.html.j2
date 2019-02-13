@@ -21,7 +21,6 @@
                          {%- if tactics |length > 1 -%}<li>{%endif%}<a href="https://attack.mitre.org/tactics/{{tactic_id}}">{{tactic_id}}: {{ tactic_name }}</a>{%- if tactics |length > 1 -%}</li>{%endif%}
                      {%- endfor %}
                      {%- if tactics |length > 1 -%}</ul>{%endif%}
-                     <br />
                  </td>
              </tr>
 {% endif %}
@@ -29,12 +28,11 @@
              <tr>
                  <th class="confluenceTh">ATT&amp;CK Technique</th>
                  <td class="confluenceTd">
-                     {%- if techniques |length > 1 -%}<ul>{%endif%}
-                     {%- for technique in techniques %}
-                         {%- if techniques |length > 1 -%}<li>{%endif%}<a href="https://attack.mitre.org/techniques/{{technique}}">{{ technique }}</a>{%- if techniques |length > 1 -%}</li>{%endif%}
-                     {%- endfor %}
-                     {%- if techniques |length > 1 -%}</ul>{%endif%}
-                     <br />
+                      {%- if techniques |length > 1 -%}<ul>{%endif%}
+                      {%- for technique_name, technique_id in techniques %}
+                            {%- if techniques |length > 1 -%}<li>{%endif%}<a href="https://attack.mitre.org/techniques/{{technique_id}}">{{ technique_id }}: {{technique_name}}</a>{%- if techniques |length > 1 -%}</li>{%endif%}
+                      {%- endfor %}
+                      {%- if techniques |length > 1 -%}</ul>{%endif%}
                  </td>
              </tr>
 {% endif %}
@@ -47,7 +45,7 @@
                             {%- if other_tags |length > 1 -%}<li>{%endif%}{{ tag }}{%- if other_tags |length > 1 -%}</li>{%endif%}
                         {%- endfor %}
                         {%- if other_tags |length > 1 -%}</ul>{%endif%}
-                        <br />
+  
                     </td>
                 </tr>
 {% endif %}
