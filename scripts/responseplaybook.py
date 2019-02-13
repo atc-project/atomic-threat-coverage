@@ -68,7 +68,8 @@ class ResponsePlaybook:
                 if tactic_re.match(tag):
                     tactic.append(ta_mapping.get(tag))
                 elif technique_re.match(tag):
-                    technique.append(tag.upper()[7:])
+                    te = tag.upper()[7:]
+                    technique.append((te_mapping.get(te), te))
                 else:
                     other_tags.append(tag)
 
@@ -131,7 +132,8 @@ class ResponsePlaybook:
                 if tactic_re.match(tag):
                     tactic.append(ta_mapping.get(tag))
                 elif technique_re.match(tag):
-                    technique.append(tag.upper()[7:])
+                    te = tag.upper()[7:]
+                    technique.append((te_mapping.get(te), te))
                 else:
                     other_tags.append(tag)
 

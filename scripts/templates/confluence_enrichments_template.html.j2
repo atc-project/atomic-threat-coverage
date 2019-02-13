@@ -25,7 +25,6 @@
                      {%- if data_needed |length > 1 -%}<li>{%endif%}<a href="{{confluence_viewpage_url}}{{data_id}}">{{ data_name }}</a>{%- if data_needed |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if data_needed |length > 1 -%}</ul>{%endif%}
-                  <br />
                </td>
             </tr>
 {% endif %}
@@ -38,7 +37,6 @@
                      {%- if data_to_enrich |length > 1 -%}<li>{%endif%}<a href="{{confluence_viewpage_url}}{{data_id}}">{{ data_name }}</a>{%- if data_to_enrich |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if data_to_enrich |length > 1 -%}</ul>{%endif%}
-                  <br />
                </td>
             </tr>
 {% endif %}
@@ -51,7 +49,6 @@
                      {%- if references |length > 1 -%}<li>{%endif%}<a href="{{ ref |e }}">{{ ref |e }}</a>{%- if references |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if references |length > 1 -%}</ul>{%endif%}
-                  <br />
                </td>
             </tr>
 {% endif %}
@@ -68,7 +65,6 @@
                      {%- if requirements |length > 1 -%}<li>{%endif%}<a href="{{confluence_viewpage_url}}{{req_id}}">{{ req_name }}</a>{%- if requirements |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if requirements |length > 1 -%}</ul>{%endif%}
-                  <br />
                </td>
             </tr>
 {% endif %}
@@ -81,7 +77,6 @@
                      {%- if new_fields |length > 1 -%}<li>{%endif%}{{ field }}{%- if new_fields |length > 1 -%}</li>{%endif%}
                      {% endfor %}
                   {%- if new_fields |length > 1 -%}</ul>{%endif%}
-                  <br />
                </td>
             </tr>
 {% endif %}

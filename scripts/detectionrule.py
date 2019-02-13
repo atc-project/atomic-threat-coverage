@@ -118,7 +118,7 @@ class DetectionRule:
                         else:
                             other_tags.append(tag)
                     elif technique_re.match(tag):
-                        te = tag.upper()[7:].upper()
+                        te = tag.upper()[7:]
                         technique.append((te_mapping.get(te), te))
                     else:
                         other_tags.append(tag)
@@ -215,7 +215,7 @@ class DetectionRule:
                         else:
                             other_tags.append(tag)
                     elif technique_re.match(tag):
-                        te = tag.upper()[7:].upper()
+                        te = tag.upper()[7:]
                         technique.append((te_mapping.get(te), te))
                     else:
                         other_tags.append(tag)
@@ -243,9 +243,9 @@ class DetectionRule:
                 try:
                     # trigger_yaml = ATCutils.read_yaml_file(path)
                     # main(path,'triggering')
-
+                    page_name = trigger_id + ": " + trigger_name
                     trigger_page_id = str(ATCutils.confluence_get_page_id(
-                        self.apipath, self.auth, self.space, trigger_id))
+                        self.apipath, self.auth, self.space, page_name))
 
                     trigger = (trigger_name, trigger_id, trigger_page_id)
 
