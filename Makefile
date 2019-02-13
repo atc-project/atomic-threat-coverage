@@ -11,6 +11,7 @@ setup:
 	@echo "[*] Updating 3rd party repository"
 	git submodule init
 	git submodule update
+	git submodule foreach git pull origin master
 	
 setup_confluence:
 	@echo "[*] Setting up confluecne"
