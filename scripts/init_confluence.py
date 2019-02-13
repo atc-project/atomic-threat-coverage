@@ -1,51 +1,71 @@
 #!/usr/bin/env python3
-from utils import push_to_confluence, get_page_id
+from atcutils import ATCutils
 from requests.auth import HTTPBasicAuth
 import getpass
 
-def main():
+
+def main(c_auth=None):
 
     try:
-        import config  # where we define confluence space name, list of DR and TG folders
-        confluence_space_name = config.confluence_space_name
-        confluence_space_home_page_name = config.confluence_space_home_page_name
-        list_of_detection_rules_directories = config.list_of_detection_rules_directories # not used so far
-        list_of_triggering_directories = config.list_of_triggering_directories           # not used so far
-        confluence_name_of_root_directory = config.confluence_name_of_root_directory     # not used so far
-        confluence_rest_api_url = config.confluence_rest_api_url
+        ATCconfig = ATCutils.read_yaml_file("config.yml")
+        confluence_space_name = ATCconfig.get('confluence_space_name')
+        confluence_space_home_page_name = ATCconfig.get(
+            'confluence_space_home_page_name')
+        confluence_rest_api_url = ATCconfig.get('confluence_rest_api_url')
+        confluence_name_of_root_directory = ATCconfig.get(
+            'confluence_name_of_root_directory')
+
     except Exception as e:
         raise e
         pass
 
-    mail = input("Email for access to confluence: ")
-    url = confluence_rest_api_url
-    password = getpass.getpass(prompt='Password: ', stream=None)
-    auth = HTTPBasicAuth(mail, password)
-    content=""
+    if not c_auth:
+        mail = input("Login: ")
+        password = getpass.getpass(prompt='Password: ', stream=None)
+        auth = HTTPBasicAuth(mail, password)
+    else:
+        auth = c_auth
 
+    url = confluence_rest_api_url
+    content = ""
+
+    print("Creating ATC page..")
+    # print(str(ATCutils.confluence_get_page_id(url,
+    # auth, confluence_space_name, confluence_space_home_page_name)))
     data = {
         "title": confluence_name_of_root_directory,
         "spacekey": confluence_space_name,
-        "parentid": str(get_page_id(url, auth, confluence_space_name, confluence_space_home_page_name)),
+        "parentid": str(ATCutils.confluence_get_page_id(
+            url, auth, confluence_space_name,
+            confluence_space_home_page_name)),
         "confluencecontent": content,
     }
 
-    #print(push_to_confluence(data, url, auth))
-    push_to_confluence(data, url, auth)
-    
-    spaces = ["Detection Rules", "Logging Policies", "Data Needed", "Triggering"]
+    # print(push_to_confluence(data, url, auth))
+    if not ATCutils.push_to_confluence(data, url, auth):
+        raise Exception("Could not create or update the page. " +
+                        "Is the parent name correct?")
+
+    spaces = ["Detection Rules", "Logging Policies",
+              "Data Needed", "Triggers", "Response Actions",
+              "Response Playbooks", "Enrichments"]
 
     for space in spaces:
+        print("Creating %s.." % space)
         data = {
-        "title": space,
-        "spacekey": confluence_space_name,
-        "parentid": str(get_page_id(url, auth, confluence_space_name, confluence_name_of_root_directory)),
-        "confluencecontent": content,
+            "title": space,
+            "spacekey": confluence_space_name,
+            "parentid": str(ATCutils.confluence_get_page_id(
+                url, auth, confluence_space_name,
+                confluence_name_of_root_directory)),
+            "confluencecontent": content,
         }
-        #print(push_to_confluence(data, url, auth))
-        push_to_confluence(data, url, auth)
+        # print(push_to_confluence(data, url, auth))
+        if not ATCutils.push_to_confluence(data, url, auth):
+            raise Exception("Could not create or update the page. " +
+                            "Is the parent name correct?")
+    print("Done!")
 
-    print("done")
 
 if __name__ == "__main__":
     main()
