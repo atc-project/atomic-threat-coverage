@@ -14,6 +14,7 @@ import re
 
 ATCconfig = ATCutils.read_yaml_file("config.yml")
 
+
 class ResponsePlaybook:
     """Class for the Playbook Actions entity"""
 
@@ -120,7 +121,8 @@ class ResponsePlaybook:
                 'confluence_responseplaybook_template.html.j2'
             )
 
-            self.rp_parsed_file.update({'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
+            self.rp_parsed_file.update(
+                {'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
 
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')

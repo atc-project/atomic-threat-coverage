@@ -14,12 +14,11 @@ from requests.auth import HTTPBasicAuth
 from jinja2 import Environment, FileSystemLoader
 from pprint import pprint
 
-from pdb import set_trace as bp
-
 
 # ########################################################################### #
 # ############################ ATCutils ##################################### #
 # ########################################################################### #
+
 
 class ATCutils:
     """Class which consists of handful methods used throughout the project"""
@@ -84,13 +83,13 @@ class ATCutils:
         id = attack_technique_id.replace('t', 'T')
 
         with open('enterprise-attack.json') as f:
-          data = json.load(f)
+            data = json.load(f)
 
         for object in data["objects"]:
-          if object['type'] == "attack-pattern":
-            if object['external_references'][0]['external_id'] == id:
-              name = object['name']
-              return name
+            if object['type'] == "attack-pattern":
+                if object['external_references'][0]['external_id'] == id:
+                    name = object['name']
+                    return name
 
     @staticmethod
     def confluence_get_page_id(apipath, auth, space, title):
@@ -163,7 +162,6 @@ class ATCutils:
                 }
             }
         }
-        #bp()
         payload = json.dumps(dict_payload)
 
         response = requests.request(
@@ -236,11 +234,11 @@ class ATCutils:
                 return "Page updated"
             except KeyError:
                 response = requests.request(
-                "GET",
-                url + "/%s/" % str(cid),
-                data=payload,
-                headers=headers,
-                auth=auth
+                    "GET",
+                    url + "/%s/" % str(cid),
+                    data=payload,
+                    headers=headers,
+                    auth=auth
                 )
 
                 resp = json.loads(response.text)
@@ -261,7 +259,7 @@ class ATCutils:
 
                     return "Page updated"
 
-                except:
+                except BaseException:
                     return "Page update failed"
         elif "status" in resp.keys():
             if resp["status"] == "current":
@@ -322,27 +320,6 @@ class ATCutils:
                         (key, val)
                     ])
 
-        # @yugoslavskiy: I am not sure about this
-        # list(proper_logsource_dict.items()) loop. but it works -.-
-        # I was trying to avoid error "dictionary changed size during iteration"
-        # which was triggered because of iteration
-        # over something that we are changing
-
-        """Old Code
-        for old_key, old_value in list(proper_logsource_dict.items()):
-
-            for new_key, new_value in sigma_to_real_world_mapping.items():
-
-                if old_key == new_key:
-                    # here we do mapping of keys and values
-                    new_key_name = sigma_to_real_world_mapping[new_key]
-                    new_value_name = sigma_to_real_world_mapping[old_value]
-                    proper_logsource_dict[new_key_name] \
-                        = proper_logsource_dict.pop(old_key)
-                    proper_logsource_dict.update(
-                        [(sigma_to_real_world_mapping[new_key], new_value_name)]
-                        )
-"""
         return proper_logsource_dict
 
     @staticmethod
@@ -358,12 +335,10 @@ class ATCutils:
             if str(_field) in ["condition", "timeframe"]:
                 continue
 
-            # list = ["1","3","4"]
-            # list["1"]
-            # "1" in list
-
             for val in detection_dict[_field]:
-                if isinstance(detection_dict[_field], list) and _field != 'EventID':
+                if isinstance(
+                        detection_dict[_field],
+                        list) and _field != 'EventID':
                     for val2 in detection_dict[_field]:
                         if isinstance(val2, str) or isinstance(val2, int):
                             break
@@ -388,12 +363,9 @@ class ATCutils:
             if str(_field) in ["condition", "timeframe"]:
                 continue
 
-            # list = ["1","3","4"]
-            # list["1"]
-            # "1" in list
-
-        
-            if isinstance(detection_dict[_field], list) and _field != 'EventID':
+            if isinstance(
+                    detection_dict[_field],
+                    list) and _field != 'EventID':
                 for val2 in detection_dict[_field]:
                     if isinstance(val2, str) or isinstance(val2, int):
                         break
@@ -412,8 +384,6 @@ class ATCutils:
         dn_list = ATCutils.load_yamls('../data_needed')
 
         detectionrule = ATCutils.read_yaml_file(dr_file_path)
-
-
 
         """For every DataNeeded file we do:
             * if there is no "additions" (extra log sources), make entire alert an
@@ -457,9 +427,8 @@ class ATCutils:
                         event_id_based_dr = True
                         break
 
-
             for _field in detectionrule['detection']:
-            #     # if it is selection field
+                #     # if it is selection field
                 if str(_field) in ["condition", "timeframe"]:
                     continue
 
@@ -476,8 +445,7 @@ class ATCutils:
                     )
                 else:
                     final_list += ATCutils.calculate_dn_for_non_eventid_based_dr(
-                        dn_list, detection_fields, logsource
-                    )
+                        dn_list, detection_fields, logsource)
 
             return list(set(final_list))
 
@@ -489,11 +457,6 @@ class ATCutils:
             common_fields = []
             final_list = []
 
-            # for key in detectionrule['detection'].keys():
-            #
-            #     if key in ["condition", "timeframe"]:
-            #         continue
-
             try:
                 common_fields += ATCutils.search_for_fields(
                     detectionrule.get('detection')
@@ -504,14 +467,7 @@ class ATCutils:
             if 'EventID' in common_fields:
                 event_id_based_dr = True
 
-            # for fields in detectionrule['detection'][key]:
-            #     try:
-            #         common_fields += ATCutils.search_for_fields(fields)
-            #     except Exception as e:
-            #         pass
-
             # then let's calculate Data Needed per different logsources
-
             for addition in detectionrule['additions']:
 
                 for _field in addition['detection']:
@@ -541,11 +497,9 @@ class ATCutils:
                 detection_fields = ATCutils\
                     .search_for_fields(addition['detection'])
 
-                # detection_fields += common_fields
                 for key in common_fields:
-                    if not key in [*detection_fields]:
+                    if key not in [*detection_fields]:
                         detection_fields[key] = 'placeholder'
-
 
                 if event_id_based_dr:
                     final_list += ATCutils.calculate_dn_for_eventid_based_dr(
@@ -553,12 +507,7 @@ class ATCutils:
                     )
                 else:
                     final_list += ATCutils.calculate_dn_for_non_eventid_based_dr(
-                        dn_list, detection_fields, logsource
-                    )
-
-                #final_list += ATCutils.calculate_dn_for_dr(
-                #    dn_list, detection_fields, logsource
-                #)
+                        dn_list, detection_fields, logsource)
 
         else:
             print("ATC | Unsupported rule type")
@@ -567,8 +516,8 @@ class ATCutils:
         return list(set(final_list))
 
     @staticmethod
-    def calculate_dn_for_eventid_based_dr(dn_list, detection_fields, logsource):
-
+    def calculate_dn_for_eventid_based_dr(
+            dn_list, detection_fields, logsource):
         """Meaning of the arguments:
 
         dn_list - list of Data Needed objects (all dataneeded!)
@@ -601,7 +550,8 @@ class ATCutils:
             y = dn
             x = proper_logsource
 
-            if x.get('platform') == y.get('platform') and x.get('channel') == y.get('channel'):
+            if x.get('platform') == y.get('platform') and x.get(
+                    'channel') == y.get('channel'):
 
                 # divided into two lines due to char limit
                 list_of_DN_matched_by_logsource.append(dn)
@@ -609,7 +559,7 @@ class ATCutils:
         # find all Data Needed which matched by logsource section from
         # Detection Rule AND EventID
 
-        #if detection_fields.get('EventID'):
+        # if detection_fields.get('EventID'):
 
         eventID = detection_fields.get('EventID')
 
@@ -632,9 +582,9 @@ class ATCutils:
         y = list_of_DN_matched_by_logsource_and_eventid
         return [x['title'] for x in y if x.get('title')]
 
-
     @staticmethod
-    def calculate_dn_for_non_eventid_based_dr(dn_list, detection_fields, logsource):
+    def calculate_dn_for_non_eventid_based_dr(
+            dn_list, detection_fields, logsource):
         """Meaning of the arguments:
 
         dn_list - list of Data Needed objects (all dataneeded!)
@@ -655,7 +605,6 @@ class ATCutils:
 
         list_of_DN_matched_by_fields = []
         list_of_DN_matched_by_fields_and_logsource = []
-        #list_of_DN_matched_by_fields_and_logsource_and_eventid = []
 
         for dn in dn_list:
             # Will create a list of keys from Detection Rule fields dictionary
@@ -674,49 +623,20 @@ class ATCutils:
 
         for matched_dn in list_of_DN_matched_by_fields:
 
-            # if dn['title'] == matched_dn:
-
             # divided into two lines due to char limit
             proper_logsource = ATCutils.sigma_lgsrc_fields_to_names(logsource)
 
             amount_of_fields_in_logsource = len([*proper_logsource])
             y = matched_dn
             x = proper_logsource
-            # превозмогая трудности!
-            # shared_items \
-            #     = {k: x[k] for k in x if k in y and x[k] == y[k]}
-            # bp()
-            if x.get('platform') == y.get('platform') and x.get('channel') == y.get('channel'):
+
+            if x.get('platform') == y.get('platform') and x.get(
+                    'channel') == y.get('channel'):
 
                 # divided into two lines due to char limit
                 list_of_DN_matched_by_fields_and_logsource\
                     .append(matched_dn)
 
-        # and only in the last step we check EventID
-        # if detection_fields.get('EventID'):
-        #     eventID = detection_fields.get('EventID')
-				#
-        #     for dn in list_of_DN_matched_by_fields_and_logsource:
-				#
-        #         try:
-        #             eventID_from_title = str(int(dn['title'].split("_")[2]))
-        #         except ValueError:
-        #             eventID_from_title = "None"
-				#
-        #         if isinstance(eventID, list):
-        #             for eid in eventID:
-        #                 if eventID_from_title == str(eid):
-        #                     list_of_DN_matched_by_fields_and_logsource_and_eventid\
-        #                         .append(dn)
-        #         elif eventID_from_title == str(eventID):
-        #             # divided into two lines due to char limit
-        #             list_of_DN_matched_by_fields_and_logsource_and_eventid\
-        #                 .append(dn)
-				#
-        #     y = list_of_DN_matched_by_fields_and_logsource_and_eventid
-        #     return [x['title'] for x in y if x.get('title')]
-
-        #else:
         y = list_of_DN_matched_by_fields_and_logsource
         return [x['title'] for x in y if x.get('title')]
 
@@ -731,12 +651,14 @@ class ATCutils:
         return True
 
     @staticmethod
-    def populate_tg_markdown(art_dir='../'+read_yaml_file.__func__('config.yml').get('triggers_directory'),
-                            atc_dir='../'+read_yaml_file.__func__('config.yml').get('md_name_of_root_directory')):
+    def populate_tg_markdown(
+            art_dir='../' +
+            read_yaml_file.__func__('config.yml').get('triggers_directory'),
+            atc_dir='../' +
+            read_yaml_file.__func__('config.yml').get('md_name_of_root_directory')):
         cmd = ('find \'%s/\' -name "T*.md" -exec' +
                ' cp {} \'%sTriggers/\' \;') % (art_dir, atc_dir)
         if subprocess.run(cmd, shell=True, check=True).returncode == 0:
             return True
         else:
             return False
-

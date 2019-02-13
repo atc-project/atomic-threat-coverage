@@ -74,6 +74,7 @@ class DetectionRule:
             # Convert sigma rule into queries (for instance, graylog query)
             for query in queries:
                 # prepare command to execute from shell
+                # (yes, we know)
                 cmd = ATCconfig.get('sigmac_path') + " -t " + \
                     query + " --ignore-backend-errors " + self.yaml_file
 
@@ -139,12 +140,8 @@ class DetectionRule:
             for trigger in technique:
                 if trigger is "None":
                     continue
-                # trigger = re.search('t\d{1,5}', trigger).group(0).upper()
-                # path = '../triggering/atomic-red-team/atomics/' + trigger + \
-                #        '/' + trigger + '.yaml'
 
                 try:
-                    # trigger_yaml = ATCutils.read_yaml_file(path)
 
                     triggers.append(trigger)
 
@@ -163,8 +160,9 @@ class DetectionRule:
         elif template_type == "confluence":
             template = env.get_template(
                 'confluence_alert_template.html.j2')
-            
-            self.fields.update({'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
+
+            self.fields.update(
+                {'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
 
             sigma_rule = ATCutils.read_rule_file(self.yaml_file)
             self.fields.update({'sigma_rule': sigma_rule})
@@ -188,10 +186,6 @@ class DetectionRule:
             data_needed = ATCutils.main_dn_calculatoin_func(self.yaml_file)
 
             data_needed_with_id = []
-
-            # Dan, please take a look at it, it took 5 minutes to debug at 4am
-            # if len(data_needed) == 1:
-            #     [data_needed] = data_needed
 
             for data in data_needed:
                 data_needed_id = str(ATCutils.confluence_get_page_id(
@@ -236,13 +230,9 @@ class DetectionRule:
             for trigger_name, trigger_id in technique:
                 if trigger_id is "None":
                     continue
-                # trigger = re.search('t\d{1,5}', trigger).group(0).upper()
-                # path = '../triggering/atomic-red-team/atomics/' + \
-                #     trigger + '/' + trigger + '.yaml'
+
 
                 try:
-                    # trigger_yaml = ATCutils.read_yaml_file(path)
-                    # main(path,'triggering')
                     page_name = trigger_id + ": " + trigger_name
                     trigger_page_id = str(ATCutils.confluence_get_page_id(
                         self.apipath, self.auth, self.space, page_name))
@@ -254,7 +244,7 @@ class DetectionRule:
                     print(trigger + ": No atomics trigger for this technique")
 
             self.fields.update({'triggers': triggers})
-                    
+
         self.content = template.render(self.fields)
         # Need to convert ampersand into HTML "save" format
         # Otherwise confluence throws an error

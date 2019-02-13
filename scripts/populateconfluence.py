@@ -22,6 +22,7 @@ import os
 
 ATCconfig = ATCutils.read_yaml_file("config.yml")
 
+
 class PopulateConfluence:
     """Desc"""
 
@@ -47,7 +48,8 @@ class PopulateConfluence:
             self.atc_dir = atc_dir
 
         else:
-            self.atc_dir = "../" + ATCconfig.get('md_name_of_root_directory')+'/'
+            self.atc_dir = "../" + \
+                ATCconfig.get('md_name_of_root_directory')+'/'
 
         # Check if art_dir provided
         if art_dir:
@@ -101,7 +103,8 @@ class PopulateConfluence:
             try:
                 tg = Triggers(tg_file)
                 tg.render_template("confluence")
-                title = tg.fields["attack_technique"] + ": " + te_mapping.get(tg.fields["attack_technique"])
+                title = tg.fields["attack_technique"] + ": " + \
+                    te_mapping.get(tg.fields["attack_technique"])
                 confluence_data = {
                     "title": title,
                     "spacekey": self.space,
@@ -124,7 +127,7 @@ class PopulateConfluence:
 
     def logging_policy(self, lp_path):
         """Desc"""
-        
+
         print("Populating Logging Policies..")
         if lp_path:
             lp_list = glob.glob(lp_path + '*.yml')
@@ -196,7 +199,8 @@ class PopulateConfluence:
         if dr_path:
             dr_list = glob.glob(dr_path + '*.yml')
         else:
-            dr_list = glob.glob(ATCconfig.get('detection_rules_directory') +'/*.yml')
+            dr_list = glob.glob(ATCconfig.get(
+                'detection_rules_directory') + '/*.yml')
 
         for dr_file in dr_list:
             try:

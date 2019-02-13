@@ -20,6 +20,7 @@ import sys
 
 ATCconfig = ATCutils.read_yaml_file("config.yml")
 
+
 class PopulateMarkdown:
     """Class for populating markdown repo"""
 
@@ -137,8 +138,8 @@ class PopulateMarkdown:
         if dr_path:
             dr_list = glob.glob(dr_path + '*.yml')
         else:
-            dr_list = glob.glob(ATCconfig.get('detection_rules_directory') +'/*.yml')
-
+            dr_list = glob.glob(ATCconfig.get(
+                'detection_rules_directory') + '/*.yml')
 
         for dr_file in dr_list:
             try:

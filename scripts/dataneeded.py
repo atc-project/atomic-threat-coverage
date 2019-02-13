@@ -12,6 +12,7 @@ import os
 
 ATCconfig = ATCutils.read_yaml_file("config.yml")
 
+
 class DataNeeded:
     """Class for the Data Needed entity"""
 
@@ -98,7 +99,8 @@ class DataNeeded:
             template = env\
                 .get_template('confluence_dataneeded_template.html.j2')
 
-            self.dn_fields.update({'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
+            self.dn_fields.update(
+                {'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
 
             self.dn_fields.update({'description': self.dn_fields
                                    .get('description').strip()})
@@ -119,8 +121,6 @@ class DataNeeded:
                 lp = (lp, logging_policies_id)
                 logging_policies_with_id.append(lp)
 
-            # if isinstance(logging_policies, str):
-            #     logging_policies = [ logging_policies ]
 
             refs = self.dn_fields.get("references")
 

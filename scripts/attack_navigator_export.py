@@ -13,41 +13,41 @@ except:
 
 
 NAVIGATOR_TEMPLATE = {
-	"name": "ATC-Export",
-	"version": "2.1",
-	"domain": "mitre-enterprise",
-	"description": "",
-	"filters": {
-		"stages": [
-			"act"
-		],
-		"platforms": [
-			"linux", "windows"
-		]
-	},
-	"sorting": 0,
-	"viewMode": 0,
-	"hideDisabled": True,
-	"techniques": [],
-	"gradient": {
-		"colors": [
-			"#ff6666",
-			"#ffe766",
-			"#8ec843"
-		],
-		"minValue": 0,
-		"maxValue": 100
-	},
-	"legendItems": [],
-	"showTacticRowBackground": False,
-	"tacticRowBackground":"#dddddd",
-	"selectTechniquesAcrossTactics": True
+    "name": "ATC-Export",
+    "version": "2.1",
+    "domain": "mitre-enterprise",
+    "description": "",
+    "filters": {
+            "stages": [
+                "act"
+            ],
+        "platforms": [
+                "linux", "windows"
+            ]
+    },
+    "sorting": 0,
+    "viewMode": 0,
+    "hideDisabled": True,
+    "techniques": [],
+    "gradient": {
+        "colors": [
+            "#ff6666",
+            "#ffe766",
+            "#8ec843"
+        ],
+        "minValue": 0,
+        "maxValue": 100
+    },
+    "legendItems": [],
+    "showTacticRowBackground": False,
+    "tacticRowBackground": "#dddddd",
+    "selectTechniquesAcrossTactics": True
 }
 
 
-
 def load_yamls(path):
-    yamls = [join(path, f) for f in listdir(path) if isfile(join(path, f)) if f.endswith('.yaml') or f.endswith('.yml')]
+    yamls = [join(path, f) for f in listdir(path) if isfile(
+        join(path, f)) if f.endswith('.yaml') or f.endswith('.yml')]
     result = []
     for yaml in yamls:
         try:
@@ -73,23 +73,20 @@ def get_techniques(threats):
         for technique_id in technique_ids:
             for tactic in tactics:
                 techniques.append({
-                        "techniqueID": technique_id,
-                        "tactic": tactic,
-                        "color": "#fcf26b",
-                        "comment": "",
-                        "enabled": True
+                    "techniqueID": technique_id,
+                    "tactic": tactic,
+                    "color": "#fcf26b",
+                    "comment": "",
+                    "enabled": True
 
                 })
     return techniques
-
 
 
 def main():
     dn_list = load_yamls(dr_dir)[0]
     techniques = get_techniques(dn_list)
     NAVIGATOR_TEMPLATE['techniques'] = techniques
-    #print(json.dumps(NAVIGATOR_TEMPLATE))
-
 
 
 if __name__ == '__main__':
@@ -98,4 +95,3 @@ if __name__ == '__main__':
     with open('../' + filename, 'w') as fp:
         json.dump(NAVIGATOR_TEMPLATE, fp)
     print(f'[+] Created {filename}')
-

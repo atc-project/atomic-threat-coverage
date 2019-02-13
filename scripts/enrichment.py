@@ -12,6 +12,7 @@ import os
 
 ATCconfig = ATCutils.read_yaml_file("config.yml")
 
+
 class Enrichment:
     """Class for the Enrichments entity"""
 
@@ -63,7 +64,8 @@ class Enrichment:
                 'confluence_enrichments_template.html.j2'
             )
 
-            self.en_parsed_file.update({'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
+            self.en_parsed_file.update(
+                {'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
 
             data_needed = self.en_parsed_file.get('data_needed')
             if data_needed:
