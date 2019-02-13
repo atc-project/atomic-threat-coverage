@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects successful logon with logon type 9 (NewCredentials) which matches the Overpass the Hash behavior of e.g Mimikatz's sekurlsa::pth module.                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1075: Pass the Hash](https://attack.mitre.org/tactics/T1075)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1075: Pass the Hash](https://attack.mitre.org/techniques/T1075)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[('Pass the Hash', 'T1075')](../Triggers/('Pass the Hash', 'T1075').md)</li></ul>  |
+| Trigger              | <ul><li>[T1075: Pass the Hash](../Triggers/T1075.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Runas command-line tool using /netonly parameter</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

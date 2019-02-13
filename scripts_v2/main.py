@@ -56,7 +56,7 @@ if __name__ == '__main__':
     elif args.confluence:
         print("Provide confluence credentials\n")
 
-        mail = input("Mail: ")
+        mail = input("Login: ")
         password = getpass.getpass(prompt='Password: ', stream=None)
 
         auth = HTTPBasicAuth(mail, password)

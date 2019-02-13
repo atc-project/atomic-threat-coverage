@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects execution of sdbinst writing to default shim database path C:\Windows\AppPatch\*                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1138: Application Shimming](https://attack.mitre.org/tactics/T1138)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1138: Application Shimming](https://attack.mitre.org/techniques/T1138)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[('Application Shimming', 'T1138')](../Triggers/('Application Shimming', 'T1138').md)</li></ul>  |
+| Trigger              | <ul><li>[T1138: Application Shimming](../Triggers/T1138.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects logons using NTLM, which could be caused by a legacy source or attackers                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1208: Kerberoasting](https://attack.mitre.org/tactics/T1208)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[('Kerberoasting', 'T1208')](../Triggers/('Kerberoasting', 'T1208').md)</li></ul>  |
+| Trigger              | <ul><li>[T1208: Kerberoasting](../Triggers/T1208.md)</li></ul>  |
 | Severity Level       | low                                                                                                                                                 |
 | False Positives      | <ul><li>Legacy hosts</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

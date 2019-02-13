@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects a Windows command line executable started from MSHTA.                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1170: Mshta](https://attack.mitre.org/tactics/T1170)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[('Mshta', 'T1170')](../Triggers/('Mshta', 'T1170').md)</li></ul>  |
+| Trigger              | <ul><li>[T1170: Mshta](../Triggers/T1170.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Printer software / driver installations</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

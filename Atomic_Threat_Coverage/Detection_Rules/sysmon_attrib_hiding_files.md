@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects usage of attrib.exe to hide files from users.                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1158: Hidden Files and Directories](https://attack.mitre.org/tactics/T1158)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1158: Hidden Files and Directories](https://attack.mitre.org/techniques/T1158)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[('Hidden Files and Directories', 'T1158')](../Triggers/('Hidden Files and Directories', 'T1158').md)</li></ul>  |
+| Trigger              | <ul><li>[T1158: Hidden Files and Directories](../Triggers/T1158.md)</li></ul>  |
 | Severity Level       | low                                                                                                                                                 |
 | False Positives      | <ul><li>igfxCUIService.exe hiding *.cui files via .bat script (attrib.exe a child of cmd.exe and igfxCUIService.exe is the parent of the cmd.exe)</li><li>msiexec.exe hiding desktop.ini</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |

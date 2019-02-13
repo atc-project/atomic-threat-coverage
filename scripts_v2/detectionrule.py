@@ -231,8 +231,8 @@ class DetectionRule:
 
             triggers = []
 
-            for trigger in technique:
-                if trigger is "None":
+            for trigger_name, trigger_id in technique:
+                if trigger_id is "None":
                     continue
                 # trigger = re.search('t\d{1,5}', trigger).group(0).upper()
                 # path = '../triggering/atomic-red-team/atomics/' + \
@@ -242,10 +242,10 @@ class DetectionRule:
                     # trigger_yaml = ATCutils.read_yaml_file(path)
                     # main(path,'triggering')
 
-                    trigger_id = str(ATCutils.confluence_get_page_id(
-                        self.apipath, self.auth, self.space, trigger))
+                    trigger_page_id = str(ATCutils.confluence_get_page_id(
+                        self.apipath, self.auth, self.space, trigger_id))
 
-                    trigger = (trigger, trigger_id)
+                    trigger = (trigger_name, trigger_id, trigger_page_id)
 
                     triggers.append(trigger)
                 except FileNotFoundError:

@@ -34,7 +34,7 @@
                     <th class="confluenceTh">ATT&amp;CK Technique</th>
                     <td class="confluenceTd">
                         {%- if techniques |length > 1 -%}<ul>{%endif%}
-                        {%- for for technique_name, technique_id in techniques %}
+                        {%- for technique_name, technique_id in techniques %}
                             {%- if techniques |length > 1 -%}<li>{%endif%}<a href="https://attack.mitre.org/techniques/{{technique_id}}">{{ technique_id }}: {{technique_name}}</a>{%- if techniques |length > 1 -%}</li>{%endif%}
                         {%- endfor %}
                         {%- if techniques |length > 1 -%}</ul>{%endif%}
@@ -70,8 +70,8 @@
                     <th class="confluenceTh">Trigger</th>
                     <td class="confluenceTd">
                         {%- if triggers |length > 1 -%}<ul>{%endif%}
-                        {%- for trigger_name, trigger_id in triggers %}
-                            {%- if triggers |length > 1 -%}<li>{%endif%}{% if trigger_id != "None" %}<a href="/wiki/spaces/SOC/pages/{{trigger_id}}">{{ trigger_name }}</a>{% else %}{{ trigger_name }}{% endif %}{%- if triggers |length > 1 -%}</li>{%endif%}
+                        {%- for trigger_name, trigger_id, trigger_page_id in triggers %}
+                            {%- if triggers |length > 1 -%}<li>{%endif%}{% if trigger_id != "None" %}<a href="/wiki/spaces/SOC/pages/{{trigger_page_id}}">{{trigger_id}}: {{ trigger_name }}</a>{% else %}{{trigger_id}}: {{ trigger_name }}{% endif %}{%- if triggers |length > 1 -%}</li>{%endif%}
                         {%- endfor %}
                         {%- if triggers |length > 1 -%}</ul>{%endif%}
                         <br />

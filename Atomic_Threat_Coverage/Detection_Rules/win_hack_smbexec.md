@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects the use of smbexec.py tool by detecting a specific service installation                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1077: Windows Admin Shares](https://attack.mitre.org/tactics/T1077)</li><li>[T1035: Service Execution](https://attack.mitre.org/tactics/T1035)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1077: Windows Admin Shares](https://attack.mitre.org/techniques/T1077)</li><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[('Windows Admin Shares', 'T1077')](../Triggers/('Windows Admin Shares', 'T1077').md)</li><li>[('Service Execution', 'T1035')](../Triggers/('Service Execution', 'T1035').md)</li></ul>  |
+| Trigger              | <ul><li>[T1077: Windows Admin Shares](../Triggers/T1077.md)</li><li>[T1035: Service Execution](../Triggers/T1035.md)</li></ul>  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>Penetration Test</li><li>Unknown</li></ul>                                                                  |
 | Development Status   |                                                                                                                                                 |

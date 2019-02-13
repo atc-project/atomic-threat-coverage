@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | An attacker can use the SID history attribute to gain additional privileges.                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1178: SID-History Injection](https://attack.mitre.org/tactics/T1178)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1178: SID-History Injection](https://attack.mitre.org/techniques/T1178)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
-| Trigger              | <ul><li>[('SID-History Injection', 'T1178')](../Triggers/('SID-History Injection', 'T1178').md)</li></ul>  |
+| Trigger              | <ul><li>[T1178: SID-History Injection](../Triggers/T1178.md)</li></ul>  |
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul><li>Migration of an account into a new domain</li></ul>                                                                  |
 | Development Status   | stable                                                                                                                                                |

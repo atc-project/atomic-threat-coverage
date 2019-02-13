@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects PowerShell remote thread creation in Rundll32.exe                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1085: Rundll32](https://attack.mitre.org/tactics/T1085)</li><li>[T1086: PowerShell](https://attack.mitre.org/tactics/T1086)</li></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0012_8_windows_sysmon_CreateRemoteThread](../Data_Needed/DN_0012_8_windows_sysmon_CreateRemoteThread.md)</li></ul>                                                         |
-| Trigger              | <ul><li>[('Rundll32', 'T1085')](../Triggers/('Rundll32', 'T1085').md)</li><li>[('PowerShell', 'T1086')](../Triggers/('PowerShell', 'T1086').md)</li></ul>  |
+| Trigger              | <ul><li>[T1085: Rundll32](../Triggers/T1085.md)</li><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unkown</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |
