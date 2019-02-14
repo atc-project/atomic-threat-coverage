@@ -91,7 +91,7 @@ def main():
 
 if __name__ == '__main__':
     main()
-    filename = 'atc_export.json'
+    filename = 'atc_attack_navigator_profile.json'
     with open('../' + filename, 'w') as fp:
         json.dump(NAVIGATOR_TEMPLATE, fp)
     print(f'[+] Created {filename}')
