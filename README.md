@@ -54,17 +54,17 @@ In other words, you don't have to work on data representation layer manually, yo
 
 Everything starts from Sigma rule and ends up with human-readable wiki-style pages. Atomic Threat Coverage parses it and:
 
-1. Maps **Detection Rule** to ATT&CK Tactic and Technique using `tags` from Sigma rule
-2. Maps **Detection Rule** to **Data Needed** using `logsource` and `detection` sections from Sigma rule
-3. Maps **Detection Rule** to **Triggers** (Atomic Red Team tests) using `tags` from Sigma rule
-4. Maps **Detection Rule** to **Enrichments** using existing mapping inside **Detection Rule**
-5. Maps **Response Playbooks** to ATT&CK Tactic and and Technique using existing mapping inside **Response Playbooks**
-6. Maps **Response Playbooks** to **Response Actions** using existing mapping inside **Response Playbooks**
-7. Maps **Logging Policies** to **Data Needed** using existing mapping inside **Data Needed**
+1. Maps Detection Rule to ATT&CK Tactic and Technique using `tags` from Sigma rule
+2. Maps Detection Rule to Data Needed using `logsource` and `detection` sections from Sigma rule
+3. Maps Detection Rule to Triggers (Atomic Red Team tests) using `tags` from Sigma rule
+4. Maps Detection Rule to Enrichments using existing mapping inside Detection Rule
+5. Maps Response Playbooks to ATT&CK Tactic and and Technique using existing mapping inside Response Playbooks
+6. Maps Response Playbooks to Response Actions using existing mapping inside Response Playbooks
+7. Maps Logging Policies to Data Needed using existing mapping inside Data Needed
 8. Converts everything into Confluence and Markdown wiki-style pages using jinja templates (`scripts/templates`)
 9. Pushes all pages to local repo and Confluence server (according to configuration provided in `scripts/config.yml`)
 10. Creates `analytics.csv` and `pivoting.csv` files for simple analysis of existing data
-11. Creates `atc_export.json` — [ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/enterprise/) profile for visualisation of current detection abilities
+11. Creates `atc_attack_navigator_profile.json` — [ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/enterprise/) profile for visualisation of current detection abilities
 
 ### Under the hood
 
@@ -72,6 +72,7 @@ Data in the repository:
 
 ```
 ├── analytics.csv
+├── atc_attack_navigator_profile.json
 ├── pivoting.csv
 ├── data_needed
 │   ├── DN_0001_4688_windows_process_creation.yml
@@ -301,6 +302,15 @@ At the same time it highlights which fields could be found only with specific en
 <details>
   <summary>Example of lookup for "ParentImage" field (click to expand)</summary>
   <img src="images/pivoting_parent_v1.png" />
+</details>
+
+#### atc_attack_navigator_profile.json
+
+Last but not least — Atomic Threat Coverage generates [ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/enterprise/) [profile](atc_attack_navigator_profile.json) for visualisation of current detection abilities, gap analysis, development prioritisation, planning etc. You only need to upload it to public or (better) private Navigator site, click New Tab -> Open Existing Layer -> Upload from local. Here is how it looks like for default ATC dataset (original [Sigma](https://github.com/Neo23x0/sigma) repository rules, Windows only):
+
+<details>
+  <summary>Navigator profile for original Sigma Rules (click to expand)</summary>
+  <img src="images/navigator_v1.png" />
 </details>
 
 ## Goals
