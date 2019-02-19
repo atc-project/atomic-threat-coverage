@@ -101,11 +101,9 @@ class PopulateConfluence:
     def init_export(self):
         """Desc"""
 
-        cmd = ('python3 init_confluence.py')
-        if subprocess.run(cmd, shell=True, check=True).returncode == 0:
-            return True
-        else:
-            return False
+        from init_confluence import main as init_main
+
+        init_main(self.auth)
 
     def triggers(self, tg_path):
         """Populate Triggers"""
