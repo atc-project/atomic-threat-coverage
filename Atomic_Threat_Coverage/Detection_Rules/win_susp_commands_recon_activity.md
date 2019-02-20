@@ -26,14 +26,26 @@ references:
     - https://twitter.com/haroonmeer/status/939099379834658817
     - https://twitter.com/c_APT_ure/status/939475433711722497
     - https://www.fireeye.com/blog/threat-research/2016/05/targeted_attacksaga.html
-author:  Florian Roth, Markus Neis
+author: Florian Roth, Markus Neis
 date: 2018/08/22
+modified: 2018/12/11
 tags:
     - attack.discovery
     - attack.t1073
     - attack.t1012 
 detection:
+    timeframe: 15s 
+    condition: selection | count() by CommandLine > 4
+falsepositives: 
+    - False positives depend on scripts and administrative tools used in the monitored environment
+level: medium
+---
+logsource:
+    product: windows
+    service: sysmon
+detection:
     selection:
+        EventID: 1
         CommandLine: 
             - 'tasklist'
             - 'net time'
@@ -52,18 +64,6 @@ detection:
             - '*\net1 accounts /domain' 
             - '*\net1 user net localgroup administrators' 
             - 'netstat -an'
-    timeframe: 15s 
-    condition: selection | count() by CommandLine > 4
-falsepositives: 
-    - False positives depend on scripts and administrative tools used in the monitored environment
-level: medium
----
-logsource:
-    product: windows
-    service: sysmon
-detection:
-    selection:
-        EventID: 1
 ---
 logsource:
     product: windows
@@ -72,6 +72,24 @@ logsource:
 detection:
     selection:
         EventID: 4688
+        ProcessCommandLine: 
+            - 'tasklist'
+            - 'net time'
+            - 'systeminfo'
+            - 'whoami'
+            - 'nbtstat'
+            - 'net start'
+            - '*\net1 start'
+            - 'qprocess'
+            - 'nslookup'
+            - 'hostname.exe'
+            - '*\net1 user /domain'
+            - '*\net1 group /domain'
+            - '*\net1 group "domain admins" /domain'
+            - '*\net1 group "Exchange Trusted Subsystem" /domain'
+            - '*\net1 accounts /domain' 
+            - '*\net1 user net localgroup administrators' 
+            - 'netstat -an'
 
 ```
 
@@ -85,7 +103,7 @@ detection:
 ### X-Pack Watcher
 
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Reconnaissance-Activity-with-Net-Command <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "15s"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND CommandLine.keyword:(tasklist net\\\\ time systeminfo whoami nbtstat net\\\\ start *\\\\\\\\net1\\\\ start qprocess nslookup hostname.exe *\\\\\\\\net1\\\\ user\\\\ \\\\/domain *\\\\\\\\net1\\\\ group\\\\ \\\\/domain *\\\\\\\\net1\\\\ group\\\\ \\\\\\"domain\\\\ admins\\\\\\"\\\\ \\\\/domain *\\\\\\\\net1\\\\ group\\\\ \\\\\\"Exchange\\\\ Trusted\\\\ Subsystem\\\\\\"\\\\ \\\\/domain *\\\\\\\\net1\\\\ accounts\\\\ \\\\/domain *\\\\\\\\net1\\\\ user\\\\ net\\\\ localgroup\\\\ administrators netstat\\\\ \\\\-an))",\n              "analyze_wildcard": true\n            }\n          },\n          "aggs": {\n            "by": {\n              "terms": {\n                "field": "CommandLine.keyword",\n                "size": 10,\n                "order": {\n                  "_count": "desc"\n                },\n                "min_doc_count": 5\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.aggregations.by.buckets.0.doc_count": {\n        "gt": 4\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Reconnaissance Activity with Net Command\'",\n        "body": "Hits:\\n{{#aggregations.by.buckets}}\\n {{key}} {{doc_count}}\\n{{/aggregations.by.buckets}}\\n",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Reconnaissance-Activity-with-Net-Command-2 <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "15s"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4688\\" AND CommandLine.keyword:(tasklist net\\\\ time systeminfo whoami nbtstat net\\\\ start *\\\\\\\\net1\\\\ start qprocess nslookup hostname.exe *\\\\\\\\net1\\\\ user\\\\ \\\\/domain *\\\\\\\\net1\\\\ group\\\\ \\\\/domain *\\\\\\\\net1\\\\ group\\\\ \\\\\\"domain\\\\ admins\\\\\\"\\\\ \\\\/domain *\\\\\\\\net1\\\\ group\\\\ \\\\\\"Exchange\\\\ Trusted\\\\ Subsystem\\\\\\"\\\\ \\\\/domain *\\\\\\\\net1\\\\ accounts\\\\ \\\\/domain *\\\\\\\\net1\\\\ user\\\\ net\\\\ localgroup\\\\ administrators netstat\\\\ \\\\-an))",\n              "analyze_wildcard": true\n            }\n          },\n          "aggs": {\n            "by": {\n              "terms": {\n                "field": "CommandLine.keyword",\n                "size": 10,\n                "order": {\n                  "_count": "desc"\n                },\n                "min_doc_count": 5\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.aggregations.by.buckets.0.doc_count": {\n        "gt": 4\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Reconnaissance Activity with Net Command\'",\n        "body": "Hits:\\n{{#aggregations.by.buckets}}\\n {{key}} {{doc_count}}\\n{{/aggregations.by.buckets}}\\n",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Reconnaissance-Activity-with-Net-Command <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "15s"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND CommandLine.keyword:(tasklist net\\\\ time systeminfo whoami nbtstat net\\\\ start *\\\\\\\\net1\\\\ start qprocess nslookup hostname.exe *\\\\\\\\net1\\\\ user\\\\ \\\\/domain *\\\\\\\\net1\\\\ group\\\\ \\\\/domain *\\\\\\\\net1\\\\ group\\\\ \\\\\\"domain\\\\ admins\\\\\\"\\\\ \\\\/domain *\\\\\\\\net1\\\\ group\\\\ \\\\\\"Exchange\\\\ Trusted\\\\ Subsystem\\\\\\"\\\\ \\\\/domain *\\\\\\\\net1\\\\ accounts\\\\ \\\\/domain *\\\\\\\\net1\\\\ user\\\\ net\\\\ localgroup\\\\ administrators netstat\\\\ \\\\-an))",\n              "analyze_wildcard": true\n            }\n          },\n          "aggs": {\n            "by": {\n              "terms": {\n                "field": "CommandLine.keyword",\n                "size": 10,\n                "order": {\n                  "_count": "desc"\n                },\n                "min_doc_count": 5\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.aggregations.by.buckets.0.doc_count": {\n        "gt": 4\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Reconnaissance Activity with Net Command\'",\n        "body": "Hits:\\n{{#aggregations.by.buckets}}\\n {{key}} {{doc_count}}\\n{{/aggregations.by.buckets}}\\n",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Reconnaissance-Activity-with-Net-Command-2 <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "15s"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4688\\" AND ProcessCommandLine.keyword:(tasklist net\\\\ time systeminfo whoami nbtstat net\\\\ start *\\\\\\\\net1\\\\ start qprocess nslookup hostname.exe *\\\\\\\\net1\\\\ user\\\\ \\\\/domain *\\\\\\\\net1\\\\ group\\\\ \\\\/domain *\\\\\\\\net1\\\\ group\\\\ \\\\\\"domain\\\\ admins\\\\\\"\\\\ \\\\/domain *\\\\\\\\net1\\\\ group\\\\ \\\\\\"Exchange\\\\ Trusted\\\\ Subsystem\\\\\\"\\\\ \\\\/domain *\\\\\\\\net1\\\\ accounts\\\\ \\\\/domain *\\\\\\\\net1\\\\ user\\\\ net\\\\ localgroup\\\\ administrators netstat\\\\ \\\\-an))",\n              "analyze_wildcard": true\n            }\n          },\n          "aggs": {\n            "by": {\n              "terms": {\n                "field": "CommandLine.keyword",\n                "size": 10,\n                "order": {\n                  "_count": "desc"\n                },\n                "min_doc_count": 5\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.aggregations.by.buckets.0.doc_count": {\n        "gt": 4\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Reconnaissance Activity with Net Command\'",\n        "body": "Hits:\\n{{#aggregations.by.buckets}}\\n {{key}} {{doc_count}}\\n{{/aggregations.by.buckets}}\\n",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 

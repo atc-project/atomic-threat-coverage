@@ -27,12 +27,11 @@ references:
     - https://www.hybrid-analysis.com/sample/f2943f5e45befa52fb12748ca7171d30096e1d4fc3c365561497c618341299d5?environmentId=100
 author: Markus Neis
 date: 2018/04/09
+modified: 2018/12/11
 tags:
     - attack.credential_access
     - attack.t1003
 detection:
-    selection:
-        CommandLine: '*\SYSVOL\*\policies\*'
     condition: selection
 falsepositives: 
     - administrative activity 
@@ -44,6 +43,7 @@ logsource:
 detection:
     selection:
         EventID: 1
+        CommandLine: '*\SYSVOL\\*\policies\\*'
 ---
 logsource:
     product: windows
@@ -52,6 +52,7 @@ logsource:
 detection:
     selection:
         EventID: 4688
+        ProcessCommandLine: '*\SYSVOL\\*\policies\\*'
 
 ```
 
@@ -62,7 +63,7 @@ detection:
 ### Kibana query
 
 ```
-(EventID:"1" AND CommandLine.keyword:*\\\\SYSVOL\\*\\\\policies\\*)\n(EventID:"4688" AND CommandLine.keyword:*\\\\SYSVOL\\*\\\\policies\\*)
+(EventID:"1" AND CommandLine.keyword:*\\\\SYSVOL\\\\*\\\\policies\\\\*)\n(EventID:"4688" AND ProcessCommandLine.keyword:*\\\\SYSVOL\\\\*\\\\policies\\\\*)
 ```
 
 
@@ -72,7 +73,7 @@ detection:
 ### X-Pack Watcher
 
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-SYSVOL-Domain-Group-Policy-Access <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND CommandLine.keyword:*\\\\\\\\SYSVOL\\\\*\\\\\\\\policies\\\\*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious SYSVOL Domain Group Policy Access\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-SYSVOL-Domain-Group-Policy-Access-2 <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\SYSVOL\\\\*\\\\\\\\policies\\\\*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious SYSVOL Domain Group Policy Access\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-SYSVOL-Domain-Group-Policy-Access <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND CommandLine.keyword:*\\\\\\\\SYSVOL\\\\\\\\*\\\\\\\\policies\\\\\\\\*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious SYSVOL Domain Group Policy Access\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-SYSVOL-Domain-Group-Policy-Access-2 <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4688\\" AND ProcessCommandLine.keyword:*\\\\\\\\SYSVOL\\\\\\\\*\\\\\\\\policies\\\\\\\\*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious SYSVOL Domain Group Policy Access\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -82,6 +83,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### Graylog
 
 ```
-(EventID:"1" AND CommandLine:"*\\\\SYSVOL\\*\\\\policies\\*")\n(EventID:"4688" AND CommandLine:"*\\\\SYSVOL\\*\\\\policies\\*")
+(EventID:"1" AND CommandLine:"*\\\\SYSVOL\\\\*\\\\policies\\\\*")\n(EventID:"4688" AND ProcessCommandLine:"*\\\\SYSVOL\\\\*\\\\policies\\\\*")
 ```
 

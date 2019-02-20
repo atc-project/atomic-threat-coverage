@@ -8,7 +8,7 @@
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
 | Development Status   |                                                                                                                                                 |
-| References           | <ul></ul>                                                          |
+| References           | <ul><li>[https://www.optiv.com/blog/post-exploitation-using-netntlm-downgrade-attacks](https://www.optiv.com/blog/post-exploitation-using-netntlm-downgrade-attacks)</li></ul>                                                          |
 | Author               | Florian Roth                                                                                                                                                |
 
 
@@ -21,7 +21,7 @@
 action: global
 title: NetNTLM Downgrade Attack
 description: Detects post exploitation using NetNTLM downgrade attacks
-reference: 
+references: 
     - https://www.optiv.com/blog/post-exploitation-using-netntlm-downgrade-attacks
 author: Florian Roth
 date: 2018/03/20
@@ -41,9 +41,9 @@ detection:
     selection1:
         EventID: 13
         TargetObject: 
-            - '*SYSTEM\*ControlSet*\Control\Lsa\lmcompatibilitylevel'
-            - '*SYSTEM\*ControlSet*\Control\Lsa\NtlmMinClientSec'
-            - '*SYSTEM\*ControlSet*\Control\Lsa\RestrictSendingNTLMTraffic'
+            - '*SYSTEM\\*ControlSet*\Control\Lsa\lmcompatibilitylevel'
+            - '*SYSTEM\\*ControlSet*\Control\Lsa\NtlmMinClientSec'
+            - '*SYSTEM\\*ControlSet*\Control\Lsa\RestrictSendingNTLMTraffic'
 ---
 # Windows Security Eventlog: Process Creation with Full Command Line
 logsource:
@@ -53,7 +53,7 @@ logsource:
 detection:
     selection2:
         EventID: 4657
-        ObjectName: '\REGISTRY\MACHINE\SYSTEM\*ControlSet*\Control\Lsa'
+        ObjectName: '\REGISTRY\MACHINE\SYSTEM\\*ControlSet*\Control\Lsa'
         ObjectValueName: 
             - 'LmCompatibilityLevel'
             - 'NtlmMinClientSec'
@@ -68,7 +68,7 @@ detection:
 ### Kibana query
 
 ```
-(EventID:"13" AND TargetObject.keyword:(*SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\lmcompatibilitylevel *SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\NtlmMinClientSec *SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\RestrictSendingNTLMTraffic))\n(EventID:"4657" AND ObjectName.keyword:\\\\REGISTRY\\\\MACHINE\\\\SYSTEM\\*ControlSet*\\\\Control\\\\Lsa AND ObjectValueName:("LmCompatibilityLevel" "NtlmMinClientSec" "RestrictSendingNTLMTraffic"))
+(EventID:"13" AND TargetObject.keyword:(*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\lmcompatibilitylevel *SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\NtlmMinClientSec *SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\RestrictSendingNTLMTraffic))\n(EventID:"4657" AND ObjectName.keyword:\\\\REGISTRY\\\\MACHINE\\\\SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa AND ObjectValueName:("LmCompatibilityLevel" "NtlmMinClientSec" "RestrictSendingNTLMTraffic"))
 ```
 
 
@@ -78,7 +78,7 @@ detection:
 ### X-Pack Watcher
 
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/NetNTLM-Downgrade-Attack <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"13\\" AND TargetObject.keyword:(*SYSTEM\\\\*ControlSet*\\\\\\\\Control\\\\\\\\Lsa\\\\\\\\lmcompatibilitylevel *SYSTEM\\\\*ControlSet*\\\\\\\\Control\\\\\\\\Lsa\\\\\\\\NtlmMinClientSec *SYSTEM\\\\*ControlSet*\\\\\\\\Control\\\\\\\\Lsa\\\\\\\\RestrictSendingNTLMTraffic))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'NetNTLM Downgrade Attack\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/NetNTLM-Downgrade-Attack-2 <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4657\\" AND ObjectName.keyword:\\\\\\\\REGISTRY\\\\\\\\MACHINE\\\\\\\\SYSTEM\\\\*ControlSet*\\\\\\\\Control\\\\\\\\Lsa AND ObjectValueName:(\\"LmCompatibilityLevel\\" \\"NtlmMinClientSec\\" \\"RestrictSendingNTLMTraffic\\"))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'NetNTLM Downgrade Attack\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/NetNTLM-Downgrade-Attack <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"13\\" AND TargetObject.keyword:(*SYSTEM\\\\\\\\*ControlSet*\\\\\\\\Control\\\\\\\\Lsa\\\\\\\\lmcompatibilitylevel *SYSTEM\\\\\\\\*ControlSet*\\\\\\\\Control\\\\\\\\Lsa\\\\\\\\NtlmMinClientSec *SYSTEM\\\\\\\\*ControlSet*\\\\\\\\Control\\\\\\\\Lsa\\\\\\\\RestrictSendingNTLMTraffic))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'NetNTLM Downgrade Attack\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/NetNTLM-Downgrade-Attack-2 <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4657\\" AND ObjectName.keyword:\\\\\\\\REGISTRY\\\\\\\\MACHINE\\\\\\\\SYSTEM\\\\\\\\*ControlSet*\\\\\\\\Control\\\\\\\\Lsa AND ObjectValueName:(\\"LmCompatibilityLevel\\" \\"NtlmMinClientSec\\" \\"RestrictSendingNTLMTraffic\\"))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'NetNTLM Downgrade Attack\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -88,6 +88,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### Graylog
 
 ```
-(EventID:"13" AND TargetObject:("*SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\lmcompatibilitylevel" "*SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\NtlmMinClientSec" "*SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\RestrictSendingNTLMTraffic"))\n(EventID:"4657" AND ObjectName:"\\\\REGISTRY\\\\MACHINE\\\\SYSTEM\\*ControlSet*\\\\Control\\\\Lsa" AND ObjectValueName:("LmCompatibilityLevel" "NtlmMinClientSec" "RestrictSendingNTLMTraffic"))
+(EventID:"13" AND TargetObject:("*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\lmcompatibilitylevel" "*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\NtlmMinClientSec" "*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\RestrictSendingNTLMTraffic"))\n(EventID:"4657" AND ObjectName:"\\\\REGISTRY\\\\MACHINE\\\\SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa" AND ObjectValueName:("LmCompatibilityLevel" "NtlmMinClientSec" "RestrictSendingNTLMTraffic"))
 ```
 

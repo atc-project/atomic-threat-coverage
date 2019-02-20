@@ -8,7 +8,7 @@
 | Severity Level       | low                                                                                                                                                 |
 | False Positives      | <ul><li>Legitimate administrative tasks.</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |
-| References           | <ul></ul>                                                          |
+| References           | <ul><li>[https://www.peew.pw/blog/2017/11/26/exploring-cmdkey-an-edge-case-for-privilege-escalation](https://www.peew.pw/blog/2017/11/26/exploring-cmdkey-an-edge-case-for-privilege-escalation)</li><li>[https://technet.microsoft.com/en-us/library/cc754243(v=ws.11).aspx](https://technet.microsoft.com/en-us/library/cc754243(v=ws.11).aspx)</li></ul>                                                          |
 | Author               | jmallette                                                                                                                                                |
 
 
@@ -20,7 +20,7 @@
 title: Cmdkey Cached Credentials Recon
 status: experimental
 description: Detects usage of cmdkey to look for cached credentials
-reference: 
+references: 
     - https://www.peew.pw/blog/2017/11/26/exploring-cmdkey-an-edge-case-for-privilege-escalation
     - https://technet.microsoft.com/en-us/library/cc754243(v=ws.11).aspx
 author: jmallette

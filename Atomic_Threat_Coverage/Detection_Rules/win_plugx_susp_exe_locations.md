@@ -3,7 +3,7 @@
 | Description          | Detects the execution of an executable that is typically used by PlugX for DLL side loading started from an uncommon location                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
 | ATT&amp;CK Technique | <ul></ul>                             |
-| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
@@ -38,7 +38,7 @@ detection:
         CommandLine: '*\CamMute.exe'
     filter_cammute:
         EventID: 4688
-        CommandLine: '*\Lenovo\Communication Utility\*'
+        CommandLine: '*\Lenovo\Communication Utility\\*'
 
     # Chrome Frame Helper
     selection_chrome_frame:
@@ -46,7 +46,7 @@ detection:
         CommandLine: '*\chrome_frame_helper.exe'
     filter_chrome_frame:
         EventID: 4688
-        CommandLine: '*\Google\Chrome\application\*'    
+        CommandLine: '*\Google\Chrome\application\\*'    
 
     # Microsoft Device Emulator
     selection_devemu:
@@ -54,7 +54,7 @@ detection:
         CommandLine: '*\dvcemumanager.exe'
     filter_devemu:
         EventID: 4688
-        CommandLine: '*\Microsoft Device Emulator\*'   
+        CommandLine: '*\Microsoft Device Emulator\\*'   
 
     # Windows Media Player Gadget
     selection_gadget:
@@ -62,7 +62,7 @@ detection:
         CommandLine: '*\Gadget.exe'
     filter_gadget:
         EventID: 4688
-        CommandLine: '*\Windows Media Player\*'
+        CommandLine: '*\Windows Media Player\\*'
 
     # HTML Help Workshop
     selection_hcc:
@@ -70,7 +70,7 @@ detection:
         CommandLine: '*\hcc.exe'
     filter_hcc:
         EventID: 4688
-        CommandLine: '*\HTML Help Workshop\*'
+        CommandLine: '*\HTML Help Workshop\\*'
 
     # Hotkey Command Module for Intel Graphics Contollers
     selection_hkcmd:
@@ -79,9 +79,9 @@ detection:
     filter_hkcmd:
         EventID: 4688
         CommandLine: 
-            - '*\System32\*'
-            - '*\SysNative\*'
-            - '*\SysWowo64\*'
+            - '*\System32\\*'
+            - '*\SysNative\\*'
+            - '*\SysWowo64\\*'
 
     # McAfee component
     selection_mc:
@@ -101,9 +101,9 @@ detection:
     filter_msmpeng:
         EventID: 4688
         CommandLine: 
-            - '*\Microsoft Security Client\*'
-            - '*\Windows Defender\*'
-            - '*\AntiMalware\*'
+            - '*\Microsoft Security Client\\*'
+            - '*\Windows Defender\\*'
+            - '*\AntiMalware\\*'
 
     # Microsoft Security Center
     selection_msseces:
@@ -111,7 +111,7 @@ detection:
         CommandLine: '*\msseces.exe'
     filter_msseces:
         EventID: 4688
-        CommandLine: '*\Microsoft Security Center\*'
+        CommandLine: '*\Microsoft Security Center\\*'
 
     # Microsoft Office 2003 OInfo
     selection_oinfo:
@@ -119,7 +119,7 @@ detection:
         CommandLine: '*\OInfoP11.exe'
     filter_oinfo:
         EventID: 4688
-        CommandLine: '*\Common Files\Microsoft Shared\*'      
+        CommandLine: '*\Common Files\Microsoft Shared\\*'      
 
     # OLE View
     selection_oleview:
@@ -131,20 +131,20 @@ detection:
             - '*\Microsoft Visual Studio*'
             - '*\Microsoft SDK*'
             - '*\Windows Kit*'   
-            - '*\Windows Resource Kit\*'
+            - '*\Windows Resource Kit\\*'
 
     # RC
     selection_rc:
         EventID: 4688
-        CommandLine: '*\OleView.exe'
+        CommandLine: '*\rc.exe'
     filter_rc:
         EventID: 4688
         CommandLine: 
             - '*\Microsoft Visual Studio*'
             - '*\Microsoft SDK*'
             - '*\Windows Kit*'   
-            - '*\Windows Resource Kit\*'
-            - '*\Microsoft.NET\*'  
+            - '*\Windows Resource Kit\\*'
+            - '*\Microsoft.NET\\*'  
 
     condition: ( selection_cammute and not filter_cammute ) or  
                 ( selection_chrome_frame and not filter_chrome_frame ) or
@@ -173,7 +173,7 @@ level: high
 ### Kibana query
 
 ```
-(((((((((((((EventID:"4688" AND CommandLine.keyword:*\\\\CamMute.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:*\\\\Lenovo\\\\Communication\\ Utility\\*)) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\chrome_frame_helper.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:*\\\\Google\\\\Chrome\\\\application\\*))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\dvcemumanager.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:*\\\\Microsoft\\ Device\\ Emulator\\*))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\Gadget.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:*\\\\Windows\\ Media\\ Player\\*))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\hcc.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:*\\\\HTML\\ Help\\ Workshop\\*))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\hkcmd.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:(*\\\\System32\\* *\\\\SysNative\\* *\\\\SysWowo64\\*)))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\Mc.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:(*\\\\Microsoft\\ Visual\\ Studio* *\\\\Microsoft\\ SDK* *\\\\Windows\\ Kit*)))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\MsMpEng.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:(*\\\\Microsoft\\ Security\\ Client\\* *\\\\Windows\\ Defender\\* *\\\\AntiMalware\\*)))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\msseces.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:*\\\\Microsoft\\ Security\\ Center\\*))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\OInfoP11.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:*\\\\Common\\ Files\\\\Microsoft\\ Shared\\*))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\OleView.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:(*\\\\Microsoft\\ Visual\\ Studio* *\\\\Microsoft\\ SDK* *\\\\Windows\\ Kit* *\\\\Windows\\ Resource\\ Kit\\*)))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\OleView.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:(*\\\\Microsoft\\ Visual\\ Studio* *\\\\Microsoft\\ SDK* *\\\\Windows\\ Kit* *\\\\Windows\\ Resource\\ Kit\\* *\\\\Microsoft.NET\\*))))
+(((((((((((((EventID:"4688" AND CommandLine.keyword:*\\\\CamMute.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:*\\\\Lenovo\\\\Communication\\ Utility\\\\*)) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\chrome_frame_helper.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:*\\\\Google\\\\Chrome\\\\application\\\\*))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\dvcemumanager.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:*\\\\Microsoft\\ Device\\ Emulator\\\\*))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\Gadget.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:*\\\\Windows\\ Media\\ Player\\\\*))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\hcc.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:*\\\\HTML\\ Help\\ Workshop\\\\*))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\hkcmd.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:(*\\\\System32\\\\* *\\\\SysNative\\\\* *\\\\SysWowo64\\\\*)))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\Mc.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:(*\\\\Microsoft\\ Visual\\ Studio* *\\\\Microsoft\\ SDK* *\\\\Windows\\ Kit*)))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\MsMpEng.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:(*\\\\Microsoft\\ Security\\ Client\\\\* *\\\\Windows\\ Defender\\\\* *\\\\AntiMalware\\\\*)))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\msseces.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:*\\\\Microsoft\\ Security\\ Center\\\\*))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\OInfoP11.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:*\\\\Common\\ Files\\\\Microsoft\\ Shared\\\\*))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\OleView.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:(*\\\\Microsoft\\ Visual\\ Studio* *\\\\Microsoft\\ SDK* *\\\\Windows\\ Kit* *\\\\Windows\\ Resource\\ Kit\\\\*)))) OR ((EventID:"4688" AND CommandLine.keyword:*\\\\rc.exe) AND NOT (EventID:"4688" AND CommandLine.keyword:(*\\\\Microsoft\\ Visual\\ Studio* *\\\\Microsoft\\ SDK* *\\\\Windows\\ Kit* *\\\\Windows\\ Resource\\ Kit\\\\* *\\\\Microsoft.NET\\\\*))))
 ```
 
 
@@ -183,7 +183,7 @@ level: high
 ### X-Pack Watcher
 
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Executable-used-by-PlugX-in-Uncommon-Location <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(((((((((((((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\CamMute.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Lenovo\\\\\\\\Communication\\\\ Utility\\\\*)) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\chrome_frame_helper.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\application\\\\*))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\dvcemumanager.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Microsoft\\\\ Device\\\\ Emulator\\\\*))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Gadget.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Windows\\\\ Media\\\\ Player\\\\*))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\hcc.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\HTML\\\\ Help\\\\ Workshop\\\\*))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\hkcmd.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:(*\\\\\\\\System32\\\\* *\\\\\\\\SysNative\\\\* *\\\\\\\\SysWowo64\\\\*)))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Mc.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:(*\\\\\\\\Microsoft\\\\ Visual\\\\ Studio* *\\\\\\\\Microsoft\\\\ SDK* *\\\\\\\\Windows\\\\ Kit*)))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\MsMpEng.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:(*\\\\\\\\Microsoft\\\\ Security\\\\ Client\\\\* *\\\\\\\\Windows\\\\ Defender\\\\* *\\\\\\\\AntiMalware\\\\*)))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\msseces.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Microsoft\\\\ Security\\\\ Center\\\\*))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\OInfoP11.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\*))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\OleView.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:(*\\\\\\\\Microsoft\\\\ Visual\\\\ Studio* *\\\\\\\\Microsoft\\\\ SDK* *\\\\\\\\Windows\\\\ Kit* *\\\\\\\\Windows\\\\ Resource\\\\ Kit\\\\*)))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\OleView.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:(*\\\\\\\\Microsoft\\\\ Visual\\\\ Studio* *\\\\\\\\Microsoft\\\\ SDK* *\\\\\\\\Windows\\\\ Kit* *\\\\\\\\Windows\\\\ Resource\\\\ Kit\\\\* *\\\\\\\\Microsoft.NET\\\\*))))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Executable used by PlugX in Uncommon Location\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Executable-used-by-PlugX-in-Uncommon-Location <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(((((((((((((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\CamMute.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Lenovo\\\\\\\\Communication\\\\ Utility\\\\\\\\*)) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\chrome_frame_helper.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\application\\\\\\\\*))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\dvcemumanager.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Microsoft\\\\ Device\\\\ Emulator\\\\\\\\*))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Gadget.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Windows\\\\ Media\\\\ Player\\\\\\\\*))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\hcc.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\HTML\\\\ Help\\\\ Workshop\\\\\\\\*))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\hkcmd.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:(*\\\\\\\\System32\\\\\\\\* *\\\\\\\\SysNative\\\\\\\\* *\\\\\\\\SysWowo64\\\\\\\\*)))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Mc.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:(*\\\\\\\\Microsoft\\\\ Visual\\\\ Studio* *\\\\\\\\Microsoft\\\\ SDK* *\\\\\\\\Windows\\\\ Kit*)))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\MsMpEng.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:(*\\\\\\\\Microsoft\\\\ Security\\\\ Client\\\\\\\\* *\\\\\\\\Windows\\\\ Defender\\\\\\\\* *\\\\\\\\AntiMalware\\\\\\\\*)))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\msseces.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Microsoft\\\\ Security\\\\ Center\\\\\\\\*))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\OInfoP11.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\*))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\OleView.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:(*\\\\\\\\Microsoft\\\\ Visual\\\\ Studio* *\\\\\\\\Microsoft\\\\ SDK* *\\\\\\\\Windows\\\\ Kit* *\\\\\\\\Windows\\\\ Resource\\\\ Kit\\\\\\\\*)))) OR ((EventID:\\"4688\\" AND CommandLine.keyword:*\\\\\\\\rc.exe) AND NOT (EventID:\\"4688\\" AND CommandLine.keyword:(*\\\\\\\\Microsoft\\\\ Visual\\\\ Studio* *\\\\\\\\Microsoft\\\\ SDK* *\\\\\\\\Windows\\\\ Kit* *\\\\\\\\Windows\\\\ Resource\\\\ Kit\\\\\\\\* *\\\\\\\\Microsoft.NET\\\\\\\\*))))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Executable used by PlugX in Uncommon Location\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -193,6 +193,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### Graylog
 
 ```
-(((((((((((((EventID:"4688" AND CommandLine:"*\\\\CamMute.exe") AND NOT (EventID:"4688" AND CommandLine:"*\\\\Lenovo\\\\Communication Utility\\*")) OR ((EventID:"4688" AND CommandLine:"*\\\\chrome_frame_helper.exe") AND NOT (EventID:"4688" AND CommandLine:"*\\\\Google\\\\Chrome\\\\application\\*"))) OR ((EventID:"4688" AND CommandLine:"*\\\\dvcemumanager.exe") AND NOT (EventID:"4688" AND CommandLine:"*\\\\Microsoft Device Emulator\\*"))) OR ((EventID:"4688" AND CommandLine:"*\\\\Gadget.exe") AND NOT (EventID:"4688" AND CommandLine:"*\\\\Windows Media Player\\*"))) OR ((EventID:"4688" AND CommandLine:"*\\\\hcc.exe") AND NOT (EventID:"4688" AND CommandLine:"*\\\\HTML Help Workshop\\*"))) OR ((EventID:"4688" AND CommandLine:"*\\\\hkcmd.exe") AND NOT (EventID:"4688" AND CommandLine:("*\\\\System32\\*" "*\\\\SysNative\\*" "*\\\\SysWowo64\\*")))) OR ((EventID:"4688" AND CommandLine:"*\\\\Mc.exe") AND NOT (EventID:"4688" AND CommandLine:("*\\\\Microsoft Visual Studio*" "*\\\\Microsoft SDK*" "*\\\\Windows Kit*")))) OR ((EventID:"4688" AND CommandLine:"*\\\\MsMpEng.exe") AND NOT (EventID:"4688" AND CommandLine:("*\\\\Microsoft Security Client\\*" "*\\\\Windows Defender\\*" "*\\\\AntiMalware\\*")))) OR ((EventID:"4688" AND CommandLine:"*\\\\msseces.exe") AND NOT (EventID:"4688" AND CommandLine:"*\\\\Microsoft Security Center\\*"))) OR ((EventID:"4688" AND CommandLine:"*\\\\OInfoP11.exe") AND NOT (EventID:"4688" AND CommandLine:"*\\\\Common Files\\\\Microsoft Shared\\*"))) OR ((EventID:"4688" AND CommandLine:"*\\\\OleView.exe") AND NOT (EventID:"4688" AND CommandLine:("*\\\\Microsoft Visual Studio*" "*\\\\Microsoft SDK*" "*\\\\Windows Kit*" "*\\\\Windows Resource Kit\\*")))) OR ((EventID:"4688" AND CommandLine:"*\\\\OleView.exe") AND NOT (EventID:"4688" AND CommandLine:("*\\\\Microsoft Visual Studio*" "*\\\\Microsoft SDK*" "*\\\\Windows Kit*" "*\\\\Windows Resource Kit\\*" "*\\\\Microsoft.NET\\*"))))
+(((((((((((((EventID:"4688" AND CommandLine:"*\\\\CamMute.exe") AND NOT (EventID:"4688" AND CommandLine:"*\\\\Lenovo\\\\Communication Utility\\\\*")) OR ((EventID:"4688" AND CommandLine:"*\\\\chrome_frame_helper.exe") AND NOT (EventID:"4688" AND CommandLine:"*\\\\Google\\\\Chrome\\\\application\\\\*"))) OR ((EventID:"4688" AND CommandLine:"*\\\\dvcemumanager.exe") AND NOT (EventID:"4688" AND CommandLine:"*\\\\Microsoft Device Emulator\\\\*"))) OR ((EventID:"4688" AND CommandLine:"*\\\\Gadget.exe") AND NOT (EventID:"4688" AND CommandLine:"*\\\\Windows Media Player\\\\*"))) OR ((EventID:"4688" AND CommandLine:"*\\\\hcc.exe") AND NOT (EventID:"4688" AND CommandLine:"*\\\\HTML Help Workshop\\\\*"))) OR ((EventID:"4688" AND CommandLine:"*\\\\hkcmd.exe") AND NOT (EventID:"4688" AND CommandLine:("*\\\\System32\\\\*" "*\\\\SysNative\\\\*" "*\\\\SysWowo64\\\\*")))) OR ((EventID:"4688" AND CommandLine:"*\\\\Mc.exe") AND NOT (EventID:"4688" AND CommandLine:("*\\\\Microsoft Visual Studio*" "*\\\\Microsoft SDK*" "*\\\\Windows Kit*")))) OR ((EventID:"4688" AND CommandLine:"*\\\\MsMpEng.exe") AND NOT (EventID:"4688" AND CommandLine:("*\\\\Microsoft Security Client\\\\*" "*\\\\Windows Defender\\\\*" "*\\\\AntiMalware\\\\*")))) OR ((EventID:"4688" AND CommandLine:"*\\\\msseces.exe") AND NOT (EventID:"4688" AND CommandLine:"*\\\\Microsoft Security Center\\\\*"))) OR ((EventID:"4688" AND CommandLine:"*\\\\OInfoP11.exe") AND NOT (EventID:"4688" AND CommandLine:"*\\\\Common Files\\\\Microsoft Shared\\\\*"))) OR ((EventID:"4688" AND CommandLine:"*\\\\OleView.exe") AND NOT (EventID:"4688" AND CommandLine:("*\\\\Microsoft Visual Studio*" "*\\\\Microsoft SDK*" "*\\\\Windows Kit*" "*\\\\Windows Resource Kit\\\\*")))) OR ((EventID:"4688" AND CommandLine:"*\\\\rc.exe") AND NOT (EventID:"4688" AND CommandLine:("*\\\\Microsoft Visual Studio*" "*\\\\Microsoft SDK*" "*\\\\Windows Kit*" "*\\\\Windows Resource Kit\\\\*" "*\\\\Microsoft.NET\\\\*"))))
 ```
 
