@@ -8,7 +8,7 @@ from loggingpolicy import LoggingPolicy
 from enrichment import Enrichment
 from responseaction import ResponseAction
 from responseplaybook import ResponsePlaybook
-from pdb import set_trace as bp
+# from pdb import set_trace as bp
 
 # Import ATC Utils
 from atcutils import ATCutils
@@ -17,6 +17,7 @@ from atcutils import ATCutils
 import glob
 import traceback
 import sys
+import subprocess
 
 ATCconfig = ATCutils.read_yaml_file("config.yml")
 
@@ -27,7 +28,7 @@ class PopulateMarkdown:
     def __init__(self, lp=False, dn=False, dr=False, en=False, tg=False,
                  ra=False, rp=False, auto=False, art_dir=False, atc_dir=False,
                  lp_path=False, dn_path=False, dr_path=False, en_path=False,
-                 tg_path=False, ra_path=False, rp_path=False):
+                 tg_path=False, ra_path=False, rp_path=False, init=False):
         """Init"""
 
         # Check if atc_dir provided
@@ -35,7 +36,8 @@ class PopulateMarkdown:
             self.atc_dir = atc_dir
 
         else:
-            self.atc_dir = '../'+ATCconfig.get('md_name_of_root_directory')+'/'
+            self.atc_dir = '../' + \
+                ATCconfig.get('md_name_of_root_directory') + '/'
 
         # Check if art_dir provided
         if art_dir:
@@ -43,6 +45,14 @@ class PopulateMarkdown:
 
         else:
             self.art_dir = ATCconfig.get('triggers_directory')
+
+        # Check if init switch is used
+        if init:
+            if self.init_export():
+                print("[+] Created initial markdown directories successfully")
+            else:
+                print("[X] Failed to create initial markdown directories")
+                raise Exception("Failed to markdown directories")
 
         # Main logic
         if auto:
@@ -74,6 +84,15 @@ class PopulateMarkdown:
 
         if tg:
             self.triggers(tg_path)
+
+    def init_export(self):
+        """Desc"""
+
+        cmd = ('bash init_markdown.sh')
+        if subprocess.run(cmd, shell=True, check=True).returncode == 0:
+            return True
+        else:
+            return False
 
     def triggers(self, tg_path):
         """Populate triggers"""
