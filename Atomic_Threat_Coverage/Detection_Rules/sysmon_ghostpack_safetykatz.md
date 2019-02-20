@@ -2,15 +2,15 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects possible SafetyKatz Behaviour                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| ATT&amp;CK Technique | <ul></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li></ul>                                                         |
-| Trigger              |  There is no Trigger for this technique yet.  |
+| Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |
 | References           | <ul><li>[https://github.com/GhostPack/SafetyKatz](https://github.com/GhostPack/SafetyKatz)</li></ul>                                                          |
 | Author               | Markus Neis                                                                                                                                                |
-| Other Tags           | <ul><li>attack.T1003</li><li>attack.T1003</li></ul> | 
+
 
 ## Detection Rules
 
@@ -24,7 +24,7 @@ references:
     - https://github.com/GhostPack/SafetyKatz
 tags:
     - attack.credential_access
-    - attack.T1003
+    - attack.t1003
 author: Markus Neis
 date: 2018/24/07
 logsource:

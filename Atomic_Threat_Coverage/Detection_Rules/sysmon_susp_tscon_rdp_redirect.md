@@ -8,7 +8,7 @@
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |
-| References           | <ul></ul>                                                          |
+| References           | <ul><li>[http://www.korznikov.com/2017/03/0-day-or-feature-privilege-escalation.html](http://www.korznikov.com/2017/03/0-day-or-feature-privilege-escalation.html)</li><li>[https://medium.com/@networksecurity/rdp-hijacking-how-to-hijack-rds-and-remoteapp-sessions-transparently-to-move-through-an-da2a1e73a5f6](https://medium.com/@networksecurity/rdp-hijacking-how-to-hijack-rds-and-remoteapp-sessions-transparently-to-move-through-an-da2a1e73a5f6)</li></ul>                                                          |
 | Author               | Florian Roth                                                                                                                                                |
 
 
@@ -22,14 +22,13 @@ action: global
 title: Suspicious RDP Redirect Using TSCON
 status: experimental
 description: Detects a suspicious RDP session redirect using tscon.exe
-reference: 
+references: 
     - http://www.korznikov.com/2017/03/0-day-or-feature-privilege-escalation.html
     - https://medium.com/@networksecurity/rdp-hijacking-how-to-hijack-rds-and-remoteapp-sessions-transparently-to-move-through-an-da2a1e73a5f6
 author: Florian Roth
 date: 2018/03/17
+modified: 2018/12/11
 detection:
-    selection:
-        CommandLine: '* /dest:rdp-tcp:*'
     condition: selection
 falsepositives:
     - Unknown
@@ -41,6 +40,7 @@ logsource:
 detection:
     selection:
         EventID: 1
+        CommandLine: '* /dest:rdp-tcp:*'
 ---
 logsource:
     product: windows
@@ -49,6 +49,7 @@ logsource:
 detection:
     selection:
         EventID: 4688
+        ProcessCommandLine: '* /dest:rdp-tcp:*'
 ```
 
 
@@ -58,7 +59,7 @@ detection:
 ### Kibana query
 
 ```
-(EventID:"1" AND CommandLine.keyword:*\\ \\/dest\\:rdp\\-tcp\\:*)\n(EventID:"4688" AND CommandLine.keyword:*\\ \\/dest\\:rdp\\-tcp\\:*)
+(EventID:"1" AND CommandLine.keyword:*\\ \\/dest\\:rdp\\-tcp\\:*)\n(EventID:"4688" AND ProcessCommandLine.keyword:*\\ \\/dest\\:rdp\\-tcp\\:*)
 ```
 
 
@@ -68,7 +69,7 @@ detection:
 ### X-Pack Watcher
 
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-RDP-Redirect-Using-TSCON <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND CommandLine.keyword:*\\\\ \\\\/dest\\\\:rdp\\\\-tcp\\\\:*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious RDP Redirect Using TSCON\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-RDP-Redirect-Using-TSCON-2 <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4688\\" AND CommandLine.keyword:*\\\\ \\\\/dest\\\\:rdp\\\\-tcp\\\\:*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious RDP Redirect Using TSCON\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-RDP-Redirect-Using-TSCON <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND CommandLine.keyword:*\\\\ \\\\/dest\\\\:rdp\\\\-tcp\\\\:*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious RDP Redirect Using TSCON\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-RDP-Redirect-Using-TSCON-2 <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4688\\" AND ProcessCommandLine.keyword:*\\\\ \\\\/dest\\\\:rdp\\\\-tcp\\\\:*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious RDP Redirect Using TSCON\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -78,6 +79,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### Graylog
 
 ```
-(EventID:"1" AND CommandLine:"* \\/dest\\:rdp\\-tcp\\:*")\n(EventID:"4688" AND CommandLine:"* \\/dest\\:rdp\\-tcp\\:*")
+(EventID:"1" AND CommandLine:"* \\/dest\\:rdp\\-tcp\\:*")\n(EventID:"4688" AND ProcessCommandLine:"* \\/dest\\:rdp\\-tcp\\:*")
 ```
 

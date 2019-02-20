@@ -3,7 +3,7 @@
 | Description          | Detects suspicious process run from unusual locations                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul>                                                                  |
@@ -30,10 +30,10 @@ tags:
 detection:
     selection:
         CommandLine:
-            - "*:\\RECYCLER\\*"
-            - "*:\\SystemVolumeInformation\\*"
-            - "%windir%\\Tasks\\*"
-            - "%systemroot%\\debug\\*"
+            - '*:\RECYCLER\\*'
+            - '*:\SystemVolumeInformation\\*'
+            - '%windir%\Tasks\\*'
+            - '%systemroot%\debug\\*'
     condition: selection
 falsepositives: 
     - False positives depend on scripts and administrative tools used in the monitored environment
@@ -65,7 +65,7 @@ detection:
 ### Kibana query
 
 ```
-(EventID:"4688" AND CommandLine.keyword:(*\\:\\\\RECYCLER\\* *\\:\\\\SystemVolumeInformation\\* %windir%\\\\Tasks\\* %systemroot%\\\\debug\\*))\n(EventID:"1" AND CommandLine.keyword:(*\\:\\\\RECYCLER\\* *\\:\\\\SystemVolumeInformation\\* %windir%\\\\Tasks\\* %systemroot%\\\\debug\\*))
+(EventID:"4688" AND CommandLine.keyword:(*\\:\\\\RECYCLER\\\\* *\\:\\\\SystemVolumeInformation\\\\* %windir%\\\\Tasks\\\\* %systemroot%\\\\debug\\\\*))\n(EventID:"1" AND CommandLine.keyword:(*\\:\\\\RECYCLER\\\\* *\\:\\\\SystemVolumeInformation\\\\* %windir%\\\\Tasks\\\\* %systemroot%\\\\debug\\\\*))
 ```
 
 
@@ -75,7 +75,7 @@ detection:
 ### X-Pack Watcher
 
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-Process-Start-Locations <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4688\\" AND CommandLine.keyword:(*\\\\:\\\\\\\\RECYCLER\\\\* *\\\\:\\\\\\\\SystemVolumeInformation\\\\* %windir%\\\\\\\\Tasks\\\\* %systemroot%\\\\\\\\debug\\\\*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious Process Start Locations\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-Process-Start-Locations-2 <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND CommandLine.keyword:(*\\\\:\\\\\\\\RECYCLER\\\\* *\\\\:\\\\\\\\SystemVolumeInformation\\\\* %windir%\\\\\\\\Tasks\\\\* %systemroot%\\\\\\\\debug\\\\*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious Process Start Locations\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-Process-Start-Locations <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4688\\" AND CommandLine.keyword:(*\\\\:\\\\\\\\RECYCLER\\\\\\\\* *\\\\:\\\\\\\\SystemVolumeInformation\\\\\\\\* %windir%\\\\\\\\Tasks\\\\\\\\* %systemroot%\\\\\\\\debug\\\\\\\\*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious Process Start Locations\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-Process-Start-Locations-2 <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND CommandLine.keyword:(*\\\\:\\\\\\\\RECYCLER\\\\\\\\* *\\\\:\\\\\\\\SystemVolumeInformation\\\\\\\\* %windir%\\\\\\\\Tasks\\\\\\\\* %systemroot%\\\\\\\\debug\\\\\\\\*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious Process Start Locations\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -85,6 +85,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### Graylog
 
 ```
-(EventID:"4688" AND CommandLine:("*\\:\\\\RECYCLER\\*" "*\\:\\\\SystemVolumeInformation\\*" "%windir%\\\\Tasks\\*" "%systemroot%\\\\debug\\*"))\n(EventID:"1" AND CommandLine:("*\\:\\\\RECYCLER\\*" "*\\:\\\\SystemVolumeInformation\\*" "%windir%\\\\Tasks\\*" "%systemroot%\\\\debug\\*"))
+(EventID:"4688" AND CommandLine:("*\\:\\\\RECYCLER\\\\*" "*\\:\\\\SystemVolumeInformation\\\\*" "%windir%\\\\Tasks\\\\*" "%systemroot%\\\\debug\\\\*"))\n(EventID:"1" AND CommandLine:("*\\:\\\\RECYCLER\\\\*" "*\\:\\\\SystemVolumeInformation\\\\*" "%windir%\\\\Tasks\\\\*" "%systemroot%\\\\debug\\\\*"))
 ```
 

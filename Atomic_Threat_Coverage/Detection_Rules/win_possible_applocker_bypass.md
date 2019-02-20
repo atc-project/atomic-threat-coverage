@@ -3,10 +3,10 @@
 | Description          | Detects execution of executables that can be used to bypass Applocker whitelisting                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul></ul>                             |
-| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | low                                                                                                                                                 |
-| False Positives      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul>                                                                  |
+| False Positives      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li><li>Using installutil to add features for .NET applications (primarly would occur in developer environments)</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |
 | References           | <ul><li>[https://github.com/subTee/ApplicationWhitelistBypassTechniques/blob/master/TheList.txt](https://github.com/subTee/ApplicationWhitelistBypassTechniques/blob/master/TheList.txt)</li><li>[https://room362.com/post/2014/2014-01-16-application-whitelist-bypass-using-ieexec-dot-exe/](https://room362.com/post/2014/2014-01-16-application-whitelist-bypass-using-ieexec-dot-exe/)</li></ul>                                                          |
 | Author               | juju4                                                                                                                                                |
@@ -29,7 +29,7 @@ tags:
     - attack.defense_evasion
 detection:
     selection:
-        CommandLine: 
+        CommandLine:
             - '*\msdt.exe*'
             - '*\installutil.exe*'
             - '*\regsvcs.exe*'
@@ -41,8 +41,9 @@ detection:
             # higher risk of false positives
 #            - '*\cscript.EXE*'
     condition: selection
-falsepositives: 
+falsepositives:
     - False positives depend on scripts and administrative tools used in the monitored environment
+    - Using installutil to add features for .NET applications (primarly would occur in developer environments)
 level: low
 ---
 # Windows Audit Log
