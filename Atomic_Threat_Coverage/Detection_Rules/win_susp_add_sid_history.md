@@ -45,46 +45,29 @@ level: medium
 
 
 
-### es-qs
-    
+### Kibana query
+
 ```
 EventID:("4765" "4766")
 ```
 
 
-### xpack-watcher
-    
+
+
+
+### X-Pack Watcher
+
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Addition-of-SID-History-to-Active-Directory-Object <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "EventID:(\\"4765\\" \\"4766\\")",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Addition of SID History to Active Directory Object\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-### graylog
-    
+
+
+
+### Graylog
+
 ```
 EventID:("4765" "4766")
 ```
-
-
-### splunk
-    
-```
-(EventID="4765" OR EventID="4766")
-```
-
-
-### logpoint
-    
-```
-EventID IN ["4765", "4766"]
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*4765|.*4766)'
-```
-
-
 

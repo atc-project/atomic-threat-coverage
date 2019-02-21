@@ -47,46 +47,29 @@ level: critical
 
 
 
-### es-qs
-    
+### Kibana query
+
 ```
 EventID:("150" "770")
 ```
 
 
-### xpack-watcher
-    
+
+
+
+### X-Pack Watcher
+
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/DNS-Server-Error-Failed-Loading-the-ServerLevelPluginDLL <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "EventID:(\\"150\\" \\"770\\")",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'DNS Server Error Failed Loading the ServerLevelPluginDLL\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-### graylog
-    
+
+
+
+### Graylog
+
 ```
 EventID:("150" "770")
 ```
-
-
-### splunk
-    
-```
-(EventID="150" OR EventID="770")
-```
-
-
-### logpoint
-    
-```
-EventID IN ["150", "770"]
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*150|.*770)'
-```
-
-
 

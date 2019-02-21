@@ -52,46 +52,29 @@ level: high
 
 
 
-### es-qs
-    
+### Kibana query
+
 ```
 (EventID:"3" AND Image.keyword:(*\\\\ProgramData\\* *\\\\$Recycle.bin *\\\\Users\\\\All\\ Users\\* *\\\\Users\\\\Default\\* *\\\\Users\\\\Public\\* C\\:\\\\Perflogs\\* *\\\\config\\\\systemprofile\\* *\\\\Windows\\\\Fonts\\* *\\\\Windows\\\\IME\\* *\\\\Windows\\\\addins\\*))
 ```
 
 
-### xpack-watcher
-    
+
+
+
+### X-Pack Watcher
+
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-Program-Location-with-Network-Connections <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"3\\" AND Image.keyword:(*\\\\\\\\ProgramData\\\\* *\\\\\\\\$Recycle.bin *\\\\\\\\Users\\\\\\\\All\\\\ Users\\\\* *\\\\\\\\Users\\\\\\\\Default\\\\* *\\\\\\\\Users\\\\\\\\Public\\\\* C\\\\:\\\\\\\\Perflogs\\\\* *\\\\\\\\config\\\\\\\\systemprofile\\\\* *\\\\\\\\Windows\\\\\\\\Fonts\\\\* *\\\\\\\\Windows\\\\\\\\IME\\\\* *\\\\\\\\Windows\\\\\\\\addins\\\\*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious Program Location with Network Connections\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-### graylog
-    
+
+
+
+### Graylog
+
 ```
 (EventID:"3" AND Image:("*\\\\ProgramData\\*" "*\\\\$Recycle.bin" "*\\\\Users\\\\All Users\\*" "*\\\\Users\\\\Default\\*" "*\\\\Users\\\\Public\\*" "C\\:\\\\Perflogs\\*" "*\\\\config\\\\systemprofile\\*" "*\\\\Windows\\\\Fonts\\*" "*\\\\Windows\\\\IME\\*" "*\\\\Windows\\\\addins\\*"))
 ```
-
-
-### splunk
-    
-```
-(EventID="3" (Image="*\\\\ProgramData\\*" OR Image="*\\\\$Recycle.bin" OR Image="*\\\\Users\\\\All Users\\*" OR Image="*\\\\Users\\\\Default\\*" OR Image="*\\\\Users\\\\Public\\*" OR Image="C:\\\\Perflogs\\*" OR Image="*\\\\config\\\\systemprofile\\*" OR Image="*\\\\Windows\\\\Fonts\\*" OR Image="*\\\\Windows\\\\IME\\*" OR Image="*\\\\Windows\\\\addins\\*"))
-```
-
-
-### logpoint
-    
-```
-(EventID="3" Image IN ["*\\\\ProgramData\\*", "*\\\\$Recycle.bin", "*\\\\Users\\\\All Users\\*", "*\\\\Users\\\\Default\\*", "*\\\\Users\\\\Public\\*", "C:\\\\Perflogs\\*", "*\\\\config\\\\systemprofile\\*", "*\\\\Windows\\\\Fonts\\*", "*\\\\Windows\\\\IME\\*", "*\\\\Windows\\\\addins\\*"])
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*3)(?=.*(?:.*.*\\ProgramData\\.*|.*.*\\\\$Recycle\\.bin|.*.*\\Users\\All Users\\.*|.*.*\\Users\\Default\\.*|.*.*\\Users\\Public\\.*|.*C:\\Perflogs\\.*|.*.*\\config\\systemprofile\\.*|.*.*\\Windows\\Fonts\\.*|.*.*\\Windows\\IME\\.*|.*.*\\Windows\\addins\\.*)))'
-```
-
-
 

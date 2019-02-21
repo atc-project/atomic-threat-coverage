@@ -56,46 +56,29 @@ level: high
 
 
 
-### es-qs
-    
+### Kibana query
+
 ```
 (EventID:"1" AND ParentImage.keyword:(*\\\\apache* *\\\\tomcat* *\\\\w3wp.exe *\\\\php\\-cgi.exe *\\\\nginx.exe *\\\\httpd.exe) AND CommandLine:("whoami" "net\\ user" "ping\\ \\-n" "systeminfo"))
 ```
 
 
-### xpack-watcher
-    
+
+
+
+### X-Pack Watcher
+
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Webshell-Detection-With-Command-Line-Keywords <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND ParentImage.keyword:(*\\\\\\\\apache* *\\\\\\\\tomcat* *\\\\\\\\w3wp.exe *\\\\\\\\php\\\\-cgi.exe *\\\\\\\\nginx.exe *\\\\\\\\httpd.exe) AND CommandLine:(\\"whoami\\" \\"net\\\\ user\\" \\"ping\\\\ \\\\-n\\" \\"systeminfo\\"))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Webshell Detection With Command Line Keywords\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-### graylog
-    
+
+
+
+### Graylog
+
 ```
 (EventID:"1" AND ParentImage:("*\\\\apache*" "*\\\\tomcat*" "*\\\\w3wp.exe" "*\\\\php\\-cgi.exe" "*\\\\nginx.exe" "*\\\\httpd.exe") AND CommandLine:("whoami" "net user" "ping \\-n" "systeminfo"))
 ```
-
-
-### splunk
-    
-```
-(EventID="1" (ParentImage="*\\\\apache*" OR ParentImage="*\\\\tomcat*" OR ParentImage="*\\\\w3wp.exe" OR ParentImage="*\\\\php-cgi.exe" OR ParentImage="*\\\\nginx.exe" OR ParentImage="*\\\\httpd.exe") (CommandLine="whoami" OR CommandLine="net user" OR CommandLine="ping -n" OR CommandLine="systeminfo")) | table CommandLine,ParentCommandLine
-```
-
-
-### logpoint
-    
-```
-(EventID="1" ParentImage IN ["*\\\\apache*", "*\\\\tomcat*", "*\\\\w3wp.exe", "*\\\\php-cgi.exe", "*\\\\nginx.exe", "*\\\\httpd.exe"] CommandLine IN ["whoami", "net user", "ping -n", "systeminfo"])
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\apache.*|.*.*\\tomcat.*|.*.*\\w3wp\\.exe|.*.*\\php-cgi\\.exe|.*.*\\nginx\\.exe|.*.*\\httpd\\.exe))(?=.*(?:.*whoami|.*net user|.*ping -n|.*systeminfo)))'
-```
-
-
 

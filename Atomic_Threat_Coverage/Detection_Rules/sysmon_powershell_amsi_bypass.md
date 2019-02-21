@@ -51,46 +51,29 @@ level: high
 
 
 
-### es-qs
-    
+### Kibana query
+
 ```
 (EventID:"1" AND CommandLine.keyword:(*System.Management.Automation.AmsiUtils*) AND CommandLine.keyword:(*amsiInitFailed*))
 ```
 
 
-### xpack-watcher
-    
+
+
+
+### X-Pack Watcher
+
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Powershell-AMSI-Bypass-via-.NET-Reflection <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND CommandLine.keyword:(*System.Management.Automation.AmsiUtils*) AND CommandLine.keyword:(*amsiInitFailed*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Powershell AMSI Bypass via .NET Reflection\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-### graylog
-    
+
+
+
+### Graylog
+
 ```
 (EventID:"1" AND CommandLine:("*System.Management.Automation.AmsiUtils*") AND CommandLine:("*amsiInitFailed*"))
 ```
-
-
-### splunk
-    
-```
-(EventID="1" (CommandLine="*System.Management.Automation.AmsiUtils*") (CommandLine="*amsiInitFailed*"))
-```
-
-
-### logpoint
-    
-```
-(EventID="1" CommandLine IN ["*System.Management.Automation.AmsiUtils*"] CommandLine IN ["*amsiInitFailed*"])
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*System\\.Management\\.Automation\\.AmsiUtils.*))(?=.*(?:.*.*amsiInitFailed.*)))'
-```
-
-
 

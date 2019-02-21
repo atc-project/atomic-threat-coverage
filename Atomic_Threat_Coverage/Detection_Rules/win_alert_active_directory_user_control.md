@@ -45,46 +45,29 @@ level: high
 
 
 
-### es-qs
-    
+### Kibana query
+
 ```
 (EventID:"4704" AND "SeEnableDelegationPrivilege")
 ```
 
 
-### xpack-watcher
-    
+
+
+
+### X-Pack Watcher
+
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Enabled-User-Right-in-AD-to-Control-User-Objects <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4704\\" AND \\"SeEnableDelegationPrivilege\\")",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Enabled User Right in AD to Control User Objects\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-### graylog
-    
+
+
+
+### Graylog
+
 ```
 (EventID:"4704" AND "SeEnableDelegationPrivilege")
 ```
-
-
-### splunk
-    
-```
-(EventID="4704" "SeEnableDelegationPrivilege")
-```
-
-
-### logpoint
-    
-```
-(EventID="4704" "SeEnableDelegationPrivilege")
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*4704)(?=.*SeEnableDelegationPrivilege))'
-```
-
-
 

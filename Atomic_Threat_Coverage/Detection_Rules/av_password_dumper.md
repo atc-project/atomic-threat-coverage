@@ -51,46 +51,29 @@ level: critical
 
 
 
-### es-qs
-    
+### Kibana query
+
 ```
 Signature.keyword:(*DumpCreds* *Mimikatz* *PWCrack* HTool\\/WCE *PSWtool* *PWDump*)
 ```
 
 
-### xpack-watcher
-    
+
+
+
+### X-Pack Watcher
+
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Antivirus-Password-Dumper-Detection <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "Signature.keyword:(*DumpCreds* *Mimikatz* *PWCrack* HTool\\\\/WCE *PSWtool* *PWDump*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Antivirus Password Dumper Detection\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nFileName = {{_source.FileName}}\\n    User = {{_source.User}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-### graylog
-    
+
+
+
+### Graylog
+
 ```
 Signature:("*DumpCreds*" "*Mimikatz*" "*PWCrack*" "HTool\\/WCE" "*PSWtool*" "*PWDump*")
 ```
-
-
-### splunk
-    
-```
-(Signature="*DumpCreds*" OR Signature="*Mimikatz*" OR Signature="*PWCrack*" OR Signature="HTool/WCE" OR Signature="*PSWtool*" OR Signature="*PWDump*") | table FileName,User
-```
-
-
-### logpoint
-    
-```
-Signature IN ["*DumpCreds*", "*Mimikatz*", "*PWCrack*", "HTool/WCE", "*PSWtool*", "*PWDump*"]
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*.*DumpCreds.*|.*.*Mimikatz.*|.*.*PWCrack.*|.*HTool/WCE|.*.*PSWtool.*|.*.*PWDump.*)'
-```
-
-
 

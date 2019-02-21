@@ -49,46 +49,29 @@ level: medium
 
 
 
-### es-qs
-    
+### Kibana query
+
 ```
 (EventID:"1" AND Image.keyword:(*\\\\wscript.exe *\\\\cscript.exe) AND CommandLine.keyword:(*.jse *.vbe *.js *.vba))
 ```
 
 
-### xpack-watcher
-    
+
+
+
+### X-Pack Watcher
+
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/WSF/JSE/JS/VBA/VBE-File-Execution <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND Image.keyword:(*\\\\\\\\wscript.exe *\\\\\\\\cscript.exe) AND CommandLine.keyword:(*.jse *.vbe *.js *.vba))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'WSF/JSE/JS/VBA/VBE File Execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-### graylog
-    
+
+
+
+### Graylog
+
 ```
 (EventID:"1" AND Image:("*\\\\wscript.exe" "*\\\\cscript.exe") AND CommandLine:("*.jse" "*.vbe" "*.js" "*.vba"))
 ```
-
-
-### splunk
-    
-```
-(EventID="1" (Image="*\\\\wscript.exe" OR Image="*\\\\cscript.exe") (CommandLine="*.jse" OR CommandLine="*.vbe" OR CommandLine="*.js" OR CommandLine="*.vba")) | table CommandLine,ParentCommandLine
-```
-
-
-### logpoint
-    
-```
-(EventID="1" Image IN ["*\\\\wscript.exe", "*\\\\cscript.exe"] CommandLine IN ["*.jse", "*.vbe", "*.js", "*.vba"])
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\wscript\\.exe|.*.*\\cscript\\.exe))(?=.*(?:.*.*\\.jse|.*.*\\.vbe|.*.*\\.js|.*.*\\.vba)))'
-```
-
-
 
