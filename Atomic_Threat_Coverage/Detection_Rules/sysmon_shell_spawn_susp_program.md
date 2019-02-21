@@ -58,70 +58,45 @@ level: high
 
 
 
-
-### Kibana query
-
+### esqs
+    
 ```
 (EventID:"1" AND ParentImage.keyword:(*\\\\mshta.exe *\\\\powershell.exe *\\\\cmd.exe *\\\\rundll32.exe *\\\\cscript.exe *\\\\wscript.exe *\\\\wmiprvse.exe) AND Image.keyword:(*\\\\schtasks.exe *\\\\nslookup.exe *\\\\certutil.exe *\\\\bitsadmin.exe *\\\\mshta.exe))
 ```
 
 
-
-
-
-### X-Pack Watcher
-
+### xpackwatcher
+    
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Windows-Shell-Spawning-Suspicious-Program <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND ParentImage.keyword:(*\\\\\\\\mshta.exe *\\\\\\\\powershell.exe *\\\\\\\\cmd.exe *\\\\\\\\rundll32.exe *\\\\\\\\cscript.exe *\\\\\\\\wscript.exe *\\\\\\\\wmiprvse.exe) AND Image.keyword:(*\\\\\\\\schtasks.exe *\\\\\\\\nslookup.exe *\\\\\\\\certutil.exe *\\\\\\\\bitsadmin.exe *\\\\\\\\mshta.exe))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Windows Shell Spawning Suspicious Program\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-
-
-
-### Graylog
-
+### graylog
+    
 ```
 (EventID:"1" AND ParentImage:("*\\\\mshta.exe" "*\\\\powershell.exe" "*\\\\cmd.exe" "*\\\\rundll32.exe" "*\\\\cscript.exe" "*\\\\wscript.exe" "*\\\\wmiprvse.exe") AND Image:("*\\\\schtasks.exe" "*\\\\nslookup.exe" "*\\\\certutil.exe" "*\\\\bitsadmin.exe" "*\\\\mshta.exe"))
 ```
 
 
-
-
-
-### Splunk
-
+### splunk
+    
 ```
 (EventID="1" (ParentImage="*\\\\mshta.exe" OR ParentImage="*\\\\powershell.exe" OR ParentImage="*\\\\cmd.exe" OR ParentImage="*\\\\rundll32.exe" OR ParentImage="*\\\\cscript.exe" OR ParentImage="*\\\\wscript.exe" OR ParentImage="*\\\\wmiprvse.exe") (Image="*\\\\schtasks.exe" OR Image="*\\\\nslookup.exe" OR Image="*\\\\certutil.exe" OR Image="*\\\\bitsadmin.exe" OR Image="*\\\\mshta.exe")) | table CommandLine,ParentCommandLine
 ```
 
 
-
-
-
-### Logpoint
-
+### logpoint
+    
 ```
 (EventID="1" ParentImage IN ["*\\\\mshta.exe", "*\\\\powershell.exe", "*\\\\cmd.exe", "*\\\\rundll32.exe", "*\\\\cscript.exe", "*\\\\wscript.exe", "*\\\\wmiprvse.exe"] Image IN ["*\\\\schtasks.exe", "*\\\\nslookup.exe", "*\\\\certutil.exe", "*\\\\bitsadmin.exe", "*\\\\mshta.exe"])
 ```
 
 
-
-
-
-### Grep
-
+### grep
+    
 ```
 grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\mshta\\.exe|.*.*\\powershell\\.exe|.*.*\\cmd\\.exe|.*.*\\rundll32\\.exe|.*.*\\cscript\\.exe|.*.*\\wscript\\.exe|.*.*\\wmiprvse\\.exe))(?=.*(?:.*.*\\schtasks\\.exe|.*.*\\nslookup\\.exe|.*.*\\certutil\\.exe|.*.*\\bitsadmin\\.exe|.*.*\\mshta\\.exe)))'
 ```
 
-
-
-
-
-### Fieldlist
-
-```
-EventID\nImage\nParentImage
-```
 

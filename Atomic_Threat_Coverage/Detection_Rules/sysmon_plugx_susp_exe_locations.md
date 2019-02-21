@@ -170,70 +170,45 @@ level: high
 
 
 
-
-### Kibana query
-
+### esqs
+    
 ```
 (((((((((((((EventID:"1" AND Image.keyword:*\\\\CamMute.exe) AND NOT (EventID:"1" AND Image.keyword:*\\\\Lenovo\\\\Communication\\ Utility\\*)) OR ((EventID:"1" AND Image.keyword:*\\\\chrome_frame_helper.exe) AND NOT (EventID:"1" AND Image.keyword:*\\\\Google\\\\Chrome\\\\application\\*))) OR ((EventID:"1" AND Image.keyword:*\\\\dvcemumanager.exe) AND NOT (EventID:"1" AND Image.keyword:*\\\\Microsoft\\ Device\\ Emulator\\*))) OR ((EventID:"1" AND Image.keyword:*\\\\Gadget.exe) AND NOT (EventID:"1" AND Image.keyword:*\\\\Windows\\ Media\\ Player\\*))) OR ((EventID:"1" AND Image.keyword:*\\\\hcc.exe) AND NOT (EventID:"1" AND Image.keyword:*\\\\HTML\\ Help\\ Workshop\\*))) OR ((EventID:"1" AND Image.keyword:*\\\\hkcmd.exe) AND NOT (EventID:"1" AND Image.keyword:(*\\\\System32\\* *\\\\SysNative\\* *\\\\SysWowo64\\*)))) OR ((EventID:"1" AND Image.keyword:*\\\\Mc.exe) AND NOT (EventID:"1" AND Image.keyword:(*\\\\Microsoft\\ Visual\\ Studio* *\\\\Microsoft\\ SDK* *\\\\Windows\\ Kit*)))) OR ((EventID:"1" AND Image.keyword:*\\\\MsMpEng.exe) AND NOT (EventID:"1" AND Image.keyword:(*\\\\Microsoft\\ Security\\ Client\\* *\\\\Windows\\ Defender\\* *\\\\AntiMalware\\*)))) OR ((EventID:"1" AND Image.keyword:*\\\\msseces.exe) AND NOT (EventID:"1" AND Image.keyword:*\\\\Microsoft\\ Security\\ Center\\*))) OR ((EventID:"1" AND Image.keyword:*\\\\OInfoP11.exe) AND NOT (EventID:"1" AND Image.keyword:*\\\\Common\\ Files\\\\Microsoft\\ Shared\\*))) OR ((EventID:"1" AND Image.keyword:*\\\\OleView.exe) AND NOT (EventID:"1" AND Image.keyword:(*\\\\Microsoft\\ Visual\\ Studio* *\\\\Microsoft\\ SDK* *\\\\Windows\\ Kit* *\\\\Windows\\ Resource\\ Kit\\*)))) OR ((EventID:"1" AND Image.keyword:*\\\\OleView.exe) AND NOT (EventID:"1" AND Image.keyword:(*\\\\Microsoft\\ Visual\\ Studio* *\\\\Microsoft\\ SDK* *\\\\Windows\\ Kit* *\\\\Windows\\ Resource\\ Kit\\* *\\\\Microsoft.NET\\*))))
 ```
 
 
-
-
-
-### X-Pack Watcher
-
+### xpackwatcher
+    
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Executable-used-by-PlugX-in-Uncommon-Location---Sysmon-Version <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(((((((((((((EventID:\\"1\\" AND Image.keyword:*\\\\\\\\CamMute.exe) AND NOT (EventID:\\"1\\" AND Image.keyword:*\\\\\\\\Lenovo\\\\\\\\Communication\\\\ Utility\\\\*)) OR ((EventID:\\"1\\" AND Image.keyword:*\\\\\\\\chrome_frame_helper.exe) AND NOT (EventID:\\"1\\" AND Image.keyword:*\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\application\\\\*))) OR ((EventID:\\"1\\" AND Image.keyword:*\\\\\\\\dvcemumanager.exe) AND NOT (EventID:\\"1\\" AND Image.keyword:*\\\\\\\\Microsoft\\\\ Device\\\\ Emulator\\\\*))) OR ((EventID:\\"1\\" AND Image.keyword:*\\\\\\\\Gadget.exe) AND NOT (EventID:\\"1\\" AND Image.keyword:*\\\\\\\\Windows\\\\ Media\\\\ Player\\\\*))) OR ((EventID:\\"1\\" AND Image.keyword:*\\\\\\\\hcc.exe) AND NOT (EventID:\\"1\\" AND Image.keyword:*\\\\\\\\HTML\\\\ Help\\\\ Workshop\\\\*))) OR ((EventID:\\"1\\" AND Image.keyword:*\\\\\\\\hkcmd.exe) AND NOT (EventID:\\"1\\" AND Image.keyword:(*\\\\\\\\System32\\\\* *\\\\\\\\SysNative\\\\* *\\\\\\\\SysWowo64\\\\*)))) OR ((EventID:\\"1\\" AND Image.keyword:*\\\\\\\\Mc.exe) AND NOT (EventID:\\"1\\" AND Image.keyword:(*\\\\\\\\Microsoft\\\\ Visual\\\\ Studio* *\\\\\\\\Microsoft\\\\ SDK* *\\\\\\\\Windows\\\\ Kit*)))) OR ((EventID:\\"1\\" AND Image.keyword:*\\\\\\\\MsMpEng.exe) AND NOT (EventID:\\"1\\" AND Image.keyword:(*\\\\\\\\Microsoft\\\\ Security\\\\ Client\\\\* *\\\\\\\\Windows\\\\ Defender\\\\* *\\\\\\\\AntiMalware\\\\*)))) OR ((EventID:\\"1\\" AND Image.keyword:*\\\\\\\\msseces.exe) AND NOT (EventID:\\"1\\" AND Image.keyword:*\\\\\\\\Microsoft\\\\ Security\\\\ Center\\\\*))) OR ((EventID:\\"1\\" AND Image.keyword:*\\\\\\\\OInfoP11.exe) AND NOT (EventID:\\"1\\" AND Image.keyword:*\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\*))) OR ((EventID:\\"1\\" AND Image.keyword:*\\\\\\\\OleView.exe) AND NOT (EventID:\\"1\\" AND Image.keyword:(*\\\\\\\\Microsoft\\\\ Visual\\\\ Studio* *\\\\\\\\Microsoft\\\\ SDK* *\\\\\\\\Windows\\\\ Kit* *\\\\\\\\Windows\\\\ Resource\\\\ Kit\\\\*)))) OR ((EventID:\\"1\\" AND Image.keyword:*\\\\\\\\OleView.exe) AND NOT (EventID:\\"1\\" AND Image.keyword:(*\\\\\\\\Microsoft\\\\ Visual\\\\ Studio* *\\\\\\\\Microsoft\\\\ SDK* *\\\\\\\\Windows\\\\ Kit* *\\\\\\\\Windows\\\\ Resource\\\\ Kit\\\\* *\\\\\\\\Microsoft.NET\\\\*))))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Executable used by PlugX in Uncommon Location - Sysmon Version\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-
-
-
-### Graylog
-
+### graylog
+    
 ```
 (((((((((((((EventID:"1" AND Image:"*\\\\CamMute.exe") AND NOT (EventID:"1" AND Image:"*\\\\Lenovo\\\\Communication Utility\\*")) OR ((EventID:"1" AND Image:"*\\\\chrome_frame_helper.exe") AND NOT (EventID:"1" AND Image:"*\\\\Google\\\\Chrome\\\\application\\*"))) OR ((EventID:"1" AND Image:"*\\\\dvcemumanager.exe") AND NOT (EventID:"1" AND Image:"*\\\\Microsoft Device Emulator\\*"))) OR ((EventID:"1" AND Image:"*\\\\Gadget.exe") AND NOT (EventID:"1" AND Image:"*\\\\Windows Media Player\\*"))) OR ((EventID:"1" AND Image:"*\\\\hcc.exe") AND NOT (EventID:"1" AND Image:"*\\\\HTML Help Workshop\\*"))) OR ((EventID:"1" AND Image:"*\\\\hkcmd.exe") AND NOT (EventID:"1" AND Image:("*\\\\System32\\*" "*\\\\SysNative\\*" "*\\\\SysWowo64\\*")))) OR ((EventID:"1" AND Image:"*\\\\Mc.exe") AND NOT (EventID:"1" AND Image:("*\\\\Microsoft Visual Studio*" "*\\\\Microsoft SDK*" "*\\\\Windows Kit*")))) OR ((EventID:"1" AND Image:"*\\\\MsMpEng.exe") AND NOT (EventID:"1" AND Image:("*\\\\Microsoft Security Client\\*" "*\\\\Windows Defender\\*" "*\\\\AntiMalware\\*")))) OR ((EventID:"1" AND Image:"*\\\\msseces.exe") AND NOT (EventID:"1" AND Image:"*\\\\Microsoft Security Center\\*"))) OR ((EventID:"1" AND Image:"*\\\\OInfoP11.exe") AND NOT (EventID:"1" AND Image:"*\\\\Common Files\\\\Microsoft Shared\\*"))) OR ((EventID:"1" AND Image:"*\\\\OleView.exe") AND NOT (EventID:"1" AND Image:("*\\\\Microsoft Visual Studio*" "*\\\\Microsoft SDK*" "*\\\\Windows Kit*" "*\\\\Windows Resource Kit\\*")))) OR ((EventID:"1" AND Image:"*\\\\OleView.exe") AND NOT (EventID:"1" AND Image:("*\\\\Microsoft Visual Studio*" "*\\\\Microsoft SDK*" "*\\\\Windows Kit*" "*\\\\Windows Resource Kit\\*" "*\\\\Microsoft.NET\\*"))))
 ```
 
 
-
-
-
-### Splunk
-
+### splunk
+    
 ```
 (((((((((((((EventID="1" Image="*\\\\CamMute.exe") NOT (EventID="1" Image="*\\\\Lenovo\\\\Communication Utility\\*")) OR ((EventID="1" Image="*\\\\chrome_frame_helper.exe") NOT (EventID="1" Image="*\\\\Google\\\\Chrome\\\\application\\*"))) OR ((EventID="1" Image="*\\\\dvcemumanager.exe") NOT (EventID="1" Image="*\\\\Microsoft Device Emulator\\*"))) OR ((EventID="1" Image="*\\\\Gadget.exe") NOT (EventID="1" Image="*\\\\Windows Media Player\\*"))) OR ((EventID="1" Image="*\\\\hcc.exe") NOT (EventID="1" Image="*\\\\HTML Help Workshop\\*"))) OR ((EventID="1" Image="*\\\\hkcmd.exe") NOT (EventID="1" (Image="*\\\\System32\\*" OR Image="*\\\\SysNative\\*" OR Image="*\\\\SysWowo64\\*")))) OR ((EventID="1" Image="*\\\\Mc.exe") NOT (EventID="1" (Image="*\\\\Microsoft Visual Studio*" OR Image="*\\\\Microsoft SDK*" OR Image="*\\\\Windows Kit*")))) OR ((EventID="1" Image="*\\\\MsMpEng.exe") NOT (EventID="1" (Image="*\\\\Microsoft Security Client\\*" OR Image="*\\\\Windows Defender\\*" OR Image="*\\\\AntiMalware\\*")))) OR ((EventID="1" Image="*\\\\msseces.exe") NOT (EventID="1" Image="*\\\\Microsoft Security Center\\*"))) OR ((EventID="1" Image="*\\\\OInfoP11.exe") NOT (EventID="1" Image="*\\\\Common Files\\\\Microsoft Shared\\*"))) OR ((EventID="1" Image="*\\\\OleView.exe") NOT (EventID="1" (Image="*\\\\Microsoft Visual Studio*" OR Image="*\\\\Microsoft SDK*" OR Image="*\\\\Windows Kit*" OR Image="*\\\\Windows Resource Kit\\*")))) OR ((EventID="1" Image="*\\\\OleView.exe") NOT (EventID="1" (Image="*\\\\Microsoft Visual Studio*" OR Image="*\\\\Microsoft SDK*" OR Image="*\\\\Windows Kit*" OR Image="*\\\\Windows Resource Kit\\*" OR Image="*\\\\Microsoft.NET\\*")))) | table CommandLine,ParentCommandLine
 ```
 
 
-
-
-
-### Logpoint
-
+### logpoint
+    
 ```
 (((((((((((((EventID="1" Image="*\\\\CamMute.exe")  -(EventID="1" Image="*\\\\Lenovo\\\\Communication Utility\\*")) OR ((EventID="1" Image="*\\\\chrome_frame_helper.exe")  -(EventID="1" Image="*\\\\Google\\\\Chrome\\\\application\\*"))) OR ((EventID="1" Image="*\\\\dvcemumanager.exe")  -(EventID="1" Image="*\\\\Microsoft Device Emulator\\*"))) OR ((EventID="1" Image="*\\\\Gadget.exe")  -(EventID="1" Image="*\\\\Windows Media Player\\*"))) OR ((EventID="1" Image="*\\\\hcc.exe")  -(EventID="1" Image="*\\\\HTML Help Workshop\\*"))) OR ((EventID="1" Image="*\\\\hkcmd.exe")  -(EventID="1" Image IN ["*\\\\System32\\*", "*\\\\SysNative\\*", "*\\\\SysWowo64\\*"]))) OR ((EventID="1" Image="*\\\\Mc.exe")  -(EventID="1" Image IN ["*\\\\Microsoft Visual Studio*", "*\\\\Microsoft SDK*", "*\\\\Windows Kit*"]))) OR ((EventID="1" Image="*\\\\MsMpEng.exe")  -(EventID="1" Image IN ["*\\\\Microsoft Security Client\\*", "*\\\\Windows Defender\\*", "*\\\\AntiMalware\\*"]))) OR ((EventID="1" Image="*\\\\msseces.exe")  -(EventID="1" Image="*\\\\Microsoft Security Center\\*"))) OR ((EventID="1" Image="*\\\\OInfoP11.exe")  -(EventID="1" Image="*\\\\Common Files\\\\Microsoft Shared\\*"))) OR ((EventID="1" Image="*\\\\OleView.exe")  -(EventID="1" Image IN ["*\\\\Microsoft Visual Studio*", "*\\\\Microsoft SDK*", "*\\\\Windows Kit*", "*\\\\Windows Resource Kit\\*"]))) OR ((EventID="1" Image="*\\\\OleView.exe")  -(EventID="1" Image IN ["*\\\\Microsoft Visual Studio*", "*\\\\Microsoft SDK*", "*\\\\Windows Kit*", "*\\\\Windows Resource Kit\\*", "*\\\\Microsoft.NET\\*"])))
 ```
 
 
-
-
-
-### Grep
-
+### grep
+    
 ```
 grep -P '^(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\CamMute\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*.*\\Lenovo\\Communication Utility\\.*)))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\chrome_frame_helper\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*.*\\Google\\Chrome\\application\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\dvcemumanager\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*.*\\Microsoft Device Emulator\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\Gadget\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*.*\\Windows Media Player\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\hcc\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*.*\\HTML Help Workshop\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\hkcmd\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*(?:.*.*\\System32\\.*|.*.*\\SysNative\\.*|.*.*\\SysWowo64\\.*))))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\Mc\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*(?:.*.*\\Microsoft Visual Studio.*|.*.*\\Microsoft SDK.*|.*.*\\Windows Kit.*))))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\MsMpEng\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*(?:.*.*\\Microsoft Security Client\\.*|.*.*\\Windows Defender\\.*|.*.*\\AntiMalware\\.*))))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\msseces\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*.*\\Microsoft Security Center\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\OInfoP11\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*.*\\Common Files\\Microsoft Shared\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\OleView\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*(?:.*.*\\Microsoft Visual Studio.*|.*.*\\Microsoft SDK.*|.*.*\\Windows Kit.*|.*.*\\Windows Resource Kit\\.*))))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\OleView\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*(?:.*.*\\Microsoft Visual Studio.*|.*.*\\Microsoft SDK.*|.*.*\\Windows Kit.*|.*.*\\Windows Resource Kit\\.*|.*.*\\Microsoft\\.NET\\.*))))))))'
 ```
 
-
-
-
-
-### Fieldlist
-
-```
-EventID\nImage
-```
 

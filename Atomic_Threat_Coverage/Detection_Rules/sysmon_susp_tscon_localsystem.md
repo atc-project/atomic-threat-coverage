@@ -43,70 +43,45 @@ level: high
 
 
 
-
-### Kibana query
-
+### esqs
+    
 ```
 (EventID:"1" AND User:"NT\\ AUTHORITY\\\\SYSTEM" AND Image.keyword:*\\\\tscon.exe)
 ```
 
 
-
-
-
-### X-Pack Watcher
-
+### xpackwatcher
+    
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-TSCON-Start <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\" AND Image.keyword:*\\\\\\\\tscon.exe)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious TSCON Start\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-
-
-
-### Graylog
-
+### graylog
+    
 ```
 (EventID:"1" AND User:"NT AUTHORITY\\\\SYSTEM" AND Image:"*\\\\tscon.exe")
 ```
 
 
-
-
-
-### Splunk
-
+### splunk
+    
 ```
 (EventID="1" User="NT AUTHORITY\\\\SYSTEM" Image="*\\\\tscon.exe")
 ```
 
 
-
-
-
-### Logpoint
-
+### logpoint
+    
 ```
 (EventID="1" User="NT AUTHORITY\\\\SYSTEM" Image="*\\\\tscon.exe")
 ```
 
 
-
-
-
-### Grep
-
+### grep
+    
 ```
 grep -P '^(?:.*(?=.*1)(?=.*NT AUTHORITY\\SYSTEM)(?=.*.*\\tscon\\.exe))'
 ```
 
-
-
-
-
-### Fieldlist
-
-```
-EventID\nImage\nUser
-```
 

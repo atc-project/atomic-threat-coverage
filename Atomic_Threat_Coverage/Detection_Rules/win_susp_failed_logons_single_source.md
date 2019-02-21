@@ -56,56 +56,45 @@ level: medium
 
 
 
+### esqs
+    
+```
+
+```
 
 
-
-
-### X-Pack Watcher
-
+### xpackwatcher
+    
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Multiple-Failed-Logins-with-Different-Accounts-from-Single-Source-System <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "24h"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4776\\" AND UserName.keyword:* AND Workstation.keyword:*)",\n              "analyze_wildcard": true\n            }\n          },\n          "aggs": {\n            "by": {\n              "terms": {\n                "field": "Workstation.keyword",\n                "size": 10,\n                "order": {\n                  "_count": "desc"\n                },\n                "min_doc_count": 4\n              },\n              "aggs": {\n                "agg": {\n                  "terms": {\n                    "field": "UserName.keyword",\n                    "size": 10,\n                    "order": {\n                      "_count": "desc"\n                    },\n                    "min_doc_count": 4\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.aggregations.by.buckets.0.agg.buckets.0.doc_count": {\n        "gt": 3\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Multiple Failed Logins with Different Accounts from Single Source System\'",\n        "body": "Hits:\\n{{#aggregations.agg.buckets}}\\n {{key}} {{doc_count}}\\n\\n{{#by.buckets}}\\n-- {{key}} {{doc_count}}\\n{{/by.buckets}}\\n\\n{{/aggregations.agg.buckets}}\\n",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
+### graylog
+    
+```
+
+```
 
 
-
-
-
-
-### Splunk
-
+### splunk
+    
 ```
 ((EventID="529" OR EventID="4625") UserName="*" WorkstationName="*") | eventstats dc(UserName) as val by WorkstationName | search val > 3
 ```
 
 
-
-
-
-### Logpoint
-
+### logpoint
+    
 ```
 (EventID IN ["529", "4625"] UserName="*" WorkstationName="*") | chart count(UserName) as val by WorkstationName | search val > 3
 ```
 
 
-
-
-
-### Grep
-
+### grep
+    
 ```
 grep -P '^(?:.*(?=.*(?:.*529|.*4625))(?=.*.*)(?=.*.*))'
 ```
 
-
-
-
-
-### Fieldlist
-
-```
-EventID\nUserName\nWorkstationName
-```
 

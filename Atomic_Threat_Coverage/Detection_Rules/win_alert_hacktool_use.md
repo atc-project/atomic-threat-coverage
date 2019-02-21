@@ -48,70 +48,45 @@ level: critical
 
 
 
-
-### Kibana query
-
+### esqs
+    
 ```
 (EventID:("4776" "4624" "4625") AND WorkstationName:"RULER")
 ```
 
 
-
-
-
-### X-Pack Watcher
-
+### xpackwatcher
+    
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Hacktool-Use <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:(\\"4776\\" \\"4624\\" \\"4625\\") AND WorkstationName:\\"RULER\\")",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Hacktool Use\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-
-
-
-### Graylog
-
+### graylog
+    
 ```
 (EventID:("4776" "4624" "4625") AND WorkstationName:"RULER")
 ```
 
 
-
-
-
-### Splunk
-
+### splunk
+    
 ```
 ((EventID="4776" OR EventID="4624" OR EventID="4625") WorkstationName="RULER")
 ```
 
 
-
-
-
-### Logpoint
-
+### logpoint
+    
 ```
 (EventID IN ["4776", "4624", "4625"] WorkstationName="RULER")
 ```
 
 
-
-
-
-### Grep
-
+### grep
+    
 ```
 grep -P '^(?:.*(?=.*(?:.*4776|.*4624|.*4625))(?=.*RULER))'
 ```
 
-
-
-
-
-### Fieldlist
-
-```
-EventID\nWorkstationName
-```
 

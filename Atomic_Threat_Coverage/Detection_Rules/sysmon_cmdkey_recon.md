@@ -46,70 +46,45 @@ level: low
 
 
 
-
-### Kibana query
-
+### esqs
+    
 ```
 (EventID:"1" AND Image.keyword:*\\\\cmdkey.exe AND CommandLine.keyword:*\\ \\/list\\ *)
 ```
 
 
-
-
-
-### X-Pack Watcher
-
+### xpackwatcher
+    
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Cmdkey-Cached-Credentials-Recon <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND Image.keyword:*\\\\\\\\cmdkey.exe AND CommandLine.keyword:*\\\\ \\\\/list\\\\ *)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Cmdkey Cached Credentials Recon\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}\\n             User = {{_source.User}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-
-
-
-### Graylog
-
+### graylog
+    
 ```
 (EventID:"1" AND Image:"*\\\\cmdkey.exe" AND CommandLine:"* \\/list *")
 ```
 
 
-
-
-
-### Splunk
-
+### splunk
+    
 ```
 (EventID="1" Image="*\\\\cmdkey.exe" CommandLine="* /list *") | table CommandLine,ParentCommandLine,User
 ```
 
 
-
-
-
-### Logpoint
-
+### logpoint
+    
 ```
 (EventID="1" Image="*\\\\cmdkey.exe" CommandLine="* /list *")
 ```
 
 
-
-
-
-### Grep
-
+### grep
+    
 ```
 grep -P '^(?:.*(?=.*1)(?=.*.*\\cmdkey\\.exe)(?=.*.* /list .*))'
 ```
 
-
-
-
-
-### Fieldlist
-
-```
-CommandLine\nEventID\nImage
-```
 

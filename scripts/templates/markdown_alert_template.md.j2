@@ -19,83 +19,17 @@
 ```
 {{ sigma_rule }}
 ```
-
 {% else %}
 {% endif %}
 
-{% if esqs is defined and esqs|length %}
-
-### Kibana query
-
+{% if det_queries is defined and det_queries|length %}
+{% for key, value in det_queries.items() %}
+### {{key}}
+    
 ```
-{{ esqs }}
-```
-
-{% else %}
-{% endif %}
-
-{% if xpackwatcher is defined and xpackwatcher|length %}
-
-### X-Pack Watcher
-
-```
-{{ xpackwatcher }}
+{{value}}
 ```
 
-{% else %}
-{% endif %}
-
-{% if graylog is defined and graylog|length %}
-
-### Graylog
-
-```
-{{ graylog }}
-```
-
-{% else %}
-{% endif %}
-
-{% if splunk is defined and splunk|length %}
-
-### Splunk
-
-```
-{{ splunk }}
-```
-
-{% else %}
-{% endif %}
-
-{% if logpoint is defined and logpoint|length %}
-
-### Logpoint
-
-```
-{{ logpoint }}
-```
-
-{% else %}
-{% endif %}
-
-{% if grep is defined and grep|length %}
-
-### Grep
-
-```
-{{ grep }}
-```
-
-{% else %}
-{% endif %}
-
-{% if fieldlist is defined and fieldlist|length %}
-
-### Fieldlist
-
-```
-{{ fieldlist }}
-```
-
+{% endfor %}
 {% else %}
 {% endif %}

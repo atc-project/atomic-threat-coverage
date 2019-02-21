@@ -66,70 +66,45 @@ level: high
 
 
 
-
-### Kibana query
-
+### esqs
+    
 ```
 (EventID:"1" AND CommandLine.keyword:(*certutil\\ *\\ \\-decode\\ * *certutil\\ *\\ \\-decodehex\\ * *certutil\\ *\\-urlcache*\\ http* *certutil\\ *\\-urlcache*\\ ftp* *certutil\\ *\\-URL* *certutil\\ *\\-ping* *certutil.exe\\ *\\ \\-decode\\ * *certutil.exe\\ *\\ \\-decodehex\\ * *certutil.exe\\ *\\-urlcache*\\ http* *certutil.exe\\ *\\-urlcache*\\ ftp* *certutil.exe\\ *\\-URL* *certutil.exe\\ *\\-ping*))
 ```
 
 
-
-
-
-### X-Pack Watcher
-
+### xpackwatcher
+    
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Suspicious-Certutil-Command <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND CommandLine.keyword:(*certutil\\\\ *\\\\ \\\\-decode\\\\ * *certutil\\\\ *\\\\ \\\\-decodehex\\\\ * *certutil\\\\ *\\\\-urlcache*\\\\ http* *certutil\\\\ *\\\\-urlcache*\\\\ ftp* *certutil\\\\ *\\\\-URL* *certutil\\\\ *\\\\-ping* *certutil.exe\\\\ *\\\\ \\\\-decode\\\\ * *certutil.exe\\\\ *\\\\ \\\\-decodehex\\\\ * *certutil.exe\\\\ *\\\\-urlcache*\\\\ http* *certutil.exe\\\\ *\\\\-urlcache*\\\\ ftp* *certutil.exe\\\\ *\\\\-URL* *certutil.exe\\\\ *\\\\-ping*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious Certutil Command\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-
-
-
-### Graylog
-
+### graylog
+    
 ```
 (EventID:"1" AND CommandLine:("*certutil * \\-decode *" "*certutil * \\-decodehex *" "*certutil *\\-urlcache* http*" "*certutil *\\-urlcache* ftp*" "*certutil *\\-URL*" "*certutil *\\-ping*" "*certutil.exe * \\-decode *" "*certutil.exe * \\-decodehex *" "*certutil.exe *\\-urlcache* http*" "*certutil.exe *\\-urlcache* ftp*" "*certutil.exe *\\-URL*" "*certutil.exe *\\-ping*"))
 ```
 
 
-
-
-
-### Splunk
-
+### splunk
+    
 ```
 (EventID="1" (CommandLine="*certutil * -decode *" OR CommandLine="*certutil * -decodehex *" OR CommandLine="*certutil *-urlcache* http*" OR CommandLine="*certutil *-urlcache* ftp*" OR CommandLine="*certutil *-URL*" OR CommandLine="*certutil *-ping*" OR CommandLine="*certutil.exe * -decode *" OR CommandLine="*certutil.exe * -decodehex *" OR CommandLine="*certutil.exe *-urlcache* http*" OR CommandLine="*certutil.exe *-urlcache* ftp*" OR CommandLine="*certutil.exe *-URL*" OR CommandLine="*certutil.exe *-ping*")) | table CommandLine,ParentCommandLine
 ```
 
 
-
-
-
-### Logpoint
-
+### logpoint
+    
 ```
 (EventID="1" CommandLine IN ["*certutil * -decode *", "*certutil * -decodehex *", "*certutil *-urlcache* http*", "*certutil *-urlcache* ftp*", "*certutil *-URL*", "*certutil *-ping*", "*certutil.exe * -decode *", "*certutil.exe * -decodehex *", "*certutil.exe *-urlcache* http*", "*certutil.exe *-urlcache* ftp*", "*certutil.exe *-URL*", "*certutil.exe *-ping*"])
 ```
 
 
-
-
-
-### Grep
-
+### grep
+    
 ```
 grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*certutil .* -decode .*|.*.*certutil .* -decodehex .*|.*.*certutil .*-urlcache.* http.*|.*.*certutil .*-urlcache.* ftp.*|.*.*certutil .*-URL.*|.*.*certutil .*-ping.*|.*.*certutil\\.exe .* -decode .*|.*.*certutil\\.exe .* -decodehex .*|.*.*certutil\\.exe .*-urlcache.* http.*|.*.*certutil\\.exe .*-urlcache.* ftp.*|.*.*certutil\\.exe .*-URL.*|.*.*certutil\\.exe .*-ping.*)))'
 ```
 
-
-
-
-
-### Fieldlist
-
-```
-CommandLine\nEventID
-```
 

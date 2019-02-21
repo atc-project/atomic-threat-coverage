@@ -48,63 +48,45 @@ level: critical
 
 
 
-
-### Kibana query
-
+### esqs
+    
 ```
 (mimikatz OR mimilib OR 3\\ eo.oe OR eo.oe.kiwi OR privilege\\:\\:debug OR sekurlsa\\:\\:logonpasswords OR lsadump\\:\\:sam OR mimidrv.sys)
 ```
 
 
-
-
-
-### X-Pack Watcher
-
+### xpackwatcher
+    
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Mimikatz-Use <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(mimikatz OR mimilib OR 3\\\\ eo.oe OR eo.oe.kiwi OR privilege\\\\:\\\\:debug OR sekurlsa\\\\:\\\\:logonpasswords OR lsadump\\\\:\\\\:sam OR mimidrv.sys)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Mimikatz Use\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-
-
-
-### Graylog
-
+### graylog
+    
 ```
 ("mimikatz" OR "mimilib" OR "<3 eo.oe" OR "eo.oe.kiwi" OR "privilege\\:\\:debug" OR "sekurlsa\\:\\:logonpasswords" OR "lsadump\\:\\:sam" OR "mimidrv.sys")
 ```
 
 
-
-
-
-### Splunk
-
+### splunk
+    
 ```
 ("mimikatz" OR "mimilib" OR "<3 eo.oe" OR "eo.oe.kiwi" OR "privilege::debug" OR "sekurlsa::logonpasswords" OR "lsadump::sam" OR "mimidrv.sys")
 ```
 
 
-
-
-
-### Logpoint
-
+### logpoint
+    
 ```
 ("mimikatz" OR "mimilib" OR "<3 eo.oe" OR "eo.oe.kiwi" OR "privilege::debug" OR "sekurlsa::logonpasswords" OR "lsadump::sam" OR "mimidrv.sys")
 ```
 
 
-
-
-
-### Grep
-
+### grep
+    
 ```
 grep -P '^(?:.*(?:.*mimikatz|.*mimilib|.*<3 eo\\.oe|.*eo\\.oe\\.kiwi|.*privilege::debug|.*sekurlsa::logonpasswords|.*lsadump::sam|.*mimidrv\\.sys))'
 ```
-
-
 
 

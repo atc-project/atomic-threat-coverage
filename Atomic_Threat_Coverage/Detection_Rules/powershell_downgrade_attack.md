@@ -47,70 +47,45 @@ level: medium
 
 
 
-
-### Kibana query
-
+### esqs
+    
 ```
 ((EventID:"400" AND EngineVersion.keyword:2.*) AND NOT (HostVersion.keyword:2.*))
 ```
 
 
-
-
-
-### X-Pack Watcher
-
+### xpackwatcher
+    
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/PowerShell-Downgrade-Attack <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "((EventID:\\"400\\" AND EngineVersion.keyword:2.*) AND NOT (HostVersion.keyword:2.*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'PowerShell Downgrade Attack\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-
-
-
-### Graylog
-
+### graylog
+    
 ```
 ((EventID:"400" AND EngineVersion:"2.*") AND NOT (HostVersion:"2.*"))
 ```
 
 
-
-
-
-### Splunk
-
+### splunk
+    
 ```
 ((EventID="400" EngineVersion="2.*") NOT (HostVersion="2.*"))
 ```
 
 
-
-
-
-### Logpoint
-
+### logpoint
+    
 ```
 ((EventID="400" EngineVersion="2.*")  -(HostVersion="2.*"))
 ```
 
 
-
-
-
-### Grep
-
+### grep
+    
 ```
 grep -P '^(?:.*(?=.*(?:.*(?=.*400)(?=.*2\\..*)))(?=.*(?!.*(?:.*(?=.*2\\..*)))))'
 ```
 
-
-
-
-
-### Fieldlist
-
-```
-EngineVersion\nEventID\nHostVersion
-```
 

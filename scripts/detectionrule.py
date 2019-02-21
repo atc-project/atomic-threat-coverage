@@ -69,7 +69,11 @@ class DetectionRule:
             self.fields.update({'sigma_rule': sigma_rule})
 
             # Define which queries we want from Sigma
-            queries = ["es-qs", "xpack-watcher", "graylog", "splunk", "logpoint", "grep", "fieldlist"]
+            #queries = ["es-qs", "xpack-watcher", "graylog", "splunk", "logpoint", "grep", "fieldlist"]
+            queries = ATCconfig.get('detection_queries').split(",")
+
+            # dict to store query key + query values
+            det_queries = {}
 
             # Convert sigma rule into queries (for instance, graylog query)
             for query in queries:
@@ -90,7 +94,10 @@ class DetectionRule:
                 Jinja2 variable naming,
                 e.g es-qs throws error 'no es variable'
                 """
-                self.fields.update({query.replace("-", ""): str(query2)[2:-3]})
+                det_queries[query.replace("-", "")] = str(query2)[2:-3]
+                
+            # Update detection rules
+            self.fields.update({"det_queries": det_queries})
 
             # Data Needed
             data_needed = ATCutils.main_dn_calculatoin_func(self.yaml_file)
