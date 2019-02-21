@@ -3,7 +3,7 @@
 | Description          | Detects the creation of a named pipe used by known APT malware                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0021_18_windows_sysmon_PipeEvent](../Data_Needed/DN_0021_18_windows_sysmon_PipeEvent.md)</li><li>[DN_0020_17_windows_sysmon_PipeEvent](../Data_Needed/DN_0020_17_windows_sysmon_PipeEvent.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0020_17_windows_sysmon_PipeEvent](../Data_Needed/DN_0020_17_windows_sysmon_PipeEvent.md)</li><li>[DN_0021_18_windows_sysmon_PipeEvent](../Data_Needed/DN_0021_18_windows_sysmon_PipeEvent.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li></ul>  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>Unkown</li></ul>                                                                  |
@@ -86,5 +86,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 (EventID:("17" "18") AND PipeName:("\\\\isapi_http" "\\\\isapi_dg" "\\\\isapi_dg2" "\\\\sdlrpc" "\\\\ahexec" "\\\\winsession" "\\\\lsassw" "\\\\46a676ab7f179e511e30dd2dc41bd388" "\\\\9f81f59bc58452127884ce513865ed20" "\\\\e710f28d59aa529d6792ca6ff0ca1b34" "\\\\rpchlp_3" "\\\\NamePipe_MoreWindows" "\\\\pcheap_reuse"))
+```
+
+
+
+
+
+### Splunk
+
+```
+((EventID="17" OR EventID="18") (PipeName="\\\\isapi_http" OR PipeName="\\\\isapi_dg" OR PipeName="\\\\isapi_dg2" OR PipeName="\\\\sdlrpc" OR PipeName="\\\\ahexec" OR PipeName="\\\\winsession" OR PipeName="\\\\lsassw" OR PipeName="\\\\46a676ab7f179e511e30dd2dc41bd388" OR PipeName="\\\\9f81f59bc58452127884ce513865ed20" OR PipeName="\\\\e710f28d59aa529d6792ca6ff0ca1b34" OR PipeName="\\\\rpchlp_3" OR PipeName="\\\\NamePipe_MoreWindows" OR PipeName="\\\\pcheap_reuse"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID IN ["17", "18"] PipeName IN ["\\\\isapi_http", "\\\\isapi_dg", "\\\\isapi_dg2", "\\\\sdlrpc", "\\\\ahexec", "\\\\winsession", "\\\\lsassw", "\\\\46a676ab7f179e511e30dd2dc41bd388", "\\\\9f81f59bc58452127884ce513865ed20", "\\\\e710f28d59aa529d6792ca6ff0ca1b34", "\\\\rpchlp_3", "\\\\NamePipe_MoreWindows", "\\\\pcheap_reuse"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*17|.*18))(?=.*(?:.*\\isapi_http|.*\\isapi_dg|.*\\isapi_dg2|.*\\sdlrpc|.*\\ahexec|.*\\winsession|.*\\lsassw|.*\\46a676ab7f179e511e30dd2dc41bd388|.*\\9f81f59bc58452127884ce513865ed20|.*\\e710f28d59aa529d6792ca6ff0ca1b34|.*\\rpchlp_3|.*\\NamePipe_MoreWindows|.*\\pcheap_reuse)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nPipeName
 ```
 

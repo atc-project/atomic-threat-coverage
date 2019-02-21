@@ -69,3 +69,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 
 
+
+
+
+
+### Splunk
+
+```
+((EventID="529" OR EventID="4625") UserName="*" WorkstationName="*") | eventstats dc(UserName) as val by WorkstationName | search val > 3
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID IN ["529", "4625"] UserName="*" WorkstationName="*") | chart count(UserName) as val by WorkstationName | search val > 3
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*529|.*4625))(?=.*.*)(?=.*.*))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nUserName\nWorkstationName
+```
+

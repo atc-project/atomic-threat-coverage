@@ -79,3 +79,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND Image:("*\\\\bitsadmin.exe") AND CommandLine:("\\/transfer"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (Image="*\\\\bitsadmin.exe") (CommandLine="/transfer")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" Image IN ["*\\\\bitsadmin.exe"] CommandLine IN ["/transfer"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\bitsadmin\\.exe))(?=.*(?:.*/transfer)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nImage
+```
+

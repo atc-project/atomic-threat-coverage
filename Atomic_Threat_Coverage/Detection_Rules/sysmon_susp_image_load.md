@@ -72,3 +72,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"7" AND Image:("*\\\\notepad.exe") AND ImageLoaded:("*\\\\samlib.dll" "*\\\\WinSCard.dll"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="7" (Image="*\\\\notepad.exe") (ImageLoaded="*\\\\samlib.dll" OR ImageLoaded="*\\\\WinSCard.dll"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="7" Image IN ["*\\\\notepad.exe"] ImageLoaded IN ["*\\\\samlib.dll", "*\\\\WinSCard.dll"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*7)(?=.*(?:.*.*\\notepad\\.exe))(?=.*(?:.*.*\\samlib\\.dll|.*.*\\WinSCard\\.dll)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage\nImageLoaded
+```
+

@@ -3,7 +3,7 @@
 | Description          | Detects suspicious process related to rasdial.exe                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
 | ATT&amp;CK Technique | <ul></ul>                             |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul>                                                                  |
@@ -80,5 +80,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 (EventID:"4688" AND CommandLine:("rasdial"))\n(EventID:"1" AND CommandLine:("rasdial"))
+```
+
+
+
+
+
+### Splunk
+
+```
+(EventID="4688" (CommandLine="rasdial"))\n(EventID="1" (CommandLine="rasdial"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4688" CommandLine IN ["rasdial"])\n(EventID="1" CommandLine IN ["rasdial"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*4688)(?=.*(?:.*rasdial)))'\ngrep -P '^(?:.*(?=.*1)(?=.*(?:.*rasdial)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID
 ```
 

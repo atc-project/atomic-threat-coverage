@@ -81,3 +81,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"1" AND Image:"*\\\\attrib.exe" AND CommandLine:"* \\+h *") AND NOT ((CommandLine:"*\\\\desktop.ini *" OR (ParentImage:"*\\\\cmd.exe" AND CommandLine:"\\+R \\+H \\+S \\+A \\*.cui" AND ParentCommandLine:"C\\:\\\\WINDOWS\\\\system32\\\\*.bat"))))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="1" Image="*\\\\attrib.exe" CommandLine="* +h *") NOT ((CommandLine="*\\\\desktop.ini *" OR (ParentImage="*\\\\cmd.exe" CommandLine="+R +H +S +A \\*.cui" ParentCommandLine="C:\\\\WINDOWS\\\\system32\\\\*.bat")))) | table CommandLine,ParentCommandLine,User
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="1" Image="*\\\\attrib.exe" CommandLine="* +h *")  -((CommandLine="*\\\\desktop.ini *" OR (ParentImage="*\\\\cmd.exe" CommandLine="+R +H +S +A \\*.cui" ParentCommandLine="C:\\\\WINDOWS\\\\system32\\\\*.bat"))))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\attrib\\.exe)(?=.*.* +h .*)))(?=.*(?!.*(?:.*(?:.*(?:.*.*\\desktop\\.ini .*|.*(?:.*(?=.*.*\\cmd\\.exe)(?=.*+R +H +S +A \\.*\\.cui)(?=.*C:\\WINDOWS\\system32\\\\.*\\.bat))))))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nImage\nParentCommandLine\nParentImage
+```
+

@@ -3,7 +3,7 @@
 | Description          | Detects suspicious powershell process starts with base64 encoded commands                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
 | ATT&amp;CK Technique | <ul></ul>                             |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>GRR powershell hacks</li><li>PowerSponse Deployments</li></ul>                                                                  |
@@ -91,5 +91,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 ((EventID:"1" AND CommandLine:("* \\-e JAB*" "* \\-enc JAB*" "* \\-encodedcommand JAB*")) AND NOT ((ImagePath:"*\\\\GRR\\*") OR (CommandLine:"* \\-ExecutionPolicy remotesigned *")))\n((EventID:"4688" AND CommandLine:("* \\-e JAB*" "* \\-enc JAB*" "* \\-encodedcommand JAB*")) AND NOT ((ImagePath:"*\\\\GRR\\*") OR (CommandLine:"* \\-ExecutionPolicy remotesigned *")))
+```
+
+
+
+
+
+### Splunk
+
+```
+((EventID="1" (CommandLine="* -e JAB*" OR CommandLine="* -enc JAB*" OR CommandLine="* -encodedcommand JAB*")) NOT ((ImagePath="*\\\\GRR\\*") OR (CommandLine="* -ExecutionPolicy remotesigned *")))\n((EventID="4688" (CommandLine="* -e JAB*" OR CommandLine="* -enc JAB*" OR CommandLine="* -encodedcommand JAB*")) NOT ((ImagePath="*\\\\GRR\\*") OR (CommandLine="* -ExecutionPolicy remotesigned *")))
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="1" CommandLine IN ["* -e JAB*", "* -enc JAB*", "* -encodedcommand JAB*"])  -((ImagePath="*\\\\GRR\\*") OR (CommandLine="* -ExecutionPolicy remotesigned *")))\n((EventID="4688" CommandLine IN ["* -e JAB*", "* -enc JAB*", "* -encodedcommand JAB*"])  -((ImagePath="*\\\\GRR\\*") OR (CommandLine="* -ExecutionPolicy remotesigned *")))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*(?:.*.* -e JAB.*|.*.* -enc JAB.*|.*.* -encodedcommand JAB.*))))(?=.*(?!.*(?:.*(?:.*(?:.*(?=.*.*\\GRR\\.*))|.*(?:.*(?=.*.* -ExecutionPolicy remotesigned .*)))))))'\ngrep -P '^(?:.*(?=.*(?:.*(?=.*4688)(?=.*(?:.*.* -e JAB.*|.*.* -enc JAB.*|.*.* -encodedcommand JAB.*))))(?=.*(?!.*(?:.*(?:.*(?:.*(?=.*.*\\GRR\\.*))|.*(?:.*(?=.*.* -ExecutionPolicy remotesigned .*)))))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nImagePath
 ```
 

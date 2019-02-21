@@ -3,7 +3,7 @@
 | Description          | Detects the execution of whoami, which is often used by attackers after exloitation / privilege escalation but rarely used by administrators                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1033: System Owner/User Discovery](https://attack.mitre.org/techniques/T1033)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1033: System Owner/User Discovery](../Triggers/T1033.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Admin activity</li><li>Scripts and administrative tools used in the monitored environment</li></ul>                                                                  |
@@ -84,5 +84,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 (EventID:"1" AND CommandLine:"whoami")\n(EventID:"4688" AND NewProcessName:"*\\\\whoami.exe")
+```
+
+
+
+
+
+### Splunk
+
+```
+(EventID="1" CommandLine="whoami")\n(EventID="4688" NewProcessName="*\\\\whoami.exe")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" CommandLine="whoami")\n(EventID="4688" NewProcessName="*\\\\whoami.exe")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*whoami))'\ngrep -P '^(?:.*(?=.*4688)(?=.*.*\\whoami\\.exe))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nNewProcessName
 ```
 

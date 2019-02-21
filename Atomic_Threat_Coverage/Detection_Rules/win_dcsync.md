@@ -76,3 +76,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"4662" AND Properties:("*Replicating Directory Changes All*" "*1131f6ad\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2*"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="4662" (Properties="*Replicating Directory Changes All*" OR Properties="*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2*"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4662" Properties IN ["*Replicating Directory Changes All*", "*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2*"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*4662)(?=.*(?:.*.*Replicating Directory Changes All.*|.*.*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2.*)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nProperties
+```
+

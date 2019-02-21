@@ -86,3 +86,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"7045" AND (ServiceName:("WCESERVICE" "WCE SERVICE") OR ServiceFileName:"*\\\\PAExec*" OR ServiceFileName:"winexesvc.exe*" OR ServiceFileName:"*\\\\DumpSvc.exe" OR ServiceName:"mssecsvc2.0" OR ServiceFileName:"* net user *" OR ServiceName:("pwdump*" "gsecdump*" "cachedump*")))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="7045" ((ServiceName="WCESERVICE" OR ServiceName="WCE SERVICE") OR ServiceFileName="*\\\\PAExec*" OR ServiceFileName="winexesvc.exe*" OR ServiceFileName="*\\\\DumpSvc.exe" OR ServiceName="mssecsvc2.0" OR ServiceFileName="* net user *" OR (ServiceName="pwdump*" OR ServiceName="gsecdump*" OR ServiceName="cachedump*")))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="7045" (ServiceName IN ["WCESERVICE", "WCE SERVICE"] OR ServiceFileName="*\\\\PAExec*" OR ServiceFileName="winexesvc.exe*" OR ServiceFileName="*\\\\DumpSvc.exe" OR ServiceName="mssecsvc2.0" OR ServiceFileName="* net user *" OR ServiceName IN ["pwdump*", "gsecdump*", "cachedump*"]))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*7045)(?=.*(?:.*(?:.*(?:.*WCESERVICE|.*WCE SERVICE)|.*.*\\PAExec.*|.*winexesvc\\.exe.*|.*.*\\DumpSvc\\.exe|.*mssecsvc2\\.0|.*.* net user .*|.*(?:.*pwdump.*|.*gsecdump.*|.*cachedump.*)))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nServiceFileName\nServiceName
+```
+

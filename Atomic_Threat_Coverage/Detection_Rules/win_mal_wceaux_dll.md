@@ -76,3 +76,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:("4656" "4658" "4660" "4663") AND ObjectName:"*\\\\wceaux.dll")
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="4656" OR EventID="4658" OR EventID="4660" OR EventID="4663") ObjectName="*\\\\wceaux.dll")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID IN ["4656", "4658", "4660", "4663"] ObjectName="*\\\\wceaux.dll")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*4656|.*4658|.*4660|.*4663))(?=.*.*\\wceaux\\.dll))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nObjectName
+```
+

@@ -71,3 +71,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"4656" AND ProcessName:"C\\:\\\\Windows\\\\System32\\\\lsass.exe" AND AccessMask:"0x705" AND ObjectType:"SAM_DOMAIN")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="4656" ProcessName="C:\\\\Windows\\\\System32\\\\lsass.exe" AccessMask="0x705" ObjectType="SAM_DOMAIN")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4656" ProcessName="C:\\\\Windows\\\\System32\\\\lsass.exe" AccessMask="0x705" ObjectType="SAM_DOMAIN")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*4656)(?=.*C:\\Windows\\System32\\lsass\\.exe)(?=.*0x705)(?=.*SAM_DOMAIN))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+AccessMask\nEventID\nObjectType\nProcessName
+```
+

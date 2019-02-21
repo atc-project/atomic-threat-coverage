@@ -71,3 +71,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 EventID:("4765" "4766")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="4765" OR EventID="4766")
+```
+
+
+
+
+
+### Logpoint
+
+```
+EventID IN ["4765", "4766"]
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*4765|.*4766)'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID
+```
+

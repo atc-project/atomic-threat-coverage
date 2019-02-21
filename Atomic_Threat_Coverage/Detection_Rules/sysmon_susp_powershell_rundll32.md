@@ -74,3 +74,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"8" AND SourceImage:"*\\\\powershell.exe" AND TargetImage:"*\\\\rundll32.exe")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="8" SourceImage="*\\\\powershell.exe" TargetImage="*\\\\rundll32.exe")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="8" SourceImage="*\\\\powershell.exe" TargetImage="*\\\\rundll32.exe")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*8)(?=.*.*\\powershell\\.exe)(?=.*.*\\rundll32\\.exe))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nSourceImage\nTargetImage
+```
+

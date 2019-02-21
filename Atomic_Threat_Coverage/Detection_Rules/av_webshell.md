@@ -78,3 +78,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 Signature:("PHP\\/Backdoor" "JSP\\/Backdoor" "ASP\\/Backdoor" "Backdoor.PHP" "Backdoor.JSP" "Backdoor.ASP" "*Webshell*")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(Signature="PHP/Backdoor" OR Signature="JSP/Backdoor" OR Signature="ASP/Backdoor" OR Signature="Backdoor.PHP" OR Signature="Backdoor.JSP" OR Signature="Backdoor.ASP" OR Signature="*Webshell*") | table FileName,User
+```
+
+
+
+
+
+### Logpoint
+
+```
+Signature IN ["PHP/Backdoor", "JSP/Backdoor", "ASP/Backdoor", "Backdoor.PHP", "Backdoor.JSP", "Backdoor.ASP", "*Webshell*"]
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*PHP/Backdoor|.*JSP/Backdoor|.*ASP/Backdoor|.*Backdoor\\.PHP|.*Backdoor\\.JSP|.*Backdoor\\.ASP|.*.*Webshell.*)'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+Signature
+```
+

@@ -71,3 +71,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"4704" AND "SeEnableDelegationPrivilege")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="4704" "SeEnableDelegationPrivilege")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4704" "SeEnableDelegationPrivilege")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*4704)(?=.*SeEnableDelegationPrivilege))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID
+```
+

@@ -102,3 +102,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND ParentImage:("*\\\\WINWORD.EXE" "*\\\\EXCEL.EXE" "*\\\\POWERPNT.exe" "*\\\\MSPUB.exe" "*\\\\VISIO.exe" "*\\\\OUTLOOK.EXE") AND Image:("*\\\\cmd.exe" "*\\\\powershell.exe" "*\\\\wscript.exe" "*\\\\cscript.exe" "*\\\\sh.exe" "*\\\\bash.exe" "*\\\\scrcons.exe" "*\\\\schtasks.exe" "*\\\\regsvr32.exe" "*\\\\hh.exe" "*\\\\wmic.exe" "*\\\\mshta.exe" "*\\\\rundll32.exe" "*\\\\msiexec.exe" "*\\\\forfiles.exe" "*\\\\scriptrunner.exe" "*\\\\mftrace.exe" "*\\\\AppVLP.exe"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (ParentImage="*\\\\WINWORD.EXE" OR ParentImage="*\\\\EXCEL.EXE" OR ParentImage="*\\\\POWERPNT.exe" OR ParentImage="*\\\\MSPUB.exe" OR ParentImage="*\\\\VISIO.exe" OR ParentImage="*\\\\OUTLOOK.EXE") (Image="*\\\\cmd.exe" OR Image="*\\\\powershell.exe" OR Image="*\\\\wscript.exe" OR Image="*\\\\cscript.exe" OR Image="*\\\\sh.exe" OR Image="*\\\\bash.exe" OR Image="*\\\\scrcons.exe" OR Image="*\\\\schtasks.exe" OR Image="*\\\\regsvr32.exe" OR Image="*\\\\hh.exe" OR Image="*\\\\wmic.exe" OR Image="*\\\\mshta.exe" OR Image="*\\\\rundll32.exe" OR Image="*\\\\msiexec.exe" OR Image="*\\\\forfiles.exe" OR Image="*\\\\scriptrunner.exe" OR Image="*\\\\mftrace.exe" OR Image="*\\\\AppVLP.exe")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" ParentImage IN ["*\\\\WINWORD.EXE", "*\\\\EXCEL.EXE", "*\\\\POWERPNT.exe", "*\\\\MSPUB.exe", "*\\\\VISIO.exe", "*\\\\OUTLOOK.EXE"] Image IN ["*\\\\cmd.exe", "*\\\\powershell.exe", "*\\\\wscript.exe", "*\\\\cscript.exe", "*\\\\sh.exe", "*\\\\bash.exe", "*\\\\scrcons.exe", "*\\\\schtasks.exe", "*\\\\regsvr32.exe", "*\\\\hh.exe", "*\\\\wmic.exe", "*\\\\mshta.exe", "*\\\\rundll32.exe", "*\\\\msiexec.exe", "*\\\\forfiles.exe", "*\\\\scriptrunner.exe", "*\\\\mftrace.exe", "*\\\\AppVLP.exe"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\WINWORD\\.EXE|.*.*\\EXCEL\\.EXE|.*.*\\POWERPNT\\.exe|.*.*\\MSPUB\\.exe|.*.*\\VISIO\\.exe|.*.*\\OUTLOOK\\.EXE))(?=.*(?:.*.*\\cmd\\.exe|.*.*\\powershell\\.exe|.*.*\\wscript\\.exe|.*.*\\cscript\\.exe|.*.*\\sh\\.exe|.*.*\\bash\\.exe|.*.*\\scrcons\\.exe|.*.*\\schtasks\\.exe|.*.*\\regsvr32\\.exe|.*.*\\hh\\.exe|.*.*\\wmic\\.exe|.*.*\\mshta\\.exe|.*.*\\rundll32\\.exe|.*.*\\msiexec\\.exe|.*.*\\forfiles\\.exe|.*.*\\scriptrunner\\.exe|.*.*\\mftrace\\.exe|.*.*\\AppVLP\\.exe)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage\nParentImage
+```
+

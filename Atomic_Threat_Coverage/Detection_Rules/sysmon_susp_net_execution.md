@@ -85,3 +85,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND Image:("*\\\\net.exe" "*\\\\net1.exe") AND CommandLine:("* group*" "* localgroup*" "* user*" "* view*" "* share" "* accounts*" "* use*"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (Image="*\\\\net.exe" OR Image="*\\\\net1.exe") (CommandLine="* group*" OR CommandLine="* localgroup*" OR CommandLine="* user*" OR CommandLine="* view*" OR CommandLine="* share" OR CommandLine="* accounts*" OR CommandLine="* use*")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" Image IN ["*\\\\net.exe", "*\\\\net1.exe"] CommandLine IN ["* group*", "* localgroup*", "* user*", "* view*", "* share", "* accounts*", "* use*"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\net\\.exe|.*.*\\net1\\.exe))(?=.*(?:.*.* group.*|.*.* localgroup.*|.*.* user.*|.*.* view.*|.*.* share|.*.* accounts.*|.*.* use.*)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nImage
+```
+

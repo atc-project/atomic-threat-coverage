@@ -84,3 +84,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND CommandLine:("vssadmin.exe Delete Shadows" "vssadmin create shadow \\/for=C\\:" "copy \\\\?\\\\GLOBALROOT\\\\Device\\*\\\\windows\\\\ntds\\\\ntds.dit" "copy \\\\?\\\\GLOBALROOT\\\\Device\\*\\\\config\\\\SAM" "vssadmin delete shadows \\/for=C\\:" "reg SAVE HKLM\\\\SYSTEM "))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (CommandLine="vssadmin.exe Delete Shadows" OR CommandLine="vssadmin create shadow /for=C:" OR CommandLine="copy \\\\?\\\\GLOBALROOT\\\\Device\\*\\\\windows\\\\ntds\\\\ntds.dit" OR CommandLine="copy \\\\?\\\\GLOBALROOT\\\\Device\\*\\\\config\\\\SAM" OR CommandLine="vssadmin delete shadows /for=C:" OR CommandLine="reg SAVE HKLM\\\\SYSTEM ")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" CommandLine IN ["vssadmin.exe Delete Shadows", "vssadmin create shadow /for=C:", "copy \\\\?\\\\GLOBALROOT\\\\Device\\*\\\\windows\\\\ntds\\\\ntds.dit", "copy \\\\?\\\\GLOBALROOT\\\\Device\\*\\\\config\\\\SAM", "vssadmin delete shadows /for=C:", "reg SAVE HKLM\\\\SYSTEM "])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*vssadmin\\.exe Delete Shadows|.*vssadmin create shadow /for=C:|.*copy \\\\?\\GLOBALROOT\\Device\\.*\\windows\\ntds\\ntds\\.dit|.*copy \\\\?\\GLOBALROOT\\Device\\.*\\config\\SAM|.*vssadmin delete shadows /for=C:|.*reg SAVE HKLM\\SYSTEM )))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID
+```
+

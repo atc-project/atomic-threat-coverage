@@ -3,7 +3,7 @@
 | Description          | Detects scenarios where one can control another users or computers account without having to use their credentials.                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1098: Account Manipulation](https://attack.mitre.org/techniques/T1098)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0027_4738_user_account_was_changed](../Data_Needed/DN_0027_4738_user_account_was_changed.md)</li><li>[DN_0026_5136_windows_directory_service_object_was_modified](../Data_Needed/DN_0026_5136_windows_directory_service_object_was_modified.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0026_5136_windows_directory_service_object_was_modified](../Data_Needed/DN_0026_5136_windows_directory_service_object_was_modified.md)</li><li>[DN_0027_4738_user_account_was_changed](../Data_Needed/DN_0027_4738_user_account_was_changed.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1098: Account Manipulation](../Triggers/T1098.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
@@ -82,5 +82,38 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 ((((EventID:"4738" AND NOT (NOT _exists_:AllowedToDelegateTo)) OR (EventID:"5136" AND AttributeLDAPDisplayName:"msDS\\-AllowedToDelegateTo")) OR (EventID:"5136" AND ObjectClass:"user" AND AttributeLDAPDisplayName:"servicePrincipalName")) OR (EventID:"5136" AND AttributeLDAPDisplayName:"msDS\\-AllowedToActOnBehalfOfOtherIdentity"))
+```
+
+
+
+
+
+### Splunk
+
+```
+((((EventID="4738" NOT (NOT AllowedToDelegateTo="*")) OR (EventID="5136" AttributeLDAPDisplayName="msDS-AllowedToDelegateTo")) OR (EventID="5136" ObjectClass="user" AttributeLDAPDisplayName="servicePrincipalName")) OR (EventID="5136" AttributeLDAPDisplayName="msDS-AllowedToActOnBehalfOfOtherIdentity"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+((((EventID="4738"  -(-AllowedToDelegateTo=*)) OR (EventID="5136" AttributeLDAPDisplayName="msDS-AllowedToDelegateTo")) OR (EventID="5136" ObjectClass="user" AttributeLDAPDisplayName="servicePrincipalName")) OR (EventID="5136" AttributeLDAPDisplayName="msDS-AllowedToActOnBehalfOfOtherIdentity"))
+```
+
+
+
+
+
+
+
+
+### Fieldlist
+
+```
+AllowedToDelegateTo\nAttributeLDAPDisplayName\nEventID\nObjectClass
 ```
 

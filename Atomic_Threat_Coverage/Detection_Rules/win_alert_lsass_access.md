@@ -73,3 +73,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1121" AND Path:"*\\\\lsass.exe")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1121" Path="*\\\\lsass.exe")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1121" Path="*\\\\lsass.exe")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1121)(?=.*.*\\lsass\\.exe))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nPath
+```
+

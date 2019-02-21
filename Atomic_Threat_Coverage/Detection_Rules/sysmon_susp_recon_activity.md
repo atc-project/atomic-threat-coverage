@@ -74,3 +74,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND CommandLine:("net group \\"domain admins\\" \\/domain" "net localgroup administrators"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (CommandLine="net group \\"domain admins\\" /domain" OR CommandLine="net localgroup administrators")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" CommandLine IN ["net group \\"domain admins\\" /domain", "net localgroup administrators"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P \'^(?:.*(?=.*1)(?=.*(?:.*net group "domain admins" /domain|.*net localgroup administrators)))\'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID
+```
+

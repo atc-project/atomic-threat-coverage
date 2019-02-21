@@ -79,3 +79,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:("4656" "4663" "4658") AND ObjectName:("*.AAA" "*.ZZZ"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="4656" OR EventID="4663" OR EventID="4658") (ObjectName="*.AAA" OR ObjectName="*.ZZZ"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID IN ["4656", "4663", "4658"] ObjectName IN ["*.AAA", "*.ZZZ"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*4656|.*4663|.*4658))(?=.*(?:.*.*\\.AAA|.*.*\\.ZZZ)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nObjectName
+```
+

@@ -83,3 +83,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"13" AND TargetObject:("*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\*" "*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\\*") AND Details:("C\\:\\\\Windows\\\\Temp\\*" "*\\\\AppData\\*" "C\\:\\\\$Recycle.bin\\*" "C\\:\\\\Temp\\*" "C\\:\\\\Users\\\\Public\\*" "C\\:\\\\Users\\\\Default\\*" "C\\:\\\\Users\\\\Desktop\\*"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="13" (TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\*" OR TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\\*") (Details="C:\\\\Windows\\\\Temp\\*" OR Details="*\\\\AppData\\*" OR Details="C:\\\\$Recycle.bin\\*" OR Details="C:\\\\Temp\\*" OR Details="C:\\\\Users\\\\Public\\*" OR Details="C:\\\\Users\\\\Default\\*" OR Details="C:\\\\Users\\\\Desktop\\*")) | table Image
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="13" TargetObject IN ["*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\*", "*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\\*"] Details IN ["C:\\\\Windows\\\\Temp\\*", "*\\\\AppData\\*", "C:\\\\$Recycle.bin\\*", "C:\\\\Temp\\*", "C:\\\\Users\\\\Public\\*", "C:\\\\Users\\\\Default\\*", "C:\\\\Users\\\\Desktop\\*"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*13)(?=.*(?:.*.*\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\.*|.*.*\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce\\.*))(?=.*(?:.*C:\\Windows\\Temp\\.*|.*.*\\AppData\\.*|.*C:\\\\$Recycle\\.bin\\.*|.*C:\\Temp\\.*|.*C:\\Users\\Public\\.*|.*C:\\Users\\Default\\.*|.*C:\\Users\\Desktop\\.*)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+Details\nEventID\nTargetObject
+```
+

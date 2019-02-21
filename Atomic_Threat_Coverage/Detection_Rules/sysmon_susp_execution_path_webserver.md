@@ -79,3 +79,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"1" AND Image:("*\\\\wwwroot\\*" "*\\\\wmpub\\*" "*\\\\htdocs\\*")) AND NOT (Image:("*bin\\*" "*\\\\Tools\\*" "*\\\\SMSComponent\\*") AND ParentImage:("*\\\\services.exe")))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="1" (Image="*\\\\wwwroot\\*" OR Image="*\\\\wmpub\\*" OR Image="*\\\\htdocs\\*")) NOT ((Image="*bin\\*" OR Image="*\\\\Tools\\*" OR Image="*\\\\SMSComponent\\*") (ParentImage="*\\\\services.exe"))) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="1" Image IN ["*\\\\wwwroot\\*", "*\\\\wmpub\\*", "*\\\\htdocs\\*"])  -(Image IN ["*bin\\*", "*\\\\Tools\\*", "*\\\\SMSComponent\\*"] ParentImage IN ["*\\\\services.exe"]))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*(?:.*.*\\wwwroot\\.*|.*.*\\wmpub\\.*|.*.*\\htdocs\\.*))))(?=.*(?!.*(?:.*(?=.*(?:.*.*bin\\.*|.*.*\\Tools\\.*|.*.*\\SMSComponent\\.*))(?=.*(?:.*.*\\services\\.exe))))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage\nParentImage
+```
+

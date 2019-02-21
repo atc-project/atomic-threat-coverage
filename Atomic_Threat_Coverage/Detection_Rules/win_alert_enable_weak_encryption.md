@@ -73,3 +73,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"4738" AND ("DES" OR "Preauth" OR "Encrypted")) AND "Enabled")
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="4738" ("DES" OR "Preauth" OR "Encrypted")) "Enabled")
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="4738" ("DES" OR "Preauth" OR "Encrypted")) "Enabled")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*4738)(?=.*(?:.*(?:.*DES|.*Preauth|.*Encrypted)))))(?=.*Enabled))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID
+```
+

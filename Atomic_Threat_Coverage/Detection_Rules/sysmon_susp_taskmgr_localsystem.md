@@ -67,3 +67,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND User:"NT AUTHORITY\\\\SYSTEM" AND Image:"*\\\\taskmgr.exe")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" User="NT AUTHORITY\\\\SYSTEM" Image="*\\\\taskmgr.exe")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" User="NT AUTHORITY\\\\SYSTEM" Image="*\\\\taskmgr.exe")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*NT AUTHORITY\\SYSTEM)(?=.*.*\\taskmgr\\.exe))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage\nUser
+```
+

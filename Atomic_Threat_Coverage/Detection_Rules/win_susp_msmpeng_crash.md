@@ -79,3 +79,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (((Source:"Application Error" AND EventID:"1000") OR (Source:"Windows Error Reporting" AND EventID:"1001")) AND ("MsMpEng.exe" AND "mpengine.dll"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(((Source="Application Error" EventID="1000") OR (Source="Windows Error Reporting" EventID="1001")) ("MsMpEng.exe" "mpengine.dll"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(((Source="Application Error" EventID="1000") OR (Source="Windows Error Reporting" EventID="1001")) ("MsMpEng.exe" "mpengine.dll"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?:.*(?:.*(?=.*Application Error)(?=.*1000))|.*(?:.*(?=.*Windows Error Reporting)(?=.*1001)))))(?=.*(?:.*(?=.*MsMpEng\\.exe)(?=.*mpengine\\.dll))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nSource
+```
+

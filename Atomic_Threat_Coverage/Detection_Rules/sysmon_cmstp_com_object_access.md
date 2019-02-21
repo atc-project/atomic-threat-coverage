@@ -84,3 +84,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND ParentCommandLine:"*\\\\DllHost.exe" AND ParentCommandLine:("*\\\\\\{3E5FC7F9\\-9A51\\-4367\\-9063\\-A120244FBEC7\\}" "*\\\\\\{3E000D72\\-A845\\-4CD9\\-BD83\\-80C07C3B881F\\}"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" ParentCommandLine="*\\\\DllHost.exe" (ParentCommandLine="*\\\\{3E5FC7F9-9A51-4367-9063-A120244FBEC7}" OR ParentCommandLine="*\\\\{3E000D72-A845-4CD9-BD83-80C07C3B881F}")) | table CommandLine,ParentCommandLine,Hashes
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" ParentCommandLine="*\\\\DllHost.exe" ParentCommandLine IN ["*\\\\{3E5FC7F9-9A51-4367-9063-A120244FBEC7}", "*\\\\{3E000D72-A845-4CD9-BD83-80C07C3B881F}"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*.*\\DllHost\\.exe)(?=.*(?:.*.*\\\\{3E5FC7F9-9A51-4367-9063-A120244FBEC7\\}|.*.*\\\\{3E000D72-A845-4CD9-BD83-80C07C3B881F\\})))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nParentCommandLine
+```
+

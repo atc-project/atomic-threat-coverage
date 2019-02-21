@@ -54,3 +54,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 
 
+
+
+
+
+### Splunk
+
+```
+EventID="106" | eventstats count as val by TaskName| search val < 5
+```
+
+
+
+
+
+### Logpoint
+
+```
+EventID="106" | chart count() as val by TaskName | search val < 5
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^106'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nTaskName
+```
+

@@ -74,3 +74,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"4624" AND LogonType:"9" AND LogonProcessName:"seclogo" AND AuthenticationPackageName:"Negotiate")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="4624" LogonType="9" LogonProcessName="seclogo" AuthenticationPackageName="Negotiate")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4624" LogonType="9" LogonProcessName="seclogo" AuthenticationPackageName="Negotiate")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*4624)(?=.*9)(?=.*seclogo)(?=.*Negotiate))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+AuthenticationPackageName\nEventID\nLogonProcessName\nLogonType
+```
+

@@ -3,7 +3,7 @@
 | Description          | Detects Base64 encoded Shellcode                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
@@ -92,5 +92,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 (EventID:"4688" AND ProcesssCommandLine:"*AAAAYInlM*" AND ProcesssCommandLine:("*OiCAAAAYInlM*" "*OiJAAAAYInlM*"))\n(EventID:"1" AND CommandLine:"*AAAAYInlM*" AND CommandLine:("*OiCAAAAYInlM*" "*OiJAAAAYInlM*"))
+```
+
+
+
+
+
+### Splunk
+
+```
+(EventID="4688" ProcesssCommandLine="*AAAAYInlM*" (ProcesssCommandLine="*OiCAAAAYInlM*" OR ProcesssCommandLine="*OiJAAAAYInlM*"))\n(EventID="1" CommandLine="*AAAAYInlM*" (CommandLine="*OiCAAAAYInlM*" OR CommandLine="*OiJAAAAYInlM*"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4688" ProcesssCommandLine="*AAAAYInlM*" ProcesssCommandLine IN ["*OiCAAAAYInlM*", "*OiJAAAAYInlM*"])\n(EventID="1" CommandLine="*AAAAYInlM*" CommandLine IN ["*OiCAAAAYInlM*", "*OiJAAAAYInlM*"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*4688)(?=.*.*AAAAYInlM.*)(?=.*(?:.*.*OiCAAAAYInlM.*|.*.*OiJAAAAYInlM.*)))'\ngrep -P '^(?:.*(?=.*1)(?=.*.*AAAAYInlM.*)(?=.*(?:.*.*OiCAAAAYInlM.*|.*.*OiJAAAAYInlM.*)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nProcesssCommandLine
 ```
 

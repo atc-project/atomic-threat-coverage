@@ -81,3 +81,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND (Image:("*\\\\rundll32.exe") OR Description:("*Windows\\-Hostprozess \\(Rundll32\\)*")) AND CommandLine:("*Default.GetString*" "*FromBase64String*"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" ((Image="*\\\\rundll32.exe") OR (Description="*Windows-Hostprozess (Rundll32)*")) (CommandLine="*Default.GetString*" OR CommandLine="*FromBase64String*"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" (Image IN ["*\\\\rundll32.exe"] OR Description IN ["*Windows-Hostprozess (Rundll32)*"]) CommandLine IN ["*Default.GetString*", "*FromBase64String*"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*(?:.*(?:.*.*\\rundll32\\.exe)|.*(?:.*.*Windows-Hostprozess \\(Rundll32\\).*))))(?=.*(?:.*.*Default\\.GetString.*|.*.*FromBase64String.*)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nDescription\nEventID\nImage
+```
+

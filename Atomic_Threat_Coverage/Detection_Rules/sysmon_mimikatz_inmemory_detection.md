@@ -73,3 +73,29 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 
 
+
+
+
+
+
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*7)(?=.*C:\\Windows\\System32\\rundll32\\.exe))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage
+```
+

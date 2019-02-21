@@ -64,3 +64,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"6" AND ImageLoaded:"*\\\\Temp\\*")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="6" ImageLoaded="*\\\\Temp\\*")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="6" ImageLoaded="*\\\\Temp\\*")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*6)(?=.*.*\\Temp\\.*))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImageLoaded
+```
+

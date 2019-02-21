@@ -72,3 +72,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"13" AND TargetObject:"HKEY_USERS\\*\\\\Classes\\\\exefile\\\\shell\\\\runas\\\\command\\\\isolatedCommand")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="13" TargetObject="HKEY_USERS\\*\\\\Classes\\\\exefile\\\\shell\\\\runas\\\\command\\\\isolatedCommand")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="13" TargetObject="HKEY_USERS\\*\\\\Classes\\\\exefile\\\\shell\\\\runas\\\\command\\\\isolatedCommand")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*13)(?=.*HKEY_USERS\\.*\\Classes\\exefile\\shell\\runas\\command\\isolatedCommand))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nTargetObject
+```
+

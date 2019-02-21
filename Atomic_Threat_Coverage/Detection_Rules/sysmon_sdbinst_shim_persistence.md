@@ -74,3 +74,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND Image:("*\\\\sdbinst.exe") AND CommandLine:("*\\\\AppPatch\\*\\}.sdb*"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (Image="*\\\\sdbinst.exe") (CommandLine="*\\\\AppPatch\\*}.sdb*"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" Image IN ["*\\\\sdbinst.exe"] CommandLine IN ["*\\\\AppPatch\\*}.sdb*"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\sdbinst\\.exe))(?=.*(?:.*.*\\AppPatch\\.*\\}\\.sdb.*)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nImage
+```
+

@@ -3,7 +3,7 @@
 | Description          | Detects suspicious PowerShell download command                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li><li>[DN_0037_4103_windows_powershell_executing_pipeline](../Data_Needed/DN_0037_4103_windows_powershell_executing_pipeline.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0037_4103_windows_powershell_executing_pipeline](../Data_Needed/DN_0037_4103_windows_powershell_executing_pipeline.md)</li><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul><li>PowerShell scripts that download content from the Internet</li></ul>                                                                  |
@@ -67,4 +67,37 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 ("System.Net.WebClient\\).DownloadString\\(" OR "system.net.webclient\\).downloadfile\\(")
 ```
+
+
+
+
+
+### Splunk
+
+```
+("System.Net.WebClient).DownloadString(" OR "system.net.webclient).downloadfile(")
+```
+
+
+
+
+
+### Logpoint
+
+```
+("System.Net.WebClient).DownloadString(" OR "system.net.webclient).downloadfile(")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?:.*System\\.Net\\.WebClient\\)\\.DownloadString\\(|.*system\\.net\\.webclient\\)\\.downloadfile\\())'
+```
+
+
+
 

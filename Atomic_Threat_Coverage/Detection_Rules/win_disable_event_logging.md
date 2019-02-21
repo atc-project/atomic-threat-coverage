@@ -75,3 +75,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"4719" AND AuditPolicyChanges:"removed")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="4719" AuditPolicyChanges="removed")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4719" AuditPolicyChanges="removed")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*4719)(?=.*removed))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+AuditPolicyChanges\nEventID
+```
+

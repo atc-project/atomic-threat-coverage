@@ -74,3 +74,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"1" AND ParentImage:"*\\\\System32\\\\control.exe" AND CommandLine:"*\\\\rundll32.exe *") AND NOT (CommandLine:"*Shell32.dll*"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="1" ParentImage="*\\\\System32\\\\control.exe" CommandLine="*\\\\rundll32.exe *") NOT (CommandLine="*Shell32.dll*")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="1" ParentImage="*\\\\System32\\\\control.exe" CommandLine="*\\\\rundll32.exe *")  -(CommandLine="*Shell32.dll*"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\System32\\control\\.exe)(?=.*.*\\rundll32\\.exe .*)))(?=.*(?!.*(?:.*(?=.*.*Shell32\\.dll.*)))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nParentImage
+```
+

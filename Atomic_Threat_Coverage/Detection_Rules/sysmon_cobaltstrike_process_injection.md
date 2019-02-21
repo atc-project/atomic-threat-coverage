@@ -71,3 +71,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"8" AND TargetProcessAddress:"*0B80")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="8" TargetProcessAddress="*0B80")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="8" TargetProcessAddress="*0B80")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*8)(?=.*.*0B80))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nTargetProcessAddress
+```
+

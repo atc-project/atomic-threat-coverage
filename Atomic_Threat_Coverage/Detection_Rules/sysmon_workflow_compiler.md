@@ -74,3 +74,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND Image:"*\\\\Microsoft.Workflow.Compiler.exe")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" Image="*\\\\Microsoft.Workflow.Compiler.exe") | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" Image="*\\\\Microsoft.Workflow.Compiler.exe")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*.*\\Microsoft\\.Workflow\\.Compiler\\.exe))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage
+```
+

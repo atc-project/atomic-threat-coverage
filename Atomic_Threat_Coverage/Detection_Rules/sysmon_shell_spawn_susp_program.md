@@ -85,3 +85,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND ParentImage:("*\\\\mshta.exe" "*\\\\powershell.exe" "*\\\\cmd.exe" "*\\\\rundll32.exe" "*\\\\cscript.exe" "*\\\\wscript.exe" "*\\\\wmiprvse.exe") AND Image:("*\\\\schtasks.exe" "*\\\\nslookup.exe" "*\\\\certutil.exe" "*\\\\bitsadmin.exe" "*\\\\mshta.exe"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (ParentImage="*\\\\mshta.exe" OR ParentImage="*\\\\powershell.exe" OR ParentImage="*\\\\cmd.exe" OR ParentImage="*\\\\rundll32.exe" OR ParentImage="*\\\\cscript.exe" OR ParentImage="*\\\\wscript.exe" OR ParentImage="*\\\\wmiprvse.exe") (Image="*\\\\schtasks.exe" OR Image="*\\\\nslookup.exe" OR Image="*\\\\certutil.exe" OR Image="*\\\\bitsadmin.exe" OR Image="*\\\\mshta.exe")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" ParentImage IN ["*\\\\mshta.exe", "*\\\\powershell.exe", "*\\\\cmd.exe", "*\\\\rundll32.exe", "*\\\\cscript.exe", "*\\\\wscript.exe", "*\\\\wmiprvse.exe"] Image IN ["*\\\\schtasks.exe", "*\\\\nslookup.exe", "*\\\\certutil.exe", "*\\\\bitsadmin.exe", "*\\\\mshta.exe"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\mshta\\.exe|.*.*\\powershell\\.exe|.*.*\\cmd\\.exe|.*.*\\rundll32\\.exe|.*.*\\cscript\\.exe|.*.*\\wscript\\.exe|.*.*\\wmiprvse\\.exe))(?=.*(?:.*.*\\schtasks\\.exe|.*.*\\nslookup\\.exe|.*.*\\certutil\\.exe|.*.*\\bitsadmin\\.exe|.*.*\\mshta\\.exe)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage\nParentImage
+```
+

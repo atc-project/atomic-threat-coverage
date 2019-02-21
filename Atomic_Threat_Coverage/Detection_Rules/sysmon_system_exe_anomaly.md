@@ -85,3 +85,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"1" AND Image:("*\\\\svchost.exe" "*\\\\rundll32.exe" "*\\\\services.exe" "*\\\\powershell.exe" "*\\\\regsvr32.exe" "*\\\\spoolsv.exe" "*\\\\lsass.exe" "*\\\\smss.exe" "*\\\\csrss.exe" "*\\\\conhost.exe")) AND NOT (Image:("*\\\\System32\\*" "*\\\\SysWow64\\*")))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="1" (Image="*\\\\svchost.exe" OR Image="*\\\\rundll32.exe" OR Image="*\\\\services.exe" OR Image="*\\\\powershell.exe" OR Image="*\\\\regsvr32.exe" OR Image="*\\\\spoolsv.exe" OR Image="*\\\\lsass.exe" OR Image="*\\\\smss.exe" OR Image="*\\\\csrss.exe" OR Image="*\\\\conhost.exe")) NOT ((Image="*\\\\System32\\*" OR Image="*\\\\SysWow64\\*")))
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="1" Image IN ["*\\\\svchost.exe", "*\\\\rundll32.exe", "*\\\\services.exe", "*\\\\powershell.exe", "*\\\\regsvr32.exe", "*\\\\spoolsv.exe", "*\\\\lsass.exe", "*\\\\smss.exe", "*\\\\csrss.exe", "*\\\\conhost.exe"])  -(Image IN ["*\\\\System32\\*", "*\\\\SysWow64\\*"]))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*(?:.*.*\\svchost\\.exe|.*.*\\rundll32\\.exe|.*.*\\services\\.exe|.*.*\\powershell\\.exe|.*.*\\regsvr32\\.exe|.*.*\\spoolsv\\.exe|.*.*\\lsass\\.exe|.*.*\\smss\\.exe|.*.*\\csrss\\.exe|.*.*\\conhost\\.exe))))(?=.*(?!.*(?:.*(?=.*(?:.*.*\\System32\\.*|.*.*\\SysWow64\\.*))))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage
+```
+

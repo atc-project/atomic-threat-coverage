@@ -91,3 +91,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"13" AND TargetObject:("*SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\lmcompatibilitylevel" "*SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\NtlmMinClientSec" "*SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\RestrictSendingNTLMTraffic"))\n(EventID:"4657" AND ObjectName:"\\\\REGISTRY\\\\MACHINE\\\\SYSTEM\\*ControlSet*\\\\Control\\\\Lsa" AND ObjectValueName:("LmCompatibilityLevel" "NtlmMinClientSec" "RestrictSendingNTLMTraffic"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="13" (TargetObject="*SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\lmcompatibilitylevel" OR TargetObject="*SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\NtlmMinClientSec" OR TargetObject="*SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\RestrictSendingNTLMTraffic"))\n(EventID="4657" ObjectName="\\\\REGISTRY\\\\MACHINE\\\\SYSTEM\\*ControlSet*\\\\Control\\\\Lsa" (ObjectValueName="LmCompatibilityLevel" OR ObjectValueName="NtlmMinClientSec" OR ObjectValueName="RestrictSendingNTLMTraffic"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="13" TargetObject IN ["*SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\lmcompatibilitylevel", "*SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\NtlmMinClientSec", "*SYSTEM\\*ControlSet*\\\\Control\\\\Lsa\\\\RestrictSendingNTLMTraffic"])\n(EventID="4657" ObjectName="\\\\REGISTRY\\\\MACHINE\\\\SYSTEM\\*ControlSet*\\\\Control\\\\Lsa" ObjectValueName IN ["LmCompatibilityLevel", "NtlmMinClientSec", "RestrictSendingNTLMTraffic"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*13)(?=.*(?:.*.*SYSTEM\\.*ControlSet.*\\Control\\Lsa\\lmcompatibilitylevel|.*.*SYSTEM\\.*ControlSet.*\\Control\\Lsa\\NtlmMinClientSec|.*.*SYSTEM\\.*ControlSet.*\\Control\\Lsa\\RestrictSendingNTLMTraffic)))'\ngrep -P '^(?:.*(?=.*4657)(?=.*\\REGISTRY\\MACHINE\\SYSTEM\\.*ControlSet.*\\Control\\Lsa)(?=.*(?:.*LmCompatibilityLevel|.*NtlmMinClientSec|.*RestrictSendingNTLMTraffic)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nObjectName\nObjectValueName\nTargetObject
+```
+

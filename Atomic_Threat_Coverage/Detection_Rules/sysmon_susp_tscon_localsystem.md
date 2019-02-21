@@ -70,3 +70,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND User:"NT AUTHORITY\\\\SYSTEM" AND Image:"*\\\\tscon.exe")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" User="NT AUTHORITY\\\\SYSTEM" Image="*\\\\tscon.exe")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" User="NT AUTHORITY\\\\SYSTEM" Image="*\\\\tscon.exe")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*NT AUTHORITY\\SYSTEM)(?=.*.*\\tscon\\.exe))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage\nUser
+```
+

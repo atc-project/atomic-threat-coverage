@@ -75,3 +75,36 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ("mimikatz" OR "mimilib" OR "<3 eo.oe" OR "eo.oe.kiwi" OR "privilege\\:\\:debug" OR "sekurlsa\\:\\:logonpasswords" OR "lsadump\\:\\:sam" OR "mimidrv.sys")
 ```
 
+
+
+
+
+### Splunk
+
+```
+("mimikatz" OR "mimilib" OR "<3 eo.oe" OR "eo.oe.kiwi" OR "privilege::debug" OR "sekurlsa::logonpasswords" OR "lsadump::sam" OR "mimidrv.sys")
+```
+
+
+
+
+
+### Logpoint
+
+```
+("mimikatz" OR "mimilib" OR "<3 eo.oe" OR "eo.oe.kiwi" OR "privilege::debug" OR "sekurlsa::logonpasswords" OR "lsadump::sam" OR "mimidrv.sys")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?:.*mimikatz|.*mimilib|.*<3 eo\\.oe|.*eo\\.oe\\.kiwi|.*privilege::debug|.*sekurlsa::logonpasswords|.*lsadump::sam|.*mimidrv\\.sys))'
+```
+
+
+
+

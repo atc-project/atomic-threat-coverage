@@ -79,3 +79,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:("528" "529" "4624" "4625") AND LogonType:"2" AND ComputerName:("%ServerSystems%" "%DomainControllers%")) AND NOT (LogonProcessName:"Advapi" AND ComputerName:"%Workstations%"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(((EventID="528" OR EventID="529" OR EventID="4624" OR EventID="4625") LogonType="2" (ComputerName="%ServerSystems%" OR ComputerName="%DomainControllers%")) NOT (LogonProcessName="Advapi" ComputerName="%Workstations%"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID IN ["528", "529", "4624", "4625"] LogonType="2" ComputerName IN ["%ServerSystems%", "%DomainControllers%"])  -(LogonProcessName="Advapi" ComputerName="%Workstations%"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*(?:.*528|.*529|.*4624|.*4625))(?=.*2)(?=.*(?:.*%ServerSystems%|.*%DomainControllers%))))(?=.*(?!.*(?:.*(?=.*Advapi)(?=.*%Workstations%)))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+ComputerName\nEventID\nLogonProcessName\nLogonType
+```
+

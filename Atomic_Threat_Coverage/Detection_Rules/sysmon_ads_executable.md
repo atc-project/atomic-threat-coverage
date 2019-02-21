@@ -78,3 +78,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"15" AND NOT (Imphash:"00000000000000000000000000000000"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="15" NOT (Imphash="00000000000000000000000000000000")) | table TargetFilename,Image
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="15"  -(Imphash="00000000000000000000000000000000"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*15)(?=.*(?!.*(?:.*(?=.*00000000000000000000000000000000)))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImphash
+```
+

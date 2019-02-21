@@ -3,7 +3,7 @@
 | Description          | This method detects well-known keywords of malicious services in the Windows System Eventlog                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0083_16_access_history_in_hive_was_cleared](../Data_Needed/DN_0083_16_access_history_in_hive_was_cleared.md)</li><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li><li>[DN_0083_16_access_history_in_hive_was_cleared](../Data_Needed/DN_0083_16_access_history_in_hive_was_cleared.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unlikely</li></ul>                                                                  |
@@ -74,5 +74,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 ((EventID:("7045" "4697") AND ("WCE SERVICE" OR "WCESERVICE" OR "DumpSvc")) OR (EventID:"16" AND HiveName:"*\\\\AppData\\\\Local\\\\Temp\\\\SAM*.dmp"))
+```
+
+
+
+
+
+### Splunk
+
+```
+(((EventID="7045" OR EventID="4697") ("WCE SERVICE" OR "WCESERVICE" OR "DumpSvc")) OR (EventID="16" HiveName="*\\\\AppData\\\\Local\\\\Temp\\\\SAM*.dmp"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID IN ["7045", "4697"] ("WCE SERVICE" OR "WCESERVICE" OR "DumpSvc")) OR (EventID="16" HiveName="*\\\\AppData\\\\Local\\\\Temp\\\\SAM*.dmp"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?:.*(?:.*(?=.*(?:.*7045|.*4697))(?=.*(?:.*(?:.*WCE SERVICE|.*WCESERVICE|.*DumpSvc))))|.*(?:.*(?=.*16)(?=.*.*\\AppData\\Local\\Temp\\SAM.*\\.dmp))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nHiveName
 ```
 

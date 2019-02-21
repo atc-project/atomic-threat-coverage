@@ -75,3 +75,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND Image:("*\\\\wscript.exe" "*\\\\cscript.exe") AND CommandLine:("*.jse" "*.vbe" "*.js" "*.vba"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (Image="*\\\\wscript.exe" OR Image="*\\\\cscript.exe") (CommandLine="*.jse" OR CommandLine="*.vbe" OR CommandLine="*.js" OR CommandLine="*.vba")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" Image IN ["*\\\\wscript.exe", "*\\\\cscript.exe"] CommandLine IN ["*.jse", "*.vbe", "*.js", "*.vba"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\wscript\\.exe|.*.*\\cscript\\.exe))(?=.*(?:.*.*\\.jse|.*.*\\.vbe|.*.*\\.js|.*.*\\.vba)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nImage
+```
+

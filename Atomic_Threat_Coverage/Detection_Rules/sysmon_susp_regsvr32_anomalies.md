@@ -101,3 +101,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND ((Image:"*\\\\regsvr32.exe" AND CommandLine:"*\\\\Temp\\*") OR (Image:"*\\\\regsvr32.exe" AND ParentImage:"*\\\\powershell.exe") OR (Image:"*\\\\regsvr32.exe" AND CommandLine:("*\\/i\\:http* scrobj.dll" "*\\/i\\:ftp* scrobj.dll")) OR (Image:"*\\\\wscript.exe" AND ParentImage:"*\\\\regsvr32.exe") OR (Image:"*\\\\EXCEL.EXE" AND CommandLine:"*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe *")))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" ((Image="*\\\\regsvr32.exe" CommandLine="*\\\\Temp\\*") OR (Image="*\\\\regsvr32.exe" ParentImage="*\\\\powershell.exe") OR (Image="*\\\\regsvr32.exe" (CommandLine="*/i:http* scrobj.dll" OR CommandLine="*/i:ftp* scrobj.dll")) OR (Image="*\\\\wscript.exe" ParentImage="*\\\\regsvr32.exe") OR (Image="*\\\\EXCEL.EXE" CommandLine="*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe *"))) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" ((Image="*\\\\regsvr32.exe" CommandLine="*\\\\Temp\\*") OR (Image="*\\\\regsvr32.exe" ParentImage="*\\\\powershell.exe") OR (Image="*\\\\regsvr32.exe" CommandLine IN ["*/i:http* scrobj.dll", "*/i:ftp* scrobj.dll"]) OR (Image="*\\\\wscript.exe" ParentImage="*\\\\regsvr32.exe") OR (Image="*\\\\EXCEL.EXE" CommandLine="*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe *")))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*(?:.*(?:.*(?=.*.*\\regsvr32\\.exe)(?=.*.*\\Temp\\.*))|.*(?:.*(?=.*.*\\regsvr32\\.exe)(?=.*.*\\powershell\\.exe))|.*(?:.*(?=.*.*\\regsvr32\\.exe)(?=.*(?:.*.*/i:http.* scrobj\\.dll|.*.*/i:ftp.* scrobj\\.dll)))|.*(?:.*(?=.*.*\\wscript\\.exe)(?=.*.*\\regsvr32\\.exe))|.*(?:.*(?=.*.*\\EXCEL\\.EXE)(?=.*.*\\.\\.\\\\.\\.\\\\.\\.\\Windows\\System32\\regsvr32\\.exe .*))))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nImage\nParentImage
+```
+

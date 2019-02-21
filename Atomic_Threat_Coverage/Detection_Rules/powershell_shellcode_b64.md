@@ -75,3 +75,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"4104" AND "*AAAAYInlM*") AND ("*OiCAAAAYInlM*" OR "*OiJAAAAYInlM*"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="4104" "*AAAAYInlM*") ("*OiCAAAAYInlM*" OR "*OiJAAAAYInlM*"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="4104" "*AAAAYInlM*") ("*OiCAAAAYInlM*" OR "*OiJAAAAYInlM*"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*4104)(?=.*.*AAAAYInlM.*)))(?=.*(?:.*(?:.*.*OiCAAAAYInlM.*|.*.*OiJAAAAYInlM.*))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID
+```
+

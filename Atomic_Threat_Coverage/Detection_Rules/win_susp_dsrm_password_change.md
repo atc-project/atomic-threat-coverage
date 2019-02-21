@@ -69,3 +69,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 EventID:"4794"
 ```
 
+
+
+
+
+### Splunk
+
+```
+EventID="4794"
+```
+
+
+
+
+
+### Logpoint
+
+```
+EventID="4794"
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^4794'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID
+```
+

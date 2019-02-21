@@ -78,3 +78,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"3" AND Image:"*\\\\powershell.exe") AND NOT (DestinationIp:("10.*" "192.168.*" "172.*" "127.0.0.1") AND DestinationIsIpv6:"false" AND User:"NT AUTHORITY\\\\SYSTEM"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="3" Image="*\\\\powershell.exe") NOT ((DestinationIp="10.*" OR DestinationIp="192.168.*" OR DestinationIp="172.*" OR DestinationIp="127.0.0.1") DestinationIsIpv6="false" User="NT AUTHORITY\\\\SYSTEM"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="3" Image="*\\\\powershell.exe")  -(DestinationIp IN ["10.*", "192.168.*", "172.*", "127.0.0.1"] DestinationIsIpv6="false" User="NT AUTHORITY\\\\SYSTEM"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*3)(?=.*.*\\powershell\\.exe)))(?=.*(?!.*(?:.*(?=.*(?:.*10\\..*|.*192\\.168\\..*|.*172\\..*|.*127\\.0\\.0\\.1))(?=.*false)(?=.*NT AUTHORITY\\SYSTEM)))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+DestinationIp\nDestinationIsIpv6\nEventID\nImage\nUser
+```
+

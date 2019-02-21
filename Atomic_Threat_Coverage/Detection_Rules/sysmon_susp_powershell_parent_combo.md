@@ -80,3 +80,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"1" AND ParentImage:("*\\\\wscript.exe" "*\\\\cscript.exe") AND Image:("*\\\\powershell.exe")) AND NOT (CurrentDirectory:"*\\\\Health Service State\\*"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="1" (ParentImage="*\\\\wscript.exe" OR ParentImage="*\\\\cscript.exe") (Image="*\\\\powershell.exe")) NOT (CurrentDirectory="*\\\\Health Service State\\*")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="1" ParentImage IN ["*\\\\wscript.exe", "*\\\\cscript.exe"] Image IN ["*\\\\powershell.exe"])  -(CurrentDirectory="*\\\\Health Service State\\*"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*(?:.*.*\\wscript\\.exe|.*.*\\cscript\\.exe))(?=.*(?:.*.*\\powershell\\.exe))))(?=.*(?!.*(?:.*(?=.*.*\\Health Service State\\.*)))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CurrentDirectory\nEventID\nImage\nParentImage
+```
+

@@ -86,3 +86,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 FileName:("C\\:\\\\Windows\\\\Temp\\*" "C\\:\\\\Temp\\*" "*\\\\Client\\*" "C\\:\\\\PerfLogs\\*" "C\\:\\\\Users\\\\Public\\*" "C\\:\\\\Users\\\\Default\\*" "*.ps1" "*.vbs" "*.bat" "*.chm" "*.xml" "*.txt" "*.jsp" "*.jspx" "*.asp" "*.aspx" "*.php" "*.war")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(FileName="C:\\\\Windows\\\\Temp\\*" OR FileName="C:\\\\Temp\\*" OR FileName="*\\\\Client\\*" OR FileName="C:\\\\PerfLogs\\*" OR FileName="C:\\\\Users\\\\Public\\*" OR FileName="C:\\\\Users\\\\Default\\*" OR FileName="*.ps1" OR FileName="*.vbs" OR FileName="*.bat" OR FileName="*.chm" OR FileName="*.xml" OR FileName="*.txt" OR FileName="*.jsp" OR FileName="*.jspx" OR FileName="*.asp" OR FileName="*.aspx" OR FileName="*.php" OR FileName="*.war") | table Signature,User
+```
+
+
+
+
+
+### Logpoint
+
+```
+FileName IN ["C:\\\\Windows\\\\Temp\\*", "C:\\\\Temp\\*", "*\\\\Client\\*", "C:\\\\PerfLogs\\*", "C:\\\\Users\\\\Public\\*", "C:\\\\Users\\\\Default\\*", "*.ps1", "*.vbs", "*.bat", "*.chm", "*.xml", "*.txt", "*.jsp", "*.jspx", "*.asp", "*.aspx", "*.php", "*.war"]
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*C:\\Windows\\Temp\\.*|.*C:\\Temp\\.*|.*.*\\\\Client\\.*|.*C:\\PerfLogs\\.*|.*C:\\Users\\Public\\.*|.*C:\\Users\\Default\\.*|.*.*\\.ps1|.*.*\\.vbs|.*.*\\.bat|.*.*\\.chm|.*.*\\.xml|.*.*\\.txt|.*.*\\.jsp|.*.*\\.jspx|.*.*\\.asp|.*.*\\.aspx|.*.*\\.php|.*.*\\.war)'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+FileName
+```
+

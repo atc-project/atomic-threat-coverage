@@ -74,3 +74,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"4769" AND TicketOptions:"0x40810000" AND TicketEncryptionType:"0x17") AND NOT (ServiceName:"$*"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="4769" TicketOptions="0x40810000" TicketEncryptionType="0x17") NOT (ServiceName="$*"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="4769" TicketOptions="0x40810000" TicketEncryptionType="0x17")  -(ServiceName="$*"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*4769)(?=.*0x40810000)(?=.*0x17)))(?=.*(?!.*(?:.*(?:.*(?=.*\\$.*))))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nServiceName\nTicketEncryptionType\nTicketOptions
+```
+

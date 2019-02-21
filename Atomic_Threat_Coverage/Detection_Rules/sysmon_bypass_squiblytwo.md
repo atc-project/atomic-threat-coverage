@@ -86,3 +86,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND ((Image:("*\\\\wmic.exe") AND CommandLine:("wmic * *format\\:\\\\\\"http*" "wmic * \\/format\\:\'http" "wmic * \\/format\\:http*")) OR (Imphash:("1B1A3F43BF37B5BFE60751F2EE2F326E" "37777A96245A3C74EB217308F3546F4C" "9D87C9D67CE724033C0B40CC4CA1B206") AND CommandLine:("* *format\\:\\\\\\"http*" "* \\/format\\:\'http" "* \\/format\\:http*"))))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (((Image="*\\\\wmic.exe") (CommandLine="wmic * *format:\\\\\\"http*" OR CommandLine="wmic * /format:\'http" OR CommandLine="wmic * /format:http*")) OR ((Imphash="1B1A3F43BF37B5BFE60751F2EE2F326E" OR Imphash="37777A96245A3C74EB217308F3546F4C" OR Imphash="9D87C9D67CE724033C0B40CC4CA1B206") (CommandLine="* *format:\\\\\\"http*" OR CommandLine="* /format:\'http" OR CommandLine="* /format:http*"))))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" ((Image IN ["*\\\\wmic.exe"] CommandLine IN ["wmic * *format:\\\\\\"http*", "wmic * /format:\'http", "wmic * /format:http*"]) OR (Imphash IN ["1B1A3F43BF37B5BFE60751F2EE2F326E", "37777A96245A3C74EB217308F3546F4C", "9D87C9D67CE724033C0B40CC4CA1B206"] CommandLine IN ["* *format:\\\\\\"http*", "* /format:\'http", "* /format:http*"])))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P \'^(?:.*(?=.*1)(?=.*(?:.*(?:.*(?:.*(?=.*(?:.*.*\\wmic\\.exe))(?=.*(?:.*wmic .* .*format:\\"http.*|.*wmic .* /format:\'http|.*wmic .* /format:http.*)))|.*(?:.*(?=.*(?:.*1B1A3F43BF37B5BFE60751F2EE2F326E|.*37777A96245A3C74EB217308F3546F4C|.*9D87C9D67CE724033C0B40CC4CA1B206))(?=.*(?:.*.* .*format:\\"http.*|.*.* /format:\'http|.*.* /format:http.*)))))))\'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nImage\nImphash
+```
+

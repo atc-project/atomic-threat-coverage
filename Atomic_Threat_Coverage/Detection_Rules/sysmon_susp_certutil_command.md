@@ -93,3 +93,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND CommandLine:("*certutil * \\-decode *" "*certutil * \\-decodehex *" "*certutil *\\-urlcache* http*" "*certutil *\\-urlcache* ftp*" "*certutil *\\-URL*" "*certutil *\\-ping*" "*certutil.exe * \\-decode *" "*certutil.exe * \\-decodehex *" "*certutil.exe *\\-urlcache* http*" "*certutil.exe *\\-urlcache* ftp*" "*certutil.exe *\\-URL*" "*certutil.exe *\\-ping*"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (CommandLine="*certutil * -decode *" OR CommandLine="*certutil * -decodehex *" OR CommandLine="*certutil *-urlcache* http*" OR CommandLine="*certutil *-urlcache* ftp*" OR CommandLine="*certutil *-URL*" OR CommandLine="*certutil *-ping*" OR CommandLine="*certutil.exe * -decode *" OR CommandLine="*certutil.exe * -decodehex *" OR CommandLine="*certutil.exe *-urlcache* http*" OR CommandLine="*certutil.exe *-urlcache* ftp*" OR CommandLine="*certutil.exe *-URL*" OR CommandLine="*certutil.exe *-ping*")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" CommandLine IN ["*certutil * -decode *", "*certutil * -decodehex *", "*certutil *-urlcache* http*", "*certutil *-urlcache* ftp*", "*certutil *-URL*", "*certutil *-ping*", "*certutil.exe * -decode *", "*certutil.exe * -decodehex *", "*certutil.exe *-urlcache* http*", "*certutil.exe *-urlcache* ftp*", "*certutil.exe *-URL*", "*certutil.exe *-ping*"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*certutil .* -decode .*|.*.*certutil .* -decodehex .*|.*.*certutil .*-urlcache.* http.*|.*.*certutil .*-urlcache.* ftp.*|.*.*certutil .*-URL.*|.*.*certutil .*-ping.*|.*.*certutil\\.exe .* -decode .*|.*.*certutil\\.exe .* -decodehex .*|.*.*certutil\\.exe .*-urlcache.* http.*|.*.*certutil\\.exe .*-urlcache.* ftp.*|.*.*certutil\\.exe .*-URL.*|.*.*certutil\\.exe .*-ping.*)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID
+```
+

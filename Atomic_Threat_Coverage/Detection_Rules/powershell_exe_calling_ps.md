@@ -76,3 +76,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"400" AND EngineVersion:("2.*" "4.*" "5.*") AND HostVersion:"3.*")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="400" (EngineVersion="2.*" OR EngineVersion="4.*" OR EngineVersion="5.*") HostVersion="3.*")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="400" EngineVersion IN ["2.*", "4.*", "5.*"] HostVersion="3.*")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*400)(?=.*(?:.*2\\..*|.*4\\..*|.*5\\..*))(?=.*3\\..*))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EngineVersion\nEventID\nHostVersion
+```
+

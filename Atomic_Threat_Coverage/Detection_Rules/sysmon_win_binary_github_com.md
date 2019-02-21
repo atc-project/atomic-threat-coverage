@@ -73,3 +73,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"3" AND DestinationHostname:("*.github.com" "*.githubusercontent.com") AND Image:"C\\:\\\\Windows\\*")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="3" (DestinationHostname="*.github.com" OR DestinationHostname="*.githubusercontent.com") Image="C:\\\\Windows\\*")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="3" DestinationHostname IN ["*.github.com", "*.githubusercontent.com"] Image="C:\\\\Windows\\*")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*3)(?=.*(?:.*.*\\.github\\.com|.*.*\\.githubusercontent\\.com))(?=.*C:\\Windows\\.*))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+DestinationHostname\nEventID\nImage
+```
+

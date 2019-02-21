@@ -70,3 +70,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"13" AND TargetObject:"*\\\\EulaAccepted")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="13" TargetObject="*\\\\EulaAccepted")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="13" TargetObject="*\\\\EulaAccepted")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*13)(?=.*.*\\EulaAccepted))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nTargetObject
+```
+

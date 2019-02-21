@@ -3,7 +3,7 @@
 | Description          | Detects the usage and installation of a backdoor that uses an option to register a malicious debugger for built-in tools that are accessible in the login screen                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1015: Accessibility Features](https://attack.mitre.org/techniques/T1015)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1015: Accessibility Features](../Triggers/T1015.md)</li></ul>  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>Unlikely</li></ul>                                                                  |
@@ -88,5 +88,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 ((EventID:"1" AND ParentImage:("*\\\\winlogon.exe") AND CommandLine:("*\\\\cmd.exe sethc.exe *" "*\\\\cmd.exe utilman.exe *" "*\\\\cmd.exe osk.exe *" "*\\\\cmd.exe Magnify.exe *" "*\\\\cmd.exe Narrator.exe *" "*\\\\cmd.exe DisplaySwitch.exe *")) OR (EventID:"13" AND TargetObject:("*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\sethc.exe\\\\Debugger" "*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\utilman.exe\\\\Debugger" "*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\osk.exe\\\\Debugger" "*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\Magnify.exe\\\\Debugger" "*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\Narrator.exe\\\\Debugger" "*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\DisplaySwitch.exe\\\\Debugger") AND EventType:"SetValue"))
+```
+
+
+
+
+
+### Splunk
+
+```
+((EventID="1" (ParentImage="*\\\\winlogon.exe") (CommandLine="*\\\\cmd.exe sethc.exe *" OR CommandLine="*\\\\cmd.exe utilman.exe *" OR CommandLine="*\\\\cmd.exe osk.exe *" OR CommandLine="*\\\\cmd.exe Magnify.exe *" OR CommandLine="*\\\\cmd.exe Narrator.exe *" OR CommandLine="*\\\\cmd.exe DisplaySwitch.exe *")) OR (EventID="13" (TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\sethc.exe\\\\Debugger" OR TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\utilman.exe\\\\Debugger" OR TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\osk.exe\\\\Debugger" OR TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\Magnify.exe\\\\Debugger" OR TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\Narrator.exe\\\\Debugger" OR TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\DisplaySwitch.exe\\\\Debugger") EventType="SetValue"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="1" ParentImage IN ["*\\\\winlogon.exe"] CommandLine IN ["*\\\\cmd.exe sethc.exe *", "*\\\\cmd.exe utilman.exe *", "*\\\\cmd.exe osk.exe *", "*\\\\cmd.exe Magnify.exe *", "*\\\\cmd.exe Narrator.exe *", "*\\\\cmd.exe DisplaySwitch.exe *"]) OR (EventID="13" TargetObject IN ["*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\sethc.exe\\\\Debugger", "*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\utilman.exe\\\\Debugger", "*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\osk.exe\\\\Debugger", "*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\Magnify.exe\\\\Debugger", "*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\Narrator.exe\\\\Debugger", "*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\DisplaySwitch.exe\\\\Debugger"] EventType="SetValue"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?:.*(?:.*(?=.*1)(?=.*(?:.*.*\\winlogon\\.exe))(?=.*(?:.*.*\\cmd\\.exe sethc\\.exe .*|.*.*\\cmd\\.exe utilman\\.exe .*|.*.*\\cmd\\.exe osk\\.exe .*|.*.*\\cmd\\.exe Magnify\\.exe .*|.*.*\\cmd\\.exe Narrator\\.exe .*|.*.*\\cmd\\.exe DisplaySwitch\\.exe .*)))|.*(?:.*(?=.*13)(?=.*(?:.*.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\sethc\\.exe\\Debugger|.*.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\utilman\\.exe\\Debugger|.*.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\osk\\.exe\\Debugger|.*.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Magnify\\.exe\\Debugger|.*.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Narrator\\.exe\\Debugger|.*.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\DisplaySwitch\\.exe\\Debugger))(?=.*SetValue))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nEventType\nParentImage\nTargetObject
 ```
 

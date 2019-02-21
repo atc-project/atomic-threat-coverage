@@ -77,3 +77,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND CommandLine:("*System.Management.Automation.AmsiUtils*") AND CommandLine:("*amsiInitFailed*"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (CommandLine="*System.Management.Automation.AmsiUtils*") (CommandLine="*amsiInitFailed*"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" CommandLine IN ["*System.Management.Automation.AmsiUtils*"] CommandLine IN ["*amsiInitFailed*"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*System\\.Management\\.Automation\\.AmsiUtils.*))(?=.*(?:.*.*amsiInitFailed.*)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID
+```
+

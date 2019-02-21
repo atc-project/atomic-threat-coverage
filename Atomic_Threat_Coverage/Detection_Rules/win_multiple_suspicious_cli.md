@@ -3,7 +3,7 @@
 | Description          | Detects multiple suspicious process in a limited timeframe                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
 | ATT&amp;CK Technique | <ul></ul>                             |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | low                                                                                                                                                 |
 | False Positives      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul>                                                                  |
@@ -106,4 +106,44 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 
 
+
+
+
+
+
+### Splunk
+
+```
+(EventID="4688" (CommandLine="arp.exe" OR CommandLine="at.exe" OR CommandLine="attrib.exe" OR CommandLine="cscript.exe" OR CommandLine="dsquery.exe" OR CommandLine="hostname.exe" OR CommandLine="ipconfig.exe" OR CommandLine="mimikatz.exe" OR CommandLine="nbstat.exe" OR CommandLine="net.exe" OR CommandLine="netsh.exe" OR CommandLine="nslookup.exe" OR CommandLine="ping.exe" OR CommandLine="quser.exe" OR CommandLine="qwinsta.exe" OR CommandLine="reg.exe" OR CommandLine="runas.exe" OR CommandLine="sc.exe" OR CommandLine="schtasks.exe" OR CommandLine="ssh.exe" OR CommandLine="systeminfo.exe" OR CommandLine="taskkill.exe" OR CommandLine="telnet.exe" OR CommandLine="tracert.exe" OR CommandLine="wscript.exe" OR CommandLine="xcopy.exe" OR CommandLine="pscp.exe" OR CommandLine="copy.exe" OR CommandLine="robocopy.exe" OR CommandLine="certutil.exe" OR CommandLine="vssadmin.exe" OR CommandLine="powershell.exe" OR CommandLine="wevtutil.exe" OR CommandLine="psexec.exe" OR CommandLine="bcedit.exe" OR CommandLine="wbadmin.exe" OR CommandLine="icacls.exe" OR CommandLine="diskpart.exe")) | eventstats count as val by MachineName| search val > 5\n(EventID="1" (CommandLine="arp.exe" OR CommandLine="at.exe" OR CommandLine="attrib.exe" OR CommandLine="cscript.exe" OR CommandLine="dsquery.exe" OR CommandLine="hostname.exe" OR CommandLine="ipconfig.exe" OR CommandLine="mimikatz.exe" OR CommandLine="nbstat.exe" OR CommandLine="net.exe" OR CommandLine="netsh.exe" OR CommandLine="nslookup.exe" OR CommandLine="ping.exe" OR CommandLine="quser.exe" OR CommandLine="qwinsta.exe" OR CommandLine="reg.exe" OR CommandLine="runas.exe" OR CommandLine="sc.exe" OR CommandLine="schtasks.exe" OR CommandLine="ssh.exe" OR CommandLine="systeminfo.exe" OR CommandLine="taskkill.exe" OR CommandLine="telnet.exe" OR CommandLine="tracert.exe" OR CommandLine="wscript.exe" OR CommandLine="xcopy.exe" OR CommandLine="pscp.exe" OR CommandLine="copy.exe" OR CommandLine="robocopy.exe" OR CommandLine="certutil.exe" OR CommandLine="vssadmin.exe" OR CommandLine="powershell.exe" OR CommandLine="wevtutil.exe" OR CommandLine="psexec.exe" OR CommandLine="bcedit.exe" OR CommandLine="wbadmin.exe" OR CommandLine="icacls.exe" OR CommandLine="diskpart.exe")) | eventstats count as val by MachineName| search val > 5
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4688" CommandLine IN ["arp.exe", "at.exe", "attrib.exe", "cscript.exe", "dsquery.exe", "hostname.exe", "ipconfig.exe", "mimikatz.exe", "nbstat.exe", "net.exe", "netsh.exe", "nslookup.exe", "ping.exe", "quser.exe", "qwinsta.exe", "reg.exe", "runas.exe", "sc.exe", "schtasks.exe", "ssh.exe", "systeminfo.exe", "taskkill.exe", "telnet.exe", "tracert.exe", "wscript.exe", "xcopy.exe", "pscp.exe", "copy.exe", "robocopy.exe", "certutil.exe", "vssadmin.exe", "powershell.exe", "wevtutil.exe", "psexec.exe", "bcedit.exe", "wbadmin.exe", "icacls.exe", "diskpart.exe"]) | chart count() as val by MachineName | search val > 5\n(EventID="1" CommandLine IN ["arp.exe", "at.exe", "attrib.exe", "cscript.exe", "dsquery.exe", "hostname.exe", "ipconfig.exe", "mimikatz.exe", "nbstat.exe", "net.exe", "netsh.exe", "nslookup.exe", "ping.exe", "quser.exe", "qwinsta.exe", "reg.exe", "runas.exe", "sc.exe", "schtasks.exe", "ssh.exe", "systeminfo.exe", "taskkill.exe", "telnet.exe", "tracert.exe", "wscript.exe", "xcopy.exe", "pscp.exe", "copy.exe", "robocopy.exe", "certutil.exe", "vssadmin.exe", "powershell.exe", "wevtutil.exe", "psexec.exe", "bcedit.exe", "wbadmin.exe", "icacls.exe", "diskpart.exe"]) | chart count() as val by MachineName | search val > 5
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*4688)(?=.*(?:.*arp\\.exe|.*at\\.exe|.*attrib\\.exe|.*cscript\\.exe|.*dsquery\\.exe|.*hostname\\.exe|.*ipconfig\\.exe|.*mimikatz\\.exe|.*nbstat\\.exe|.*net\\.exe|.*netsh\\.exe|.*nslookup\\.exe|.*ping\\.exe|.*quser\\.exe|.*qwinsta\\.exe|.*reg\\.exe|.*runas\\.exe|.*sc\\.exe|.*schtasks\\.exe|.*ssh\\.exe|.*systeminfo\\.exe|.*taskkill\\.exe|.*telnet\\.exe|.*tracert\\.exe|.*wscript\\.exe|.*xcopy\\.exe|.*pscp\\.exe|.*copy\\.exe|.*robocopy\\.exe|.*certutil\\.exe|.*vssadmin\\.exe|.*powershell\\.exe|.*wevtutil\\.exe|.*psexec\\.exe|.*bcedit\\.exe|.*wbadmin\\.exe|.*icacls\\.exe|.*diskpart\\.exe)))'\ngrep -P '^(?:.*(?=.*1)(?=.*(?:.*arp\\.exe|.*at\\.exe|.*attrib\\.exe|.*cscript\\.exe|.*dsquery\\.exe|.*hostname\\.exe|.*ipconfig\\.exe|.*mimikatz\\.exe|.*nbstat\\.exe|.*net\\.exe|.*netsh\\.exe|.*nslookup\\.exe|.*ping\\.exe|.*quser\\.exe|.*qwinsta\\.exe|.*reg\\.exe|.*runas\\.exe|.*sc\\.exe|.*schtasks\\.exe|.*ssh\\.exe|.*systeminfo\\.exe|.*taskkill\\.exe|.*telnet\\.exe|.*tracert\\.exe|.*wscript\\.exe|.*xcopy\\.exe|.*pscp\\.exe|.*copy\\.exe|.*robocopy\\.exe|.*certutil\\.exe|.*vssadmin\\.exe|.*powershell\\.exe|.*wevtutil\\.exe|.*psexec\\.exe|.*bcedit\\.exe|.*wbadmin\\.exe|.*icacls\\.exe|.*diskpart\\.exe)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nMachineName
+```
 

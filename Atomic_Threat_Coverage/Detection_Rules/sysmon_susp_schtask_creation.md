@@ -78,3 +78,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"1" AND Image:"*\\\\schtasks.exe" AND CommandLine:"* \\/create *") AND NOT (User:"NT AUTHORITY\\\\SYSTEM"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="1" Image="*\\\\schtasks.exe" CommandLine="* /create *") NOT (User="NT AUTHORITY\\\\SYSTEM")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="1" Image="*\\\\schtasks.exe" CommandLine="* /create *")  -(User="NT AUTHORITY\\\\SYSTEM"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\schtasks\\.exe)(?=.*.* /create .*)))(?=.*(?!.*(?:.*(?=.*NT AUTHORITY\\SYSTEM)))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nImage\nUser
+```
+

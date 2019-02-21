@@ -70,3 +70,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"1" AND CommandLine:"*transport=dt_socket,address=*") AND NOT (CommandLine:"*address=127.0.0.1*" OR CommandLine:"*address=localhost*"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="1" CommandLine="*transport=dt_socket,address=*") NOT (CommandLine="*address=127.0.0.1*" OR CommandLine="*address=localhost*")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="1" CommandLine="*transport=dt_socket,address=*")  -(CommandLine="*address=127.0.0.1*" OR CommandLine="*address=localhost*"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*.*transport=dt_socket,address=.*)))(?=.*(?!.*(?:.*(?:.*(?=.*.*address=127\\.0\\.0\\.1.*)|.*(?=.*.*address=localhost.*))))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID
+```
+

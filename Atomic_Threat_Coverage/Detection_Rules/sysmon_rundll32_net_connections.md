@@ -77,3 +77,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"3" AND Image:"*\\\\rundll32.exe") AND NOT (DestinationIp:("10.*" "192.168.*" "172.*")))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="3" Image="*\\\\rundll32.exe") NOT ((DestinationIp="10.*" OR DestinationIp="192.168.*" OR DestinationIp="172.*")))
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="3" Image="*\\\\rundll32.exe")  -(DestinationIp IN ["10.*", "192.168.*", "172.*"]))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*3)(?=.*.*\\rundll32\\.exe)))(?=.*(?!.*(?:.*(?=.*(?:.*10\\..*|.*192\\.168\\..*|.*172\\..*))))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+DestinationIp\nEventID\nImage
+```
+

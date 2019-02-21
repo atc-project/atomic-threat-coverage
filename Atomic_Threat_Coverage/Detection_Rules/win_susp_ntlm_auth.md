@@ -73,3 +73,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"8002" AND CallingProcessName:"*")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="8002" CallingProcessName="*")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="8002" CallingProcessName="*")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*8002)(?=.*.*))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CallingProcessName\nEventID
+```
+

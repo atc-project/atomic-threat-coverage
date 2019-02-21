@@ -71,3 +71,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"104" AND Source:"Eventlog")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="104" Source="Eventlog")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="104" Source="Eventlog")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*104)(?=.*Eventlog))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nSource
+```
+

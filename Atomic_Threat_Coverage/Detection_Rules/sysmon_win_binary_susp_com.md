@@ -73,3 +73,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"3" AND DestinationHostname:("*dl.dropboxusercontent.com" "*.pastebin.com") AND Image:"C\\:\\\\Windows\\*")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="3" (DestinationHostname="*dl.dropboxusercontent.com" OR DestinationHostname="*.pastebin.com") Image="C:\\\\Windows\\*")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="3" DestinationHostname IN ["*dl.dropboxusercontent.com", "*.pastebin.com"] Image="C:\\\\Windows\\*")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*3)(?=.*(?:.*.*dl\\.dropboxusercontent\\.com|.*.*\\.pastebin\\.com))(?=.*C:\\Windows\\.*))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+DestinationHostname\nEventID\nImage
+```
+

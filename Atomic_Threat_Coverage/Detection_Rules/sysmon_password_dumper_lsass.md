@@ -72,3 +72,36 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"8" AND TargetImage:"C\\:\\\\Windows\\\\System32\\\\lsass.exe" AND NOT _exists_:StartModule)
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="8" TargetImage="C:\\\\Windows\\\\System32\\\\lsass.exe" NOT StartModule="*")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="8" TargetImage="C:\\\\Windows\\\\System32\\\\lsass.exe" -StartModule=*)
+```
+
+
+
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nStartModule\nTargetImage
+```
+

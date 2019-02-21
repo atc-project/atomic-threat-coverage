@@ -69,3 +69,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"4688" AND CommandLine:"C\\:\\\\Windows\\\\PSEXESVC.exe")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="4688" CommandLine="C:\\\\Windows\\\\PSEXESVC.exe")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4688" CommandLine="C:\\\\Windows\\\\PSEXESVC.exe")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*4688)(?=.*C:\\Windows\\PSEXESVC\\.exe))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID
+```
+

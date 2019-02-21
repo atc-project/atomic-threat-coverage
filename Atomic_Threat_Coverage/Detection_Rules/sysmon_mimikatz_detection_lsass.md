@@ -72,3 +72,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"10" AND TargetImage:"C\\:\\\\windows\\\\system32\\\\lsass.exe" AND GrantedAccess:"0x1410")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="10" TargetImage="C:\\\\windows\\\\system32\\\\lsass.exe" GrantedAccess="0x1410")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="10" TargetImage="C:\\\\windows\\\\system32\\\\lsass.exe" GrantedAccess="0x1410")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*10)(?=.*C:\\windows\\system32\\lsass\\.exe)(?=.*0x1410))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nGrantedAccess\nTargetImage
+```
+

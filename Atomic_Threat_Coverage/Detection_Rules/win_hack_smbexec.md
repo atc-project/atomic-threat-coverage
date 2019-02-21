@@ -75,3 +75,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"7045" AND ServiceName:"BTOBTO" AND ServiceFileName:"*\\\\execute.bat")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="7045" ServiceName="BTOBTO" ServiceFileName="*\\\\execute.bat") | table ServiceName,ServiceFileName
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="7045" ServiceName="BTOBTO" ServiceFileName="*\\\\execute.bat")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*7045)(?=.*BTOBTO)(?=.*.*\\execute\\.bat))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nServiceFileName\nServiceName
+```
+

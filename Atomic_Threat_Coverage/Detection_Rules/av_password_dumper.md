@@ -77,3 +77,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 Signature:("*DumpCreds*" "*Mimikatz*" "*PWCrack*" "HTool\\/WCE" "*PSWtool*" "*PWDump*")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(Signature="*DumpCreds*" OR Signature="*Mimikatz*" OR Signature="*PWCrack*" OR Signature="HTool/WCE" OR Signature="*PSWtool*" OR Signature="*PWDump*") | table FileName,User
+```
+
+
+
+
+
+### Logpoint
+
+```
+Signature IN ["*DumpCreds*", "*Mimikatz*", "*PWCrack*", "HTool/WCE", "*PSWtool*", "*PWDump*"]
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*.*DumpCreds.*|.*.*Mimikatz.*|.*.*PWCrack.*|.*HTool/WCE|.*.*PSWtool.*|.*.*PWDump.*)'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+Signature
+```
+

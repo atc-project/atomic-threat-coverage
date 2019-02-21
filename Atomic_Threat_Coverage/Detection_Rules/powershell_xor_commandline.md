@@ -3,7 +3,7 @@
 | Description          | Detects suspicious powershell process which includes bxor command, alternatvide obfuscation method to b64 encoded commands.                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
 | ATT&amp;CK Technique | <ul></ul>                             |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul><li>unknown</li></ul>                                                                  |
@@ -77,5 +77,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 (EventID:"1" AND CommandLine:("* \\-bxor*"))\n(EventID:"4688" AND CommandLine:("* \\-bxor*"))
+```
+
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (CommandLine="* -bxor*"))\n(EventID="4688" (CommandLine="* -bxor*"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" CommandLine IN ["* -bxor*"])\n(EventID="4688" CommandLine IN ["* -bxor*"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*.* -bxor.*)))'\ngrep -P '^(?:.*(?=.*4688)(?=.*(?:.*.* -bxor.*)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID
 ```
 

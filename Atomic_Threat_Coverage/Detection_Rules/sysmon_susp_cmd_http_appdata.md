@@ -73,3 +73,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND CommandLine:("cmd.exe \\/c *http\\:\\/\\/*%AppData%" "cmd.exe \\/c *https\\:\\/\\/*%AppData%"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (CommandLine="cmd.exe /c *http://*%AppData%" OR CommandLine="cmd.exe /c *https://*%AppData%")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" CommandLine IN ["cmd.exe /c *http://*%AppData%", "cmd.exe /c *https://*%AppData%"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*cmd\\.exe /c .*http://.*%AppData%|.*cmd\\.exe /c .*https://.*%AppData%)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID
+```
+

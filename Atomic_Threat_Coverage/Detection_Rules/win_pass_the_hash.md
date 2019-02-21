@@ -82,3 +82,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((LogonType:"3" AND LogonProcessName:"NtLmSsp" AND WorkstationName:"%Workstations%" AND ComputerName:"%Workstations%" AND (EventID:"4624" OR EventID:"4625")) AND NOT (AccountName:"ANONYMOUS LOGON"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((LogonType="3" LogonProcessName="NtLmSsp" WorkstationName="%Workstations%" ComputerName="%Workstations%" (EventID="4624" OR EventID="4625")) NOT (AccountName="ANONYMOUS LOGON"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+((LogonType="3" LogonProcessName="NtLmSsp" WorkstationName="%Workstations%" ComputerName="%Workstations%" (EventID="4624" OR EventID="4625"))  -(AccountName="ANONYMOUS LOGON"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*3)(?=.*NtLmSsp)(?=.*%Workstations%)(?=.*%Workstations%)(?=.*(?:.*(?:.*4624|.*4625)))))(?=.*(?!.*(?:.*(?=.*ANONYMOUS LOGON)))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+AccountName\nComputerName\nEventID\nLogonProcessName\nLogonType\nWorkstationName
+```
+

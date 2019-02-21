@@ -3,7 +3,7 @@
 | Description          | Detects javaw.exe in AppData folder as used by Adwind / JRAT                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
 | ATT&amp;CK Technique | <ul></ul>                             |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul></ul>                                                                  |
@@ -103,5 +103,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 (EventID:"4688" AND CommandLine:("*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe *" "*cscript.exe *Retrive*.vbs *"))\n(EventID:"1" AND Image:"*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe")\n(EventID:"11" AND TargetFilename:("*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe" "*\\\\Retrive*.vbs"))\n(EventID:"13" AND TargetObject:"\\\\REGISTRY\\\\MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run*" AND Details:"%AppData%\\\\Roaming\\\\Oracle\\\\bin\\*")
+```
+
+
+
+
+
+### Splunk
+
+```
+(EventID="4688" (CommandLine="*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe *" OR CommandLine="*cscript.exe *Retrive*.vbs *"))\n(EventID="1" Image="*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe")\n(EventID="11" (TargetFilename="*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe" OR TargetFilename="*\\\\Retrive*.vbs"))\n(EventID="13" TargetObject="\\\\REGISTRY\\\\MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run*" Details="%AppData%\\\\Roaming\\\\Oracle\\\\bin\\*")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4688" CommandLine IN ["*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe *", "*cscript.exe *Retrive*.vbs *"])\n(EventID="1" Image="*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe")\n(EventID="11" TargetFilename IN ["*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe", "*\\\\Retrive*.vbs"])\n(EventID="13" TargetObject="\\\\REGISTRY\\\\MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run*" Details="%AppData%\\\\Roaming\\\\Oracle\\\\bin\\*")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*4688)(?=.*(?:.*.*\\AppData\\Roaming\\Oracle.*\\java.*\\.exe .*|.*.*cscript\\.exe .*Retrive.*\\.vbs .*)))'\ngrep -P '^(?:.*(?=.*1)(?=.*.*\\AppData\\Roaming\\Oracle\\bin\\java.*\\.exe))'\ngrep -P '^(?:.*(?=.*11)(?=.*(?:.*.*\\AppData\\Roaming\\Oracle\\bin\\java.*\\.exe|.*.*\\Retrive.*\\.vbs)))'\ngrep -P '^(?:.*(?=.*13)(?=.*\\REGISTRY\\MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run.*)(?=.*%AppData%\\Roaming\\Oracle\\bin\\.*))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nDetails\nEventID\nImage\nTargetFilename\nTargetObject
 ```
 

@@ -3,7 +3,7 @@
 | Description          | Detects suspicious process that use escape characters                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1140: Deobfuscate/Decode Files or Information](https://attack.mitre.org/techniques/T1140)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1140: Deobfuscate/Decode Files or Information](../Triggers/T1140.md)</li></ul>  |
 | Severity Level       | low                                                                                                                                                 |
 | False Positives      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul>                                                                  |
@@ -95,5 +95,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 (EventID:"4688" AND CommandLine:("<TAB>" "\\^h\\^t\\^t\\^p" "h\\"t\\"t\\"p"))\n(EventID:"1" AND CommandLine:("<TAB>" "\\^h\\^t\\^t\\^p" "h\\"t\\"t\\"p"))
+```
+
+
+
+
+
+### Splunk
+
+```
+(EventID="4688" (CommandLine="<TAB>" OR CommandLine="^h^t^t^p" OR CommandLine="h\\"t\\"t\\"p"))\n(EventID="1" (CommandLine="<TAB>" OR CommandLine="^h^t^t^p" OR CommandLine="h\\"t\\"t\\"p"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4688" CommandLine IN ["<TAB>", "^h^t^t^p", "h\\"t\\"t\\"p"])\n(EventID="1" CommandLine IN ["<TAB>", "^h^t^t^p", "h\\"t\\"t\\"p"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P \'^(?:.*(?=.*4688)(?=.*(?:.*<TAB>|.*\\^h\\^t\\^t\\^p|.*h"t"t"p)))\'\ngrep -P \'^(?:.*(?=.*1)(?=.*(?:.*<TAB>|.*\\^h\\^t\\^t\\^p|.*h"t"t"p)))\'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID
 ```
 

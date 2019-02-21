@@ -3,7 +3,7 @@
 | Description          | Detects WannaCry Ransomware Activity                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
 | ATT&amp;CK Technique | <ul></ul>                             |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
@@ -115,5 +115,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 (EventID:"4688" AND (CommandLine:("*vssadmin delete shadows*" "*icacls * \\/grant Everyone\\:F \\/T \\/C \\/Q*" "*bcdedit \\/set \\{default\\} recoveryenabled no*" "*wbadmin delete catalog \\-quiet*") OR NewProcessName:("*\\\\tasksche.exe" "*\\\\mssecsvc.exe" "*\\\\taskdl.exe" "*\\\\WanaDecryptor*" "*\\\\taskhsvc.exe" "*\\\\taskse.exe" "*\\\\111.exe" "*\\\\lhdfrgui.exe" "*\\\\diskpart.exe" "*\\\\linuxnew.exe" "*\\\\wannacry.exe")))\n(EventID:"1" AND (CommandLine:("*vssadmin delete shadows*" "*icacls * \\/grant Everyone\\:F \\/T \\/C \\/Q*" "*bcdedit \\/set \\{default\\} recoveryenabled no*" "*wbadmin delete catalog \\-quiet*") OR Image:("*\\\\tasksche.exe" "*\\\\mssecsvc.exe" "*\\\\taskdl.exe" "*\\\\WanaDecryptor*" "*\\\\taskhsvc.exe" "*\\\\taskse.exe" "*\\\\111.exe" "*\\\\lhdfrgui.exe" "*\\\\diskpart.exe" "*\\\\linuxnew.exe" "*\\\\wannacry.exe")))
+```
+
+
+
+
+
+### Splunk
+
+```
+(EventID="4688" ((CommandLine="*vssadmin delete shadows*" OR CommandLine="*icacls * /grant Everyone:F /T /C /Q*" OR CommandLine="*bcdedit /set {default} recoveryenabled no*" OR CommandLine="*wbadmin delete catalog -quiet*") OR (NewProcessName="*\\\\tasksche.exe" OR NewProcessName="*\\\\mssecsvc.exe" OR NewProcessName="*\\\\taskdl.exe" OR NewProcessName="*\\\\WanaDecryptor*" OR NewProcessName="*\\\\taskhsvc.exe" OR NewProcessName="*\\\\taskse.exe" OR NewProcessName="*\\\\111.exe" OR NewProcessName="*\\\\lhdfrgui.exe" OR NewProcessName="*\\\\diskpart.exe" OR NewProcessName="*\\\\linuxnew.exe" OR NewProcessName="*\\\\wannacry.exe")))\n(EventID="1" ((CommandLine="*vssadmin delete shadows*" OR CommandLine="*icacls * /grant Everyone:F /T /C /Q*" OR CommandLine="*bcdedit /set {default} recoveryenabled no*" OR CommandLine="*wbadmin delete catalog -quiet*") OR (Image="*\\\\tasksche.exe" OR Image="*\\\\mssecsvc.exe" OR Image="*\\\\taskdl.exe" OR Image="*\\\\WanaDecryptor*" OR Image="*\\\\taskhsvc.exe" OR Image="*\\\\taskse.exe" OR Image="*\\\\111.exe" OR Image="*\\\\lhdfrgui.exe" OR Image="*\\\\diskpart.exe" OR Image="*\\\\linuxnew.exe" OR Image="*\\\\wannacry.exe")))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4688" (CommandLine IN ["*vssadmin delete shadows*", "*icacls * /grant Everyone:F /T /C /Q*", "*bcdedit /set {default} recoveryenabled no*", "*wbadmin delete catalog -quiet*"] OR NewProcessName IN ["*\\\\tasksche.exe", "*\\\\mssecsvc.exe", "*\\\\taskdl.exe", "*\\\\WanaDecryptor*", "*\\\\taskhsvc.exe", "*\\\\taskse.exe", "*\\\\111.exe", "*\\\\lhdfrgui.exe", "*\\\\diskpart.exe", "*\\\\linuxnew.exe", "*\\\\wannacry.exe"]))\n(EventID="1" (CommandLine IN ["*vssadmin delete shadows*", "*icacls * /grant Everyone:F /T /C /Q*", "*bcdedit /set {default} recoveryenabled no*", "*wbadmin delete catalog -quiet*"] OR Image IN ["*\\\\tasksche.exe", "*\\\\mssecsvc.exe", "*\\\\taskdl.exe", "*\\\\WanaDecryptor*", "*\\\\taskhsvc.exe", "*\\\\taskse.exe", "*\\\\111.exe", "*\\\\lhdfrgui.exe", "*\\\\diskpart.exe", "*\\\\linuxnew.exe", "*\\\\wannacry.exe"]))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*4688)(?=.*(?:.*(?:.*(?:.*.*vssadmin delete shadows.*|.*.*icacls .* /grant Everyone:F /T /C /Q.*|.*.*bcdedit /set \\{default\\} recoveryenabled no.*|.*.*wbadmin delete catalog -quiet.*)|.*(?:.*.*\\tasksche\\.exe|.*.*\\mssecsvc\\.exe|.*.*\\taskdl\\.exe|.*.*\\WanaDecryptor.*|.*.*\\taskhsvc\\.exe|.*.*\\taskse\\.exe|.*.*\\111\\.exe|.*.*\\lhdfrgui\\.exe|.*.*\\diskpart\\.exe|.*.*\\linuxnew\\.exe|.*.*\\wannacry\\.exe)))))'\ngrep -P '^(?:.*(?=.*1)(?=.*(?:.*(?:.*(?:.*.*vssadmin delete shadows.*|.*.*icacls .* /grant Everyone:F /T /C /Q.*|.*.*bcdedit /set \\{default\\} recoveryenabled no.*|.*.*wbadmin delete catalog -quiet.*)|.*(?:.*.*\\tasksche\\.exe|.*.*\\mssecsvc\\.exe|.*.*\\taskdl\\.exe|.*.*\\WanaDecryptor.*|.*.*\\taskhsvc\\.exe|.*.*\\taskse\\.exe|.*.*\\111\\.exe|.*.*\\lhdfrgui\\.exe|.*.*\\diskpart\\.exe|.*.*\\linuxnew\\.exe|.*.*\\wannacry\\.exe)))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nImage\nNewProcessName
 ```
 

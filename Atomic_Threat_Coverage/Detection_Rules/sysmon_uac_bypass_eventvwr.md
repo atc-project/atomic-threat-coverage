@@ -3,7 +3,7 @@
 | Description          | Detects UAC bypass method using Windows event viewer                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1088: Bypass User Account Control](https://attack.mitre.org/techniques/T1088)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1088: Bypass User Account Control](../Triggers/T1088.md)</li></ul>  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>unknown</li></ul>                                                                  |
@@ -80,5 +80,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 ((EventID:"13" AND TargetObject:"HKEY_USERS\\*\\\\mscfile\\\\shell\\\\open\\\\command") OR ((EventID:"1" AND ParentImage:"*\\\\eventvwr.exe") AND NOT (Image:"*\\\\mmc.exe")))
+```
+
+
+
+
+
+### Splunk
+
+```
+((EventID="13" TargetObject="HKEY_USERS\\*\\\\mscfile\\\\shell\\\\open\\\\command") OR ((EventID="1" ParentImage="*\\\\eventvwr.exe") NOT (Image="*\\\\mmc.exe"))) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="13" TargetObject="HKEY_USERS\\*\\\\mscfile\\\\shell\\\\open\\\\command") OR ((EventID="1" ParentImage="*\\\\eventvwr.exe")  -(Image="*\\\\mmc.exe")))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?:.*(?:.*(?=.*13)(?=.*HKEY_USERS\\.*\\mscfile\\shell\\open\\command))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\eventvwr\\.exe)))(?=.*(?!.*(?:.*(?=.*.*\\mmc\\.exe)))))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage\nParentImage\nTargetObject
 ```
 

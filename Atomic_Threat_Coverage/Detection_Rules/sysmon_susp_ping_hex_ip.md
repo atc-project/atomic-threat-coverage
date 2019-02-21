@@ -73,3 +73,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND CommandLine:("*\\\\ping.exe 0x*" "*\\\\ping 0x*"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (CommandLine="*\\\\ping.exe 0x*" OR CommandLine="*\\\\ping 0x*")) | table ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" CommandLine IN ["*\\\\ping.exe 0x*", "*\\\\ping 0x*"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\ping\\.exe 0x.*|.*.*\\ping 0x.*)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID
+```
+

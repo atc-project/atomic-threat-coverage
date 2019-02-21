@@ -74,3 +74,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"4104" AND "PromptForCredential")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="4104" "PromptForCredential")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4104" "PromptForCredential")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*4104)(?=.*PromptForCredential))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID
+```
+

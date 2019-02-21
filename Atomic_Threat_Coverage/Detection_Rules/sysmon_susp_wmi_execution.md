@@ -82,3 +82,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND Image:("*\\\\wmic.exe") AND CommandLine:("*\\/NODE\\:*process call create *" "* path AntiVirusProduct get *" "* path FirewallProduct get *" "* shadowcopy delete *"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (Image="*\\\\wmic.exe") (CommandLine="*/NODE:*process call create *" OR CommandLine="* path AntiVirusProduct get *" OR CommandLine="* path FirewallProduct get *" OR CommandLine="* shadowcopy delete *")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" Image IN ["*\\\\wmic.exe"] CommandLine IN ["*/NODE:*process call create *", "* path AntiVirusProduct get *", "* path FirewallProduct get *", "* shadowcopy delete *"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\wmic\\.exe))(?=.*(?:.*.*/NODE:.*process call create .*|.*.* path AntiVirusProduct get .*|.*.* path FirewallProduct get .*|.*.* shadowcopy delete .*)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nImage
+```
+

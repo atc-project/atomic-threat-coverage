@@ -71,3 +71,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"11" AND Image:"C\\:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="11" Image="C:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="11" Image="C:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*11)(?=.*C:\\WINDOWS\\system32\\wbem\\scrcons\\.exe))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage
+```
+

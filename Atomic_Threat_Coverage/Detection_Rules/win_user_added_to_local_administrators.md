@@ -69,3 +69,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"4732" AND GroupName:"Administrators") AND NOT (SubjectUserName:"*$"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="4732" GroupName="Administrators") NOT (SubjectUserName="*$"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="4732" GroupName="Administrators")  -(SubjectUserName="*$"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*4732)(?=.*Administrators)))(?=.*(?!.*(?:.*(?=.*.*\\$)))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nGroupName\nSubjectUserName
+```
+

@@ -3,7 +3,7 @@
 | Description          | Detects WMI script event consumers                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Legitimate event consumers</li></ul>                                                                  |
@@ -84,5 +84,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 (EventID:"1" AND Image:"C\\:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe" AND ParentImage:"C\\:\\\\Windows\\\\System32\\\\svchost.exe")\n(EventID:"4688" AND Image:"C\\:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe" AND ParentImage:"C\\:\\\\Windows\\\\System32\\\\svchost.exe")
+```
+
+
+
+
+
+### Splunk
+
+```
+(EventID="1" Image="C:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe" ParentImage="C:\\\\Windows\\\\System32\\\\svchost.exe")\n(EventID="4688" Image="C:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe" ParentImage="C:\\\\Windows\\\\System32\\\\svchost.exe")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" Image="C:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe" ParentImage="C:\\\\Windows\\\\System32\\\\svchost.exe")\n(EventID="4688" Image="C:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe" ParentImage="C:\\\\Windows\\\\System32\\\\svchost.exe")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*C:\\WINDOWS\\system32\\wbem\\scrcons\\.exe)(?=.*C:\\Windows\\System32\\svchost\\.exe))'\ngrep -P '^(?:.*(?=.*4688)(?=.*C:\\WINDOWS\\system32\\wbem\\scrcons\\.exe)(?=.*C:\\Windows\\System32\\svchost\\.exe))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage\nParentImage
 ```
 

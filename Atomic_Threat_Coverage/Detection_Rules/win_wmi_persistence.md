@@ -79,3 +79,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"5861" AND ("ActiveScriptEventConsumer" OR "CommandLineEventConsumer" OR "CommandLineTemplate" OR "Binding EventFilter")) OR EventID:"5859")
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="5861" ("ActiveScriptEventConsumer" OR "CommandLineEventConsumer" OR "CommandLineTemplate" OR "Binding EventFilter")) OR EventID="5859")
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="5861" ("ActiveScriptEventConsumer" OR "CommandLineEventConsumer" OR "CommandLineTemplate" OR "Binding EventFilter")) OR EventID="5859")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?:.*(?:.*(?=.*5861)(?=.*(?:.*(?:.*ActiveScriptEventConsumer|.*CommandLineEventConsumer|.*CommandLineTemplate|.*Binding EventFilter))))|.*5859))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID
+```
+

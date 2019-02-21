@@ -3,7 +3,7 @@
 | Description          | Detects suspicious svchost processes with parent process that is not services.exe, command line missing -k parameter or running outside Windows folder                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
 | ATT&amp;CK Technique | <ul></ul>                             |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Renamed %SystemRoot%s</li></ul>                                                                  |
@@ -97,5 +97,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 ((EventID:"1" AND Image:"*\\\\svchost.exe") AND NOT ((ParentImage:("*\\\\services.exe" "*\\\\MsMpEng.exe") OR CommandLine:"* \\-k *" OR Image:"C\\:\\\\Windows\\\\S*")))\n((EventID:"4688" AND NewProcessName:"*\\\\svchost.exe") AND NOT (NewProcessName:"C\\:\\\\Windows\\\\S*"))
+```
+
+
+
+
+
+### Splunk
+
+```
+((EventID="1" Image="*\\\\svchost.exe") NOT (((ParentImage="*\\\\services.exe" OR ParentImage="*\\\\MsMpEng.exe") OR CommandLine="* -k *" OR Image="C:\\\\Windows\\\\S*")))\n((EventID="4688" NewProcessName="*\\\\svchost.exe") NOT (NewProcessName="C:\\\\Windows\\\\S*"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="1" Image="*\\\\svchost.exe")  -((ParentImage IN ["*\\\\services.exe", "*\\\\MsMpEng.exe"] OR CommandLine="* -k *" OR Image="C:\\\\Windows\\\\S*")))\n((EventID="4688" NewProcessName="*\\\\svchost.exe")  -(NewProcessName="C:\\\\Windows\\\\S*"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\svchost\\.exe)))(?=.*(?!.*(?:.*(?:.*(?:.*(?:.*.*\\services\\.exe|.*.*\\MsMpEng\\.exe)|.*.* -k .*|.*C:\\Windows\\S.*))))))'\ngrep -P '^(?:.*(?=.*(?:.*(?=.*4688)(?=.*.*\\svchost\\.exe)))(?=.*(?!.*(?:.*(?=.*C:\\Windows\\S.*)))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nImage\nNewProcessName\nParentImage
 ```
 

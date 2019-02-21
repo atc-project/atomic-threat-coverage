@@ -72,3 +72,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"4103" AND "PS ATTACK\\!\\!\\!")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="4103" "PS ATTACK!!!")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4103" "PS ATTACK!!!")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*4103)(?=.*PS ATTACK!!!))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID
+```
+

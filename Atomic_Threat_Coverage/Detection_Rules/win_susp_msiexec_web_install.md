@@ -3,7 +3,7 @@
 | Description          | Detects suspicious msiexec proess starts with web addreses as parameter                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
 | ATT&amp;CK Technique | <ul></ul>                             |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul>                                                                  |
@@ -80,5 +80,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 (EventID:"1" AND CommandLine:("* msiexec*\\:\\\\\\/\\\\\\/*"))\n(EventID:"4688" AND CommandLine:("* msiexec*\\:\\\\\\/\\\\\\/*"))
+```
+
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (CommandLine="* msiexec*:\\\\/\\\\/*"))\n(EventID="4688" (CommandLine="* msiexec*:\\\\/\\\\/*"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" CommandLine IN ["* msiexec*:\\\\/\\\\/*"])\n(EventID="4688" CommandLine IN ["* msiexec*:\\\\/\\\\/*"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*.* msiexec.*:\\/\\/.*)))'\ngrep -P '^(?:.*(?=.*4688)(?=.*(?:.*.* msiexec.*:\\/\\/.*)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID
 ```
 

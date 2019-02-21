@@ -3,7 +3,7 @@
 | Description          | Detects suspicious PowerShell invocation command parameters                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li><li>[DN_0037_4103_windows_powershell_executing_pipeline](../Data_Needed/DN_0037_4103_windows_powershell_executing_pipeline.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0037_4103_windows_powershell_executing_pipeline](../Data_Needed/DN_0037_4103_windows_powershell_executing_pipeline.md)</li><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Penetration tests</li><li>Very special / sneaky PowerShell scripts</li></ul>                                                                  |
@@ -76,4 +76,37 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 ((" \\-enc " OR " \\-EncodedCommand ") AND (" \\-w hidden " OR " \\-window hidden " OR " \\- windowstyle hidden ") AND (" \\-noni " OR " \\-noninteractive "))
 ```
+
+
+
+
+
+### Splunk
+
+```
+((" -enc " OR " -EncodedCommand ") (" -w hidden " OR " -window hidden " OR " - windowstyle hidden ") (" -noni " OR " -noninteractive "))
+```
+
+
+
+
+
+### Logpoint
+
+```
+((" -enc " OR " -EncodedCommand ") (" -w hidden " OR " -window hidden " OR " - windowstyle hidden ") (" -noni " OR " -noninteractive "))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?:.* -enc |.* -EncodedCommand )))(?=.*(?:.*(?:.* -w hidden |.* -window hidden |.* - windowstyle hidden )))(?=.*(?:.*(?:.* -noni |.* -noninteractive ))))'
+```
+
+
+
 

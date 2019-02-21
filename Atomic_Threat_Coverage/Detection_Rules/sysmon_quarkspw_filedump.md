@@ -70,3 +70,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"11" AND TargetFilename:"*\\\\AppData\\\\Local\\\\Temp\\\\SAM\\-*.dmp*")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="11" TargetFilename="*\\\\AppData\\\\Local\\\\Temp\\\\SAM-*.dmp*")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="11" TargetFilename="*\\\\AppData\\\\Local\\\\Temp\\\\SAM-*.dmp*")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*11)(?=.*.*\\AppData\\Local\\Temp\\SAM-.*\\.dmp.*))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nTargetFilename
+```
+

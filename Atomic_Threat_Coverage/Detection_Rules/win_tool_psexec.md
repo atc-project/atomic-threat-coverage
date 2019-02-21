@@ -85,3 +85,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"7045" AND ServiceName:"PSEXESVC" AND ServiceFileName:"*\\\\PSEXESVC.exe") OR (EventID:"7036" AND ServiceName:"PSEXESVC") OR (EventID:"1" AND Image:"*\\\\PSEXESVC.exe" AND User:"NT AUTHORITY\\\\SYSTEM"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="7045" ServiceName="PSEXESVC" ServiceFileName="*\\\\PSEXESVC.exe") OR (EventID="7036" ServiceName="PSEXESVC") OR (EventID="1" Image="*\\\\PSEXESVC.exe" User="NT AUTHORITY\\\\SYSTEM")) | table EventID,CommandLine,ParentCommandLine,ServiceName,ServiceFileName
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="7045" ServiceName="PSEXESVC" ServiceFileName="*\\\\PSEXESVC.exe") OR (EventID="7036" ServiceName="PSEXESVC") OR (EventID="1" Image="*\\\\PSEXESVC.exe" User="NT AUTHORITY\\\\SYSTEM"))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?:.*(?:.*(?=.*7045)(?=.*PSEXESVC)(?=.*.*\\PSEXESVC\\.exe))|.*(?:.*(?=.*7036)(?=.*PSEXESVC))|.*(?:.*(?=.*1)(?=.*.*\\PSEXESVC\\.exe)(?=.*NT AUTHORITY\\SYSTEM))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage\nServiceFileName\nServiceName\nUser
+```
+

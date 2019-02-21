@@ -69,3 +69,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND ParentImage:"*\\\\svchost.exe" AND Image:"*\\\\mshta.exe")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" ParentImage="*\\\\svchost.exe" Image="*\\\\mshta.exe")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" ParentImage="*\\\\svchost.exe" Image="*\\\\mshta.exe")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*.*\\svchost\\.exe)(?=.*.*\\mshta\\.exe))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage\nParentImage
+```
+

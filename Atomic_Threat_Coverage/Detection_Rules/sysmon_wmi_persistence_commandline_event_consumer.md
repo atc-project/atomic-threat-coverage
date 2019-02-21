@@ -72,3 +72,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"7" AND Image:"C\\:\\\\Windows\\\\System32\\\\wbem\\\\WmiPrvSE.exe" AND ImageLoaded:"wbemcons.dll")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="7" Image="C:\\\\Windows\\\\System32\\\\wbem\\\\WmiPrvSE.exe" ImageLoaded="wbemcons.dll")
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="7" Image="C:\\\\Windows\\\\System32\\\\wbem\\\\WmiPrvSE.exe" ImageLoaded="wbemcons.dll")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*7)(?=.*C:\\Windows\\System32\\wbem\\WmiPrvSE\\.exe)(?=.*wbemcons\\.dll))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage\nImageLoaded
+```
+

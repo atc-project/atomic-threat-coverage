@@ -73,3 +73,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND Image:"*\\\\cmdkey.exe" AND CommandLine:"* \\/list *")
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" Image="*\\\\cmdkey.exe" CommandLine="* /list *") | table CommandLine,ParentCommandLine,User
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" Image="*\\\\cmdkey.exe" CommandLine="* /list *")
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*.*\\cmdkey\\.exe)(?=.*.* /list .*))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nImage
+```
+

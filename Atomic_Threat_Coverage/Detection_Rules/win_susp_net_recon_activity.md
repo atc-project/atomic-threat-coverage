@@ -3,7 +3,7 @@
 | Description          | Detects activity as "net user administrator /domain" and "net group domain admins /domain"                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li><li>[T1069: Permission Groups Discovery](https://attack.mitre.org/techniques/T1069)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0030_4662_operation_was_performed_on_an_object](../Data_Needed/DN_0030_4662_operation_was_performed_on_an_object.md)</li><li>[DN_0029_4661_handle_to_an_object_was_requested](../Data_Needed/DN_0029_4661_handle_to_an_object_was_requested.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0029_4661_handle_to_an_object_was_requested](../Data_Needed/DN_0029_4661_handle_to_an_object_was_requested.md)</li><li>[DN_0030_4662_operation_was_performed_on_an_object](../Data_Needed/DN_0030_4662_operation_was_performed_on_an_object.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1087: Account Discovery](../Triggers/T1087.md)</li><li>[T1069: Permission Groups Discovery](../Triggers/T1069.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Administrator activity</li><li>Penetration tests</li></ul>                                                                  |
@@ -78,5 +78,45 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 
 ```
 (EventID:"4661" AND AccessMask:"0x2d" AND ((ObjectType:"SAM_USER" AND ObjectName:"S\\-1\\-5\\-21\\-*\\-500") OR (ObjectType:"SAM_GROUP" AND ObjectName:"S\\-1\\-5\\-21\\-*\\-512")))
+```
+
+
+
+
+
+### Splunk
+
+```
+(EventID="4661" AccessMask="0x2d" ((ObjectType="SAM_USER" ObjectName="S-1-5-21-*-500") OR (ObjectType="SAM_GROUP" ObjectName="S-1-5-21-*-512")))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="4661" AccessMask="0x2d" ((ObjectType="SAM_USER" ObjectName="S-1-5-21-*-500") OR (ObjectType="SAM_GROUP" ObjectName="S-1-5-21-*-512")))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*4661)(?=.*0x2d)(?=.*(?:.*(?:.*(?:.*(?=.*SAM_USER)(?=.*S-1-5-21-.*-500))|.*(?:.*(?=.*SAM_GROUP)(?=.*S-1-5-21-.*-512))))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+AccessMask\nEventID\nObjectName\nObjectType
 ```
 

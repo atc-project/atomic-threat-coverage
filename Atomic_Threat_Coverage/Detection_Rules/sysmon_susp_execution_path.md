@@ -77,3 +77,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND Image:("*\\\\$Recycle.bin" "*\\\\Users\\\\All Users\\*" "*\\\\Users\\\\Default\\*" "*\\\\Users\\\\Public\\*" "C\\:\\\\Perflogs\\*" "*\\\\config\\\\systemprofile\\*" "*\\\\Windows\\\\Fonts\\*" "*\\\\Windows\\\\IME\\*" "*\\\\Windows\\\\addins\\*"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (Image="*\\\\$Recycle.bin" OR Image="*\\\\Users\\\\All Users\\*" OR Image="*\\\\Users\\\\Default\\*" OR Image="*\\\\Users\\\\Public\\*" OR Image="C:\\\\Perflogs\\*" OR Image="*\\\\config\\\\systemprofile\\*" OR Image="*\\\\Windows\\\\Fonts\\*" OR Image="*\\\\Windows\\\\IME\\*" OR Image="*\\\\Windows\\\\addins\\*")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" Image IN ["*\\\\$Recycle.bin", "*\\\\Users\\\\All Users\\*", "*\\\\Users\\\\Default\\*", "*\\\\Users\\\\Public\\*", "C:\\\\Perflogs\\*", "*\\\\config\\\\systemprofile\\*", "*\\\\Windows\\\\Fonts\\*", "*\\\\Windows\\\\IME\\*", "*\\\\Windows\\\\addins\\*"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\\\$Recycle\\.bin|.*.*\\Users\\All Users\\.*|.*.*\\Users\\Default\\.*|.*.*\\Users\\Public\\.*|.*C:\\Perflogs\\.*|.*.*\\config\\systemprofile\\.*|.*.*\\Windows\\Fonts\\.*|.*.*\\Windows\\IME\\.*|.*.*\\Windows\\addins\\.*)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage
+```
+

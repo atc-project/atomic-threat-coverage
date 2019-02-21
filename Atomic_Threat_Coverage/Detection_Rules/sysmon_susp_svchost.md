@@ -75,3 +75,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"1" AND Image:"*\\\\svchost.exe") AND NOT (ParentImage:("*\\\\services.exe" "*\\\\MsMpEng.exe")))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="1" Image="*\\\\svchost.exe") NOT ((ParentImage="*\\\\services.exe" OR ParentImage="*\\\\MsMpEng.exe"))) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="1" Image="*\\\\svchost.exe")  -(ParentImage IN ["*\\\\services.exe", "*\\\\MsMpEng.exe"]))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\svchost\\.exe)))(?=.*(?!.*(?:.*(?=.*(?:.*.*\\services\\.exe|.*.*\\MsMpEng\\.exe))))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage\nParentImage
+```
+

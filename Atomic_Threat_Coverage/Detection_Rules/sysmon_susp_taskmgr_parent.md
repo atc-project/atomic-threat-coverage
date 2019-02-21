@@ -74,3 +74,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ((EventID:"1" AND ParentImage:"*\\\\taskmgr.exe") AND NOT (Image:("resmon.exe" "mmc.exe")))
 ```
 
+
+
+
+
+### Splunk
+
+```
+((EventID="1" ParentImage="*\\\\taskmgr.exe") NOT ((Image="resmon.exe" OR Image="mmc.exe"))) | table Image,CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+((EventID="1" ParentImage="*\\\\taskmgr.exe")  -(Image IN ["resmon.exe", "mmc.exe"]))
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\taskmgr\\.exe)))(?=.*(?!.*(?:.*(?=.*(?:.*resmon\\.exe|.*mmc\\.exe))))))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nImage\nParentImage
+```
+

@@ -82,3 +82,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"1" AND ParentImage:("*\\\\apache*" "*\\\\tomcat*" "*\\\\w3wp.exe" "*\\\\php\\-cgi.exe" "*\\\\nginx.exe" "*\\\\httpd.exe") AND CommandLine:("whoami" "net user" "ping \\-n" "systeminfo"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="1" (ParentImage="*\\\\apache*" OR ParentImage="*\\\\tomcat*" OR ParentImage="*\\\\w3wp.exe" OR ParentImage="*\\\\php-cgi.exe" OR ParentImage="*\\\\nginx.exe" OR ParentImage="*\\\\httpd.exe") (CommandLine="whoami" OR CommandLine="net user" OR CommandLine="ping -n" OR CommandLine="systeminfo")) | table CommandLine,ParentCommandLine
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="1" ParentImage IN ["*\\\\apache*", "*\\\\tomcat*", "*\\\\w3wp.exe", "*\\\\php-cgi.exe", "*\\\\nginx.exe", "*\\\\httpd.exe"] CommandLine IN ["whoami", "net user", "ping -n", "systeminfo"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\apache.*|.*.*\\tomcat.*|.*.*\\w3wp\\.exe|.*.*\\php-cgi\\.exe|.*.*\\nginx\\.exe|.*.*\\httpd\\.exe))(?=.*(?:.*whoami|.*net user|.*ping -n|.*systeminfo)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+CommandLine\nEventID\nParentImage
+```
+

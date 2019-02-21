@@ -72,3 +72,43 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 (EventID:"13" AND TargetObject:("*\\\\Services\\\\DHCPServer\\\\Parameters\\\\CalloutDlls" "*\\\\Services\\\\DHCPServer\\\\Parameters\\\\CalloutEnabled"))
 ```
 
+
+
+
+
+### Splunk
+
+```
+(EventID="13" (TargetObject="*\\\\Services\\\\DHCPServer\\\\Parameters\\\\CalloutDlls" OR TargetObject="*\\\\Services\\\\DHCPServer\\\\Parameters\\\\CalloutEnabled"))
+```
+
+
+
+
+
+### Logpoint
+
+```
+(EventID="13" TargetObject IN ["*\\\\Services\\\\DHCPServer\\\\Parameters\\\\CalloutDlls", "*\\\\Services\\\\DHCPServer\\\\Parameters\\\\CalloutEnabled"])
+```
+
+
+
+
+
+### Grep
+
+```
+grep -P '^(?:.*(?=.*13)(?=.*(?:.*.*\\Services\\DHCPServer\\Parameters\\CalloutDlls|.*.*\\Services\\DHCPServer\\Parameters\\CalloutEnabled)))'
+```
+
+
+
+
+
+### Fieldlist
+
+```
+EventID\nTargetObject
+```
+
