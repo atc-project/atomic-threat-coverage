@@ -66,6 +66,7 @@ detection:
 
 
 
+
 ### es-qs
     
 ```
@@ -106,5 +107,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*(?:.*.* -e JAB.*|.*.* -enc JAB.*|.*.* -encodedcommand JAB.*))))(?=.*(?!.*(?:.*(?:.*(?:.*(?=.*.*\\GRR\\.*))|.*(?:.*(?=.*.* -ExecutionPolicy remotesigned .*)))))))'\ngrep -P '^(?:.*(?=.*(?:.*(?=.*4688)(?=.*(?:.*.* -e JAB.*|.*.* -enc JAB.*|.*.* -encodedcommand JAB.*))))(?=.*(?!.*(?:.*(?:.*(?:.*(?=.*.*\\GRR\\.*))|.*(?:.*(?=.*.* -ExecutionPolicy remotesigned .*)))))))'
 ```
+
 
 

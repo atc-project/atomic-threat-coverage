@@ -66,6 +66,7 @@ level: high
 
 
 
+
 ### es-qs
     
 ```
@@ -106,5 +107,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*certutil .* -decode .*|.*.*certutil .* -decodehex .*|.*.*certutil .*-urlcache.* http.*|.*.*certutil .*-urlcache.* ftp.*|.*.*certutil .*-URL.*|.*.*certutil .*-ping.*|.*.*certutil\\.exe .* -decode .*|.*.*certutil\\.exe .* -decodehex .*|.*.*certutil\\.exe .*-urlcache.* http.*|.*.*certutil\\.exe .*-urlcache.* ftp.*|.*.*certutil\\.exe .*-URL.*|.*.*certutil\\.exe .*-ping.*)))'
 ```
+
 
 

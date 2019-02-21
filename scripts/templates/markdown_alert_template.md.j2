@@ -23,13 +23,16 @@
 {% endif %}
 
 {% if det_queries is defined and det_queries|length %}
-{% for key, value in det_queries.items() %}
-### {{key}}
+{% if queries is defined and queries|length %}
+{% for query in queries %}
+### {{query}}
     
 ```
-{{value}}
+{{det_queries.get(query)}}
 ```
 
 {% endfor %}
+{% else %}
+{% endif %}
 {% else %}
 {% endif %}

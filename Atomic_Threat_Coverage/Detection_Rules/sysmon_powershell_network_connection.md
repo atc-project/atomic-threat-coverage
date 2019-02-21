@@ -51,6 +51,7 @@ level: low
 
 
 
+
 ### es-qs
     
 ```
@@ -91,5 +92,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*(?:.*(?=.*3)(?=.*.*\\powershell\\.exe)))(?=.*(?!.*(?:.*(?=.*(?:.*10\\..*|.*192\\.168\\..*|.*172\\..*|.*127\\.0\\.0\\.1))(?=.*false)(?=.*NT AUTHORITY\\SYSTEM)))))'
 ```
+
 
 

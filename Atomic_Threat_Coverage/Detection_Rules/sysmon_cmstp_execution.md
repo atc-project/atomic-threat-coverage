@@ -3,7 +3,7 @@
 | Description          | Detects various indicators of Microsoft Connection Manager Profile Installer execution                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1191: CMSTP](https://attack.mitre.org/techniques/T1191)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0016_12_windows_sysmon_RegistryEvent](../Data_Needed/DN_0016_12_windows_sysmon_RegistryEvent.md)</li><li>[DN_0014_10_windows_sysmon_ProcessAccess](../Data_Needed/DN_0014_10_windows_sysmon_ProcessAccess.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0016_12_windows_sysmon_RegistryEvent](../Data_Needed/DN_0016_12_windows_sysmon_RegistryEvent.md)</li><li>[DN_0014_10_windows_sysmon_ProcessAccess](../Data_Needed/DN_0014_10_windows_sysmon_ProcessAccess.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1191: CMSTP](../Triggers/T1191.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Legitimate CMSTP use (unlikely in modern enterprise environments)</li></ul>                                                                  |
@@ -62,6 +62,7 @@ level: high
 
 
 
+
 ### es-qs
     
 ```
@@ -102,5 +103,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?:.*(?:.*(?=.*1)(?=.*.*\\cmstp\\.exe))|.*(?:.*(?=.*12)(?=.*.*\\cmmgr32\\.exe.*))|.*(?:.*(?=.*13)(?=.*.*\\cmmgr32\\.exe.*))|.*(?:.*(?=.*10)(?=.*.*cmlua\\.dll.*))))'
 ```
+
 
 

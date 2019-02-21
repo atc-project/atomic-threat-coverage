@@ -44,6 +44,7 @@ level: high
 
 
 
+
 ### es-qs
     
 ```
@@ -84,5 +85,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*4656)(?=.*C:\\Windows\\System32\\lsass\\.exe)(?=.*0x705)(?=.*SAM_DOMAIN))'
 ```
+
 
 

@@ -3,7 +3,7 @@
 | Description          | Detects WannaCry Ransomware Activity                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
 | ATT&amp;CK Technique | <ul></ul>                             |
-| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
@@ -90,6 +90,7 @@ detection:
 
 
 
+
 ### es-qs
     
 ```
@@ -130,5 +131,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*4688)(?=.*(?:.*(?:.*(?:.*.*vssadmin delete shadows.*|.*.*icacls .* /grant Everyone:F /T /C /Q.*|.*.*bcdedit /set \\{default\\} recoveryenabled no.*|.*.*wbadmin delete catalog -quiet.*)|.*(?:.*.*\\tasksche\\.exe|.*.*\\mssecsvc\\.exe|.*.*\\taskdl\\.exe|.*.*\\WanaDecryptor.*|.*.*\\taskhsvc\\.exe|.*.*\\taskse\\.exe|.*.*\\111\\.exe|.*.*\\lhdfrgui\\.exe|.*.*\\diskpart\\.exe|.*.*\\linuxnew\\.exe|.*.*\\wannacry\\.exe)))))'\ngrep -P '^(?:.*(?=.*1)(?=.*(?:.*(?:.*(?:.*.*vssadmin delete shadows.*|.*.*icacls .* /grant Everyone:F /T /C /Q.*|.*.*bcdedit /set \\{default\\} recoveryenabled no.*|.*.*wbadmin delete catalog -quiet.*)|.*(?:.*.*\\tasksche\\.exe|.*.*\\mssecsvc\\.exe|.*.*\\taskdl\\.exe|.*.*\\WanaDecryptor.*|.*.*\\taskhsvc\\.exe|.*.*\\taskse\\.exe|.*.*\\111\\.exe|.*.*\\lhdfrgui\\.exe|.*.*\\diskpart\\.exe|.*.*\\linuxnew\\.exe|.*.*\\wannacry\\.exe)))))'
 ```
+
 
 

@@ -58,6 +58,7 @@ level: high
 
 
 
+
 ### es-qs
     
 ```
@@ -98,5 +99,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*(?:.*(?:.*HTool|.*Hacktool|.*ASP/Backdoor|.*JSP/Backdoor|.*PHP/Backdoor|.*Backdoor\\.ASP|.*Backdoor\\.JSP|.*Backdoor\\.PHP|.*Webshell|.*Portscan|.*Mimikatz|.*WinCred|.*PlugX|.*Korplug|.*Pwdump|.*Chopper|.*WmiExec|.*Xscan|.*Clearlog|.*ASPXSpy)))(?=.*(?!.*(?:.*(?:.*Keygen|.*Crack)))))'
 ```
+
 
 

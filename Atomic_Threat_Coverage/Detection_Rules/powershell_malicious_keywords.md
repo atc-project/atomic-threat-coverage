@@ -3,7 +3,7 @@
 | Description          | Detects keywords from well-known PowerShell exploitation frameworks                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li><li>[DN_0037_4103_windows_powershell_executing_pipeline](../Data_Needed/DN_0037_4103_windows_powershell_executing_pipeline.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0037_4103_windows_powershell_executing_pipeline](../Data_Needed/DN_0037_4103_windows_powershell_executing_pipeline.md)</li><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Penetration tests</li></ul>                                                                  |
@@ -68,6 +68,7 @@ level: high
 
 
 
+
 ### es-qs
     
 ```
@@ -108,5 +109,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?:.*AdjustTokenPrivileges|.*IMAGE_NT_OPTIONAL_HDR64_MAGIC|.*Management\\.Automation\\.RuntimeException|.*Microsoft\\.Win32\\.UnsafeNativeMethods|.*ReadProcessMemory\\.Invoke|.*Runtime\\.InteropServices|.*SE_PRIVILEGE_ENABLED|.*System\\.Security\\.Cryptography|.*System\\.Runtime\\.InteropServices|.*LSA_UNICODE_STRING|.*MiniDumpWriteDump|.*PAGE_EXECUTE_READ|.*Net\\.Sockets\\.SocketFlags|.*Reflection\\.Assembly|.*SECURITY_DELEGATION|.*TOKEN_ADJUST_PRIVILEGES|.*TOKEN_ALL_ACCESS|.*TOKEN_ASSIGN_PRIMARY|.*TOKEN_DUPLICATE|.*TOKEN_ELEVATION|.*TOKEN_IMPERSONATE|.*TOKEN_INFORMATION_CLASS|.*TOKEN_PRIVILEGES|.*TOKEN_QUERY|.*Metasploit|.*Mimikatz))'
 ```
+
 
 

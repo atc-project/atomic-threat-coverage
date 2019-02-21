@@ -57,6 +57,7 @@ level: high
 
 
 
+
 ### es-qs
     
 ```
@@ -97,5 +98,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*1)(?=.*(?:.*vssadmin\\.exe Delete Shadows|.*vssadmin create shadow /for=C:|.*copy \\\\?\\GLOBALROOT\\Device\\.*\\windows\\ntds\\ntds\\.dit|.*copy \\\\?\\GLOBALROOT\\Device\\.*\\config\\SAM|.*vssadmin delete shadows /for=C:|.*reg SAVE HKLM\\SYSTEM )))'
 ```
+
 
 

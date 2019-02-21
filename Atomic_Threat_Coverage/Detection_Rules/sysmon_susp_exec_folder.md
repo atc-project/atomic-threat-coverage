@@ -58,6 +58,7 @@ level: high
 
 
 
+
 ### es-qs
     
 ```
@@ -98,5 +99,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*1)(?=.*(?:.*C:\\PerfLogs\\.*|.*C:\\\\$Recycle\\.bin\\.*|.*C:\\Intel\\Logs\\.*|.*C:\\Users\\Default\\.*|.*C:\\Users\\Public\\.*|.*C:\\Users\\NetworkService\\.*|.*C:\\Windows\\Fonts\\.*|.*C:\\Windows\\Debug\\.*|.*C:\\Windows\\Media\\.*|.*C:\\Windows\\Help\\.*|.*C:\\Windows\\addins\\.*|.*C:\\Windows\\repair\\.*|.*C:\\Windows\\security\\.*|.*.*\\RSA\\MachineKeys\\.*|.*C:\\Windows\\system32\\config\\systemprofile\\.*)))'
 ```
+
 
 

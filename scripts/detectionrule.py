@@ -98,6 +98,7 @@ class DetectionRule:
                 
             # Update detection rules
             self.fields.update({"det_queries": det_queries})
+            self.fields.update({"queries": queries})
 
             # Data Needed
             data_needed = ATCutils.main_dn_calculatoin_func(self.yaml_file)

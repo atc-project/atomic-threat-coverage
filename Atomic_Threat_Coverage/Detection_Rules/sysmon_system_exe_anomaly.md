@@ -58,6 +58,7 @@ level: high
 
 
 
+
 ### es-qs
     
 ```
@@ -98,5 +99,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*(?:.*.*\\svchost\\.exe|.*.*\\rundll32\\.exe|.*.*\\services\\.exe|.*.*\\powershell\\.exe|.*.*\\regsvr32\\.exe|.*.*\\spoolsv\\.exe|.*.*\\lsass\\.exe|.*.*\\smss\\.exe|.*.*\\csrss\\.exe|.*.*\\conhost\\.exe))))(?=.*(?!.*(?:.*(?=.*(?:.*.*\\System32\\.*|.*.*\\SysWow64\\.*))))))'
 ```
+
 
 

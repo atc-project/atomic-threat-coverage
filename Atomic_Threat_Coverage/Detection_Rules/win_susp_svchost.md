@@ -72,6 +72,7 @@ detection:
 
 
 
+
 ### es-qs
     
 ```
@@ -112,5 +113,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\svchost\\.exe)))(?=.*(?!.*(?:.*(?:.*(?:.*(?:.*.*\\services\\.exe|.*.*\\MsMpEng\\.exe)|.*.* -k .*|.*C:\\Windows\\S.*))))))'\ngrep -P '^(?:.*(?=.*(?:.*(?=.*4688)(?=.*.*\\svchost\\.exe)))(?=.*(?!.*(?:.*(?=.*C:\\Windows\\S.*)))))'
 ```
+
 
 

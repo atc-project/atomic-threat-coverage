@@ -50,6 +50,7 @@ level: critical
 
 
 
+
 ### es-qs
     
 ```
@@ -90,5 +91,6 @@ Signature IN ["*DumpCreds*", "*Mimikatz*", "*PWCrack*", "HTool/WCE", "*PSWtool*"
 ```
 grep -P '^(?:.*.*DumpCreds.*|.*.*Mimikatz.*|.*.*PWCrack.*|.*HTool/WCE|.*.*PSWtool.*|.*.*PWDump.*)'
 ```
+
 
 

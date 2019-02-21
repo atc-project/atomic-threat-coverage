@@ -52,6 +52,7 @@ level: medium
 
 
 
+
 ### es-qs
     
 ```
@@ -92,5 +93,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*(?:.*(?=.*1)(?=.*(?:.*.*\\wwwroot\\.*|.*.*\\wmpub\\.*|.*.*\\htdocs\\.*))))(?=.*(?!.*(?:.*(?=.*(?:.*.*bin\\.*|.*.*\\Tools\\.*|.*.*\\SMSComponent\\.*))(?=.*(?:.*.*\\services\\.exe))))))'
 ```
+
 
 

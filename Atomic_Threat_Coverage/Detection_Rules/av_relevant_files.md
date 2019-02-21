@@ -59,6 +59,7 @@ level: high
 
 
 
+
 ### es-qs
     
 ```
@@ -99,5 +100,6 @@ FileName IN ["C:\\\\Windows\\\\Temp\\*", "C:\\\\Temp\\*", "*\\\\Client\\*", "C:\
 ```
 grep -P '^(?:.*C:\\Windows\\Temp\\.*|.*C:\\Temp\\.*|.*.*\\\\Client\\.*|.*C:\\PerfLogs\\.*|.*C:\\Users\\Public\\.*|.*C:\\Users\\Default\\.*|.*.*\\.ps1|.*.*\\.vbs|.*.*\\.bat|.*.*\\.chm|.*.*\\.xml|.*.*\\.txt|.*.*\\.jsp|.*.*\\.jspx|.*.*\\.asp|.*.*\\.aspx|.*.*\\.php|.*.*\\.war)'
 ```
+
 
 

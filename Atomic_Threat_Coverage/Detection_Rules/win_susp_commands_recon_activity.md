@@ -78,6 +78,7 @@ detection:
 
 
 
+
 ### es-qs
     
 ```
@@ -118,5 +119,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P \'^(?:.*(?=.*1)(?=.*(?:.*tasklist|.*net time|.*systeminfo|.*whoami|.*nbtstat|.*net start|.*.*\\net1 start|.*qprocess|.*nslookup|.*hostname\\.exe|.*.*\\net1 user /domain|.*.*\\net1 group /domain|.*.*\\net1 group "domain admins" /domain|.*.*\\net1 group "Exchange Trusted Subsystem" /domain|.*.*\\net1 accounts /domain|.*.*\\net1 user net localgroup administrators|.*netstat -an)))\'\ngrep -P \'^(?:.*(?=.*4688)(?=.*(?:.*tasklist|.*net time|.*systeminfo|.*whoami|.*nbtstat|.*net start|.*.*\\net1 start|.*qprocess|.*nslookup|.*hostname\\.exe|.*.*\\net1 user /domain|.*.*\\net1 group /domain|.*.*\\net1 group "domain admins" /domain|.*.*\\net1 group "Exchange Trusted Subsystem" /domain|.*.*\\net1 accounts /domain|.*.*\\net1 user net localgroup administrators|.*netstat -an)))\'
 ```
+
 
 

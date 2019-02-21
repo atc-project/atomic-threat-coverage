@@ -59,6 +59,7 @@ detection:
 
 
 
+
 ### es-qs
     
 ```
@@ -99,5 +100,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*1)(?=.*C:\\WINDOWS\\system32\\wbem\\scrcons\\.exe)(?=.*C:\\Windows\\System32\\svchost\\.exe))'\ngrep -P '^(?:.*(?=.*4688)(?=.*C:\\WINDOWS\\system32\\wbem\\scrcons\\.exe)(?=.*C:\\Windows\\System32\\svchost\\.exe))'
 ```
+
 
 

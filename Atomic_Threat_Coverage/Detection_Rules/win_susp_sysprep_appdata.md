@@ -57,6 +57,7 @@ detection:
 
 
 
+
 ### es-qs
     
 ```
@@ -97,5 +98,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\sysprep\\.exe .*\\AppData\\.*|.*sysprep\\.exe .*\\AppData\\.*)))'\ngrep -P '^(?:.*(?=.*4688)(?=.*(?:.*.*\\sysprep\\.exe .*\\AppData\\.*|.*sysprep\\.exe .*\\AppData\\.*)))'
 ```
+
 
 

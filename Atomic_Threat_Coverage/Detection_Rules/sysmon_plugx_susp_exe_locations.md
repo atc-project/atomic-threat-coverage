@@ -170,6 +170,7 @@ level: high
 
 
 
+
 ### es-qs
     
 ```
@@ -210,5 +211,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\CamMute\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*.*\\Lenovo\\Communication Utility\\.*)))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\chrome_frame_helper\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*.*\\Google\\Chrome\\application\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\dvcemumanager\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*.*\\Microsoft Device Emulator\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\Gadget\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*.*\\Windows Media Player\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\hcc\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*.*\\HTML Help Workshop\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\hkcmd\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*(?:.*.*\\System32\\.*|.*.*\\SysNative\\.*|.*.*\\SysWowo64\\.*))))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\Mc\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*(?:.*.*\\Microsoft Visual Studio.*|.*.*\\Microsoft SDK.*|.*.*\\Windows Kit.*))))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\MsMpEng\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*(?:.*.*\\Microsoft Security Client\\.*|.*.*\\Windows Defender\\.*|.*.*\\AntiMalware\\.*))))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\msseces\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*.*\\Microsoft Security Center\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\OInfoP11\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*.*\\Common Files\\Microsoft Shared\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\OleView\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*(?:.*.*\\Microsoft Visual Studio.*|.*.*\\Microsoft SDK.*|.*.*\\Windows Kit.*|.*.*\\Windows Resource Kit\\.*))))))))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\OleView\\.exe)))(?=.*(?!.*(?:.*(?=.*1)(?=.*(?:.*.*\\Microsoft Visual Studio.*|.*.*\\Microsoft SDK.*|.*.*\\Windows Kit.*|.*.*\\Windows Resource Kit\\.*|.*.*\\Microsoft\\.NET\\.*))))))))'
 ```
+
 
 

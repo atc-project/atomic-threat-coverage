@@ -55,6 +55,7 @@ level: medium
 
 
 
+
 ### es-qs
     
 ```
@@ -95,5 +96,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*1)(?=.*(?:.*.*\\wmic\\.exe))(?=.*(?:.*.*/NODE:.*process call create .*|.*.* path AntiVirusProduct get .*|.*.* path FirewallProduct get .*|.*.* shadowcopy delete .*)))'
 ```
+
 
 

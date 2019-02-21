@@ -55,6 +55,7 @@ level: critical
 
 
 
+
 ### es-qs
     
 ```
@@ -95,5 +96,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?:.*(?:.*(?=.*13)(?=.*HKEY_USERS\\.*\\mscfile\\shell\\open\\command))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\eventvwr\\.exe)))(?=.*(?!.*(?:.*(?=.*.*\\mmc\\.exe)))))))'
 ```
+
 
 

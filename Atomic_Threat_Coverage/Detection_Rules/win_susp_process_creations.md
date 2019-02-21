@@ -110,6 +110,7 @@ detection:
 
 
 
+
 ### es-qs
     
 ```
@@ -150,5 +151,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P \'^(?:.*(?=.*1)(?=.*(?:.*vssadmin\\.exe delete shadows.*|.*vssadmin delete shadows.*|.*vssadmin create shadow /for=C:.*|.*copy \\\\?\\GLOBALROOT\\Device\\.*\\windows\\ntds\\ntds\\.dit.*|.*copy \\\\?\\GLOBALROOT\\Device\\.*\\config\\SAM.*|.*reg SAVE HKLM\\SYSTEM .*|.*.* sekurlsa:.*|.*net localgroup adminstrators .* /add|.*net group "Domain Admins" .* /ADD /DOMAIN|.*certutil\\.exe .*-urlcache.* http.*|.*certutil\\.exe .*-urlcache.* ftp.*|.*netsh advfirewall firewall .*\\AppData\\.*|.*attrib +S +H +R .*\\AppData\\.*|.*schtasks.* /create .*\\AppData\\.*|.*schtasks.* /sc minute.*|.*.*\\Regasm\\.exe .*\\AppData\\.*|.*.*\\Regasm .*\\AppData\\.*|.*.*\\bitsadmin.* /transfer.*|.*.*\\certutil\\.exe .* -decode .*|.*.*\\certutil\\.exe .* -decodehex .*|.*.*\\certutil\\.exe -ping .*|.*icacls .* /grant Everyone:F /T /C /Q|.*.* wmic shadowcopy delete .*|.*.* wbadmin\\.exe delete catalog -quiet.*|.*.*\\wscript\\.exe .*\\.jse|.*.*\\wscript\\.exe .*\\.js|.*.*\\wscript\\.exe .*\\.vba|.*.*\\wscript\\.exe .*\\.vbe|.*.*\\cscript\\.exe .*\\.jse|.*.*\\cscript\\.exe .*\\.js|.*.*\\cscript\\.exe .*\\.vba|.*.*\\cscript\\.exe .*\\.vbe|.*.*\\fodhelper\\.exe|.*.*waitfor.*/s.*|.*.*waitfor.*/si persist.*|.*.*remote.*/s.*|.*.*remote.*/c.*|.*.*remote.*/q.*|.*.*AddInProcess.*)))\'\ngrep -P \'^(?:.*(?=.*4688)(?=.*(?:.*vssadmin\\.exe delete shadows.*|.*vssadmin delete shadows.*|.*vssadmin create shadow /for=C:.*|.*copy \\\\?\\GLOBALROOT\\Device\\.*\\windows\\ntds\\ntds\\.dit.*|.*copy \\\\?\\GLOBALROOT\\Device\\.*\\config\\SAM.*|.*reg SAVE HKLM\\SYSTEM .*|.*.* sekurlsa:.*|.*net localgroup adminstrators .* /add|.*net group "Domain Admins" .* /ADD /DOMAIN|.*certutil\\.exe .*-urlcache.* http.*|.*certutil\\.exe .*-urlcache.* ftp.*|.*netsh advfirewall firewall .*\\AppData\\.*|.*attrib +S +H +R .*\\AppData\\.*|.*schtasks.* /create .*\\AppData\\.*|.*schtasks.* /sc minute.*|.*.*\\Regasm\\.exe .*\\AppData\\.*|.*.*\\Regasm .*\\AppData\\.*|.*.*\\bitsadmin.* /transfer.*|.*.*\\certutil\\.exe .* -decode .*|.*.*\\certutil\\.exe .* -decodehex .*|.*.*\\certutil\\.exe -ping .*|.*icacls .* /grant Everyone:F /T /C /Q|.*.* wmic shadowcopy delete .*|.*.* wbadmin\\.exe delete catalog -quiet.*|.*.*\\wscript\\.exe .*\\.jse|.*.*\\wscript\\.exe .*\\.js|.*.*\\wscript\\.exe .*\\.vba|.*.*\\wscript\\.exe .*\\.vbe|.*.*\\cscript\\.exe .*\\.jse|.*.*\\cscript\\.exe .*\\.js|.*.*\\cscript\\.exe .*\\.vba|.*.*\\cscript\\.exe .*\\.vbe|.*.*\\fodhelper\\.exe|.*.*waitfor.*/s.*|.*.*waitfor.*/si persist.*|.*.*remote.*/s.*|.*.*remote.*/c.*|.*.*remote.*/q.*|.*.*AddInProcess.*)))\'
 ```
+
 
 

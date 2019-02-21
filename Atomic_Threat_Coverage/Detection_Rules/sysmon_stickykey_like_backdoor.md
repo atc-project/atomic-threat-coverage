@@ -63,6 +63,7 @@ level: critical
 
 
 
+
 ### es-qs
     
 ```
@@ -103,5 +104,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?:.*(?:.*(?=.*1)(?=.*(?:.*.*\\winlogon\\.exe))(?=.*(?:.*.*\\cmd\\.exe sethc\\.exe .*|.*.*\\cmd\\.exe utilman\\.exe .*|.*.*\\cmd\\.exe osk\\.exe .*|.*.*\\cmd\\.exe Magnify\\.exe .*|.*.*\\cmd\\.exe Narrator\\.exe .*|.*.*\\cmd\\.exe DisplaySwitch\\.exe .*)))|.*(?:.*(?=.*13)(?=.*(?:.*.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\sethc\\.exe\\Debugger|.*.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\utilman\\.exe\\Debugger|.*.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\osk\\.exe\\Debugger|.*.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Magnify\\.exe\\Debugger|.*.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Narrator\\.exe\\Debugger|.*.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\DisplaySwitch\\.exe\\Debugger))(?=.*SetValue))))'
 ```
+
 
 

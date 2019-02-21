@@ -85,6 +85,7 @@ level: high
 
 
 
+
 ### es-qs
     
 ```
@@ -125,5 +126,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*(?:.*.*\\Powershell\\.exe))(?=.*1)(?=.*(?:.* -windowstyle h |.* -windowstyl h|.* -windowsty h|.* -windowst h|.* -windows h|.* -windo h|.* -wind h|.* -win h|.* -wi h|.* -win h |.* -win hi |.* -win hid |.* -win hidd |.* -win hidde |.* -NoPr |.* -NoPro |.* -NoProf |.* -NoProfi |.* -NoProfil |.* -nonin |.* -nonint |.* -noninte |.* -noninter |.* -nonintera |.* -noninterac |.* -noninteract |.* -noninteracti |.* -noninteractiv |.* -ec |.* -encodedComman |.* -encodedComma |.* -encodedComm |.* -encodedCom |.* -encodedCo |.* -encodedC |.* -encoded |.* -encode |.* -encod |.* -enco |.* -en )))'
 ```
+
 
 

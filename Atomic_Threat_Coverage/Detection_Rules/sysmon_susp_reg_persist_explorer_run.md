@@ -57,6 +57,7 @@ level: high
 
 
 
+
 ### es-qs
     
 ```
@@ -97,5 +98,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*13)(?=.*.*\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\Run)(?=.*(?:.*C:\\Windows\\Temp\\.*|.*C:\\ProgramData\\.*|.*.*\\AppData\\.*|.*C:\\\\$Recycle\\.bin\\.*|.*C:\\Temp\\.*|.*C:\\Users\\Public\\.*|.*C:\\Users\\Default\\.*)))'
 ```
+
 
 

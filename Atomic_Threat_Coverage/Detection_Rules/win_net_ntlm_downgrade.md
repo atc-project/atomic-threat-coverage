@@ -64,6 +64,7 @@ detection:
 
 
 
+
 ### es-qs
     
 ```
@@ -104,5 +105,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*13)(?=.*(?:.*.*SYSTEM\\.*ControlSet.*\\Control\\Lsa\\lmcompatibilitylevel|.*.*SYSTEM\\.*ControlSet.*\\Control\\Lsa\\NtlmMinClientSec|.*.*SYSTEM\\.*ControlSet.*\\Control\\Lsa\\RestrictSendingNTLMTraffic)))'\ngrep -P '^(?:.*(?=.*4657)(?=.*\\REGISTRY\\MACHINE\\SYSTEM\\.*ControlSet.*\\Control\\Lsa)(?=.*(?:.*LmCompatibilityLevel|.*NtlmMinClientSec|.*RestrictSendingNTLMTraffic)))'
 ```
+
 
 

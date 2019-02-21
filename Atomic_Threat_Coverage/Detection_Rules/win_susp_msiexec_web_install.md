@@ -55,6 +55,7 @@ detection:
 
 
 
+
 ### es-qs
     
 ```
@@ -95,5 +96,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?=.*1)(?=.*(?:.*.* msiexec.*:\\/\\/.*)))'\ngrep -P '^(?:.*(?=.*4688)(?=.*(?:.*.* msiexec.*:\\/\\/.*)))'
 ```
+
 
 

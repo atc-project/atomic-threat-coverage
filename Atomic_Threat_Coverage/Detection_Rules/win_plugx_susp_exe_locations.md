@@ -3,7 +3,7 @@
 | Description          | Detects the execution of an executable that is typically used by PlugX for DLL side loading started from an uncommon location                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul></ul>  |
 | ATT&amp;CK Technique | <ul></ul>                             |
-| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
 | Trigger              |  There is no Trigger for this technique yet.  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
@@ -169,6 +169,7 @@ level: high
 
 
 
+
 ### es-qs
     
 ```
@@ -209,5 +210,6 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 grep -P '^(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?:.*(?=.*(?:.*(?=.*4688)(?=.*.*\\CamMute\\.exe)))(?=.*(?!.*(?:.*(?=.*4688)(?=.*.*\\Lenovo\\Communication Utility\\.*)))))|.*(?:.*(?=.*(?:.*(?=.*4688)(?=.*.*\\chrome_frame_helper\\.exe)))(?=.*(?!.*(?:.*(?=.*4688)(?=.*.*\\Google\\Chrome\\application\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*4688)(?=.*.*\\dvcemumanager\\.exe)))(?=.*(?!.*(?:.*(?=.*4688)(?=.*.*\\Microsoft Device Emulator\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*4688)(?=.*.*\\Gadget\\.exe)))(?=.*(?!.*(?:.*(?=.*4688)(?=.*.*\\Windows Media Player\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*4688)(?=.*.*\\hcc\\.exe)))(?=.*(?!.*(?:.*(?=.*4688)(?=.*.*\\HTML Help Workshop\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*4688)(?=.*.*\\hkcmd\\.exe)))(?=.*(?!.*(?:.*(?=.*4688)(?=.*(?:.*.*\\System32\\.*|.*.*\\SysNative\\.*|.*.*\\SysWowo64\\.*))))))))|.*(?:.*(?=.*(?:.*(?=.*4688)(?=.*.*\\Mc\\.exe)))(?=.*(?!.*(?:.*(?=.*4688)(?=.*(?:.*.*\\Microsoft Visual Studio.*|.*.*\\Microsoft SDK.*|.*.*\\Windows Kit.*))))))))|.*(?:.*(?=.*(?:.*(?=.*4688)(?=.*.*\\MsMpEng\\.exe)))(?=.*(?!.*(?:.*(?=.*4688)(?=.*(?:.*.*\\Microsoft Security Client\\.*|.*.*\\Windows Defender\\.*|.*.*\\AntiMalware\\.*))))))))|.*(?:.*(?=.*(?:.*(?=.*4688)(?=.*.*\\msseces\\.exe)))(?=.*(?!.*(?:.*(?=.*4688)(?=.*.*\\Microsoft Security Center\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*4688)(?=.*.*\\OInfoP11\\.exe)))(?=.*(?!.*(?:.*(?=.*4688)(?=.*.*\\Common Files\\Microsoft Shared\\.*)))))))|.*(?:.*(?=.*(?:.*(?=.*4688)(?=.*.*\\OleView\\.exe)))(?=.*(?!.*(?:.*(?=.*4688)(?=.*(?:.*.*\\Microsoft Visual Studio.*|.*.*\\Microsoft SDK.*|.*.*\\Windows Kit.*|.*.*\\Windows Resource Kit\\.*))))))))|.*(?:.*(?=.*(?:.*(?=.*4688)(?=.*.*\\OleView\\.exe)))(?=.*(?!.*(?:.*(?=.*4688)(?=.*(?:.*.*\\Microsoft Visual Studio.*|.*.*\\Microsoft SDK.*|.*.*\\Windows Kit.*|.*.*\\Windows Resource Kit\\.*|.*.*\\Microsoft\\.NET\\.*))))))))'
 ```
+
 
 
