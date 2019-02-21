@@ -94,7 +94,7 @@ class DetectionRule:
                 Jinja2 variable naming,
                 e.g es-qs throws error 'no es variable'
                 """
-                det_queries[query.replace("-", "")] = str(query2)[2:-3]
+                det_queries[query] = str(query2)[2:-3]
                 
             # Update detection rules
             self.fields.update({"det_queries": det_queries})

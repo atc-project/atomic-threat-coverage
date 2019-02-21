@@ -52,14 +52,14 @@ level: medium
 
 
 
-### esqs
+### es-qs
     
 ```
 ((EventID:("528" "529" "4624" "4625") AND LogonType:"2" AND ComputerName:("%ServerSystems%" "%DomainControllers%")) AND NOT (LogonProcessName:"Advapi" AND ComputerName:"%Workstations%"))
 ```
 
 
-### xpackwatcher
+### xpack-watcher
     
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Interactive-Logon-to-Server-Systems <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "((EventID:(\\"528\\" \\"529\\" \\"4624\\" \\"4625\\") AND LogonType:\\"2\\" AND ComputerName:(\\"%ServerSystems%\\" \\"%DomainControllers%\\")) AND NOT (LogonProcessName:\\"Advapi\\" AND ComputerName:\\"%Workstations%\\"))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Interactive Logon to Server Systems\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
