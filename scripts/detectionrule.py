@@ -69,7 +69,7 @@ class DetectionRule:
             self.fields.update({'sigma_rule': sigma_rule})
 
             # Define which queries we want from Sigma
-            queries = ["es-qs", "xpack-watcher", "graylog", "kibana", "splunk"]
+            queries = ["es-qs", "xpack-watcher", "graylog", "kibana", "splunk", "logpoint", "grep", "fieldlist"]
 
             # Convert sigma rule into queries (for instance, graylog query)
             for query in queries:
