@@ -8,10 +8,9 @@ RUN apk add --update \
     build-base \
     make \
     git \
-    bash \
-  && pip install virtualenv \
-  && rm -rf /var/cache/apk/*
+    bash
 COPY ./ /app
 WORKDIR /app
 RUN pip3 install -r requirements.txt
+RUN apk del py-pip python3-dev && rm -rf /var/cache/apk/*
 CMD make
