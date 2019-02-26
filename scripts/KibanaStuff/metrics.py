@@ -54,8 +54,8 @@ class BaseKibanaParams:
         return self.__dict__
 
 
-class BaseKibanaVisualization:
-    """Base Kibana Visualization"""
+class BaseKibanaVisualizationObject:
+    """Base Kibana VisualizationObject"""
 
     description = str
     kibanaSavedObjectMeta = {}
@@ -67,4 +67,17 @@ class BaseKibanaVisualization:
     def __call__(self):
 
         return self.__dict__
+
+class BaseKibanaDoc:
+    """Base Kibana Doc"""
+
+    type = str
+    updated_at = str
+
+class KibanaVisualizationDoc(BaseKibanaDoc):
+    """Kibana Visualization Doc"""
+
+    type = "visualization"
+    visualization = {}
+
 
