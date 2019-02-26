@@ -3,7 +3,7 @@
 import requests
 from elasticsearch import Elasticsearch
 from elasticsearch.client import Elasticsearch as CES
-
+from pprint import pprint
 
 class KibanaBaseModel():
     def __init__(self, rdata):
@@ -53,7 +53,7 @@ class KibanaAPI():
         """Get all saved objects and put them into visualization/dashboards"""
 
         r = self.es.search(
-            index='.kibana*', doc_type='doc',
+            index='.kibana*', doc_type='',
             body={'query': {'match_all': {}}},
             size=self.search_limit_size,
         )
@@ -84,4 +84,9 @@ if __name__ == "__main__":
 
     print("\nVisualizations:")
     for vis in kapi.visualizations:
-        print(vis.title)
+        if "Area #1" == vis.title:
+            import json
+            print(vis.title)
+            visState = json.loads(vis.data["visualization"]["visState"])
+            pprint(visState)
+            print("\n\n")
