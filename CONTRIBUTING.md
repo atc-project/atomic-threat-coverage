@@ -25,6 +25,7 @@ The proper place for open-ended questions is [Slack](https://join.slack.com/t/at
    - The issue that you fixed, e.g. `Fixes #123`
    - Motivation: why did you create this PR? What functionality did you set out to improve? What was the problem + an overview of how you fixed it? Whom does it affect and how should people use it?
    - Any other useful information: links to other related Github or mailing list issues and discussions, benchmark graphs, academic papers…
+   - Note that your Pull Request should be into **develop** branch, **not master**
 
 P.S. for developers: see our [Developer Page](https://gitlab.com/krakow2600/atomic-threat-coverage/wikis/Developer-guide) for details on the code style, CI, testing and similar.
 
