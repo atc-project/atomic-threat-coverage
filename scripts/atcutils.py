@@ -25,6 +25,56 @@ DEFAULT_PROJECT_CONFIG_PATH = 'config.default.yml'
 DEFAULT_CONFIG_PATH = 'config.yml'
 
 
+class ATCConfig(object):
+    def __init__(self, path='config.yml'):
+        self.config_local = path
+        self.config_project = DEFAULT_PROJECT_CONFIG_PATH
+    
+    @property
+    def config_project(self):
+        return self.__config_project
+
+    @property
+    def config_local(self):
+        return self.__config_local
+
+    @property
+    def config(self):
+        return dict(self.config_project).update(dict(self.__config_local))
+    
+    @config_project.setter
+    def config_project(self, path):
+        self.__config_project = self.__read_yaml_file(path)
+
+    @config_local.setter
+    def config_local(self, path):
+        try:
+            self.__config_local = self.__read_yaml_file(path)
+        except FileNotFoundError:
+            wrn = "Local config '{path}' not found, using project default"
+            warnings.warn(wrn.format(path=path))
+            self.__config_local = {}
+
+    def __read_yaml_file(self, path):
+        """Open the yaml file and load it to the variable.
+        Return created list"""
+        with open(path) as f:
+            yaml_fields = yaml.load_all(f.read())
+
+        buff_results = [x for x in yaml_fields]
+        if len(buff_results) > 1:
+            result = buff_results[0]
+            result['additions'] = buff_results[1:]
+        else:
+            result = buff_results[0]
+        return result
+
+    def get(self, key):
+        return self.config.get(key)
+
+ATC_config = ATCConfig()
+
+
 class ATCutils:
     """Class which consists of handful methods used throughout the project"""
 
