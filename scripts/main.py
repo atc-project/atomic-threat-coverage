@@ -26,7 +26,7 @@ if __name__ == '__main__':
                        help='Set the output to be markdown files')
 
     # Mutually exclusive group for chosing type of data
-    group2 = parser.add_mutually_exclusive_group(required=True)
+    group2 = parser.add_mutually_exclusive_group(required=False)
 
     group2.add_argument('-A', '--auto', action='store_true',
                         help='Build full repository')
@@ -45,13 +45,18 @@ if __name__ == '__main__':
     group2.add_argument('-RP', '--responseplaybook', action='store_true',
                         help='Build response playbook part')
 
+    # Init capabilities
+    parser.add_argument('-i', '--init', action='store_true',
+                        help="Build initial pages or directories " +
+                        "depending on the export type")
     args = parser.parse_args()
 
     if args.markdown:
         PopulateMarkdown(auto=args.auto, lp=args.loggingpolicy,
                          dn=args.dataneeded, dr=args.detectionrule,
                          tg=args.triggers, en=args.enrichment,
-                         ra=args.responseactions, rp=args.responseplaybook)
+                         ra=args.responseactions, rp=args.responseplaybook,
+                         init=args.init)
 
     elif args.confluence:
         print("Provide confluence credentials\n")
@@ -64,4 +69,5 @@ if __name__ == '__main__':
         PopulateConfluence(auth=auth, auto=args.auto, lp=args.loggingpolicy,
                            dn=args.dataneeded, dr=args.detectionrule,
                            tg=args.triggers, en=args.enrichment,
-                           ra=args.responseactions, rp=args.responseplaybook)
+                           ra=args.responseactions, rp=args.responseplaybook,
+                           init=args.init)
