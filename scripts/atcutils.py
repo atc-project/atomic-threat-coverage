@@ -13,6 +13,7 @@ from os.path import isfile, join
 from requests.auth import HTTPBasicAuth
 from jinja2 import Environment, FileSystemLoader
 from pprint import pprint
+import warnings
 
 
 # ########################################################################### #
@@ -20,7 +21,9 @@ from pprint import pprint
 # ########################################################################### #
 
 # Default configuration file path 
-DEFAULT_CONFIG_PATH='config.default.yml'
+DEFAULT_PROJECT_CONFIG_PATH = 'config.default.yml'
+DEFAULT_CONFIG_PATH = 'config.yml'
+
 
 class ATCutils:
     """Class which consists of handful methods used throughout the project"""
@@ -41,17 +44,9 @@ class ATCutils:
     @staticmethod
     def read_yaml_file(path):
         """Open the yaml file and load it to the variable.
-        If the path given does not exist, 
-        fall back to the default project configuration.
         Return created list"""
-        try:
-            with open(path) as f:
-                yaml_fields = yaml.load_all(f.read())
-        
-        except FileNotFoundError:
-            # If config file is not found, load project default in stead:
-            with open(DEFAULT_CONFIG_PATH) as f:
-                yaml_fields = yaml.load_all(f.read())
+        with open(path) as f:
+            yaml_fields = yaml.load_all(f.read())
 
         buff_results = [x for x in yaml_fields]
         if len(buff_results) > 1:
@@ -60,6 +55,24 @@ class ATCutils:
         else:
             result = buff_results[0]
         return result
+
+    @staticmethod
+    def load_config(path=DEFAULT_CONFIG_PATH):
+        """Open the yaml config file and load it to the variable.
+        If the path given does not exist, 
+        fall back to the default project configuration.
+        Return created list"""
+
+        config = ATCutils.read_yaml_file('config.default.yml')
+        local_config = {}
+        try:
+            local_config = ATCutils.read_yaml_file(path)
+            config.update(local_config)
+        except FileNotFoundError:
+            wrn = "configuration file '{path}' not found, using project default"
+            warnings.warn(wrn.format(path=path))
+
+        return config
 
     @staticmethod
     def load_yamls(path):
