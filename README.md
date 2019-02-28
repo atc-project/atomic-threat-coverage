@@ -58,8 +58,8 @@ Everything starts from Sigma rule and ends up with human-readable wiki-style pag
 2. Maps Detection Rule to Data Needed using `logsource` and `detection` sections from Sigma rule
 3. Maps Detection Rule to Triggers (Atomic Red Team tests) using `tags` from Sigma rule
 4. Maps Detection Rule to Enrichments using existing mapping inside Detection Rule
-5. Maps Response Playbooks to ATT&CK Tactic and and Technique using existing mapping inside Response Playbooks
-6. Maps Response Playbooks to Response Actions using existing mapping inside Response Playbooks
+5. Maps Response Playbooks to ATT&CK Tactic and Technique using existing mapping inside Response Playbooks
+6. Maps Response Actions to Response Playbooks using existing mapping inside Response Playbooks
 7. Maps Logging Policies to Data Needed using existing mapping inside Data Needed
 8. Converts everything into Confluence and Markdown wiki-style pages using jinja templates (`scripts/templates`)
 9. Pushes all pages to local repo and Confluence server (according to configuration provided in `scripts/config.yml`)

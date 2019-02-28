@@ -12,6 +12,7 @@ setup:
 	git submodule init
 	git submodule update
 	git submodule foreach git pull origin master
+	cp -r detection_rules/sigma/rules/windows/*/*.yml detection_rules/
 	
 setup_confluence:
 	@echo "[*] Setting up confluence"
