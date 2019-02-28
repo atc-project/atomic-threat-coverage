@@ -36,9 +36,7 @@ class PopulateMarkdown:
             self.atc_dir = atc_dir
 
         else:
-            self.atc_dir = '../' + \
-                ATCconfig.get('md_name_of_root_directory') + '/'
-
+            self.atc_dir = ATCconfig.get('md_name_of_root_directory')+'/'
         # Check if art_dir provided
         if art_dir:
             self.art_dir = art_dir
