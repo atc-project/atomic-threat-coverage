@@ -1,3 +1,5 @@
+# Project supplied default configuration.  Add a new configuration file 'config.yml' where you can overwrite any settings depicted below.
+# config.yml is not tracked by the git system, while config.default.yml is.
 confluence_space_name: "ATC" # SPACE KEY. GO TO: SPACE TOOLS -> Overview -> Space Details -> Key
 confluence_space_home_page_name: 'ATC Home' # SPACE HOME. GO TO: SPACE TOOLS -> Overview -> Space Details -> Home page
 confluence_name_of_root_directory: 'Atomic Threat Coverage'
