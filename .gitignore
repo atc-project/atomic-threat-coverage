@@ -4,4 +4,4 @@
 *.idea
 _*
 # Ignore local configuration
-# config.yml
+config.yml
