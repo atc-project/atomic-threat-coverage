@@ -149,7 +149,7 @@ class ATCutils:
     def read_yaml_file(path):
         """Open the yaml file and load it to the variable.
         Return created list"""
-        if 'config.yml' in path:
+        if path == 'config.yml':
             wrn = "Use 'load_config' or 'ATCConfig' instead for config"
             # Warning will not show, 
             # unless captured by logging facility or python called with -Wd
