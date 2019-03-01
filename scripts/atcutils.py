@@ -24,32 +24,35 @@ import warnings
 DEFAULT_PROJECT_CONFIG_PATH = 'config.default.yml'
 DEFAULT_CONFIG_PATH = 'config.yml'
 
+#Show warnings only once:
+with warnings.catch_warnings():
+    warnings.simplefilter("once")
 
-class ATCConfig(object):
+
+class ATCconfig(object):
+
     def __init__(self, path='config.yml'):
         self.config_local = path
         self.config_project = DEFAULT_PROJECT_CONFIG_PATH
     
-    @property
-    def config_project(self):
+    def get_config_project(self):
         return self.__config_project
 
-    @property
-    def config_local(self):
+    def get_config_local(self):
         return self.__config_local
 
     @property
     def config(self):
-        return dict(self.config_project).update(dict(self.__config_local))
-    
-    @config_project.setter
-    def config_project(self, path):
-        self.__config_project = self.__read_yaml_file(path)
+        config_final = dict(self.config_project)
+        config_final.update(self.config_local)
+        return config_final
 
-    @config_local.setter
-    def config_local(self, path):
+    def set_config_project(self, path):
+        self.__config_project = dict(self.__read_yaml_file(path))
+
+    def set_config_local(self, path):
         try:
-            self.__config_local = self.__read_yaml_file(path)
+            self.__config_local = dict(self.__read_yaml_file(path))
         except FileNotFoundError:
             wrn = "Local config '{path}' not found, using project default"
             warnings.warn(wrn.format(path=path))
@@ -67,12 +70,17 @@ class ATCConfig(object):
             result['additions'] = buff_results[1:]
         else:
             result = buff_results[0]
+
         return result
 
     def get(self, key):
         return self.config.get(key)
+    
+    config_local = property(get_config_local, set_config_local)
+    config_project = property(get_config_project, set_config_project)
 
-ATC_config = ATCConfig()
+## Initialize global config
+ATC_config = ATCconfig()
 
 
 class ATCutils:
@@ -105,24 +113,6 @@ class ATCutils:
         else:
             result = buff_results[0]
         return result
-
-    @staticmethod
-    def load_config(path=DEFAULT_CONFIG_PATH):
-        """Open the yaml config file and load it to the variable.
-        If the path given does not exist, 
-        fall back to the default project configuration.
-        Return created list"""
-
-        config = ATCutils.read_yaml_file('config.default.yml')
-        local_config = {}
-        try:
-            local_config = ATCutils.read_yaml_file(path)
-            config.update(local_config)
-        except FileNotFoundError:
-            wrn = "configuration file '{path}' not found, using project default"
-            warnings.warn(wrn.format(path=path))
-
-        return config
 
     @staticmethod
     def load_yamls(path):
@@ -722,12 +712,13 @@ class ATCutils:
 
         return True
 
+    DEFAULT_ART_DIR = "../" + ATC_config.get('triggers_directory')
+    DEFAULT_ATC_DIR = '../' + ATC_config.get('md_name_of_root_directory')
+
     @staticmethod
-    def populate_tg_markdown(
-            art_dir='../' +
-            read_yaml_file.__func__('config.yml').get('triggers_directory'),
-            atc_dir='../' +
-            read_yaml_file.__func__('config.yml').get('md_name_of_root_directory')):
+    def populate_tg_markdown(art_dir=DEFAULT_ART_DIR,
+                             atc_dir=DEFAULT_ATC_DIR):
+
         cmd = ('find \'%s/\' -name "T*.md" -exec' +
                ' cp {} \'%sTriggers/\' \;') % (art_dir, atc_dir)
         if subprocess.run(cmd, shell=True, check=True).returncode == 0:
