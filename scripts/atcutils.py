@@ -113,6 +113,19 @@ class ATCutils:
         else:
             result = buff_results[0]
         return result
+    
+    @staticmethod
+    def load_config(path):
+        """Load the configuration YAML files used ofr ATC into a dictionary 
+        
+        Arguments:
+            path {filepath} -- File path of the local configuration file
+        
+        Returns:
+            dict -- Configuration for ATC in dictionary format
+        """
+
+        return ATCConfig().config
 
     @staticmethod
     def load_yamls(path):
