@@ -34,7 +34,7 @@ class ATCConfig(object):
     def __init__(self, path='config.yml'):
         self.config_local = path
         self.config_project = DEFAULT_PROJECT_CONFIG_PATH
-    
+
     def get_config_project(self):
         return self.__config_project
 
@@ -105,9 +105,6 @@ class ATCutils:
         """Open the yaml file and load it to the variable.
         Return created list"""
         if 'config.yml' in path:
-            from inspect import currentframe, getframeinfo
-            cf = currentframe()
-            frameinfo = getframeinfo(cf)
             wrn = "Use 'load_config' or 'ATCConfig' in stead for config"
             # Warning will not show, 
             # unless captured by logging facility or python called with -Wd
