@@ -8,8 +8,8 @@ from triggers import Triggers
 from enrichment import Enrichment
 from responseaction import ResponseAction
 from responseplaybook import ResponsePlaybook
-from pdb import set_trace as bp
-from attack_mapping import te_mapping, ta_mapping
+# from pdb import set_trace as bp
+from attack_mapping import te_mapping  # , ta_mapping
 
 # Import ATC Utils
 from atcutils import ATCutils
@@ -19,6 +19,7 @@ import glob
 import sys
 import traceback
 import os
+import subprocess
 
 ATCconfig = ATCutils.load_config("config.yml")
 
@@ -29,7 +30,7 @@ class PopulateConfluence:
     def __init__(self, auth, lp=False, dn=False, dr=False, en=False, tg=False,
                  ra=False, rp=False, auto=False, art_dir=False, atc_dir=False,
                  lp_path=False, dn_path=False, dr_path=False, en_path=False,
-                 tg_path=False, ra_path=False, rp_path=False):
+                 tg_path=False, ra_path=False, rp_path=False, init=False):
         """Desc"""
 
         self.auth = auth
@@ -49,7 +50,7 @@ class PopulateConfluence:
 
         else:
             self.atc_dir = "../" + \
-                ATCconfig.get('md_name_of_root_directory')+'/'
+                ATCconfig.get('md_name_of_root_directory') + '/'
 
         # Check if art_dir provided
         if art_dir:
@@ -57,6 +58,14 @@ class PopulateConfluence:
 
         else:
             self.art_dir = ATCconfig.get('triggers_directory')
+
+        # Check if init switch is used
+        if init:
+            if self.init_export():
+                print("[+] Created initial confluence pages successfully")
+            else:
+                print("[X] Failed to create initial confluence pages")
+                raise Exception("Failed to init pages")
 
         # Main logic
         if auto:
@@ -88,6 +97,13 @@ class PopulateConfluence:
 
         if tg:
             self.triggers(tg_path)
+
+    def init_export(self):
+        """Desc"""
+
+        from init_confluence import main as init_main
+
+        init_main(self.auth)
 
     def triggers(self, tg_path):
         """Populate Triggers"""

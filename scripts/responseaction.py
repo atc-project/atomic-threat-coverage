@@ -98,7 +98,7 @@ class ResponseAction:
 
         self.content = template.render(self.ra_parsed_file)
 
-    def save_markdown_file(self, atc_dir='../' + ATCconfig.get('md_name_of_root_directory')):
+    def save_markdown_file(self, atc_dir=ATCconfig.get('md_name_of_root_directory')):
         """Write content (md template filled with data) to a file"""
 
         base = os.path.basename(self.yaml_file)
