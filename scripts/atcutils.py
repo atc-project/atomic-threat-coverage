@@ -55,6 +55,7 @@ class ATCConfig(object):
             self.__config_local = dict(self.__read_yaml_file(path))
         except FileNotFoundError:
             wrn = "Local config '{path}' not found, using project default"
+            # Warning will show because it is in Exception block.
             warnings.warn(wrn.format(path=path))
             self.__config_local = {}
 
@@ -103,6 +104,17 @@ class ATCutils:
     def read_yaml_file(path):
         """Open the yaml file and load it to the variable.
         Return created list"""
+        if 'config.yml' in path:
+            from inspect import currentframe, getframeinfo
+            cf = currentframe()
+            frameinfo = getframeinfo(cf)
+            wrn = "Use 'load_config' or 'ATCConfig' in stead for config"
+            # Warning will not show, 
+            # unless captured by logging facility or python called with -Wd
+            warnings.warn(message=wrn,
+                          category=DeprecationWarning)
+            return ATCConfig(path).config
+
         with open(path) as f:
             yaml_fields = yaml.load_all(f.read())
 
