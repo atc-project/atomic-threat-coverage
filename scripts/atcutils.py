@@ -179,7 +179,7 @@ class ATCutils:
             dict -- Configuration for ATC in dictionary format
         """
 
-        return ATCConfig().config
+        return ATCConfig(path).config
 
     @staticmethod
     def load_yamls(path):
