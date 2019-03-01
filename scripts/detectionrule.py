@@ -14,7 +14,7 @@ from pdb import set_trace as bp
 # ########################### Detection Rule ################################ #
 # ########################################################################### #
 
-ATCconfig = ATCconfig().config
+ATCconfig = ATCConfig()
 
 
 class DetectionRule:
