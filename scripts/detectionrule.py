@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from atcutils import ATCutils, ATCconfig
+from atcutils import ATCutils
 from attack_mapping import te_mapping, ta_mapping
 
 from jinja2 import Environment, FileSystemLoader
@@ -14,7 +14,7 @@ from pdb import set_trace as bp
 # ########################### Detection Rule ################################ #
 # ########################################################################### #
 
-ATCconfig = ATCConfig()
+ATCconfig = ATCutils.load_config('config.yml')
 
 
 class DetectionRule:
