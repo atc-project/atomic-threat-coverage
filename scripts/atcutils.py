@@ -29,7 +29,7 @@ with warnings.catch_warnings():
     warnings.simplefilter("once")
 
 
-class ATCconfig(object):
+class ATCConfig(object):
 
     def __init__(self, path='config.yml'):
         self.config_local = path
@@ -80,7 +80,7 @@ class ATCconfig(object):
     config_project = property(get_config_project, set_config_project)
 
 ## Initialize global config
-ATC_config = ATCconfig()
+ATC_config = ATCConfig()
 
 
 class ATCutils:
