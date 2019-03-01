@@ -7,7 +7,7 @@ import getpass
 def main(c_auth=None):
 
     try:
-        ATCconfig = ATCutils.read_yaml_file("config.yml")
+        ATCconfig = ATCutils.load_config("config.yml")
         confluence_space_name = ATCconfig.get('confluence_space_name')
         confluence_space_home_page_name = ATCconfig.get(
             'confluence_space_home_page_name')

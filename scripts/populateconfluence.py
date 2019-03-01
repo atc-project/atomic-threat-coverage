@@ -20,7 +20,7 @@ import sys
 import traceback
 import os
 
-ATCconfig = ATCutils.read_yaml_file("config.yml")
+ATCconfig = ATCutils.load_config("config.yml")
 
 
 class PopulateConfluence:

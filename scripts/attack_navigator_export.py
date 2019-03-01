@@ -6,7 +6,7 @@ from yaml.scanner import ScannerError
 
 
 try:
-    ATCconfig = ATCutils.read_yaml_file("config.yml")
+    ATCconfig = ATCutils.load_config("config.yml")
     dr_dir = ATCconfig.get('detection_rules_directory')
 except:
     dr_dir = "../detection_rules/"
