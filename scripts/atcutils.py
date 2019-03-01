@@ -105,7 +105,7 @@ class ATCutils:
         """Open the yaml file and load it to the variable.
         Return created list"""
         if 'config.yml' in path:
-            wrn = "Use 'load_config' or 'ATCConfig' in stead for config"
+            wrn = "Use 'load_config' or 'ATCConfig' instead for config"
             # Warning will not show, 
             # unless captured by logging facility or python called with -Wd
             warnings.warn(message=wrn,
