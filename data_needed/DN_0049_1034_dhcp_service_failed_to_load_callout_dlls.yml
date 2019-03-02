@@ -1,0 +1,18 @@
+title: DN_0049_1034_dhcp_service_failed_to_load_callout_dlls
+description: >
+  The DHCP service has failed to load one or more callout DLLs
+loggingpolicy: 
+  - None
+references:
+  - https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc774858(v=ws.10)
+category: OS Logs
+platform: Windows
+type: Applications and Services Logs
+channel: System
+provider: Microsoft-Windows-DHCP-Server
+fields:
+  - EventID
+  - Computer
+  - Hostname # redundant
+sample: |
+  TODO
