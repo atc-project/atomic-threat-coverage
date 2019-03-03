@@ -11,7 +11,7 @@ from pdb import set_trace as bp
 # ########################### Logging Policy ################################ #
 # ########################################################################### #
 
-ATCconfig = ATCutils.read_yaml_file("config.yml")
+ATCconfig = ATCutils.load_config("config.yml")
 
 
 class LoggingPolicy:
