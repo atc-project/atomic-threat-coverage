@@ -19,7 +19,7 @@ import traceback
 import sys
 import subprocess
 
-ATCconfig = ATCutils.read_yaml_file("config.yml")
+ATCconfig = ATCutils.load_config("config.yml")
 
 
 class PopulateMarkdown:

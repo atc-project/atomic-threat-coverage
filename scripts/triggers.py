@@ -10,7 +10,7 @@ import os
 # ############################ Triggers ##################################### #
 # ########################################################################### #
 
-ATCconfig = ATCutils.read_yaml_file("config.yml")
+ATCconfig = ATCutils.load_config("config.yml")
 
 class Triggers:
     """Class for the Triggers entity"""

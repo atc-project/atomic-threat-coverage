@@ -13,11 +13,120 @@ from os.path import isfile, join
 from requests.auth import HTTPBasicAuth
 from jinja2 import Environment, FileSystemLoader
 from pprint import pprint
+import warnings
 
 
 # ########################################################################### #
 # ############################ ATCutils ##################################### #
 # ########################################################################### #
+
+# Default configuration file path 
+DEFAULT_PROJECT_CONFIG_PATH = 'config.default.yml'
+DEFAULT_CONFIG_PATH = 'config.yml'
+
+#Show warnings only once:
+with warnings.catch_warnings():
+    warnings.simplefilter("once")
+
+
+class ATCConfig(object):
+    """Class for handling the project configuration"""
+
+    def __init__(self, path='config.yml'):
+        """Constructor that will return an ATCconfig object holding the project configuration
+        
+        Keyword Arguments:
+            path {str} -- 'Path of the local configuration file' (default: {'config.yml'})
+        """
+
+        self.config_local = path
+        self.config_project = DEFAULT_PROJECT_CONFIG_PATH
+
+    def get_config_project(self):
+        """Get the configuration as defined by the project
+        
+        Returns:
+            config {dict} -- Dictionary object containing configuration,
+                             as set in the project configuration.
+        """
+
+        return self.__config_project
+
+    def get_config_local(self):
+        """Get the configuartion that is defined locally,
+only contains local overrides and additions.
+        
+        Returns:
+            config {dict} -- Dictionary object containing local configuration, 
+                             containing only overrides and additions.
+        """
+
+        return self.__config_local
+
+    @property
+    def config(self):
+        """Get the whole configuration including local settings and additions. 
+This the configuation that is used by the application.
+        
+        Returns:
+            config {dict} -- Dictionary object containing default settings, overriden by local settings if set.
+        """
+
+        config_final = dict(self.config_project)
+        config_final.update(self.config_local)
+        return config_final
+
+    def set_config_project(self, path):
+        """Set the project configuration via file path
+        
+        Arguments:
+            path {str} -- File location of the config (yaml)
+        """
+
+        self.__config_project = dict(self.__read_yaml_file(path))
+
+    def set_config_local(self, path):
+        """Set the local configration via file path.
+This will override project defaults in the final configuration.
+If no local configuration is found on the argument path, a warning will be shown, and only default config is used.
+
+        
+        Arguments:
+            path {str} -- Local config file location
+        """
+
+        try:
+            self.__config_local = dict(self.__read_yaml_file(path))
+        except FileNotFoundError:
+            wrn = "Local config '{path}' not found, using project default"
+            # Warning will show because it is in Exception block.
+            warnings.warn(wrn.format(path=path))
+            self.__config_local = {}
+
+    def __read_yaml_file(self, path):
+        """Open the yaml file and load it to the variable.
+        Return created list"""
+        with open(path) as f:
+            yaml_fields = yaml.load_all(f.read())
+
+        buff_results = [x for x in yaml_fields]
+        if len(buff_results) > 1:
+            result = buff_results[0]
+            result['additions'] = buff_results[1:]
+        else:
+            result = buff_results[0]
+
+        return result
+
+    def get(self, key):
+        """ Maps to 'get' Function of configuration {dict} object """
+        return self.config.get(key)
+    
+    config_local = property(get_config_local, set_config_local)
+    config_project = property(get_config_project, set_config_project)
+
+## Initialize global config
+ATC_config = ATCConfig()
 
 
 class ATCutils:
@@ -40,6 +149,13 @@ class ATCutils:
     def read_yaml_file(path):
         """Open the yaml file and load it to the variable.
         Return created list"""
+        if path == 'config.yml':
+            wrn = "Use 'load_config' or 'ATCConfig' instead for config"
+            # Warning will not show, 
+            # unless captured by logging facility or python called with -Wd
+            warnings.warn(message=wrn,
+                          category=DeprecationWarning)
+            return ATCConfig(path).config
 
         with open(path) as f:
             yaml_fields = yaml.load_all(f.read())
@@ -51,6 +167,19 @@ class ATCutils:
         else:
             result = buff_results[0]
         return result
+    
+    @staticmethod
+    def load_config(path):
+        """Load the configuration YAML files used ofr ATC into a dictionary 
+        
+        Arguments:
+            path {filepath} -- File path of the local configuration file
+        
+        Returns:
+            dict -- Configuration for ATC in dictionary format
+        """
+
+        return ATCConfig(path).config
 
     @staticmethod
     def load_yamls(path):
@@ -650,12 +779,13 @@ class ATCutils:
 
         return True
 
+    DEFAULT_ART_DIR = "../" + ATC_config.get('triggers_directory')
+    DEFAULT_ATC_DIR = '../' + ATC_config.get('md_name_of_root_directory')
+
     @staticmethod
-    def populate_tg_markdown(
-            art_dir='../' +
-            read_yaml_file.__func__('config.yml').get('triggers_directory'),
-            atc_dir='../' +
-            read_yaml_file.__func__('config.yml').get('md_name_of_root_directory')):
+    def populate_tg_markdown(art_dir=DEFAULT_ART_DIR,
+                             atc_dir=DEFAULT_ATC_DIR):
+
         cmd = ('find \'%s/\' -name "T*.md" -exec' +
                ' cp {} \'%sTriggers/\' \;') % (art_dir, atc_dir)
         if subprocess.run(cmd, shell=True, check=True).returncode == 0:

@@ -3,3 +3,5 @@
 *.pyc
 *.idea
 _*
+# Ignore local configuration
+config.yml

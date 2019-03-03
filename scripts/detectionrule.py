@@ -14,7 +14,7 @@ from pdb import set_trace as bp
 # ########################### Detection Rule ################################ #
 # ########################################################################### #
 
-ATCconfig = ATCutils.read_yaml_file("config.yml")
+ATCconfig = ATCutils.load_config('config.yml')
 
 
 class DetectionRule:
