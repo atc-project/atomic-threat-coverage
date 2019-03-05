@@ -36,7 +36,7 @@ sample: |
       <TimeCreated SystemTime="2019-01-01T15:49:38.973342200Z" /> 
       <EventRecordID>6724</EventRecordID> 
       <Channel>Application</Channel> 
-      <Computer>WL357705.eu.tieto.com</Computer> 
+      <Computer>WD0000.eu.windows.com</Computer> 
       <Security /> 
     </System>
     - <EventData>
