@@ -8,7 +8,7 @@ from triggers import Triggers
 from enrichment import Enrichment
 from responseaction import ResponseAction
 from responseplaybook import ResponsePlaybook
-# from pdb import set_trace as bp
+from pdb import set_trace as bp
 from attack_mapping import te_mapping  # , ta_mapping
 
 # Import ATC Utils
@@ -103,7 +103,7 @@ class PopulateConfluence:
 
         from init_confluence import main as init_main
 
-        init_main(self.auth)
+        return init_main(self.auth)
 
     def triggers(self, tg_path):
         """Populate Triggers"""
@@ -215,8 +215,14 @@ class PopulateConfluence:
         if dr_path:
             dr_list = glob.glob(dr_path + '*.yml')
         else:
-            dr_list = glob.glob(ATCconfig.get(
-                'detection_rules_directory') + '/*.yml')
+            dr_dirs = ATCconfig.get('detection_rules_directories')
+            # check if config provides multiple directories for detection rules
+            if isinstance(dr_dirs, list):
+                dr_list = []
+                for directory in dr_dirs:
+                    dr_list += glob.glob(directory + '/*.yml')
+            elif isinstance(dr_dirs, str):
+                dr_list = glob.glob(dr_dirs + '/*.yml')
 
         for dr_file in dr_list:
             try:
