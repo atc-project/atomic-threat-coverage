@@ -8,7 +8,7 @@ references:
 category: OS Logs
 platform: Windows
 type: Windows Log
-channel: Security
+channel: Application
 provider: Application Error
 fields:
   - EventID
