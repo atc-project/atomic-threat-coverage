@@ -65,7 +65,7 @@ def main(c_auth=None):
             raise Exception("Could not create or update the page. " +
                             "Is the parent name correct?")
     print("Done!")
-
+    return True
 
 if __name__ == "__main__":
     main()
