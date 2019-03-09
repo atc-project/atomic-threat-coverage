@@ -7,73 +7,73 @@ from metrics import BaseKibanaSeriesParams
 # ########################################################################### #
 
 
-class AverageAgg(BaseKibanaSeriesParams):
+class AverageParamSeries(BaseKibanaSeriesParams):
 
     def __init__(self):
         pass
 
 
-class CountAgg(BaseKibanaSeriesParams):
+class CountParamSeries(BaseKibanaSeriesParams):
 
     def __init__(self):
         pass
 
 
-class MaxAgg(BaseKibanaSeriesParams):
+class MaxParamSeries(BaseKibanaSeriesParams):
 
     def __init__(self):
         pass
 
 
-class MedianAgg(BaseKibanaSeriesParams):
+class MedianParamSeries(BaseKibanaSeriesParams):
 
     def __init__(self):
         pass
 
 
-class MinAgg(BaseKibanaSeriesParams):
+class MinParamSeries(BaseKibanaSeriesParams):
 
     def __init__(self):
         pass
 
 
-class PercentileRanksAgg(BaseKibanaSeriesParams):
+class PercentileRanksParamSeries(BaseKibanaSeriesParams):
 
     def __init__(self):
         pass
 
 
-class PercentilesAgg(BaseKibanaSeriesParams):
+class PercentilesParamSeries(BaseKibanaSeriesParams):
 
     def __init__(self):
         pass
 
 
-class StandardDeviationAgg(BaseKibanaSeriesParams):
+class StandardDeviationParamSeries(BaseKibanaSeriesParams):
 
     def __init__(self):
         pass
 
 
-class SumAgg(BaseKibanaSeriesParams):
+class SumParamSeries(BaseKibanaSeriesParams):
 
     def __init__(self):
         pass
 
 
-class TopHitsAgg(BaseKibanaSeriesParams):
+class TopHitsParamSeries(BaseKibanaSeriesParams):
 
     def __init__(self):
         pass
 
 
-class UniqueCountAgg(BaseKibanaSeriesParams):
+class UniqueCountParamSeries(BaseKibanaSeriesParams):
 
     def __init__(self):
         pass
 
 
-class DotSizeAgg(BaseKibanaSeriesParams):
+class DotSizeParamSeries(BaseKibanaSeriesParams):
 
     def __init__(self):
         pass
