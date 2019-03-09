@@ -100,3 +100,13 @@ class KibanaVisualizationDoc(BaseKibanaDoc):
         super().__init__()  # Init Base Class
         self.type = "visualization"
         self.visualization = dict()
+
+
+class KibanaDashboardDoc(BaseKibanaDoc):
+    """Kibana Visualization Doc"""
+
+    def __init__(self):
+
+        super().__init__()  # Init Base Class
+        self.type = "dashboard"
+        self.dashboard = dict()
