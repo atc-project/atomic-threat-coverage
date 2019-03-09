@@ -44,6 +44,23 @@ class BaseKibanaAgg:
             return self.__dict__
 
 
+class BaseKibanaSeriesParams:
+    """Base Kibana Series Params"""
+
+    def __init__(self, data=None, drawLinesBetweenPoints=None,
+                 mode=None, show=None, showCircles=None, type=None,
+                 valueAxis=None, interpolate=None):
+
+        self.data = dict()
+        self.drawLinesBetweenPoints = bool()
+        self.mode = str()
+        self.show = bool()
+        self.showCircles = bool()
+        self.type = str()
+        self.valueAxis = str()
+        self.interpolate = str()
+
+
 class BaseKibanaVisState:
     """Base Kibana visState"""
 
@@ -79,9 +96,9 @@ class BaseKibanaParams:
                  legendPosition=None, times=None, addTimeMarker=None):
 
         self.type = str()
-        self.grid = dict()  # TODO: Check if it's really here
+        self.grid = dict()
         self.categoryAxes = list()
-        self.valueAxes = list()
+        self.valueAxes = list()  # This is'nt a mistake (not confuse with Axis)
         self.seriesParams = list()
         self.addTooltip = bool()
         self.addLegend = bool()
