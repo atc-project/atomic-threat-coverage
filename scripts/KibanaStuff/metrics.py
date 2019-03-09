@@ -79,7 +79,7 @@ class BaseKibanaParams:
                  legendPosition=None, times=None, addTimeMarker=None):
 
         self.type = str()
-        self.grid = dict()
+        self.grid = dict()  # TODO: Check if it's really here
         self.categoryAxes = list()
         self.valueAxes = list()
         self.seriesParams = list()
