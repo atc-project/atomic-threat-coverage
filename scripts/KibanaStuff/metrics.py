@@ -5,6 +5,7 @@
 # ########################################################################### #
 
 import json
+import datetime
 
 
 class BaseKibanaAgg:
@@ -16,10 +17,7 @@ class BaseKibanaAgg:
         self.enabled = str()
         self.type = str()
         self.schema = str()
-        self.params = {
-            "field": "",
-            "customLabel": "",
-        }
+        self.params = dict()
 
     def __call__(self):
 
@@ -89,6 +87,7 @@ class BaseKibanaDoc:
 
     def __call__(self):
 
+        self.updated_at = datetime.datetime.today().isoformat() + "Z"
         return self.__dict__
 
 
