@@ -1,9 +1,10 @@
 #!/bin/env python3
 
-import requests
-from elasticsearch import Elasticsearch
+# import requests
+# from elasticsearch import Elasticsearch
 from elasticsearch.client import Elasticsearch as CES
 from pprint import pprint
+
 
 class KibanaBaseModel():
     def __init__(self, rdata):
@@ -42,7 +43,7 @@ class KibanaAPI():
 
     def __init__(self, es):
 
-        self.search_limit_size = 10000 # 10000 is MAX
+        self.search_limit_size = 10000  # 10000 is MAX
 
         if isinstance(es, CES):
             self.es = es
@@ -66,9 +67,11 @@ class KibanaAPI():
                         self.visualizations.append(Visualizations(obj))
                     if _type == 'dashboard':
                         self.dashboards.append(Dashboards(obj))
+
     def push_object(self, data):
-        
-       pass
+
+        pass
+
 
 if __name__ == "__main__":
     from elasticsearch import Elasticsearch as ES

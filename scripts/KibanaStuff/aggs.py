@@ -18,6 +18,10 @@ class AverageAgg(BaseKibanaAgg):
             }
         )
 
+    def validate(self):
+        # TODO: Write custom validate (check if field exists in elastic)
+        super().validate()
+
 
 class CountAgg(BaseKibanaAgg):
 
@@ -37,6 +41,10 @@ class MaxAgg(BaseKibanaAgg):
             type="max"
         )
 
+    def validate(self):
+        # TODO: Write custom validate (check if field exists in elastic)
+        super().validate()
+
 
 class MedianAgg(BaseKibanaAgg):
 
@@ -48,6 +56,10 @@ class MedianAgg(BaseKibanaAgg):
             }, schema="metric", type="median"
         )
 
+    def validate(self):
+        # TODO: Write custom validate (check if field exists in elastic)
+        super().validate()
+
 
 class MinAgg(BaseKibanaAgg):
 
@@ -57,6 +69,10 @@ class MinAgg(BaseKibanaAgg):
             id=id, enabled=enabled, params={"field": field}, schema="metric",
             type="min"
         )
+
+    def validate(self):
+        # TODO: Write custom validate (check if field exists in elastic)
+        super().validate()
 
 
 class PercentileRanksAgg(BaseKibanaAgg):
@@ -69,6 +85,11 @@ class PercentileRanksAgg(BaseKibanaAgg):
                 "field": field, "values": percentile_ranks
             }, schema="metric", type="percentile_ranks"
         )
+
+    def validate(self):
+        # TODO: Write custom validate (check if field exists in elastic)
+        # TODO: Write custom validate (check if percentile_rank is valid list)
+        super().validate()
 
 
 class PercentilesAgg(BaseKibanaAgg):
@@ -84,6 +105,11 @@ class PercentilesAgg(BaseKibanaAgg):
             }, schema="metric", type="percentiles"
         )
 
+    def validate(self):
+        # TODO: Write custom validate (check if field exists in elastic)
+        # TODO: Write custom validate (check if percents is valid list)
+        super().validate()
+
 
 class StandardDeviationAgg(BaseKibanaAgg):
 
@@ -95,6 +121,10 @@ class StandardDeviationAgg(BaseKibanaAgg):
             }, schema="metric", type="std_dev"
         )
 
+    def validate(self):
+        # TODO: Write custom validate (check if field exists in elastic)
+        super().validate()
+
 
 class SumAgg(BaseKibanaAgg):
 
@@ -105,6 +135,10 @@ class SumAgg(BaseKibanaAgg):
                 "field": field
             }, schema="metric", type="sum"
         )
+
+    def validate(self):
+        # TODO: Write custom validate (check if field exists in elastic)
+        super().validate()
 
 
 class TopHitsAgg(BaseKibanaAgg):
@@ -122,6 +156,10 @@ sort_order - can be asc or dsc
             }, schema="metric", type="top_hits"
         )
 
+    def validate(self):
+        # TODO: Write custom validate (validate every required field)
+        super().validate()
+
 
 class UniqueCountAgg(BaseKibanaAgg):
 
@@ -133,9 +171,13 @@ class UniqueCountAgg(BaseKibanaAgg):
             }, schema="metric", type="cardinality"
         )
 
+    def validate(self):
+        # TODO: Write custom validate (check if field exists in elastic)
+        super().validate()
+
 
 class DotSizeAgg(BaseKibanaAgg):
-
+    # TODO: Develop it further
     def __init__(
         self, id, aggregation_type, field=None, aggregate_with=None, size=None,
         enabled=None, order=None
@@ -161,3 +203,8 @@ class DotSizeAgg(BaseKibanaAgg):
                 "field": field
             }
         )
+
+    def validate(self):
+        # TODO: Write custom validate
+        # (validate field based on given aggregation type)
+        super().validate()
