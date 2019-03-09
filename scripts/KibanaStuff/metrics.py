@@ -4,18 +4,22 @@
 # ############################ Base Classes ################################# #
 # ########################################################################### #
 
+import json
 
-class BaseKibanaAggs:
-    """Base Kibana Aggs"""
 
-    id = str
-    enabled = str
-    type = str
-    schema = str
-    params = {
-        "field": "",
-        "customLabel": "",
-    }
+class BaseKibanaAgg:
+    """Base Kibana Agg"""
+
+    def __init__(self):
+
+        self.id = str()
+        self.enabled = str()
+        self.type = str()
+        self.schema = str()
+        self.params = {
+            "field": "",
+            "customLabel": "",
+        }
 
     def __call__(self):
 
@@ -25,29 +29,33 @@ class BaseKibanaAggs:
 class BaseKibanaVisState:
     """Base Kibana visState"""
 
-    title = str
-    type = str
-    params = {}
-    aggs = []
+    def __init__(self):
+
+        self.title = str()
+        self.type = str()
+        self.params = dict()
+        self.aggs = list()
 
     def __call__(self):
 
-        return str(self.__dict__)
+        return json.dumps(self.__dict__)
 
 
 class BaseKibanaParams:
     """Base Kibana Params"""
 
-    type = str
-    grid = {}
-    categoryAxes = []
-    valueAxes = []
-    seriesParams = []
-    addTooltip = bool
-    addLegend = bool
-    legendPosition = str
-    times = []
-    addTimeMarker = bool
+    def __init__(self):
+
+        self.type = str()
+        self.grid = dict()
+        self.categoryAxes = list()
+        self.valueAxes = list()
+        self.seriesParams = list()
+        self.addTooltip = bool()
+        self.addLegend = bool()
+        self.legendPosition = str()
+        self.times = list()
+        self.addTimeMarker = bool()
 
     def __call__(self):
 
@@ -57,27 +65,38 @@ class BaseKibanaParams:
 class BaseKibanaVisualizationObject:
     """Base Kibana VisualizationObject"""
 
-    description = str
-    kibanaSavedObjectMeta = {}
-    title = str
-    uiStateJSON = str
-    version = int
-    visState = str  # '{ some valid JSON }'
+    def __init__(self):
+
+        self.description = str()
+        self.kibanaSavedObjectMeta = dict()
+        self.title = str()
+        self.uiStateJSON = str()
+        self.version = int()
+        self.visState = str()  # '{ some valid JSON }'
 
     def __call__(self):
 
         return self.__dict__
 
+
 class BaseKibanaDoc:
     """Base Kibana Doc"""
 
-    type = str
-    updated_at = str
+    def __init__(self):
+
+        self.type = str()
+        self.updated_at = str()
+
+    def __call__(self):
+
+        return self.__dict__
+
 
 class KibanaVisualizationDoc(BaseKibanaDoc):
     """Kibana Visualization Doc"""
 
-    type = "visualization"
-    visualization = {}
+    def __init__(self):
 
-
+        super().__init__()  # Init Base Class
+        self.type = "visualization"
+        self.visualization = dict()
