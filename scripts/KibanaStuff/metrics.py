@@ -56,9 +56,41 @@ class BaseKibanaSeriesParams:
         self.mode = str()
         self.show = bool()
         self.showCircles = bool()
-        self.type = str()
+        self.p_type = str()
         self.valueAxis = str()
         self.interpolate = str()
+
+        if data:
+            self.data = data
+
+        if drawLinesBetweenPoints:
+            self.drawLinesBetweenPoints = drawLinesBetweenPoints
+
+        if mode:
+            self.mode = mode
+
+        if show:
+            self.show = show
+
+        if showCircles:
+            self.showCircles = showCircles
+
+        if type:
+            self.type = type
+
+        if valueAxis:
+            self.valueAxis = valueAxis
+
+        if interpolate:
+            self.interpolate = interpolate
+
+    def validate(self):
+        # TODO: Write validate method
+        return True
+
+    def __call__(self):
+        if self.validate():
+            return self.__dict__
 
 
 class BaseKibanaVisState:
@@ -83,9 +115,13 @@ class BaseKibanaVisState:
         if aggs:
             self.aggs = aggs
 
-    def __call__(self):
+    def validate(self):
+        # TODO: Write validate method
+        return True
 
-        return json.dumps(self.__dict__)
+    def __call__(self):
+        if self.validate():
+            return json.dumps(self.__dict__)
 
 
 class BaseKibanaParams:
@@ -157,9 +193,13 @@ class BaseKibanaVisualizationObject:
         self.version = int()
         self.visState = str()  # '{ some valid JSON }'
 
-    def __call__(self):
+    def validate(self):
+        # TODO: Write validate method
+        return True
 
-        return self.__dict__
+    def __call__(self):
+        if self.validate():
+            return self.__dict__
 
 
 class BaseKibanaDoc:
@@ -170,10 +210,14 @@ class BaseKibanaDoc:
         self.type = str()
         self.updated_at = str()
 
-    def __call__(self):
+    def validate(self):
+        # TODO: Write validate method
+        return True
 
-        self.updated_at = datetime.datetime.today().isoformat() + "Z"
-        return self.__dict__
+    def __call__(self):
+        if self.validate():
+            self.updated_at = datetime.datetime.today().isoformat() + "Z"
+            return self.__dict__
 
 
 class KibanaVisualizationDoc(BaseKibanaDoc):

@@ -1,364 +1,118 @@
-[
-  {
-    "_id": "65215480-4254-11e9-8146-8d8c924c8dc2",
-    "_type": "visualization",
-    "_source": {
-      "title": "Area1",
-      "visState": "
-        {
-          \"title\": \"Area1\",
-          \"type\": \"line\",
-          \"params\": {
-            \"addLegend\": true,
-            \"addTimeMarker\": false,
-            \"addTooltip\": true,
-            \"categoryAxes\": [
-              {
-                \"id\": \"CategoryAxis-1\",
-                \"labels\": {
-                  \"show\": true,
-                  \"truncate\": 100
-                },
-                \"position\": \"bottom\",
-                \"scale\": {
-                  \"type\": \"linear\"
-                },
-                \"show\": true,
-                \"style\": {},
-                \"title\": {},
-                \"type\": \"category\"
-              }
-            ],
-            \"grid\": {
-              \"categoryLines\": true,
-              \"style\": {
-                \"color\": \"#eee\"
-              },
-              \"valueAxis\": null
+"_source": {
+  "title": "Area1",
+  "visState": "
+    {
+      \"title\": \"Area1\",
+      \"type\": \"line\",
+      \"params\": {
+        \"addLegend\": true,
+        \"addTimeMarker\": false,
+        \"addTooltip\": true,
+        \"categoryAxes\": [
+          {
+            \"id\": \"CategoryAxis-1\",
+            \"labels\": {
+              \"show\": true,
+              \"truncate\": 100
             },
-            \"legendPosition\": \"right\",
-            \"seriesParams\": [
-              {
-                \"data\": {
-                  \"id\": \"1\",
-                  \"label\": \"Average port\"
-                },
-                \"drawLinesBetweenPoints\": true,
-                \"mode\": \"normal\",
-                \"show\": \"true\",
-                \"showCircles\": true,
-                \"type\": \"line\",
-                \"valueAxis\": \"ValueAxis-1\",
-                \"interpolate\": \"linear\"
-              },
-              {
-                \"data\": {
-                  \"id\": \"2\",
-                  \"label\": \"Count\"
-                },
-                \"drawLinesBetweenPoints\": true,
-                \"mode\": \"normal\",
-                \"show\": true,
-                \"showCircles\": true,
-                \"type\": \"line\",
-                \"valueAxis\": \"ValueAxis-1\"
-              },
-              {
-                \"data\": {
-                  \"id\": \"3\",
-                  \"label\": \"Max port\"
-                },
-                \"drawLinesBetweenPoints\": true,
-                \"mode\": \"normal\",
-                \"show\": true,
-                \"showCircles\": true,
-                \"type\": \"line\",
-                \"valueAxis\": \"ValueAxis-1\"
-              },
-              {
-                \"data\": {
-                  \"id\": \"4\",
-                  \"label\": \"Median port\"
-                },
-                \"drawLinesBetweenPoints\": true,
-                \"mode\": \"normal\",
-                \"show\": true,
-                \"showCircles\": true,
-                \"type\": \"line\",
-                \"valueAxis\": \"ValueAxis-1\"
-              },
-              {
-                \"data\": {
-                  \"id\": \"5\",
-                  \"label\": \"Min port\"
-                },
-                \"drawLinesBetweenPoints\": true,
-                \"mode\": \"normal\",
-                \"show\": true,
-                \"showCircles\": true,
-                \"type\": \"line\",
-                \"valueAxis\": \"ValueAxis-1\"
-              },
-              {
-                \"data\": {
-                  \"id\": \"6\",
-                  \"label\": \"Percentile ranks of port\"
-                },
-                \"drawLinesBetweenPoints\": true,
-                \"mode\": \"normal\",
-                \"show\": true,
-                \"showCircles\": true,
-                \"type\": \"line\",
-                \"valueAxis\": \"ValueAxis-1\"
-              },
-              {
-                \"data\": {
-                  \"id\": \"7\",
-                  \"label\": \"Percentiles of port\"
-                },
-                \"drawLinesBetweenPoints\": true,
-                \"mode\": \"normal\",
-                \"show\": true,
-                \"showCircles\": true,
-                \"type\": \"line\",
-                \"valueAxis\": \"ValueAxis-1\"
-              },
-              {
-                \"data\": {
-                  \"id\": \"8\",
-                  \"label\": \"Standard Deviation of port\"
-                },
-                \"drawLinesBetweenPoints\": true,
-                \"mode\": \"normal\",
-                \"show\": true,
-                \"showCircles\": true,
-                \"type\": \"line\",
-                \"valueAxis\": \"ValueAxis-1\"
-              },
-              {
-                \"data\": {
-                  \"id\": \"9\",
-                  \"label\": \"Sum of port\"
-                },
-                \"drawLinesBetweenPoints\": true,
-                \"mode\": \"normal\",
-                \"show\": true,
-                \"showCircles\": true,
-                \"type\": \"line\",
-                \"valueAxis\": \"ValueAxis-1\"
-              },
-              {
-                \"data\": {
-                  \"id\": \"10\",
-                  \"label\": \"Last 3 port\"
-                },
-                \"drawLinesBetweenPoints\": true,
-                \"mode\": \"normal\",
-                \"show\": true,
-                \"showCircles\": true,
-                \"type\": \"line\",
-                \"valueAxis\": \"ValueAxis-1\"
-              },
-              {
-                \"data\": {
-                  \"id\": \"11\",
-                  \"label\": \"Unique count of port\"
-                },
-                \"drawLinesBetweenPoints\": true,
-                \"mode\": \"normal\",
-                \"show\": true,
-                \"showCircles\": true,
-                \"type\": \"line\",
-                \"valueAxis\": \"ValueAxis-1\"
-              }
-            ],
-            \"times\": [],
-            \"type\": \"line\",
-            \"valueAxes\": [
-              {
-                \"id\": \"ValueAxis-1\",
-                \"labels\": {
-                  \"filter\": false,
-                  \"rotate\": 0,
-                  \"show\": true,
-                  \"truncate\": 100
-                },
-                \"name\": \"LeftAxis-1\",
-                \"position\": \"left\",
-                \"scale\": {
-                  \"mode\": \"normal\",
-                  \"type\": \"linear\"
-                },
-                \"show\": true,
-                \"style\": {},
-                \"title\": {
-                  \"text\": \"Average port\"
-                },
-                \"type\": \"value\"
-              },
-              {
-                \"id\": \"ValueAxis-5\",
-                \"labels\": {
-                  \"filter\": false,
-                  \"rotate\": 0,
-                  \"show\": true,
-                  \"truncate\": 100
-                },
-                \"name\": \"RightAxis-1\",
-                \"position\": \"right\",
-                \"scale\": {
-                  \"mode\": \"silhouette\",
-                  \"type\": \"square root\"
-                },
-                \"show\": true,
-                \"style\": {},
-                \"title\": {
-                  \"text\": \"Average port\"
-                },
-                \"type\": \"value\"
-              }
-            ]
+            \"position\": \"bottom\",
+            \"scale\": {
+              \"type\": \"linear\"
+            },
+            \"show\": true,
+            \"style\": {},
+            \"title\": {},
+            \"type\": \"category\"
+          }
+        ],
+        \"grid\": {
+          \"categoryLines\": true,
+          \"style\": {
+            \"color\": \"#eee\"
           },
-          \"aggs\": [
-            {
+          \"valueAxis\": null
+        },
+        \"legendPosition\": \"right\",
+        \"seriesParams\": [
+          {
+            \"data\": {
               \"id\": \"1\",
-              \"enabled\": true,
-              \"type\": \"avg\",
-              \"schema\": \"metric\",
-              \"params\": {
-                \"field\": \"port\"
-              }
+              \"label\": \"Average port\"
             },
-            {
-              \"id\": \"2\",
-              \"enabled\": true,
-              \"type\": \"count\",
-              \"schema\": \"metric\",
-              \"params\": {}
+            \"drawLinesBetweenPoints\": true,
+            \"mode\": \"normal\",
+            \"show\": \"true\",
+            \"showCircles\": true,
+            \"type\": \"line\",
+            \"valueAxis\": \"ValueAxis-1\",
+            \"interpolate\": \"linear\"
+          }
+        ],
+        \"times\": [],
+        \"type\": \"line\",
+        \"valueAxes\": [
+          {
+            \"id\": \"ValueAxis-1\",
+            \"labels\": {
+              \"filter\": false,
+              \"rotate\": 0,
+              \"show\": true,
+              \"truncate\": 100
             },
-            {
-              \"id\": \"3\",
-              \"enabled\": true,
-              \"type\": \"max\",
-              \"schema\": \"metric\",
-              \"params\": {
-                \"field\": \"port\"
-              }
+            \"name\": \"LeftAxis-1\",
+            \"position\": \"left\",
+            \"scale\": {
+              \"mode\": \"normal\",
+              \"type\": \"linear\"
             },
-            {
-              \"id\": \"4\",
-              \"enabled\": true,
-              \"type\": \"median\",
-              \"schema\": \"metric\",
-              \"params\": {
-                \"field\": \"port\",
-                \"percents\": [
-                  50
-                ]
-              }
+            \"show\": true,
+            \"style\": {},
+            \"title\": {
+              \"text\": \"Average port\"
             },
-            {
-              \"id\": \"5\",
-              \"enabled\": true,
-              \"type\": \"min\",
-              \"schema\": \"metric\",
-              \"params\": {
-                \"field\": \"port\"
-              }
+            \"type\": \"value\"
+          },
+          {
+            \"id\": \"ValueAxis-5\",
+            \"labels\": {
+              \"filter\": false,
+              \"rotate\": 0,
+              \"show\": true,
+              \"truncate\": 100
             },
-            {
-              \"id\": \"6\",
-              \"enabled\": true,
-              \"type\": \"percentile_ranks\",
-              \"schema\": \"metric\",
-              \"params\": {
-                \"field\": \"port\",
-                \"values\": [
-                  1,
-                  2,
-                  3,
-                  4,
-                  5
-                ]
-              }
+            \"name\": \"RightAxis-1\",
+            \"position\": \"right\",
+            \"scale\": {
+              \"mode\": \"silhouette\",
+              \"type\": \"square root\"
             },
-            {
-              \"id\": \"7\",
-              \"enabled\": true,
-              \"type\": \"percentiles\",
-              \"schema\": \"metric\",
-              \"params\": {
-                \"field\": \"port\",
-                \"percents\": [
-                  1,
-                  5,
-                  25,
-                  50,
-                  75,
-                  95,
-                  99
-                ]
-              }
+            \"show\": true,
+            \"style\": {},
+            \"title\": {
+              \"text\": \"Average port\"
             },
-            {
-              \"id\": \"8\",
-              \"enabled\": true,
-              \"type\": \"std_dev\",
-              \"schema\": \"metric\",
-              \"params\": {
-                \"field\": \"port\"
-              }
-            },
-            {
-              \"id\": \"9\",
-              \"enabled\": true,
-              \"type\": \"sum\",
-              \"schema\": \"metric\",
-              \"params\": {
-                \"field\": \"port\"
-              }
-            },
-            {
-              \"id\": \"10\",
-              \"enabled\": true,
-              \"type\": \"top_hits\",
-              \"schema\": \"metric\",
-              \"params\": {
-                \"field\": \"port\",
-                \"aggregate\": \"average\",
-                \"size\": 3,
-                \"sortField\": \"@timestamp\",
-                \"sortOrder\": \"desc\"
-              }
-            },
-            {
-              \"id\": \"11\",
-              \"enabled\": true,
-              \"type\": \"cardinality\",
-              \"schema\": \"metric\",
-              \"params\": {
-                \"field\": \"port\"
-              }
-            },
-            {
-              \"id\": \"16\",
-              \"enabled\": true,
-              \"type\": \"avg\",
-              \"schema\": \"radius\",
-              \"params\": {
-                \"field\": \"port\"
-              }
-            }
-          ]
+            \"type\": \"value\"
+          }
+        ]
+      },
+      \"aggs\": [
+        {
+          \"id\": \"1\",
+          \"enabled\": true,
+          \"type\": \"avg\",
+          \"schema\": \"metric\",
+          \"params\": {
+            \"field\": \"port\"
+          }
         }
-      ",
-      "uiStateJSON": "{}",
-      "description": "",
-      "savedSearchId": "fed72e90-4251-11e9-8146-8d8c924c8dc2",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"lucene\"},\"filter\":[]}"
-      }
+      ]
     }
+  ",
+  "uiStateJSON": "{}",
+  "description": "",
+  "savedSearchId": "fed72e90-4251-11e9-8146-8d8c924c8dc2",
+  "version": 1,
+  "kibanaSavedObjectMeta": {
+    "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"lucene\"},\"filter\":[]}"
   }
-]
+}
