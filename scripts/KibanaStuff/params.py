@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from metrics import BaseKibanaSeriesParams
+from base import BaseKibanaSeriesParams
 
 # ########################################################################### #
 # ############################ Params ####################################### #
