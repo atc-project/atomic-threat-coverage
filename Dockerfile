@@ -1,16 +1,20 @@
 FROM alpine
+COPY ./ /app
+WORKDIR /app
 
-RUN apk update
-RUN apk add --update \
+RUN apk update; \
+    apk add --update \
     python3 \
     python3-dev \
     py-pip \
     build-base \
     make \
     git \
-    bash
-COPY ./ /app
-WORKDIR /app
-RUN pip3 install -r requirements.txt
-RUN apk del py-pip python3-dev && rm -rf /var/cache/apk/*
-CMD make
+    bash; \
+    pip3 install -r requirements.txt && \
+    git submodule init && \
+	git submodule update && \
+	git submodule foreach git pull origin master && \
+	cp -r detection_rules/sigma/rules/windows/*/*.yml detection_rules/ && \
+    apk del py-pip python3-dev git build-base make && rm -rf /var/cache/apk/*
+CMD /app/docker-entrypoint.sh
