@@ -11,15 +11,15 @@ from ast import literal_eval
 class KibanaVisualizationDoc(base.BaseKibanaDoc):
     """Kibana Visualization Doc"""
 
-    def __init__(self, title, index_name):
+    def __init__(self, title, index_name, type):
 
         super().__init__()  # Init Base Class
         self.metric_id = 1
         self.type = "visualization"
         self.visualization = base.BaseKibanaVisualizationObject(title=title)
         self.visualization.visState = base.BaseKibanaVisState(
-            title=title, type="line")
-        self.visualization.visState.params = base.BaseKibanaParams()
+            title=title, type=type)
+        self.visualization.visState.params = base.BaseKibanaParams(type=type)
         self.visualization.kibanaSavedObjectMeta["searchSourceJSON"] = \
             "{\"index\":\"%s-*\",\"query\":{\"query_string\":{" % index_name +\
             "\"analyze_wildcard\":true,\"query\":\"*\"}},\"filter\":[]}"
@@ -30,17 +30,31 @@ class KibanaVisualizationDoc(base.BaseKibanaDoc):
         # TODO: Make class for that
         self.visualization.visState.params.valueAxes.append({
             "id": "ValueAxis-1",
+            "name": "LeftAxis-1",
+            "type": "value",
+            "position": "left",
+            "show": True,
+            "style": {},
+            "scale": {
+                "type": "linear",
+                "mode": "normal"
+            },
             "labels": {
-                "filter": False,
-                "rotate": 0,
                 "show": True,
+                "rotate": 0,
+                "filter": False,
                 "truncate": 100
-            }})
+            },
+            # "title": {
+            #     "text": "Count"
+            # }
+        }
+        )
 
         # TODO: Make class for that
         self.visualization.visState.params.categoryAxes.append(
             {
-                "id": "CategoryAxis-1",
+                "id": "CategoryLeftAxis-1",
                 "labels": {
                     "show": True,
                     "truncate": 100
