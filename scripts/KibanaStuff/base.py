@@ -132,6 +132,9 @@ class BaseKibanaVisState:
     def __repr__(self):
         return str(self.__dict__)
 
+    def __iter__(self):
+        return iter(self.__dict__)
+
 
 class BaseKibanaParams:
     """Base Kibana Params"""
@@ -143,13 +146,13 @@ class BaseKibanaParams:
         self.type = str()
         self.grid = dict()
         self.categoryAxes = list()
-        self.valueAxes = list()  # This is'nt a mistake (not confuse with Axis)
+        self.valueAxes = list()  # This isn't a mistake (not confuse with Axis)
         self.seriesParams = list()
-        self.addTooltip = bool()
-        self.addLegend = bool()
+        self.addTooltip = True
+        self.addLegend = True
         self.legendPosition = str()
         self.times = list()
-        self.addTimeMarker = bool()
+        self.addTimeMarker = False
 
         if type:
             self.type = type
@@ -196,14 +199,17 @@ class BaseKibanaParams:
 class BaseKibanaVisualizationObject:
     """Base Kibana VisualizationObject"""
 
-    def __init__(self):
+    def __init__(self, title=None):
 
         self.description = str()
         self.kibanaSavedObjectMeta = dict()
         self.title = str()
         self.uiStateJSON = str()
-        self.version = int()
+        self.version = 1
         self.visState = str()  # '{ some valid JSON }'
+
+        if title:
+            self.title = title
 
     def validate(self):
         # TODO: Write validate method

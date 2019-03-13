@@ -36,15 +36,16 @@ class AreaMetric(BaseMetric):
     def __init__(self, id, field, enabled=None, type=None, label=None,
                  valueAxis=None, interpolate=None, mode=None,
                  showCircles=None):
-        self.agg = aggs.AverageAgg(id=id, field=field, enabled=enabled)
-        self.param = params.AverageParamSeries(
-            id=id, enabled=enabled, field=field, type=type, label=label,
+        self.agg_var = aggs.AverageAgg(id=str(id), field=field,
+                                       enabled=enabled)
+        self.param_var = params.AverageParamSeries(
+            id=str(id), enabled=enabled, field=field, type=type, label=label,
             valueAxis=valueAxis, interpolate=interpolate, mode=mode,
             showCircles=showCircles
         )
 
     def agg(self):
-        return self.agg()
+        return self.agg_var()
 
     def param(self):
-        return self.param()
+        return self.param_var()
