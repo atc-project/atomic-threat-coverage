@@ -7,13 +7,17 @@ import uuid
 from metrics import BaseMetric
 from ast import literal_eval
 
+# ########################################################################### #
+# ############################ Base Visualisation ########################### #
+# ########################################################################### #
 
-class KibanaVisualizationDoc(base.BaseKibanaDoc):
+
+class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
     """Kibana Visualization Doc"""
 
     def __init__(self, title, type):
 
-        super().__init__()  # Init Base Class
+        super().__init__()
         self._meta_data_set = False
         self.metric_id = 1
         self.type = "visualization"
@@ -70,7 +74,9 @@ class KibanaVisualizationDoc(base.BaseKibanaDoc):
         )
 
     def validate(self):
-        if self._meta_data_set and super().validate():
+        supported_vis = ["area", "metric"]
+        if self._meta_data_set and super().validate() \
+                and self.visualization.visState.type in supported_vis:
             return True
         else:
             return False
@@ -140,7 +146,31 @@ class KibanaVisualizationDoc(base.BaseKibanaDoc):
             _id = self.search_id_of_title_by_type(
                 search_type="search", search_title=saved_search_name
             )
+            self.visualization.savedSearchId = _id
         self.visualization.kibanaSavedObjectMeta["searchSourceJSON"] = \
-            ("{\"index\":\"%s\",\"query\":" +
-             "{\"query\":\"\",\"language\":\"lucene\"},\"filter\":[]}") % _id
+            ("{\"query\":{\"query\":\"\",\"language\"" +
+             ":\"lucene\"},\"filter\":[]}")
         self._meta_data_set = True
+
+# ########################################################################### #
+# ############################ Area Visualisation ########################### #
+# ########################################################################### #
+
+
+class AreaVisualisation(BaseKibanaVisualizationDoc):
+
+    def __init__(self, title):
+
+        super().__init__(title=title, type="area")
+
+
+# ########################################################################### #
+# ############################ Metric Visualisation ######################### #
+# ########################################################################### #
+
+
+class MetricVisualisation(BaseKibanaVisualizationDoc):
+
+    def __init__(self, title):
+
+        super().__init__(title=title, type="metric")

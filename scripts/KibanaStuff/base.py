@@ -103,7 +103,6 @@ search_title - string
                             result_dict[item.get("attributes").get("title")] =\
                                 item.get('id')
                 if search_title in result_dict.keys():
-                    del(result_dict)
                     return result_dict[search_title]
                 else:
                     current_page += 1
