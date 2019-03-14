@@ -69,6 +69,12 @@ class KibanaVisualizationDoc(base.BaseKibanaDoc):
             }
         )
 
+    def validate(self):
+        if self._meta_data_set and super().validate():
+            return True
+        else:
+            return False
+
     def add_metric(self, metric):
         if not issubclass(metric.__class__, BaseMetric):
             raise Exception("Are you trying to add non-metric?")
@@ -96,18 +102,26 @@ class KibanaVisualizationDoc(base.BaseKibanaDoc):
             raise Exception("Data validation failed")
 
     def set_index_search(self, index_name):
-        if self.search_id_of_title_by_type(
-                search_type="index-pattern", search_title=index_name
-        ):
+        if self.check_kibana_vars():
+            if self.search_id_of_title_by_type(
+                    search_type="index-pattern", search_title=index_name
+            ):
+                self.visualization.kibanaSavedObjectMeta["searchSourceJSON"] =\
+                    ("{\"index\":\"%s\",\"query\":{\"query_string\":{" +
+                     "\"analyze_wildcard\":true,\"query\":\"*\"}}," +
+                     "\"filter\":[]}") % index_name
+                self._meta_data_set = True
+            else:
+                raise Exception(
+                    "Did not find such index name." +
+                    " Didn't you forget an asterisk?"
+                )
+        else:
             self.visualization.kibanaSavedObjectMeta["searchSourceJSON"] = \
                 ("{\"index\":\"%s\",\"query\":{\"query_string\":{" +
-                 "\"analyze_wildcard\":true,\"query\":\"*\"}},\"filter\":[]" +
-                 "}") % index_name
+                 "\"analyze_wildcard\":true,\"query\":\"*\"}}," +
+                 "\"filter\":[]}") % index_name
             self._meta_data_set = True
-        else:
-            raise Exception(
-                "Did not find such index name. Didn't you forget an asterisk?"
-            )
 
     def set_saved_search(self, saved_search_name=None, saved_search_id=None):
         """Provide ID if you know it and don't want to engage kibana"""
