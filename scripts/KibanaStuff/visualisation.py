@@ -11,18 +11,17 @@ from ast import literal_eval
 class KibanaVisualizationDoc(base.BaseKibanaDoc):
     """Kibana Visualization Doc"""
 
-    def __init__(self, title, index_name, type):
+    def __init__(self, title, type):
 
         super().__init__()  # Init Base Class
+        self._meta_data_set = False
         self.metric_id = 1
         self.type = "visualization"
         self.visualization = base.BaseKibanaVisualizationObject(title=title)
         self.visualization.visState = base.BaseKibanaVisState(
             title=title, type=type)
         self.visualization.visState.params = base.BaseKibanaParams(type=type)
-        self.visualization.kibanaSavedObjectMeta["searchSourceJSON"] = \
-            "{\"index\":\"%s-*\",\"query\":{\"query_string\":{" % index_name +\
-            "\"analyze_wildcard\":true,\"query\":\"*\"}},\"filter\":[]}"
+
         self.some_defaults()
 
     def some_defaults(self):
@@ -90,7 +89,44 @@ class KibanaVisualizationDoc(base.BaseKibanaDoc):
             )
             tmp_dictionary.pop("metric_id", None)
             tmp_dictionary.pop("updated_at", None)
+            tmp_dictionary.pop("_meta_data_set", None)
             tmp_dictionary["_source"] = tmp_dictionary.pop("visualization")
             return json.dumps([tmp_dictionary])
         else:
             raise Exception("Data validation failed")
+
+    def set_index_search(self, index_name):
+        if self.search_id_of_title_by_type(
+                search_type="index-pattern", search_title=index_name
+        ):
+            self.visualization.kibanaSavedObjectMeta["searchSourceJSON"] = \
+                ("{\"index\":\"%s\",\"query\":{\"query_string\":{" +
+                 "\"analyze_wildcard\":true,\"query\":\"*\"}},\"filter\":[]" +
+                 "}") % index_name
+            self._meta_data_set = True
+        else:
+            raise Exception(
+                "Did not find such index name. Didn't you forget an asterisk?"
+            )
+
+    def set_saved_search(self, saved_search_name=None, saved_search_id=None):
+        """Provide ID if you know it and don't want to engage kibana"""
+        if not saved_search_name and not saved_search_id:
+            raise Exception(
+                "What's the point of running this method without arguments?"
+            )
+        _id = ""
+        if saved_search_id:
+            _id = saved_search_id
+        else:
+            if not self.check_kibana_vars():
+                raise Exception(
+                    "Cannot search for an ID if no access to Kibana!"
+                )
+            _id = self.search_id_of_title_by_type(
+                search_type="search", search_title=saved_search_name
+            )
+        self.visualization.kibanaSavedObjectMeta["searchSourceJSON"] = \
+            ("{\"index\":\"%s\",\"query\":" +
+             "{\"query\":\"\",\"language\":\"lucene\"},\"filter\":[]}") % _id
+        self._meta_data_set = True
