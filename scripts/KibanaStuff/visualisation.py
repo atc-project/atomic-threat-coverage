@@ -30,7 +30,7 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
 
     def some_defaults(self):
 
-        # TODO: Make class for that
+        # TODO: Make class for that as well as proper handling in the code
         self.visualization.visState.params.valueAxes.append({
             "id": "ValueAxis-1",
             "name": "LeftAxis-1",
