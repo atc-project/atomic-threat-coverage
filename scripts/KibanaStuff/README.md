@@ -78,10 +78,8 @@ This is kinda similar to metrics but one layer above and has no general instruct
 | UniqueCount           |              |
 | DotSize (kind of)     |              |
 
-> 
-| DotSize (kind of)     |              |
-> 
-DotSize is specific. I didn't dig into it but it doesn't required series params. Maybe it's the only difference, I don't know at the moment
+> | DotSize (kind of)     |              |
+> DotSize is specific. I didn't dig into it but it doesn't required series params. Maybe it's the only difference, I don't know at the moment
 
 ---
 
