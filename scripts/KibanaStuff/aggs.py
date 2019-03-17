@@ -34,7 +34,7 @@ class CountAgg(BaseKibanaAgg):
 
 class MaxAgg(BaseKibanaAgg):
 
-    def __init__(self, id, field, enabled=None, ):
+    def __init__(self, id, field, enabled=None):
 
         super().__init__(
             id=id, enabled=enabled, params={"field": field}, schema="metric",

@@ -46,10 +46,159 @@ class AverageMetric(BaseMetric):
 class CountMetric(BaseMetric):
 
     def __init__(self, id, enabled=None, type=None, label=None,
-                 valueAxis=None, interpolate=None, mode=None,
-                 showCircles=None):
+                 valueAxis=None, mode=None, showCircles=None):
         self.agg_var = aggs.CountAgg(id=str(id), enabled=enabled)
         self.param_var = params.CountParamSeries(
             id=str(id), enabled=enabled, type=type, label=label,
+            valueAxis=valueAxis, mode=mode, showCircles=showCircles
+        )
+
+# ########################################################################### #
+# ############################ Max ########################################## #
+# ########################################################################### #
+
+
+class MaxMetric(BaseMetric):
+
+    def __init__(self, id, field, enabled=None, type=None, label=None,
+                 valueAxis=None, mode=None, showCircles=None):
+        self.agg_var = aggs.MaxAgg(id=str(id), field=field, enabled=enabled)
+        self.param_var = params.MaxParamSeries(
+            id=str(id), field=field, enabled=enabled, type=type, label=label,
+            valueAxis=valueAxis, mode=mode, showCircles=showCircles
+        )
+
+# ########################################################################### #
+# ############################ Median ####################################### #
+# ########################################################################### #
+
+
+class MedianMetric(BaseMetric):
+
+    def __init__(self, id, field, enabled=None, type=None, label=None,
+                 valueAxis=None, mode=None, showCircles=None):
+        self.agg_var = aggs.MedianAgg(id=str(id), field=field, enabled=enabled)
+        self.param_var = params.MedianParamSeries(
+            id=str(id), field=field, enabled=enabled, type=type, label=label,
+            valueAxis=valueAxis, mode=mode, showCircles=showCircles
+        )
+
+# ########################################################################### #
+# ############################ Min ########################################## #
+# ########################################################################### #
+
+
+class MinMetric(BaseMetric):
+
+    def __init__(self, id, field, enabled=None, type=None, label=None,
+                 valueAxis=None, mode=None, showCircles=None):
+        self.agg_var = aggs.MinAgg(id=str(id), field=field, enabled=enabled)
+        self.param_var = params.MinParamSeries(
+            id=str(id), field=field, enabled=enabled, type=type, label=label,
+            valueAxis=valueAxis, mode=mode, showCircles=showCircles
+        )
+
+# ########################################################################### #
+# ############################ Percentile Ranks ############################# #
+# ########################################################################### #
+
+
+class PercentileRanksMetric(BaseMetric):
+
+    def __init__(self, id, field, percentile_ranks, enabled=None, type=None,
+                 label=None, valueAxis=None, mode=None, showCircles=None):
+        self.agg_var = aggs.PercentileRanksAgg(
+            id=str(id), field=field, percentile_ranks=percentile_ranks,
+            enabled=enabled
+        )
+        self.param_var = params.PercentileRanksParamSeries(
+            id=str(id), field=field, enabled=enabled, type=type, label=label,
+            valueAxis=valueAxis, mode=mode, showCircles=showCircles
+        )
+
+# ########################################################################### #
+# ############################ Percentiles ################################## #
+# ########################################################################### #
+
+
+class PercentilesMetric(BaseMetric):
+
+    def __init__(self, id, field, percents=None, enabled=None, type=None,
+                 label=None, valueAxis=None, mode=None, showCircles=None):
+        self.agg_var = aggs.PercentilesAgg(
+            id=str(id), field=field, percents=percents, enabled=enabled
+        )
+        self.param_var = params.PercentilesParamSeries(
+            id=str(id), field=field, enabled=enabled, type=type, label=label,
+            valueAxis=valueAxis, mode=mode, showCircles=showCircles
+        )
+
+# ########################################################################### #
+# ############################ Standard Deviation ########################### #
+# ########################################################################### #
+
+
+class StandardDeviationMetric(BaseMetric):
+
+    def __init__(self, id, field, enabled=None, type=None,
+                 label=None, valueAxis=None, mode=None, showCircles=None):
+        self.agg_var = aggs.StandardDeviationAgg(
+            id=str(id), field=field, enabled=enabled
+        )
+        self.param_var = params.StandardDeviationParamSeries(
+            id=str(id), field=field, enabled=enabled, type=type, label=label,
+            valueAxis=valueAxis, mode=mode, showCircles=showCircles
+        )
+
+# ########################################################################### #
+# ############################ Sum ########################################## #
+# ########################################################################### #
+
+
+class SumMetric(BaseMetric):
+
+    def __init__(self, id, field, enabled=None, type=None,
+                 label=None, valueAxis=None, mode=None, showCircles=None):
+        self.agg_var = aggs.SumAgg(
+            id=str(id), field=field, enabled=enabled
+        )
+        self.param_var = params.SumParamSeries(
+            id=str(id), field=field, enabled=enabled, type=type, label=label,
+            valueAxis=valueAxis, mode=mode, showCircles=showCircles
+        )
+
+# ########################################################################### #
+# ############################ Top Hits ##################################### #
+# ########################################################################### #
+
+
+class TopHitsMetric(BaseMetric):
+
+    def __init__(self, id, field, aggregate_with, size, sort_order, sort_field,
+                 enabled=None, type=None, label=None, valueAxis=None,
+                 mode=None, showCircles=None):
+        self.agg_var = aggs.TopHitsAgg(
+            id=str(id), field=field, aggregate_with=aggregate_with, size=size,
+            sort_order=sort_order, sort_field=sort_field, enabled=enabled
+        )
+        self.param_var = params.TopHitsParamSeries(
+            id=str(id), field=field, enabled=enabled, type=type, label=label,
+            valueAxis=valueAxis, mode=mode, showCircles=showCircles
+        )
+
+# ########################################################################### #
+# ############################ Unique Count ################################# #
+# ########################################################################### #
+
+
+class UniqueCountMetric(BaseMetric):
+
+    def __init__(self, id, field, enabled=None, type=None,
+                 label=None, valueAxis=None, mode=None, showCircles=None):
+        self.agg_var = aggs.UniqueCountAgg(
+            id=str(id), field=field, enabled=enabled
+        )
+        self.param_var = params.UniqueCountParamSeries(
+            id=str(id), field=field, enabled=enabled, type=type, label=label,
             valueAxis=valueAxis, mode=mode, showCircles=showCircles
         )

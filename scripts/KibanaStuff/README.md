@@ -68,15 +68,15 @@ This is kinda similar to metrics but one layer above and has no general instruct
 | --------------------- | ------------ |
 | Average               | Yes          |
 | Count                 | Yes          |
-| Max                   |              |
-| Median                |              |
-| Min                   |              |
-| PercentileRanks       |              |
-| Percentiles           |              |
-| StandardDeviation     |              |
-| Sum                   |              |
-| TopHits               |              |
-| UniqueCount           |              |
+| Max                   | Yes          |
+| Median                | Yes          |
+| Min                   | Yes          |
+| PercentileRanks       | Yes          |
+| Percentiles           | Yes          |
+| StandardDeviation     | Yes          |
+| Sum                   | Yes          |
+| TopHits               | Yes          |
+| UniqueCount           | Yes          |
 | DotSize (kind of)     |              |
 
 > DotSize (kind of)
@@ -92,14 +92,15 @@ This is kinda similar to metrics but one layer above and has no general instruct
 | Name                  | Implemented? |
 | --------------------- | ------------ |
 | Metric                | Yes          |
+| Pie                   |              |
 | Horizontal Bar        |              |
 | Vertical Bar          |              |
-| Pie                   |              |
+| Area                  | Yes          |
 | Line                  |              |
 | Data Table            |              |
 | Goal                  |              |
 | Gauge                 |              |
-| Area                  | Yes          |
+| --------------------- | ------------ |
 | Heat Map              |              |
 | Markdown              |              |
 | Tag Cloud             |              |
