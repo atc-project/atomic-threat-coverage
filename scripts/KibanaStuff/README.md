@@ -4,30 +4,30 @@
 2. Export JSON file
 3. Create metric visualisation using script, export JSON file and do diff
     ```
-from visualisation import MetricVisualisation
+    from visualisation import MetricVisualisation
 
-t = MetricVisualisation("Metric vis")
-t.set_index_search(index_name="logstash*")
+    t = MetricVisualisation("Metric vis")
+    t.set_index_search(index_name="logstash*")
 
-with open("test.json", "w+") as f:
-    f.write(t.json_export())
-```
+    with open("test.json", "w+") as f:
+        f.write(t.json_export())
+    ```
 4. Depending on the metric, use according agg and param series (for Max metric, use MaxAgg and MaxParamSeries, etc)
 5. You only should overwrite `__init__` method
 6. Once implemented, test your metric. Use `metric_id` when providing `id` metric param. When adding metric, add other required attributes accordingly (in the below example, only id is required).
     ```
-from visualisation import MetricVisualisation
-from metrics import YourMetric
+    from visualisation import MetricVisualisation
+    from metrics import YourMetric
 
-t = MetricVisualisation("Metric vis")
-t.set_index_search(index_name="logstash*")
-t.add_metric(YourMetric(t.metric_id))
-# Or this way
-# t.add_metric(YourMetric(id=t.metric_id))
+    t = MetricVisualisation("Metric vis")
+    t.set_index_search(index_name="logstash*")
+    t.add_metric(YourMetric(t.metric_id))
+    # Or this way
+    # t.add_metric(YourMetric(id=t.metric_id))
 
-with open("test.json", "w+") as f:
-    f.write(t.json_export())
-```
+    with open("test.json", "w+") as f:
+        f.write(t.json_export())
+    ```
 
 # General workflow - visualisation
 
