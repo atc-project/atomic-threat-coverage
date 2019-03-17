@@ -71,7 +71,7 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
         )
 
     def validate(self):
-        supported_vis = ["area", "metric"]
+        supported_vis = ["area", "metric", "pie"]
         if self._meta_data_set and super().validate() \
                 and self.visualization.visState.type in supported_vis:
             return True
@@ -143,7 +143,7 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
             _id = self.search_id_of_title_by_type(
                 search_type="search", search_title=saved_search_name
             )
-            self.visualization.savedSearchId = _id
+        self.visualization.savedSearchId = _id
         self.visualization.kibanaSavedObjectMeta["searchSourceJSON"] = \
             ("{\"query\":{\"query\":\"\",\"language\"" +
              ":\"lucene\"},\"filter\":[]}")
@@ -172,3 +172,64 @@ class MetricVisualisation(BaseKibanaVisualizationDoc):
     def __init__(self, title):
 
         super().__init__(title=title, type="metric")
+
+# ########################################################################### #
+# ############################ Pie Visualisation ############################ #
+# ########################################################################### #
+
+
+class PieKibanaParams(base.BaseKibanaParams):
+    """Pie Kibana Params"""
+
+    def __init__(self, type=None, grid=None, categoryAxes=None, valueAxes=None,
+                 seriesParams=None, addTooltip=None, addLegend=None,
+                 legendPosition=None, times=None, addTimeMarker=None,
+                 isDonut=None, labels_show=None, labels_values=None,
+                 labels_last_level=None, labels_truncate=None):
+
+        super().__init__(
+            type=type, grid=grid, categoryAxes=categoryAxes,
+            valueAxes=valueAxes, seriesParams=seriesParams,
+            addTooltip=addTooltip, addLegend=addLegend,
+            legendPosition=legendPosition, times=times,
+            addTimeMarker=addTimeMarker)
+
+        self.isDonut = True
+        self.labels = dict()
+
+        if isDonut:
+            self.isDonut = isDonut
+
+        if not labels_show:
+            self.labels["show"] = False
+        else:
+            self.labels["show"] = labels_show
+
+        if not labels_values:
+            self.labels["values"] = True
+        else:
+            self.labels["values"] = labels_values
+
+        if not labels_last_level:
+            self.labels["last_level"] = True
+        else:
+            self.labels["last_level"] = labels_last_level
+
+        if not labels_truncate:
+            self.labels["truncate"] = 100
+        else:
+            self.labels["truncate"] = labels_truncate
+
+
+class PieVisualisation(BaseKibanaVisualizationDoc):
+
+    def __init__(self, title):
+
+        super().__init__(title=title, type="pie")
+        self.visualization.visState.params = PieKibanaParams(type="pie")
+
+    def split_slices(self, sub_bucket):
+        if not issubclass(sub_bucket.__class__, BaseMetric):
+            raise Exception("Are you trying to add non-metric?")
+        self.visualization.visState.aggs.append(sub_bucket.agg())
+        self.metric_id += 1

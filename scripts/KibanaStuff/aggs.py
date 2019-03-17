@@ -213,3 +213,21 @@ class DotSizeAgg(BaseKibanaAgg):
         # TODO: Write custom validate
         # (validate field based on given aggregation type)
         return super().validate()
+
+
+class SplitSlicesTermsAgg(BaseKibanaAgg):
+
+    def __init__(self, id, field, size, order=None, order_by=None,
+                 other_bucket=None, other_bucket_label=None,
+                 missing_bucket=None, missing_bucket_label=None,
+                 enabled=None):
+
+        super().__init__(
+            id=id, enabled=enabled, params={
+                "field": field
+            }, schema="metric", type="cardinality"
+        )
+
+    def validate(self):
+        # TODO: Write custom validate (check if field exists in elastic)
+        return super().validate()
