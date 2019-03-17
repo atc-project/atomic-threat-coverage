@@ -28,6 +28,7 @@
     with open("test.json", "w+") as f:
         f.write(t.json_export())
     ```
+7. Not only import the JSON file but **open** the visualisation itself. Successful import doesn't mean that it will show anything in the visualisation!
 
 # General workflow - visualisation
 
