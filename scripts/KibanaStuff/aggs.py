@@ -158,6 +158,11 @@ sort_order - can be asc or dsc
 
     def validate(self):
         # TODO: Write custom validate (validate every required field)
+        """
+        sort_order - either `asc` or `desc`
+        size - int positive number
+        aggregate_with - ["average", "concat", "min", "max", "sum"]
+"""
         return super().validate()
 
 
