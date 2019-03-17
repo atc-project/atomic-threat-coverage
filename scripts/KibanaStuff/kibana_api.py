@@ -27,7 +27,7 @@ class Visualizations(KibanaBaseModel):
 
 
 class Dashboards(KibanaBaseModel):
-    """Simple visualization class"""
+    """Simple dashboard class"""
 
     def __init__(self, rdata):
         super().__init__(rdata)
