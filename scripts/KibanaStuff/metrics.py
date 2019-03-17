@@ -11,20 +11,14 @@ import params
 class BaseMetric:
 
     def __init__(self, id):
-        self.agg = None
-        self.param = None
+        self.agg_var = None
+        self.param_var = None
 
-    def json_agg(self):
-        pass
+    def agg(self):
+        return self.agg_var()
 
-    def json_series_params(self):
-        pass
-
-    def dict_agg(self):
-        pass
-
-    def dict_series_params(self):
-        pass
+    def param(self):
+        return self.param_var()
 
 # ########################################################################### #
 # ############################ Area ######################################### #
@@ -44,12 +38,6 @@ class AverageMetric(BaseMetric):
             showCircles=showCircles
         )
 
-    def agg(self):
-        return self.agg_var()
-
-    def param(self):
-        return self.param_var()
-
 # ########################################################################### #
 # ############################ Count ######################################## #
 # ########################################################################### #
@@ -65,9 +53,3 @@ class CountMetric(BaseMetric):
             id=str(id), enabled=enabled, type=type, label=label,
             valueAxis=valueAxis, mode=mode, showCircles=showCircles
         )
-
-    def agg(self):
-        return self.agg_var()
-
-    def param(self):
-        return self.param_var()
