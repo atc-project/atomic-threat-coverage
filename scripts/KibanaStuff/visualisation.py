@@ -26,10 +26,7 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
             title=title, type=type)
         self.visualization.visState.params = base.BaseKibanaParams(type=type)
 
-        self.some_defaults()
-
-    def some_defaults(self):
-
+    def default_axis(self):
         # TODO: Make class for that as well as proper handling in the code
         self.visualization.visState.params.valueAxes.append({
             "id": "ValueAxis-1",
@@ -162,6 +159,7 @@ class AreaVisualisation(BaseKibanaVisualizationDoc):
     def __init__(self, title):
 
         super().__init__(title=title, type="area")
+        self.default_axis()
 
 
 # ########################################################################### #
