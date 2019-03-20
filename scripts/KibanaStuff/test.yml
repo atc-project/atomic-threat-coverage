@@ -1,9 +1,10 @@
 type: visualization
-name: pie
-title: My Pie Vis created via YAML file
+name: metric
+title: Count vis
 index_name: logstash*
 options:
   add_metric:
     - count
     - average:
         field: port
+        enabled: False
