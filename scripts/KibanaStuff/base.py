@@ -125,19 +125,19 @@ class BaseKibanaAgg(BaseKibana):
         self.schema = str()
         self.params = dict()
 
-        if id:
+        if id is not None:
             self.id = id
 
-        if enabled:
+        if enabled is not None:
             self.enabled = enabled
 
-        if type:
+        if type is not None:
             self.type = type
 
-        if schema:
+        if schema is not None:
             self.schema = schema  # propably 'metric'
 
-        if params:
+        if params is not None:
             self.params = params
 
     def validate(self):
@@ -168,28 +168,28 @@ class BaseKibanaSeriesParams(BaseKibana):
         self.valueAxis = str()
         self.interpolate = str()
 
-        if data:
+        if data is not None:
             self.data = data
 
-        if drawLinesBetweenPoints:
+        if drawLinesBetweenPoints is not None:
             self.drawLinesBetweenPoints = drawLinesBetweenPoints
 
-        if mode:
+        if mode is not None:
             self.mode = mode
 
-        if show:
+        if show is not None:
             self.show = show
 
-        if showCircles:
+        if showCircles is not None:
             self.showCircles = showCircles
 
-        if type:
+        if type is not None:
             self.type = type
 
-        if valueAxis:
+        if valueAxis is not None:
             self.valueAxis = valueAxis
 
-        if interpolate:
+        if interpolate is not None:
             self.interpolate = interpolate
 
     def validate(self):
