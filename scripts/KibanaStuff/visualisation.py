@@ -85,7 +85,7 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
         self.visualization.visState.params.seriesParams.append(metric.param())
         self.metric_id += 1
 
-    def json_export(self):
+    def json_export(self, return_dict=False):
         """visState has to be a string with escaped doublequotes"""
         if self.validate():
             # self.updated_at = datetime.datetime.today().isoformat() + "Z"
@@ -100,7 +100,10 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
             tmp_dictionary.pop("updated_at", None)
             tmp_dictionary.pop("_meta_data_set", None)
             tmp_dictionary["_source"] = tmp_dictionary.pop("visualization")
-            return json.dumps(tmp_dictionary)
+            if return_dict:
+                return tmp_dictionary
+            else:
+                return json.dumps(tmp_dictionary)
         else:
             raise Exception("Data validation failed")
 

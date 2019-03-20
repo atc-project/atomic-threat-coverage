@@ -4,6 +4,7 @@ import yaml
 import visualisation
 import metrics
 import argparse
+import json
 
 """
 type: 1
@@ -51,7 +52,7 @@ class YamlHandler:
 
         self.iter_over_yamls()
         with open(output_file, 'w') as f:
-            f.write(self._results)
+            json.dump(self._results, f)
 
     def iter_over_yamls(self):
         for yaml_document in self.yamls:
@@ -115,6 +116,7 @@ class YamlHandler:
 
         if _options:
             for option in _options:
+                _metric = None
                 if isinstance(option, str):
                     if option in self._general_metrics:
                         _metric = self.handle_metric(_vis.metric_id, option)
@@ -126,11 +128,9 @@ class YamlHandler:
                             _vis.metric_id, _option_metric_name,
                             args=option[_option_metric_name]
                         )
-                else:
-                    _metric = None
                 if _metric:
                     _vis.add_metric(_metric)
-        self._results.append(_vis.json_export())
+        self._results.append(_vis.json_export(return_dict=True))
 
     def handle_metric(self, id, metric_name, args=None):
         if metric_name not in self._general_metrics:
