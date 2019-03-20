@@ -100,7 +100,7 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
             tmp_dictionary.pop("updated_at", None)
             tmp_dictionary.pop("_meta_data_set", None)
             tmp_dictionary["_source"] = tmp_dictionary.pop("visualization")
-            return json.dumps([tmp_dictionary])
+            return json.dumps(tmp_dictionary)
         else:
             raise Exception("Data validation failed")
 
