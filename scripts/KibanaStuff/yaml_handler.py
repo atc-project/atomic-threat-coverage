@@ -72,6 +72,15 @@ class YamlHandler:
     def visualization(self, yaml_document):
         self._name = yaml_document.get('name')
         _title = yaml_document.get('title')
+        _saved_search_id = yaml_document.get('saved_search_id')
+        _saved_search_name = yaml_document.get('saved_search_name')
+        _index_name = yaml_document.get('index_name')
+        if not _saved_search_id and not _saved_search_name and not _index_name:
+            raise Exception("""Provide one of these:
+  * saved_search_id
+  * saved_search_name
+  * index_name
+""")
         _options = yaml_document.get('options')
         if not _title:
             raise Exception("No title defined")
@@ -92,8 +101,19 @@ class YamlHandler:
             _vis = visualisation.PieVisualisation(title=_title)
         else:
             _vis = None
+        if not _vis:
+            raise Exception("Unsupported or invalid visualisation")
 
-        if _vis and _options:
+        if _saved_search_name:
+            _vis.set_saved_search(saved_search_name=_saved_search_name)
+
+        if _saved_search_id:
+            _vis.set_saved_search(saved_search_id=_saved_search_id)
+
+        if _index_name:
+            _vis.set_index_search(_index_name)
+
+        if _options:
             for option in _options:
                 if isinstance(option, str):
                     if option in self._general_metrics:
@@ -216,8 +236,8 @@ class YamlHandler:
 
 def main():
     parser = argparse.ArgumentParser(description='Visualizations')
-    parser.add_argument('-i', help="input file location")
-    parser.add_argument('-o', help="output file location")
+    parser.add_argument('-i', help="input file location", required=True)
+    parser.add_argument('-o', help="output file location", required=True)
 
     args = parser.parse_args()
 
