@@ -116,20 +116,24 @@ class YamlHandler:
 
         if _options:
             for option in _options:
-                _metric = None
-                if isinstance(option, str):
-                    if option in self._general_metrics:
-                        _metric = self.handle_metric(_vis.metric_id, option)
-                elif isinstance(option, dict):
-                    if option in self._general_metrics\
-                            and len(option) == 1:
-                        _option_metric_name = [x for x in option][0]
-                        _metric = self.handle_metric(
-                            _vis.metric_id, _option_metric_name,
-                            args=option[_option_metric_name]
-                        )
-                if _metric:
-                    _vis.add_metric(_metric)
+                if option not in self._options:
+                    raise Exception("Not known option")
+                if option == "add_metric":
+                    for option_val in _options[option]:
+                        _metric = None
+                        if isinstance(option_val, str):
+                            _metric = self.handle_metric(
+                                _vis.metric_id, option_val
+                            )
+                        elif isinstance(option_val, dict)\
+                                and len(option_val) == 1:
+                            _option_metric_name = [x for x in option_val][0]
+                            _metric = self.handle_metric(
+                                _vis.metric_id, _option_metric_name,
+                                args=option_val[_option_metric_name]
+                            )
+                        if _metric:
+                            _vis.add_metric(_metric)
         self._results.append(_vis.json_export(return_dict=True))
 
     def handle_metric(self, id, metric_name, args=None):
@@ -142,10 +146,10 @@ class YamlHandler:
             if not args.get("field"):
                 raise Exception("field required")
 
-            return metrics.AverageMetric(id, args.get("field"))
+            return metrics.AverageMetric(id, args.get("field"), args=args)
 
         elif metric_name == "count":
-            return metrics.CountMetric(id)
+            return metrics.CountMetric(id, args)
 
         elif metric_name == "max":
             if not args:
@@ -153,7 +157,7 @@ class YamlHandler:
             if not args.get("field"):
                 raise Exception("field required")
 
-            return metrics.MaxMetric(id, args.get('field'))
+            return metrics.MaxMetric(id, args.get('field'), args=args)
 
         elif metric_name == "median":
             if not args:
@@ -161,7 +165,7 @@ class YamlHandler:
             if not args.get("field"):
                 raise Exception("field required")
 
-            return metrics.MedianMetric(id, args.get('field'))
+            return metrics.MedianMetric(id, args.get('field'), args=args)
 
         elif metric_name == "min":
             if not args:
@@ -169,7 +173,7 @@ class YamlHandler:
             if not args.get("field"):
                 raise Exception("field required")
 
-            return metrics.MinMetric(id, args.get('field'))
+            return metrics.MinMetric(id, args.get('field'), args=args)
 
         elif metric_name == "percentile-ranks":
             if not args:
@@ -179,7 +183,9 @@ class YamlHandler:
             if not args.get('percentile_ranks'):
                 raise Exception("percentile_ranks required")
 
-            return metrics.PercentileRanksMetric(id, args.get('field'))
+            return metrics.PercentileRanksMetric(
+                id, args.get('field'), args=args
+            )
 
         elif metric_name == "percentiles":
             if not args:
@@ -187,7 +193,7 @@ class YamlHandler:
             if not args.get("field"):
                 raise Exception("field required")
 
-            return metrics.PercentilesMetric(id, args.get('field'))
+            return metrics.PercentilesMetric(id, args.get('field'), args=args)
 
         elif metric_name == "standard-deviation":
             if not args:
@@ -195,7 +201,9 @@ class YamlHandler:
             if not args.get("field"):
                 raise Exception("field required")
 
-            return metrics.StandardDeviationMetric(id, args.get('field'))
+            return metrics.StandardDeviationMetric(
+                id, args.get('field'), args=args
+            )
 
         elif metric_name == "sum":
             if not args:
@@ -203,7 +211,7 @@ class YamlHandler:
             if not args.get("field"):
                 raise Exception("field required")
 
-            return metrics.SumMetric(id, args.get('field'))
+            return metrics.SumMetric(id, args.get('field'), args=args)
 
         elif metric_name == "top-hits":
             if not args:
@@ -222,7 +230,7 @@ class YamlHandler:
             return metrics.TopHitsMetric(
                 id, args.get('field'), args.get('aggregate_with'),
                 args.get('size'), args.get('sort_order'),
-                args.get('sort_field')
+                args.get('sort_field'), args
             )
 
         elif metric_name == "unique-count":
@@ -231,7 +239,7 @@ class YamlHandler:
             if not args.get("field"):
                 raise Exception("field required")
 
-            return metrics.UniqueCountMetric(id, args.get('field'))
+            return metrics.UniqueCountMetric(id, args.get('field'), args=args)
 
 
 def main():

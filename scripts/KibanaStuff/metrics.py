@@ -20,6 +20,7 @@ class BaseMetric:
     def param(self):
         return self.param_var()
 
+
 # ########################################################################### #
 # ############################ Area ######################################### #
 # ########################################################################### #
@@ -29,7 +30,24 @@ class AverageMetric(BaseMetric):
 
     def __init__(self, id, field, enabled=None, type=None, label=None,
                  valueAxis=None, interpolate=None, mode=None,
-                 showCircles=None):
+                 showCircles=None, args=None):
+
+        if args:
+            if 'enabled' in args:
+                enabled = args['enabled']
+            if 'type' in args:
+                type = args['type']
+            if 'label' in args:
+                label = args['label']
+            if 'valueAxis' in args:
+                valueAxis = args['valueAxis']
+            if 'interpolate' in args:
+                interpolate = args['interpolate']
+            if 'mode' in args:
+                mode = args['mode']
+            if 'showCircles' in args:
+                showCircles = args['showCircles']
+
         self.agg_var = aggs.AverageAgg(id=str(id), field=field,
                                        enabled=enabled)
         self.param_var = params.AverageParamSeries(
@@ -46,7 +64,22 @@ class AverageMetric(BaseMetric):
 class CountMetric(BaseMetric):
 
     def __init__(self, id, enabled=None, type=None, label=None,
-                 valueAxis=None, mode=None, showCircles=None):
+                 valueAxis=None, mode=None, showCircles=None, args=None):
+
+        if args:
+            if 'enabled' in args:
+                enabled = args['enabled']
+            if 'type' in args:
+                type = args['type']
+            if 'label' in args:
+                label = args['label']
+            if 'valueAxis' in args:
+                valueAxis = args['valueAxis']
+            if 'mode' in args:
+                mode = args['mode']
+            if 'showCircles' in args:
+                showCircles = args['showCircles']
+
         self.agg_var = aggs.CountAgg(id=str(id), enabled=enabled)
         self.param_var = params.CountParamSeries(
             id=str(id), enabled=enabled, type=type, label=label,
@@ -61,7 +94,22 @@ class CountMetric(BaseMetric):
 class MaxMetric(BaseMetric):
 
     def __init__(self, id, field, enabled=None, type=None, label=None,
-                 valueAxis=None, mode=None, showCircles=None):
+                 valueAxis=None, mode=None, showCircles=None, args=None):
+
+        if args:
+            if 'enabled' in args:
+                enabled = args['enabled']
+            if 'type' in args:
+                type = args['type']
+            if 'label' in args:
+                label = args['label']
+            if 'valueAxis' in args:
+                valueAxis = args['valueAxis']
+            if 'mode' in args:
+                mode = args['mode']
+            if 'showCircles' in args:
+                showCircles = args['showCircles']
+
         self.agg_var = aggs.MaxAgg(id=str(id), field=field, enabled=enabled)
         self.param_var = params.MaxParamSeries(
             id=str(id), field=field, enabled=enabled, type=type, label=label,
@@ -76,7 +124,22 @@ class MaxMetric(BaseMetric):
 class MedianMetric(BaseMetric):
 
     def __init__(self, id, field, enabled=None, type=None, label=None,
-                 valueAxis=None, mode=None, showCircles=None):
+                 valueAxis=None, mode=None, showCircles=None, args=None):
+
+        if args:
+            if 'enabled' in args:
+                enabled = args['enabled']
+            if 'type' in args:
+                type = args['type']
+            if 'label' in args:
+                label = args['label']
+            if 'valueAxis' in args:
+                valueAxis = args['valueAxis']
+            if 'mode' in args:
+                mode = args['mode']
+            if 'showCircles' in args:
+                showCircles = args['showCircles']
+
         self.agg_var = aggs.MedianAgg(id=str(id), field=field, enabled=enabled)
         self.param_var = params.MedianParamSeries(
             id=str(id), field=field, enabled=enabled, type=type, label=label,
@@ -91,7 +154,22 @@ class MedianMetric(BaseMetric):
 class MinMetric(BaseMetric):
 
     def __init__(self, id, field, enabled=None, type=None, label=None,
-                 valueAxis=None, mode=None, showCircles=None):
+                 valueAxis=None, mode=None, showCircles=None, args=None):
+
+        if args:
+            if 'enabled' in args:
+                enabled = args['enabled']
+            if 'type' in args:
+                type = args['type']
+            if 'label' in args:
+                label = args['label']
+            if 'valueAxis' in args:
+                valueAxis = args['valueAxis']
+            if 'mode' in args:
+                mode = args['mode']
+            if 'showCircles' in args:
+                showCircles = args['showCircles']
+
         self.agg_var = aggs.MinAgg(id=str(id), field=field, enabled=enabled)
         self.param_var = params.MinParamSeries(
             id=str(id), field=field, enabled=enabled, type=type, label=label,
@@ -106,7 +184,25 @@ class MinMetric(BaseMetric):
 class PercentileRanksMetric(BaseMetric):
 
     def __init__(self, id, field, percentile_ranks, enabled=None, type=None,
-                 label=None, valueAxis=None, mode=None, showCircles=None):
+                 label=None, valueAxis=None, mode=None, showCircles=None,
+                 args=None):
+
+        if args:
+            if 'enabled' in args:
+                enabled = args['enabled']
+            if 'type' in args:
+                type = args['type']
+            if 'label' in args:
+                label = args['label']
+            if 'valueAxis' in args:
+                valueAxis = args['valueAxis']
+            if 'mode' in args:
+                mode = args['mode']
+            if 'showCircles' in args:
+                showCircles = args['showCircles']
+            if 'percentile_ranks' in args:
+                percentile_ranks = args['percentile_ranks']
+
         self.agg_var = aggs.PercentileRanksAgg(
             id=str(id), field=field, percentile_ranks=percentile_ranks,
             enabled=enabled
@@ -124,7 +220,25 @@ class PercentileRanksMetric(BaseMetric):
 class PercentilesMetric(BaseMetric):
 
     def __init__(self, id, field, percents=None, enabled=None, type=None,
-                 label=None, valueAxis=None, mode=None, showCircles=None):
+                 label=None, valueAxis=None, mode=None, showCircles=None,
+                 args=None):
+
+        if args:
+            if 'enabled' in args:
+                enabled = args['enabled']
+            if 'percents' in args:
+                percents = args['percents']
+            if 'type' in args:
+                type = args['type']
+            if 'label' in args:
+                label = args['label']
+            if 'valueAxis' in args:
+                valueAxis = args['valueAxis']
+            if 'mode' in args:
+                mode = args['mode']
+            if 'showCircles' in args:
+                showCircles = args['showCircles']
+
         self.agg_var = aggs.PercentilesAgg(
             id=str(id), field=field, percents=percents, enabled=enabled
         )
@@ -141,7 +255,23 @@ class PercentilesMetric(BaseMetric):
 class StandardDeviationMetric(BaseMetric):
 
     def __init__(self, id, field, enabled=None, type=None,
-                 label=None, valueAxis=None, mode=None, showCircles=None):
+                 label=None, valueAxis=None, mode=None, showCircles=None,
+                 args=None):
+
+        if args:
+            if 'enabled' in args:
+                enabled = args['enabled']
+            if 'type' in args:
+                type = args['type']
+            if 'label' in args:
+                label = args['label']
+            if 'valueAxis' in args:
+                valueAxis = args['valueAxis']
+            if 'mode' in args:
+                mode = args['mode']
+            if 'showCircles' in args:
+                showCircles = args['showCircles']
+
         self.agg_var = aggs.StandardDeviationAgg(
             id=str(id), field=field, enabled=enabled
         )
@@ -158,7 +288,23 @@ class StandardDeviationMetric(BaseMetric):
 class SumMetric(BaseMetric):
 
     def __init__(self, id, field, enabled=None, type=None,
-                 label=None, valueAxis=None, mode=None, showCircles=None):
+                 label=None, valueAxis=None, mode=None, showCircles=None,
+                 args=None):
+
+        if args:
+            if 'enabled' in args:
+                enabled = args['enabled']
+            if 'type' in args:
+                type = args['type']
+            if 'label' in args:
+                label = args['label']
+            if 'valueAxis' in args:
+                valueAxis = args['valueAxis']
+            if 'mode' in args:
+                mode = args['mode']
+            if 'showCircles' in args:
+                showCircles = args['showCircles']
+
         self.agg_var = aggs.SumAgg(
             id=str(id), field=field, enabled=enabled
         )
@@ -176,7 +322,22 @@ class TopHitsMetric(BaseMetric):
 
     def __init__(self, id, field, aggregate_with, size, sort_order, sort_field,
                  enabled=None, type=None, label=None, valueAxis=None,
-                 mode=None, showCircles=None):
+                 mode=None, showCircles=None, args=None):
+
+        if args:
+            if 'enabled' in args:
+                enabled = args['enabled']
+            if 'type' in args:
+                type = args['type']
+            if 'label' in args:
+                label = args['label']
+            if 'valueAxis' in args:
+                valueAxis = args['valueAxis']
+            if 'mode' in args:
+                mode = args['mode']
+            if 'showCircles' in args:
+                showCircles = args['showCircles']
+
         self.agg_var = aggs.TopHitsAgg(
             id=str(id), field=field, aggregate_with=aggregate_with, size=size,
             sort_order=sort_order, sort_field=sort_field, enabled=enabled
@@ -194,7 +355,22 @@ class TopHitsMetric(BaseMetric):
 class UniqueCountMetric(BaseMetric):
 
     def __init__(self, id, field, enabled=None, type=None,
-                 label=None, valueAxis=None, mode=None, showCircles=None):
+                 label=None, valueAxis=None, mode=None, showCircles=None,
+                 args=None):
+        if args:
+            if 'enabled' in args:
+                enabled = args['enabled']
+            if 'type' in args:
+                type = args['type']
+            if 'label' in args:
+                label = args['label']
+            if 'valueAxis' in args:
+                valueAxis = args['valueAxis']
+            if 'mode' in args:
+                mode = args['mode']
+            if 'showCircles' in args:
+                showCircles = args['showCircles']
+
         self.agg_var = aggs.UniqueCountAgg(
             id=str(id), field=field, enabled=enabled
         )
