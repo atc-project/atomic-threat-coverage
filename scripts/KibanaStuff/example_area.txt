@@ -1,118 +1,168 @@
-"_source": {
-  "title": "Area1",
-  "visState": "
+{
+  "title": "Pie_All",
+  "type": "pie",
+  "params": {
+    "type": "pie",
+    "addTooltip": true,
+    "addLegend": true,
+    "legendPosition": "right",
+    "isDonut": true,
+    "labels": {
+      "show": false,
+      "values": true,
+      "last_level": true,
+      "truncate": 100
+    }
+  },
+  "aggs": [
     {
-      \"title\": \"Area1\",
-      \"type\": \"line\",
-      \"params\": {
-        \"addLegend\": true,
-        \"addTimeMarker\": false,
-        \"addTooltip\": true,
-        \"categoryAxes\": [
-          {
-            \"id\": \"CategoryAxis-1\",
-            \"labels\": {
-              \"show\": true,
-              \"truncate\": 100
-            },
-            \"position\": \"bottom\",
-            \"scale\": {
-              \"type\": \"linear\"
-            },
-            \"show\": true,
-            \"style\": {},
-            \"title\": {},
-            \"type\": \"category\"
-          }
-        ],
-        \"grid\": {
-          \"categoryLines\": true,
-          \"style\": {
-            \"color\": \"#eee\"
-          },
-          \"valueAxis\": null
+      "id": "1",
+      "enabled": true,
+      "type": "count",
+      "schema": "metric",
+      "params": {}
+    },
+    {
+      "id": "2",
+      "enabled": true,
+      "type": "date_histogram",
+      "schema": "segment",
+      "params": {
+        "field": "@timestamp",
+        "timeRange": {
+          "from": "now-5y",
+          "to": "now",
+          "mode": "quick"
         },
-        \"legendPosition\": \"right\",
-        \"seriesParams\": [
+        "useNormalizedEsInterval": true,
+        "interval": "auto",
+        "time_zone": "America/Los_Angeles",
+        "drop_partials": false,
+        "customInterval": "2h",
+        "min_doc_count": 1,
+        "extended_bounds": {}
+      }
+    },
+    {
+      "id": "3",
+      "enabled": true,
+      "type": "date_range",
+      "schema": "segment",
+      "params": {
+        "field": "@timestamp",
+        "ranges": [
           {
-            \"data\": {
-              \"id\": \"1\",
-              \"label\": \"Average port\"
-            },
-            \"drawLinesBetweenPoints\": true,
-            \"mode\": \"normal\",
-            \"show\": \"true\",
-            \"showCircles\": true,
-            \"type\": \"line\",
-            \"valueAxis\": \"ValueAxis-1\",
-            \"interpolate\": \"linear\"
-          }
-        ],
-        \"times\": [],
-        \"type\": \"line\",
-        \"valueAxes\": [
-          {
-            \"id\": \"ValueAxis-1\",
-            \"labels\": {
-              \"filter\": false,
-              \"rotate\": 0,
-              \"show\": true,
-              \"truncate\": 100
-            },
-            \"name\": \"LeftAxis-1\",
-            \"position\": \"left\",
-            \"scale\": {
-              \"mode\": \"normal\",
-              \"type\": \"linear\"
-            },
-            \"show\": true,
-            \"style\": {},
-            \"title\": {
-              \"text\": \"Average port\"
-            },
-            \"type\": \"value\"
+            "from": "now-1w/w",
+            "to": "now"
           },
           {
-            \"id\": \"ValueAxis-5\",
-            \"labels\": {
-              \"filter\": false,
-              \"rotate\": 0,
-              \"show\": true,
-              \"truncate\": 100
-            },
-            \"name\": \"RightAxis-1\",
-            \"position\": \"right\",
-            \"scale\": {
-              \"mode\": \"silhouette\",
-              \"type\": \"square root\"
-            },
-            \"show\": true,
-            \"style\": {},
-            \"title\": {
-              \"text\": \"Average port\"
-            },
-            \"type\": \"value\"
+            "from": "now-1d/d",
+            "to": "now"
           }
         ]
-      },
-      \"aggs\": [
-        {
-          \"id\": \"1\",
-          \"enabled\": true,
-          \"type\": \"avg\",
-          \"schema\": \"metric\",
-          \"params\": {
-            \"field\": \"port\"
+      }
+    },
+    {
+      "id": "4",
+      "enabled": true,
+      "type": "filters",
+      "schema": "segment",
+      "params": {
+        "filters": [
+          {
+            "input": {
+              "query": "Mar"
+            },
+            "label": ""
           }
+        ]
+      }
+    },
+    {
+      "id": "5",
+      "enabled": true,
+      "type": "histogram",
+      "schema": "segment",
+      "params": {
+        "field": "port",
+        "interval": 1,
+        "extended_bounds": {}
+      }
+    },
+    {
+      "id": "6",
+      "enabled": true,
+      "type": "ip_range",
+      "schema": "segment",
+      "params": {
+        "field": "geoip.ip",
+        "ipRangeType": "fromTo",
+        "ranges": {
+          "fromTo": [
+            {
+              "from": "0.0.0.0",
+              "to": "127.255.255.255"
+            },
+            {
+              "from": "128.0.0.0",
+              "to": "191.255.255.255"
+            }
+          ],
+          "mask": [
+            {
+              "mask": "0.0.0.0/1"
+            },
+            {
+              "mask": "128.0.0.0/2"
+            }
+          ]
         }
-      ]
+      }
+    },
+    {
+      "id": "7",
+      "enabled": true,
+      "type": "range",
+      "schema": "segment",
+      "params": {
+        "field": "port",
+        "ranges": [
+          {
+            "from": 0,
+            "to": 1000
+          },
+          {
+            "from": 1000,
+            "to": 2000
+          }
+        ]
+      }
+    },
+    {
+      "id": "8",
+      "enabled": true,
+      "type": "significant_terms",
+      "schema": "segment",
+      "params": {
+        "field": "host.keyword",
+        "size": 1
+      }
+    },
+    {
+      "id": "9",
+      "enabled": true,
+      "type": "terms",
+      "schema": "segment",
+      "params": {
+        "field": "port",
+        "size": 5,
+        "order": "desc",
+        "orderBy": "1",
+        "otherBucket": false,
+        "otherBucketLabel": "Other",
+        "missingBucket": false,
+        "missingBucketLabel": "Missing"
+      }
     }
-  ",
-  "uiStateJSON": "{}",
-  "description": "",
-  "savedSearchId": "fed72e90-4251-11e9-8146-8d8c924c8dc2",
-  "version": 1,
-  "kibanaSavedObjectMeta": {
-    "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"lucene\"},\"filter\":[]}"
-  }
+  ]
 }
