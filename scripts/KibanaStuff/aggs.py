@@ -6,6 +6,15 @@ from base import BaseKibanaAgg
 # ############################ Aggs ######################################### #
 # ########################################################################### #
 
+#
+# 1. Metrics
+# 2. Buckets
+#
+
+# ########################################################################### #
+# ############################ Metrics ###################################### #
+# ########################################################################### #
+
 
 class AverageAgg(BaseKibanaAgg):
 
@@ -226,6 +235,39 @@ class SplitSlicesTermsAgg(BaseKibanaAgg):
             id=id, enabled=enabled, params={
                 "field": field
             }, schema="metric", type="cardinality"
+        )
+
+    def validate(self):
+        # TODO: Write custom validate (check if field exists in elastic)
+        return super().validate()
+
+# ########################################################################### #
+# ############################ Buckets ###################################### #
+# ########################################################################### #
+
+
+class DateHistogramAgg(BaseKibanaAgg):
+
+    def __init__(self, id, field, time_range_from, time_range_to,
+                 time_range_mode, drop_partial_buckets=False,
+                 time_zone="America/Los_Angeles", enabled=None):
+
+        super().__init__(
+            id=id, enabled=enabled, params={
+                "field": field,
+                "timeRange": {
+                    "from": time_range_from,
+                    "to": time_range_to,
+                    "mode": time_range_mode
+                },
+                "useNormalizedEsInterval": True,
+                "interval": "auto",
+                "time_zone": time_zone,
+                "drop_partials": drop_partial_buckets,
+                "customInterval": "2h",
+                "min_doc_count": 1,
+                "extended_bounds": {}
+            }, schema="segment", type="date_histogram"
         )
 
     def validate(self):

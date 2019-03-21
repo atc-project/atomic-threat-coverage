@@ -141,6 +141,11 @@ class YamlHandler:
             raise Exception("Metric not supported")
 
         if metric_name == "average":
+            if not self.allowed_metrics(type="metric", name=metric_name,
+                                        visualisation_name=self._name):
+                raise Exception(
+                    "This metric is not allowed in given visualisation"
+                )
             if not args:
                 raise Exception("Args required for average metric")
             if not args.get("field"):
@@ -149,9 +154,19 @@ class YamlHandler:
             return metrics.AverageMetric(id, args.get("field"), args=args)
 
         elif metric_name == "count":
+            if not self.allowed_metrics(type="metric", name=metric_name,
+                                        visualisation_name=self._name):
+                raise Exception(
+                    "This metric is not allowed in given visualisation"
+                )
             return metrics.CountMetric(id, args)
 
         elif metric_name == "max":
+            if not self.allowed_metrics(type="metric", name=metric_name,
+                                        visualisation_name=self._name):
+                raise Exception(
+                    "This metric is not allowed in given visualisation"
+                )
             if not args:
                 raise Exception("Args required for max metric")
             if not args.get("field"):
@@ -160,6 +175,11 @@ class YamlHandler:
             return metrics.MaxMetric(id, args.get('field'), args=args)
 
         elif metric_name == "median":
+            if not self.allowed_metrics(type="metric", name=metric_name,
+                                        visualisation_name=self._name):
+                raise Exception(
+                    "This metric is not allowed in given visualisation"
+                )
             if not args:
                 raise Exception("Args required for median metric")
             if not args.get("field"):
@@ -168,6 +188,11 @@ class YamlHandler:
             return metrics.MedianMetric(id, args.get('field'), args=args)
 
         elif metric_name == "min":
+            if not self.allowed_metrics(type="metric", name=metric_name,
+                                        visualisation_name=self._name):
+                raise Exception(
+                    "This metric is not allowed in given visualisation"
+                )
             if not args:
                 raise Exception("Args required for min metric")
             if not args.get("field"):
@@ -176,6 +201,11 @@ class YamlHandler:
             return metrics.MinMetric(id, args.get('field'), args=args)
 
         elif metric_name == "percentile-ranks":
+            if not self.allowed_metrics(type="metric", name=metric_name,
+                                        visualisation_name=self._name):
+                raise Exception(
+                    "This metric is not allowed in given visualisation"
+                )
             if not args:
                 raise Exception("Args required for percentile-ranks metric")
             if not args.get("field"):
@@ -188,6 +218,11 @@ class YamlHandler:
             )
 
         elif metric_name == "percentiles":
+            if not self.allowed_metrics(type="metric", name=metric_name,
+                                        visualisation_name=self._name):
+                raise Exception(
+                    "This metric is not allowed in given visualisation"
+                )
             if not args:
                 raise Exception("Args required for percentiles metric")
             if not args.get("field"):
@@ -196,6 +231,11 @@ class YamlHandler:
             return metrics.PercentilesMetric(id, args.get('field'), args=args)
 
         elif metric_name == "standard-deviation":
+            if not self.allowed_metrics(type="metric", name=metric_name,
+                                        visualisation_name=self._name):
+                raise Exception(
+                    "This metric is not allowed in given visualisation"
+                )
             if not args:
                 raise Exception("Args required for standard-deviation metric")
             if not args.get("field"):
@@ -206,6 +246,11 @@ class YamlHandler:
             )
 
         elif metric_name == "sum":
+            if not self.allowed_metrics(type="metric", name=metric_name,
+                                        visualisation_name=self._name):
+                raise Exception(
+                    "This metric is not allowed in given visualisation"
+                )
             if not args:
                 raise Exception("Args required for sum metric")
             if not args.get("field"):
@@ -214,6 +259,11 @@ class YamlHandler:
             return metrics.SumMetric(id, args.get('field'), args=args)
 
         elif metric_name == "top-hits":
+            if not self.allowed_metrics(type="metric", name=metric_name,
+                                        visualisation_name=self._name):
+                raise Exception(
+                    "This metric is not allowed in given visualisation"
+                )
             if not args:
                 raise Exception("Args required for top-hits metric")
             if not args.get("field"):
@@ -234,12 +284,56 @@ class YamlHandler:
             )
 
         elif metric_name == "unique-count":
+            if not self.allowed_metrics(type="metric", name=metric_name,
+                                        visualisation_name=self._name):
+                raise Exception(
+                    "This metric is not allowed in given visualisation"
+                )
             if not args:
                 raise Exception("Args required for unique-count metric")
             if not args.get("field"):
                 raise Exception("field required")
 
             return metrics.UniqueCountMetric(id, args.get('field'), args=args)
+
+    def allowed_metrics(self, type, name, visualisation_name):
+        dictionary_metrics = {
+            "pie": ["count", "sum", "top-hits", "unique-count"],
+            "metric": ["average", "count", "max", "min", "median",
+                       "percentile-ranks", "percentiles", "sum",
+                       "top-hits", "unique-count"],
+            "area": ["average", "count", "max", "min", "median",
+                     "percentile-ranks", "percentiles", "sum",
+                     "top-hits", "unique-count"],
+        }
+        dictionary_buckets = {
+            "pie": [
+                "date_histogram", "date_range", "filters", "histogram",
+                "ip_range", "range", "significant_terms", "terms"
+            ],
+        }
+        if type.lower() in ["metric", "metrics"]:
+            if visualisation_name not in dictionary_metrics.keys():
+                raise Exception(
+                    "Unable to check if metric is allowed in given " +
+                    "visualisation due to unsupported visualisation " +
+                    "(%s)." % visualisation_name + "Available visualisations" +
+                    ": %s" % ", ".join(self._visualizations)
+                )
+            if name in dictionary_metrics.get(visualisation_name):
+                return True
+            return False
+        elif type.lower() in ["bucket", "buckets"]:
+            if visualisation_name not in dictionary_buckets.keys():
+                raise Exception(
+                    "Unable to check if bucket is allowed in given " +
+                    "visualisation due to unsupported visualisation " +
+                    "(%s)." % visualisation_name + "Available visualisations" +
+                    ": %s" % ", ".join(self._visualizations)
+                )
+            if name in dictionary_buckets.get(visualisation_name):
+                return True
+            return False
 
 
 def main():

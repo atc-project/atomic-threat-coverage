@@ -92,7 +92,7 @@ This is kinda similar to metrics but one layer above and has no general instruct
 | Name                  | Implemented? |
 | --------------------- | ------------ |
 | Metric                | Yes          |
-| Pie                   |              |
+| Pie                   | Kind of      |
 | Horizontal Bar        |              |
 | Vertical Bar          |              |
 | Area                  | Yes          |
