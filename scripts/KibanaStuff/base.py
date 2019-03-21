@@ -328,6 +328,71 @@ class BaseKibanaVisualizationObject(BaseKibana):
         return str(self.__call__())
 
 
+class BasePanelsJson(BaseKibana):
+    """Base panelsJSON"""
+
+    def __init__(self):
+        self.embeddableConfig = dict()
+        self.gridData = dict()
+        self.id = str()
+        self.panelIndex = str()
+        self.type = str()
+        self.version = str()
+
+    def validate(self):
+        # TODO: Write validate method
+        return True
+
+    def __call__(self):
+        if self.validate():
+            return self.__dict__
+
+    def __repr__(self):
+        return str(self.__call__())
+
+
+class BaseGridData(BaseKibana):
+    """Base gridData"""
+
+    def __init__(self):
+        self.w = 0
+        self.h = 0
+        self.x = 0
+        self.y = 0
+        self.i = str()
+
+    def validate(self):
+        # TODO: Write validate method
+        return True
+
+    def __call__(self):
+        if self.validate():
+            return self.__dict__
+
+    def __repr__(self):
+        return str(self.__call__())
+
+
+class BaseOptionsJson(BaseKibana):
+    """Base optionsJSON"""
+
+    def __init__(self):
+        self.darkTheme = bool()
+        self.hidePanelTitles = bool()
+        self.useMargins = bool()
+
+    def validate(self):
+        # TODO: Write validate method
+        return True
+
+    def __call__(self):
+        if self.validate():
+            return self.__dict__
+
+    def __repr__(self):
+        return str(self.__call__())
+
+
 class BaseKibanaDoc(BaseKibana):
     """Base Kibana Doc"""
 
