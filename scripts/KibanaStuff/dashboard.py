@@ -50,11 +50,12 @@ class KibanaDashboardObject(base.BaseKibana):
             return json.dumps(_tmp)
 
     def add_visualization(self, vis, x=0, y=0, w=0, h=0):
-        _vis = base.BasePanelsJson(vid=vis.uuid)
+        _vis = base.BasePanelsJson(vis_uuid=vis["uuid"])
         _vis.gridData.x = x
         _vis.gridData.y = y
         _vis.gridData.w = w
         _vis.gridData.h = h
+        print(type(self.panelsJSON))
         self.panelsJSON.append(_vis)
         self._id += 1
 

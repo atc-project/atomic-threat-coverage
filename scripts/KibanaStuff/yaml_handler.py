@@ -62,6 +62,7 @@ class YamlHandler:
 
     def iter_over_yamls(self):
         for yaml_document in self.yamls:
+            print(yaml_document)
             _type = yaml_document.get('type')
             if not _type:
                 raise Exception("Type not defined")
@@ -163,16 +164,16 @@ class YamlHandler:
           "searchSourceJSON": "{\"query\":{\"query\":\"\"," +
             "\"language\":\"lucene\"},\"filter\":[]}"
         }
-        _dashboard.panelsJSON = base.BasePanelsJson()
-        _dashboard.panelsJSON.gridData = base.BaseGridData()
-        _dashboard.optionsJSON = base.BaseOptionsJson()
+        # _dashboard.panelsJSON = base.BasePanelsJson()
+        # _dashboard.panelsJSON.gridData = base.BaseGridData()
+        # _dashboard.optionsJSON = base.BaseOptionsJson()
 
         visualization_objects_list = self.load_yamls("/tmp/atomic-threat-coverage/scripts/KibanaStuff/visualizations/")
 
         for visualization in visualization_objects_list:
-            if visualization not in _dashboard.visualization:
+            if visualization['title'] not in yaml_document.get('visualizations'):
                 continue
-            self.visualization(visualization)
+            # self.visualization(visualization)
             _dashboard.add_visualization(visualization)
         self._results.append(_dashboard.json_export(return_dict=True))
 
@@ -392,7 +393,12 @@ class YamlHandler:
             try:
                 with open(yaml_item, 'r') as f:
                     _ = yaml.load_all(f.read())
-                    print(_)
+                    _ = [x for x in _]
+                    if len(_) > 1:
+                        _ = _[0]
+                        _['additions'] = _[1:]
+                    else:
+                        _ = _[0]
                     _["uuid"] = uuid.uuid4()
                     result.append(_)
             except ScannerError:
