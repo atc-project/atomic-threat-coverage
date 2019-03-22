@@ -7,6 +7,7 @@ import argparse
 import json
 import dashboard
 import base
+import uuid
 
 from os import listdir
 from os.path import isfile, join
@@ -387,14 +388,15 @@ class YamlHandler:
 
         result = []
 
-        for yaml in yamls:
+        for yaml_item in yamls:
             try:
-                print(yaml)
-                _ = yaml.load_all(yaml)
-                _["uuid"] = uuid.uuid4()
-                result.append(_)
+                with open(yaml_item, 'r') as f:
+                    _ = yaml.load_all(f.read())
+                    print(_)
+                    _["uuid"] = uuid.uuid4()
+                    result.append(_)
             except ScannerError:
-                raise ScannerError('yaml is bad! %s' % yaml)
+                raise ScannerError('yaml is bad! %s' % yaml_item)
 
         return result
 
