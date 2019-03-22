@@ -328,16 +328,15 @@ class BaseKibanaVisualizationObject(BaseKibana):
         return str(self.__call__())
 
 
-class BasePanelsJson(BaseKibana):
-    """Base panelsJSON"""
+class BaseGridData(BaseKibana):
+    """Base gridData"""
 
-    def __init__(self):
-        self.embeddableConfig = dict()
-        self.gridData = dict()
-        self.id = str()
-        self.panelIndex = str()
-        self.type = str()
-        self.version = str()
+    def __init__(self, x=0, y=0, w=0, h=0, vid=1):
+        self.w = w
+        self.h = h
+        self.x = x
+        self.y = y
+        self.i = str(vid)
 
     def validate(self):
         # TODO: Write validate method
@@ -351,15 +350,23 @@ class BasePanelsJson(BaseKibana):
         return str(self.__call__())
 
 
-class BaseGridData(BaseKibana):
-    """Base gridData"""
+class BasePanelsJson(BaseKibana):
+    """Base panelsJSON"""
 
-    def __init__(self):
-        self.w = 0
-        self.h = 0
-        self.x = 0
-        self.y = 0
-        self.i = str()
+    def __init__(self, vis_uuid=None, vis_id=None, version="6.6.2", type="visualization"):
+        self.embeddableConfig = dict()
+        self.gridData = BaseGridData()
+        self.id = str()
+        self.panelIndex = str()
+        self.type = type
+        self.version = version
+
+        if vis_uuid:
+            self.id = vis_uuid
+
+        if vis_id:
+            self.panelIndex = str(vis_id)
+            self.gridData.i = str(vis_id)
 
     def validate(self):
         # TODO: Write validate method

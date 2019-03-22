@@ -5,6 +5,11 @@ import visualisation
 import metrics
 import argparse
 import json
+import dashboard
+import base
+
+from os import listdir
+from os.path import isfile, join
 
 """
 type: 1
@@ -67,10 +72,12 @@ class YamlHandler:
 
             if _type == "visualization":
                 self.visualization(yaml_document)
+            elif _type == "dashboard":
+                self.dashboard(yaml_document)
             else:
                 raise Exception("Not supported yet. Sorry!")
 
-    def visualization(self, yaml_document):
+    def visualization_f(self, yaml_document):
         self._name = yaml_document.get('name')
         _title = yaml_document.get('title')
         _saved_search_id = yaml_document.get('saved_search_id')
@@ -135,6 +142,39 @@ class YamlHandler:
                         if _metric:
                             _vis.add_metric(_metric)
         self._results.append(_vis.json_export(return_dict=True))
+
+    def dashboard(self, yaml_document):
+        if not yaml_document.get('visualizations'):
+            raise Exception("No visualizations, no sense. Provide it!")
+
+        _title = yaml_document.get('title')
+        _visualizations = yaml_document.get('visualizations')
+
+        if not _title:
+            raise Exception("Provide title")
+
+        if not isinstance(_visualizations, list):
+            raise Exception("visualizations var needs to be a list")
+
+        _dashboard = dashboard.KibanaDashboardObject()
+        _dashboard.title = _title
+        _dashboard.kibanaSavedObjectMeta = {
+          "searchSourceJSON": "{\"query\":{\"query\":\"\"," +
+            "\"language\":\"lucene\"},\"filter\":[]}"
+        }
+        _dashboard.panelsJSON = base.BasePanelsJson()
+        _dashboard.panelsJSON.gridData = base.BaseGridData()
+        _dashboard.optionsJSON = base.BaseOptionsJson()
+
+        visualization_objects_list = self.load_yamls("/tmp/atomic-threat-coverage/scripts/KibanaStuff/visualizations/")
+
+        for visualization in visualization_objects_list:
+            if visualization not in _dashboard.visualization:
+                continue
+            self.visualization(visualization)
+            _dashboard.add_visualization(visualization)
+        self._results.append(_dashboard.json_export(return_dict=True))
+
 
     def handle_metric(self, id, metric_name, args=None):
         if metric_name not in self._general_metrics:
@@ -334,6 +374,29 @@ class YamlHandler:
             if name in dictionary_buckets.get(visualisation_name):
                 return True
             return False
+
+    def load_yamls(self, path):
+        """Load multiple yamls into list"""
+
+        yamls = [
+            join(path, f) for f in listdir(path)
+            if isfile(join(path, f))
+            if f.endswith('.yaml')
+            or f.endswith('.yml')
+        ]
+
+        result = []
+
+        for yaml in yamls:
+            try:
+                print(yaml)
+                _ = yaml.load_all(yaml)
+                _["uuid"] = uuid.uuid4()
+                result.append(_)
+            except ScannerError:
+                raise ScannerError('yaml is bad! %s' % yaml)
+
+        return result
 
 
 def main():
