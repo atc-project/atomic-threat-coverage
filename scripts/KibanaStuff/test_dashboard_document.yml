@@ -1,0 +1,7 @@
+type: dashboard
+name: test dashboard
+title: test dashboard
+index_name: atc-analytics
+darktheme: True
+visualizations:
+  - Count vis

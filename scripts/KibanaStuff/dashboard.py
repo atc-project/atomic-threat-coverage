@@ -20,30 +20,47 @@ class KibanaDashboardObject(base.BaseKibana):
         self.kibanaSavedObjectMeta = dict()
         self.version = 1
         self.hits = 0
-        self._id = 1
+        #
+        # 23.03.2010
+        # no use case for that
+        # 
+        #self._id = 1
 
         if title:
             self.title = title
 
-    def validate(self):
-        # TODO: Write validate method
-        return True
+    #def validate(self):
+    #    # TODO: Write validate method
+    #    return True
 
-    def __call__(self):
-        if self.validate():
-            return self.__dict__
+    #def __call__(self):
+    #    if self.validate():
+    #        return self.__dict__
 
     def __repr__(self):
         return str(self.__call__())
 
     def json_export(self, return_dict=False):
         _tmp = {}
-        _tmp["_source"] = literal_eval(str(self.__dict__))
-        _tmp["_id"] = str(uuid.uuid4())
-        _tmp["_type"] = "dashboard"
-        _tmp.pop("_id", None)
-        _tmp["_source"]["panelsJSON"] = json.dumps(_tmp["_source"]["panelsJSON"])
-        _tmp["_source"]["optionsJSON"] = json.dumps(_tmp["_source"]["optionsJSON"])
+        test = self.__dict__
+        str_test = str(test)
+        _tmp["attributes"] = literal_eval(str_test)
+       # _tmp["attributes"] = literal_eval(str(self.__dict__))
+        _tmp["type"] = "dashboard"
+        _tmp["version"] = "1"
+        
+        # 23.03.2010
+        # temporarly changed due to wrong level of presence in final JSON and wrong value (should be uuid)
+        #_tmp.pop("_id", None)
+
+        _tmp["attributes"]["panelsJSON"] = json.dumps(_tmp["attributes"]["panelsJSON"])
+        #_tmp["attributes"]["optionsJSON"] = json.dumps(_tmp["attributes"]["optionsJSON"])
+        
+        # 23.03.2010
+        # temporarly changed due to hardcoded definition in yaml_handler
+        _tmp["attributes"]["optionsJSON"] = _tmp["attributes"]["optionsJSON"]
+        _tmp["id"] = str(uuid.uuid4())
+        
         if return_dict:
             return _tmp
         else:
@@ -57,5 +74,9 @@ class KibanaDashboardObject(base.BaseKibana):
         _vis.gridData.h = h
         print(type(self.panelsJSON))
         self.panelsJSON.append(_vis)
-        self._id += 1
+        #
+        # 23.03.2010
+        # no use case for that
+        # 
+        #self._id += 1
 

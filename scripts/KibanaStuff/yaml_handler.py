@@ -73,7 +73,7 @@ class YamlHandler:
                 )
 
             if _type == "visualization":
-                self.visualization(yaml_document)
+                self.visualization_f(yaml_document)
             elif _type == "dashboard":
                 self.dashboard(yaml_document)
             else:
@@ -167,8 +167,12 @@ class YamlHandler:
         # _dashboard.panelsJSON = base.BasePanelsJson()
         # _dashboard.panelsJSON.gridData = base.BaseGridData()
         # _dashboard.optionsJSON = base.BaseOptionsJson()
+        
+        # manual definition due to absence of understanding how to do it properly via classes
+        # dashboard.py changed accordingly
+        _dashboard.optionsJSON = '{ "darkTheme": false }'
 
-        visualization_objects_list = self.load_yamls("/tmp/atomic-threat-coverage/scripts/KibanaStuff/visualizations/")
+        visualization_objects_list = self.load_yamls("/Users/yugoslavskiy/Desktop/re_of_jk_fancy_classes/atomic-threat-coverage/scripts/KibanaStuff/visualizations")
 
         for visualization in visualization_objects_list:
             if visualization['title'] not in yaml_document.get('visualizations'):
@@ -399,7 +403,7 @@ class YamlHandler:
                         _['additions'] = _[1:]
                     else:
                         _ = _[0]
-                    _["uuid"] = uuid.uuid4()
+                    _["uuid"] = str(uuid.uuid4())
                     result.append(_)
             except ScannerError:
                 raise ScannerError('yaml is bad! %s' % yaml_item)

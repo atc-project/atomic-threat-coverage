@@ -91,15 +91,15 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
             # self.updated_at = datetime.datetime.today().isoformat() + "Z"
             # TODO: Find proper way to do below line :))
             tmp_dictionary = literal_eval(str(self.__dict__))
-            tmp_dictionary["_id"] = str(uuid.uuid4())
-            tmp_dictionary["_type"] = tmp_dictionary.pop("type")
+            tmp_dictionary["id"] = str(uuid.uuid4())
+            tmp_dictionary["type"] = tmp_dictionary.pop("type")
             tmp_dictionary["visualization"]["visState"] = json.dumps(
                 tmp_dictionary["visualization"]["visState"]
             )
             tmp_dictionary.pop("metric_id", None)
             tmp_dictionary.pop("updated_at", None)
             tmp_dictionary.pop("_meta_data_set", None)
-            tmp_dictionary["_source"] = tmp_dictionary.pop("visualization")
+            tmp_dictionary["attributes"] = tmp_dictionary.pop("visualization")
             if return_dict:
                 return tmp_dictionary
             else:

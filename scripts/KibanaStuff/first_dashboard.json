@@ -1,0 +1,47 @@
+{
+  "objects": [
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}},\"filter\":[]}"
+        },
+        "title": "Count vis",
+        "uiStateJSON": "",
+        "version": 1,
+        "visState": "{\"title\": \"Count vis\", \"type\": \"metric\", \"params\": {\"type\": \"metric\", \"grid\": {}, \"categoryAxes\": [], \"valueAxes\": [], \"seriesParams\": [{\"data\": {\"id\": \"1\", \"label\": \"Count\"}, \"drawLinesBetweenPoints\": true, \"mode\": \"normal\", \"show\": true, \"showCircles\": true, \"p_type\": \"\", \"valueAxis\": \"ValueAxis-1\", \"interpolate\": \"\", \"type\": \"line\"}, {\"data\": {\"id\": \"2\", \"label\": \"Average port\"}, \"drawLinesBetweenPoints\": true, \"mode\": \"normal\", \"show\": true, \"showCircles\": true, \"p_type\": \"\", \"valueAxis\": \"ValueAxis-1\", \"interpolate\": \"linear\", \"type\": \"line\"}], \"addTooltip\": true, \"addLegend\": true, \"legendPosition\": \"\", \"times\": [], \"addTimeMarker\": false}, \"aggs\": [{\"id\": \"1\", \"enabled\": true, \"type\": \"count\", \"schema\": \"metric\", \"params\": {}}, {\"id\": \"2\", \"enabled\": false, \"type\": \"avg\", \"schema\": \"metric\", \"params\": {\"field\": \"port\"}}]}"
+      },
+      "id": "f4e25ad6-207a-4484-a546-7ad2c984ccb7",
+      "type": "visualization"
+    },
+    {
+      "attributes": {
+        "description": "",
+        "hits": 0,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"lucene\"},\"filter\":[]}"
+        },
+        "optionsJSON": "{ \"darkTheme\": false }",
+        "panelsJSON": "[{\"embeddableConfig\": {}, \"gridData\": {\"w\": 0, \"h\": 0, \"x\": 0, \"y\": 0, \"i\": \"1\"}, \"id\": \"f4e25ad6-207a-4484-a546-7ad2c984ccb7\", \"panelIndex\": \"\", \"type\": \"visualization\", \"version\": \"6.6.2\"}]",
+        "timeRestore": false,
+        "title": "test dashboard",
+        "version": 1
+      },
+      "id": "cc9d292f-0447-4bfb-969f-4d1ac26c0415",
+      "type": "dashboard",
+      "version": "1"
+    }
+  ], 
+  "version": "6.5.2"
+}
+
+
+curl -X POST "http://178.62.206.115:5601/api/kibana/dashboards/import?exclude=index-pattern" -H 'kbn-xsrf: true' -H 'Content-Type: application/json' -d'
+
+curl http://178.62.206.115:5601/api/kibana/dashboards/import?exclude=index-pattern&force=true 
+
+
+
+
+
+

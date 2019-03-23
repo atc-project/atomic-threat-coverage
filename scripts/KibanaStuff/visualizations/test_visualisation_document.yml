@@ -1,7 +1,7 @@
 type: visualization
 name: metric
 title: Count vis
-index_name: logstash*
+index_name: atc-analytics
 options:
   add_metric:
     - count
