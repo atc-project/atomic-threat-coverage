@@ -1,5 +1,3 @@
----
-action: global
 title: Invocation of Active Directory Diagnostic Tool (ntdsutil.exe)
 description: Detects execution of ntdsutil.exe, which can be used for various attacks against the NTDS database (NTDS.DIT)
 status: experimental
@@ -9,25 +7,13 @@ author: Thomas Patzke
 tags:
     - attack.credential_access
     - attack.t1003
+logsource:
+    category: process_creation
+    product: windows
 detection:
+    selection:
+        CommandLine: '*\ntdsutil*'
     condition: selection
-falsepositives: 
+falsepositives:
     - NTDS maintenance
 level: high
----
-logsource:
-    product: windows
-    service: sysmon
-detection:
-    selection:
-        EventID: 1
-        CommandLine: '*\ntdsutil*'
----
-logsource:
-    product: windows
-    service: security
-    definition: 'Requirements: Audit Policy : Detailed Tracking > Audit Process creation, Group Policy : Administrative Templates\System\Audit Process Creation'
-detection:
-    selection:
-        EventID: 4688
-        ProcessCommandLine: '*\ntdsutil*'

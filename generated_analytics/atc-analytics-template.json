@@ -28,3 +28,6 @@
 }
 
 // curl -H 'Content-Type: application/json' -XPUT http://<elasticsearch_ip/domain_name>:<elasticsearch_port>/_template/atc-analytics -d@atc-analytics-template.json
+
+
+curl --user elastic:AhJAUky9vBYztXpgZe0o  -XPOST 'http://157.230.126.111:9200/_template/atc-analytics' -d@atc-analytics-template.json -H 'Content-Type: application/json'

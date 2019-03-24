@@ -108,7 +108,9 @@ def main(**kwargs):
                     date_created = datetime.datetime.now().isoformat() 
         else:
             # temporary solution to avoid errors. all internal DRs must have date of creation
-            date_created = datetime.datetime.now().isoformat() 
+            #date_created = datetime.datetime.now().isoformat() 
+            date_created = '2019-03-01T22:50:37.587060'
+            
 
         # we create index document based on DR title, which is unique (supposed to be).
         # this way we will update existing documents in case of changes,
@@ -163,9 +165,7 @@ def main(**kwargs):
         else:
             dr_status = 'not defined'
         
-        if 'severity' in alert:
-            dr_severity = alert['severity']
-        elif 'level' in alert:
+        if 'level' in alert:
             dr_severity = alert['level']
         else:
             dr_severity = 'not defined'
