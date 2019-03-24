@@ -85,13 +85,16 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
         self.visualization.visState.params.seriesParams.append(metric.param())
         self.metric_id += 1
 
-    def json_export(self, return_dict=False):
+    def json_export(self, return_dict=False, uuid_=None):
         """visState has to be a string with escaped doublequotes"""
         if self.validate():
             # self.updated_at = datetime.datetime.today().isoformat() + "Z"
             # TODO: Find proper way to do below line :))
             tmp_dictionary = literal_eval(str(self.__dict__))
-            tmp_dictionary["id"] = str(uuid.uuid4())
+            if uuid_:
+                tmp_dictionary["id"] = uuid_
+            else:
+                tmp_dictionary["id"] = str(uuid.uuid4())
             tmp_dictionary["type"] = tmp_dictionary.pop("type")
             tmp_dictionary["visualization"]["visState"] = json.dumps(
                 tmp_dictionary["visualization"]["visState"]

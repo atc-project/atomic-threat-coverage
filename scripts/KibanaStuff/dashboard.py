@@ -20,11 +20,7 @@ class KibanaDashboardObject(base.BaseKibana):
         self.kibanaSavedObjectMeta = dict()
         self.version = 1
         self.hits = 0
-        #
-        # 23.03.2010
-        # no use case for that
-        # 
-        #self._id = 1
+        self._id = 1
 
         if title:
             self.title = title
@@ -72,11 +68,9 @@ class KibanaDashboardObject(base.BaseKibana):
         _vis.gridData.y = y
         _vis.gridData.w = w
         _vis.gridData.h = h
-        print(type(self.panelsJSON))
+        _vis.gridData.i = self._id
+        _vis.panelIndex = self._id
+        # print(type(self.panelsJSON))
         self.panelsJSON.append(_vis)
-        #
-        # 23.03.2010
-        # no use case for that
-        # 
-        #self._id += 1
+        self._id += 1
 

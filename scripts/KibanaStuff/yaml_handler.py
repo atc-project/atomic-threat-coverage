@@ -79,7 +79,7 @@ class YamlHandler:
             else:
                 raise Exception("Not supported yet. Sorry!")
 
-    def visualization_f(self, yaml_document):
+    def visualization_f(self, yaml_document, uuid_=None):
         self._name = yaml_document.get('name')
         _title = yaml_document.get('title')
         _saved_search_id = yaml_document.get('saved_search_id')
@@ -143,7 +143,8 @@ class YamlHandler:
                             )
                         if _metric:
                             _vis.add_metric(_metric)
-        self._results.append(_vis.json_export(return_dict=True))
+        self._results.append(_vis.json_export(return_dict=True, uuid_=uuid_))
+        # return _vis
 
     def dashboard(self, yaml_document):
         if not yaml_document.get('visualizations'):
@@ -177,7 +178,7 @@ class YamlHandler:
         for visualization in visualization_objects_list:
             if visualization['title'] not in yaml_document.get('visualizations'):
                 continue
-            # self.visualization(visualization)
+            _result = self.visualization_f(visualization, uuid_=visualization.get('uuid'))
             _dashboard.add_visualization(visualization)
         self._results.append(_dashboard.json_export(return_dict=True))
 
