@@ -40,29 +40,22 @@ class KibanaDashboardObject(base.BaseKibana):
         _tmp = {}
         test = self.__dict__
         str_test = str(test)
-        _tmp["attributes"] = literal_eval(str_test)
-       # _tmp["attributes"] = literal_eval(str(self.__dict__))
-        _tmp["type"] = "dashboard"
-        _tmp["version"] = "1"
-        
-        # 23.03.2010
-        # temporarly changed due to wrong level of presence in final JSON and wrong value (should be uuid)
-        #_tmp.pop("_id", None)
+        _tmp["_source"] = literal_eval(str_test)
+        _tmp["_type"] = "dashboard"
+        # _tmp["version"] = "1"
+        _tmp.pop("_id", None)
 
-        _tmp["attributes"]["panelsJSON"] = json.dumps(_tmp["attributes"]["panelsJSON"])
-        #_tmp["attributes"]["optionsJSON"] = json.dumps(_tmp["attributes"]["optionsJSON"])
-        
-        # 23.03.2010
-        # temporarly changed due to hardcoded definition in yaml_handler
-        _tmp["attributes"]["optionsJSON"] = _tmp["attributes"]["optionsJSON"]
-        _tmp["id"] = str(uuid.uuid4())
+        _tmp["_source"]["panelsJSON"] = json.dumps(_tmp["_source"]["panelsJSON"])
+        _tmp["_source"]["optionsJSON"] = json.dumps(_tmp["_source"]["optionsJSON"])
+        _tmp["_source"].pop("_id", None)
+        _tmp["_id"] = str(uuid.uuid4())
         
         if return_dict:
             return _tmp
         else:
             return json.dumps(_tmp)
 
-    def add_visualization(self, vis, x=0, y=0, w=0, h=0):
+    def add_visualization(self, vis, x=0, y=0, w=1, h=1):
         _vis = base.BasePanelsJson(vis_uuid=vis["uuid"])
         _vis.gridData.x = x
         _vis.gridData.y = y

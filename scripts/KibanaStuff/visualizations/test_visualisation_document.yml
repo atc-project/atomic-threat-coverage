@@ -6,5 +6,5 @@ options:
   add_metric:
     - count
     - average:
-        field: port
+        field: type
         enabled: False

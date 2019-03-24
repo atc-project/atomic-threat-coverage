@@ -165,13 +165,7 @@ class YamlHandler:
           "searchSourceJSON": "{\"query\":{\"query\":\"\"," +
             "\"language\":\"lucene\"},\"filter\":[]}"
         }
-        # _dashboard.panelsJSON = base.BasePanelsJson()
-        # _dashboard.panelsJSON.gridData = base.BaseGridData()
-        # _dashboard.optionsJSON = base.BaseOptionsJson()
-        
-        # manual definition due to absence of understanding how to do it properly via classes
-        # dashboard.py changed accordingly
-        _dashboard.optionsJSON = '{ "darkTheme": false }'
+        _dashboard.optionsJSON = { "darkTheme": False }
 
         visualization_objects_list = self.load_yamls("/Users/yugoslavskiy/Desktop/re_of_jk_fancy_classes/atomic-threat-coverage/scripts/KibanaStuff/visualizations")
 
