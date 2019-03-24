@@ -74,13 +74,13 @@ def main(**kwargs):
         dn_titles = ATCutils.main_dn_calculatoin_func(path)
         alert_dns = [data for data in dn_list if data['title'] in dn_titles]
         if len(alert_dns) < 1:
-            alert_dns = [{'category': '-',
-                          'platform': '-',
-                          'provider': '-',
-                          'type': '-',
-                          'channel': '-',
-                          'title': '-',
-                          'loggingpolicy': ['-']}]
+            alert_dns = [{'category': 'not defined',
+                          'platform': 'not defined',
+                          'provider': 'not defined',
+                          'type': 'not defined',
+                          'channel': 'not defined',
+                          'title': 'not defined',
+                          'loggingpolicy': ['not defined']}]
         logging_policies = []
         for dn in alert_dns:
             # If there are logging policies in DN that we havent added yet - add them
