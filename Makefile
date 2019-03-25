@@ -2,8 +2,8 @@
 
 all: setup setup_confluence setup_markdown push_to_confluence push_to_markdown create_analytics_and_pivoting_csv create_attack_navigator_profile
 update: push_to_confluence create_analytics_and_pivoting_csv push_to_markdown create_attack_navigator_profile
-# markdown: setup_markdown push_to_markdown
-# confluence: setup_confluence push_to_confluence
+markdown: setup_markdown push_to_markdown
+confluence: setup_confluence push_to_confluence
 analytics: create_analytics_and_pivoting_csv
 navigator: create_attack_navigator_profile
 
@@ -12,7 +12,6 @@ setup:
 	git submodule init
 	git submodule update
 	git submodule foreach git pull origin master
-	cp -r detection_rules/sigma/rules/windows/*/*.yml detection_rules/
 	
 setup_confluence:
 	@echo "[*] Setting up confluence"
