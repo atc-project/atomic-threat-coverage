@@ -69,12 +69,12 @@ def get_techniques(threats):
 
 def main():
     dr_dirs = ATCconfig.get('detection_rules_directories')
-    dn_list = []
+    dr_list = []
     for path in dr_dirs:
-        dn_list.append(ATCutils.load_yamls(path))
-    # flat dn_list
-    dn_list = [dn for path in dn_list for dn in path]
-    techniques = get_techniques(dn_list)
+        dr_list.append(ATCutils.load_yamls(path))
+    # flat dr_list
+    dr_list = [dr for drs_from_path in dr_list for dr in drs_from_path]
+    techniques = get_techniques(dr_list)
     NAVIGATOR_TEMPLATE['techniques'] = techniques
 
     filename = 'atc_attack_navigator_profile.json'
