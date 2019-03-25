@@ -3,7 +3,6 @@ from os.path import isfile, join
 import json
 from atcutils import ATCutils
 from yaml.scanner import ScannerError
-from pdb import set_trace as bp
 
 
 ATCconfig = ATCutils.load_config("config.yml")

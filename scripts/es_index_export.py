@@ -11,21 +11,9 @@ from atcutils import ATCutils
 from yaml.scanner import ScannerError
 from attack_mapping import te_mapping, ta_mapping
 
-try:
-    ATCconfig = ATCutils.load_config("config.yml")
-    dr_dir = ATCconfig.get('detection_rules_directory')
-except:
-    dr_dir = "../detection_rules/"
 
-def load_yamls(path):
-    yamls = [join(path, f) for f in listdir(path) if isfile(join(path, f)) if f.endswith('.yaml') or f.endswith('.yml')]
-    result = []
-    for yaml in yamls:
-        try:
-            result.append(ATCutils.read_yaml_file(yaml))
-        except ScannerError:
-            raise ScannerError('yaml is bad! %s' % yaml)
-    return result, yamls
+ATCconfig = ATCutils.load_config("config.yml")
+dr_dir = ATCconfig.get('detection_rules_directory')
 
 def main(**kwargs):
     dn_list = load_yamls(kwargs['dn_path'])[0]
@@ -33,8 +21,8 @@ def main(**kwargs):
     ra_list = load_yamls(kwargs['ra_path'])[0]
     rp_list = load_yamls(kwargs['rp_path'])[0]
     cu_list = load_yamls(kwargs['cu_path'])[0]
-    enrichments_list = load_yamls(kwargs['en_path'])[0]
-    alerts, path_to_alerts = load_yamls(kwargs['dr_path'])
+    enrichments_list = ATCutils.load_yamls(kwargs['en_path'])[0]
+    alerts, path_to_alerts = ATCutils.load_yamls(kwargs['dr_path'])
     _index = {}
 
     # Iterate through alerts and pathes to them
