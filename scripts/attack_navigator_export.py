@@ -3,14 +3,10 @@ from os.path import isfile, join
 import json
 from atcutils import ATCutils
 from yaml.scanner import ScannerError
+from pdb import set_trace as bp
 
 
-try:
-    ATCconfig = ATCutils.load_config("config.yml")
-    dr_dir = ATCconfig.get('detection_rules_directory')
-except:
-    dr_dir = "../detection_rules/"
-
+ATCconfig = ATCutils.load_config("config.yml")
 
 NAVIGATOR_TEMPLATE = {
     "name": "ATC-Export",
@@ -45,18 +41,6 @@ NAVIGATOR_TEMPLATE = {
 }
 
 
-def load_yamls(path):
-    yamls = [join(path, f) for f in listdir(path) if isfile(
-        join(path, f)) if f.endswith('.yaml') or f.endswith('.yml')]
-    result = []
-    for yaml in yamls:
-        try:
-            result.append(ATCutils.read_yaml_file(yaml))
-        except ScannerError:
-            raise ScannerError('yaml is bad! %s' % yaml)
-    return result, yamls
-
-
 def get_techniques(threats):
     techniques = []
     for threat in threats:
@@ -84,14 +68,22 @@ def get_techniques(threats):
 
 
 def main():
-    dn_list = load_yamls(dr_dir)[0]
+    dr_dirs = ATCconfig.get('detection_rules_directories')
+    dn_list = []
+    for path in dr_dirs:
+        dn_list.append(ATCutils.load_yamls(path))
+    # flat dn_list
+    dn_list = [dn for path in dn_list for dn in path]
     techniques = get_techniques(dn_list)
     NAVIGATOR_TEMPLATE['techniques'] = techniques
+
+    filename = 'atc_attack_navigator_profile.json'
+    exported_analytics_directory = ATCconfig.get('exported_analytics_directory')
+
+    with open(exported_analytics_directory + '/' + filename, 'w') as fp:
+        json.dump(NAVIGATOR_TEMPLATE, fp)
+    print(f'[+] Created {filename}')
 
 
 if __name__ == '__main__':
     main()
-    filename = 'atc_attack_navigator_profile.json'
-    with open('../' + filename, 'w') as fp:
-        json.dump(NAVIGATOR_TEMPLATE, fp)
-    print(f'[+] Created {filename}')
