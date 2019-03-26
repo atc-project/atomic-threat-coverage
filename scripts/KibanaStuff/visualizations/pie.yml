@@ -1,0 +1,8 @@
+type: visualization
+name: pie
+title: Pie vis
+index_name: atc-analytics
+metrics:
+  - count
+  - terms:
+      field: port

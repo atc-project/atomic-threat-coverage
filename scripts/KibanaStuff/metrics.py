@@ -385,13 +385,10 @@ class UniqueCountMetric(BaseMetric):
 # ########################################################################### #
 
 
-class BaseBucket:
+class BaseBucket(BaseMetric):
 
-    def __init__(self, id):
-        self.agg_var = None
-
-    def agg(self):
-        return self.agg_var()
+    def param(self):
+        return None
 
 
 # ########################################################################### #
@@ -400,7 +397,8 @@ class BaseBucket:
 
 class TermsBucket(BaseBucket):
 
-    def __init__(self, id, field, size=None, order=None, enabled=None):
+    def __init__(self, id, field, size=None, order=None, enabled=None,
+                 args=None):
         if not order:
             order = 'desc'
 

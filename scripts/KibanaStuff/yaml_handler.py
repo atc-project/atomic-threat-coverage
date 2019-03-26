@@ -199,8 +199,9 @@ class YamlHandler(base.BaseKibana):
         self._results.append(_dashboard.json_export(return_dict=True))
 
     def handle_metric(self, id, metric_name, args=None):
-        if metric_name not in self._general_metrics:
-            raise Exception("Metric not supported")
+        if metric_name not in self._general_metrics\
+                and metric_name not in self._bucket_names:
+            raise Exception("Metric/bucket not supported")
 
         if metric_name == "average":
             if not self.allowed_metrics(type="metric", name=metric_name,
