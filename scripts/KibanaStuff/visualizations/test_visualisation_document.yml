@@ -2,9 +2,10 @@ type: visualization
 name: metric
 title: Count vis
 index_name: atc-analytics
-options:
-  add_metric:
-    - count
-    - average:
-        field: type
-        enabled: False
+query: dupa
+labels: False
+metrics:
+  - count
+  - average:
+      field: port
+      enabled: False

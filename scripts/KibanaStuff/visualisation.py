@@ -25,6 +25,16 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
         self.visualization.visState = base.BaseKibanaVisState(
             title=title, type=type)
         self.visualization.visState.params = base.BaseKibanaParams(type=type)
+        self.visualization.kibanaSavedObjectMeta["searchSourceJSON"] = {
+            "index": "",
+            "query": {
+                "query_string": {
+                    "analyze_wildcard": True,
+                    "query": "*"
+                }
+            },
+            "filter": []
+        }
 
     def default_axis(self):
         # TODO: Make class for that as well as proper handling in the code
@@ -102,6 +112,12 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
             tmp_dictionary.pop("metric_id", None)
             tmp_dictionary.pop("updated_at", None)
             tmp_dictionary.pop("_meta_data_set", None)
+            kbsvd = tmp_dictionary["visualization"]["kibanaSavedObjectMeta"]
+            kbsvd["searchSourceJSON"] = json.dumps(
+                tmp_dictionary.get("visualization")
+                .get("kibanaSavedObjectMeta")
+                .get("searchSourceJSON")
+            )
             tmp_dictionary["_source"] = tmp_dictionary.pop("visualization")
             if return_dict:
                 return tmp_dictionary
@@ -115,10 +131,9 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
             if self.search_id_of_title_by_type(
                     search_type="index-pattern", search_title=index_name
             ):
-                self.visualization.kibanaSavedObjectMeta["searchSourceJSON"] =\
-                    ("{\"index\":\"%s\",\"query\":{\"query_string\":{" +
-                     "\"analyze_wildcard\":true,\"query\":\"*\"}}," +
-                     "\"filter\":[]}") % index_name
+                self.visualization\
+                    .kibanaSavedObjectMeta["searchSourceJSON"]["index"]\
+                    = index_name
                 self._meta_data_set = True
             else:
                 raise Exception(
@@ -126,10 +141,9 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
                     " Didn't you forget an asterisk?"
                 )
         else:
-            self.visualization.kibanaSavedObjectMeta["searchSourceJSON"] = \
-                ("{\"index\":\"%s\",\"query\":{\"query_string\":{" +
-                 "\"analyze_wildcard\":true,\"query\":\"*\"}}," +
-                 "\"filter\":[]}") % index_name
+            self.visualization\
+                .kibanaSavedObjectMeta["searchSourceJSON"]["index"]\
+                = index_name
             self._meta_data_set = True
 
     def set_saved_search(self, saved_search_name=None, saved_search_id=None):
@@ -150,10 +164,13 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
                 search_type="search", search_title=saved_search_name
             )
         self.visualization.savedSearchId = _id
-        self.visualization.kibanaSavedObjectMeta["searchSourceJSON"] = \
-            ("{\"query\":{\"query\":\"\",\"language\"" +
-             ":\"lucene\"},\"filter\":[]}")
+        self.visualization.kibanaSavedObjectMeta["searchSourceJSON"]\
+            .pop("index", None)
         self._meta_data_set = True
+
+    def set_query(self, query):
+        ssjs = self.visualization.kibanaSavedObjectMeta["searchSourceJSON"]
+        ssjs["query"]["query_string"]["query"] = str(query)
 
 # ########################################################################### #
 # ############################ Area Visualisation ########################### #
@@ -172,12 +189,57 @@ class AreaVisualisation(BaseKibanaVisualizationDoc):
 # ############################ Metric Visualisation ######################### #
 # ########################################################################### #
 
+class MetricKibanaParams(base.BaseKibanaParams):
+
+    def __init__(self, type=None, grid=None, categoryAxes=None, valueAxes=None,
+                 seriesParams=None, addTooltip=None, addLegend=None,
+                 legendPosition=None, times=None, addTimeMarker=None):
+
+        super().__init__(
+            type=type, grid=grid, categoryAxes=categoryAxes,
+            valueAxes=valueAxes, seriesParams=seriesParams,
+            addTooltip=addTooltip, addLegend=addLegend,
+            legendPosition=legendPosition, times=times,
+            addTimeMarker=addTimeMarker)
+
+        self.metric = {
+            "percentageMode": False,
+            "useRanges": False,
+            "colorSchema": "Green to Red",
+            "metricColorMode": "None",
+            "colorsRange": [
+                {
+                    "from": 0,
+                    "to": 10000
+                }
+            ],
+            "labels": {
+                "show": True
+            },
+            "invertColors": False,
+            "style": {
+                "bgFill": "#000",
+                "bgColor": False,
+                "labelColor": False,
+                "subText": "",
+                "fontSize": 60
+            }
+        }
+
+    def disable_labels(self):
+        self.metric["labels"]["show"] = False
+
 
 class MetricVisualisation(BaseKibanaVisualizationDoc):
 
     def __init__(self, title):
 
         super().__init__(title=title, type="metric")
+        self.visualization.visState.params = MetricKibanaParams(type="metric")
+
+    def disable_labels(self):
+        self.visualization.visState.params.disable_labels()
+
 
 # ########################################################################### #
 # ############################ Pie Visualisation ############################ #

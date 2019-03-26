@@ -6,9 +6,10 @@ import metrics
 import argparse
 import json
 import dashboard
-import base
+# import base
 import uuid
 
+from yaml.scanner import ScannerError
 from os import listdir
 from os.path import isfile, join
 
@@ -62,7 +63,6 @@ class YamlHandler:
 
     def iter_over_yamls(self):
         for yaml_document in self.yamls:
-            print(yaml_document)
             _type = yaml_document.get('type')
             if not _type:
                 raise Exception("Type not defined")
@@ -91,7 +91,6 @@ class YamlHandler:
   * saved_search_name
   * index_name
 """)
-        _options = yaml_document.get('options')
         if not _title:
             raise Exception("No title defined")
         if not self._name:
@@ -114,6 +113,13 @@ class YamlHandler:
         if not _vis:
             raise Exception("Unsupported or invalid visualisation")
 
+        if yaml_document.get('query'):
+            _vis.set_query(yaml_document.get('query'))
+
+        if 'labels' in yaml_document.keys():
+            if isinstance(yaml_document['labels'], bool):
+                self.vis_handle_labels(yaml_document['labels'], _vis)
+
         if _saved_search_name:
             _vis.set_saved_search(saved_search_name=_saved_search_name)
 
@@ -123,28 +129,31 @@ class YamlHandler:
         if _index_name:
             _vis.set_index_search(_index_name)
 
-        if _options:
-            for option in _options:
-                if option not in self._options:
-                    raise Exception("Not known option")
-                if option == "add_metric":
-                    for option_val in _options[option]:
-                        _metric = None
-                        if isinstance(option_val, str):
-                            _metric = self.handle_metric(
-                                _vis.metric_id, option_val
-                            )
-                        elif isinstance(option_val, dict)\
-                                and len(option_val) == 1:
-                            _option_metric_name = [x for x in option_val][0]
-                            _metric = self.handle_metric(
-                                _vis.metric_id, _option_metric_name,
-                                args=option_val[_option_metric_name]
-                            )
-                        if _metric:
-                            _vis.add_metric(_metric)
+        if yaml_document.get('metrics'):
+            for metric in yaml_document.get('metrics'):
+                _metric = None
+                if isinstance(metric, str):
+                    _metric = self.handle_metric(
+                        _vis.metric_id, metric
+                    )
+                elif isinstance(metric, dict)\
+                        and len(metric) == 1:
+                    _option_metric_name = [x for x in metric][0]
+                    _metric = self.handle_metric(
+                        _vis.metric_id, _option_metric_name,
+                        args=metric[_option_metric_name]
+                    )
+                if _metric:
+                    _vis.add_metric(_metric)
         self._results.append(_vis.json_export(return_dict=True, uuid_=uuid_))
-        # return _vis
+
+    def vis_handle_labels(self, bool_var, vis_):
+        if self._name == "metric":
+            if bool_var is False:
+                vis_.disable_labels()
+        else:
+            print("Warning! Can't disable labels for given visualization. " +
+                  "Not supported.")
 
     def dashboard(self, yaml_document):
         if not yaml_document.get('visualizations'):
@@ -161,21 +170,27 @@ class YamlHandler:
 
         _dashboard = dashboard.KibanaDashboardObject()
         _dashboard.title = _title
-        _dashboard.kibanaSavedObjectMeta = {
-          "searchSourceJSON": "{\"query\":{\"query\":\"\"," +
-            "\"language\":\"lucene\"},\"filter\":[]}"
-        }
-        _dashboard.optionsJSON = { "darkTheme": False }
 
-        visualization_objects_list = self.load_yamls("/Users/yugoslavskiy/Desktop/re_of_jk_fancy_classes/atomic-threat-coverage/scripts/KibanaStuff/visualizations")
+        if yaml_document.get('query'):
+            _dashboard.set_query(yaml_document.get('query'))
 
-        for visualization in visualization_objects_list:
-            if visualization['title'] not in yaml_document.get('visualizations'):
+        if yaml_document.get('darktheme'):
+            _dashboard.set_dark_theme()
+
+        vis_list = self.load_yamls("visualizations")
+        _vis_objects_dict = {}
+
+        for visualization in vis_list:
+            if visualization['title'] \
+                    not in yaml_document.get('visualizations'):
                 continue
-            _result = self.visualization_f(visualization, uuid_=visualization.get('uuid'))
-            _dashboard.add_visualization(visualization)
+            self.visualization_f(
+                visualization, uuid_=visualization.get('uuid')
+            )
+            _vis_objects_dict[visualization.get('title')] = visualization
+        for title in yaml_document.get('visualizations'):
+            _dashboard.add_visualization(_vis_objects_dict[title])
         self._results.append(_dashboard.json_export(return_dict=True))
-
 
     def handle_metric(self, id, metric_name, args=None):
         if metric_name not in self._general_metrics:
@@ -382,8 +397,7 @@ class YamlHandler:
         yamls = [
             join(path, f) for f in listdir(path)
             if isfile(join(path, f))
-            if f.endswith('.yaml')
-            or f.endswith('.yml')
+            if f.endswith('.yaml') or f.endswith('.yml')
         ]
 
         result = []
