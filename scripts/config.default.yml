@@ -21,3 +21,4 @@ confluence_rest_api_url: 'https://atomicthreatcoverage.atlassian.net/wiki/rest/a
 confluence_viewpage_url: 'https://atomicthreatcoverage.atlassian.net/wiki/pages/viewpage.action?pageId='
 sigmac_path: '../detection_rules/sigma/tools/sigmac'
 detection_queries: 'es-qs,xpack-watcher,graylog,splunk,logpoint,grep'
+customers_directory: '../customers'

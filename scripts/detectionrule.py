@@ -8,7 +8,7 @@ from jinja2 import Environment, FileSystemLoader
 import os
 import subprocess
 import re
-from pdb import set_trace as bp
+
 
 # ########################################################################### #
 # ########################### Detection Rule ################################ #
