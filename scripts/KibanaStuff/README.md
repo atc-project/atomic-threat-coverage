@@ -85,6 +85,24 @@ This is kinda similar to metrics but one layer above and has no general instruct
 
 ---
 
+# Buckets
+
+| Bucket name            | Implemented? |
+| ---------------------- | ------------ |
+| Terms                  |              |
+| ---------------------- | ------------ |
+| Below are LOW priority |              |
+| ---------------------- | ------------ |
+| Date Histogram         |              |
+| Date Range             |              |
+| Filters                |              |
+| Histogram              |              |
+| IPv4 Range             |              |
+| Range                  |              |
+| Significant Terms      |              |
+
+---
+
 # Visualisations
 
 ### Priority by the order
