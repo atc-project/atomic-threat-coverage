@@ -204,6 +204,18 @@ class ATCutils:
         return result
 
     @staticmethod
+    def load_yamls_with_paths(path):
+        yamls = [join(path, f) for f in listdir(path) if isfile(
+            join(path, f)) if f.endswith('.yaml') or f.endswith('.yml')]
+        result = []
+        for yaml in yamls:
+            try:
+                result.append(ATCutils.read_yaml_file(yaml))
+            except ScannerError:
+                raise ScannerError('yaml is bad! %s' % yaml)
+        return (result, yamls)
+
+    @staticmethod
     def get_attack_technique_name_by_id(attack_technique_id):
         """Get ATT&CK Technique ID and return name of the technique
             * Input: t0000 (sigma tag)
