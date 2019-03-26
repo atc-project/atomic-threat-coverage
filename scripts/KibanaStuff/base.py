@@ -25,8 +25,15 @@ class BaseKibana:
         pass
 
     @classmethod
+    def omit_kibana(cls):
+        cls.kibana_usage = False
+
+    @classmethod
     def init_credentials(cls):
-        _ = ""
+        if cls.omit_kibana:
+            _ = "n"
+        else:
+            _ = ""
         while _ not in ["y", "n"]:
             _ = input("Can I use Kibana? [y/n]: ")[0].lower()
         if _ == "n":
@@ -353,7 +360,8 @@ class BaseGridData(BaseKibana):
 class BasePanelsJson(BaseKibana):
     """Base panelsJSON"""
 
-    def __init__(self, vis_uuid=None, vis_id=None, version="6.6.2", type="visualization"):
+    def __init__(self, vis_uuid=None, vis_id=None, version="6.6.2",
+                 type="visualization"):
         self.embeddableConfig = dict()
         self.gridData = BaseGridData()
         self.id = str()

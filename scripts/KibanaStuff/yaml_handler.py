@@ -6,7 +6,7 @@ import metrics
 import argparse
 import json
 import dashboard
-# import base
+import base
 import uuid
 
 from yaml.scanner import ScannerError
@@ -36,10 +36,12 @@ def read_yaml_file(path):
     return [x for x in yaml_fields]
 
 
-class YamlHandler:
+class YamlHandler(base.BaseKibana):
     """YamlHandler class"""
 
-    def __init__(self, yaml_path, output_file):
+    def __init__(self, yaml_path, output_file, omit_kibana):
+        if omit_kibana:
+            self.omit_kibana()
         self.yamls = read_yaml_file(yaml_path)
         self._results = []
         self._types = [
@@ -421,13 +423,17 @@ class YamlHandler:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Visualizations')
+    parser = argparse.ArgumentParser(
+        description='Visualisations ATC module a\'ka Atomic Kibana Coverage!'
+    )
     parser.add_argument('-i', help="input file location", required=True)
     parser.add_argument('-o', help="output file location", required=True)
+    parser.add_argument('-f', help="force to omit kibana", required=False,
+                        action='store_true')
 
     args = parser.parse_args()
 
-    YamlHandler(args.i, args.o)
+    YamlHandler(args.i, args.o, args.f)
 
 
 if __name__ == "__main__":
