@@ -59,6 +59,10 @@ class YamlHandler(base.BaseKibana):
             "unique-count"
         ]
 
+        self._bucket_names = [
+            "terms",
+        ]
+
         self.iter_over_yamls()
         with open(output_file, 'w') as f:
             json.dump(self._results, f)
@@ -353,6 +357,24 @@ class YamlHandler(base.BaseKibana):
                 raise Exception("field required")
 
             return metrics.UniqueCountMetric(id, args.get('field'), args=args)
+
+        elif metric_name == "terms":
+            if not self.allowed_metrics(type="bucket", name=metric_name,
+                                        visualisation_name=self._name):
+                raise Exception(
+                    "This bucket is not allowed in given visualisation"
+                )
+            if not args:
+                raise Exception("Args required for terms bucket")
+            if not args.get("field"):
+                raise Exception("field required")
+
+            return metrics.TermsBucket(id, args.get('field'), args=args)
+
+    def handle_bucket(self, id, bucket_name, args=None):
+        if bucket_name not in self._bucket_names:
+            raise Exception("Bucket not supported")
+        pass
 
     def allowed_metrics(self, type, name, visualisation_name):
         dictionary_metrics = {

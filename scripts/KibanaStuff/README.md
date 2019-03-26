@@ -87,19 +87,19 @@ This is kinda similar to metrics but one layer above and has no general instruct
 
 # Buckets
 
-| Bucket name            | Implemented? |
-| ---------------------- | ------------ |
-| Terms                  |              |
-| ---------------------- | ------------ |
-| Below are LOW priority |              |
-| ---------------------- | ------------ |
-| Date Histogram         |              |
-| Date Range             |              |
-| Filters                |              |
-| Histogram              |              |
-| IPv4 Range             |              |
-| Range                  |              |
-| Significant Terms      |              |
+| Bucket name            | Implemented?     |
+| ---------------------- | ---------------- |
+| Terms                  | Yes              |
+| ---------------------- | ---------------- |
+| Below are LOW priority | -                |
+| ---------------------- | ---------------- |
+| Date Histogram         | Yes/NotSupported |
+| Date Range             |                  |
+| Filters                |                  |
+| Histogram              |                  |
+| IPv4 Range             |                  |
+| Range                  |                  |
+| Significant Terms      |                  |
 
 ---
 

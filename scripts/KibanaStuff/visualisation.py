@@ -91,8 +91,12 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
     def add_metric(self, metric):
         if not issubclass(metric.__class__, BaseMetric):
             raise Exception("Are you trying to add non-metric?")
-        self.visualization.visState.aggs.append(metric.agg())
-        self.visualization.visState.params.seriesParams.append(metric.param())
+        if metric.agg():
+            self.visualization.visState.aggs.append(metric.agg())
+        if metric.param():
+            self.visualization.visState.params.seriesParams.append(
+                metric.param()
+            )
         self.metric_id += 1
 
     def json_export(self, return_dict=False, uuid_=None):
@@ -297,7 +301,14 @@ class PieVisualisation(BaseKibanaVisualizationDoc):
         self.visualization.visState.params = PieKibanaParams(type="pie")
 
     def split_slices(self, sub_bucket):
+
+        _supported_buckets = ["terms", ]
+
         if not issubclass(sub_bucket.__class__, BaseMetric):
             raise Exception("Are you trying to add non-metric?")
+
+        if sub_bucket not in _supported_buckets:
+            raise Exception("Bucket not supported.")
+
         self.visualization.visState.aggs.append(sub_bucket.agg())
         self.metric_id += 1

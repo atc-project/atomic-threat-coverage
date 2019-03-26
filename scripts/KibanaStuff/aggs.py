@@ -273,3 +273,24 @@ class DateHistogramAgg(BaseKibanaAgg):
     def validate(self):
         # TODO: Write custom validate (check if field exists in elastic)
         return super().validate()
+
+
+class TermsAgg(BaseKibanaAgg):
+
+    def __init__(self, id, field, size=None, order=None, enabled=None):
+        super().__init__(
+            id=id, enabled=enabled, params={
+                "field": field,
+                "size": size,
+                "order": order,
+                "orderBy": "1",
+                "otherBucket": False,
+                "otherBucketLabel": "Other",
+                "missingBucket": False,
+                "missingBucketLabel": "Missing"
+            }, schema="segment", type="terms"
+        )
+
+    def validate(self):
+        # TODO: Write custom validate (check if field exists in elastic)
+        return super().validate()

@@ -378,3 +378,35 @@ class UniqueCountMetric(BaseMetric):
             id=str(id), field=field, enabled=enabled, type=type, label=label,
             valueAxis=valueAxis, mode=mode, showCircles=showCircles
         )
+
+
+# ########################################################################### #
+# ############################ Buckets ###################################### #
+# ########################################################################### #
+
+
+class BaseBucket:
+
+    def __init__(self, id):
+        self.agg_var = None
+
+    def agg(self):
+        return self.agg_var()
+
+
+# ########################################################################### #
+# ############################ Terms ######################################## #
+# ########################################################################### #
+
+class TermsBucket(BaseBucket):
+
+    def __init__(self, id, field, size=None, order=None, enabled=None):
+        if not order:
+            order = 'desc'
+
+        if not size:
+            size = 5
+
+        self.agg_var = aggs.TermsAgg(
+            id=id, field=field, size=size, order=order, enabled=enabled
+        )
