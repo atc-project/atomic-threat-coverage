@@ -7,7 +7,7 @@
 # Pie
 
 - [ ] only index name
-- [ ] use internal search
+- [x] use internal search
 - [ ] show labels
 - [ ] split slices (terms) - else default
 
