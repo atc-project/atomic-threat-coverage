@@ -6,8 +6,7 @@ query: "*"
 metrics:
   - count
   - average:
-      field:
-        port
+      field: port
   - terms:
       split: x
       field: port
