@@ -1,13 +1,12 @@
-.PHONY: all  setup update_sigma generate_queries clean push_to_markdown
+.PHONY: all analytics navigator elastic setup clean
 
-all: setup setup_confluence setup_markdown push_to_confluence push_to_markdown create_analytics_and_pivoting_csv create_attack_navigator_profile
-update: push_to_confluence create_analytics_and_pivoting_csv push_to_markdown create_attack_navigator_profile
-markdown: setup_markdown push_to_markdown
-confluence: setup_confluence push_to_confluence
+all: setup_repo markdown confluence analytics navigator elastic
 analytics: create_analytics_and_pivoting_csv
-navigator: create_attack_navigator_profile
+navigator: create_attack_navigator_profile create_attack_navigator_profile_per_customer
+elastic: create_es_export
+setup: setup_repo setup_confluence setup_markdown
 
-setup:
+setup_repo:
 	@echo "[*] Updating 3rd party repository"
 	git submodule init
 	git submodule update
@@ -37,6 +36,10 @@ create_attack_navigator_profile:
 	@echo "[*] Creating ATT&CK Navigator profile"
 	@cd scripts && python3 attack_navigator_export.py
 
+create_attack_navigator_profile_per_customer:
+	@echo "[*] Creating ATT&CK Navigator profile"
+	@cd scripts && python3 attack_navigator_per_customer_export.py
+
 markdown:
 	@echo "[*] Creating markdown repository and pushing data"
 	@cd scripts && python3 main.py --markdown --auto --init
@@ -45,6 +48,16 @@ confluence:
 	@echo "[*] Creating conflunce repository and pushing data"
 	@cd scripts && python3 main.py --confluence --auto --init
 
+create_es_export:
+	@echo "[*] Creating elastic index"
+	@cd scripts && python3 es_index_export.py
+
+# TODO: make clean works with non default paths from config
 clean:
 	@echo "[*] Cleaning up..."
 	@rm -rf ./Atomic_Threat_Coverage
+	@rm -f ./generated_analytics/atc_attack_navigator_profile*.json
+	@rm -f ./generated_analytics/analytics.csv
+	@rm -f ./generated_analytics/pivoting.csv
+	@rm -f ./generated_analytics/atc_es_index.json
+
