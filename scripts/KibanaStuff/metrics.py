@@ -398,13 +398,33 @@ class BaseBucket(BaseMetric):
 class TermsBucket(BaseBucket):
 
     def __init__(self, id, field, size=None, order=None, enabled=None,
-                 args=None):
+                 schema=None, orderby=None, args=None):
         if not order:
             order = 'desc'
 
         if not size:
             size = 5
 
+        if 'size' in args:
+            size = args['size']
+
+        if 'order' in args:
+            order = args['order']
+
+        if 'orderby' in args:
+            if args['orderby'] not in ["_key", "1"]:
+                raise Exception("orderby field invalid")
+            orderby = args['orderby']
+
+        if 'split' in args and args.get('split') in ["x", "series", "chart"]:
+            if args.get('split') == "x":
+                schema = "segment"
+            if args.get('split') == "series":
+                schema = "group"
+            if args.get('split') == "chart":
+                schema = "split"
+
         self.agg_var = aggs.TermsAgg(
-            id=id, field=field, size=size, order=order, enabled=enabled
+            id=id, field=field, size=size, order=order, orderby=orderby,
+            enabled=enabled, schema=schema
         )

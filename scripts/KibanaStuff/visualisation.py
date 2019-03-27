@@ -15,7 +15,7 @@ from ast import literal_eval
 class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
     """Kibana Visualization Doc"""
 
-    def __init__(self, title, type):
+    def __init__(self, title, type, params_grid=None):
 
         super().__init__()
         self._meta_data_set = False
@@ -24,7 +24,9 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
         self.visualization = base.BaseKibanaVisualizationObject(title=title)
         self.visualization.visState = base.BaseKibanaVisState(
             title=title, type=type)
-        self.visualization.visState.params = base.BaseKibanaParams(type=type)
+        self.visualization.visState.params = base.BaseKibanaParams(
+            type=type, grid=params_grid
+        )
         self.visualization.kibanaSavedObjectMeta["searchSourceJSON"] = {
             "index": "",
             "query": {
@@ -36,7 +38,7 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
             "filter": []
         }
 
-    def default_axis(self):
+    def default_axis(self, category_axes_name="CategoryLeftAxis-1"):
         # TODO: Make class for that as well as proper handling in the code
         self.visualization.visState.params.valueAxes.append({
             "id": "ValueAxis-1",
@@ -55,16 +57,16 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
                 "filter": False,
                 "truncate": 100
             },
-            # "title": {
-            #     "text": "Count"
-            # }
+            "title": {
+                "text": "Count"
+            }
         }
         )
 
         # TODO: Make class for that
         self.visualization.visState.params.categoryAxes.append(
             {
-                "id": "CategoryLeftAxis-1",
+                "id": category_axes_name,
                 "labels": {
                     "show": True,
                     "truncate": 100
@@ -81,7 +83,7 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
         )
 
     def validate(self):
-        supported_vis = ["area", "metric", "pie"]
+        supported_vis = ["area", "metric", "pie", "histogram"]
         if self._meta_data_set and super().validate() \
                 and self.visualization.visState.type in supported_vis:
             return True
@@ -233,6 +235,9 @@ class MetricKibanaParams(base.BaseKibanaParams):
     def disable_labels(self):
         self.metric["labels"]["show"] = False
 
+    def enable_labels(self):
+        self.metric["labels"]["show"] = True
+
 
 class MetricVisualisation(BaseKibanaVisualizationDoc):
 
@@ -243,6 +248,9 @@ class MetricVisualisation(BaseKibanaVisualizationDoc):
 
     def disable_labels(self):
         self.visualization.visState.params.disable_labels()
+
+    def enable_labels(self):
+        self.visualization.visState.params.enable_labels()
 
 
 # ########################################################################### #
@@ -300,15 +308,48 @@ class PieVisualisation(BaseKibanaVisualizationDoc):
         super().__init__(title=title, type="pie")
         self.visualization.visState.params = PieKibanaParams(type="pie")
 
-    def split_slices(self, sub_bucket):
+    def split_slices(self, bucket):
 
         _supported_buckets = ["terms", ]
 
-        if not issubclass(sub_bucket.__class__, BaseMetric):
+        if not issubclass(bucket.__class__, BaseMetric):
             raise Exception("Are you trying to add non-metric?")
 
-        if sub_bucket not in _supported_buckets:
+        if bucket not in _supported_buckets:
             raise Exception("Bucket not supported.")
 
-        self.visualization.visState.aggs.append(sub_bucket.agg())
+        self.visualization.visState.aggs.append(bucket.agg())
         self.metric_id += 1
+
+
+# ########################################################################### #
+# ############################ Vertical Bar Visualisation ################### #
+# ########################################################################### #
+
+
+class VerticalBarVisualisation(BaseKibanaVisualizationDoc):
+
+    def __init__(self, title):
+
+        super().__init__(
+            title=title, type="histogram",
+            params_grid={
+                "categoryLines": False,
+                "style": {
+                    "color": "#eee"
+                }
+            },
+        )
+        self.default_axis(category_axes_name="CategoryAxis-1")
+        self.visualization.visState.params.seriesParams.append({
+            "show": "true",
+            "type": "histogram",
+            "mode": "stacked",
+            "data": {
+                "label": "",
+                "id": "1"
+            },
+            "valueAxis": "ValueAxis-1",
+            "drawLinesBetweenPoints": True,
+            "showCircles": True
+        })

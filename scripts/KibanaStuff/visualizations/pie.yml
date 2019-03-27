@@ -1,8 +1,10 @@
 type: visualization
 name: pie
 title: Pie vis
-index_name: atc-analytics
+index_name: logstash*
+query: "*"
 metrics:
   - count
   - terms:
       field: port
+      size: 3

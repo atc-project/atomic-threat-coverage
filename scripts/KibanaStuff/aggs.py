@@ -277,18 +277,30 @@ class DateHistogramAgg(BaseKibanaAgg):
 
 class TermsAgg(BaseKibanaAgg):
 
-    def __init__(self, id, field, size=None, order=None, enabled=None):
+    def __init__(self, id, field, size=None, order=None, orderby=None,
+                 enabled=None, schema=None, row=None):
+        if not schema:
+            schema = "segment"
+        if not orderby:
+            orderby = "1"
+
+        params_dict = {
+            "field": field,
+            "size": size,
+            "order": order,
+            "orderBy": orderby,
+            "otherBucket": False,
+            "otherBucketLabel": "Other",
+            "missingBucket": False,
+            "missingBucketLabel": "Missing"
+        }
+
+        if row:
+            params_dict["row"] = True
+
         super().__init__(
-            id=id, enabled=enabled, params={
-                "field": field,
-                "size": size,
-                "order": order,
-                "orderBy": "1",
-                "otherBucket": False,
-                "otherBucketLabel": "Other",
-                "missingBucket": False,
-                "missingBucketLabel": "Missing"
-            }, schema="segment", type="terms"
+            id=id, enabled=enabled, params=params_dict, schema=schema,
+            type="terms"
         )
 
     def validate(self):

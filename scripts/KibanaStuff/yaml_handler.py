@@ -48,7 +48,7 @@ class YamlHandler(base.BaseKibana):
             "index-pattern", "search", "visualization", "dashboard"
         ]
         self._visualizations = [
-            "area", "metric", "pie"
+            "area", "metric", "pie", "vbar",
         ]
         self._options = [
             "add_metric",
@@ -60,7 +60,8 @@ class YamlHandler(base.BaseKibana):
         ]
 
         self._bucket_names = [
-            "terms",
+            "date_histogram", "date_range", "filters", "histogram",
+            "ip_range", "range", "significant_terms", "terms"
         ]
 
         self.iter_over_yamls()
@@ -114,6 +115,8 @@ class YamlHandler(base.BaseKibana):
             _vis = visualisation.MetricVisualisation(title=_title)
         elif self._name == "pie":
             _vis = visualisation.PieVisualisation(title=_title)
+        elif self._name == "vbar":
+            _vis = visualisation.VerticalBarVisualisation(title=_title)
         else:
             _vis = None
         if not _vis:
@@ -122,9 +125,8 @@ class YamlHandler(base.BaseKibana):
         if yaml_document.get('query'):
             _vis.set_query(yaml_document.get('query'))
 
-        if 'labels' in yaml_document.keys():
-            if isinstance(yaml_document['labels'], bool):
-                self.vis_handle_labels(yaml_document['labels'], _vis)
+        if yaml_document.get('labels'):
+            self.vis_set_show_labels(self, _vis, yaml_document.get('labels'))
 
         if _saved_search_name:
             _vis.set_saved_search(saved_search_name=_saved_search_name)
@@ -153,13 +155,22 @@ class YamlHandler(base.BaseKibana):
                     _vis.add_metric(_metric)
         self._results.append(_vis.json_export(return_dict=True, uuid_=uuid_))
 
-    def vis_handle_labels(self, bool_var, vis_):
-        if self._name == "metric":
-            if bool_var is False:
-                vis_.disable_labels()
-        else:
-            print("Warning! Can't disable labels for given visualization. " +
-                  "Not supported.")
+    def vis_set_show_labels(self, vis, show_labels):
+
+        if not isinstance(show_labels, bool):
+            raise Exception("Provided value is not a bool")
+
+        if isinstance(vis, visualisation.AreaVisualisation):
+            print(
+                "Warning! Setting labels appearance in Area is not supported"
+            )
+
+        elif isinstance(vis, visualisation.MetricVisualisation)\
+                or isinstance(vis, visualisation.PieVisualisation):
+            if show_labels:
+                vis.enable_labels()
+            else:
+                vis.disable_labels()
 
     def dashboard(self, yaml_document):
         if not yaml_document.get('visualizations'):
@@ -374,8 +385,8 @@ class YamlHandler(base.BaseKibana):
 
     def handle_bucket(self, id, bucket_name, args=None):
         if bucket_name not in self._bucket_names:
-            raise Exception("Bucket not supported")
-        pass
+            raise Exception("Invalid/unrecognized bucket name")
+        self.handle_metric(id=id, metric_name=bucket_name, args=args)
 
     def allowed_metrics(self, type, name, visualisation_name):
         dictionary_metrics = {
@@ -386,11 +397,16 @@ class YamlHandler(base.BaseKibana):
             "area": ["average", "count", "max", "min", "median",
                      "percentile-ranks", "percentiles", "sum",
                      "top-hits", "unique-count"],
+            "vbar": ["average", "count", "max", "min", "median",
+                     "percentile-ranks", "percentiles", "sum",
+                     "top-hits", "unique-count"],
         }
         dictionary_buckets = {
             "pie": [
-                "date_histogram", "date_range", "filters", "histogram",
-                "ip_range", "range", "significant_terms", "terms"
+                "terms",
+            ],
+            "vbar": [
+                "terms",
             ],
         }
         if type.lower() in ["metric", "metrics"]:

@@ -6,16 +6,17 @@
 
 # Pie
 
-- [ ] only index name
+- [x] only index name
 - [x] use internal search
-- [ ] show labels
-- [ ] split slices (terms) - else default
+- [x] show labels
+- [x] split slices (terms) - else default
 
 # Bars - vertical
 
-- [ ] X-axis - terms
-- [ ] split series - terms
-- [ ] else default
+- [x] X-axis - terms
+- [x] split series - terms
+- [x] split charts - terms, this wasn't planned but it is handled as well (matter of 1 line)
+- [x] else default
 
 # Area
 
