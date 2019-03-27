@@ -12,7 +12,7 @@ detection_rules_directories:
   - '../detection_rules/sigma/rules/windows/process_creation'
   - '../detection_rules/sigma/rules/windows/sysmon'
 triggers_directory: '../triggers/atomic-red-team/atomics'
-exported_analytics_directory: '../generated_analytics'
+exported_analytics_directory: '../analytics/generated'
 confluence_rest_api_url: 'https://atomicthreatcoverage.atlassian.net/wiki/rest/api/'
 # to get sample viewpage url go to 'Page Information' for any page from your confluence
 # you will be redirected to sth like https://atomicthreatcoverage.atlassian.net/wiki/pages/viewinfo.action?pageId=115606439

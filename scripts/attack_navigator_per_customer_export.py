@@ -99,7 +99,7 @@ def main():
         filename = 'atc_attack_navigator_profile_' + \
             customer.get('title') + '.json'
         exported_analytics_directory = \
-            ATCconfig.get('exported_analytics_directory')
+            ATCconfig.get('exported_analytics_directory') + "/attack_navigator_profiles"
 
         with open(exported_analytics_directory + '/' + filename, 'w') as fp:
             json.dump(NAVIGATOR_TEMPLATE, fp)

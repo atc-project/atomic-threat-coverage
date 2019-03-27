@@ -77,7 +77,8 @@ def main():
     NAVIGATOR_TEMPLATE['techniques'] = techniques
 
     filename = 'atc_attack_navigator_profile.json'
-    exported_analytics_directory = ATCconfig.get('exported_analytics_directory')
+    exported_analytics_directory = \
+        ATCconfig.get('exported_analytics_directory') + "/attack_navigator_profiles"
 
     with open(exported_analytics_directory + '/' + filename, 'w') as fp:
         json.dump(NAVIGATOR_TEMPLATE, fp)
