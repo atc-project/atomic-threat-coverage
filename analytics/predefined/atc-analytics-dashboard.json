@@ -1,0 +1,253 @@
+{
+  "objects": 
+  [
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0001: Initial Access\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "title": "Initial Access",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"title\":\"Initial Access\",\"type\":\"metric\",\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":false},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":60}}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}]}"
+      },
+      "id": "0808e350-4a9a-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0004: Privilege Escalation\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "title": "Privilege Escalation",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"title\":\"Privilege Escalation\",\"type\":\"metric\",\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":false},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":60}}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}]}"
+      },
+      "id": "c9d32320-4a99-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "description": "", 
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0006: Credential Access\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "title": "Credential Access",
+        "visState": "{\"title\":\"Credential Access\",\"type\":\"metric\",\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":false},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":60}}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}]}",
+        "uiStateJSON": "{}",
+        "version": 1
+      },
+      "id": "d468f210-4a99-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "title": "Defense Evasion",
+        "visState": "{\"title\":\"Defense Evasion\",\"type\":\"metric\",\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":false},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":60}}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}]}",
+        "uiStateJSON": "{}",
+        "description": "",
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0005: Defense Evasion\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "id": "a1658ef0-4a99-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "title": "Persistence",
+        "visState": "{\"title\":\"Persistence\",\"type\":\"metric\",\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":false},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":60}}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}]}",
+        "uiStateJSON": "{}",
+        "description": "",
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0003: Persistence\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "id": "c174a690-4a99-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "title": "Execution",
+        "visState": "{\"title\":\"Execution\",\"type\":\"metric\",\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":false},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":60}}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}]}",
+        "uiStateJSON": "{}",
+        "description": "",
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0002: Execution\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "id": "aff12920-4a99-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "title": "Collection",
+        "visState": "{\"title\":\"Collection\",\"type\":\"metric\",\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":false},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":60}}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}]}",
+        "uiStateJSON": "{}",
+        "description": "",
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0009: Collection\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "id": "47338ad0-4a9a-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "title": "C&C",
+        "visState": "{\"title\":\"C&C\",\"type\":\"metric\",\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":false},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":60}}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}]}",
+        "uiStateJSON": "{}",
+        "description": "",
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0011: Command and Control\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "id": "1acf19f0-4a9a-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "title": "Lateral Movement",
+        "visState": "{\"title\":\"Lateral Movement\",\"type\":\"metric\",\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":false},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":60}}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}]}",
+        "uiStateJSON": "{}",
+        "description": "",
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0008: Lateral Movement\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "id": "dd6bc4f0-4a99-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "title": "Discovery",
+        "visState": "{\"title\":\"Discovery\",\"type\":\"metric\",\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":false},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":60}}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}]}",
+        "uiStateJSON": "{}",
+        "description": "",
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0007: Discovery\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "id": "fe2a7d80-4a99-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "title": "Exfiltration",
+        "visState": "{\"title\":\"Exfiltration\",\"type\":\"metric\",\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":false},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":60}}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}]}",
+        "uiStateJSON": "{}",
+        "description": "",
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0010: Exfiltration\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "id": "6015ef20-4a9a-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "title": "Distribution of Data Needed providers",
+        "visState": "{\"title\":\"Distribution of Data Needed providers\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":true,\"labels\":{\"show\":true,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"provider\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
+        "uiStateJSON": "{}",
+        "description": "",
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "id": "c6a34a80-4a9a-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "title": "Distribution of Detection Rules severity per Data Needed provider",
+        "visState": "{\"title\":\"Distribution of Detection Rules severity per Data Needed provider\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Count\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Count\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"provider\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"detection_rule_severity\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
+        "uiStateJSON": "{\"vis\":{\"colors\":{\"critical\":\"#BF1B00\",\"high\":\"#EF843C\",\"medium\":\"#EAB839\",\"low\":\"#7EB26D\"}}}",
+        "description": "",
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "id": "5464cfb0-4a9b-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "title": "Distribution of Detection Rules development statuses",
+        "visState": "{\"title\":\"Distribution of Detection Rules development statuses\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":true,\"labels\":{\"show\":true,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"detection_rule_development_status\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
+        "uiStateJSON": "{}",
+        "description": "",
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "id": "ebdd03e0-4a9a-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "title": "Distribution of Detection Rules implemented per Customer",
+        "visState": "{\"title\":\"Distribution of Detection Rules implemented per Customer\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":true,\"labels\":{\"show\":true,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"customer\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
+        "uiStateJSON": "{}",
+        "description": "",
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "id": "8fb8e930-4a9a-11e9-8452-47d9c17cdb75",
+      "type": "visualization",
+      "version": 1
+    },
+    {
+      "attributes": {
+        "description": "",
+        "hits": 0,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"filter\":[]}"
+        },
+        "title": "ATC Analytics Dashboard",
+        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":6,\"i\":\"1\",\"w\":5,\"x\":15,\"y\":0},\"id\":\"c9d32320-4a99-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"1\",\"type\":\"visualization\",\"version\":\"6.6.2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":6,\"i\":\"2\",\"w\":4,\"x\":20,\"y\":0},\"id\":\"a1658ef0-4a99-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"2\",\"type\":\"visualization\",\"version\":\"6.6.2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":6,\"i\":\"3\",\"w\":5,\"x\":10,\"y\":0},\"id\":\"c174a690-4a99-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"3\",\"type\":\"visualization\",\"version\":\"6.6.2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":6,\"i\":\"4\",\"w\":5,\"x\":5,\"y\":0},\"id\":\"aff12920-4a99-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"4\",\"type\":\"visualization\",\"version\":\"6.6.2\"},{\"embeddableConfig\":{\"vis\":{\"colors\":{\"None\":\"#E0752D\",\"TESTCUSTOMER\":\"#629E51\"}}},\"gridData\":{\"h\":15,\"i\":\"5\",\"w\":24,\"x\":0,\"y\":6},\"id\":\"8fb8e930-4a9a-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"5\",\"type\":\"visualization\",\"version\":\"6.6.2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":6,\"i\":\"6\",\"w\":4,\"x\":24,\"y\":0},\"id\":\"d468f210-4a99-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"6\",\"type\":\"visualization\",\"version\":\"6.6.2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":6,\"i\":\"7\",\"w\":4,\"x\":32,\"y\":0},\"id\":\"dd6bc4f0-4a99-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"7\",\"type\":\"visualization\",\"version\":\"6.6.2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":6,\"i\":\"8\",\"w\":5,\"x\":0,\"y\":0},\"id\":\"0808e350-4a9a-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"8\",\"type\":\"visualization\",\"version\":\"6.6.2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":6,\"i\":\"9\",\"w\":4,\"x\":40,\"y\":0},\"id\":\"6015ef20-4a9a-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"9\",\"type\":\"visualization\",\"version\":\"6.6.2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":6,\"i\":\"10\",\"w\":4,\"x\":36,\"y\":0},\"id\":\"47338ad0-4a9a-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"10\",\"type\":\"visualization\",\"version\":\"6.6.2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":6,\"i\":\"11\",\"w\":4,\"x\":44,\"y\":0},\"id\":\"1acf19f0-4a9a-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"11\",\"type\":\"visualization\",\"version\":\"6.6.2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":6,\"i\":\"12\",\"w\":4,\"x\":28,\"y\":0},\"id\":\"fe2a7d80-4a99-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"12\",\"type\":\"visualization\",\"version\":\"6.6.2\"},{\"embeddableConfig\":{\"vis\":{\"colors\":{\"experimental\":\"#BF1B00\",\"not defined\":\"#0A50A1\",\"stable\":\"#3F6833\"}}},\"gridData\":{\"h\":15,\"i\":\"13\",\"w\":24,\"x\":0,\"y\":21},\"id\":\"ebdd03e0-4a9a-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"13\",\"type\":\"visualization\",\"version\":\"6.6.2\"},{\"embeddableConfig\":{\"vis\":{\"colors\":{\"critical\":\"#BF1B00\",\"high\":\"#EF843C\",\"low\":\"#7EB26D\",\"medium\":\"#EAB839\"}}},\"gridData\":{\"h\":15,\"i\":\"14\",\"w\":24,\"x\":24,\"y\":6},\"id\":\"5464cfb0-4a9b-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"14\",\"type\":\"visualization\",\"version\":\"6.6.2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"15\",\"w\":24,\"x\":24,\"y\":21},\"id\":\"c6a34a80-4a9a-11e9-8452-47d9c17cdb75\",\"panelIndex\":\"15\",\"type\":\"visualization\",\"version\":\"6.6.2\"}]",
+        "optionsJSON": "{\"darkTheme\":true,\"hidePanelTitles\":false,\"useMargins\":true}",
+        "version": 1,
+        "timeRestore": true,
+        "timeTo": "now",
+        "timeFrom": "now-5y",
+        "refreshInterval": {
+          "pause": true,
+          "value": 0
+        }
+      },
+      "id": "c3351e70-4a9d-11e9-8452-47d9c17cdb75",
+      "type": "dashboard",
+      "version": 1
+    }
+  ]
+}

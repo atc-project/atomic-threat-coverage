@@ -1,5 +1,9 @@
 🇬🇧 [English version](README.md)  |   🇷🇺 [Русская версия](README_RU.md)  
 
+# TEN DOKUMENT NIE JEST AKTUALNY. ZAKTUALIZOWANA WERSJA DOSTĘPNA BĘDZIE POD KONIEC MARCA.
+# TEN DOKUMENT NIE JEST AKTUALNY. ZAKTUALIZOWANA WERSJA DOSTĘPNA BĘDZIE POD KONIEC MARCA.
+# TEN DOKUMENT NIE JEST AKTUALNY. ZAKTUALIZOWANA WERSJA DOSTĘPNA BĘDZIE POD KONIEC MARCA.
+
 # Atomic Threat Coverage
 
 Automatycznie generowana analityczna baza wiedzy zaprojektowana, aby zwalczać zagrożenia na podstawie [MITRE ATT&CK](https://attack.mitre.org/).
