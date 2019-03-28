@@ -1,0 +1,32 @@
+title: LP_0044_windows_ntlm_audit
+default: Not configured
+volume: High # depends on configuration and NTLM use in domain
+description: >
+  This is combined audit policy, consist of 3 policies under "Network security: 
+  Restrict NTLM" — Audit NTLM authentication in this domain, Audit Incoming NTLM Traffic, 
+  Outgoing NTLM traffic to remote servers. It will provide visibility on 
+  NTLM authentication attempts. This policy is only about auditing events,
+  it will not disable NTLM authentication itself. 
+eventID:
+  - 8001 # NTLM client blocked audit: Audit outgoing NTLM authentication traffic that would be blocked
+  - 8002 # NTLM server blocked audit: Audit Incoming NTLM Traffic that would be blocked
+  - 8003 # NTLM server blocked in the domain audit: Audit NTLM authentication in this domain
+  - 8004 # no details. todo
+references:
+    - https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/network-security-restrict-ntlm-audit-ntlm-authentication-in-this-domain
+    - https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/network-security-restrict-ntlm-audit-incoming-ntlm-traffic
+    - https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/network-security-restrict-ntlm-outgoing-ntlm-traffic-to-remote-servers
+configuration: |
+  Steps to implement logging policy with Group Policies:
+  ```
+  Computer Configuratoin ->
+  Policies ->
+  Windows Settings ->
+  Security Settings ->
+  Local Policies ->
+  Security Options:
+
+  - Network security: Restrict NTLM: Audit NTLM authentication in this domain: Enable all
+  - Network security: Restrict NTLM: Audit Incoming NTLM Traffic: Enable audit for all accounts
+  - Network security: Restrict NTLM: Outgoing NTLM traffic to remote servers. Policy Setting: Audit all
+  ```

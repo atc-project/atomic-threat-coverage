@@ -1,0 +1,24 @@
+# Project supplied default configuration.  Add a new configuration file 'config.yml' where you can overwrite any settings depicted below.
+# config.yml is not tracked by the version management system, while config.default.yml is.
+confluence_space_name: "ATC" # SPACE KEY. GO TO: SPACE TOOLS -> Overview -> Space Details -> Key
+confluence_space_home_page_name: 'ATC Home' # SPACE HOME. GO TO: SPACE TOOLS -> Overview -> Space Details -> Home page
+confluence_name_of_root_directory: 'Atomic Threat Coverage'
+md_name_of_root_directory: '../Atomic_Threat_Coverage'
+detection_rules_directories: 
+  - '../detection_rules/sigma/rules/windows/builtin'
+  - '../detection_rules/sigma/rules/windows/malware'
+  - '../detection_rules/sigma/rules/windows/other'
+  - '../detection_rules/sigma/rules/windows/powershell'
+  - '../detection_rules/sigma/rules/windows/process_creation'
+  - '../detection_rules/sigma/rules/windows/sysmon'
+triggers_directory: '../triggers/atomic-red-team/atomics'
+exported_analytics_directory: '../analytics/generated'
+confluence_rest_api_url: 'https://atomicthreatcoverage.atlassian.net/wiki/rest/api/'
+# to get sample viewpage url go to 'Page Information' for any page from your confluence
+# you will be redirected to sth like https://atomicthreatcoverage.atlassian.net/wiki/pages/viewinfo.action?pageId=115606439
+# change viewinfo to viewpage and delete number from the end
+# you should get sth like https://atomicthreatcoverage.atlassian.net/wiki/pages/viewpage.action?pageId=
+confluence_viewpage_url: 'https://atomicthreatcoverage.atlassian.net/wiki/pages/viewpage.action?pageId='
+sigmac_path: '../detection_rules/sigma/tools/sigmac'
+detection_queries: 'es-qs,xpack-watcher,graylog,splunk,logpoint,grep'
+customers_directory: '../customers'

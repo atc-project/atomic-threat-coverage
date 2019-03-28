@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects certain DLL loads when Mimikatz gets executed                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| ATT&amp;CK Technique | <ul></ul>                             |
+| ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>                             |
 | Data Needed          | <ul><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li></ul>                                                         |
-| Trigger              |  There is no Trigger for this technique yet.  |
+| Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul><li>unknown</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |
@@ -24,6 +24,7 @@ references:
     - https://securityriskadvisors.com/blog/post/detecting-in-memory-mimikatz/
 tags:
     - attack.s0002
+    - attack.t1003
     - attack.lateral_movement
     - attack.credential_access
 logsource:
@@ -61,15 +62,46 @@ level: medium
 
 
 
+### es-qs
+    
+```
+
+```
 
 
-
-### X-Pack Watcher
-
+### xpack-watcher
+    
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Mimikatz-In-Memory <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30s"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"7\\" AND Image:\\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\rundll32.exe\\")",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Mimikatz In-Memory\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
+
+### graylog
+    
+```
+
+```
+
+
+### splunk
+    
+```
+
+```
+
+
+### logpoint
+    
+```
+
+```
+
+
+### grep
+    
+```
+grep -P '^(?:.*(?=.*7)(?=.*C:\\Windows\\System32\\rundll32\\.exe))'
+```
 
 
 

@@ -10,6 +10,7 @@ import os
 # ############################ Triggers ##################################### #
 # ########################################################################### #
 
+ATCconfig = ATCutils.load_config("config.yml")
 
 class Triggers:
     """Class for the Triggers entity"""
@@ -58,7 +59,7 @@ class Triggers:
 
             base = os.path.basename(self.yaml_file)
             trigger = os.path.splitext(base)[0]
-            path_md = '../triggers/atomic-red-team/atomics/' + \
+            path_md = ATCconfig.get('triggers_directory') + '/' + \
                 trigger + '/' + trigger + '.md'
 
             with open(path_md, 'r') as myfile:

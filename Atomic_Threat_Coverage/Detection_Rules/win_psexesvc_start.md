@@ -3,7 +3,7 @@
 | Description          | Detects a PsExec service start                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1035: Service Execution](../Triggers/T1035.md)</li></ul>  |
 | Severity Level       | low                                                                                                                                                 |
 | False Positives      | <ul><li>Administrative activity</li></ul>                                                                  |
@@ -27,46 +27,62 @@ tags:
     - attack.t1035
     - attack.s0029
 logsource:
+    category: process_creation
     product: windows
-    service: security
-    definition: 'Requirements: Audit Policy : Detailed Tracking > Audit Process creation, Group Policy : Administrative Templates\System\Audit Process Creation'
 detection:
     selection:
-        EventID: 4688
-        ProcessCommandLine: 'C:\Windows\PSEXESVC.exe'
+        ProcessCommandLine: C:\Windows\PSEXESVC.exe
     condition: selection
 falsepositives:
     - Administrative activity
 level: low
+
+```
+
+
+
+
+
+### es-qs
+    
+```
+ProcessCommandLine:"C\\:\\\\Windows\\\\PSEXESVC.exe"
 ```
 
 
-
-
-
-### Kibana query
-
+### xpack-watcher
+    
 ```
-(EventID:"4688" AND ProcessCommandLine:"C\\:\\\\Windows\\\\PSEXESVC.exe")
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/PsExec-Service-Start <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "ProcessCommandLine:\\"C\\\\:\\\\\\\\Windows\\\\\\\\PSEXESVC.exe\\"",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'PsExec Service Start\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-
-
-
-### X-Pack Watcher
-
+### graylog
+    
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/PsExec-Service-Start <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4688\\" AND ProcessCommandLine:\\"C\\\\:\\\\\\\\Windows\\\\\\\\PSEXESVC.exe\\")",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'PsExec Service Start\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+ProcessCommandLine:"C\\:\\\\Windows\\\\PSEXESVC.exe"
 ```
 
 
-
-
-
-### Graylog
-
+### splunk
+    
 ```
-(EventID:"4688" AND ProcessCommandLine:"C\\:\\\\Windows\\\\PSEXESVC.exe")
+ProcessCommandLine="C:\\\\Windows\\\\PSEXESVC.exe"
 ```
+
+
+### logpoint
+    
+```
+ProcessCommandLine="C:\\\\Windows\\\\PSEXESVC.exe"
+```
+
+
+### grep
+    
+```
+grep -P '^C:\\Windows\\PSEXESVC\\.exe'
+```
+
+
 

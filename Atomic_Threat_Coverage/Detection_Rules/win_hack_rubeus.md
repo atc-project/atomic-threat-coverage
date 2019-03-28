@@ -3,7 +3,7 @@
 | Description          | Detects command line parameters used by Rubeus hack tool                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>unlikely</li></ul>                                                                  |
@@ -17,87 +17,82 @@
 ### Sigma rule
 
 ```
----
-action: global
 title: Rubeus Hack Tool
-description: Detects command line parameters used by Rubeus hack tool 
+description: Detects command line parameters used by Rubeus hack tool
 author: Florian Roth
-references: 
+references:
     - https://www.harmj0y.net/blog/redteaming/from-kekeo-to-rubeus/
 date: 2018/12/19
 tags:
     - attack.credential_access
     - attack.t1003
     - attack.s0005
+logsource:
+    category: process_creation
+    product: windows
 detection:
+    selection:
+        CommandLine:
+            - '* asreproast *'
+            - '* dump /service:krbtgt *'
+            - '* kerberoast *'
+            - '* createnetonly /program:*'
+            - '* ptt /ticket:*'
+            - '* /impersonateuser:*'
+            - '* renew /ticket:*'
+            - '* asktgt /user:*'
+            - '* harvest /interval:*'
     condition: selection
 falsepositives:
     - unlikely
 level: critical
----
-logsource:
-    product: windows
-    service: sysmon
-detection:
-    selection:
-        EventID: 1
-        CommandLine: 
-            - '* asreproast *'
-            - '* dump /service:krbtgt *'
-            - '* kerberoast *'
-            - '* createnetonly /program:*'
-            - '* ptt /ticket:*'
-            - '* /impersonateuser:*'
-            - '* renew /ticket:*'
-            - '* asktgt /user:*'
-            - '* harvest /interval:*'
----
-logsource:
-    product: windows
-    service: security
-    definition: 'Requirements: Audit Policy : Detailed Tracking > Audit Process creation, Group Policy : Administrative Templates\System\Audit Process Creation'
-detection:
-    selection:
-        EventID: 4688
-        ProcessCommandLine: 
-            - '* asreproast *'
-            - '* dump /service:krbtgt *'
-            - '* kerberoast *'
-            - '* createnetonly /program:*'
-            - '* ptt /ticket:*'
-            - '* /impersonateuser:*'
-            - '* renew /ticket:*'
-            - '* asktgt /user:*'
-            - '* harvest /interval:*'
+
+```
+
+
+
+
+
+### es-qs
+    
+```
+CommandLine.keyword:(*\\ asreproast\\ * *\\ dump\\ \\/service\\:krbtgt\\ * *\\ kerberoast\\ * *\\ createnetonly\\ \\/program\\:* *\\ ptt\\ \\/ticket\\:* *\\ \\/impersonateuser\\:* *\\ renew\\ \\/ticket\\:* *\\ asktgt\\ \\/user\\:* *\\ harvest\\ \\/interval\\:*)
 ```
 
 
-
-
-
-### Kibana query
-
+### xpack-watcher
+    
 ```
-(EventID:"1" AND CommandLine.keyword:(*\\ asreproast\\ * *\\ dump\\ \\/service\\:krbtgt\\ * *\\ kerberoast\\ * *\\ createnetonly\\ \\/program\\:* *\\ ptt\\ \\/ticket\\:* *\\ \\/impersonateuser\\:* *\\ renew\\ \\/ticket\\:* *\\ asktgt\\ \\/user\\:* *\\ harvest\\ \\/interval\\:*))\n(EventID:"4688" AND ProcessCommandLine.keyword:(*\\ asreproast\\ * *\\ dump\\ \\/service\\:krbtgt\\ * *\\ kerberoast\\ * *\\ createnetonly\\ \\/program\\:* *\\ ptt\\ \\/ticket\\:* *\\ \\/impersonateuser\\:* *\\ renew\\ \\/ticket\\:* *\\ asktgt\\ \\/user\\:* *\\ harvest\\ \\/interval\\:*))
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Rubeus-Hack-Tool <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "CommandLine.keyword:(*\\\\ asreproast\\\\ * *\\\\ dump\\\\ \\\\/service\\\\:krbtgt\\\\ * *\\\\ kerberoast\\\\ * *\\\\ createnetonly\\\\ \\\\/program\\\\:* *\\\\ ptt\\\\ \\\\/ticket\\\\:* *\\\\ \\\\/impersonateuser\\\\:* *\\\\ renew\\\\ \\\\/ticket\\\\:* *\\\\ asktgt\\\\ \\\\/user\\\\:* *\\\\ harvest\\\\ \\\\/interval\\\\:*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Rubeus Hack Tool\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-
-
-
-### X-Pack Watcher
-
+### graylog
+    
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Rubeus-Hack-Tool <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND CommandLine.keyword:(*\\\\ asreproast\\\\ * *\\\\ dump\\\\ \\\\/service\\\\:krbtgt\\\\ * *\\\\ kerberoast\\\\ * *\\\\ createnetonly\\\\ \\\\/program\\\\:* *\\\\ ptt\\\\ \\\\/ticket\\\\:* *\\\\ \\\\/impersonateuser\\\\:* *\\\\ renew\\\\ \\\\/ticket\\\\:* *\\\\ asktgt\\\\ \\\\/user\\\\:* *\\\\ harvest\\\\ \\\\/interval\\\\:*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Rubeus Hack Tool\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Rubeus-Hack-Tool-2 <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4688\\" AND ProcessCommandLine.keyword:(*\\\\ asreproast\\\\ * *\\\\ dump\\\\ \\\\/service\\\\:krbtgt\\\\ * *\\\\ kerberoast\\\\ * *\\\\ createnetonly\\\\ \\\\/program\\\\:* *\\\\ ptt\\\\ \\\\/ticket\\\\:* *\\\\ \\\\/impersonateuser\\\\:* *\\\\ renew\\\\ \\\\/ticket\\\\:* *\\\\ asktgt\\\\ \\\\/user\\\\:* *\\\\ harvest\\\\ \\\\/interval\\\\:*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Rubeus Hack Tool\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+CommandLine:("* asreproast *" "* dump \\/service\\:krbtgt *" "* kerberoast *" "* createnetonly \\/program\\:*" "* ptt \\/ticket\\:*" "* \\/impersonateuser\\:*" "* renew \\/ticket\\:*" "* asktgt \\/user\\:*" "* harvest \\/interval\\:*")
 ```
 
 
-
-
-
-### Graylog
-
+### splunk
+    
 ```
-(EventID:"1" AND CommandLine:("* asreproast *" "* dump \\/service\\:krbtgt *" "* kerberoast *" "* createnetonly \\/program\\:*" "* ptt \\/ticket\\:*" "* \\/impersonateuser\\:*" "* renew \\/ticket\\:*" "* asktgt \\/user\\:*" "* harvest \\/interval\\:*"))\n(EventID:"4688" AND ProcessCommandLine:("* asreproast *" "* dump \\/service\\:krbtgt *" "* kerberoast *" "* createnetonly \\/program\\:*" "* ptt \\/ticket\\:*" "* \\/impersonateuser\\:*" "* renew \\/ticket\\:*" "* asktgt \\/user\\:*" "* harvest \\/interval\\:*"))
+(CommandLine="* asreproast *" OR CommandLine="* dump /service:krbtgt *" OR CommandLine="* kerberoast *" OR CommandLine="* createnetonly /program:*" OR CommandLine="* ptt /ticket:*" OR CommandLine="* /impersonateuser:*" OR CommandLine="* renew /ticket:*" OR CommandLine="* asktgt /user:*" OR CommandLine="* harvest /interval:*")
 ```
+
+
+### logpoint
+    
+```
+CommandLine IN ["* asreproast *", "* dump /service:krbtgt *", "* kerberoast *", "* createnetonly /program:*", "* ptt /ticket:*", "* /impersonateuser:*", "* renew /ticket:*", "* asktgt /user:*", "* harvest /interval:*"]
+```
+
+
+### grep
+    
+```
+grep -P '^(?:.*.* asreproast .*|.*.* dump /service:krbtgt .*|.*.* kerberoast .*|.*.* createnetonly /program:.*|.*.* ptt /ticket:.*|.*.* /impersonateuser:.*|.*.* renew /ticket:.*|.*.* asktgt /user:.*|.*.* harvest /interval:.*)'
+```
+
+
 

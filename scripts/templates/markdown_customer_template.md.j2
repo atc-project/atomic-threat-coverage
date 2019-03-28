@@ -1,0 +1,7 @@
+| Title          | {{ title }} |
+|:---------------|:-----------------------------------------------------------------------------------------------------------------|
+| Customer Name    	| {{ customer_name }} |
+| Description 		| {{ description }} |
+| Data Needed    | {%- if dataneeded is defined and dataneeded|length %}<ul>{% for data in dataneeded %}<li>[{{ data }}](../Data_Needed/{{data}}.md)</li>{% endfor %}</ul>{% else %} None{%endif%} |
+| Logging Policy | <ul>{% for policy in loggingpolicy %}<li>{% if policy != "None" %}[{{ policy }}](../Logging_Policies/{{policy}}.md){% else %} Not existing {% endif %}</li>{% endfor %}</ul> |
+| Detection Rule | <ul>{% for rule, name in detectionrule %}<li>{% if rule != "None" %}[{{ rule }}](../Detection_Rules/{{name}}.md){% else %} Not existing {% endif %}</li>{% endfor %}</ul> |

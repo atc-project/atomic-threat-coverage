@@ -1,15 +1,21 @@
 #!/bin/bash
 
-DIRECTORIES=(
-  "../Atomic_Threat_Coverage"
-  "../Atomic_Threat_Coverage/Detection_Rules"
-  "../Atomic_Threat_Coverage/Logging_Policies"
-  "../Atomic_Threat_Coverage/Data_Needed"
-  "../Atomic_Threat_Coverage/Triggers"
-  "../Atomic_Threat_Coverage/Response_Actions"
-  "../Atomic_Threat_Coverage/Response_Playbooks"
-  "../Atomic_Threat_Coverage/Enrichments"
+OUTPUT_PATH=`grep md_name_of_root_directory config.yml | sed -e "s/^.*\'\(.*\)\'.*$/\1/"`
 
+if [ -z "$OUTPUT_PATH" ]; then
+  OUTPUT_PATH="../Atomic_Threat_Coverage"
+fi
+
+DIRECTORIES=(
+  "$OUTPUT_PATH"
+  "$OUTPUT_PATH/Detection_Rules"
+  "$OUTPUT_PATH/Logging_Policies"
+  "$OUTPUT_PATH/Data_Needed"
+  "$OUTPUT_PATH/Triggers"
+  "$OUTPUT_PATH/Response_Actions"
+  "$OUTPUT_PATH/Response_Playbooks"
+  "$OUTPUT_PATH/Enrichments"
+  "$OUTPUT_PATH/Customers"
 )
 
 for DIRECTORY in ${DIRECTORIES[@]}; do
@@ -17,3 +23,4 @@ for DIRECTORY in ${DIRECTORIES[@]}; do
     mkdir ${DIRECTORY}
   fi
 done
+

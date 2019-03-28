@@ -3,3 +3,6 @@
 *.pyc
 *.idea
 _*
+# Ignore local configuration
+config.yml
+Atomic_Threat_Coverage_test

@@ -8,13 +8,13 @@ from jinja2 import Environment, FileSystemLoader
 import os
 import subprocess
 import re
-from pdb import set_trace as bp
+
 
 # ########################################################################### #
 # ########################### Detection Rule ################################ #
 # ########################################################################### #
 
-ATCconfig = ATCutils.read_yaml_file("config.yml")
+ATCconfig = ATCutils.load_config('config.yml')
 
 
 class DetectionRule:
@@ -261,7 +261,7 @@ class DetectionRule:
 
         return True
 
-    def save_markdown_file(self, atc_dir='../' + ATCconfig.get('md_name_of_root_directory') + '/'):
+    def save_markdown_file(self, atc_dir=ATCconfig.get('md_name_of_root_directory') + '/'):
         """Write content (md template filled with data) to a file"""
         base = os.path.basename(self.yaml_file)
         title = os.path.splitext(base)[0]

@@ -1,7 +1,7 @@
 | Title                | Unauthorized System Time Modification                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detect scenarios where a potentially unauthorized application or user is modifying the system time.                                                                                                                                           |
-| ATT&amp;CK Tactic    | <ul></ul>  |
+| ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1099: Timestomp](https://attack.mitre.org/techniques/T1099)</li></ul>                             |
 | Data Needed          | <ul></ul>                                                         |
 | Trigger              | <ul><li>[T1099: Timestomp](../Triggers/T1099.md)</li></ul>  |
@@ -26,6 +26,7 @@ references:
     - Live environment caused by malware
 date: 2019/02/05
 tags:
+    - attack.defense_evasion
     - attack.t1099
 logsource:
     product: windows
@@ -52,29 +53,46 @@ level: high
 
 
 
-### Kibana query
-
+### es-qs
+    
 ```
 (EventID:"4616" AND NOT (((ProcessName:"C\\:\\\\Program\\ Files\\\\VMware\\\\VMware\\ Tools\\\\vmtoolsd.exe" OR ProcessName:"C\\:\\\\Windows\\\\System32\\\\VBoxService.exe") OR (ProcessName:"C\\:\\\\Windows\\\\System32\\\\svchost.exe" AND SubjectUserSid:"S\\-1\\-5\\-19"))))
 ```
 
 
-
-
-
-### X-Pack Watcher
-
+### xpack-watcher
+    
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Unauthorized-System-Time-Modification <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4616\\" AND NOT (((ProcessName:\\"C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\VMware\\\\\\\\VMware\\\\ Tools\\\\\\\\vmtoolsd.exe\\" OR ProcessName:\\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\VBoxService.exe\\") OR (ProcessName:\\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\svchost.exe\\" AND SubjectUserSid:\\"S\\\\-1\\\\-5\\\\-19\\"))))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Unauthorized System Time Modification\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-
-
-
-### Graylog
-
+### graylog
+    
 ```
 (EventID:"4616" AND NOT (((ProcessName:"C\\:\\\\Program Files\\\\VMware\\\\VMware Tools\\\\vmtoolsd.exe" OR ProcessName:"C\\:\\\\Windows\\\\System32\\\\VBoxService.exe") OR (ProcessName:"C\\:\\\\Windows\\\\System32\\\\svchost.exe" AND SubjectUserSid:"S\\-1\\-5\\-19"))))
 ```
+
+
+### splunk
+    
+```
+(EventID="4616" NOT (((ProcessName="C:\\\\Program Files\\\\VMware\\\\VMware Tools\\\\vmtoolsd.exe" OR ProcessName="C:\\\\Windows\\\\System32\\\\VBoxService.exe") OR (ProcessName="C:\\\\Windows\\\\System32\\\\svchost.exe" SubjectUserSid="S-1-5-19"))))
+```
+
+
+### logpoint
+    
+```
+(EventID="4616"  -(((ProcessName="C:\\\\Program Files\\\\VMware\\\\VMware Tools\\\\vmtoolsd.exe" OR ProcessName="C:\\\\Windows\\\\System32\\\\VBoxService.exe") OR (ProcessName="C:\\\\Windows\\\\System32\\\\svchost.exe" SubjectUserSid="S-1-5-19"))))
+```
+
+
+### grep
+    
+```
+grep -P '^(?:.*(?=.*4616)(?=.*(?!.*(?:.*(?:.*(?:.*(?:.*(?:.*C:\\Program Files\\VMware\\VMware Tools\\vmtoolsd\\.exe|.*C:\\Windows\\System32\\VBoxService\\.exe))|.*(?:.*(?=.*C:\\Windows\\System32\\svchost\\.exe)(?=.*S-1-5-19))))))))'
+```
+
+
 

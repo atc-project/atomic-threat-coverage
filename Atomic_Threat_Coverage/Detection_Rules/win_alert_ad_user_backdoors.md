@@ -1,9 +1,9 @@
 | Title                | Active Directory User Backdoors                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects scenarios where one can control another users or computers account without having to use their credentials.                                                                                                                                           |
-| ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
+| ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1098: Account Manipulation](https://attack.mitre.org/techniques/T1098)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0026_5136_windows_directory_service_object_was_modified](../Data_Needed/DN_0026_5136_windows_directory_service_object_was_modified.md)</li><li>[DN_0027_4738_user_account_was_changed](../Data_Needed/DN_0027_4738_user_account_was_changed.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0027_4738_user_account_was_changed](../Data_Needed/DN_0027_4738_user_account_was_changed.md)</li><li>[DN_0026_5136_windows_directory_service_object_was_modified](../Data_Needed/DN_0026_5136_windows_directory_service_object_was_modified.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1098: Account Manipulation](../Triggers/T1098.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
@@ -27,6 +27,7 @@ author: '@neu5ron'
 tags:
     - attack.t1098
     - attack.credential_access
+    - attack.persistence
 logsource:
     product: windows
     service: security
@@ -58,29 +59,46 @@ level: high
 
 
 
-### Kibana query
-
+### es-qs
+    
 ```
 ((((EventID:"4738" AND NOT (NOT _exists_:AllowedToDelegateTo)) OR (EventID:"5136" AND AttributeLDAPDisplayName:"msDS\\-AllowedToDelegateTo")) OR (EventID:"5136" AND ObjectClass:"user" AND AttributeLDAPDisplayName:"servicePrincipalName")) OR (EventID:"5136" AND AttributeLDAPDisplayName:"msDS\\-AllowedToActOnBehalfOfOtherIdentity"))
 ```
 
 
-
-
-
-### X-Pack Watcher
-
+### xpack-watcher
+    
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Active-Directory-User-Backdoors <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "((((EventID:\\"4738\\" AND NOT (NOT _exists_:AllowedToDelegateTo)) OR (EventID:\\"5136\\" AND AttributeLDAPDisplayName:\\"msDS\\\\-AllowedToDelegateTo\\")) OR (EventID:\\"5136\\" AND ObjectClass:\\"user\\" AND AttributeLDAPDisplayName:\\"servicePrincipalName\\")) OR (EventID:\\"5136\\" AND AttributeLDAPDisplayName:\\"msDS\\\\-AllowedToActOnBehalfOfOtherIdentity\\"))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Active Directory User Backdoors\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-
-
-
-### Graylog
-
+### graylog
+    
 ```
 ((((EventID:"4738" AND NOT (NOT _exists_:AllowedToDelegateTo)) OR (EventID:"5136" AND AttributeLDAPDisplayName:"msDS\\-AllowedToDelegateTo")) OR (EventID:"5136" AND ObjectClass:"user" AND AttributeLDAPDisplayName:"servicePrincipalName")) OR (EventID:"5136" AND AttributeLDAPDisplayName:"msDS\\-AllowedToActOnBehalfOfOtherIdentity"))
 ```
+
+
+### splunk
+    
+```
+((((EventID="4738" NOT (NOT AllowedToDelegateTo="*")) OR (EventID="5136" AttributeLDAPDisplayName="msDS-AllowedToDelegateTo")) OR (EventID="5136" ObjectClass="user" AttributeLDAPDisplayName="servicePrincipalName")) OR (EventID="5136" AttributeLDAPDisplayName="msDS-AllowedToActOnBehalfOfOtherIdentity"))
+```
+
+
+### logpoint
+    
+```
+((((EventID="4738"  -(-AllowedToDelegateTo=*)) OR (EventID="5136" AttributeLDAPDisplayName="msDS-AllowedToDelegateTo")) OR (EventID="5136" ObjectClass="user" AttributeLDAPDisplayName="servicePrincipalName")) OR (EventID="5136" AttributeLDAPDisplayName="msDS-AllowedToActOnBehalfOfOtherIdentity"))
+```
+
+
+### grep
+    
+```
+
+```
+
+
 
