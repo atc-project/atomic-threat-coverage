@@ -3,7 +3,6 @@ from os.path import isfile, join
 import json
 from atcutils import ATCutils
 from yaml.scanner import ScannerError
-from pdb import set_trace as bp
 
 
 ATCconfig = ATCutils.load_config("config.yml")
@@ -48,13 +47,7 @@ def get_customers():
     return customers
 
 
-def get_rules_per_customer(customer):
-    dr_dirs = ATCconfig.get('detection_rules_directories')
-    dr_list = []
-    for path in dr_dirs:
-        dr_list.append(ATCutils.load_yamls(path))
-    # flat dr_list
-    dr_list = [dr for drs_from_path in dr_list for dr in drs_from_path]
+def find_rules_per_customer(customer, dr_list):
     dr_list_per_customer = [dr for dr_title in customer.get('detectionrule')
                             for dr in dr_list if dr.get('title') == dr_title]
     return dr_list_per_customer
@@ -87,9 +80,16 @@ def get_techniques(threats):
 
 
 def main():
+    dr_dirs = ATCconfig.get('detection_rules_directories')
+    dr_list = []
+    for path in dr_dirs:
+        dr_list.append(ATCutils.load_yamls(path))
+    # flat dr_list
+    dr_list = [dr for drs_from_path in dr_list for dr in drs_from_path]
+
     list_of_customers = get_customers()
     for customer in list_of_customers:
-        rules = get_rules_per_customer(customer)
+        rules = find_rules_per_customer(customer, dr_list)
         techniques = get_techniques(rules)
 
         tab_name = {"name": customer.get('customer_name')}
@@ -99,7 +99,8 @@ def main():
         filename = 'atc_attack_navigator_profile_' + \
             customer.get('title') + '.json'
         exported_analytics_directory = \
-            ATCconfig.get('exported_analytics_directory') + "/attack_navigator_profiles"
+            ATCconfig.get('exported_analytics_directory') + \
+            "/attack_navigator_profiles"
 
         with open(exported_analytics_directory + '/' + filename, 'w') as fp:
             json.dump(NAVIGATOR_TEMPLATE, fp)

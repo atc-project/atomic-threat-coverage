@@ -48,7 +48,7 @@ def main(c_auth=None):
 
     spaces = ["Detection Rules", "Logging Policies",
               "Data Needed", "Triggers", "Response Actions",
-              "Response Playbooks", "Enrichments"]
+              "Response Playbooks", "Enrichments", "Customers"]
 
     for space in spaces:
         print("Creating %s.." % space)
@@ -66,6 +66,7 @@ def main(c_auth=None):
                             "Is the parent name correct?")
     print("Done!")
     return True
+
 
 if __name__ == "__main__":
     main()

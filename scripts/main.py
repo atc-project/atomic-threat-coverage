@@ -44,6 +44,8 @@ if __name__ == '__main__':
                         help='Build response action part')
     group2.add_argument('-RP', '--responseplaybook', action='store_true',
                         help='Build response playbook part')
+    group2.add_argument('-CU', '--customers', action='store_true',
+                        help='Build response customers part')
 
     # Init capabilities
     parser.add_argument('-i', '--init', action='store_true',
@@ -56,7 +58,7 @@ if __name__ == '__main__':
                          dn=args.dataneeded, dr=args.detectionrule,
                          tg=args.triggers, en=args.enrichment,
                          ra=args.responseactions, rp=args.responseplaybook,
-                         init=args.init)
+                         cu=args.customers, init=args.init)
 
     elif args.confluence:
         print("Provide confluence credentials\n")
@@ -70,4 +72,4 @@ if __name__ == '__main__':
                            dn=args.dataneeded, dr=args.detectionrule,
                            tg=args.triggers, en=args.enrichment,
                            ra=args.responseactions, rp=args.responseplaybook,
-                           init=args.init)
+                           cu=args.customers, init=args.init)

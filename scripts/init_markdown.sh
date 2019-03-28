@@ -15,6 +15,7 @@ DIRECTORIES=(
   "$OUTPUT_PATH/Response_Actions"
   "$OUTPUT_PATH/Response_Playbooks"
   "$OUTPUT_PATH/Enrichments"
+  "$OUTPUT_PATH/Customers"
 )
 
 for DIRECTORY in ${DIRECTORIES[@]}; do
