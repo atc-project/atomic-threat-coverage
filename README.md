@@ -396,7 +396,7 @@ At the same time it highlights which fields could be found only with specific en
 You don't have to add anything to make it work in your environment, you can just configure export settings using `scripts/config.yml` and utilise default dataset.
 At the same time you can access [demo](https://atomicthreatcoverage.atlassian.net/wiki/spaces/ATC/pages/126025996/WMI+Persistence+-+Script+Event+Consumer) of automatically generated knowledge base in Confluence to make yourself familiar with final result with default dataset.
 
-### Setting ATC Analytics Dashboard
+### Uploading ATC Analytics Dashboard
 
 You need both Elasticsearch and Kibana up and running.
 
