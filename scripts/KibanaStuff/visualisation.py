@@ -101,7 +101,7 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
             )
         self.metric_id += 1
 
-    def json_export(self, return_dict=False, uuid_=None):
+    def json_export_gui(self, return_dict=False, uuid_=None):
         """visState has to be a string with escaped doublequotes"""
         if self.validate():
             # self.updated_at = datetime.datetime.today().isoformat() + "Z"
@@ -125,6 +125,38 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
                 .get("searchSourceJSON")
             )
             tmp_dictionary["_source"] = tmp_dictionary.pop("visualization")
+            if return_dict:
+                return tmp_dictionary
+            else:
+                return json.dumps(tmp_dictionary)
+        else:
+            raise Exception("Data validation failed")
+
+    def json_export_api(self, return_dict=False, uuid_=None):
+        """visState has to be a string with escaped doublequotes"""
+        if self.validate():
+            # self.updated_at = datetime.datetime.today().isoformat() + "Z"
+            # TODO: Find proper way to do below line :))
+            tmp_dictionary = literal_eval(str(self.__dict__))
+            if uuid_:
+                tmp_dictionary["id"] = uuid_
+            else:
+                tmp_dictionary["id"] = str(uuid.uuid4())
+            tmp_dictionary["type"] = tmp_dictionary.pop("type")
+            tmp_dictionary["visualization"]["visState"] = json.dumps(
+                tmp_dictionary["visualization"]["visState"]
+            )
+            tmp_dictionary.pop("metric_id", None)
+            tmp_dictionary.pop("updated_at", None)
+            tmp_dictionary.pop("_meta_data_set", None)
+            kbsvd = tmp_dictionary["visualization"]["kibanaSavedObjectMeta"]
+            kbsvd["searchSourceJSON"] = json.dumps(
+                tmp_dictionary.get("visualization")
+                .get("kibanaSavedObjectMeta")
+                .get("searchSourceJSON")
+            )
+            tmp_dictionary["attributes"] = tmp_dictionary.pop("visualization")
+            tmp_dictionary["version"] = 1
             if return_dict:
                 return tmp_dictionary
             else:
@@ -353,3 +385,99 @@ class VerticalBarVisualisation(BaseKibanaVisualizationDoc):
             "drawLinesBetweenPoints": True,
             "showCircles": True
         })
+
+# ########################################################################### #
+# ############################ Vertical Bar Visualisation ################### #
+# ########################################################################### #
+
+
+class SavedSearchVisualisation(BaseKibanaVisualizationDoc):
+
+    def __init__(self, title, query, index_name):
+        self.title = title
+        self.description = str()
+        self.hits = 0
+        self.version = 1
+        self.kibanaSavedObjectMeta = {}
+
+        self.kibanaSavedObjectMeta["searchSourceJSON"] = \
+            {
+                "index": str(index_name),
+                "highlightAll": True,
+                "version": True,
+                "query": {
+                    "query": str(query),
+                    "language": "lucene"
+                },
+                "filter": []
+        }
+        self.type = "search"
+
+    def validate(self):
+        return True
+
+    def json_export_gui(self, return_dict=False):
+        if self.validate():
+            tmp_dictionary = literal_eval(str(self.__dict__))
+            tmp_dictionary["_type"] = tmp_dictionary.pop("type")
+            tmp_dictionary["_source"] = {}
+            tmp_dictionary["_source"]["title"] = \
+                tmp_dictionary.pop("title")
+            tmp_dictionary["_source"]["description"] = \
+                tmp_dictionary.pop("description")
+            tmp_dictionary["_source"]["hits"] = \
+                tmp_dictionary.pop("hits")
+            tmp_dictionary["_source"]["version"] = \
+                tmp_dictionary.pop("version")
+            tmp_dictionary["_source"]["kibanaSavedObjectMeta"] = \
+                tmp_dictionary.pop("kibanaSavedObjectMeta")
+            tmp_dictionary["_id"] = tmp_dictionary["_source"]["title"]\
+                .replace(" ", "_")
+
+            kbsvd = tmp_dictionary["_source"]["kibanaSavedObjectMeta"]
+            kbsvd["searchSourceJSON"] = json.dumps(
+                tmp_dictionary.get("_source")
+                .get("kibanaSavedObjectMeta")
+                .get("searchSourceJSON")
+            )
+
+            if return_dict:
+                return tmp_dictionary
+            else:
+                return json.dumps([tmp_dictionary])
+        else:
+            raise Exception("Data validation failed")
+
+    def json_export_api(self, return_dict=False):
+        if self.validate():
+            tmp_dictionary = literal_eval(str(self.__dict__))
+            tmp_dictionary["type"] = tmp_dictionary.pop("type")
+            tmp_dictionary["attributes"] = {}
+            tmp_dictionary["attributes"]["title"] = \
+                tmp_dictionary.pop("title")
+            tmp_dictionary["attributes"]["description"] = \
+                tmp_dictionary.pop("description")
+            tmp_dictionary["attributes"]["hits"] = \
+                tmp_dictionary.pop("hits")
+            tmp_dictionary["attributes"]["version"] = \
+                tmp_dictionary.pop("version")
+            tmp_dictionary["attributes"]["kibanaSavedObjectMeta"] = \
+                tmp_dictionary.pop("kibanaSavedObjectMeta")
+            tmp_dictionary["id"] = tmp_dictionary["attributes"]["title"]\
+                .replace(" ", "_")
+
+            kbsvd = tmp_dictionary["attributes"]["kibanaSavedObjectMeta"]
+            kbsvd["searchSourceJSON"] = json.dumps(
+                tmp_dictionary.get("attributes")
+                .get("kibanaSavedObjectMeta")
+                .get("searchSourceJSON")
+            )
+
+            tmp_dictionary["version"] = 1
+
+            if return_dict:
+                return tmp_dictionary
+            else:
+                return json.dumps([tmp_dictionary])
+        else:
+            raise Exception("Data validation failed")

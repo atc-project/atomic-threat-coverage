@@ -82,6 +82,19 @@ class KibanaDashboardObject(base.BaseKibana):
         self.panelsJSON.append(_vis)
         self._id += 1
 
+    def add_saved_search(
+            self, saved_search_id=None, saved_search_name=None,
+            x=0, y=0, w=20, h=20):
+
+        if not saved_search_id and not saved_search_name:
+            raise Exception("What about providing id or name?")
+
+        if saved_search_name and not saved_search_id:
+            # Some logic to convert name to id
+            pass
+
+        self.add_visualization(vis=saved_search_id, x=x, y=y, w=w, h=h)
+
     def set_dark_theme(self):
         self.optionsJSON.update({'darkTheme': True})
 

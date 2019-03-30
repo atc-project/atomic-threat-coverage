@@ -39,11 +39,15 @@ def read_yaml_file(path):
 class YamlHandler(base.BaseKibana):
     """YamlHandler class"""
 
-    def __init__(self, yaml_path, output_file, omit_kibana):
+    def __init__(self, yaml_path, output_file, omit_kibana, export_type):
+        self._export_type = export_type
         if omit_kibana:
             self.omit_kibana()
         self.yamls = read_yaml_file(yaml_path)
-        self._results = []
+        if self._export_type == "api":
+            self._results = {"objects": []}
+        elif self._export_type == "gui":
+            self._results = []
         self._types = [
             "index-pattern", "search", "visualization", "dashboard"
         ]
@@ -83,8 +87,44 @@ class YamlHandler(base.BaseKibana):
                 self.visualization_f(yaml_document)
             elif _type == "dashboard":
                 self.dashboard(yaml_document)
+            elif _type == "search":
+                self.search_f(yaml_document)
             else:
                 raise Exception("Not supported yet. Sorry!")
+
+    def append_result(self, result, uuid_=None):
+        if self._export_type == "api":
+            if uuid_:
+                self._results["objects"].append(
+                    result.json_export_api(return_dict=True, uuid_=uuid_)
+                )
+            else:
+                self._results["objects"].append(
+                    result.json_export_api(return_dict=True)
+                )
+        elif self._export_type == "gui":
+            if uuid_:
+                self._results.append(
+                    result.json_export_gui(return_dict=True, uuid_=uuid_)
+                )
+            else:
+                self._results.append(
+                    result.json_export_gui(return_dict=True)
+                )
+
+    def search_f(self, yaml_document):
+        self._name = "search"
+        _title = yaml_document.get('title')
+        _index_name = yaml_document.get('index_name')
+        if not _index_name:
+            raise Exception("Provide index_name")
+        _query = yaml_document.get('query')
+        if not _query:
+            raise Exception("Saved search without query does not make sense")
+        _ss = visualisation.SavedSearchVisualisation(
+            title=_title, query=_query, index_name=_index_name
+        )
+        self.append_result(_ss)
 
     def visualization_f(self, yaml_document, uuid_=None):
         self._name = yaml_document.get('name')
@@ -153,7 +193,7 @@ class YamlHandler(base.BaseKibana):
                     )
                 if _metric:
                     _vis.add_metric(_metric)
-        self._results.append(_vis.json_export(return_dict=True, uuid_=uuid_))
+        self.append_result(_vis, uuid_=uuid_)
 
     def vis_set_show_labels(self, vis, show_labels):
 
@@ -207,7 +247,7 @@ class YamlHandler(base.BaseKibana):
             _vis_objects_dict[visualization.get('title')] = visualization
         for title in yaml_document.get('visualizations'):
             _dashboard.add_visualization(_vis_objects_dict[title])
-        self._results.append(_dashboard.json_export(return_dict=True))
+        self.append_result(_dashboard.json_export(return_dict=True))
 
     def handle_metric(self, id, metric_name, args=None):
         if metric_name not in self._general_metrics\
@@ -469,10 +509,13 @@ def main():
     parser.add_argument('-o', help="output file location", required=True)
     parser.add_argument('-f', help="force to omit kibana", required=False,
                         action='store_true')
+    parser.add_argument('-e', help="JSON export type [api/gui]",
+                        required=False, default="api", const="gui",
+                        action="store_const")
 
     args = parser.parse_args()
 
-    YamlHandler(args.i, args.o, args.f)
+    YamlHandler(args.i, args.o, args.f, args.e)
 
 
 if __name__ == "__main__":
