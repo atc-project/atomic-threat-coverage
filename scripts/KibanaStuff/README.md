@@ -249,6 +249,23 @@ Configurability:
 | `enabled` | `true`/`false`      |
 | `label`   | `any string`        |
 
+* `terms` (bucket)
+
+> Used in Pie metric
+
+```yaml
+- terms:
+    field: [required/text]
+    enabled: [optional/bool]
+    label: [optional/text]
+```
+
+| Field     | Available values    |
+|-----------|---------------------|
+| `field`   | `field as a string` |
+| `enabled` | `true`/`false`      |
+| `label`   | `any string`        |
+
 # Dashboards
 
 
