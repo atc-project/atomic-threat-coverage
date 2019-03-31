@@ -110,10 +110,10 @@ This is kinda similar to metrics but one layer above and has no general instruct
 | Name                  | Implemented? |
 | --------------------- | ------------ |
 | Metric                | Yes          |
-| Pie                   | Yes.         |
+| Pie                   | Yes          |
 | Horizontal Bar        |              |
 | Vertical Bar          | Yes          |
-| Area                  | Yes          |
+| Area                  | No           |
 | Line                  |              |
 | Data Table            |              |
 | Goal                  |              |
