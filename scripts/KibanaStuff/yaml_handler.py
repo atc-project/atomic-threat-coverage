@@ -237,17 +237,34 @@ class YamlHandler(base.BaseKibana):
         vis_list = self.load_yamls("visualizations")
         _vis_objects_dict = {}
 
-        for visualization in vis_list:
-            if visualization['title'] \
+        self._w, self._h, self._x, self._y = 15, 15, 0, 0
+
+        for object_ in vis_list:
+            if object_['title'] \
                     not in yaml_document.get('visualizations'):
                 continue
-            self.visualization_f(
-                visualization, uuid_=visualization.get('uuid')
-            )
-            _vis_objects_dict[visualization.get('title')] = visualization
+            if object_["type"] == "visualization":
+                self.visualization_f(
+                    object_, uuid_=object_.get('uuid')
+                )
+            elif object_["type"] == "search":
+                self.search_f(object_)
+            _vis_objects_dict[object_.get('title')] = object_
+        _counter = 1
         for title in yaml_document.get('visualizations'):
-            _dashboard.add_visualization(_vis_objects_dict[title])
-        self.append_result(_dashboard.json_export(return_dict=True))
+            _dashboard.add_visualization(
+                _vis_objects_dict[title], w=self._w, h=self._h,
+                x=self._x, y=self._y
+            )
+            if _counter < 3:
+                self._x = self._x + 15
+            else:
+                self._y = self._y + 15
+                self._x = 0
+                _counter = 1
+                continue
+            _counter += 1
+        self.append_result(_dashboard)
 
     def handle_metric(self, id, metric_name, args=None):
         if metric_name not in self._general_metrics\

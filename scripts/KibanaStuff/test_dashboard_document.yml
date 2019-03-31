@@ -2,8 +2,24 @@ type: dashboard
 name: test dashboard
 title: test dashboard
 darktheme: True
-query: port:123455667
+query: port:4321
 visualizations:
+  - Count vis
+  - Count vis
+  - Count vis
+  - Count vis
+  - Count vis
+  - Count vis
+  - Count vis
+  - Count vis
+  - Count vis
+  - Count vis
+  - Count vis
+  - Count vis
+  - Count vis
+  - Count vis
+  - Count vis
+  - Count vis
   - Count vis
   - Count vis
   - Count vis

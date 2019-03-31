@@ -1,7 +1,7 @@
 type: visualization
 name: metric
 title: Count vis
-index_name: atc-analytics
+index_name: logstash*
 query: dupa
 labels: False
 metrics:

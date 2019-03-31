@@ -45,7 +45,33 @@ class KibanaDashboardObject(base.BaseKibana):
     def __repr__(self):
         return str(self.__call__())
 
-    def json_export(self, return_dict=False):
+    def json_export_api(self, return_dict=False):
+        _tmp = {}
+        test = self.__dict__
+        str_test = str(test)
+        _tmp["attributes"] = literal_eval(str_test)
+        _tmp["type"] = "dashboard"
+        _tmp.pop("_id", None)
+
+        _tmp["attributes"]["panelsJSON"] = json.dumps(
+            _tmp["attributes"]["panelsJSON"]
+        )
+        _tmp["attributes"]["optionsJSON"] = json.dumps(
+            _tmp["attributes"]["optionsJSON"]
+        )
+        _tmp["attributes"]["kibanaSavedObjectMeta"]["searchSourceJSON"] =\
+            json.dumps(
+                _tmp["attributes"]["kibanaSavedObjectMeta"]["searchSourceJSON"]
+        )
+        _tmp["attributes"].pop("_id", None)
+        _tmp["id"] = str(uuid.uuid4())
+
+        if return_dict:
+            return _tmp
+        else:
+            return json.dumps(_tmp)
+
+    def json_export_gui(self, return_dict=False):
         _tmp = {}
         test = self.__dict__
         str_test = str(test)
@@ -72,13 +98,17 @@ class KibanaDashboardObject(base.BaseKibana):
             return json.dumps(_tmp)
 
     def add_visualization(self, vis, x=0, y=0, w=20, h=20):
-        _vis = base.BasePanelsJson(vis_uuid=vis["uuid"])
+        if vis.get('type') == "search":
+            vis["uuid"] = vis.get('title').replace(" ", "_")
+            _vis = base.BasePanelsJson(vis_uuid=vis["uuid"], type="search")
+        elif vis.get('type') in ["visualization", "visualisation"]:
+            _vis = base.BasePanelsJson(vis_uuid=vis["uuid"])
         _vis.gridData.x = x
         _vis.gridData.y = y
         _vis.gridData.w = w
         _vis.gridData.h = h
-        _vis.gridData.i = self._id
-        _vis.panelIndex = self._id
+        _vis.gridData.i = str(self._id)
+        _vis.panelIndex = str(self._id)
         self.panelsJSON.append(_vis)
         self._id += 1
 

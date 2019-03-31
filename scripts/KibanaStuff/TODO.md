@@ -24,4 +24,4 @@
 
 # Saved Search 
 
-- [ ] it's needed for dashboards (add as object inside dashboard)
+- [x] it's needed for dashboards (add as object inside dashboard)
