@@ -262,7 +262,7 @@ visualizations [required/list of visualizations titles]
 
 Configurability:
 
-* `type` has to be `visualization`
+* `type` has to be `dashboard`
 * `name` for now it's the same as title
 * `title` is the title used inside Kibana
 * `darktheme` defines if dark theme should be used
