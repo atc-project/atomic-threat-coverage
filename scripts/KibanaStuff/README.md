@@ -8,7 +8,7 @@
 
 # Structure
 
-Files consist of both required and optional fields. The structure depends on the object you want to define. All the visualizations and saved searches have to be inside `visualizations` directory. Dashboards can be anywhere but to keep it simple, just put it `dashboards` directory.
+Files consist of both required and optional fields. The structure depends on the object you want to define. All the visualizations and saved searches have to be inside `visualizations` directory. Dashboards can be anywhere but to keep it simple, just put it in `dashboards` directory.
 
 # Tips
 
@@ -67,7 +67,7 @@ Configurability:
 
 ### Metrics
 
-> In the vertical bar metric, you can use the `split` parameter with the following available values `x`/`series`/`chart` in order to split X axis, split series or chart. 
+> In the vertical bar metric, you can use the `split` parameter with the following available values `x`/`series`/`chart` in order to split X axis, split series or split chart. 
 
 * `count`
 
