@@ -1,130 +1,279 @@
-# General workflow - metrics
+# Menu
 
-1. From the kibana WebUI create metric visualisation (we already have this implemented and that's why we can easily observe what's changing)
-2. Export JSON file
-3. Create metric visualisation using script, export JSON file and do diff
-    ```
-    from visualisation import MetricVisualisation
+* [Structure](#structure)
+* [Tips](#tips)
+* [Saved Search](#saved-search)
+* [Visualizations](#visualizations)
+* [Dashboards](#dashboards)
 
-    t = MetricVisualisation("Metric vis")
-    t.set_index_search(index_name="logstash*")
+# Structure
 
-    with open("test.json", "w+") as f:
-        f.write(t.json_export())
-    ```
-4. Depending on the metric, use according agg and param series (for Max metric, use MaxAgg and MaxParamSeries, etc)
-5. You only should overwrite `__init__` method
-6. Once implemented, test your metric. Use `metric_id` when providing `id` metric param. When adding metric, add other required attributes accordingly (in the below example, only id is required).
-    ```
-    from visualisation import MetricVisualisation
-    from metrics import YourMetric
+Files consist of both required and optional fields. The structure depends on the object you want to define. All the visualizations and saved searches have to be inside `visualizations` directory. Dashboards can be anywhere but to keep it simple, just put it `dashboards` directory.
 
-    t = MetricVisualisation("Metric vis")
-    t.set_index_search(index_name="logstash*")
-    t.add_metric(YourMetric(t.metric_id))
-    # Or this way
-    # t.add_metric(YourMetric(id=t.metric_id))
+# Tips
 
-    with open("test.json", "w+") as f:
-        f.write(t.json_export())
-    ```
-7. Not only import the JSON file but **open** the visualisation itself. Successful import doesn't mean that it will show anything in the visualisation!
+* If you choose to create JSON for GUI import (`-e gui` or just `-e`), you can choose index pattern on importing in Kibana
 
-# General workflow - visualisation
+## Saved Search
 
-This is kinda similar to metrics but one layer above and has no general instructions, sorry.
+```yaml
+type [required]
+title [required]
+index [required]
+query [required]
+```
 
-1. Generate visualisation from Kibana WebUI
-2. Export JSON file
-3. Investigate what's that and what we are missing from base class (if it requires axis, we have already basic `default_axis` method inside `BaseKibanaVisualizationDoc` - look how it's done in `AreaVisualisation`)
-4. Implement it))
-5. Test it
-6. Not only import the JSON file but **open** the visualisation itself. Successful import doesn't mean that it will show anything in the visualisation!
+Configurability:
 
----
+* `type` has to be `search`
+* `title` is a name which you will see in Kibana as well as the ID of the
+* `index` is the index pattern ID (**not the name** but sometimes that's the same)
+* `query` is a query, just put it in the quotes or double quotes (you have to escape characters in double quotes by youself)
 
-# Useful table
+## Visualizations
 
-| Aggs                                      | Params Series                                              |
-| ----------------------------------------- | ---------------------------------------------------------- |
-| class AverageAgg(BaseKibanaAgg)           | class AverageParamSeries(BaseKibanaSeriesParams)           |
-| class CountAgg(BaseKibanaAgg)             | class CountParamSeries(BaseKibanaSeriesParams)             |
-| class MaxAgg(BaseKibanaAgg)               | class MaxParamSeries(BaseKibanaSeriesParams)               |
-| class MedianAgg(BaseKibanaAgg)            | class MedianParamSeries(BaseKibanaSeriesParams)            |
-| class MinAgg(BaseKibanaAgg)               | class MinParamSeries(BaseKibanaSeriesParams)               |
-| class PercentileRanksAgg(BaseKibanaAgg)   | class PercentileRanksParamSeries(BaseKibanaSeriesParams)   |
-| class PercentilesAgg(BaseKibanaAgg)       | class PercentilesParamSeries(BaseKibanaSeriesParams)       |
-| class StandardDeviationAgg(BaseKibanaAgg) | class StandardDeviationParamSeries(BaseKibanaSeriesParams) |
-| class SumAgg(BaseKibanaAgg)               | class SumParamSeries(BaseKibanaSeriesParams)               |
-| class TopHitsAgg(BaseKibanaAgg)           | class TopHitsParamSeries(BaseKibanaSeriesParams)           |
-| class UniqueCountAgg(BaseKibanaAgg)       | class UniqueCountParamSeries(BaseKibanaSeriesParams)       |
-| class DotSizeAgg(BaseKibanaAgg)           | -                                                          |
+```yaml
+type [required]
+name [required]
+title [required]
+index [1 of 3/text]
+saved_search_id [1 of 3/text]
+saved_search_name [1 of 3/text]
+query [optional/string]
+metrics [required/list of metrics]
+```
 
----
+Configurability:
 
-# Metrics
+* `type` has to be `visualization`
+* `name` is the visualization type, has to be one of `['metric', 'pie', 'vbar']`
+* `index` is the index pattern ID (**not the name** but sometimes that's the same)
+* `saved_search_id` is the saved search ID
+* `saved_search_name` is the saved search name (we can translate name into ID using Kibana API)
+* `title` is the title used inside Kibana
+*  `query` is a query, just put it in the quotes or double quotes (you have to escape characters in double quotes by youself)
+* `metrics` contains a list of metrics (they are described below)
 
-| Metric name           | Implemented? |
-| --------------------- | ------------ |
-| Average               | Yes          |
-| Count                 | Yes          |
-| Max                   | Yes          |
-| Median                | Yes          |
-| Min                   | Yes          |
-| PercentileRanks       | Yes          |
-| Percentiles           | Yes          |
-| StandardDeviation     | Yes          |
-| Sum                   | Yes          |
-| TopHits               | Yes          |
-| UniqueCount           | Yes          |
-| DotSize (kind of)     |              |
+| Field               | Available values            |
+|---------------------|-----------------------------|
+| `type`              | `visualization`             |
+| `name`              | `['metric', 'pie', 'vbar']` |
+| `index`             | `some-index-id`             |
+| `saved_search_id`   | `some-saved-search-id`      |
+| `saved_search_name` | `some-saved-search-name`    |
+| `title`             | `some title`                |
+| `query`             | `any query in lucene`       |
+| `metrics`           | `list of metrics`           |
 
-> DotSize (kind of)
-> 
-> DotSize is specific. I didn't dig into it but it doesn't required series params. Maybe it's the only difference, I don't know at the moment
+### Metrics
 
----
+> In the vertical bar metric, you can use the `split` parameter with the following available values `x`/`series`/`chart` in order to split X axis, split series or chart. 
 
-# Buckets
+* `count`
 
-| Bucket name            | Implemented?     |
-| ---------------------- | ---------------- |
-| Terms                  | Yes              |
-| ---------------------- | ---------------- |
-| Below are LOW priority | -                |
-| ---------------------- | ---------------- |
-| Date Histogram         | Yes/NotSupported |
-| Date Range             |                  |
-| Filters                |                  |
-| Histogram              |                  |
-| IPv4 Range             |                  |
-| Range                  |                  |
-| Significant Terms      |                  |
+```yaml
+- count:
+    enabled: [optional/bool]
+    label: [optional/text]
+```
 
----
+| Field     | Available values    |
+|-----------|---------------------|
+| `enabled` | `true`/`false`      |
+| `label`   | `any string`        |
 
-# Visualisations
+* `average`
 
-### Priority by the order
+```yaml
+- average:
+    field: [required/text]
+    enabled: [optional/bool]
+    label: [optional/text]
+```
 
-| Name                  | Implemented? |
-| --------------------- | ------------ |
-| Metric                | Yes          |
-| Pie                   | Kind of      |
-| Horizontal Bar        |              |
-| Vertical Bar          |              |
-| Area                  | Yes          |
-| Line                  |              |
-| Data Table            |              |
-| Goal                  |              |
-| Gauge                 |              |
-| --------------------- | ------------ |
-| Heat Map              |              |
-| Markdown              |              |
-| Tag Cloud             |              |
-| Region Map            |              |
-| Timelion              |              |
-| Coordinate Map        |              |
-| Visual Builder        |              |
-| Controls (E)          |              |
-| Vega (E)              |              |
+| Field     | Available values    |
+|-----------|---------------------|
+| `field`   | `field as a string` |
+| `enabled` | `true`/`false`      |
+| `label`   | `any string`        |
+
+
+* `max`
+
+```yaml
+- max:
+    field: [required/text]
+    enabled: [optional/bool]
+    label: [optional/text]
+```
+
+| Field     | Available values    |
+|-----------|---------------------|
+| `field`   | `field as a string` |
+| `enabled` | `true`/`false`      |
+| `label`   | `any string`        |
+
+
+* `median`
+
+```yaml
+- median:
+    field: [required/text]
+    enabled: [optional/bool]
+    label: [optional/text]
+```
+
+| Field     | Available values    |
+|-----------|---------------------|
+| `field`   | `field as a string` |
+| `enabled` | `true`/`false`      |
+| `label`   | `any string`        |
+
+
+* `min`
+
+```yaml
+- min:
+    field: [required/text]
+    enabled: [optional/bool]
+    label: [optional/text]
+```
+
+| Field     | Available values    |
+|-----------|---------------------|
+| `field`   | `field as a string` |
+| `enabled` | `true`/`false`      |
+| `label`   | `any string`        |
+
+
+* `percentile_ranks`
+
+```yaml
+- percentile_ranks:
+    field: [required/text]
+    percentile_ranks: [required/list of integers]
+    enabled: [optional/bool]
+    label: [optional/text]
+```
+
+| Field                | Available values    |
+|----------------------|---------------------|
+| `field`              | `field as a string` |
+| `percentile_ranks`   | `[1, 2, 9, 22, 99]` |
+| `enabled`            | `true`/`false`      |
+| `label`              | `any string`        |
+
+
+* `percentiles`
+
+```yaml
+- percentiles:
+    field: [required/text]
+    percents: [optional/list of integers]
+    enabled: [optional/bool]
+    label: [optional/text]
+```
+
+| Field                | Available values             |
+|----------------------|------------------------------|
+| `field`              | `field as a string`          |
+| `percentes`          | `[1, 5, 25, 50, 75, 95, 99]` |
+| `enabled`            | `true`/`false`               |
+| `label`              | `any string`                 |
+
+* `standard_deviation`
+
+```yaml
+- standard_deviation:
+    field: [required/text]
+    enabled: [optional/bool]
+    label: [optional/text]
+```
+
+| Field     | Available values    |
+|-----------|---------------------|
+| `field`   | `field as a string` |
+| `enabled` | `true`/`false`      |
+| `label`   | `any string`        |
+
+* `sum`
+
+```yaml
+- sum:
+    field: [required/text]
+    enabled: [optional/bool]
+    label: [optional/text]
+```
+
+| Field     | Available values    |
+|-----------|---------------------|
+| `field`   | `field as a string` |
+| `enabled` | `true`/`false`      |
+| `label`   | `any string`        |
+
+* `top_hits`
+
+```yaml
+- top_hits:
+    field: [required/text]
+    aggregate_with: [required/text]
+    size: [required/integer]
+    sort_order: [required/text]
+    sort_field: [required/text]
+    enabled: [optional/bool]
+    label: [optional/text]
+```
+
+| Field              | Available values    |
+|--------------------|---------------------|
+| `field`            | `field as a string` |
+| `aggregate_with`   | `concat`            |
+| `size`             | `5`                 |
+| `sort_order`       | `asc`, `desc`       |
+| `sort_field`       | `field as a string` |
+| `enabled`          | `true`/`false`      |
+| `label`            | `any string`        |
+
+* `unique_count`
+
+```yaml
+- unique_count:
+    field: [required/text]
+    enabled: [optional/bool]
+    label: [optional/text]
+```
+
+| Field     | Available values    |
+|-----------|---------------------|
+| `field`   | `field as a string` |
+| `enabled` | `true`/`false`      |
+| `label`   | `any string`        |
+
+# Dashboards
+
+
+```yaml
+type [required]
+name [required]
+title [required]
+query [optional/string]
+visualizations [required/list of visualizations titles]
+```
+
+Configurability:
+
+* `type` has to be `visualization`
+* `name` for now it's the same as title
+* `title` is the title used inside Kibana
+* `darktheme` defines if dark theme should be used
+* `query` is a query, just put it in the quotes or double quotes (you have to escape characters in double quotes by youself)
+* `visualizations` contains a list of metrics (they are described below)
+
+| Field               | Available values            |
+|---------------------|-----------------------------|
+| `type`              | `visualization`             |
+| `name`              | `some title`                |
+| `title`             | `some title`                |
+| `darktheme`         | `true`/`false`              |
+| `query`             | `any query in lucene`       |
+| `visualizations`    | `list of visualizations`    |

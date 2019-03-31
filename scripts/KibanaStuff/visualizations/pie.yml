@@ -1,7 +1,7 @@
 type: visualization
 name: pie
 title: Pie vis
-index_name: logstash*
+index: logstash*
 query: "*"
 metrics:
   - count

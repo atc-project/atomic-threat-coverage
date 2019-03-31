@@ -1,4 +1,4 @@
 type: search
 title: dupa
-index_name: logstash*
+index: logstash*
 query: "*"

@@ -19,7 +19,7 @@ name: 1
 title: 1
 saved_search_id: 12341234-1234-1234-1234-123412341234
 saved_search_name: asd
-index_name: asd
+index: asd
 options:
     add_metric:
         - count
@@ -115,9 +115,9 @@ class YamlHandler(base.BaseKibana):
     def search_f(self, yaml_document):
         self._name = "search"
         _title = yaml_document.get('title')
-        _index_name = yaml_document.get('index_name')
+        _index_name = yaml_document.get('index')
         if not _index_name:
-            raise Exception("Provide index_name")
+            raise Exception("Provide index")
         _query = yaml_document.get('query')
         if not _query:
             raise Exception("Saved search without query does not make sense")
@@ -131,12 +131,12 @@ class YamlHandler(base.BaseKibana):
         _title = yaml_document.get('title')
         _saved_search_id = yaml_document.get('saved_search_id')
         _saved_search_name = yaml_document.get('saved_search_name')
-        _index_name = yaml_document.get('index_name')
+        _index_name = yaml_document.get('index')
         if not _saved_search_id and not _saved_search_name and not _index_name:
             raise Exception("""Provide one of these:
   * saved_search_id
   * saved_search_name
-  * index_name
+  * index
 """)
         if not _title:
             raise Exception("No title defined")

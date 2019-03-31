@@ -1,7 +1,7 @@
 type: visualization
 name: metric
 title: Count vis
-index_name: logstash*
+index: logstash*
 query: dupa
 labels: False
 metrics:

@@ -1,7 +1,7 @@
 type: visualization
 name: vbar
 title: Vertical Bar visualization
-index_name: logstash*
+index: logstash*
 query: "*"
 metrics:
   - count
