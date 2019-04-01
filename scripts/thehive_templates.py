@@ -167,8 +167,9 @@ class RPTheHive:
                         self.task_prefix += 0.1
                         task.title = str(round(self.task_prefix, 1)) + \
                             " | " + str(rtask.get('title'))
-                        task.title = f'{round(self.task_prefix, 1)}|{str(rtask.get("title"))}'
-                        task.group = rtask.get('stage','Unknown stage')
+                        task.title = str(round(self.task_prefix, 1)) + " | "\
+                            + str(rtask.get("title"))
+                        task.group = rtask.get('stage', 'Unknown stage')
                         task.description = str(rtask.get('workflow'))
                         self.case.tasks.append(task.return_dictionary())
 
