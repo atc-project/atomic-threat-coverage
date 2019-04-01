@@ -80,7 +80,8 @@ class DetectionRule:
                 # prepare command to execute from shell
                 # (yes, we know)
                 cmd = ATCconfig.get('sigmac_path') + " -t " + \
-                    query + " --ignore-backend-errors " + self.yaml_file
+                    query + " --ignore-backend-errors " + self.yaml_file + \
+                    " 2> /dev/null"
 
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
 
@@ -95,7 +96,7 @@ class DetectionRule:
                 e.g es-qs throws error 'no es variable'
                 """
                 det_queries[query] = str(query2)[2:-3]
-                
+
             # Update detection rules
             self.fields.update({"det_queries": det_queries})
             self.fields.update({"queries": queries})
@@ -179,7 +180,8 @@ class DetectionRule:
 
             for output in outputs:
                 cmd = ATCconfig.get('sigmac_path') + " -t " + \
-                    output + " --ignore-backend-errors " + self.yaml_file
+                    output + " --ignore-backend-errors " + self.yaml_file + \
+                    " 2> /dev/null"
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
                 (query, err) = p.communicate()
                 # Wait for date to terminate. Get return returncode ##
