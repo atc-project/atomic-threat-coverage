@@ -1,0 +1,8 @@
+type: search
+title: WMI Activity
+index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
+query: "log_name:( \"Microsoft-Windows-WMI-Activity/Operational\" OR \"Microsoft-Windows-Sysmon/Operational\" ) AND event_id:(19 OR 20 OR 21 OR 5859 OR 5861)"
+language: kuery
+columns:
+  - "event_id"
+  - "message"

@@ -1,0 +1,9 @@
+type: search
+title: Logon Activities
+index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
+query: "log_name:( \"Security\" ) AND event_id:( 4624 OR 4625 OR 4634 OR 4647 OR 4672 OR 4648 OR 4768 OR 4769 OR 4771 OR 4776 )"
+language: kuery
+columns:
+  - "event_id"
+  - "event_data.TargetUserName"
+  - "event_data.SubjectUserName"

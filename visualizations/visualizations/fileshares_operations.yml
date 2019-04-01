@@ -1,0 +1,8 @@
+type: search
+title: Fileshares operations
+index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
+query: "log_name:( \"Security\" ) AND event_id:( 5140 OR 5145 )"
+language: kuery
+columns:
+  - "event_data.ShareLocalPath"
+  - "event_data.ShareName"

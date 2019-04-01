@@ -1,0 +1,8 @@
+type: search
+title: Services and Drivers operations
+index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
+query: "log_name:( \"System\" OR \"Microsoft-Windows-Sysmon/Operational\" OR \"Security\" ) AND event_id:( 6 OR 7034 OR 7035 OR 7036 OR 7040 OR 7045 OR 4697 )"
+language: kuery
+columns:
+  - "event_id"
+  - "event_data.ImageLoaded"

@@ -1,0 +1,8 @@
+type: search
+title: Pipe Events
+index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
+query: "log_name:( \"Microsoft-Windows-Sysmon/Operational\" ) AND event_id:( 17 OR 18 )"
+language: kuery
+columns:
+  - "event_data.Image"
+  - "event_data.PipeName"

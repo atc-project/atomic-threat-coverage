@@ -1,0 +1,10 @@
+type: search
+title: Process Execution
+index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
+query: "log_name:( \"Security\" OR \"Microsoft-Windows-Sysmon/Operational\" ) AND event_id:( 1 OR 5 OR 4688 )"
+language: kuery
+columns:
+  - "event_id"
+  - "event_data.CommandLine"
+  - "event_data.Image"
+  - "event_data.Hashes"
