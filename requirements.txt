@@ -5,3 +5,4 @@ elasticsearch
 sanitize
 random
 string
+json
