@@ -51,6 +51,7 @@ type [required]
 title [required]
 index [required]
 query [required]
+language [optional]
 ```
 
 Configurability:
@@ -66,6 +67,15 @@ or
 
 query: '\path\'
 ```
+* `language` is language used for query. Usually it's lucene or kuery (lucene by default)
+
+| Field               | Available values            |
+|---------------------|-----------------------------|
+| `type`              | `search`                    |
+| `title`             | `some title`                |
+| `index`             | `some-index-id`             |
+| `query`             | `any query in lucene`       |
+| `language`          | `lucene`/`kuery`            |
 
 ## Visualizations
 
