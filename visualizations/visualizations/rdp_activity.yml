@@ -1,3 +1,4 @@
+author: '@atc_project'
 type: search
 title: RDP Activity
 index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
@@ -5,3 +6,5 @@ query: "( log_name:\"Microsoft-Windows-TerminalServices-RDPClient/Operational\" 
 language: kuery
 columns:
   - "message"
+data_needed:
+  - DN_0004_4624_windows_account_logon

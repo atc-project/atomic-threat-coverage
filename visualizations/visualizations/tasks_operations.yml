@@ -1,3 +1,4 @@
+author: '@atc_project'
 type: search
 title: Tasks operations
 index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
@@ -5,3 +6,5 @@ query: "log_name:( \"Security\" OR \"Microsoft-Windows-TaskScheduler/Operational
 language: kuery
 columns:
   - "message"
+data_needed:
+  - DN_0035_106_task_scheduler_task_registered

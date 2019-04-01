@@ -1,3 +1,4 @@
+author: '@atc_project'
 type: search
 title: WMI Activity
 index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
@@ -6,3 +7,9 @@ language: kuery
 columns:
   - "event_id"
   - "message"
+data_needed:
+  - DN_0022_19_windows_sysmon_WmiEvent
+  - DN_0023_20_windows_sysmon_WmiEvent
+  - DN_0024_21_windows_sysmon_WmiEvent
+  - DN_0080_5859_wmi_activity
+  - DN_0081_5861_wmi_activity

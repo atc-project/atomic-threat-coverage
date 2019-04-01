@@ -1,3 +1,4 @@
+author: '@atc_project'
 type: search
 title: Registry operations
 index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
@@ -6,3 +7,8 @@ language: kuery
 columns:
   - "event_data.Image"
   - "event_data.TargetObject"
+data_needed:
+  - DN_0016_12_windows_sysmon_RegistryEvent
+  - DN_0017_13_windows_sysmon_RegistryEvent
+  - DN_0018_14_windows_sysmon_RegistryEvent
+  - DN_0083_16_access_history_in_hive_was_cleared

@@ -1,3 +1,4 @@
+author: '@atc_project'
 type: search
 title: Local files operations
 index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
@@ -10,3 +11,6 @@ columns:
   - "event_data.TargetFilename"
   - "event_data.ProcessName"
   - "event_data.ObjectName"
+data_needed:
+  - DN_0013_9_windows_sysmon_RawAccessRead
+  - DN_0015_11_windows_sysmon_FileCreate
