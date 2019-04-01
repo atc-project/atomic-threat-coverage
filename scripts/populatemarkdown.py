@@ -100,6 +100,7 @@ class PopulateMarkdown:
     def triggers(self, tg_path):
         """Populate triggers"""
 
+        print("Populating Triggers..")
         if self.art_dir and self.atc_dir:
             r = ATCutils.populate_tg_markdown(art_dir=self.art_dir,
                                               atc_dir=self.atc_dir)
@@ -113,11 +114,13 @@ class PopulateMarkdown:
         else:
             r = ATCutils.populate_tg_markdown()
 
+        print("Triggers populated!")
         return r
 
     def logging_policy(self, lp_path):
         """Desc"""
 
+        print("Populating Logging Policies..")
         if lp_path:
             lp_list = glob.glob(lp_path + '*.yml')
         else:
@@ -135,9 +138,12 @@ class PopulateMarkdown:
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
 
+        print("Logging Policies populated!")
+
     def data_needed(self, dn_path):
         """Desc"""
 
+        print("Populating Data Needed..")
         if dn_path:
             dn_list = glob.glob(dn_path + '*.yml')
         else:
@@ -154,9 +160,12 @@ class PopulateMarkdown:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
+        print("Data Needed populated!")
 
     def detection_rule(self, dr_path):
         """Desc"""
+
+        print("Populating Detection Rules..")
         if dr_path:
             dr_list = glob.glob(dr_path + '*.yml')
         else:
@@ -180,10 +189,12 @@ class PopulateMarkdown:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
+        print("Detection Rules populated!")
 
     def enrichment(self, en_path):
         """Nothing here yet"""
 
+        print("Populating Enrichments..")
         if en_path:
             en_list = glob.glob(en_path + '*.yml')
         else:
@@ -200,10 +211,12 @@ class PopulateMarkdown:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
+        print("Enrichments populated!")
 
     def response_action(self, ra_path):
         """Nothing here yet"""
 
+        print("Populating Response Actions..")
         if ra_path:
             ra_list = glob.glob(ra_path + '*.yml')
         else:
@@ -220,10 +233,12 @@ class PopulateMarkdown:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
+        print("Response Actions populated!")
 
     def response_playbook(self, rp_path):
         """Nothing here yet"""
 
+        print("Populating Response Playbooks..")
         if rp_path:
             rp_list = glob.glob(rp_path + '*.yml')
         else:
@@ -240,10 +255,12 @@ class PopulateMarkdown:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
+        print("Response Playbooks populated!")
 
     def customer(self, cu_path):
         """Nothing here yet"""
 
+        print("Populating Customers..")
         if cu_path:
             cu_list = glob.glob(cu_path + '*.yml')
         else:
@@ -261,3 +278,4 @@ class PopulateMarkdown:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
+        print("Customers populated!")
