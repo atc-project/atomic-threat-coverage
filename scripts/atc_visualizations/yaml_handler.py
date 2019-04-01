@@ -121,11 +121,12 @@ class YamlHandler(base.BaseKibana):
         if not _index_name:
             raise Exception("Provide index")
         _query = yaml_document.get('query')
+        _language = yaml_document.get('language', "lucene")
         if not _query:
             raise Exception("Saved search without query does not make sense")
         _ss = visualisation.SavedSearchVisualisation(
             title=_title, query=_query, index_name=_index_name,
-            columns=_columns
+            columns=_columns, language=_language
         )
         self.append_result(_ss)
 
