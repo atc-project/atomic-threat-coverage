@@ -2,7 +2,6 @@
 
 * [Structure](#structure)
 * [How to run](#how-to-run)
-* [Tips](#tips)
 * [Saved Search](#saved-search)
 * [Visualizations](#visualizations)
 * [Dashboards](#dashboards)
@@ -44,10 +43,6 @@ Run the following command in the `${ATC}` directory:
 `GUI=1 make visualizations`
 
 Next, open Kibana web interface. Navigate to `Management -> Saved Objects` and use `Import` button, select JSON file and correct index ID if there is a non-existing one.
-
-# Tips
-
-* If you choose to create JSON for GUI import (`-e gui` or just `-e`), you can choose index pattern on importing in Kibana.
 
 ## Saved Search
 
