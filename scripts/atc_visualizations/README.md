@@ -39,7 +39,11 @@ curl -k --user ${USER}:${PASSWORD} -H "Content-Type: application/json"\
 
 ## WebUI / GUI
 
+Run the following command in the `${ATC}` directory:
 
+`GUI=1 make visualizations`
+
+Next, open Kibana web interface. Navigate to `Management -> Saved Objects` and use `Import` button, select JSON file and correct index ID if there is a non-existing one.
 
 # Tips
 
