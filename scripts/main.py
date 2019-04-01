@@ -2,6 +2,8 @@
 
 from populatemarkdown import PopulateMarkdown
 from populateconfluence import PopulateConfluence
+from thehive_templates import RPTheHive
+
 
 # For confluence
 from requests.auth import HTTPBasicAuth
@@ -35,6 +37,8 @@ if __name__ == '__main__':
                        help='Export analytics to Markdown repository')
     group.add_argument('-V', '--visualisations', action='store_true',
                        help='Use visualisations module')
+    group.add_argument('-T', '--thehive', action='store_true',
+                       help='Generate TheHive Case templates')
 
     # Mutually exclusive group for chosing type of data
     group2 = parser.add_mutually_exclusive_group(required=False)
@@ -152,3 +156,32 @@ if __name__ == '__main__':
             YamlHandler(args.vis_input, output_path2 + ".json", args.vis_force,
                         args.vis_export_type)
             print("File path: %s" % (output_path2 + ".json"))
+
+    elif args.thehive:
+        ATCconfig = ATCutils.read_yaml_file("config.yml")
+        ATCconfig2 = ATCutils.read_yaml_file("config.default.yml")
+        print("HINT: Make sure proper directories are " +
+              "configured in the config.yml")
+        if ATCconfig.get(
+            'response_playbooks_dir',
+            ATCconfig2.get('response_playbooks_dir')) and \
+                ATCconfig.get(
+                    'response_actions_dir',
+                    ATCconfig2.get('response_actions_dir')) and \
+                ATCconfig.get(
+                    'thehive_templates_dir',
+                    ATCconfig2.get('thehive_templates_dir')):
+            RPTheHive(
+                inputRP=ATCconfig.get(
+                    'response_playbooks_dir',
+                    ATCconfig2.get('response_playbooks_dir')),
+                inputRA=ATCconfig.get(
+                    'response_actions_dir',
+                    ATCconfig2.get('response_actions_dir')),
+                output=ATCconfig.get(
+                    'thehive_templates_dir',
+                    ATCconfig2.get('thehive_templates_dir'))
+            )
+            print("Done!")
+        else:
+            print("ERROR: Dirs were not provided in the config")

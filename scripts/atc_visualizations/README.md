@@ -51,6 +51,8 @@ type [required]
 title [required]
 index [required]
 query [required]
+language [optional]
+columns [optional]
 ```
 
 Configurability:
@@ -66,6 +68,17 @@ or
 
 query: '\path\'
 ```
+* `language` is language used for query. Usually it's lucene or kuery (lucene by default)
+* `columns` are the fields which are visible inside dashboard
+
+| Field               | Available values            |
+|---------------------|-----------------------------|
+| `type`              | `search`                    |
+| `title`             | `some title`                |
+| `index`             | `some-index-id`             |
+| `query`             | `any query in lucene`       |
+| `language`          | `lucene`/`kuery`            |
+| `columns`           | `- col1`<br/>`- col2`       |
 
 ## Visualizations
 
