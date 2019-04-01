@@ -1,6 +1,7 @@
 # Menu
 
 * [Structure](#structure)
+* [How to run](#how-to-run)
 * [Tips](#tips)
 * [Saved Search](#saved-search)
 * [Visualizations](#visualizations)
@@ -8,7 +9,37 @@
 
 # Structure
 
-Files consist of both required and optional fields. The structure depends on the object you want to define. All the visualizations and saved searches have to be inside `visualizations` directory. Dashboards can be anywhere but to keep it simple, just put it in `dashboards` directory.
+Files consist of both required and optional fields. The structure depends on the object you want to define. All the visualizations and saved searches have to be inside `${ATC}/visualizations/visualizations` directory. Dashboards have to be in `${ATC}/visualizations/dashboards` directory. By default, outputs will be saved to `${ATC}/analytics/generated/visualizations/`.
+
+# How to run
+
+## Curl / API
+
+Run the following command in the `${ATC}` directory:
+
+`make visualizations`
+
+Define variables:
+
+```bash
+KIBANA_URL="http://<kibana ip/domain>:<kibana port>"
+USER=""
+PASSWORD=""
+
+```
+
+Then you can use following curl:
+
+```bash
+curl -k --user ${USER}:${PASSWORD} -H "Content-Type: application/json"\
+  -H "kbn-xsrf: true"\
+  -XPOST "${KIBANA_URL}/api/kibana/dashboards/import?exclude=index-pattern&force=true"\
+  -d@analytics/generated/visualizations/${FILENAME}.json
+```
+
+## WebUI / GUI
+
+
 
 # Tips
 

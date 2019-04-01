@@ -6,24 +6,35 @@ from populateconfluence import PopulateConfluence
 # For confluence
 from requests.auth import HTTPBasicAuth
 
+from atcutils import ATCutils
+
+from atc_visualizations.yaml_handler import YamlHandler
+
 # Others
 import argparse
 import getpass
+import random
+import string
+import os
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(description='Main function of ATC. ' +
-                                     'This function is handling generating' +
-                                     'markdown files and/or ' +
-                                     'populating confluence')
+    parser = argparse.ArgumentParser(
+        description="""Main function of ATC.
+
+    You can not only choose to export analytics but also to use different
+    modules.
+""")
 
     # Mutually exclusive group for chosing the output of the script
     group = parser.add_mutually_exclusive_group(required=True)
 
     group.add_argument('-C', '--confluence', action='store_true',
-                       help='Set the output to be a Confluence')
+                       help='Export analytics to Confluence')
     group.add_argument('-M', '--markdown', action='store_true',
-                       help='Set the output to be markdown files')
+                       help='Export analytics to Markdown repository')
+    group.add_argument('-V', '--visualisations', action='store_true',
+                       help='Use visualisations module')
 
     # Mutually exclusive group for chosing type of data
     group2 = parser.add_mutually_exclusive_group(required=False)
@@ -51,6 +62,30 @@ if __name__ == '__main__':
     parser.add_argument('-i', '--init', action='store_true',
                         help="Build initial pages or directories " +
                         "depending on the export type")
+    # Input
+    parser.add_argument('--vis-input', help="Provide input file for " +
+                        "visualisations module")
+    # Output
+    parser.add_argument('--vis-output-dir', help="""
+    Provide directory path where to save output for visualisations module.
+    Default is created by joining exported_analytics_directory field from
+    config file with `dashboards` directory, so in the end it is:
+
+        ${exported_analytics_directory}/dashboards/
+""")
+    parser.add_argument('--vis-output-file-name', help="Provide file name " +
+                        "which will be used to save a file in output " +
+                        "directory\nDefault is: [randomstring].yml")
+    # Force
+    parser.add_argument('--vis-force', action='store_true',
+                        help="Force visualisations module to not use Kibana")
+
+    # Export type
+    parser.add_argument('--vis-export-type', help="Switch JSON export type " +
+                        "from api (uploaded using curl) to gui (imported in " +
+                        "kibana)", required=False, default="api", const="gui",
+                        action="store_const")
+
     args = parser.parse_args()
 
     if args.markdown:
@@ -73,3 +108,47 @@ if __name__ == '__main__':
                            tg=args.triggers, en=args.enrichment,
                            ra=args.responseactions, rp=args.responseplaybook,
                            cu=args.customers, init=args.init)
+
+    elif args.visualisations:
+        ATCconfig = ATCutils.load_config("config.yml")
+        ATCconfig_default = ATCutils.load_config("config.default.yml")
+        if not args.vis_output_dir:
+            analytics_generated = ATCconfig.get(
+                "exported_analytics_directory",
+                ATCconfig_default.get("exported_analytics_directory")
+            )
+            analytics_generated = analytics_generated if \
+                analytics_generated[-1] == "/" else analytics_generated + "/"
+            output_path = analytics_generated + "visualizations/"
+
+            if not args.vis_output_file_name:
+                output_name = ''.join(
+                    random.choices(
+                        string.ascii_uppercase + string.ascii_lowercase +
+                        string.digits, k=20)
+                )
+                # output_name += ".json"
+            else:
+                output_name = args.vis_output_file_name
+            output_path += output_name
+
+        else:
+            analytics_generated = args.vis_output_dir if \
+                args.vis_output_dir[-1] == "/" else args.vis_output_dir + "/"
+            output_path = analytics_generated
+
+        dashboard_path = "../visualizations/dashboards/"
+
+        if not args.vis_input:
+            for file in os.listdir(dashboard_path):
+                if not file.endswith((".yml", ".yaml")):
+                    continue
+                YamlHandler(dashboard_path + file, output_path + "_" +
+                            file[:-4] + ".json", args.vis_force,
+                            args.vis_export_type)
+                print("File path: %s" % (output_path + "_" +
+                      file[:-4] + ".json"))
+        else:
+            YamlHandler(args.vis_input, output_path + ".json", args.vis_force,
+                        args.vis_export_type)
+            print("File path: %s" % (output_path + ".json"))

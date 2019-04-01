@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
 import yaml
-import visualisation
-import metrics
+import atc_visualizations.visualisation as visualisation
+import atc_visualizations.metrics as metrics
 import argparse
 import json
-import dashboard
-import base
+import atc_visualizations.dashboard as dashboard
+import atc_visualizations.base as base
 import uuid
 
 from yaml.scanner import ScannerError
@@ -39,7 +39,8 @@ def read_yaml_file(path):
 class YamlHandler(base.BaseKibana):
     """YamlHandler class"""
 
-    def __init__(self, yaml_path, output_file, omit_kibana, export_type):
+    def __init__(self, yaml_path, output_file, omit_kibana, export_type,
+                 vis_path="../visualizations/visualizations/"):
         self._export_type = export_type
         if omit_kibana:
             self.omit_kibana()
@@ -68,11 +69,11 @@ class YamlHandler(base.BaseKibana):
             "ip_range", "range", "significant_terms", "terms"
         ]
 
-        self.iter_over_yamls()
+        self.iter_over_yamls(vis_path=vis_path)
         with open(output_file, 'w') as f:
             json.dump(self._results, f)
 
-    def iter_over_yamls(self):
+    def iter_over_yamls(self, vis_path):
         for yaml_document in self.yamls:
             _type = yaml_document.get('type')
             if not _type:
@@ -86,7 +87,7 @@ class YamlHandler(base.BaseKibana):
             if _type == "visualization":
                 self.visualization_f(yaml_document)
             elif _type == "dashboard":
-                self.dashboard(yaml_document)
+                self.dashboard(yaml_document, vis_path=vis_path)
             elif _type == "search":
                 self.search_f(yaml_document)
             else:
@@ -212,7 +213,7 @@ class YamlHandler(base.BaseKibana):
             else:
                 vis.disable_labels()
 
-    def dashboard(self, yaml_document):
+    def dashboard(self, yaml_document, vis_path):
         if not yaml_document.get('visualizations'):
             raise Exception("No visualizations, no sense. Provide it!")
 
@@ -234,7 +235,7 @@ class YamlHandler(base.BaseKibana):
         if yaml_document.get('darktheme'):
             _dashboard.set_dark_theme()
 
-        vis_list = self.load_yamls("visualizations")
+        vis_list = self.load_yamls(vis_path)
         _vis_objects_dict = {}
 
         self._w, self._h, self._x, self._y = 15, 15, 0, 0
@@ -529,9 +530,10 @@ def main():
     parser.add_argument('-e', help="JSON export type [api/gui]",
                         required=False, default="api", const="gui",
                         action="store_const")
+    parser.add_argument('--vis-output', help="Provide where to save output " +
+                        "for visualisations module")
 
     args = parser.parse_args()
-
     YamlHandler(args.i, args.o, args.f, args.e)
 
 

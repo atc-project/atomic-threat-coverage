@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import base
+import atc_visualizations.base as base
 import json
 import uuid
 
