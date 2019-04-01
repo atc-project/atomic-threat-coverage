@@ -130,12 +130,12 @@ if __name__ == '__main__':
                 # output_name += ".json"
             else:
                 output_name = args.vis_output_file_name
-            output_path += output_name
+            output_path2 = output_path + output_name
 
         else:
             analytics_generated = args.vis_output_dir if \
                 args.vis_output_dir[-1] == "/" else args.vis_output_dir + "/"
-            output_path = analytics_generated
+            output_path2 = analytics_generated
 
         dashboard_path = "../visualizations/dashboards/"
 
@@ -143,12 +143,12 @@ if __name__ == '__main__':
             for file in os.listdir(dashboard_path):
                 if not file.endswith((".yml", ".yaml")):
                     continue
-                YamlHandler(dashboard_path + file, output_path + "_" +
+                YamlHandler(dashboard_path + file, output_path +
                             file[:-4] + ".json", args.vis_force,
                             args.vis_export_type)
                 print("File path: %s" % (output_path + "_" +
                       file[:-4] + ".json"))
         else:
-            YamlHandler(args.vis_input, output_path + ".json", args.vis_force,
+            YamlHandler(args.vis_input, output_path2 + ".json", args.vis_force,
                         args.vis_export_type)
             print("File path: %s" % (output_path + ".json"))

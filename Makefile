@@ -69,4 +69,5 @@ clean:
 	@rm -f ./generated_analytics/analytics.csv
 	@rm -f ./generated_analytics/pivoting.csv
 	@rm -f ./generated_analytics/atc_es_index.json
+	@rm -f ./generated_analytics/visualizations/*.json
 
