@@ -1,0 +1,11 @@
+type: visualization
+name: metric
+title: Count vis
+index: logstash*
+query: dupa
+labels: False
+metrics:
+  - count
+  - average:
+      field: port
+      enabled: False

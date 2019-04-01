@@ -1,0 +1,10 @@
+type: visualization
+name: pie
+title: Pie vis
+index: logstash*
+query: "*"
+metrics:
+  - count
+  - terms:
+      field: port
+      size: 3
