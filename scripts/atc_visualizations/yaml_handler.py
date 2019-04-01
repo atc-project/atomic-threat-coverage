@@ -117,13 +117,15 @@ class YamlHandler(base.BaseKibana):
         self._name = "search"
         _title = yaml_document.get('title')
         _index_name = yaml_document.get('index')
+        _columns = yaml_document.get('columns')
         if not _index_name:
             raise Exception("Provide index")
         _query = yaml_document.get('query')
         if not _query:
             raise Exception("Saved search without query does not make sense")
         _ss = visualisation.SavedSearchVisualisation(
-            title=_title, query=_query, index_name=_index_name
+            title=_title, query=_query, index_name=_index_name,
+            columns=_columns
         )
         self.append_result(_ss)
 

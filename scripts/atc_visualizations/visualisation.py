@@ -393,10 +393,11 @@ class VerticalBarVisualisation(BaseKibanaVisualizationDoc):
 
 class SavedSearchVisualisation(BaseKibanaVisualizationDoc):
 
-    def __init__(self, title, query, index_name):
+    def __init__(self, title, query, index_name, columns=[]):
         self.title = title
         self.description = str()
         self.hits = 0
+        self.columns = columns
         self.version = 1
         self.kibanaSavedObjectMeta = {}
 
@@ -429,6 +430,8 @@ class SavedSearchVisualisation(BaseKibanaVisualizationDoc):
                 tmp_dictionary.pop("hits")
             tmp_dictionary["_source"]["version"] = \
                 tmp_dictionary.pop("version")
+            tmp_dictionary["_source"]["columns"] = \
+                json.dumps(tmp_dictionary.pop("columns"))
             tmp_dictionary["_source"]["kibanaSavedObjectMeta"] = \
                 tmp_dictionary.pop("kibanaSavedObjectMeta")
             tmp_dictionary["_id"] = tmp_dictionary["_source"]["title"]\
@@ -461,6 +464,8 @@ class SavedSearchVisualisation(BaseKibanaVisualizationDoc):
                 tmp_dictionary.pop("hits")
             tmp_dictionary["attributes"]["version"] = \
                 tmp_dictionary.pop("version")
+            tmp_dictionary["attributes"]["columns"] = \
+                json.dumps(tmp_dictionary.pop("columns"))
             tmp_dictionary["attributes"]["kibanaSavedObjectMeta"] = \
                 tmp_dictionary.pop("kibanaSavedObjectMeta")
             tmp_dictionary["id"] = tmp_dictionary["attributes"]["title"]\

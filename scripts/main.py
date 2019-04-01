@@ -151,4 +151,4 @@ if __name__ == '__main__':
         else:
             YamlHandler(args.vis_input, output_path2 + ".json", args.vis_force,
                         args.vis_export_type)
-            print("File path: %s" % (output_path + ".json"))
+            print("File path: %s" % (output_path2 + ".json"))
