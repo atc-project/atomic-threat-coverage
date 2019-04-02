@@ -1,6 +1,6 @@
 title: RA_0003_identification_make_sure_email_is_a_phising
 stage: identification
-author: Daniil Yugoslavskiy
+author: '@atc_project'
 creation_date: 31.01.2019
 references:
   - https://en.wikipedia.org/wiki/Phishing
