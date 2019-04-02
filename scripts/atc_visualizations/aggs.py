@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from base import BaseKibanaAgg
+from atc_visualizations.base import BaseKibanaAgg
 
 # ########################################################################### #
 # ############################ Aggs ######################################### #

@@ -3,3 +3,6 @@ requests
 jinja2
 elasticsearch
 sanitize
+random
+string
+json

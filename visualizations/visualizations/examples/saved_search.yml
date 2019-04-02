@@ -1,0 +1,8 @@
+type: search
+title: dupa
+index: logstash*
+query: "*"
+columns:
+  - message
+  - port
+  - host

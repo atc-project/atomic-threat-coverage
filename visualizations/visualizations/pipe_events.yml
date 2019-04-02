@@ -1,0 +1,13 @@
+author: '@atc_project'
+type: search
+title: Pipe Events
+index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
+query: "log_name:( \"Microsoft-Windows-Sysmon/Operational\" ) AND event_id:( 17 OR 18 )"
+language: kuery
+columns:
+  - "event_data.Image"
+  - "event_data.PipeName"
+data_needed:
+  - DN_0036_4104_windows_powershell_script_block
+  - DN_0037_4103_windows_powershell_executing_pipeline
+  - DN_0038_400_windows_powershell_engine_lifecycle

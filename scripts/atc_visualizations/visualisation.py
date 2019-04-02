@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-import base
+import atc_visualizations.base as base
 import json
 import uuid
 
-from metrics import BaseMetric
+from atc_visualizations.metrics import BaseMetric
 from ast import literal_eval
 
 # ########################################################################### #
@@ -393,10 +393,12 @@ class VerticalBarVisualisation(BaseKibanaVisualizationDoc):
 
 class SavedSearchVisualisation(BaseKibanaVisualizationDoc):
 
-    def __init__(self, title, query, index_name):
+    def __init__(self, title, query, index_name, columns=[],
+                 language="lucene"):
         self.title = title
         self.description = str()
         self.hits = 0
+        self.columns = columns
         self.version = 1
         self.kibanaSavedObjectMeta = {}
 
@@ -407,7 +409,7 @@ class SavedSearchVisualisation(BaseKibanaVisualizationDoc):
                 "version": True,
                 "query": {
                     "query": str(query),
-                    "language": "lucene"
+                    "language": str(language)
                 },
                 "filter": []
         }
@@ -429,6 +431,8 @@ class SavedSearchVisualisation(BaseKibanaVisualizationDoc):
                 tmp_dictionary.pop("hits")
             tmp_dictionary["_source"]["version"] = \
                 tmp_dictionary.pop("version")
+            tmp_dictionary["_source"]["columns"] = \
+                tmp_dictionary.pop("columns")
             tmp_dictionary["_source"]["kibanaSavedObjectMeta"] = \
                 tmp_dictionary.pop("kibanaSavedObjectMeta")
             tmp_dictionary["_id"] = tmp_dictionary["_source"]["title"]\
@@ -461,6 +465,8 @@ class SavedSearchVisualisation(BaseKibanaVisualizationDoc):
                 tmp_dictionary.pop("hits")
             tmp_dictionary["attributes"]["version"] = \
                 tmp_dictionary.pop("version")
+            tmp_dictionary["attributes"]["columns"] = \
+                tmp_dictionary.pop("columns")
             tmp_dictionary["attributes"]["kibanaSavedObjectMeta"] = \
                 tmp_dictionary.pop("kibanaSavedObjectMeta")
             tmp_dictionary["id"] = tmp_dictionary["attributes"]["title"]\

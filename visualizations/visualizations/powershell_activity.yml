@@ -1,0 +1,12 @@
+author: '@atc_project'
+type: search
+title: PowerShell Activity
+index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
+query: "log_name:( \"Microsoft-Windows-PowerShell/Operational\" OR \"Windows PowerShell\" )"
+language: kuery
+columns:
+  - "message"
+data_needed:
+  - DN_0036_4104_windows_powershell_script_block
+  - DN_0037_4103_windows_powershell_executing_pipeline
+  - DN_0038_400_windows_powershell_engine_lifecycle

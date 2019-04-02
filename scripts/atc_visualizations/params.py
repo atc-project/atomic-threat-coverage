@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from base import BaseKibanaSeriesParams
+from atc_visualizations.base import BaseKibanaSeriesParams
 
 # ########################################################################### #
 # ############################ Params ####################################### #

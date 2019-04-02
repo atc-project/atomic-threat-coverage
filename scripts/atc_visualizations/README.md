@@ -1,18 +1,48 @@
 # Menu
 
 * [Structure](#structure)
-* [Tips](#tips)
+* [How to run](#how-to-run)
 * [Saved Search](#saved-search)
 * [Visualizations](#visualizations)
 * [Dashboards](#dashboards)
 
 # Structure
 
-Files consist of both required and optional fields. The structure depends on the object you want to define. All the visualizations and saved searches have to be inside `visualizations` directory. Dashboards can be anywhere but to keep it simple, just put it in `dashboards` directory.
+Files consist of both required and optional fields. The structure depends on the object you want to define. All the visualizations and saved searches have to be inside `${ATC}/visualizations/visualizations` directory. Dashboards have to be in `${ATC}/visualizations/dashboards` directory. By default, outputs will be saved to `${ATC}/analytics/generated/visualizations/`.
 
-# Tips
+# How to run
 
-* If you choose to create JSON for GUI import (`-e gui` or just `-e`), you can choose index pattern on importing in Kibana.
+## Curl / API
+
+Run the following command in the `${ATC}` directory:
+
+`make visualizations`
+
+Define variables:
+
+```bash
+KIBANA_URL="http://<kibana ip/domain>:<kibana port>"
+USER=""
+PASSWORD=""
+
+```
+
+Then you can use following curl:
+
+```bash
+curl -k --user ${USER}:${PASSWORD} -H "Content-Type: application/json"\
+  -H "kbn-xsrf: true"\
+  -XPOST "${KIBANA_URL}/api/kibana/dashboards/import?exclude=index-pattern&force=true"\
+  -d@analytics/generated/visualizations/${FILENAME}.json
+```
+
+## WebUI / GUI
+
+Run the following command in the `${ATC}` directory:
+
+`GUI=1 make visualizations`
+
+Next, open Kibana web interface. Navigate to `Management -> Saved Objects` and use `Import` button, select JSON file and correct index ID if there is a non-existing one.
 
 ## Saved Search
 
@@ -21,6 +51,8 @@ type [required]
 title [required]
 index [required]
 query [required]
+language [optional]
+columns [optional]
 ```
 
 Configurability:
@@ -36,6 +68,17 @@ or
 
 query: '\path\'
 ```
+* `language` is language used for query. Usually it's lucene or kuery (lucene by default)
+* `columns` are the fields which are visible inside dashboard
+
+| Field               | Available values            |
+|---------------------|-----------------------------|
+| `type`              | `search`                    |
+| `title`             | `some title`                |
+| `index`             | `some-index-id`             |
+| `query`             | `any query in lucene`       |
+| `language`          | `lucene`/`kuery`            |
+| `columns`           | `- col1`<br/>`- col2`       |
 
 ## Visualizations
 

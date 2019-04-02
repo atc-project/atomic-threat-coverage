@@ -1,0 +1,18 @@
+author: '@atc_project'
+type: dashboard
+name: OS Hunting Dashboard
+title: OS Hunting Dashboard
+darktheme: True
+visualizations:
+  - Fileshares operations
+  - Local files operations
+  - Logon Activities
+  - Pipe Events
+  - PowerShell Activity
+  - Process Activities
+  - Process Execution
+  - RDP Activity
+  - Registry operations
+  - Services and Drivers operations
+  - Tasks operations
+  - WMI Activity
