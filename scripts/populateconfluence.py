@@ -245,7 +245,7 @@ class PopulateConfluence:
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
-                print("Done: ", dr.fields['title'])
+                # print("Done: ", dr.fields['title'])
             except Exception as err:
                 print(dr_file + " failed")
                 print("Err message: %s" % err)
