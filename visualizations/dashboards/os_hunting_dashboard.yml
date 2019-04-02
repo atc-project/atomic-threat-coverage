@@ -1,7 +1,7 @@
+author: '@atc_project'
 type: dashboard
 name: OS Hunting Dashboard
 title: OS Hunting Dashboard
-author: '@atc_project'
 darktheme: True
 visualizations:
   - Fileshares operations
