@@ -2,7 +2,7 @@
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Stage    | containment                                                            |
 | Automation | None |
-| Author    | Daniil Yugoslavskiy                                                          |
+| Author    | @atc_project                                                          |
 | Creation Date    | 31.01.2019                                            |
 | References     |<ul><li>[https://en.wikipedia.org/wiki/DNS_sinkhole](https://en.wikipedia.org/wiki/DNS_sinkhole)</li></ul>                                  |
 | Description    | Block domain on DNS server.                                                               |
