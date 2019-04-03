@@ -1,10 +1,12 @@
-.PHONY: all analytics navigator elastic setup clean
+.PHONY: all analytics navigator elastic setup clean visualizations thehive
 
 all: setup_repo markdown confluence analytics navigator elastic
 analytics: create_analytics_and_pivoting_csv
 navigator: create_attack_navigator_profile create_attack_navigator_profile_per_customer
 elastic: create_es_export
 setup: setup_repo setup_confluence setup_markdown
+visualizations: make_visualizations
+thehive: thehive_templates
 
 setup_repo:
 	@echo "[*] Updating 3rd party repository"
@@ -52,6 +54,18 @@ create_es_export:
 	@echo "[*] Creating elastic index"
 	@cd scripts && python3 es_index_export.py
 
+make_visualizations:
+	@echo "[*] Creating visualizations.."
+ifeq ($(GUI), 1)
+	@cd scripts && python3 main.py -V --vis-export-type
+else
+	@cd scripts && python3 main.py -V
+endif
+
+thehive_templates:
+	@echo "[*] Generating TheHive Case templates based on Response Playbooks"
+	@cd scripts && python3 main.py --thehive
+
 # TODO: make clean works with non default paths from config
 clean:
 	@echo "[*] Cleaning up..."
@@ -60,4 +74,5 @@ clean:
 	@rm -f ./generated_analytics/analytics.csv
 	@rm -f ./generated_analytics/pivoting.csv
 	@rm -f ./generated_analytics/atc_es_index.json
+	@rm -f ./generated_analytics/visualizations/*.json
 

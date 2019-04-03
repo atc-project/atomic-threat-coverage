@@ -2,7 +2,7 @@
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Stage    | identification                                                            |
 | Automation |<ul><li>thehive</li></ul> |
-| Author    | Daniil Yugoslavskiy                                                          |
+| Author    | @atc_project                                                          |
 | Creation Date    | 31.01.2019                                            |
 | References     |<ul><li>[https://github.com/TheHive-Project/Cortex-Analyzers](https://github.com/TheHive-Project/Cortex-Analyzers)</li></ul>                                  |
 | Description    | Aggregated Response Action for analysis of indicators of compromise                                                               |

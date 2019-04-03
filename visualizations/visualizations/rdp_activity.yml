@@ -1,0 +1,10 @@
+author: '@atc_project'
+type: search
+title: RDP Activity
+index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
+query: "( log_name:\"Microsoft-Windows-TerminalServices-RDPClient/Operational\" AND event_id: ( 1024 OR 1102 ) OR ( log_name:\"Security\" AND event_id:( 4624 ) AND event_data.LogonType: 10) OR ( log_name:\"Security\" AND event_id:( 4778 OR 4779 )) OR ( log_name:\"Microsoft-Windows-RemoteDesktopServices-RdpCoreTS/Operational\" AND event_id:( 131 OR 98 )) OR ( log_name:\"Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational\" AND event_id:1149 ) OR ( log_name:\"Microsoft-Windows-TerminalServices-LocalSessionManager\" AND event_id:( 21 OR 22 OR 25 OR 41 )))"
+language: kuery
+columns:
+  - "message"
+data_needed:
+  - DN_0004_4624_windows_account_logon

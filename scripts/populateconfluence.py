@@ -20,7 +20,6 @@ import sys
 import traceback
 import os
 
-
 ATCconfig = ATCutils.load_config("config.yml")
 
 
@@ -136,7 +135,7 @@ class PopulateConfluence:
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
-                print("Done: ", tg.fields["attack_technique"])
+                # print("Done: ", tg.fields["attack_technique"])
             except Exception as err:
                 print(tg_file + " failed")
                 print("Err message: %s" % err)
@@ -170,7 +169,7 @@ class PopulateConfluence:
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
-                print("Done: ", lp.fields['title'])
+                # print("Done: ", lp.fields['title'])
             except Exception as err:
                 print(lp_file + " failed")
                 print("Err message: %s" % err)
@@ -204,7 +203,7 @@ class PopulateConfluence:
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
 
-                print("Done: ", dn.dn_fields['title'])
+                # print("Done: ", dn.dn_fields['title'])
             except Exception as err:
                 print(dn_file + " failed")
                 print("Err message: %s" % err)
@@ -246,7 +245,7 @@ class PopulateConfluence:
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
-                print("Done: ", dr.fields['title'])
+                # print("Done: ", dr.fields['title'])
             except Exception as err:
                 print(dr_file + " failed")
                 print("Err message: %s" % err)
@@ -280,7 +279,7 @@ class PopulateConfluence:
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
-                print("Done: ", en.en_parsed_file['title'])
+                # print("Done: ", en.en_parsed_file['title'])
             except Exception as err:
                 print(en_file + " failed")
                 print("Err message: %s" % err)
@@ -314,7 +313,7 @@ class PopulateConfluence:
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
-                print("Done: ", ra.ra_parsed_file['title'])
+                # print("Done: ", ra.ra_parsed_file['title'])
             except Exception as err:
                 print(ra_file + " failed")
                 print("Err message: %s" % err)
@@ -352,7 +351,7 @@ class PopulateConfluence:
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
-                print("Done: ", rp.rp_parsed_file['title'])
+                # print("Done: ", rp.rp_parsed_file['title'])
             except Exception as err:
                 print(rp_file + " failed")
                 print("Err message: %s" % err)
@@ -388,7 +387,7 @@ class PopulateConfluence:
 
                 ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
-                print("Done: ", cu.title)
+                # print("Done: ", cu.title)
             except Exception as err:
                 print(cu_file + " failed")
                 print("Err message: %s" % err)

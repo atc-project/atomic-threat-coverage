@@ -1,0 +1,15 @@
+author: '@atc_project'
+type: search
+title: Process Execution
+index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
+query: "log_name:( \"Security\" OR \"Microsoft-Windows-Sysmon/Operational\" ) AND event_id:( 1 OR 4688 )"
+language: kuery
+columns:
+  - "event_id"
+  - "event_data.CommandLine"
+  - "event_data.Image"
+  - "event_data.Hashes"
+data_needed:
+  - DN_0001_4688_windows_process_creation
+  - DN_0002_4688_windows_process_creation_with_commandline
+  - DN_0003_1_windows_sysmon_process_creation

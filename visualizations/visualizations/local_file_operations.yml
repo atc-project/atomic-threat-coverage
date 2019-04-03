@@ -1,0 +1,16 @@
+author: '@atc_project'
+type: search
+title: Local files operations
+index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
+query: "log_name:( \"Microsoft-Windows-Sysmon/Operational\" OR \"Security\" ) AND event_id:( 9 OR 11 OR 4656 OR 4658 OR 4660 OR 4663 )"
+language: kuery
+columns:
+  - "event_id"
+  - "event_data.Image"
+  - "event_data.Device"
+  - "event_data.TargetFilename"
+  - "event_data.ProcessName"
+  - "event_data.ObjectName"
+data_needed:
+  - DN_0013_9_windows_sysmon_RawAccessRead
+  - DN_0015_11_windows_sysmon_FileCreate

@@ -15,6 +15,7 @@ Atomic Threat Coverage is tool which allows you to automatically generate action
 - **Triggers** based on [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) — detection tests based on MITRE's ATT&CK
 - **Response Actions** which executed during Incident Response
 - **Response Playbooks** for reacting on specific threat, constructed from atomic Response Actions
+- **Visualisations** for creating Threat Hunting / Triage Dashboards
 - **Hardening Policies** need to be implemented to mitigate specific Threat
 - **Mitigation Systems** need to be deployed and configured to mitigate specific Threat
 - **Customers** of the analytics — could be internal or external. This entity needed for implementation tracking
@@ -70,6 +71,7 @@ Everything starts from Sigma rule and ends up with human-readable wiki-style pag
 11. Creates [Elasticsearch](https://www.elastic.co/products/elasticsearch) index for visualisation and analysis of existing data in [Kibana](https://www.elastic.co/products/kibana)
 12. Creates [ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/enterprise/) profile for visualisation of current detection abilities per Customer
 13. Creates `analytics.csv` and `pivoting.csv` files for simple analysis of existing data
+14. Creates Dashboards json files for uploading to Kibana
 
 ### Under the hood
 
@@ -85,6 +87,8 @@ Data in the repository:
 │   │   │   ├── atc_attack_navigator_profile.json
 │   │   │   ├── atc_attack_navigator_profile_CU_0001_TESTCUSTOMER.json
 │   │   │   └── atc_attack_navigator_profile_CU_0002_TESTCUSTOMER2.json
+│   │   └── visualizations/
+│   │   │   └── os_hunting_dashboard.json
 │   └── predefined/
 │   │   ├── atc-analytics-dashboard.json
 │   │   ├── atc-analytics-index-pattern.json
@@ -115,8 +119,17 @@ Data in the repository:
 │   ├── RP_0001_phishing_email.yml
 │   ├── RP_0002_generic_response_playbook_for_postexploitation_activities.yml
 │   └── respose_playbook.yml.template
-└── triggering/
-    └── atomic-red-team/
+├── triggering/
+│   └── atomic-red-team/
+└── visualizations/
+    ├── dashboards/
+    │   ├── examples/
+    │   │   └── test_dashboard_document.yml
+    │   └── os_hunting_dashboard.yml
+    └── visualizations/
+        ├── examples/
+        │   └── vert_bar.yml
+        └── wmi_activity.yml
 ```
 
 #### Detection Rules
@@ -303,6 +316,33 @@ This entity used as an Incident Response plan for specific threat.
 This entity used to track Logging Policies configuration, Data Needed collection and Detection Rules implementation per customer. Customer could be internal (for example, remote site) or external (in case of Service Providers). It even could be a specific host. There are no limitations for definition of the entity.
 
 This entity expected to simplify communication with SIEM/LM/Data Engineering teams, provide visibility on implementation for Leadership. It used to generate `analytics.csv`, `atc_attack_navigator_profile.json` (per customer) and `atc_es_index.json`.
+
+#### visualizations
+
+<details>
+  <summary>Visualization yaml (click to expand)</summary>
+  <img src="images/visualisation_yaml_v1.png" />
+</details>
+
+<details>
+  <summary>Dashboard yaml (click to expand)</summary>
+  <img src="images/dashboard_yaml_v1.png" />
+</details>
+
+<details>
+  <summary>Dashboard in Kibana (click to expand)</summary>
+  <img src="images/dashboard_v1.png" />
+</details>
+
+<br>
+
+Visualisations include separate Visualisations / Saved searches and Dashboards, built on top of them.  
+Basically, atomic visualisations represent building blocks for Dashboards of different purposes.  
+
+For now we only support export to Kibana. But we are targeting multiple platforms export (Splunk being the nearest future).  
+This entity could be described as a Sigma for Visualisations.  
+
+Detailed HowTo could be found [here](scripts/atc_visualizations/README.md).
 
 #### atc_es_index.json
 

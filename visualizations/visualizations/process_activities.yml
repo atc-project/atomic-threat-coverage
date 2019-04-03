@@ -1,0 +1,16 @@
+author: '@atc_project'
+type: search
+title: Process Activities
+index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
+query: "log_name:( \"Microsoft-Windows-Sysmon/Operational\" ) AND event_id:( 7 OR 8 OR 10 )"
+language: kuery
+columns:
+  - "event_id"
+  - "event_data.Image"
+  - "event_data.ImageLoaded"
+  - "event_data.SourceImage"
+  - "event_data.TargetImage"
+data_needed:
+  - DN_0011_7_windows_sysmon_image_loaded
+  - DN_0012_8_windows_sysmon_CreateRemoteThread
+  - DN_0014_10_windows_sysmon_ProcessAccess

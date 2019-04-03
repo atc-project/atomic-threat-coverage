@@ -2,7 +2,7 @@ title: RA_0041_eradication_report_incident_to_external_companies
 stage: eradication
 automation:
   - thehive                 # integration with MISP
-author: Daniil Yugoslavskiy
+author: '@atc_project'
 creation_date: 31.01.2019
 references: 
   - https://blog.thehive-project.org/2017/06/19/thehive-cortex-and-misp-how-they-all-fit-together/

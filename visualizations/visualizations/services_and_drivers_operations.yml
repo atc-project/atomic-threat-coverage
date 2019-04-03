@@ -1,0 +1,14 @@
+author: '@atc_project'
+type: search
+title: Services and Drivers operations
+index: 94066e90-54a4-11e9-b2fc-91cb2cfc8381
+query: "log_name:( \"System\" OR \"Microsoft-Windows-Sysmon/Operational\" OR \"Security\" ) AND event_id:( 6 OR 7034 OR 7035 OR 7036 OR 7040 OR 7045 OR 4697 )"
+language: kuery
+columns:
+  - "event_id"
+  - "event_data.ImageLoaded"
+data_needed:
+  - DN_0010_6_windows_sysmon_driver_loaded
+  - DN_0031_7036_service_started_stopped
+  - DN_0005_7045_windows_service_insatalled
+  - DN_0063_4697_service_was_installed_in_the_system

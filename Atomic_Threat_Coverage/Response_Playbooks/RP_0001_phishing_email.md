@@ -7,7 +7,7 @@
 | Severity    | M                                             		|
 | TLP    | AMBER                                                            |
 | PAP    | WHITE                                                            |
-| Author    | Daniil Yugoslavskiy                                        				|
+| Author    | @atc_project                                        				|
 | Creation Date    | 31.01.2019                                       	|
 | Identification |<ul><li>[RA_0001_identification_get_original_email](../Response_Actions/RA_0001_identification_get_original_email.md)</li><li>[RA_0002_identification_extract_observables_from_email](../Response_Actions/RA_0002_identification_extract_observables_from_email.md)</li><li>[RA_0003_identification_make_sure_email_is_a_phising](../Response_Actions/RA_0003_identification_make_sure_email_is_a_phising.md)</li><li>[RA_0004_identification_analyse_obtained_indicators_of_compromise](../Response_Actions/RA_0004_identification_analyse_obtained_indicators_of_compromise.md)</li><li>[RA_0005_identification_find_all_phising_attack_victims](../Response_Actions/RA_0005_identification_find_all_phising_attack_victims.md)</li><li>[RA_0040_identification_put_on_monitoring_compromised_accounts](../Response_Actions/RA_0040_identification_put_on_monitoring_compromised_accounts.md)</li></ul> |
 | Containment |<ul><li>[RA_0006_containment_block_domain_on_email](../Response_Actions/RA_0006_containment_block_domain_on_email.md)</li><li>[RA_0028_containment_block_threat_on_network_level](../Response_Actions/RA_0028_containment_block_threat_on_network_level.md)</li></ul> |

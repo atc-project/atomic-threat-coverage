@@ -1,6 +1,6 @@
-title: DN_0038_517_the_audit_log_was_cleared
+title: DN_0038_1102_the_audit_log_was_cleared
 description: >
-  Event 517 is logged whenever the Security log is cleared, REGARDLESS of the status of the Audit System Events audit policy. 
+  Event 1102 is logged whenever the Security log is cleared, REGARDLESS of the status of the Audit System Events audit policy. 
 loggingpolicy:
   - none
 references:

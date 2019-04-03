@@ -9,7 +9,7 @@ tags:
 severity: M
 tlp: AMBER
 pap: WHITE
-author: Daniil Yugoslavskiy
+author: '@atc_project'
 creation_date: 31.01.2019
 linked_rp:
   - RP_0002_generic_post_exploitation

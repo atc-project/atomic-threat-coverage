@@ -2,7 +2,7 @@ title: RA_0012_eradication_report_phishing_attack_to_external_companies
 stage: eradication
 automation:
   - thehive                 # integration with MISP
-author: Daniil Yugoslavskiy
+author: '@atc_project'
 creation_date: 31.01.2019
 references: 
   - https://www.antiphishing.org/report-phishing/

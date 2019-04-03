@@ -96,7 +96,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### grep
     
 ```
-grep -P \'^(?:.*(?:.*(?:.*(?=.*(?:.*.*\\wmic\\.exe))(?=.*(?:.*wmic .* .*format:\\"http.*|.*wmic .* /format:\'http|.*wmic .* /format:http.*)))|.*(?:.*(?=.*(?:.*1B1A3F43BF37B5BFE60751F2EE2F326E|.*37777A96245A3C74EB217308F3546F4C|.*9D87C9D67CE724033C0B40CC4CA1B206))(?=.*(?:.*.* .*format:\\"http.*|.*.* /format:\'http|.*.* /format:http.*)))))\'
+grep -P \'^(?:.*(?:.*(?:.*(?=.*(?:.*.*\\wmic\\.exe))(?=.*(?:.*wmic .* .*format:\\"http.*|.*wmic .* /format:\'"\'"\'http|.*wmic .* /format:http.*)))|.*(?:.*(?=.*(?:.*1B1A3F43BF37B5BFE60751F2EE2F326E|.*37777A96245A3C74EB217308F3546F4C|.*9D87C9D67CE724033C0B40CC4CA1B206))(?=.*(?:.*.* .*format:\\"http.*|.*.* /format:\'"\'"\'http|.*.* /format:http.*)))))\'
 ```
 
 
