@@ -72,34 +72,62 @@ Atomic Threat Coverage это фреймворк для создания **ва�
 Типы аналитических данных в репозитории:
 
 ```
-├── analytics.csv
-├── atc_attack_navigator_profile.json
-├── pivoting.csv
-├── data_needed
+├── analytics/
+│   ├── generated/
+│   │   ├── analytics.csv
+│   │   ├── pivoting.csv
+│   │   ├── atc_es_index.json
+│   │   ├── thehive_templates/
+│   │   │   └── RP_0001_phishing_email.json
+│   │   └── attack_navigator_profiles/
+│   │   │   ├── atc_attack_navigator_profile.json
+│   │   │   ├── atc_attack_navigator_profile_CU_0001_TESTCUSTOMER.json
+│   │   │   └── atc_attack_navigator_profile_CU_0002_TESTCUSTOMER2.json
+│   │   └── visualizations/
+│   │   │   └── os_hunting_dashboard.json
+│   └── predefined/
+│   │   ├── atc-analytics-dashboard.json
+│   │   ├── atc-analytics-index-pattern.json
+│   │   └── atc-analytics-index-template.json
+├── customers/
+│   ├── CU_0001_TESTCUSTOMER.yml
+│   ├── CU_0002_TESTCUSTOMER2.yml
+│   └── customer.yml.template
+├── data_needed/
 │   ├── DN_0001_4688_windows_process_creation.yml
 │   ├── DN_0002_4688_windows_process_creation_with_commandline.yml
 │   └── dataneeded.yml.template
-├── detection_rules
+├── detection_rules/
 │   └── sigma/
-├── enrichments
+├── enrichments/
 │   ├── EN_0001_cache_sysmon_event_id_1_info.yml
 │   ├── EN_0002_enrich_sysmon_event_id_1_with_parent_info.yaml
 │   └── enrichment.yml.template
-├── logging_policies
+├── logging_policies/
 │   ├── LP_0001_windows_audit_process_creation.yml
 │   ├── LP_0002_windows_audit_process_creation_with_commandline.yml
 │   └── loggingpolicy_template.yml
-├── response_actions
+├── response_actions/
 │   ├── RA_0001_identification_get_original_email.yml
 │   ├── RA_0002_identification_extract_observables_from_email.yml
 │   └── respose_action.yml.template
-├── response_playbooks
+├── response_playbooks/
 │   ├── RP_0001_phishing_email.yml
 │   ├── RP_0002_generic_response_playbook_for_postexploitation_activities.yml
 │   └── respose_playbook.yml.template
-└── triggering
-    └── atomic-red-team/
+├── triggering/
+│   └── atomic-red-team/
+└── visualizations/
+    ├── dashboards/
+    │   ├── examples/
+    │   │   └── test_dashboard_document.yml
+    │   └── os_hunting_dashboard.yml
+    └── visualizations/
+        ├── examples/
+        │   └── vert_bar.yml
+        └── wmi_activity.yml
 ```
+
 
 #### Detection Rules
 
@@ -440,6 +468,58 @@ Atomic Threat Coverage генерирует [pivoting.csv](pivoting.csv) — с�
 
 Вам не обязательно добавлять какие-либо данные чтобы все заработало. Вы можете просто настроить экспорт посредством `scripts/config.yml` и использовать существующие данные. 
 В то же время вы можете посмотреть [демо](https://atomicthreatcoverage.atlassian.net/wiki/spaces/ATC/pages/126025996/WMI+Persistence+-+Script+Event+Consumer) автоматически сгенерированной базы знаний в Confluence чтобы для ознакомления с результатом экспорта с существующими данными.
+
+### Загрузка аналитической дашборды ATC
+
+Для начала Вам необходимо развернуть Elasticsearch и Kibana.
+
+Определить переменные:
+
+```bash
+ELASTICSEARCH_URL="http://<es ip/domain>:<es port>"
+KIBANA_URL="http://<kibana ip/domain>:<kibana port>"
+USER=""
+PASSWORD=""
+```
+
+Загрузить шаблон индекса в ElasticSearch:
+
+```bash
+curl -k --user ${USER}:${PASSWORD} -H "Content-Type: application/json"\
+  -H "kbn-xsrf: true"\
+  -XPUT "${ELASTICSEARCH_URL}/_template/atc-analytics"\
+  -d@analytics/predefined/atc-analytics-index-template.json
+```
+
+Затем загрузить index pattern в Кибану:
+
+```bash
+curl -k --user ${USER}:${PASSWORD} -H "Content-Type: application/json"\
+  -H "kbn-xsrf: true"\
+  -XPOST "${KIBANA_URL}/api/kibana/dashboards/import?force=true"\
+  -d@analytics/predefined/atc-analytics-index-pattern.json
+```
+
+Затем загрузить Дашборд в Кибану:
+
+```bash
+curl -k --user ${USER}:${PASSWORD} -H "Content-Type: application/json"\
+  -H "kbn-xsrf: true"\
+  -XPOST "${KIBANA_URL}/api/kibana/dashboards/import?exclude=index-pattern&force=true"\
+  -d@analytics/predefined/atc-analytics-dashboard.json
+```
+
+Затем загрузить индекс в Elasticsearch:
+
+```bash
+curl -k --user ${USER}:${PASSWORD} -H "Content-Type: application/json"\
+  -XPOST "${ELASTICSEARCH_URL}/atc-analytics/_doc/_bulk?pretty"\
+  --data-binary @analytics/generated/atc_es_index.json
+```
+
+Можно автоматизировать загрузку индекса, добавив последнюю команду в Makefile в вашем приватном форке. 
+В таком случае каждый раз когда вы будете добавлять новую аналитику, Дашборд будет автоматически обновляться.
+
 
 ## Текущая стадия разработки: Alpha
 
