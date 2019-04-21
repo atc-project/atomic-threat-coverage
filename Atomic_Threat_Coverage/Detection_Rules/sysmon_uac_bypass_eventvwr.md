@@ -32,7 +32,7 @@ detection:
         EventID: 13
         TargetObject: 'HKEY_USERS\\*\mscfile\shell\open\command'
     methprocess:
-        EventID: 1
+        EventID: 1 # Migration to process_creation requires multipart YAML
         ParentImage: '*\eventvwr.exe'
     filterprocess:
         Image: '*\mmc.exe'
@@ -47,36 +47,52 @@ tags:
 falsepositives:
     - unknown
 level: critical
-
 ```
 
 
 
 
 
-### Kibana query
-
+### es-qs
+    
 ```
 ((EventID:"13" AND TargetObject:"HKEY_USERS\\\\*\\\\mscfile\\\\shell\\\\open\\\\command") OR ((EventID:"1" AND ParentImage.keyword:*\\\\eventvwr.exe) AND NOT (Image.keyword:*\\\\mmc.exe)))
 ```
 
 
-
-
-
-### X-Pack Watcher
-
+### xpack-watcher
+    
 ```
 curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/UAC-Bypass-via-Event-Viewer <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "((EventID:\\"13\\" AND TargetObject:\\"HKEY_USERS\\\\\\\\*\\\\\\\\mscfile\\\\\\\\shell\\\\\\\\open\\\\\\\\command\\") OR ((EventID:\\"1\\" AND ParentImage.keyword:*\\\\\\\\eventvwr.exe) AND NOT (Image.keyword:*\\\\\\\\mmc.exe)))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'UAC Bypass via Event Viewer\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
-
-
-
-### Graylog
-
+### graylog
+    
 ```
 ((EventID:"13" AND TargetObject:"HKEY_USERS\\\\*\\\\mscfile\\\\shell\\\\open\\\\command") OR ((EventID:"1" AND ParentImage:"*\\\\eventvwr.exe") AND NOT (Image:"*\\\\mmc.exe")))
 ```
+
+
+### splunk
+    
+```
+((EventID="13" TargetObject="HKEY_USERS\\\\*\\\\mscfile\\\\shell\\\\open\\\\command") OR ((EventID="1" ParentImage="*\\\\eventvwr.exe") NOT (Image="*\\\\mmc.exe"))) | table CommandLine,ParentCommandLine
+```
+
+
+### logpoint
+    
+```
+((EventID="13" TargetObject="HKEY_USERS\\\\*\\\\mscfile\\\\shell\\\\open\\\\command") OR ((EventID="1" ParentImage="*\\\\eventvwr.exe")  -(Image="*\\\\mmc.exe")))
+```
+
+
+### grep
+    
+```
+grep -P '^(?:.*(?:.*(?:.*(?=.*13)(?=.*HKEY_USERS\\\\.*\\mscfile\\shell\\open\\command))|.*(?:.*(?=.*(?:.*(?=.*1)(?=.*.*\\eventvwr\\.exe)))(?=.*(?!.*(?:.*(?=.*.*\\mmc\\.exe)))))))'
+```
+
+
 

@@ -7,7 +7,7 @@ import getpass
 def main(c_auth=None):
 
     try:
-        ATCconfig = ATCutils.read_yaml_file("config.yml")
+        ATCconfig = ATCutils.load_config("config.yml")
         confluence_space_name = ATCconfig.get('confluence_space_name')
         confluence_space_home_page_name = ATCconfig.get(
             'confluence_space_home_page_name')
@@ -48,7 +48,7 @@ def main(c_auth=None):
 
     spaces = ["Detection Rules", "Logging Policies",
               "Data Needed", "Triggers", "Response Actions",
-              "Response Playbooks", "Enrichments"]
+              "Response Playbooks", "Enrichments", "Customers"]
 
     for space in spaces:
         print("Creating %s.." % space)
@@ -65,6 +65,7 @@ def main(c_auth=None):
             raise Exception("Could not create or update the page. " +
                             "Is the parent name correct?")
     print("Done!")
+    return True
 
 
 if __name__ == "__main__":

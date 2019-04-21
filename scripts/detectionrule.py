@@ -8,13 +8,13 @@ from jinja2 import Environment, FileSystemLoader
 import os
 import subprocess
 import re
-from pdb import set_trace as bp
+
 
 # ########################################################################### #
 # ########################### Detection Rule ################################ #
 # ########################################################################### #
 
-ATCconfig = ATCutils.read_yaml_file("config.yml")
+ATCconfig = ATCutils.load_config('config.yml')
 
 
 class DetectionRule:
@@ -80,7 +80,8 @@ class DetectionRule:
                 # prepare command to execute from shell
                 # (yes, we know)
                 cmd = ATCconfig.get('sigmac_path') + " -t " + \
-                    query + " --ignore-backend-errors " + self.yaml_file
+                    query + " --ignore-backend-errors " + self.yaml_file + \
+                    " 2> /dev/null"
 
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
 
@@ -95,7 +96,7 @@ class DetectionRule:
                 e.g es-qs throws error 'no es variable'
                 """
                 det_queries[query] = str(query2)[2:-3]
-                
+
             # Update detection rules
             self.fields.update({"det_queries": det_queries})
             self.fields.update({"queries": queries})
@@ -179,7 +180,8 @@ class DetectionRule:
 
             for output in outputs:
                 cmd = ATCconfig.get('sigmac_path') + " -t " + \
-                    output + " --ignore-backend-errors " + self.yaml_file
+                    output + " --ignore-backend-errors " + self.yaml_file + \
+                    " 2> /dev/null"
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
                 (query, err) = p.communicate()
                 # Wait for date to terminate. Get return returncode ##
@@ -261,7 +263,7 @@ class DetectionRule:
 
         return True
 
-    def save_markdown_file(self, atc_dir='../' + ATCconfig.get('md_name_of_root_directory') + '/'):
+    def save_markdown_file(self, atc_dir=ATCconfig.get('md_name_of_root_directory') + '/'):
         """Write content (md template filled with data) to a file"""
         base = os.path.basename(self.yaml_file)
         title = os.path.splitext(base)[0]

@@ -2,7 +2,7 @@
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Stage    | eradication                                                            |
 | Automation | None |
-| Author    | Daniil Yugoslavskiy                                                          |
+| Author    | @atc_project                                                          |
 | Creation Date    | 31.01.2019                                            |
 | References     | None                                  |
 | Description    | Delete malicious emails from Email Server and users' email boxes.                                                               |

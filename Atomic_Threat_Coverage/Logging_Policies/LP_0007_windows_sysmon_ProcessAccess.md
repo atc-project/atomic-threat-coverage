@@ -20,7 +20,8 @@ Sample configuration:
   </ProcessAccess>
   <ProcessAccess onmatch="exclude">
     <SourceImage condition="is">C:\windows\system32\wbem\wmiprvse.exe</SourceImage>
-    <SourceImage condition="is">C:\windows\system32\svchost.exe</TargetImage>
+    <SourceImage condition="is">C:\windows\system32\svchost.exe</SourceImage>
   </ProcessAccess>
 ```
+
 

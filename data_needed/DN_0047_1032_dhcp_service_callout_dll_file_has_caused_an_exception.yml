@@ -1,0 +1,18 @@
+title: DN_0047_1032_dhcp_service_callout_dll_file_has_caused_an_exception
+description: >
+  The installed server callout .dll file has caused an exception
+loggingpolicy: 
+  - None
+references:
+  - https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc726937(v%3dws.10)
+category: OS Logs
+platform: Windows
+type: Applications and Services Logs
+channel: System
+provider: Microsoft-Windows-DHCP-Server
+fields:
+  - EventID
+  - Computer
+  - Hostname # redundant
+sample: |
+  TODO

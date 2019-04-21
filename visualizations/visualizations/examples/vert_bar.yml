@@ -1,0 +1,21 @@
+type: visualization
+name: vbar
+title: Vertical Bar visualization
+index: logstash*
+query: "*"
+metrics:
+  - count
+  - average:
+      field: port
+  - terms:
+      split: x
+      field: port
+      size: 3
+  - terms:
+      split: series
+      field: port
+      size: 3
+  - terms:
+      split: chart
+      field: port
+      size: 3

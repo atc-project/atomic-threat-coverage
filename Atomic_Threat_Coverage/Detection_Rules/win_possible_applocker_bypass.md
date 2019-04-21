@@ -2,9 +2,9 @@
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects execution of executables that can be used to bypass Applocker whitelisting                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul></ul>                             |
-| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>                                                         |
-| Trigger              |  There is no Trigger for this technique yet.  |
+| ATT&amp;CK Technique | <ul><li>[T1118: InstallUtil](https://attack.mitre.org/techniques/T1118)</li><li>[T1121: Regsvcs/Regasm](https://attack.mitre.org/techniques/T1121)</li><li>[T1127: Trusted Developer Utilities](https://attack.mitre.org/techniques/T1127)</li><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li></ul>                             |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>                                                         |
+| Trigger              | <ul><li>[T1118: InstallUtil](../Triggers/T1118.md)</li><li>[T1121: Regsvcs/Regasm](../Triggers/T1121.md)</li><li>[T1127: Trusted Developer Utilities](../Triggers/T1127.md)</li><li>[T1170: Mshta](../Triggers/T1170.md)</li></ul>  |
 | Severity Level       | low                                                                                                                                                 |
 | False Positives      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li><li>Using installutil to add features for .NET applications (primarly would occur in developer environments)</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |
@@ -17,7 +17,6 @@
 ### Sigma rule
 
 ```
-action: global
 title: Possible Applocker Bypass
 description: Detects execution of executables that can be used to bypass Applocker whitelisting
 status: experimental
@@ -27,6 +26,13 @@ references:
 author: juju4
 tags:
     - attack.defense_evasion
+    - attack.t1118
+    - attack.t1121
+    - attack.t1127
+    - attack.t1170
+logsource:
+    category: process_creation
+    product: windows
 detection:
     selection:
         CommandLine:
@@ -38,30 +44,11 @@ detection:
             - '*\msbuild.exe*'
             - '*\ieexec.exe*'
             - '*\mshta.exe*'
-            # higher risk of false positives
-#            - '*\cscript.EXE*'
     condition: selection
 falsepositives:
     - False positives depend on scripts and administrative tools used in the monitored environment
     - Using installutil to add features for .NET applications (primarly would occur in developer environments)
 level: low
----
-# Windows Audit Log
-logsource:
-    product: windows
-    service: security
-    definition: 'Requirements: Audit Policy : Detailed Tracking > Audit Process creation, Group Policy : Administrative Templates\System\Audit Process Creation'
-detection:
-    selection:
-        EventID: 4688
----
-# Sysmon
-logsource:
-    product: windows
-    service: sysmon
-detection:
-    selection:
-        EventID: 1
 
 ```
 
@@ -69,29 +56,46 @@ detection:
 
 
 
-### Kibana query
-
+### es-qs
+    
 ```
-(EventID:"4688" AND CommandLine.keyword:(*\\\\msdt.exe* *\\\\installutil.exe* *\\\\regsvcs.exe* *\\\\regasm.exe* *\\\\regsvr32.exe* *\\\\msbuild.exe* *\\\\ieexec.exe* *\\\\mshta.exe*))\n(EventID:"1" AND CommandLine.keyword:(*\\\\msdt.exe* *\\\\installutil.exe* *\\\\regsvcs.exe* *\\\\regasm.exe* *\\\\regsvr32.exe* *\\\\msbuild.exe* *\\\\ieexec.exe* *\\\\mshta.exe*))
-```
-
-
-
-
-
-### X-Pack Watcher
-
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Possible-Applocker-Bypass <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4688\\" AND CommandLine.keyword:(*\\\\\\\\msdt.exe* *\\\\\\\\installutil.exe* *\\\\\\\\regsvcs.exe* *\\\\\\\\regasm.exe* *\\\\\\\\regsvr32.exe* *\\\\\\\\msbuild.exe* *\\\\\\\\ieexec.exe* *\\\\\\\\mshta.exe*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Possible Applocker Bypass\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Possible-Applocker-Bypass-2 <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"1\\" AND CommandLine.keyword:(*\\\\\\\\msdt.exe* *\\\\\\\\installutil.exe* *\\\\\\\\regsvcs.exe* *\\\\\\\\regasm.exe* *\\\\\\\\regsvr32.exe* *\\\\\\\\msbuild.exe* *\\\\\\\\ieexec.exe* *\\\\\\\\mshta.exe*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Possible Applocker Bypass\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+CommandLine.keyword:(*\\\\msdt.exe* *\\\\installutil.exe* *\\\\regsvcs.exe* *\\\\regasm.exe* *\\\\regsvr32.exe* *\\\\msbuild.exe* *\\\\ieexec.exe* *\\\\mshta.exe*)
 ```
 
 
-
-
-
-### Graylog
-
+### xpack-watcher
+    
 ```
-(EventID:"4688" AND CommandLine:("*\\\\msdt.exe*" "*\\\\installutil.exe*" "*\\\\regsvcs.exe*" "*\\\\regasm.exe*" "*\\\\regsvr32.exe*" "*\\\\msbuild.exe*" "*\\\\ieexec.exe*" "*\\\\mshta.exe*"))\n(EventID:"1" AND CommandLine:("*\\\\msdt.exe*" "*\\\\installutil.exe*" "*\\\\regsvcs.exe*" "*\\\\regasm.exe*" "*\\\\regsvr32.exe*" "*\\\\msbuild.exe*" "*\\\\ieexec.exe*" "*\\\\mshta.exe*"))
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Possible-Applocker-Bypass <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "CommandLine.keyword:(*\\\\\\\\msdt.exe* *\\\\\\\\installutil.exe* *\\\\\\\\regsvcs.exe* *\\\\\\\\regasm.exe* *\\\\\\\\regsvr32.exe* *\\\\\\\\msbuild.exe* *\\\\\\\\ieexec.exe* *\\\\\\\\mshta.exe*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Possible Applocker Bypass\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
+
+
+### graylog
+    
+```
+CommandLine:("*\\\\msdt.exe*" "*\\\\installutil.exe*" "*\\\\regsvcs.exe*" "*\\\\regasm.exe*" "*\\\\regsvr32.exe*" "*\\\\msbuild.exe*" "*\\\\ieexec.exe*" "*\\\\mshta.exe*")
+```
+
+
+### splunk
+    
+```
+(CommandLine="*\\\\msdt.exe*" OR CommandLine="*\\\\installutil.exe*" OR CommandLine="*\\\\regsvcs.exe*" OR CommandLine="*\\\\regasm.exe*" OR CommandLine="*\\\\regsvr32.exe*" OR CommandLine="*\\\\msbuild.exe*" OR CommandLine="*\\\\ieexec.exe*" OR CommandLine="*\\\\mshta.exe*")
+```
+
+
+### logpoint
+    
+```
+CommandLine IN ["*\\\\msdt.exe*", "*\\\\installutil.exe*", "*\\\\regsvcs.exe*", "*\\\\regasm.exe*", "*\\\\regsvr32.exe*", "*\\\\msbuild.exe*", "*\\\\ieexec.exe*", "*\\\\mshta.exe*"]
+```
+
+
+### grep
+    
+```
+grep -P '^(?:.*.*\\msdt\\.exe.*|.*.*\\installutil\\.exe.*|.*.*\\regsvcs\\.exe.*|.*.*\\regasm\\.exe.*|.*.*\\regsvr32\\.exe.*|.*.*\\msbuild\\.exe.*|.*.*\\ieexec\\.exe.*|.*.*\\mshta\\.exe.*)'
+```
+
+
 

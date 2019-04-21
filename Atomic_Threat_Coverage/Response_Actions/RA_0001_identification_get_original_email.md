@@ -2,7 +2,7 @@
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Stage    | identification                                                            |
 | Automation | None |
-| Author    | Daniil Yugoslavskiy                                                          |
+| Author    | @atc_project                                                          |
 | Creation Date    | 31.01.2019                                            |
 | References     |<ul><li>[https://www.lifewire.com/save-an-email-as-an-eml-file-in-gmail-1171956](https://www.lifewire.com/save-an-email-as-an-eml-file-in-gmail-1171956)</li><li>[https://eml.tooutlook.com/](https://eml.tooutlook.com/)</li></ul>                                  |
 | Description    | Obtain original phishing email                                                               |

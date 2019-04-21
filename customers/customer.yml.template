@@ -1,0 +1,10 @@
+title: CU_0000_some_name_here
+customer_name: some_name_here
+description: >
+  Some text description here. It will be merged into one line.
+dataneeded:
+  - DN_0000_some_data_needed_name_here
+loggingpolicy:
+  - LP_0000_some_logging_policy_name_here
+detectionrule:
+  - DR_0000_some_detection_rule_name_here

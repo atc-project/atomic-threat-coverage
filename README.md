@@ -2,11 +2,11 @@
 
 # Atomic Threat Coverage
 
-Automatically generated knowledge base of analytics designed to combat threats based on MITRE's [ATT&CK](https://attack.mitre.org/).
+Automatically generated actionable analytics designed to combat threats based on MITRE's [ATT&CK](https://attack.mitre.org/).
 
 ![](images/logo_v1.png)
 
-Atomic Threat Coverage is tool which allows you to automatically generate knowledge base of analytics, designed to combat threats (based on the [MITRE ATT&CK](https://attack.mitre.org/) adversary model) from Detection, Response, Mitigation and Simulation perspectives:
+Atomic Threat Coverage is tool which allows you to automatically generate actionable analytics, designed to combat threats (based on the [MITRE ATT&CK](https://attack.mitre.org/) adversary model) from Detection, Response, Mitigation and Simulation perspectives:
 
 - **Detection Rules** based on [Sigma](https://github.com/Neo23x0/sigma) — Generic Signature Format for SIEM Systems
 - **Data Needed** to be collected to produce detection of specific Threat
@@ -15,10 +15,12 @@ Atomic Threat Coverage is tool which allows you to automatically generate knowle
 - **Triggers** based on [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) — detection tests based on MITRE's ATT&CK
 - **Response Actions** which executed during Incident Response
 - **Response Playbooks** for reacting on specific threat, constructed from atomic Response Actions
+- **Visualisations** for creating Threat Hunting / Triage Dashboards
 - **Hardening Policies** need to be implemented to mitigate specific Threat
 - **Mitigation Systems** need to be deployed and configured to mitigate specific Threat
+- **Customers** of the analytics — could be internal or external. This entity needed for implementation tracking
 
-Atomic Threat Coverage is highly automatable framework for accumulation, developing, explanation and sharing actionable analytics.
+Atomic Threat Coverage is highly automatable framework for accumulation, development and sharing actionable analytics.
 
 ## Description
 
@@ -52,52 +54,85 @@ In other words, you don't have to work on data representation layer manually, yo
 
 ### How it works
 
-Everything starts from Sigma rule and ends up with human-readable wiki-style pages. Atomic Threat Coverage parses it and:
+![](images/atc_scheme_v2.jpg)
+
+Everything starts from Sigma rule and ends up with human-readable wiki-style pages and other valuable analytics. Atomic Threat Coverage parses it and:
 
 1. Maps Detection Rule to ATT&CK Tactic and Technique using `tags` from Sigma rule
 2. Maps Detection Rule to Data Needed using `logsource` and `detection` sections from Sigma rule
 3. Maps Detection Rule to Triggers (Atomic Red Team tests) using `tags` from Sigma rule
-4. Maps Detection Rule to Enrichments using existing mapping inside Detection Rule
-5. Maps Response Playbooks to ATT&CK Tactic and Technique using existing mapping inside Response Playbooks
-6. Maps Response Actions to Response Playbooks using existing mapping inside Response Playbooks
-7. Maps Logging Policies to Data Needed using existing mapping inside Data Needed
-8. Converts everything into Confluence and Markdown wiki-style pages using jinja templates (`scripts/templates`)
-9. Pushes all pages to local repo and Confluence server (according to configuration provided in `scripts/config.yml`)
-10. Creates `analytics.csv` and `pivoting.csv` files for simple analysis of existing data
-11. Creates `atc_attack_navigator_profile.json` — [ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/enterprise/) profile for visualisation of current detection abilities
+4. Maps Detection Rule to Enrichments using references inside Detection Rule
+5. Maps Response Playbooks to ATT&CK Tactic and Technique using references inside Response Playbooks
+6. Maps Response Actions to Response Playbooks using references inside Response Playbooks
+7. Maps Logging Policies to Data Needed using references inside Data Needed
+8. Maps Detection Rules, Data Needed and Logging Policies into Customers using references inside Customers entity
+9. Converts everything into Confluence and Markdown wiki-style pages using jinja templates (`scripts/templates`)
+10. Pushes all pages to local repo and Confluence server (according to configuration provided in `scripts/config.yml`)
+11. Creates [Elasticsearch](https://www.elastic.co/products/elasticsearch) index for visualisation and analysis of existing data in [Kibana](https://www.elastic.co/products/kibana)
+12. Creates [ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/enterprise/) profile for visualisation of current detection abilities per Customer
+13. Creates [TheHive](https://thehive-project.org) Case Templates, build on top of Response Playbooks
+14. Creates `analytics.csv` and `pivoting.csv` files for simple analysis of existing data
+15. Creates Dashboards json files for uploading to Kibana
 
 ### Under the hood
 
 Data in the repository:
 
 ```
-├── analytics.csv
-├── atc_attack_navigator_profile.json
-├── pivoting.csv
-├── data_needed
+├── analytics/
+│   ├── generated/
+│   │   ├── analytics.csv
+│   │   ├── pivoting.csv
+│   │   ├── atc_es_index.json
+│   │   ├── thehive_templates/
+│   │   │   └── RP_0001_phishing_email.json
+│   │   └── attack_navigator_profiles/
+│   │   │   ├── atc_attack_navigator_profile.json
+│   │   │   ├── atc_attack_navigator_profile_CU_0001_TESTCUSTOMER.json
+│   │   │   └── atc_attack_navigator_profile_CU_0002_TESTCUSTOMER2.json
+│   │   └── visualizations/
+│   │   │   └── os_hunting_dashboard.json
+│   └── predefined/
+│   │   ├── atc-analytics-dashboard.json
+│   │   ├── atc-analytics-index-pattern.json
+│   │   └── atc-analytics-index-template.json
+├── customers/
+│   ├── CU_0001_TESTCUSTOMER.yml
+│   ├── CU_0002_TESTCUSTOMER2.yml
+│   └── customer.yml.template
+├── data_needed/
 │   ├── DN_0001_4688_windows_process_creation.yml
 │   ├── DN_0002_4688_windows_process_creation_with_commandline.yml
 │   └── dataneeded.yml.template
-├── detection_rules
+├── detection_rules/
 │   └── sigma/
-├── enrichments
+├── enrichments/
 │   ├── EN_0001_cache_sysmon_event_id_1_info.yml
 │   ├── EN_0002_enrich_sysmon_event_id_1_with_parent_info.yaml
 │   └── enrichment.yml.template
-├── logging_policies
+├── logging_policies/
 │   ├── LP_0001_windows_audit_process_creation.yml
 │   ├── LP_0002_windows_audit_process_creation_with_commandline.yml
 │   └── loggingpolicy_template.yml
-├── response_actions
+├── response_actions/
 │   ├── RA_0001_identification_get_original_email.yml
 │   ├── RA_0002_identification_extract_observables_from_email.yml
 │   └── respose_action.yml.template
-├── response_playbooks
+├── response_playbooks/
 │   ├── RP_0001_phishing_email.yml
 │   ├── RP_0002_generic_response_playbook_for_postexploitation_activities.yml
 │   └── respose_playbook.yml.template
-└── triggering
-    └── atomic-red-team/
+├── triggering/
+│   └── atomic-red-team/
+└── visualizations/
+    ├── dashboards/
+    │   ├── examples/
+    │   │   └── test_dashboard_document.yml
+    │   └── os_hunting_dashboard.yml
+    └── visualizations/
+        ├── examples/
+        │   └── vert_bar.yml
+        └── wmi_activity.yml
 ```
 
 #### Detection Rules
@@ -220,58 +255,152 @@ Triggers are unmodified [Atomic Red Team tests](https://github.com/redcanaryco/a
 
 This entity needed to test specific technical controls and detections. Detailed description could be found in official [site](https://atomicredteam.io).
 
-#### Response Actions
+#### Customers
 
 <details>
-  <summary>Response Action yaml (click to expand)</summary>
-  <img src="images/ra_yaml_v1.png" />
+  <summary>Customers yaml (click to expand)</summary>
+  <img src="images/cu_yaml_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/ra_confluence_v1.png" />
+  <img src="images/cu_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/ra_markdown_v1.png" />
+  <img src="images/cu_markdown_v1.png" />
 </details>
 
 <br>
 
-This entity used to build Response Playbooks.
+This entity used to track Logging Policies configuration, Data Needed collection and Detection Rules implementation per customer. Customer could be internal (for example, remote site) or external (in case of Service Providers). It even could be a specific host. There are no limitations for definition of the entity.
+
+This entity expected to simplify communication with SIEM/LM/Data Engineering teams, provide visibility on implementation for Leadership. It used to generate `analytics.csv`, `atc_attack_navigator_profile.json` (per customer) and `atc_es_index.json`.
+
+#### Response Actions
+
+<details>
+  <summary>Response Action yaml (click to expand)</summary>
+  <img src="images/ra_yaml_v2.png" />
+</details>
+
+<details>
+  <summary>Automatically created confluence page (click to expand)</summary>
+  <img src="images/ra_confluence_v2.png" />
+</details>
+
+<details>
+  <summary>Automatically created markdown page (click to expand)</summary>
+  <img src="images/ra_markdown_v2.png" />
+</details>
+
+<br>
+
+This entity used to build Response Playbooks, as well as TheHive Case Templates' Tasks.
 
 #### Response Playbooks
 
 <details>
   <summary>Response Playbook yaml (click to expand)</summary>
-  <img src="images/rp_yaml_v1.png" />
+  <img src="images/rp_yaml_v2.png" />
 </details>
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/rp_confluence_v1.png" />
+  <img src="images/rp_confluence_v2.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/rp_markdown_v1.png" />
+  <img src="images/rp_markdown_v2.png" />
 </details>
 
 <br>
 
-This entity used as an Incident Response plan for specific threat.
+This entity used as an Incident Response plan for specific threat, as well as TheHive Case Templates.
+
+#### TheHive Case Templates
+
+Atomic Threat Coverage generates [TheHive Case Templates](analytics/generated/thehive_templates/) build on top of [Response Playbooks](#response-playbooks). Each task in Case Template is [Response Action](#response-actions), mapped to specific IR Lifecycle step (according to description in Response Playbook).
+
+<details>
+  <summary>Exported TheHive Case Template, made of Response Playbook (click to expand)</summary>
+  <img src="images/thehive_case_template_v1.png" />
+</details>
+
+<details>
+  <summary>One of the Tasks in TheHive Case, made of Response Action (click to expand)</summary>
+  <img src="images/thehive_case_task_v1.png" />
+</details>
+
+#### Visualizations
+
+<details>
+  <summary>Visualization yaml (click to expand)</summary>
+  <img src="images/visualisation_yaml_v1.png" />
+</details>
+
+<details>
+  <summary>Dashboard yaml (click to expand)</summary>
+  <img src="images/dashboard_yaml_v1.png" />
+</details>
+
+<details>
+  <summary>Dashboard in Kibana (click to expand)</summary>
+  <img src="images/dashboard_v1.png" />
+</details>
+
+<br>
+
+Visualisations include separate Visualisations / Saved searches and Dashboards, built on top of them.  
+Basically, atomic visualisations represent building blocks for Dashboards of different purposes.  
+
+For now we only support export to Kibana. But we are targeting multiple platforms export (Splunk being the nearest future).  
+This entity could be described as a Sigma for Visualisations.  
+
+Detailed HowTo could be found [here](scripts/atc_visualizations/README.md).
+
+#### atc_es_index.json
+
+Atomic Threat Coverage generates [Elasticsearch](https://www.elastic.co/products/elasticsearch) [index](analytics/generated/atc_es_index.json) with all data mapped to each other for visualisation and analysis of existing data in [Kibana](https://www.elastic.co/products/kibana). Demo of the ATC Analytics Dashboard builded upon public Sigma rules available [here](https://kibana.atomicthreatcoverage.com) (user: demo, password: password).
+
+<details>
+  <summary>ATC Analytics Dashboard in Kibana (click to expand)</summary>
+  <img src="images/atc_analytics_dashboard.png" />
+</details>
+
+<br>
+
+This way it can help to answer these questions:
+
+- What data do I need to collect to detect specific threats?
+- Which Logging Policies do I need to implement to collect the data I need for detection of specific threats?
+- Which data provided me most of the high fidelity alerts? (prioritisation of data collection implementation)
+- etc
+
+<!-- - What threats can I respond to with existing Response Playbooks? -->
+
+Ideally, these visualisations could provide organizations with the ability to connect Threat Coverage from detection perspective to *money*. Like:
+
+- if we will collect all Data Needed from all hosts for all Detection Rules we have it would be X Events Per Second (EPS) (do calculation for a couple of weeks or so) with these resources for storage/processing (some more or less concrete number)
+- if we will collect Data Needed only for high fidelity alerts and only on critical hosts, it will be Y EPS with these resources for storage/processing (again, more or less concrete number)
+- etc
+
+If you don't have Elasticsearch and Kibana deployed, you can use `analytics.csv` for the same purposes.
+
+#### atc_attack_navigator_profile.json
+
+Atomic Threat Coverage generates [ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/enterprise/) common [profile](analytics/generated/attack_navigator_profiles/atc_attack_navigator_profile.json) (for all existing Detection Rules) as well as per Customer profiles for visualisation of current detection abilities, gap analysis, development prioritisation, planning etc. You only need to upload it to public or (better) private Navigator site, click New Tab -> Open Existing Layer -> Upload from local. Here is how it looks like for default ATC dataset (original [Sigma](https://github.com/Neo23x0/sigma) repository rules, Windows only):
+
+<details>
+  <summary>Navigator profile for original Sigma Rules (click to expand)</summary>
+  <img src="images/navigator_v1.png" />
+</details>
 
 #### analytics.csv
 
-Atomic Threat Coverage generates [analytics.csv](analytics.csv) with list of all data mapped to each other for simple analysis. This file is suppose to answer these questions:
-
-- What data do I need to collect to detect specific threats?
-- What threats can I respond to with existing Response Playbooks?
-- Which Logging Policies do I need to implement to collect the data I need for detection of specific threats?
-- Which Logging Policies I can install everywhere (event volume low/medium) and which only on critical hosts (high/extremely high)?
-- Which data provided me most of the high fidelity alerts? (prioritisation of data collection implementation)
-- etc
+Atomic Threat Coverage generates [analytics.csv](analytics/generated/analytics.csv) with list of all data mapped to each other for simple analysis.
 
 <details>
   <summary>Example of lookup for "pass the hash" technique (click to expand)</summary>
@@ -280,15 +409,11 @@ Atomic Threat Coverage generates [analytics.csv](analytics.csv) with list of all
 
 <br>
 
-Ideally, this kind of mapping could provide organizations with the ability to connect Threat Coverage from detection perspective to *money*. Like:
-
-- if we will collect all Data Needed from all hosts for all Detection Rules we have it would be X Events Per Second (EPS) (do calculation for a couple of weeks or so) with these resources for storage/processing (some more or less concrete number)
-- if we will collect Data Needed only for high fidelity alerts and only on critical hosts, it will be Y EPS with these resources for storage/processing (again, more or less concrete number)
-- etc
+It could be used for the same purposes as `atc_es_index.json`.
 
 #### pivoting.csv
 
-Atomic Threat Coverage generates [pivoting.csv](pivoting.csv) with list of all fields (from Data Needed) mapped to description of Data Needed for very specific purpose — it provides information about data sources where some specific data type could be found, for example domain name, username, hash etc:
+Atomic Threat Coverage generates [pivoting.csv](analytics/generated/pivoting.csv) with list of all fields (from Data Needed) mapped to description of Data Needed for very specific purpose — it provides information about data sources where some specific data type could be found, for example domain name, username, hash etc:
 
 <details>
   <summary>Example of lookup for "hash" field (click to expand)</summary>
@@ -304,19 +429,10 @@ At the same time it highlights which fields could be found only with specific en
   <img src="images/pivoting_parent_v1.png" />
 </details>
 
-#### atc_attack_navigator_profile.json
-
-Last but not least — Atomic Threat Coverage generates [ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/enterprise/) [profile](atc_attack_navigator_profile.json) for visualisation of current detection abilities, gap analysis, development prioritisation, planning etc. You only need to upload it to public or (better) private Navigator site, click New Tab -> Open Existing Layer -> Upload from local. Here is how it looks like for default ATC dataset (original [Sigma](https://github.com/Neo23x0/sigma) repository rules, Windows only):
-
-<details>
-  <summary>Navigator profile for original Sigma Rules (click to expand)</summary>
-  <img src="images/navigator_v1.png" />
-</details>
-
 ## Goals
 
-1. Stimulate community to use [Sigma](https://github.com/Neo23x0/sigma) rule format (so we will have more contributors, more and better converters)
-2. Stimulate community to use [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) tests format (so we will have more contributors and execution frameworks)
+1. Evangelize MITRE [ATT&CK](https://attack.mitre.org/) framework
+2. Stimulate community to use [Sigma](https://github.com/Neo23x0/sigma) and [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) projects
 3. Evangelize threat information sharing
 4. Automate most of manual work
 5. Provide information security community framework which will improve communication with other departments, general analytics accumulation, developing and sharing
@@ -328,13 +444,65 @@ Last but not least — Atomic Threat Coverage generates [ATT&CK Navigator](https
 3. Add Data Needed into `data_needed` directory (you can create new one using [template](data_needed/dataneeded.yml.template))
 4. Add Logging Policies into `logging_policies` directory (you can create new one using [template](logging_policies/loggingpolicy.yml.template))
 5. Add Enrichments into `enrichments` directory (you can create new one using [template](enrichments/enrichment.yml.template))
-6. Add Response Actions into `response_actions` directory (you can create new one using [template](response_actions/respose_action.yml.template))
-7. Add Response Playbooks into `response_playbooks` directory (you can create new one using [template](response_playbooks/respose_playbook.yml.template))
-8. Configure your export settings using `scripts/config.yml`
-9. Execute `make` in root directory of the repository
+6. Add Customers into `customers` directory (you can create new one using [template](customers/customer.yml.template))
+7. Add Response Actions into `response_actions` directory (you can create new one using [template](response_actions/respose_action.yml.template))
+8. Add Response Playbooks into `response_playbooks` directory (you can create new one using [template](response_playbooks/respose_playbook.yml.template))
+9. Configure your export settings using `scripts/config.yml` (create if from `scripts/config.default.yml` and adjust settings)
+10. Execute `make` in root directory of the repository
 
 You don't have to add anything to make it work in your environment, you can just configure export settings using `scripts/config.yml` and utilise default dataset.
 At the same time you can access [demo](https://atomicthreatcoverage.atlassian.net/wiki/spaces/ATC/pages/126025996/WMI+Persistence+-+Script+Event+Consumer) of automatically generated knowledge base in Confluence to make yourself familiar with final result with default dataset.
+
+### Uploading ATC Analytics Dashboard
+
+You need both Elasticsearch and Kibana up and running.
+
+Define variables:
+
+```bash
+ELASTICSEARCH_URL="http://<es ip/domain>:<es port>"
+KIBANA_URL="http://<kibana ip/domain>:<kibana port>"
+USER=""
+PASSWORD=""
+```
+
+First upload index template to Elasticsearch:
+
+```bash
+curl -k --user ${USER}:${PASSWORD} -H "Content-Type: application/json"\
+  -H "kbn-xsrf: true"\
+  -XPUT "${ELASTICSEARCH_URL}/_template/atc-analytics"\
+  -d@analytics/predefined/atc-analytics-index-template.json
+```
+
+Then upload index pattern to Kibana:
+
+```bash
+curl -k --user ${USER}:${PASSWORD} -H "Content-Type: application/json"\
+  -H "kbn-xsrf: true"\
+  -XPOST "${KIBANA_URL}/api/kibana/dashboards/import?force=true"\
+  -d@analytics/predefined/atc-analytics-index-pattern.json
+```
+
+Then upload Dashboard to Kibana:
+
+```bash
+curl -k --user ${USER}:${PASSWORD} -H "Content-Type: application/json"\
+  -H "kbn-xsrf: true"\
+  -XPOST "${KIBANA_URL}/api/kibana/dashboards/import?exclude=index-pattern&force=true"\
+  -d@analytics/predefined/atc-analytics-dashboard.json
+```
+
+Then upload index to Elasticsearch:
+
+```bash
+curl -k --user ${USER}:${PASSWORD} -H "Content-Type: application/json"\
+  -XPOST "${ELASTICSEARCH_URL}/atc-analytics/_doc/_bulk?pretty"\
+  --data-binary @analytics/generated/atc_es_index.json
+```
+
+You can automate index uploading adding last command to Makefile in your private fork.  
+This way each time you will add new analytics, Dashboard will be automatically updated.
 
 ## Current Status: Alpha
 

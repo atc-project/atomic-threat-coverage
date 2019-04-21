@@ -2,7 +2,7 @@
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Stage    | identification                                                            |
 | Automation |<ul><li>thehive</li></ul> |
-| Author    | Daniil Yugoslavskiy                                                          |
+| Author    | @atc_project                                                          |
 | Creation Date    | 31.01.2019                                            |
 | References     | None                                  |
 | Description    | Aggregated Response Action for identification of all potential victims of the phishing attack                                                               |
