@@ -1,0 +1,32 @@
+title: LP_0038_windows_audit_kerberos_authentication_service
+default: Partially (Other) # Success on Servers. Not enabled on clients
+volume: High # on Kerberos Key Distribution Center servers
+description: >
+  Audit Kerberos Authentication Service determines whether to generate 
+  audit events for Kerberos authentication ticket-granting ticket (TGT) requests
+eventID:
+  - 4768 # (S, F): A Kerberos authentication ticket (TGT) was requested
+  - 4771 # (F): Kerberos pre-authentication failed
+  - 4772 # (F): A Kerberos authentication ticket request failed
+references:
+  - https://www.ultimatewindowssecurity.com/securitylog/book/page.aspx?spid=chapter4#KAS
+  - https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-kerberos-authentication-service
+  - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-kerberos-authentication-service.md
+configuration: |
+  Manual steps to implement logging policy:
+
+  ```
+  Computer Configuration >
+  Windows Settings >
+  Security Settings >
+  Advanced Security Audit Policy Settings >
+  Audit Policies >
+  Account Logon >
+  Audit Kerberos Authentication Service (Success,Failure)
+  ```
+
+  Script to implement logging policy:
+
+  ```
+  Auditpol /set /subcategory:"Kerberos Authentication Service" /success:enable /failure:enable
+  ```

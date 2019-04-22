@@ -1,0 +1,34 @@
+title: LP_0039_windows_audit_kernel_object
+default: Not configured
+volume: High # if auditing access of global system objects is enabled.
+description: >
+  This policy setting allows you to audit attempts to access the kernel, 
+  which include mutexes and semaphores. Only kernel objects with a matching 
+  system access control list (SACL) generate security audit events
+eventID: 
+  - 4656 #(S, F): A handle to an object was requested
+  - 4658 #(S): The handle to an object was closed
+  - 4660 #(S): An object was deleted
+  - 4663 #(S): An attempt was made to access an object
+references:
+  - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-kernel-object.md
+  - https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-kernel-object
+  - https://www.ultimatewindowssecurity.com/securitylog/book/page.aspx?spid=chapter7
+configuration: |
+  Manual steps to implement logging policy:
+
+  ```
+  Computer Configuration >
+  Windows Settings >
+  Security Settings >
+  Advanced Security Audit Policy Settings >
+  Audit Policies >
+  Object Access >
+  Audit Kernel Object (Success)
+  ```
+
+  Script to implement logging policy:
+
+  ```
+  Auditpol /set /subcategory:"Kernel Object" /success:enable /failure:disable
+  ```
