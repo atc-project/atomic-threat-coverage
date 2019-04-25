@@ -556,13 +556,13 @@ Absolutely. We also have some Detection Rules which couldn't be automatically co
 
 ## TODO
 
-- [ ] Develop TheHive Case Templates generation based on Response Playbooks
-- [ ] Develop specification for custom ATC data entities (Data Needed, Logging Policies etc)
+- [x] Develop TheHive Case Templates generation based on Response Playbooks
 - [ ] Develop docker container for the project
+- [ ] Develop specification for custom ATC data entities (Data Needed, Logging Policies etc)
 - [ ] Implement "Mitigation Systems" entity
 - [ ] Implement "Hardening Policies" entity
 - [ ] Implement consistent Data Model (fields naming)
-- [ ] Implement new entity — "Visualisation" with Kibana visualisations/dashboards stored in yaml files and option to convert them into curl commands for uploading them into Elasticsearch
+- [x] Implement new entity — "Visualisation" with Kibana visualisations/dashboards stored in yaml files and option to convert them into curl commands for uploading them into Elasticsearch
 
 ## Links
 
