@@ -105,7 +105,7 @@ class Customer:
         detectionrule_with_path = []
 
         for title in self.detection_rules:
-            if title != 'None':
+            if title is not None:
                 name = rules_by_title.get(title)[1]
             else:
                 name = ''
