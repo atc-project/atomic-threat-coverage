@@ -252,7 +252,14 @@ class ATCutils:
             headers=headers,
             auth=auth
         )
-        response = response.json()
+
+        if response.status_code == 401:
+            print("Unauthorized Response. Try to use token instead of password \
+\n https://developer.atlassian.com/cloud/confluence/basic-auth-for-rest-apis/#supplying-basic-auth-headers")
+            exit()
+        else:
+            response = response.json()
+
         # print(response)
 
         # Check if response contains proper information and return it if so
