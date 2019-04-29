@@ -2,7 +2,7 @@ title: RA_0004_identification_analyse_obtained_indicators_of_compromise
 stage: identification
 automation:
   - thehive
-author: Daniil Yugoslavskiy
+author: '@atc_project'
 creation_date: 31.01.2019
 references:
   - https://github.com/TheHive-Project/Cortex-Analyzers

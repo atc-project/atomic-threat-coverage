@@ -2,7 +2,7 @@
 |:---------------|:-----------------------------------------------------------------------------------------------------------------|
 | Stage    | identification                                                            |
 | Automation | None |
-| Author    | Daniil Yugoslavskiy                                                          |
+| Author    | @atc_project                                                          |
 | Creation Date    | 31.01.2019                                            |
 | References     | None                                  |
 | Description    | Put (potentially) compromised accounts on monitoring                                                               |

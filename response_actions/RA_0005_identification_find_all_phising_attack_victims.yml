@@ -2,7 +2,7 @@ title: RA_0005_identification_find_all_phising_attack_victims
 stage: identification
 automation:
   - thehive
-author: Daniil Yugoslavskiy
+author: '@atc_project'
 creation_date: 31.01.2019
 description: >
   Aggregated Response Action for identification of all potential victims of the phishing attack

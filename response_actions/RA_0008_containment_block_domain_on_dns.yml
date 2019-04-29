@@ -1,6 +1,6 @@
 title: RA_0008_containment_block_domain_on_dns
 stage: containment
-author: Daniil Yugoslavskiy
+author: '@atc_project'
 creation_date: 31.01.2019
 references:
   - https://en.wikipedia.org/wiki/DNS_sinkhole

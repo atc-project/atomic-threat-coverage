@@ -1,0 +1,27 @@
+title: LP_0106_windows_audit_kerberos_service_ticket_operations
+default: Partially (Other) # Success on Servers. Not enabled on clients
+volume: Extremely High # on Kerberos Key Distribution Center servers
+description: >
+  Audit Kerberos Service Ticket Operations determines whether the operating 
+  system generates security audit events for Kerberos service ticket requests.
+  Events are generated every time Kerberos is used to authenticate a user who 
+  wants to access a protected network resource. Kerberos service ticket 
+  operation audit events can be used to track user activity
+eventID:
+  - 4769 #(S, F): A Kerberos service ticket was requested
+  - 4770 #(S): A Kerberos service ticket was renewed
+  - 4773 #(F): A Kerberos service ticket request failed
+references:
+  - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-kerberos-service-ticket-operations.md
+configuration: |
+  Manual steps to implement logging policy:
+
+  ```
+  Computer Configuration >
+  Windows Settings >
+  Security Settings >
+  Advanced Security Audit Policy Settings >
+  Audit Policies >
+  Account Logon >
+  Audit Kerberos Service Ticket Operations (Success,Failure)
+  ```

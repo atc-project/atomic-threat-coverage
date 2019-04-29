@@ -1,6 +1,6 @@
 title: RA_0006_containment_block_domain_on_email
 stage: containment
-author: Daniil Yugoslavskiy
+author: '@atc_project'
 creation_date: 31.01.2019
 references:
   - https://docs.microsoft.com/en-us/office365/securitycompliance/block-email-spam-to-prevent-false-negatives

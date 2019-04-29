@@ -26,6 +26,7 @@ tags:
     - attack.t1084
     - attack.persistence
 author: Tom Ueltschi (@c_APT_ure)
+date: 2019/01/12
 logsource:
     product: windows
     service: sysmon

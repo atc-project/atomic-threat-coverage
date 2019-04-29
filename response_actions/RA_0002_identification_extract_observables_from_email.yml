@@ -2,7 +2,7 @@ title: RA_0002_identification_extract_observables_from_email
 stage: identification
 automation:
   - thehive
-author: Daniil Yugoslavskiy
+author: '@atc_project'
 creation_date: 31.01.2019
 references: 
   - https://ubuntuincident.wordpress.com/2010/09/27/extract-email-attachments/

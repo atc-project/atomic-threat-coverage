@@ -1,6 +1,6 @@
 title: RA_0013_lessons_learned_develop_incident_report
 stage: lessons_learned
-author: Daniil Yugoslavskiy
+author: '@atc_project'
 creation_date: 31.01.2019
 references: 
   - https://attack.mitre.org/tactics/enterprise/
