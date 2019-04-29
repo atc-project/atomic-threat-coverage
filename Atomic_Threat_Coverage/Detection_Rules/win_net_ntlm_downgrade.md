@@ -3,7 +3,7 @@
 | Description          | Detects post exploitation using NetNTLM downgrade attacks                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1212: Exploitation for Credential Access](https://attack.mitre.org/techniques/T1212)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0059_4657_registry_value_was_modified](../Data_Needed/DN_0059_4657_registry_value_was_modified.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li><li>[DN_0059_4657_registry_value_was_modified](../Data_Needed/DN_0059_4657_registry_value_was_modified.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1212: Exploitation for Credential Access](../Triggers/T1212.md)</li></ul>  |
 | Severity Level       | critical                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown</li></ul>                                                                  |
@@ -68,14 +68,14 @@ detection:
 ### es-qs
     
 ```
-(EventID:"13" AND TargetObject.keyword:(*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\lmcompatibilitylevel *SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\NtlmMinClientSec *SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\RestrictSendingNTLMTraffic))\n(EventID:"4657" AND ObjectName.keyword:\\\\REGISTRY\\\\MACHINE\\\\SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa AND ObjectValueName:("LmCompatibilityLevel" "NtlmMinClientSec" "RestrictSendingNTLMTraffic"))
+
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/NetNTLM-Downgrade-Attack <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"13\\" AND TargetObject.keyword:(*SYSTEM\\\\\\\\*ControlSet*\\\\\\\\Control\\\\\\\\Lsa\\\\\\\\lmcompatibilitylevel *SYSTEM\\\\\\\\*ControlSet*\\\\\\\\Control\\\\\\\\Lsa\\\\\\\\NtlmMinClientSec *SYSTEM\\\\\\\\*ControlSet*\\\\\\\\Control\\\\\\\\Lsa\\\\\\\\RestrictSendingNTLMTraffic))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'NetNTLM Downgrade Attack\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/NetNTLM-Downgrade-Attack-2 <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4657\\" AND ObjectName.keyword:\\\\\\\\REGISTRY\\\\\\\\MACHINE\\\\\\\\SYSTEM\\\\\\\\*ControlSet*\\\\\\\\Control\\\\\\\\Lsa AND ObjectValueName:(\\"LmCompatibilityLevel\\" \\"NtlmMinClientSec\\" \\"RestrictSendingNTLMTraffic\\"))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'NetNTLM Downgrade Attack\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+
 ```
 
 
@@ -89,14 +89,14 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(EventID="13" (TargetObject="*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\lmcompatibilitylevel" OR TargetObject="*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\NtlmMinClientSec" OR TargetObject="*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\RestrictSendingNTLMTraffic"))\n(EventID="4657" ObjectName="\\\\REGISTRY\\\\MACHINE\\\\SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa" (ObjectValueName="LmCompatibilityLevel" OR ObjectValueName="NtlmMinClientSec" OR ObjectValueName="RestrictSendingNTLMTraffic"))
+
 ```
 
 
 ### logpoint
     
 ```
-(EventID="13" TargetObject IN ["*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\lmcompatibilitylevel", "*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\NtlmMinClientSec", "*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\RestrictSendingNTLMTraffic"])\n(EventID="4657" ObjectName="\\\\REGISTRY\\\\MACHINE\\\\SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa" ObjectValueName IN ["LmCompatibilityLevel", "NtlmMinClientSec", "RestrictSendingNTLMTraffic"])
+
 ```
 
 
