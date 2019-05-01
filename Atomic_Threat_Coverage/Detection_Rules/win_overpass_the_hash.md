@@ -1,0 +1,93 @@
+| Title                | Successful Overpass the Hash Attempt                                                                                                                                                 |
+|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Description          | Detects successful logon with logon type 9 (NewCredentials) which matches the Overpass the Hash behavior of e.g Mimikatz's sekurlsa::pth module.                                                                                                                                           |
+| ATT&amp;CK Tactic    | <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
+| ATT&amp;CK Technique | <ul><li>[T1075: Pass the Hash](https://attack.mitre.org/techniques/T1075)</li></ul>                             |
+| Data Needed          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li></ul>                                                         |
+| Trigger              | <ul><li>[T1075: Pass the Hash](../Triggers/T1075.md)</li></ul>  |
+| Severity Level       | high                                                                                                                                                 |
+| False Positives      | <ul><li>Runas command-line tool using /netonly parameter</li></ul>                                                                  |
+| Development Status   | experimental                                                                                                                                                |
+| References           | <ul><li>[https://cyberwardog.blogspot.de/2017/04/chronicles-of-threat-hunter-hunting-for.html](https://cyberwardog.blogspot.de/2017/04/chronicles-of-threat-hunter-hunting-for.html)</li></ul>                                                          |
+| Author               | Roberto Rodriguez (source), Dominik Schaudel (rule)                                                                                                                                                |
+| Other Tags           | <ul><li>attack.s0002</li><li>attack.s0002</li></ul> | 
+
+## Detection Rules
+
+### Sigma rule
+
+```
+title: Successful Overpass the Hash Attempt
+status: experimental
+description: Detects successful logon with logon type 9 (NewCredentials) which matches the Overpass the Hash behavior of e.g Mimikatz's sekurlsa::pth module.
+references: 
+    - https://cyberwardog.blogspot.de/2017/04/chronicles-of-threat-hunter-hunting-for.html
+author: Roberto Rodriguez (source), Dominik Schaudel (rule)
+date: 2018/02/12
+tags:
+    - attack.lateral_movement
+    - attack.t1075
+    - attack.s0002
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 4624
+        LogonType: 9
+        LogonProcessName: seclogo
+        AuthenticationPackageName: Negotiate
+    condition: selection
+falsepositives:
+    - Runas command-line tool using /netonly parameter
+level: high
+
+```
+
+
+
+
+
+### es-qs
+    
+```
+
+```
+
+
+### xpack-watcher
+    
+```
+
+```
+
+
+### graylog
+    
+```
+(EventID:"4624" AND LogonType:"9" AND LogonProcessName:"seclogo" AND AuthenticationPackageName:"Negotiate")
+```
+
+
+### splunk
+    
+```
+
+```
+
+
+### logpoint
+    
+```
+
+```
+
+
+### grep
+    
+```
+grep -P '^(?:.*(?=.*4624)(?=.*9)(?=.*seclogo)(?=.*Negotiate))'
+```
+
+
+

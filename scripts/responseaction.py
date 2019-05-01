@@ -93,7 +93,7 @@ class ResponseAction:
             )
 
             self.ra_parsed_file.update(
-                {'workflow': self.ra_parsed_file.get('workflow') + '  \n\n.'}
+                {'workflow': self.ra_parsed_file.get('workflow')}
             )
 
         self.content = template.render(self.ra_parsed_file)
