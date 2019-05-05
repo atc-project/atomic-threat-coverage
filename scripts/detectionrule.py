@@ -79,7 +79,7 @@ class DetectionRule:
             for query in queries:
                 # prepare command to execute from shell
                 # (yes, we know)
-                cmd = ATCconfig.get('sigmac_path') + " -t " + \
+                cmd = ATCconfig.get('sigmac_path') + " --shoot-yourself-in-the-foot -t " + \
                     query + " --ignore-backend-errors " + self.yaml_file
                     #query + " --ignore-backend-errors " + self.yaml_file + \
                     #" 2> /dev/null"
