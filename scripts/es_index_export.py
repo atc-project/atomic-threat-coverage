@@ -14,7 +14,8 @@ from pdb import set_trace as bp
 
 
 ATCconfig = ATCutils.load_config("config.yml")
-
+exported_analytics_directory = ATCconfig.get('exported_analytics_directory')
+filename = 'atc_es_index.json'
 def main(**kwargs):
     lp_list = ATCutils.load_yamls(kwargs['lp_path'])
     ra_list = ATCutils.load_yamls(kwargs['ra_path'])
@@ -216,8 +217,6 @@ def main(**kwargs):
                 })
 
             index_line = { "index" : {  "_id" : document_id } }
-            filename = 'atc_es_index.json'
-            exported_analytics_directory = ATCconfig.get('exported_analytics_directory')
 
             with open(exported_analytics_directory + '/' + filename, 'a') as fp:
                 json.dump(index_line, fp)
@@ -247,7 +246,7 @@ if __name__ == '__main__':
             'cu_path': opts_dict.get('--customers path', '../customers/')
         }
         try:
-            os.remove("../generated_analytics/atc_es_index.json")
+            os.remove(exported_analytics_directory + '/' + filename)
             print("[-] Old atc_es_index.json has been deleted")
         except:
             pass

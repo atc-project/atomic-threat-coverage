@@ -255,6 +255,6 @@ ta_mapping = {
     "attack.lateral_movement": ("Lateral Movement", "TA0008"),
     "attack.collection": ("Collection", "TA0009"),
     "attack.exfiltration": ("Exfiltration", "TA0010"),
-    "attack.c2": ("Command and Control", "TA0011"),
+    "attack.command_and_control": ("Command and Control", "TA0011"),
     "attack.impact": ("Impact", "TA0040"),
 }
