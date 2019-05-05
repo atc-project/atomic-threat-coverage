@@ -14,5 +14,5 @@ RUN apk update; \
 	git submodule update && \
 	git submodule foreach git pull origin master && \
 	cp -r detection_rules/sigma/rules/windows/*/*.yml detection_rules/ && \
-    apk del py-pip python3-dev git && rm -rf /var/cache/apk/*
+    apk del py-pip python3-dev git && rm -rf /var/cache/apk/* && rm -rf Atomic_Threat_Coverage
 CMD /app/docker-entrypoint.sh
