@@ -55,14 +55,14 @@ level: critical
 ### es-qs
     
 ```
-((EventID:"13" AND TargetObject:("HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\Security\\ Packages" "HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\OSConfig\\\\Security\\ Packages")) AND NOT (Image:"C\\:\\\\Windows\\\\system32\\\\msiexec.exe" OR Image:"C\\:\\\\Windows\\\\syswow64\\\\MsiExec.exe"))
+
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Security-Support-Provider-SSP-added-to-LSA-configuration <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "((EventID:\\"13\\" AND TargetObject:(\\"HKLM\\\\\\\\System\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\Lsa\\\\\\\\Security\\\\ Packages\\" \\"HKLM\\\\\\\\System\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\Lsa\\\\\\\\OSConfig\\\\\\\\Security\\\\ Packages\\")) AND NOT (Image:\\"C\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\msiexec.exe\\" OR Image:\\"C\\\\:\\\\\\\\Windows\\\\\\\\syswow64\\\\\\\\MsiExec.exe\\"))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Security Support Provider (SSP) added to LSA configuration\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+
 ```
 
 
@@ -76,14 +76,14 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-((EventID="13" (TargetObject="HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\Security Packages" OR TargetObject="HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\OSConfig\\\\Security Packages")) NOT (Image="C:\\\\Windows\\\\system32\\\\msiexec.exe" OR Image="C:\\\\Windows\\\\syswow64\\\\MsiExec.exe"))
+
 ```
 
 
 ### logpoint
     
 ```
-((EventID="13" TargetObject IN ["HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\Security Packages", "HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\OSConfig\\\\Security Packages"])  -(Image="C:\\\\Windows\\\\system32\\\\msiexec.exe" OR Image="C:\\\\Windows\\\\syswow64\\\\MsiExec.exe"))
+
 ```
 
 

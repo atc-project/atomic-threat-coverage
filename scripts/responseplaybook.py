@@ -208,7 +208,7 @@ class ResponsePlaybook:
                             '../response_actions/' + task + '.yml')
                         stage_list.append(
                             (action.get('description'),
-                             action.get('workflow') + '    \n\n.')
+                             action.get('workflow'))
                         )
                 except TypeError:
                     pass
@@ -220,7 +220,7 @@ class ResponsePlaybook:
             self.rp_parsed_file.update({'stages': stages})
             self.rp_parsed_file.update(
                 {'workflow':
-                 self.rp_parsed_file.get('workflow') + '    \n\n.'
+                 self.rp_parsed_file.get('workflow')
                  }
             )
             self.rp_parsed_file.update(

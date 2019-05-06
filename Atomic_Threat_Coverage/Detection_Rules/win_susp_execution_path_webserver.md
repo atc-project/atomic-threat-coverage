@@ -3,7 +3,7 @@
 | Description          | Detects a suspicious program execution in a web service root folder (filter out false positives)                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1100: Web Shell](https://attack.mitre.org/techniques/T1100)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1100: Web Shell](../Triggers/T1100.md)</li></ul>  |
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul><li>Various applications</li><li>Tools that include ping or nslookup command invocations</li></ul>                                                                  |
@@ -58,14 +58,14 @@ level: medium
 ### es-qs
     
 ```
-(Image.keyword:(*\\\\wwwroot\\\\* *\\\\wmpub\\\\* *\\\\htdocs\\\\*) AND NOT (Image.keyword:(*bin\\\\* *\\\\Tools\\\\* *\\\\SMSComponent\\\\*) AND ParentImage.keyword:(*\\\\services.exe)))
+
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Execution-in-Webserver-Root-Folder <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(Image.keyword:(*\\\\\\\\wwwroot\\\\\\\\* *\\\\\\\\wmpub\\\\\\\\* *\\\\\\\\htdocs\\\\\\\\*) AND NOT (Image.keyword:(*bin\\\\\\\\* *\\\\\\\\Tools\\\\\\\\* *\\\\\\\\SMSComponent\\\\\\\\*) AND ParentImage.keyword:(*\\\\\\\\services.exe)))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Execution in Webserver Root Folder\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+
 ```
 
 
@@ -79,14 +79,14 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-((Image="*\\\\wwwroot\\\\*" OR Image="*\\\\wmpub\\\\*" OR Image="*\\\\htdocs\\\\*") NOT ((Image="*bin\\\\*" OR Image="*\\\\Tools\\\\*" OR Image="*\\\\SMSComponent\\\\*") (ParentImage="*\\\\services.exe"))) | table CommandLine,ParentCommandLine
+
 ```
 
 
 ### logpoint
     
 ```
-(Image IN ["*\\\\wwwroot\\\\*", "*\\\\wmpub\\\\*", "*\\\\htdocs\\\\*"]  -(Image IN ["*bin\\\\*", "*\\\\Tools\\\\*", "*\\\\SMSComponent\\\\*"] ParentImage IN ["*\\\\services.exe"]))
+
 ```
 
 

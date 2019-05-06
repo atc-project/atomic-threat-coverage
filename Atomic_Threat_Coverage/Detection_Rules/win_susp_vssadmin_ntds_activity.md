@@ -3,7 +3,7 @@
 | Description          | Detects suspicious commands that could be related to activity that uses volume shadow copy to steal and retrieve hashes from the NTDS.dit file remotely                                                                                                                                           |
 | ATT&amp;CK Tactic    | <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>                             |
-| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>                                                         |
+| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>                                                         |
 | Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | Severity Level       | high                                                                                                                                                 |
 | False Positives      | <ul><li>Administrative activity</li></ul>                                                                  |
@@ -60,14 +60,14 @@ level: high
 ### es-qs
     
 ```
-CommandLine.keyword:(vssadmin.exe\\ Delete\\ Shadows vssadmin\\ create\\ shadow\\ \\/for\\=C\\: copy\\ \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\windows\\\\ntds\\\\ntds.dit copy\\ \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\config\\\\SAM vssadmin\\ delete\\ shadows\\ \\/for\\=C\\: reg\\ SAVE\\ HKLM\\\\SYSTEM\\  esentutl.exe\\ \\/y\\ \\/vss\\ *\\\\ntds.dit*)
+
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_xpack/watcher/watch/Activity-Related-to-NTDS.dit-Domain-Hash-Retrieval <<EOF\n{\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "CommandLine.keyword:(vssadmin.exe\\\\ Delete\\\\ Shadows vssadmin\\\\ create\\\\ shadow\\\\ \\\\/for\\\\=C\\\\: copy\\\\ \\\\\\\\?\\\\\\\\GLOBALROOT\\\\\\\\Device\\\\\\\\*\\\\\\\\windows\\\\\\\\ntds\\\\\\\\ntds.dit copy\\\\ \\\\\\\\?\\\\\\\\GLOBALROOT\\\\\\\\Device\\\\\\\\*\\\\\\\\config\\\\\\\\SAM vssadmin\\\\ delete\\\\ shadows\\\\ \\\\/for\\\\=C\\\\: reg\\\\ SAVE\\\\ HKLM\\\\\\\\SYSTEM\\\\  esentutl.exe\\\\ \\\\/y\\\\ \\\\/vss\\\\ *\\\\\\\\ntds.dit*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Activity Related to NTDS.dit Domain Hash Retrieval\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+
 ```
 
 
@@ -81,14 +81,14 @@ CommandLine:("vssadmin.exe Delete Shadows" "vssadmin create shadow \\/for=C\\:" 
 ### splunk
     
 ```
-(CommandLine="vssadmin.exe Delete Shadows" OR CommandLine="vssadmin create shadow /for=C:" OR CommandLine="copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\windows\\\\ntds\\\\ntds.dit" OR CommandLine="copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\config\\\\SAM" OR CommandLine="vssadmin delete shadows /for=C:" OR CommandLine="reg SAVE HKLM\\\\SYSTEM " OR CommandLine="esentutl.exe /y /vss *\\\\ntds.dit*") | table CommandLine,ParentCommandLine
+
 ```
 
 
 ### logpoint
     
 ```
-CommandLine IN ["vssadmin.exe Delete Shadows", "vssadmin create shadow /for=C:", "copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\windows\\\\ntds\\\\ntds.dit", "copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\config\\\\SAM", "vssadmin delete shadows /for=C:", "reg SAVE HKLM\\\\SYSTEM ", "esentutl.exe /y /vss *\\\\ntds.dit*"]
+
 ```
 
 

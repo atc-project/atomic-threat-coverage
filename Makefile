@@ -70,9 +70,9 @@ thehive_templates:
 clean:
 	@echo "[*] Cleaning up..."
 	@rm -rf ./Atomic_Threat_Coverage
-	@rm -f ./generated_analytics/atc_attack_navigator_profile*.json
-	@rm -f ./generated_analytics/analytics.csv
-	@rm -f ./generated_analytics/pivoting.csv
-	@rm -f ./generated_analytics/atc_es_index.json
-	@rm -f ./generated_analytics/visualizations/*.json
-
+	@rm -f ./analytics/generated/analytics.csv
+	@rm -f ./analytics/generated/atc_es_index.json
+	@rm -f ./analytics/generated/pivoting.csv
+	@rm -f ./analytics/generated/thehive_templates/*.json
+	@rm -f ./analytics/generated/visualizations/*.json
+	@rm -f ./analytics/generated/atc_attack_navigator_profile*.json
