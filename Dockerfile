@@ -7,12 +7,9 @@ RUN apk update; \
     python3 \
     python3-dev \
     py-pip \
-    git \
     bash; \
-    pip3 install -r requirements.txt && \
-    git submodule init && \
-	git submodule update && \
-	git submodule foreach git pull origin master && \
-	cp -r detection_rules/sigma/rules/windows/*/*.yml detection_rules/ && \
-    apk del py-pip python3-dev git && rm -rf /var/cache/apk/* && rm -rf Atomic_Threat_Coverage
+    pip3 install -r requirements.txt; \
+    apk del py-pip python3-dev; \
+    rm -rf /var/cache/apk/* ; \
+    rm -rf Atomic_Threat_Coverage;
 CMD /app/docker-entrypoint.sh

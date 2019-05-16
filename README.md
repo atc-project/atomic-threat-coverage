@@ -26,7 +26,7 @@ Atomic Threat Coverage is highly automatable framework for accumulation, develop
 
 ### Motivation
 
-There are plenty decent projects which provide analytics (or functionality) of specific focus ([Sigma](https://github.com/Neo23x0/sigma), [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team), [MITRE CAR](https://car.mitre.org)). All of them have one weakness — they exist in the vacuum of their area. In reality everything is tightly connected — data for alerts doesn't come from nowhere, and generated alerts don't go nowhere. Each function, i.e. data collection, security systems administration, threat detection, incident response etc are parts of big and comprehensive process, implemented by multiple departments, which demands their close collaboration.
+There are plenty decent projects which provide analytics (or functionality) of specific focus (i.e. [Sigma](https://github.com/Neo23x0/sigma) - Detection, [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) - Simulation, etc). All of them have one weakness — they exist in the vacuum of their area. In reality everything is tightly connected — data for alerts doesn't come from nowhere, and generated alerts don't go nowhere. Data collection, security systems administration, threat detection, incident response etc are parts of bigger and more comprehensive process which requires close collaboration of various departments.
 
 Sometimes problems of one function could be solved by methods of other function in a cheaper, simpler and more efficient way. Most of the tasks couldn't be solved by one function at all. Each function is based on abilities and quality of others. There is no efficient way to detect and respond to threats without proper data collection and enrichment. There is no efficient way to respond to threats without understanding of which technologies/systems/measures could be used to block specific threat. There is no reason to conduct penetration test or Red Team exercise without understanding of abilities of processes, systems and personal to combat cyber threats. All of these require tight collaboration and mutual understanding of multiple departments. 
 
@@ -439,19 +439,45 @@ At the same time it highlights which fields could be found only with specific en
 
 ## Workflow
 
-1. Add your own custom [Sigma](https://github.com/Neo23x0/sigma) rules/fork (if you have any) to `detection_rules` directory
-2. Add your own custom [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) tests/fork (if you have any) to `triggering` directory
+### Demo with Docker
+
+If you just want to try it with default dataset, you can use docker:
+
+1. Clone the repository or download an [archive](https://github.com/krakow2600/atomic-threat-coverage/archive/master.zip) with it
+2. Go to the project directory
+3. Download and update Sigma and Atomic Red Team projects using git submodules:
+```bash
+git submodule init
+git submodule update
+git submodule foreach git pull origin master
+```
+4. Copy `scripts/config.default.yml` to `scripts/config.yml`
+5. Update `scripts/config.yml` with links to your own Confluence node (following instructions inside the default config)
+3. Build the container using `docker build . -t atc`
+4. Run the container using `docker run -it atc`
+5. Provide login and password to Confluence node when script will ask for it
+
+That's all. Confluence will be populated with the data and all analytics will be generated on your side (elasticsearch index, csv files, thehive templates, navigator profiles etc).
+
+We do not recommend to use this type of deployment for production.
+
+If you just want to make yourself familiar with final result with default dataset you can also use online [demo](https://atomicthreatcoverage.atlassian.net/wiki/spaces/ATC/pages/126025996/WMI+Persistence+-+Script+Event+Consumer) of automatically generated Confluence knowledge base.
+
+### Production use
+
+1. Add your own custom [Sigma](https://github.com/Neo23x0/sigma) fork to `detection_rules` directory
+2. Add your own custom [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) fork to `triggering` directory
 3. Add Data Needed into `data_needed` directory (you can create new one using [template](data_needed/dataneeded.yml.template))
 4. Add Logging Policies into `logging_policies` directory (you can create new one using [template](logging_policies/loggingpolicy.yml.template))
 5. Add Enrichments into `enrichments` directory (you can create new one using [template](enrichments/enrichment.yml.template))
 6. Add Customers into `customers` directory (you can create new one using [template](customers/customer.yml.template))
 7. Add Response Actions into `response_actions` directory (you can create new one using [template](response_actions/respose_action.yml.template))
 8. Add Response Playbooks into `response_playbooks` directory (you can create new one using [template](response_playbooks/respose_playbook.yml.template))
-9. Configure your export settings using `scripts/config.yml` (create if from `scripts/config.default.yml` and adjust settings)
+9. Configure your export settings and paths to analytics using `scripts/config.yml` (create it from `scripts/config.default.yml` and adjust settings)
 10. Execute `make` in root directory of the repository
+11. Provide login and password to Confluence node when script will ask for it
 
-You don't have to add anything to make it work in your environment, you can just configure export settings using `scripts/config.yml` and utilise default dataset.
-At the same time you can access [demo](https://atomicthreatcoverage.atlassian.net/wiki/spaces/ATC/pages/126025996/WMI+Persistence+-+Script+Event+Consumer) of automatically generated knowledge base in Confluence to make yourself familiar with final result with default dataset.
+If you want to partially regenerate/update analytics you can investigate `Makefile` options or `scripts/main.py` help.
 
 ### Uploading ATC Analytics Dashboard
 
@@ -557,11 +583,10 @@ Absolutely. We also have some Detection Rules which couldn't be automatically co
 ## TODO
 
 - [x] Develop TheHive Case Templates generation based on Response Playbooks
-- [ ] Develop docker container for the project
+- [x] Develop docker container for the project
 - [ ] Develop specification for custom ATC data entities (Data Needed, Logging Policies etc)
 - [ ] Implement "Mitigation Systems" entity
 - [ ] Implement "Hardening Policies" entity
-- [ ] Implement consistent Data Model (fields naming)
 - [x] Implement new entity — "Visualisation" with Kibana visualisations/dashboards stored in yaml files and option to convert them into curl commands for uploading them into Elasticsearch
 
 ## Links
