@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OUTPUT_PATH=`grep md_name_of_root_directory config.yml | sed -e "s/^.*'\(.*\)'.*$/\1/"`
+OUTPUT_PATH=$( grep md_name_of_root_directory config.yml | sed -e "s/^.*'\(.*\)'.*$/\1/" )
 
 if [ -z "$OUTPUT_PATH" ]; then
   OUTPUT_PATH="../Atomic_Threat_Coverage"
