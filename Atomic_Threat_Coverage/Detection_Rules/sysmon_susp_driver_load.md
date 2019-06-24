@@ -44,14 +44,14 @@ level: medium
 ### es-qs
     
 ```
-
+(EventID:"6" AND ImageLoaded.keyword:*\\\\Temp\\\\*)
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Driver-Load-from-Temp <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Driver Load from Temp",\n    "description": "Detects a driver load from a temporary directory",\n    "tags": [\n      "attack.persistence",\n      "attack.t1050"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"6\\" AND ImageLoaded.keyword:*\\\\\\\\Temp\\\\\\\\*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious Driver Load from Temp\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -65,14 +65,14 @@ level: medium
 ### splunk
     
 ```
-
+(EventID="6" ImageLoaded="*\\\\Temp\\\\*")
 ```
 
 
 ### logpoint
     
 ```
-
+(EventID="6" ImageLoaded="*\\\\Temp\\\\*")
 ```
 
 

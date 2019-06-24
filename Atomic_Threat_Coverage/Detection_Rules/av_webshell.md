@@ -55,14 +55,14 @@ level: critical
 ### es-qs
     
 ```
-
+Signature.keyword:(PHP\\/Backdoor JSP\\/Backdoor ASP\\/Backdoor Backdoor.PHP Backdoor.JSP Backdoor.ASP *Webshell*)
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Antivirus-Web-Shell-Detection <<EOF\n{\n  "metadata": {\n    "title": "Antivirus Web Shell Detection",\n    "description": "Detects a highly relevant Antivirus alert that reports a web shell",\n    "tags": [\n      "attack.persistence",\n      "attack.t1100"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "Signature.keyword:(PHP\\\\/Backdoor JSP\\\\/Backdoor ASP\\\\/Backdoor Backdoor.PHP Backdoor.JSP Backdoor.ASP *Webshell*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Antivirus Web Shell Detection\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nFileName = {{_source.FileName}}\\n    User = {{_source.User}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -76,14 +76,14 @@ Signature:("PHP\\/Backdoor" "JSP\\/Backdoor" "ASP\\/Backdoor" "Backdoor.PHP" "Ba
 ### splunk
     
 ```
-
+(Signature="PHP/Backdoor" OR Signature="JSP/Backdoor" OR Signature="ASP/Backdoor" OR Signature="Backdoor.PHP" OR Signature="Backdoor.JSP" OR Signature="Backdoor.ASP" OR Signature="*Webshell*") | table FileName,User
 ```
 
 
 ### logpoint
     
 ```
-
+Signature IN ["PHP/Backdoor", "JSP/Backdoor", "ASP/Backdoor", "Backdoor.PHP", "Backdoor.JSP", "Backdoor.ASP", "*Webshell*"]
 ```
 
 

@@ -10,7 +10,7 @@
 | Development Status   | experimental                                                                                                                                                |
 | References           | <ul><li>[https://enigma0x3.net/2017/01/05/lateral-movement-using-the-mmc20-application-com-object/](https://enigma0x3.net/2017/01/05/lateral-movement-using-the-mmc20-application-com-object/)</li></ul>                                                          |
 | Author               |                                                                                                                                                 |
-
+| Other Tags           | <ul><li>car.2013-02-003</li><li>car.2013-02-003</li></ul> | 
 
 ## Detection Rules
 
@@ -25,6 +25,7 @@ references:
 tags:
     - attack.lateral_movement
     - attack.t1175
+    - car.2013-02-003
 logsource:
     category: process_creation
     product: windows
@@ -51,14 +52,14 @@ level: medium
 ### es-qs
     
 ```
-
+((ParentImage.keyword:*\\\\mmc.exe AND Image.keyword:*\\\\cmd.exe) AND (NOT (CommandLine.keyword:*\\\\RunCmd.cmd)))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Processes-created-by-MMC <<EOF\n{\n  "metadata": {\n    "title": "Processes created by MMC",\n    "description": "Processes started by MMC could be a sign of lateral movement using MMC application COM object",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1175",\n      "car.2013-02-003"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "((ParentImage.keyword:*\\\\\\\\mmc.exe AND Image.keyword:*\\\\\\\\cmd.exe) AND (NOT (CommandLine.keyword:*\\\\\\\\RunCmd.cmd)))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Processes created by MMC\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -72,14 +73,14 @@ level: medium
 ### splunk
     
 ```
-
+((ParentImage="*\\\\mmc.exe" Image="*\\\\cmd.exe") NOT (CommandLine="*\\\\RunCmd.cmd")) | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-
+((ParentImage="*\\\\mmc.exe" Image="*\\\\cmd.exe")  -(CommandLine="*\\\\RunCmd.cmd"))
 ```
 
 

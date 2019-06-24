@@ -66,14 +66,14 @@ detection:
 ### es-qs
     
 ```
-
+(CommandLine.keyword:(*mshta\\ vbscript\\:CreateObject\\(\\"Wscript.Shell\\"\\)* *mshta\\ vbscript\\:Execute\\(\\"Execute* *mshta\\ vbscript\\:CreateObject\\(\\"Wscript.Shell\\"\\).Run\\(\\"mshta.exe*) OR (Image:("C\\:\\\\Windows\\\\system32\\\\mshta.exe") AND CommandLine.keyword:(*.jpg* *.png* *.lnk* *.xls* *.doc* *.zip*)))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/MSHTA-Suspicious-Execution-01 <<EOF\n{\n  "metadata": {\n    "title": "MSHTA Suspicious Execution 01",\n    "description": "Detection for mshta.exe suspicious execution patterns sometimes involving file polyglotism",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1140"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(CommandLine.keyword:(*mshta\\\\ vbscript\\\\:CreateObject\\\\(\\\\\\"Wscript.Shell\\\\\\"\\\\)* *mshta\\\\ vbscript\\\\:Execute\\\\(\\\\\\"Execute* *mshta\\\\ vbscript\\\\:CreateObject\\\\(\\\\\\"Wscript.Shell\\\\\\"\\\\).Run\\\\(\\\\\\"mshta.exe*) OR (Image:(\\"C\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\mshta.exe\\") AND CommandLine.keyword:(*.jpg* *.png* *.lnk* *.xls* *.doc* *.zip*)))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'MSHTA Suspicious Execution 01\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -87,14 +87,14 @@ detection:
 ### splunk
     
 ```
-
+((CommandLine="*mshta vbscript:CreateObject(\\"Wscript.Shell\\")*" OR CommandLine="*mshta vbscript:Execute(\\"Execute*" OR CommandLine="*mshta vbscript:CreateObject(\\"Wscript.Shell\\").Run(\\"mshta.exe*") OR ((Image="C:\\\\Windows\\\\system32\\\\mshta.exe") (CommandLine="*.jpg*" OR CommandLine="*.png*" OR CommandLine="*.lnk*" OR CommandLine="*.xls*" OR CommandLine="*.doc*" OR CommandLine="*.zip*")))
 ```
 
 
 ### logpoint
     
 ```
-
+(CommandLine IN ["*mshta vbscript:CreateObject(\\"Wscript.Shell\\")*", "*mshta vbscript:Execute(\\"Execute*", "*mshta vbscript:CreateObject(\\"Wscript.Shell\\").Run(\\"mshta.exe*"] OR (Image IN ["C:\\\\Windows\\\\system32\\\\mshta.exe"] CommandLine IN ["*.jpg*", "*.png*", "*.lnk*", "*.xls*", "*.doc*", "*.zip*"]))
 ```
 
 

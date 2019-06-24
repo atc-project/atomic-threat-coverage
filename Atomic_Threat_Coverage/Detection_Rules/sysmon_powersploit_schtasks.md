@@ -10,7 +10,7 @@
 | Development Status   | experimental                                                                                                                                                |
 | References           | <ul><li>[https://github.com/0xdeadbeefJERKY/PowerSploit/blob/8690399ef70d2cad10213575ac67e8fa90ddf7c3/Persistence/Persistence.psm1](https://github.com/0xdeadbeefJERKY/PowerSploit/blob/8690399ef70d2cad10213575ac67e8fa90ddf7c3/Persistence/Persistence.psm1)</li></ul>                                                          |
 | Author               | Markus Neis                                                                                                                                                |
-| Other Tags           | <ul><li>attack.s0111</li><li>attack.s0111</li><li>attack.g0022</li><li>attack.g0022</li><li>attack.g0060</li><li>attack.g0060</li></ul> | 
+| Other Tags           | <ul><li>attack.s0111</li><li>attack.s0111</li><li>attack.g0022</li><li>attack.g0022</li><li>attack.g0060</li><li>attack.g0060</li><li>car.2013-08-001</li><li>car.2013-08-001</li></ul> | 
 
 ## Detection Rules
 
@@ -46,6 +46,7 @@ tags:
     - attack.s0111
     - attack.g0022
     - attack.g0060
+    - car.2013-08-001
 falsepositives:
     - False positives are possible, depends on organisation and processes
 level: high
@@ -59,14 +60,14 @@ level: high
 ### es-qs
     
 ```
-
+(ParentImage.keyword:(*\\\\Powershell.exe) AND CommandLine.keyword:(*\\\\schtasks.exe*\\/Create*\\/RU*system*\\/SC*ONLOGON* *\\\\schtasks.exe*\\/Create*\\/RU*system*\\/SC*DAILY* *\\\\schtasks.exe*\\/Create*\\/RU*system*\\/SC*ONIDLE* *\\\\schtasks.exe*\\/Create*\\/RU*system*\\/SC*HOURLY*))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Default-PowerSploit-Schtasks-Persistence <<EOF\n{\n  "metadata": {\n    "title": "Default PowerSploit Schtasks Persistence",\n    "description": "Detects the creation of a schtask via PowerSploit Default Configuration",\n    "tags": [\n      "attack.execution",\n      "attack.persistence",\n      "attack.privilege_escalation",\n      "attack.t1053",\n      "attack.t1086",\n      "attack.s0111",\n      "attack.g0022",\n      "attack.g0060",\n      "car.2013-08-001"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(ParentImage.keyword:(*\\\\\\\\Powershell.exe) AND CommandLine.keyword:(*\\\\\\\\schtasks.exe*\\\\/Create*\\\\/RU*system*\\\\/SC*ONLOGON* *\\\\\\\\schtasks.exe*\\\\/Create*\\\\/RU*system*\\\\/SC*DAILY* *\\\\\\\\schtasks.exe*\\\\/Create*\\\\/RU*system*\\\\/SC*ONIDLE* *\\\\\\\\schtasks.exe*\\\\/Create*\\\\/RU*system*\\\\/SC*HOURLY*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Default PowerSploit Schtasks Persistence\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -80,14 +81,14 @@ level: high
 ### splunk
     
 ```
-
+((ParentImage="*\\\\Powershell.exe") (CommandLine="*\\\\schtasks.exe*/Create*/RU*system*/SC*ONLOGON*" OR CommandLine="*\\\\schtasks.exe*/Create*/RU*system*/SC*DAILY*" OR CommandLine="*\\\\schtasks.exe*/Create*/RU*system*/SC*ONIDLE*" OR CommandLine="*\\\\schtasks.exe*/Create*/RU*system*/SC*HOURLY*"))
 ```
 
 
 ### logpoint
     
 ```
-
+(ParentImage IN ["*\\\\Powershell.exe"] CommandLine IN ["*\\\\schtasks.exe*/Create*/RU*system*/SC*ONLOGON*", "*\\\\schtasks.exe*/Create*/RU*system*/SC*DAILY*", "*\\\\schtasks.exe*/Create*/RU*system*/SC*ONIDLE*", "*\\\\schtasks.exe*/Create*/RU*system*/SC*HOURLY*"])
 ```
 
 

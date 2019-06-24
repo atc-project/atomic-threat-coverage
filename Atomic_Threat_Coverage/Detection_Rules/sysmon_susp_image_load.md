@@ -52,14 +52,14 @@ level: high
 ### es-qs
     
 ```
-
+(EventID:"7" AND Image.keyword:(*\\\\notepad.exe) AND ImageLoaded.keyword:(*\\\\samlib.dll *\\\\WinSCard.dll))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Possible-Process-Hollowing-Image-Loading <<EOF\n{\n  "metadata": {\n    "title": "Possible Process Hollowing Image Loading",\n    "description": "Detects Loading of samlib.dll, WinSCard.dll from untypical process e.g. through process hollowing by Mimikatz",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1073"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"7\\" AND Image.keyword:(*\\\\\\\\notepad.exe) AND ImageLoaded.keyword:(*\\\\\\\\samlib.dll *\\\\\\\\WinSCard.dll))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Possible Process Hollowing Image Loading\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -73,14 +73,14 @@ level: high
 ### splunk
     
 ```
-
+(EventID="7" (Image="*\\\\notepad.exe") (ImageLoaded="*\\\\samlib.dll" OR ImageLoaded="*\\\\WinSCard.dll"))
 ```
 
 
 ### logpoint
     
 ```
-
+(EventID="7" Image IN ["*\\\\notepad.exe"] ImageLoaded IN ["*\\\\samlib.dll", "*\\\\WinSCard.dll"])
 ```
 
 

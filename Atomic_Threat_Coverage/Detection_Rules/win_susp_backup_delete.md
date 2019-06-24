@@ -49,14 +49,14 @@ level: medium
 ### es-qs
     
 ```
-
+(EventID:"524" AND Source:"Backup")
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Backup-Catalog-Deleted <<EOF\n{\n  "metadata": {\n    "title": "Backup Catalog Deleted",\n    "description": "Detects backup catalog deletions",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1107"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"524\\" AND Source:\\"Backup\\")",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Backup Catalog Deleted\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -70,14 +70,14 @@ level: medium
 ### splunk
     
 ```
-
+(EventID="524" Source="Backup")
 ```
 
 
 ### logpoint
     
 ```
-
+(EventID="524" Source="Backup")
 ```
 
 

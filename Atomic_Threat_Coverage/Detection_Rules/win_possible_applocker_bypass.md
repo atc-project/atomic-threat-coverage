@@ -59,14 +59,14 @@ level: low
 ### es-qs
     
 ```
-
+CommandLine.keyword:(*\\\\msdt.exe* *\\\\installutil.exe* *\\\\regsvcs.exe* *\\\\regasm.exe* *\\\\regsvr32.exe* *\\\\msbuild.exe* *\\\\ieexec.exe* *\\\\mshta.exe*)
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Possible-Applocker-Bypass <<EOF\n{\n  "metadata": {\n    "title": "Possible Applocker Bypass",\n    "description": "Detects execution of executables that can be used to bypass Applocker whitelisting",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1118",\n      "attack.t1121",\n      "attack.t1127",\n      "attack.t1170"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "CommandLine.keyword:(*\\\\\\\\msdt.exe* *\\\\\\\\installutil.exe* *\\\\\\\\regsvcs.exe* *\\\\\\\\regasm.exe* *\\\\\\\\regsvr32.exe* *\\\\\\\\msbuild.exe* *\\\\\\\\ieexec.exe* *\\\\\\\\mshta.exe*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Possible Applocker Bypass\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -80,14 +80,14 @@ CommandLine:("*\\\\msdt.exe*" "*\\\\installutil.exe*" "*\\\\regsvcs.exe*" "*\\\\
 ### splunk
     
 ```
-
+(CommandLine="*\\\\msdt.exe*" OR CommandLine="*\\\\installutil.exe*" OR CommandLine="*\\\\regsvcs.exe*" OR CommandLine="*\\\\regasm.exe*" OR CommandLine="*\\\\regsvr32.exe*" OR CommandLine="*\\\\msbuild.exe*" OR CommandLine="*\\\\ieexec.exe*" OR CommandLine="*\\\\mshta.exe*")
 ```
 
 
 ### logpoint
     
 ```
-
+CommandLine IN ["*\\\\msdt.exe*", "*\\\\installutil.exe*", "*\\\\regsvcs.exe*", "*\\\\regasm.exe*", "*\\\\regsvr32.exe*", "*\\\\msbuild.exe*", "*\\\\ieexec.exe*", "*\\\\mshta.exe*"]
 ```
 
 

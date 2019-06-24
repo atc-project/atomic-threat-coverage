@@ -62,14 +62,14 @@ level: medium
 ### es-qs
     
 ```
-
+CommandLine.keyword:(*\\\\rundll32.exe*\\ url.dll,*OpenURL\\ * *\\\\rundll32.exe*\\ url.dll,*OpenURLA\\ * *\\\\rundll32.exe*\\ url.dll,*FileProtocolHandler\\ * *\\\\rundll32.exe*\\ zipfldr.dll,*RouteTheCall\\ * *\\\\rundll32.exe*\\ Shell32.dll,*Control_RunDLL\\ * *\\\\rundll32.exe\\ javascript\\:* *\\ url.dll,*OpenURL\\ * *\\ url.dll,*OpenURLA\\ * *\\ url.dll,*FileProtocolHandler\\ * *\\ zipfldr.dll,*RouteTheCall\\ * *\\ Shell32.dll,*Control_RunDLL\\ * *\\ javascript\\:* *.RegisterXLL*)
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Rundll32-Activity <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Rundll32 Activity",\n    "description": "Detects suspicious process related to rundll32 based on arguments",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.execution",\n      "attack.t1085"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "CommandLine.keyword:(*\\\\\\\\rundll32.exe*\\\\ url.dll,*OpenURL\\\\ * *\\\\\\\\rundll32.exe*\\\\ url.dll,*OpenURLA\\\\ * *\\\\\\\\rundll32.exe*\\\\ url.dll,*FileProtocolHandler\\\\ * *\\\\\\\\rundll32.exe*\\\\ zipfldr.dll,*RouteTheCall\\\\ * *\\\\\\\\rundll32.exe*\\\\ Shell32.dll,*Control_RunDLL\\\\ * *\\\\\\\\rundll32.exe\\\\ javascript\\\\:* *\\\\ url.dll,*OpenURL\\\\ * *\\\\ url.dll,*OpenURLA\\\\ * *\\\\ url.dll,*FileProtocolHandler\\\\ * *\\\\ zipfldr.dll,*RouteTheCall\\\\ * *\\\\ Shell32.dll,*Control_RunDLL\\\\ * *\\\\ javascript\\\\:* *.RegisterXLL*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious Rundll32 Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -83,14 +83,14 @@ CommandLine:("*\\\\rundll32.exe* url.dll,*OpenURL *" "*\\\\rundll32.exe* url.dll
 ### splunk
     
 ```
-
+(CommandLine="*\\\\rundll32.exe* url.dll,*OpenURL *" OR CommandLine="*\\\\rundll32.exe* url.dll,*OpenURLA *" OR CommandLine="*\\\\rundll32.exe* url.dll,*FileProtocolHandler *" OR CommandLine="*\\\\rundll32.exe* zipfldr.dll,*RouteTheCall *" OR CommandLine="*\\\\rundll32.exe* Shell32.dll,*Control_RunDLL *" OR CommandLine="*\\\\rundll32.exe javascript:*" OR CommandLine="* url.dll,*OpenURL *" OR CommandLine="* url.dll,*OpenURLA *" OR CommandLine="* url.dll,*FileProtocolHandler *" OR CommandLine="* zipfldr.dll,*RouteTheCall *" OR CommandLine="* Shell32.dll,*Control_RunDLL *" OR CommandLine="* javascript:*" OR CommandLine="*.RegisterXLL*")
 ```
 
 
 ### logpoint
     
 ```
-
+CommandLine IN ["*\\\\rundll32.exe* url.dll,*OpenURL *", "*\\\\rundll32.exe* url.dll,*OpenURLA *", "*\\\\rundll32.exe* url.dll,*FileProtocolHandler *", "*\\\\rundll32.exe* zipfldr.dll,*RouteTheCall *", "*\\\\rundll32.exe* Shell32.dll,*Control_RunDLL *", "*\\\\rundll32.exe javascript:*", "* url.dll,*OpenURL *", "* url.dll,*OpenURLA *", "* url.dll,*FileProtocolHandler *", "* zipfldr.dll,*RouteTheCall *", "* Shell32.dll,*Control_RunDLL *", "* javascript:*", "*.RegisterXLL*"]
 ```
 
 

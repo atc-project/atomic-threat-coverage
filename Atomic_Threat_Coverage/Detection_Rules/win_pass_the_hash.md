@@ -10,7 +10,7 @@
 | Development Status   | experimental                                                                                                                                                |
 | References           | <ul><li>[https://github.com/iadgov/Event-Forwarding-Guidance/tree/master/Events](https://github.com/iadgov/Event-Forwarding-Guidance/tree/master/Events)</li></ul>                                                          |
 | Author               | Ilias el Matani (rule), The Information Assurance Directorate at the NSA (method)                                                                                                                                                |
-
+| Other Tags           | <ul><li>car.2016-04-004</li><li>car.2016-04-004</li></ul> | 
 
 ## Detection Rules
 
@@ -26,6 +26,7 @@ author: Ilias el Matani (rule), The Information Assurance Directorate at the NSA
 tags:
     - attack.lateral_movement
     - attack.t1075
+    - car.2016-04-004
 logsource:
     product: windows
     service: security
@@ -59,14 +60,14 @@ level: medium
 ### es-qs
     
 ```
-
+((LogonType:"3" AND LogonProcessName:"NtLmSsp" AND WorkstationName:"%Workstations%" AND ComputerName:"%Workstations%" AND (EventID:"4624" OR EventID:"4625")) AND (NOT (AccountName:"ANONYMOUS\\ LOGON")))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Pass-the-Hash-Activity <<EOF\n{\n  "metadata": {\n    "title": "Pass the Hash Activity",\n    "description": "Detects the attack technique pass the hash which is used to move laterally inside the network",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1075",\n      "car.2016-04-004"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "((LogonType:\\"3\\" AND LogonProcessName:\\"NtLmSsp\\" AND WorkstationName:\\"%Workstations%\\" AND ComputerName:\\"%Workstations%\\" AND (EventID:\\"4624\\" OR EventID:\\"4625\\")) AND (NOT (AccountName:\\"ANONYMOUS\\\\ LOGON\\")))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Pass the Hash Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -80,14 +81,14 @@ level: medium
 ### splunk
     
 ```
-
+((LogonType="3" LogonProcessName="NtLmSsp" WorkstationName="%Workstations%" ComputerName="%Workstations%" (EventID="4624" OR EventID="4625")) NOT (AccountName="ANONYMOUS LOGON"))
 ```
 
 
 ### logpoint
     
 ```
-
+((LogonType="3" LogonProcessName="NtLmSsp" WorkstationName="%Workstations%" ComputerName="%Workstations%" (EventID="4624" OR EventID="4625"))  -(AccountName="ANONYMOUS LOGON"))
 ```
 
 

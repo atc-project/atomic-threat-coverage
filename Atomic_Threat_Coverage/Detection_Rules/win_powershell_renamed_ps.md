@@ -10,7 +10,7 @@
 | Development Status   | experimental                                                                                                                                                |
 | References           | <ul><li>[https://attack.mitre.org/techniques/T1086/](https://attack.mitre.org/techniques/T1086/)</li><li>[https://isc.sans.edu/forums/diary/Maldoc+Duplicating+PowerShell+Prior+to+Use/24254/](https://isc.sans.edu/forums/diary/Maldoc+Duplicating+PowerShell+Prior+to+Use/24254/)</li></ul>                                                          |
 | Author               | Tom Ueltschi (@c_APT_ure)                                                                                                                                                |
-
+| Other Tags           | <ul><li>car.2013-05-009</li><li>car.2013-05-009</li></ul> | 
 
 ## Detection Rules
 
@@ -26,6 +26,7 @@ references:
 tags:
     - attack.t1086
     - attack.execution
+    - car.2013-05-009
 author: Tom Ueltschi (@c_APT_ure)
 logsource:
     category: process_creation
@@ -53,14 +54,14 @@ level: high
 ### es-qs
     
 ```
-
+(Description:"Windows\\ PowerShell" AND (NOT ((Image.keyword:(*\\\\powershell.exe *\\\\powershell_ise.exe) OR Description:"Windows\\ PowerShell\\ ISE"))))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Renamed-Powershell.exe <<EOF\n{\n  "metadata": {\n    "title": "Renamed Powershell.exe",\n    "description": "Detects copying and renaming of powershell.exe before execution (RETEFE malware DOC/macro starting Sept 2018)",\n    "tags": [\n      "attack.t1086",\n      "attack.execution",\n      "car.2013-05-009"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(Description:\\"Windows\\\\ PowerShell\\" AND (NOT ((Image.keyword:(*\\\\\\\\powershell.exe *\\\\\\\\powershell_ise.exe) OR Description:\\"Windows\\\\ PowerShell\\\\ ISE\\"))))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Renamed Powershell.exe\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -74,14 +75,14 @@ level: high
 ### splunk
     
 ```
-
+(Description="Windows PowerShell" NOT (((Image="*\\\\powershell.exe" OR Image="*\\\\powershell_ise.exe") OR Description="Windows PowerShell ISE")))
 ```
 
 
 ### logpoint
     
 ```
-
+(Description="Windows PowerShell"  -((Image IN ["*\\\\powershell.exe", "*\\\\powershell_ise.exe"] OR Description="Windows PowerShell ISE")))
 ```
 
 

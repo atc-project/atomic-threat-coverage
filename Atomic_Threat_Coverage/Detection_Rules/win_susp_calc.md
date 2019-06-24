@@ -51,14 +51,14 @@ level: high
 ### es-qs
     
 ```
-
+(CommandLine.keyword:*\\\\calc.exe\\ * OR (Image.keyword:*\\\\calc.exe AND (NOT (Image.keyword:*\\\\Windows\\\\Sys*))))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Calculator-Usage <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Calculator Usage",\n    "description": "Detects suspicious use of calc.exe with command line parameters or in a suspicious directory, which is likely caused by some PoC or detection evasion",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(CommandLine.keyword:*\\\\\\\\calc.exe\\\\ * OR (Image.keyword:*\\\\\\\\calc.exe AND (NOT (Image.keyword:*\\\\\\\\Windows\\\\\\\\Sys*))))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious Calculator Usage\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -72,14 +72,14 @@ level: high
 ### splunk
     
 ```
-
+(CommandLine="*\\\\calc.exe *" OR (Image="*\\\\calc.exe" NOT (Image="*\\\\Windows\\\\Sys*")))
 ```
 
 
 ### logpoint
     
 ```
-
+(CommandLine="*\\\\calc.exe *" OR (Image="*\\\\calc.exe"  -(Image="*\\\\Windows\\\\Sys*")))
 ```
 
 

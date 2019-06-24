@@ -48,14 +48,14 @@ level: high
 ### es-qs
     
 ```
-
+(EventID:"8" AND TargetProcessAddress.keyword:*0B80)
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/CobaltStrike-Process-Injection <<EOF\n{\n  "metadata": {\n    "title": "CobaltStrike Process Injection",\n    "description": "Detects a possible remote threat creation with certain characteristics which are typical for Cobalt Strike beacons",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1055"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"8\\" AND TargetProcessAddress.keyword:*0B80)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'CobaltStrike Process Injection\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -69,14 +69,14 @@ level: high
 ### splunk
     
 ```
-
+(EventID="8" TargetProcessAddress="*0B80")
 ```
 
 
 ### logpoint
     
 ```
-
+(EventID="8" TargetProcessAddress="*0B80")
 ```
 
 

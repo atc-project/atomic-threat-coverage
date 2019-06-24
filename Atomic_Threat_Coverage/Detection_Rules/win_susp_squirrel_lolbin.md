@@ -81,14 +81,14 @@ detection:
 ### es-qs
     
 ```
-
+(Image.keyword:(*\\\\update.exe) AND CommandLine.keyword:(*\\-\\-processStart*.exe* *\xe2\x80\x93createShortcut*.exe*))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Squirrel-Lolbin <<EOF\n{\n  "metadata": {\n    "title": "Squirrel Lolbin",\n    "description": "Detects Possible Squirrel Packages Manager as Lolbin",\n    "tags": [\n      "attack.execution"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(Image.keyword:(*\\\\\\\\update.exe) AND CommandLine.keyword:(*\\\\-\\\\-processStart*.exe* *\\u2013createShortcut*.exe*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Squirrel Lolbin\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -102,14 +102,14 @@ detection:
 ### splunk
     
 ```
-
+((Image="*\\\\update.exe") (CommandLine="*--processStart*.exe*" OR CommandLine="*\xe2\x80\x93createShortcut*.exe*"))
 ```
 
 
 ### logpoint
     
 ```
-
+(Image IN ["*\\\\update.exe"] CommandLine IN ["*--processStart*.exe*", "*\xe2\x80\x93createShortcut*.exe*"])
 ```
 
 
