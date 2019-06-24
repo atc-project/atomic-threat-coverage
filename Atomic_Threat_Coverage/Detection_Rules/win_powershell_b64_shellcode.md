@@ -51,14 +51,14 @@ level: critical
 ### es-qs
     
 ```
-
+(CommandLine.keyword:*AAAAYInlM* AND CommandLine.keyword:(*OiCAAAAYInlM* *OiJAAAAYInlM*))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/PowerShell-Base64-Encoded-Shellcode <<EOF\n{\n  "metadata": {\n    "title": "PowerShell Base64 Encoded Shellcode",\n    "description": "Detects Base64 encoded Shellcode",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(CommandLine.keyword:*AAAAYInlM* AND CommandLine.keyword:(*OiCAAAAYInlM* *OiJAAAAYInlM*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'PowerShell Base64 Encoded Shellcode\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -72,14 +72,14 @@ level: critical
 ### splunk
     
 ```
-
+(CommandLine="*AAAAYInlM*" (CommandLine="*OiCAAAAYInlM*" OR CommandLine="*OiJAAAAYInlM*"))
 ```
 
 
 ### logpoint
     
 ```
-
+(CommandLine="*AAAAYInlM*" CommandLine IN ["*OiCAAAAYInlM*", "*OiJAAAAYInlM*"])
 ```
 
 

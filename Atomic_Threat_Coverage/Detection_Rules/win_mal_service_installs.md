@@ -10,7 +10,7 @@
 | Development Status   |                                                                                                                                                 |
 | References           | <ul></ul>                                                          |
 | Author               | Florian Roth                                                                                                                                                |
-
+| Other Tags           | <ul><li>car.2013-09-005</li><li>car.2013-09-005</li></ul> | 
 
 ## Detection Rules
 
@@ -24,6 +24,7 @@ tags:
     - attack.persistence
     - attack.privilege_escalation
     - attack.t1050
+    - car.2013-09-005
 logsource:
     product: windows
     service: system
@@ -63,14 +64,14 @@ level: critical
 ### es-qs
     
 ```
-
+(EventID:"7045" AND (ServiceName:("WCESERVICE" "WCE\\ SERVICE") OR ServiceFileName.keyword:*\\\\PAExec* OR ServiceFileName.keyword:winexesvc.exe* OR ServiceFileName.keyword:*\\\\DumpSvc.exe OR ServiceName:"mssecsvc2.0" OR ServiceFileName.keyword:*\\ net\\ user\\ * OR ServiceName.keyword:(pwdump* gsecdump* cachedump*)))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Malicious-Service-Installations <<EOF\n{\n  "metadata": {\n    "title": "Malicious Service Installations",\n    "description": "Detects known malicious service installs that only appear in cases of lateral movement, credential dumping and other suspicious activity",\n    "tags": [\n      "attack.persistence",\n      "attack.privilege_escalation",\n      "attack.t1050",\n      "car.2013-09-005"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"7045\\" AND (ServiceName:(\\"WCESERVICE\\" \\"WCE\\\\ SERVICE\\") OR ServiceFileName.keyword:*\\\\\\\\PAExec* OR ServiceFileName.keyword:winexesvc.exe* OR ServiceFileName.keyword:*\\\\\\\\DumpSvc.exe OR ServiceName:\\"mssecsvc2.0\\" OR ServiceFileName.keyword:*\\\\ net\\\\ user\\\\ * OR ServiceName.keyword:(pwdump* gsecdump* cachedump*)))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Malicious Service Installations\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -84,14 +85,14 @@ level: critical
 ### splunk
     
 ```
-
+(EventID="7045" ((ServiceName="WCESERVICE" OR ServiceName="WCE SERVICE") OR ServiceFileName="*\\\\PAExec*" OR ServiceFileName="winexesvc.exe*" OR ServiceFileName="*\\\\DumpSvc.exe" OR ServiceName="mssecsvc2.0" OR ServiceFileName="* net user *" OR (ServiceName="pwdump*" OR ServiceName="gsecdump*" OR ServiceName="cachedump*")))
 ```
 
 
 ### logpoint
     
 ```
-
+(EventID="7045" (ServiceName IN ["WCESERVICE", "WCE SERVICE"] OR ServiceFileName="*\\\\PAExec*" OR ServiceFileName="winexesvc.exe*" OR ServiceFileName="*\\\\DumpSvc.exe" OR ServiceName="mssecsvc2.0" OR ServiceFileName="* net user *" OR ServiceName IN ["pwdump*", "gsecdump*", "cachedump*"]))
 ```
 
 

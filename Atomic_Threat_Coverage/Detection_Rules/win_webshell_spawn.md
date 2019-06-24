@@ -57,14 +57,14 @@ level: high
 ### es-qs
     
 ```
-
+(ParentImage.keyword:(*\\\\w3wp.exe *\\\\httpd.exe *\\\\nginx.exe *\\\\php\\-cgi.exe) AND Image.keyword:(*\\\\cmd.exe *\\\\sh.exe *\\\\bash.exe *\\\\powershell.exe))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Shells-Spawned-by-Web-Servers <<EOF\n{\n  "metadata": {\n    "title": "Shells Spawned by Web Servers",\n    "description": "Web servers that spawn shell processes could be the result of a successfully placed web shell or an other attack",\n    "tags": [\n      "attack.privilege_escalation",\n      "attack.persistence",\n      "attack.t1100"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(ParentImage.keyword:(*\\\\\\\\w3wp.exe *\\\\\\\\httpd.exe *\\\\\\\\nginx.exe *\\\\\\\\php\\\\-cgi.exe) AND Image.keyword:(*\\\\\\\\cmd.exe *\\\\\\\\sh.exe *\\\\\\\\bash.exe *\\\\\\\\powershell.exe))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Shells Spawned by Web Servers\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -78,14 +78,14 @@ level: high
 ### splunk
     
 ```
-
+((ParentImage="*\\\\w3wp.exe" OR ParentImage="*\\\\httpd.exe" OR ParentImage="*\\\\nginx.exe" OR ParentImage="*\\\\php-cgi.exe") (Image="*\\\\cmd.exe" OR Image="*\\\\sh.exe" OR Image="*\\\\bash.exe" OR Image="*\\\\powershell.exe")) | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-
+(ParentImage IN ["*\\\\w3wp.exe", "*\\\\httpd.exe", "*\\\\nginx.exe", "*\\\\php-cgi.exe"] Image IN ["*\\\\cmd.exe", "*\\\\sh.exe", "*\\\\bash.exe", "*\\\\powershell.exe"])
 ```
 
 

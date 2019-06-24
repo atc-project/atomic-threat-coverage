@@ -52,14 +52,14 @@ level: high
 ### es-qs
     
 ```
-
+(EventID:"10" AND TargetImage:"C\\:\\\\windows\\\\system32\\\\lsass.exe" AND GrantedAccess:"0x1fffff" AND CallTrace.keyword:(*dbghelp.dll* *dbgcore.dll*))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/LSASS-Memory-Dump <<EOF\n{\n  "metadata": {\n    "title": "LSASS Memory Dump",\n    "description": "Detects process LSASS memory dump using procdump or taskmgr based on the CallTrace pointing to dbghelp.dll or dbgcore.dll for win10",\n    "tags": [\n      "attack.t1003",\n      "attack.s0002",\n      "attack.credential_access"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"10\\" AND TargetImage:\\"C\\\\:\\\\\\\\windows\\\\\\\\system32\\\\\\\\lsass.exe\\" AND GrantedAccess:\\"0x1fffff\\" AND CallTrace.keyword:(*dbghelp.dll* *dbgcore.dll*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'LSASS Memory Dump\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -73,14 +73,14 @@ level: high
 ### splunk
     
 ```
-
+(EventID="10" TargetImage="C:\\\\windows\\\\system32\\\\lsass.exe" GrantedAccess="0x1fffff" (CallTrace="*dbghelp.dll*" OR CallTrace="*dbgcore.dll*"))
 ```
 
 
 ### logpoint
     
 ```
-
+(EventID="10" TargetImage="C:\\\\windows\\\\system32\\\\lsass.exe" GrantedAccess="0x1fffff" CallTrace IN ["*dbghelp.dll*", "*dbgcore.dll*"])
 ```
 
 

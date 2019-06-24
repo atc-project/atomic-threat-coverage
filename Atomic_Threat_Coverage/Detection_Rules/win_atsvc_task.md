@@ -10,7 +10,7 @@
 | Development Status   |                                                                                                                                                 |
 | References           | <ul><li>[https://blog.menasec.net/2019/03/threat-hunting-25-scheduled-tasks-for.html](https://blog.menasec.net/2019/03/threat-hunting-25-scheduled-tasks-for.html)</li></ul>                                                          |
 | Author               | Samir Bousseaden                                                                                                                                                |
-
+| Other Tags           | <ul><li>car.2013-05-004</li><li>car.2013-05-004</li><li>car.2015-04-001</li><li>car.2015-04-001</li></ul> | 
 
 ## Detection Rules
 
@@ -26,6 +26,8 @@ tags:
     - attack.lateral_movement
     - attack.persistence
     - attack.t1053
+    - car.2013-05-004
+    - car.2015-04-001
 logsource:
     product: windows
     service: security
@@ -50,14 +52,14 @@ level: medium
 ### es-qs
     
 ```
-
+(EventID:"5145" AND ShareName:"\\\\*\\\\IPC$" AND RelativeTargetName:"atsvc" AND Accesses.keyword:*WriteData*)
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Remote-Task-Creation-via-ATSVC-named-pipe <<EOF\n{\n  "metadata": {\n    "title": "Remote Task Creation via ATSVC named pipe",\n    "description": "Detects remote task creation via at.exe or API interacting with ATSVC namedpipe",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.persistence",\n      "attack.t1053",\n      "car.2013-05-004",\n      "car.2015-04-001"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"5145\\" AND ShareName:\\"\\\\\\\\*\\\\\\\\IPC$\\" AND RelativeTargetName:\\"atsvc\\" AND Accesses.keyword:*WriteData*)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Remote Task Creation via ATSVC named pipe\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -71,14 +73,14 @@ level: medium
 ### splunk
     
 ```
-
+(EventID="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName="atsvc" Accesses="*WriteData*")
 ```
 
 
 ### logpoint
     
 ```
-
+(EventID="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName="atsvc" Accesses="*WriteData*")
 ```
 
 

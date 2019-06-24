@@ -8,9 +8,9 @@
 | Severity Level       | medium                                                                                                                                                 |
 | False Positives      | <ul><li>Unknown imphashes</li></ul>                                                                  |
 | Development Status   | experimental                                                                                                                                                |
-| References           | <ul><li>[{'sha256': '01a461ad68d11b5b5096f45eb54df9ba62c5af413fa9eb544eacb598373a26bc'}]({'sha256': '01a461ad68d11b5b5096f45eb54df9ba62c5af413fa9eb544eacb598373a26bc'})</li><li>[https://summit.fireeye.com/content/dam/fireeye-www/summit/cds-2018/presentations/cds18-technical-s05-att&cking-fin7.pdf](https://summit.fireeye.com/content/dam/fireeye-www/summit/cds-2018/presentations/cds18-technical-s05-att&cking-fin7.pdf)</li></ul>                                                          |
+| References           | <ul><li>[sha256=01a461ad68d11b5b5096f45eb54df9ba62c5af413fa9eb544eacb598373a26bc](sha256=01a461ad68d11b5b5096f45eb54df9ba62c5af413fa9eb544eacb598373a26bc)</li><li>[https://summit.fireeye.com/content/dam/fireeye-www/summit/cds-2018/presentations/cds18-technical-s05-att&cking-fin7.pdf](https://summit.fireeye.com/content/dam/fireeye-www/summit/cds-2018/presentations/cds18-technical-s05-att&cking-fin7.pdf)</li></ul>                                                          |
 | Author               | Jason Lynch                                                                                                                                                |
-| Other Tags           | <ul><li>FIN7</li><li>FIN7</li></ul> | 
+| Other Tags           | <ul><li>FIN7</li><li>FIN7</li><li>car.2013-05-009</li><li>car.2013-05-009</li></ul> | 
 
 ## Detection Rules
 
@@ -21,12 +21,13 @@ title: Execution of Renamed PaExec
 status: experimental
 description: Detects execution of renamed paexec via imphash and executable product string 
 references:
-    - sha256: 01a461ad68d11b5b5096f45eb54df9ba62c5af413fa9eb544eacb598373a26bc 
+    - sha256=01a461ad68d11b5b5096f45eb54df9ba62c5af413fa9eb544eacb598373a26bc 
     - https://summit.fireeye.com/content/dam/fireeye-www/summit/cds-2018/presentations/cds18-technical-s05-att&cking-fin7.pdf
 tags:
     - attack.defense_evasion
     - attack.t1036
     - FIN7
+    - car.2013-05-009
 date: 2019/04/17
 author: Jason Lynch 
 falsepositives:
@@ -58,14 +59,14 @@ detection:
 ### es-qs
     
 ```
-
+((Product.keyword:(*PAExec*) AND Imphash:("11D40A7B7876288F919AB819CC2D9802" "6444f8a34e99b8f7d9647de66aabe516" "dfd6aa3f7b2b1035b76b718f1ddc689f" "1a6cca4d5460b1710a12dea39e4a592c")) AND (NOT (Image.keyword:*paexec*)))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Execution-of-Renamed-PaExec <<EOF\n{\n  "metadata": {\n    "title": "Execution of Renamed PaExec",\n    "description": "Detects execution of renamed paexec via imphash and executable product string",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036",\n      "FIN7",\n      "car.2013-05-009"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "((Product.keyword:(*PAExec*) AND Imphash:(\\"11D40A7B7876288F919AB819CC2D9802\\" \\"6444f8a34e99b8f7d9647de66aabe516\\" \\"dfd6aa3f7b2b1035b76b718f1ddc689f\\" \\"1a6cca4d5460b1710a12dea39e4a592c\\")) AND (NOT (Image.keyword:*paexec*)))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Execution of Renamed PaExec\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -79,14 +80,14 @@ detection:
 ### splunk
     
 ```
-
+(((Product="*PAExec*") (Imphash="11D40A7B7876288F919AB819CC2D9802" OR Imphash="6444f8a34e99b8f7d9647de66aabe516" OR Imphash="dfd6aa3f7b2b1035b76b718f1ddc689f" OR Imphash="1a6cca4d5460b1710a12dea39e4a592c")) NOT (Image="*paexec*"))
 ```
 
 
 ### logpoint
     
 ```
-
+((Product IN ["*PAExec*"] Imphash IN ["11D40A7B7876288F919AB819CC2D9802", "6444f8a34e99b8f7d9647de66aabe516", "dfd6aa3f7b2b1035b76b718f1ddc689f", "1a6cca4d5460b1710a12dea39e4a592c"])  -(Image="*paexec*"))
 ```
 
 

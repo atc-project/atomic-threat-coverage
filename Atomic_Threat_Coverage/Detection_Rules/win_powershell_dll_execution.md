@@ -10,7 +10,7 @@
 | Development Status   | experimental                                                                                                                                                |
 | References           | <ul><li>[https://github.com/p3nt4/PowerShdll/blob/master/README.md](https://github.com/p3nt4/PowerShdll/blob/master/README.md)</li></ul>                                                          |
 | Author               | Markus Neis                                                                                                                                                |
-
+| Other Tags           | <ul><li>car.2014-04-003</li><li>car.2014-04-003</li></ul> | 
 
 ## Detection Rules
 
@@ -25,6 +25,7 @@ references:
 tags:
     - attack.execution
     - attack.t1086
+    - car.2014-04-003
 author: Markus Neis
 date: 2018/08/25
 logsource:
@@ -55,14 +56,14 @@ level: high
 ### es-qs
     
 ```
-
+((Image.keyword:(*\\\\rundll32.exe) OR Description.keyword:(*Windows\\-Hostprozess\\ \\(Rundll32\\)*)) AND CommandLine.keyword:(*Default.GetString* *FromBase64String*))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Detection-of-PowerShell-Execution-via-DLL <<EOF\n{\n  "metadata": {\n    "title": "Detection of PowerShell Execution via DLL",\n    "description": "Detects PowerShell Strings applied to rundllas seen in PowerShdll.dll",\n    "tags": [\n      "attack.execution",\n      "attack.t1086",\n      "car.2014-04-003"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "((Image.keyword:(*\\\\\\\\rundll32.exe) OR Description.keyword:(*Windows\\\\-Hostprozess\\\\ \\\\(Rundll32\\\\)*)) AND CommandLine.keyword:(*Default.GetString* *FromBase64String*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Detection of PowerShell Execution via DLL\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -76,14 +77,14 @@ level: high
 ### splunk
     
 ```
-
+(((Image="*\\\\rundll32.exe") OR (Description="*Windows-Hostprozess (Rundll32)*")) (CommandLine="*Default.GetString*" OR CommandLine="*FromBase64String*"))
 ```
 
 
 ### logpoint
     
 ```
-
+((Image IN ["*\\\\rundll32.exe"] OR Description IN ["*Windows-Hostprozess (Rundll32)*"]) CommandLine IN ["*Default.GetString*", "*FromBase64String*"])
 ```
 
 

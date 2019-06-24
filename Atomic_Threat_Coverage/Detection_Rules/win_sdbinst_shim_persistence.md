@@ -50,14 +50,14 @@ level: high
 ### es-qs
     
 ```
-
+(Image.keyword:(*\\\\sdbinst.exe) AND CommandLine.keyword:(*\\\\AppPatch\\\\*\\}.sdb*))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Possible-Shim-Database-Persistence-via-sdbinst.exe <<EOF\n{\n  "metadata": {\n    "title": "Possible Shim Database Persistence via sdbinst.exe",\n    "description": "Detects execution of sdbinst writing to default shim database path C:\\\\Windows\\\\AppPatch\\\\*",\n    "tags": [\n      "attack.persistence",\n      "attack.t1138"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(Image.keyword:(*\\\\\\\\sdbinst.exe) AND CommandLine.keyword:(*\\\\\\\\AppPatch\\\\\\\\*\\\\}.sdb*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Possible Shim Database Persistence via sdbinst.exe\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -71,14 +71,14 @@ level: high
 ### splunk
     
 ```
-
+((Image="*\\\\sdbinst.exe") (CommandLine="*\\\\AppPatch\\\\*}.sdb*"))
 ```
 
 
 ### logpoint
     
 ```
-
+(Image IN ["*\\\\sdbinst.exe"] CommandLine IN ["*\\\\AppPatch\\\\*}.sdb*"])
 ```
 
 

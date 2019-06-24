@@ -51,14 +51,14 @@ level: high
 ### es-qs
     
 ```
-
+(EventID:"8" AND SourceImage.keyword:*\\\\powershell.exe AND TargetImage.keyword:*\\\\rundll32.exe)
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/PowerShell-Rundll32-Remote-Thread-Creation <<EOF\n{\n  "metadata": {\n    "title": "PowerShell Rundll32 Remote Thread Creation",\n    "description": "Detects PowerShell remote thread creation in Rundll32.exe",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.execution",\n      "attack.t1085",\n      "attack.t1086"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"8\\" AND SourceImage.keyword:*\\\\\\\\powershell.exe AND TargetImage.keyword:*\\\\\\\\rundll32.exe)",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'PowerShell Rundll32 Remote Thread Creation\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -72,14 +72,14 @@ level: high
 ### splunk
     
 ```
-
+(EventID="8" SourceImage="*\\\\powershell.exe" TargetImage="*\\\\rundll32.exe")
 ```
 
 
 ### logpoint
     
 ```
-
+(EventID="8" SourceImage="*\\\\powershell.exe" TargetImage="*\\\\rundll32.exe")
 ```
 
 

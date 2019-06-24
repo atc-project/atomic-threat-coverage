@@ -59,14 +59,14 @@ level: medium
 ### es-qs
     
 ```
-
+(Image.keyword:(*\\\\wmic.exe) AND CommandLine.keyword:(*\\/NODE\\:*process\\ call\\ create\\ * *\\ path\\ AntiVirusProduct\\ get\\ * *\\ path\\ FirewallProduct\\ get\\ * *\\ shadowcopy\\ delete\\ *))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-WMI-execution <<EOF\n{\n  "metadata": {\n    "title": "Suspicious WMI execution",\n    "description": "Detects WMI executing suspicious commands",\n    "tags": [\n      "attack.execution",\n      "attack.t1047",\n      "car.2016-03-002"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(Image.keyword:(*\\\\\\\\wmic.exe) AND CommandLine.keyword:(*\\\\/NODE\\\\:*process\\\\ call\\\\ create\\\\ * *\\\\ path\\\\ AntiVirusProduct\\\\ get\\\\ * *\\\\ path\\\\ FirewallProduct\\\\ get\\\\ * *\\\\ shadowcopy\\\\ delete\\\\ *))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Suspicious WMI execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -80,14 +80,14 @@ level: medium
 ### splunk
     
 ```
-
+((Image="*\\\\wmic.exe") (CommandLine="*/NODE:*process call create *" OR CommandLine="* path AntiVirusProduct get *" OR CommandLine="* path FirewallProduct get *" OR CommandLine="* shadowcopy delete *")) | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-
+(Image IN ["*\\\\wmic.exe"] CommandLine IN ["*/NODE:*process call create *", "* path AntiVirusProduct get *", "* path FirewallProduct get *", "* shadowcopy delete *"])
 ```
 
 

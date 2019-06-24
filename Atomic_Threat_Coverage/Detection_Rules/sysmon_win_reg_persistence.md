@@ -10,7 +10,7 @@
 | Development Status   |                                                                                                                                                 |
 | References           | <ul><li>[https://oddvar.moe/2018/04/10/persistence-using-globalflags-in-image-file-execution-options-hidden-from-autoruns-exe/](https://oddvar.moe/2018/04/10/persistence-using-globalflags-in-image-file-execution-options-hidden-from-autoruns-exe/)</li></ul>                                                          |
 | Author               | Karneades                                                                                                                                                |
-
+| Other Tags           | <ul><li>car.2013-01-002</li><li>car.2013-01-002</li></ul> | 
 
 ## Detection Rules
 
@@ -40,6 +40,7 @@ tags:
     - attack.persistence
     - attack.defense_evasion
     - attack.t1183
+    - car.2013-01-002
 falsepositives:
     - unknown
 level: critical
@@ -53,14 +54,14 @@ level: critical
 ### es-qs
     
 ```
-
+(EventID:"13" AND TargetObject.keyword:(*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\ NT\\\\CurrentVersion\\\\Image\\ File\\ Execution\\ Options\\\\*\\\\GlobalFlag *\\\\SOFTWARE\\\\Microsoft\\\\Windows\\ NT\\\\CurrentVersion\\\\SilentProcessExit\\\\*\\\\ReportingMode *\\\\SOFTWARE\\\\Microsoft\\\\Windows\\ NT\\\\CurrentVersion\\\\SilentProcessExit\\\\*\\\\MonitorProcess) AND EventType:"SetValue")
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Registry-Persistence-Mechanisms <<EOF\n{\n  "metadata": {\n    "title": "Registry Persistence Mechanisms",\n    "description": "Detects persistence registry keys",\n    "tags": [\n      "attack.privilege_escalation",\n      "attack.persistence",\n      "attack.defense_evasion",\n      "attack.t1183",\n      "car.2013-01-002"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"13\\" AND TargetObject.keyword:(*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Image\\\\ File\\\\ Execution\\\\ Options\\\\\\\\*\\\\\\\\GlobalFlag *\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\SilentProcessExit\\\\\\\\*\\\\\\\\ReportingMode *\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\SilentProcessExit\\\\\\\\*\\\\\\\\MonitorProcess) AND EventType:\\"SetValue\\")",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Registry Persistence Mechanisms\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -74,14 +75,14 @@ level: critical
 ### splunk
     
 ```
-
+(EventID="13" (TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\*\\\\GlobalFlag" OR TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\SilentProcessExit\\\\*\\\\ReportingMode" OR TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\SilentProcessExit\\\\*\\\\MonitorProcess") EventType="SetValue")
 ```
 
 
 ### logpoint
     
 ```
-
+(EventID="13" TargetObject IN ["*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\*\\\\GlobalFlag", "*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\SilentProcessExit\\\\*\\\\ReportingMode", "*\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\SilentProcessExit\\\\*\\\\MonitorProcess"] EventType="SetValue")
 ```
 
 

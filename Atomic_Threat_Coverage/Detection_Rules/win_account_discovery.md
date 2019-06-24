@@ -61,14 +61,14 @@ level: high
 ### es-qs
     
 ```
-
+(EventID:"4661" AND ObjectType:("SAM_USER" "SAM_GROUP") AND ObjectName.keyword:(*\\-512 *\\-502 *\\-500 *\\-505 *\\-519 *\\-520 *\\-544 *\\-551 *\\-555 *admin*))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/AD-Privileged-Users-or-Groups-Reconnaissance <<EOF\n{\n  "metadata": {\n    "title": "AD Privileged Users or Groups Reconnaissance",\n    "description": "Detect priv users or groups recon based on 4661 eventid and known privileged users or groups SIDs",\n    "tags": [\n      "attack.discovery",\n      "attack.t1087"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4661\\" AND ObjectType:(\\"SAM_USER\\" \\"SAM_GROUP\\") AND ObjectName.keyword:(*\\\\-512 *\\\\-502 *\\\\-500 *\\\\-505 *\\\\-519 *\\\\-520 *\\\\-544 *\\\\-551 *\\\\-555 *admin*))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'AD Privileged Users or Groups Reconnaissance\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -82,14 +82,14 @@ level: high
 ### splunk
     
 ```
-
+(EventID="4661" (ObjectType="SAM_USER" OR ObjectType="SAM_GROUP") (ObjectName="*-512" OR ObjectName="*-502" OR ObjectName="*-500" OR ObjectName="*-505" OR ObjectName="*-519" OR ObjectName="*-520" OR ObjectName="*-544" OR ObjectName="*-551" OR ObjectName="*-555" OR ObjectName="*admin*"))
 ```
 
 
 ### logpoint
     
 ```
-
+(EventID="4661" ObjectType IN ["SAM_USER", "SAM_GROUP"] ObjectName IN ["*-512", "*-502", "*-500", "*-505", "*-519", "*-520", "*-544", "*-551", "*-555", "*admin*"])
 ```
 
 

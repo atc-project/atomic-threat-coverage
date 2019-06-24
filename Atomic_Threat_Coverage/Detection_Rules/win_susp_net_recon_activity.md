@@ -57,14 +57,14 @@ level: high
 ### es-qs
     
 ```
-
+(EventID:"4661" AND AccessMask:"0x2d" AND ((ObjectType:"SAM_USER" AND ObjectName.keyword:S\\-1\\-5\\-21\\-*\\-500) OR (ObjectType:"SAM_GROUP" AND ObjectName.keyword:S\\-1\\-5\\-21\\-*\\-512)))
 ```
 
 
 ### xpack-watcher
     
 ```
-
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Reconnaissance-Activity <<EOF\n{\n  "metadata": {\n    "title": "Reconnaissance Activity",\n    "description": "Detects activity as \\"net user administrator /domain\\" and \\"net group domain admins /domain\\"",\n    "tags": [\n      "attack.discovery",\n      "attack.t1087",\n      "attack.t1069",\n      "attack.s0039"\n    ]\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "query_string": {\n              "query": "(EventID:\\"4661\\" AND AccessMask:\\"0x2d\\" AND ((ObjectType:\\"SAM_USER\\" AND ObjectName.keyword:S\\\\-1\\\\-5\\\\-21\\\\-*\\\\-500) OR (ObjectType:\\"SAM_GROUP\\" AND ObjectName.keyword:S\\\\-1\\\\-5\\\\-21\\\\-*\\\\-512)))",\n              "analyze_wildcard": true\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": null,\n        "subject": "Sigma Rule \'Reconnaissance Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -78,14 +78,14 @@ level: high
 ### splunk
     
 ```
-
+(EventID="4661" AccessMask="0x2d" ((ObjectType="SAM_USER" ObjectName="S-1-5-21-*-500") OR (ObjectType="SAM_GROUP" ObjectName="S-1-5-21-*-512")))
 ```
 
 
 ### logpoint
     
 ```
-
+(EventID="4661" AccessMask="0x2d" ((ObjectType="SAM_USER" ObjectName="S-1-5-21-*-500") OR (ObjectType="SAM_GROUP" ObjectName="S-1-5-21-*-512")))
 ```
 
 
