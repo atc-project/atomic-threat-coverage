@@ -27,6 +27,13 @@
                         {%- if tactics |length > 1 -%}</ul>{%endif%}
                     </td>
                 </tr>
+{% else %}
+                <tr>
+                    <th class="confluenceTh">ATT&amp;CK Tactic</th>
+                    <td class="confluenceTd">
+                        This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet
+                    </td>
+                </tr>
 {% endif %}
 {% if techniques is defined and techniques|length %}
                 <tr>
@@ -37,6 +44,13 @@
                             {%- if techniques |length > 1 -%}<li>{%endif%}<a href="https://attack.mitre.org/techniques/{{technique_id}}">{{ technique_id }}: {{technique_name}}</a>{%- if techniques |length > 1 -%}</li>{%endif%}
                         {%- endfor %}
                         {%- if techniques |length > 1 -%}</ul>{%endif%}
+                    </td>
+                </tr>
+{% else %}
+                <tr>
+                    <th class="confluenceTh">ATT&amp;CK Technique</th>
+                    <td class="confluenceTd">
+                        This Detection Rule wasn't mapped to ATT&amp;CK Technique yet
                     </td>
                 </tr>
 {% endif %}
@@ -52,6 +66,7 @@
                     </td>
                 </tr>
 {% endif %}
+{% if data_needed is defined and data_needed is not none and data_needed|length %}
                 <tr>
                     <th class="confluenceTh">Data Needed</th>
                     <td class="confluenceTd">
@@ -62,6 +77,27 @@
                         {%- if data_needed |length > 1 -%}</ul>{%endif%}
                     </td>
                 </tr>
+{% else %}
+                <tr>
+                    <th class="confluenceTh">Data Needed</th>
+                    <td class="confluenceTd">
+                        There is no documented Data Needed for this Detection Rule yet
+                    </td>
+                </tr>
+{% endif %}
+{% if enrichment is defined and enrichment is not none and enrichment|length %}
+                <tr>
+                    <th class="confluenceTh">Enrichment</th>
+                    <td class="confluenceTd">
+                        {%- if enrichment |length > 1 -%}<ul>{%endif%}
+                        {%- for enrichment_name, enrichment_page_id in enrichment %}
+                            {%- if enrichment |length > 1 -%}<li>{%endif%}{% if enrichment_page_id != "None" %}<a href="{{confluence_viewpage_url}}{{enrichment_page_id}}">{{ enrichment_name }}</a>{% else %}{{ enrichment_name }}{% endif %}{%- if enrichment |length > 1 -%}</li>{%endif%}
+                        {%- endfor %}
+                        {%- if enrichment |length > 1 -%}</ul>{%endif%}
+                    </td>
+                </tr>
+{% endif %}
+{% if triggers is defined and triggers is not none and triggers|length %}
                 <tr>
                     <th class="confluenceTh">Trigger</th>
                     <td class="confluenceTd">
@@ -72,10 +108,28 @@
                         {%- if triggers |length > 1 -%}</ul>{%endif%}
                     </td>
                 </tr>
+{% else %}
+                <tr>
+                    <th class="confluenceTh">Trigger</th>
+                    <td class="confluenceTd">
+                        There is no documented Trigger for this Detection Rule yet
+                    </td>
+                </tr>
+{% endif %}
+{% if level is defined and level is not none and level|length %}
                 <tr>
                     <th class="confluenceTh">Severity Level</th>
                     <td class="confluenceTd">{{ level }}<br /></td>
                 </tr>
+{% else %}
+                <tr>
+                    <th class="confluenceTh">Severity Level</th>
+                    <td class="confluenceTd">
+                        Severity Level for this Detection Rule wasn't defined yet
+                    </td>
+                </tr>
+{% endif %}
+{% if falsepositives is defined and falsepositives is not none and falsepositives|length %}
                 <tr>
                     <th class="confluenceTh">False Positives</th>
                     <td class="confluenceTd">
@@ -86,10 +140,28 @@
                         {%- if falsepositives |length > 1 -%}</ul>{%endif%}
                     </td>
                 </tr>
+{% else %}
+                <tr>
+                    <th class="confluenceTh">False Positives</th>
+                    <td class="confluenceTd">
+                        There are no documented False Positives for this Detection Rule yet
+                    </td>
+                </tr>
+{% endif %}
+{% if status is defined and status is not none and status|length %}
                 <tr>
                     <th class="confluenceTh">Development Status</th>
                     <td class="confluenceTd">{{ status }}<br /></td>
-                </tr>                
+                </tr>   
+{% else %}
+                <tr>
+                    <th class="confluenceTh">Development Status</th>
+                    <td class="confluenceTd">
+                        Development Status wasn't defined for this Detection Rule yet
+                    </td>
+                </tr>
+{% endif %}
+{% if references is defined and references is not none and references|length %}
                 <tr>
                     <th class="confluenceTh">References</th>
                     <td class="confluenceTd">
@@ -100,10 +172,27 @@
                         {%- if references |length > 1 -%}</ul>{%endif%}
                     </td>
                 </tr>
+{% else %}
+                <tr>
+                    <th class="confluenceTh">References</th>
+                    <td class="confluenceTd">
+                        There are no documented References for this Detection Rule yet
+                    </td>
+                </tr>
+{% endif %}
+{% if author is defined and author is not none and author|length %}
                 <tr>
                     <th class="confluenceTh">Author</th>
                     <td class="confluenceTd">{{ author }}<br /></td>
                 </tr>
+{% else %}
+                <tr>
+                    <th class="confluenceTh">Author</th>
+                    <td class="confluenceTd">
+                        Author of this Detection Rule haven't introduced himself
+                    </td>
+                </tr>
+{% endif %}
             </tbody>
         </table>
         <p class="auto-cursor-target"><br /></p>
