@@ -14,6 +14,7 @@ from requests.auth import HTTPBasicAuth
 from jinja2 import Environment, FileSystemLoader
 from pprint import pprint
 import warnings
+from yaml.scanner import ScannerError
 
 
 
