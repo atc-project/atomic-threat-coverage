@@ -40,7 +40,7 @@ sample: |
       <Correlation /> 
       <Execution ProcessID="2996" ThreadID="3992" /> 
       <Channel>Microsoft-Windows-Sysmon/Operational</Channel> 
-      <Computer>atc-win-10.atc.local</Computer> 
+      <Computer>atc-win-10</Computer> 
       <Security UserID="S-1-5-18" /> 
     </System>
     - <EventData>

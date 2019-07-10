@@ -115,6 +115,14 @@ class DetectionRule:
 
             self.fields.update({'data_needed': data_needed})
 
+            # Enrichments
+            enrichments = self.fields.get("enrichment")
+
+            if isinstance(enrichments, str):
+                enrichments = [enrichments]
+
+            self.fields.update({'enrichment': enrichments})
+            
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')
             technique = []
@@ -205,6 +213,23 @@ class DetectionRule:
                 data_needed_with_id.append(data)
 
             self.fields.update({'data_needed': data_needed_with_id})
+
+            # Enrichments
+            enrichments = self.fields.get("enrichment")
+
+            enrichments_with_page_id = []
+
+            if isinstance(enrichments, str):
+                enrichments = [enrichments]
+
+            if enrichments:
+                for enrichment_name in enrichments:
+                    enrichment_page_id = str(ATCutils.confluence_get_page_id(
+                        self.apipath, self.auth, self.space, enrichment_name))
+                    enrichment_data = (enrichment_name, enrichment_page_id)
+                    enrichments_with_page_id.append(enrichment_data)
+
+            self.fields.update({'enrichment': enrichments_with_page_id})
 
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')

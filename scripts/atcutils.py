@@ -621,6 +621,16 @@ class ATCutils:
         return event_id_based_dr
 
     @staticmethod
+    def check_for_enrichment_presence(detection_rule_obj):
+        """check if this Data for this Detection Rule required any enrichments"""
+
+        if detection_rule_obj['enrichment']:
+            return True
+        else:
+            return False
+
+
+    @staticmethod
     def get_logsource_of_the_document(detection_rule_obj):
         """get logsource for specific document (addition)"""
 
@@ -661,6 +671,17 @@ class ATCutils:
             * if logsource has no EventID field, we calculate Data Needed by
               logsource and fields in all detection sections
         """
+
+        # first of all, if data for this Detection Rule requires any enrichments,
+        # we will collect all Data Needed fields from "data_needed" field of 
+        # linked Enrichment entities
+        if ATCutils.check_for_enrichment_presence(detectionrule):
+            en_obj_list = ATCutils.load_yamls('../enrichments')
+
+            for linked_enrichments in detectionrule['enrichment']:
+                for enrichment in en_obj_list:
+                    if linked_enrichments == enrichment['title']:
+                        final_list += enrichment['data_needed']
 
         # if there are no multiple logsources defined (multiple documents)
         if not detectionrule.get('action'):
