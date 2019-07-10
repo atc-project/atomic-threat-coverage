@@ -5,7 +5,7 @@ tags:
     - attack.initial_access
     - attack.t1193
     - attack.t1192
-    - phishinng
+    - phishing
 severity: M
 tlp: AMBER
 pap: WHITE
