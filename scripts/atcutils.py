@@ -625,7 +625,7 @@ class ATCutils:
     def check_for_enrichment_presence(detection_rule_obj):
         """check if this Data for this Detection Rule required any enrichments"""
 
-        if detection_rule_obj['enrichment']:
+        if detection_rule_obj.get('enrichment'):
             return True
         else:
             return False
