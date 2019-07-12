@@ -12,6 +12,7 @@ from customer import Customer
 
 # Import ATC Utils
 from atcutils import ATCutils
+from init_markdown import create_markdown_dirs
 
 # Others
 import glob
@@ -89,12 +90,10 @@ class PopulateMarkdown:
             self.customer(cu_path)
 
     def init_export(self):
-        """Desc"""
-
-        cmd = ('bash init_markdown.sh')
-        if subprocess.run(cmd, shell=True, check=True).returncode == 0:
+        try:
+            create_markdown_dirs()
             return True
-        else:
+        except:
             return False
 
     def triggers(self, tg_path):
