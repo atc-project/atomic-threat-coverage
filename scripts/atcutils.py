@@ -433,7 +433,6 @@ class ATCutils:
             'driver-framework':
                 'Microsoft-Windows-DriverFrameworks-UserMode/Operational',
             'dhcp': 'Microsoft-Windows-DHCP-Server/Operational',
-                   Microsoft - Windows - DHCP - Server
             'powershell': 'Microsoft-Windows-PowerShell/Operational',
             'powershell-classic': 'Windows PowerShell',
             'ntlm': 'Microsoft-Windows-NTLM/Operational',
@@ -529,7 +528,7 @@ class ATCutils:
                     if isinstance(val2, str) or isinstance(val2, int):
                         dictionary_of_fields.append(_field)
                         break
-                    elif isinstance(val,str):
+                    elif isinstance(val2, str):
                         continue
                     else:
                         for val3 in val2:
