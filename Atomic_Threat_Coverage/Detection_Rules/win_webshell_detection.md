@@ -8,8 +8,8 @@
 | Trigger              | <ul><li>[T1100: Web Shell](../Triggers/T1100.md)</li></ul>  |
 | Severity Level       | high |
 | False Positives      | <ul><li>unknown</li></ul>  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
-| References           |  There are no documented References for this Detection Rule yet.  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
+| References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
 
 

@@ -9,7 +9,7 @@
 | Severity Level       | medium |
 | False Positives      | <ul><li>Inventory tool runs</li><li>Penetration tests</li><li>Administrative activity</li></ul>  |
 | Development Status   | experimental |
-| References           |  There are no documented References for this Detection Rule yet.  |
+| References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
 
 

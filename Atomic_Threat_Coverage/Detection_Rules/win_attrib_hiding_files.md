@@ -9,7 +9,7 @@
 | Severity Level       | low |
 | False Positives      | <ul><li>igfxCUIService.exe hiding *.cui files via .bat script (attrib.exe a child of cmd.exe and igfxCUIService.exe is the parent of the cmd.exe)</li><li>msiexec.exe hiding desktop.ini</li></ul>  |
 | Development Status   | experimental |
-| References           |  There are no documented References for this Detection Rule yet.  |
+| References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Sami Ruohonen |
 
 

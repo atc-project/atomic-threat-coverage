@@ -8,7 +8,7 @@
 | Trigger              | <ul><li>[T1053: Scheduled Task](../Triggers/T1053.md)</li></ul>  |
 | Severity Level       | medium |
 | False Positives      | <ul><li>pentesting</li></ul>  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://blog.menasec.net/2019/03/threat-hunting-25-scheduled-tasks-for.html](https://blog.menasec.net/2019/03/threat-hunting-25-scheduled-tasks-for.html)</li></ul>  |
 | Author               | Samir Bousseaden |
 | Other Tags           | <ul><li>car.2013-05-004</li><li>car.2013-05-004</li><li>car.2015-04-001</li><li>car.2015-04-001</li></ul> | 

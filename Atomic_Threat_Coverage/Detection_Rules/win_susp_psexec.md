@@ -8,7 +8,7 @@
 | Trigger              | <ul><li>[T1077: Windows Admin Shares](../Triggers/T1077.md)</li></ul>  |
 | Severity Level       | high |
 | False Positives      | <ul><li>nothing observed so far</li></ul>  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://blog.menasec.net/2019/02/threat-hunting-3-detecting-psexec.html](https://blog.menasec.net/2019/02/threat-hunting-3-detecting-psexec.html)</li></ul>  |
 | Author               | Samir Bousseaden |
 

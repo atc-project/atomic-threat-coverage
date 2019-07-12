@@ -6,13 +6,13 @@ description: >
   generates audit events when specific security group management tasks are
   performed
 eventID:
-  - 4731 #(S): A security-enabled local group was created.
-  - 4732 #(S): A member was added to a security-enabled local group.
-  - 4733 #(S): A member was removed from a security-enabled local group.
-  - 4734 #(S): A security-enabled local group was deleted.
-  - 4735 #(S): A security-enabled local group was changed.
-  - 4764 #(S): A group’s type was changed.
-  - 4799 #(S): A security-enabled local group membership was enumerated.
+  - 4731 # (S): A security-enabled local group was created.
+  - 4732 # (S): A member was added to a security-enabled local group.
+  - 4733 # (S): A member was removed from a security-enabled local group.
+  - 4734 # (S): A security-enabled local group was deleted.
+  - 4735 # (S): A security-enabled local group was changed.
+  - 4764 # (S): A group’s type was changed.
+  - 4799 # (S): A security-enabled local group membership was enumerated.
 references:
     - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/e7d434a47116a0b49fed43e652a07031d8249ae2/windows/security/threat-protection/auditing/audit-security-group-management.md
 configuration: |

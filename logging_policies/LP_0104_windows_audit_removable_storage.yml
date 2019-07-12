@@ -7,9 +7,9 @@ description: >
   generated for all objects and all types of access requested, with no 
   dependency on object’s SACL
 eventID: 
-  - 4656 #(S, F): A handle to an object was requested
-  - 4658 #(S): The handle to an object was closed
-  - 4663 #(S): An attempt was made to access an object
+  - 4656 # (S, F): A handle to an object was requested
+  - 4658 # (S): The handle to an object was closed
+  - 4663 # (S): An attempt was made to access an object
 references:
   - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-removable-storage.md
 configuration: |

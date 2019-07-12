@@ -3,7 +3,7 @@
 | Description          | An attacker can use the SID history attribute to gain additional privileges.                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1178: SID-History Injection](https://attack.mitre.org/techniques/T1178)</li></ul>  |
-| Data Needed          |  There is no documented Data Needed for this Detection Rule yet.  |
+| Data Needed          |  There is no documented Data Needed for this Detection Rule yet  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1178: SID-History Injection](../Triggers/T1178.md)</li></ul>  |
 | Severity Level       | medium |

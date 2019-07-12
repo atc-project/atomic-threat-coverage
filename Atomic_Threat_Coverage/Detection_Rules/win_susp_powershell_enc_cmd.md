@@ -7,7 +7,7 @@
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | Severity Level       | high |
-| False Positives      |  There are no documented False Positives for this Detection Rule yet.  |
+| False Positives      |  There are no documented False Positives for this Detection Rule yet  |
 | Development Status   | experimental |
 | References           | <ul><li>[https://app.any.run/tasks/6217d77d-3189-4db2-a957-8ab239f3e01e](https://app.any.run/tasks/6217d77d-3189-4db2-a957-8ab239f3e01e)</li></ul>  |
 | Author               | Florian Roth, Markus Neis |

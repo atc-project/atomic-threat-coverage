@@ -6,8 +6,8 @@ description: >
   generates audit events when a handle to an object is opened or closed. 
   Policy to enable smb share access logon events logging
 eventID: 
-  - 4658 #(S): The handle to an object was closed
-  - 4690 #(S): An attempt was made to duplicate a handle to an object
+  - 4658 # (S): The handle to an object was closed
+  - 4690 # (S): An attempt was made to duplicate a handle to an object
 references:
   - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-handle-manipulation.md
 configuration: |

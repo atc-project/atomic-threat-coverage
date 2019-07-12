@@ -8,8 +8,8 @@
 | Trigger              | <ul><li>[T1035: Service Execution](../Triggers/T1035.md)</li></ul>  |
 | Severity Level       | low |
 | False Positives      | <ul><li>Administrative activity</li></ul>  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
-| References           |  There are no documented References for this Detection Rule yet.  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
+| References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
 | Other Tags           | <ul><li>attack.s0029</li><li>attack.s0029</li></ul> | 
 

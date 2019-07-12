@@ -12,13 +12,13 @@ description: >
   is enabled, an audit entry is generated each time any user unsuccessfully attempts 
   to access a registry object that has a matching SACL
 eventID: 
-  - 4663 #(S): An attempt was made to access an object
-  - 4656 #(S, F): A handle to an object was requested
-  - 4658 #(S): The handle to an object was closed
-  - 4660 #(S): An object was deleted
-  - 4657 #(S): A registry value was modified
-  - 5039 #(-): A registry key was virtualized
-  - 4670 #(S): Permissions on an object were changed
+  - 4663 # (S): An attempt was made to access an object
+  - 4656 # (S, F): A handle to an object was requested
+  - 4658 # (S): The handle to an object was closed
+  - 4660 # (S): An object was deleted
+  - 4657 # (S): A registry value was modified
+  - 5039 # (-): A registry key was virtualized
+  - 4670 # (S): Permissions on an object were changed
 references:
   - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-registry.md
 configuration: |

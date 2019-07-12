@@ -8,7 +8,7 @@
 | Trigger              | <ul><li>[T1078: Valid Accounts](../Triggers/T1078.md)</li></ul>  |
 | Severity Level       | high |
 | False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://www.harmj0y.net/blog/activedirectory/the-most-dangerous-user-right-you-probably-have-never-heard-of/](https://www.harmj0y.net/blog/activedirectory/the-most-dangerous-user-right-you-probably-have-never-heard-of/)</li></ul>  |
 | Author               | @neu5ron |
 

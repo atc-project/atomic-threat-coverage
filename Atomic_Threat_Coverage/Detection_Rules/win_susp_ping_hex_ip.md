@@ -8,7 +8,7 @@
 | Trigger              | <ul><li>[T1140: Deobfuscate/Decode Files or Information](../Triggers/T1140.md)</li><li>[T1027: Obfuscated Files or Information](../Triggers/T1027.md)</li></ul>  |
 | Severity Level       | high |
 | False Positives      | <ul><li>Unlikely, because no sane admin pings IP addresses in a hexadecimal form</li></ul>  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://github.com/vysec/Aggressor-VYSEC/blob/master/ping.cna](https://github.com/vysec/Aggressor-VYSEC/blob/master/ping.cna)</li><li>[https://twitter.com/vysecurity/status/977198418354491392](https://twitter.com/vysecurity/status/977198418354491392)</li></ul>  |
 | Author               | Florian Roth |
 

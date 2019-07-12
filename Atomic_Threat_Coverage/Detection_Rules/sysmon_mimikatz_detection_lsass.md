@@ -10,7 +10,7 @@
 | False Positives      | <ul><li>unknown</li></ul>  |
 | Development Status   | experimental |
 | References           | <ul><li>[https://onedrive.live.com/view.aspx?resid=D026B4699190F1E6!2843&ithint=file%2cpptx&app=PowerPoint&authkey=!AMvCRTKB_V1J5ow](https://onedrive.live.com/view.aspx?resid=D026B4699190F1E6!2843&ithint=file%2cpptx&app=PowerPoint&authkey=!AMvCRTKB_V1J5ow)</li><li>[https://cyberwardog.blogspot.com/2017/03/chronicles-of-threat-hunter-hunting-for_22.html](https://cyberwardog.blogspot.com/2017/03/chronicles-of-threat-hunter-hunting-for_22.html)</li></ul>  |
-| Author               |  Author of this Detection Rule haven't introduced himself.  |
+| Author               |  Author of this Detection Rule haven't introduced himself  |
 | Other Tags           | <ul><li>attack.s0002</li><li>attack.s0002</li><li>car.2019-04-004</li><li>car.2019-04-004</li></ul> | 
 
 ## Detection Rules

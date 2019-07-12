@@ -7,12 +7,12 @@ description: >
   permission, resource attributes changes and Central Access Policy changes 
   for file system objects
 eventID: 
-  - 4703 #(S): A user right was adjusted
-  - 4704 #(S): A user right was assigned
-  - 4705 #(S): A user right was removed
-  - 4670 #(S): Permissions on an object were changed
-  - 4911 #(S): Resource attributes of the object were changed
-  - 4913 #(S): Central Access Policy on the object was changed
+  - 4703 # (S): A user right was adjusted
+  - 4704 # (S): A user right was assigned
+  - 4705 # (S): A user right was removed
+  - 4670 # (S): Permissions on an object were changed
+  - 4911 # (S): Resource attributes of the object were changed
+  - 4913 # (S): Central Access Policy on the object was changed
 references:
   - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-authorization-policy-change.md
 configuration: |

@@ -3,12 +3,12 @@ default: Partially (Success)
 volume: Medium
 description: >
   Audit Logon determines whether the operating system generates audit 
-  events when a user attempts to log on to a computer.
+  events when a user attempts to log on to a computer
 eventID:
-  - 4624
-  - 4625
-  - 4648
-  - 4675
+  - 4624 # (S): An account was successfully logged on
+  - 4625 # (F): An account failed to log on
+  - 4648 # (S): A logon was attempted using explicit credentials
+  - 4675 # (S): SIDs were filtered
 references:
     - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-logon.md
 configuration: |

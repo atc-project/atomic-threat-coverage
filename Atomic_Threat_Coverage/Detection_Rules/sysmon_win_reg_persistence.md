@@ -8,7 +8,7 @@
 | Trigger              | <ul><li>[T1183: Image File Execution Options Injection](../Triggers/T1183.md)</li></ul>  |
 | Severity Level       | critical |
 | False Positives      | <ul><li>unknown</li></ul>  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://oddvar.moe/2018/04/10/persistence-using-globalflags-in-image-file-execution-options-hidden-from-autoruns-exe/](https://oddvar.moe/2018/04/10/persistence-using-globalflags-in-image-file-execution-options-hidden-from-autoruns-exe/)</li></ul>  |
 | Author               | Karneades |
 | Other Tags           | <ul><li>car.2013-01-002</li><li>car.2013-01-002</li></ul> | 

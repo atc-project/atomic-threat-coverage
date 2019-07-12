@@ -10,7 +10,7 @@
 | False Positives      | <ul><li>Service accounts used on legacy systems (e.g. NetApp)</li><li>Windows Domains with DFL 2003 and legacy systems</li></ul>  |
 | Development Status   | experimental |
 | References           | <ul><li>[https://adsecurity.org/?p=3458](https://adsecurity.org/?p=3458)</li><li>[https://www.trimarcsecurity.com/single-post/TrimarcResearch/Detecting-Kerberoasting-Activity](https://www.trimarcsecurity.com/single-post/TrimarcResearch/Detecting-Kerberoasting-Activity)</li></ul>  |
-| Author               |  Author of this Detection Rule haven't introduced himself.  |
+| Author               |  Author of this Detection Rule haven't introduced himself  |
 
 
 ## Detection Rules

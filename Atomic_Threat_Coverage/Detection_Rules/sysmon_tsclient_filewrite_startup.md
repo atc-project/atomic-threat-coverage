@@ -1,15 +1,15 @@
 | Title                | Hijack legit RDP session to move laterally                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects the usage of tsclient share to place a backdoor on the RDP source machine's startup folder                                                                                                                                           |
-| ATT&amp;CK Tactic    |   There is no documented ATT&amp;CK Tactic for this Detection Rule.  |
-| ATT&amp;CK Technique |  There is no documented ATT&amp;CK Technique for this Detection Rule.  |
+| ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
+| ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
 | Data Needed          | <ul><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
-| Trigger              |  There is no Trigger for this technique yet.  |
+| Trigger              |  There is no documented Trigger for this Detection Rule yet  |
 | Severity Level       | high |
 | False Positives      | <ul><li>unknown</li></ul>  |
 | Development Status   | experimental |
-| References           |  There are no documented References for this Detection Rule yet.  |
+| References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Samir Bousseaden |
 
 

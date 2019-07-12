@@ -5,18 +5,18 @@ description: >
   This security policy setting determines whether the operating system generates 
   audit events for the management of Task Scheduler jobs or COM+ objects
 eventID: 
-  - 4671 #(-): An application attempted to access a blocked ordinal through the TBS
-  - 4691 #(S): Indirect access to an object was requested
-  - 5148 #(F): The Windows Filtering Platform has detected a DoS attack and entered a defensive mode; packets associated with this attack will be discarded
-  - 5149 #(F): The DoS attack has subsided and normal processing is being resumed
-  - 4698 #(S): A scheduled task was created
-  - 4699 #(S): A scheduled task was deleted
-  - 4700 #(S): A scheduled task was enabled
-  - 4701 #(S): A scheduled task was disabled
-  - 4702 #(S): A scheduled task was updated
-  - 5888 #(S): An object in the COM+ Catalog was modified
-  - 5889 #(S): An object was deleted from the COM+ Catalog
-  - 5890 #(S): An object was added to the COM+ Catalog
+  - 4671 # (-): An application attempted to access a blocked ordinal through the TBS
+  - 4691 # (S): Indirect access to an object was requested
+  - 5148 # (F): The Windows Filtering Platform has detected a DoS attack and entered a defensive mode; packets associated with this attack will be discarded
+  - 5149 # (F): The DoS attack has subsided and normal processing is being resumed
+  - 4698 # (S): A scheduled task was created
+  - 4699 # (S): A scheduled task was deleted
+  - 4700 # (S): A scheduled task was enabled
+  - 4701 # (S): A scheduled task was disabled
+  - 4702 # (S): A scheduled task was updated
+  - 5888 # (S): An object in the COM+ Catalog was modified
+  - 5889 # (S): An object was deleted from the COM+ Catalog
+  - 5890 # (S): An object was added to the COM+ Catalog
 references:
   - https://technet.microsoft.com/en-us/library/dd772744(v=ws.10).aspx
   - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-other-object-access-events.md

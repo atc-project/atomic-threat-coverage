@@ -8,8 +8,8 @@
 | Trigger              | <ul><li>[T1078: Valid Accounts](../Triggers/T1078.md)</li></ul>  |
 | Severity Level       | medium |
 | False Positives      | <ul><li>Administrative activity via KVM or ILO board</li></ul>  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
-| References           |  There are no documented References for this Detection Rule yet.  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
+| References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
 
 

@@ -9,7 +9,7 @@
 | Severity Level       | medium |
 | False Positives      | <ul><li>Various applications</li><li>Tools that include ping or nslookup command invocations</li></ul>  |
 | Development Status   | experimental |
-| References           |  There are no documented References for this Detection Rule yet.  |
+| References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
 
 
