@@ -47,7 +47,7 @@ markdown:
 	@cd scripts && python3 main.py --markdown --auto --init
 
 confluence:
-	@echo "[*] Creating conflunce repository and pushing data"
+	@echo "[*] Creating confluence repository and pushing data"
 	@cd scripts && python3 main.py --confluence --auto --init
 
 create_es_export:

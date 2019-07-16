@@ -3,6 +3,7 @@
 *.pyc
 *.idea
 _*
+.pytest_cache
 # Ignore local configuration
 config.yml
 Atomic_Threat_Coverage_test
