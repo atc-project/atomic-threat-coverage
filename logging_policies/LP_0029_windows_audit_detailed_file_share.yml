@@ -5,7 +5,7 @@ description: >
   Audit Detailed File Share allows you to audit attempts to 
   access files and folders on a shared folder.
 eventID:
-  - 5145
+  - 5145 # (S, F): A network share object was checked to see whether client can be granted desired access
 references:
     - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/audit-detailed-file-share.md
 configuration: |

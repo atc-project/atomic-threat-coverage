@@ -8,7 +8,7 @@
 | Trigger              | <ul><li>[T1210: Exploitation of Remote Services](../Triggers/T1210.md)</li></ul>  |
 | Severity Level       | critical |
 | False Positives      | <ul><li>Unlikely</li></ul>  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://twitter.com/AdamTheAnalyst/status/1134394070045003776](https://twitter.com/AdamTheAnalyst/status/1134394070045003776)</li><li>[https://github.com/zerosum0x0/CVE-2019-0708](https://github.com/zerosum0x0/CVE-2019-0708)</li></ul>  |
 | Author               | Florian Roth (rule), Adam Bradbury (idea) |
 | Other Tags           | <ul><li>car.2013-07-002</li><li>car.2013-07-002</li></ul> | 

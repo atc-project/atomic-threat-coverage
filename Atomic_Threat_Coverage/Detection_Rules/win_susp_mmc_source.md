@@ -10,7 +10,7 @@
 | False Positives      | <ul><li>unknown</li></ul>  |
 | Development Status   | experimental |
 | References           | <ul><li>[https://enigma0x3.net/2017/01/05/lateral-movement-using-the-mmc20-application-com-object/](https://enigma0x3.net/2017/01/05/lateral-movement-using-the-mmc20-application-com-object/)</li></ul>  |
-| Author               |  Author of this Detection Rule haven't introduced himself.  |
+| Author               |  Author of this Detection Rule haven't introduced himself  |
 | Other Tags           | <ul><li>car.2013-02-003</li><li>car.2013-02-003</li></ul> | 
 
 ## Detection Rules

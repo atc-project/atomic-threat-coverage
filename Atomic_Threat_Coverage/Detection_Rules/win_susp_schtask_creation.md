@@ -9,7 +9,7 @@
 | Severity Level       | low |
 | False Positives      | <ul><li>Administrative activity</li><li>Software installation</li></ul>  |
 | Development Status   | experimental |
-| References           |  There are no documented References for this Detection Rule yet.  |
+| References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
 | Other Tags           | <ul><li>attack.s0111</li><li>attack.s0111</li><li>car.2013-08-001</li><li>car.2013-08-001</li></ul> | 
 

@@ -2,3 +2,4 @@ pyyaml
 requests
 jinja2
 elasticsearch
+pytest

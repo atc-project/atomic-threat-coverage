@@ -10,7 +10,7 @@
 | False Positives      | <ul><li>Unkown</li></ul>  |
 | Development Status   | experimental |
 | References           | <ul><li>[https://twitter.com/jackcr/status/807385668833968128](https://twitter.com/jackcr/status/807385668833968128)</li></ul>  |
-| Author               |  Author of this Detection Rule haven't introduced himself.  |
+| Author               |  Author of this Detection Rule haven't introduced himself  |
 
 
 ## Detection Rules

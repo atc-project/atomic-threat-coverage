@@ -8,7 +8,7 @@
 | Trigger              | <ul><li>[T1054: Indicator Blocking](../Triggers/T1054.md)</li></ul>  |
 | Severity Level       | high |
 | False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://bit.ly/WinLogsZero2Hero](https://bit.ly/WinLogsZero2Hero)</li></ul>  |
 | Author               | @neu5ron |
 

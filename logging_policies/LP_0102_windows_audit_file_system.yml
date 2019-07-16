@@ -4,14 +4,14 @@ volume: Low             # Low | Medium | High | Extremely High
 description: >
   Audit File System determines whether the operating system generates audit events when users attempt to access file system objects
 eventID: 
-  - 4656 #(S, F): A handle to an object was requested
-  - 4658 #(S): The handle to an object was closed
-  - 4660 #(S): An object was deleted
-  - 4663 #(S): An attempt was made to access an object
-  - 4664 #(S): An attempt was made to create a hard link
-  - 4985 #(S): The state of a transaction has changed
-  - 5051 #(-): A file was virtualized
-  - 4670 #(S): Permissions on an object were changed
+  - 4656 # (S, F): A handle to an object was requested
+  - 4658 # (S): The handle to an object was closed
+  - 4660 # (S): An object was deleted
+  - 4663 # (S): An attempt was made to access an object
+  - 4664 # (S): An attempt was made to create a hard link
+  - 4985 # (S): The state of a transaction has changed
+  - 5051 # (-): A file was virtualized
+  - 4670 # (S): Permissions on an object were changed
 references:
     - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-file-system.md
 configuration: |

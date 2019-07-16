@@ -1,15 +1,15 @@
 | Title                | Relevant Anti-Virus Event                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | This detection method points out highly relevant Antivirus events                                                                                                                                           |
-| ATT&amp;CK Tactic    |   There is no documented ATT&amp;CK Tactic for this Detection Rule.  |
-| ATT&amp;CK Technique |  There is no documented ATT&amp;CK Technique for this Detection Rule.  |
-| Data Needed          |  There is no documented Data Needed for this Detection Rule yet.  |
+| ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
+| ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
+| Data Needed          |  There is no documented Data Needed for this Detection Rule yet  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
-| Trigger              |  There is no Trigger for this technique yet.  |
+| Trigger              |  There is no documented Trigger for this Detection Rule yet  |
 | Severity Level       | high |
 | False Positives      | <ul><li>Some software piracy tools (key generators, cracks) are classified as hack tools</li></ul>  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
-| References           |  There are no documented References for this Detection Rule yet.  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
+| References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
 
 

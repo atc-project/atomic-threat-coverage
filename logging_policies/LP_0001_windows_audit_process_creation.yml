@@ -8,8 +8,8 @@ description: >
   how a computer is being used. Information includes the name of the 
   program or the user that created the process.
 eventID: 
-  - 4688
-  - 4696
+  - 4688 # (S): A new process has been created
+  - 4696 # (S): A primary token was assigned to process
 references:
     - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/audit-process-creation.md
 configuration: |
@@ -21,5 +21,5 @@ configuration: |
   Security Settings >
   Advanced Audit Configuration >
   Detailed Tracking >
-  Audit Process Creation (Success,Failure)
+  Audit Process Creation (Success)
   ```

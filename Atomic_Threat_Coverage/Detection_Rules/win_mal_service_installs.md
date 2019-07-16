@@ -8,8 +8,8 @@
 | Trigger              | <ul><li>[T1050: New Service](../Triggers/T1050.md)</li></ul>  |
 | Severity Level       | critical |
 | False Positives      | <ul><li>Penetration testing</li></ul>  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
-| References           |  There are no documented References for this Detection Rule yet.  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
+| References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
 | Other Tags           | <ul><li>car.2013-09-005</li><li>car.2013-09-005</li></ul> | 
 

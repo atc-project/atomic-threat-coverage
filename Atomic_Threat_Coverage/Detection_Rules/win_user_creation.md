@@ -3,7 +3,7 @@
 | Description          | Detects local user creation on windows servers, which shouldn't happen in an Active Directory environment. Apply this Sigma Use Case on your windows server logs and not on your DC logs.                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1136: Create Account](https://attack.mitre.org/techniques/T1136)</li></ul>  |
-| Data Needed          |  There is no documented Data Needed for this Detection Rule yet.  |
+| Data Needed          |  There is no documented Data Needed for this Detection Rule yet  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1136: Create Account](../Triggers/T1136.md)</li></ul>  |
 | Severity Level       | low |

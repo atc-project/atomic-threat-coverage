@@ -4,10 +4,10 @@ volume: High # on domain controllers
 description: >
   Audit Directory Service Access determines whether the operating 
   system generates audit events when an Active Directory Domain 
-  Services (AD DS) object is accessed.
+  Services (AD DS) object is accessed
 eventID:
-  - 4662
-  - 4661
+  - 4662 # (S, F): An operation was performed on an object
+  - 4661 # (S, F): A handle to an object was requested
 references:
     - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/audit-directory-service-access.md
 configuration: |

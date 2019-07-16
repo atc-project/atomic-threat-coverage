@@ -1,11 +1,11 @@
 | Title                | Ransomware Deleting Shadow Volume Copies                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects a command that deletes all local shadow volume copies as often used by Ransomware                                                                                                                                           |
-| ATT&amp;CK Tactic    |   There is no documented ATT&amp;CK Tactic for this Detection Rule.  |
-| ATT&amp;CK Technique |  There is no documented ATT&amp;CK Technique for this Detection Rule.  |
+| ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
+| ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
 | Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
-| Trigger              |  There is no Trigger for this technique yet.  |
+| Trigger              |  There is no documented Trigger for this Detection Rule yet  |
 | Severity Level       | critical |
 | False Positives      | <ul><li>Adminsitrative scripts - e.g. to prepare image for golden image creation</li></ul>  |
 | Development Status   | experimental |

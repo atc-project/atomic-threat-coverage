@@ -7,7 +7,7 @@
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1070: Indicator Removal on Host](../Triggers/T1070.md)</li><li>[T1067: Bootkit](../Triggers/T1067.md)</li></ul>  |
 | Severity Level       | medium |
-| False Positives      |  There are no documented False Positives for this Detection Rule yet.  |
+| False Positives      |  There are no documented False Positives for this Detection Rule yet  |
 | Development Status   | experimental |
 | References           | <ul><li>[https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/bcdedit--set](https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/bcdedit--set)</li></ul>  |
 | Author               | @neu5ron |

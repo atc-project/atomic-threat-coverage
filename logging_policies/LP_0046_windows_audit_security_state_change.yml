@@ -1,0 +1,23 @@
+title: LP_0046_windows_audit_security_state_change
+default: Configured
+volume: Low
+description: >
+  Audit Security State Change contains Windows startup, recovery, 
+  and shutdown events, and information about changes in system time
+eventID:
+  - 4608 # (S): Windows is starting up
+  - 4616 # (S): The system time was changed
+  - 4621 # (S): Administrator recovered system from CrashOnAuditFail
+references:
+  - https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-security-state-change
+configuration: |
+  Steps to implement logging policy with Group Policies:
+  ```
+  Computer Configuration >
+  Windows Settings >
+  Security Settings >
+  Advanced Security Audit Policy Settings >
+  Audit Policies >
+  System >
+  Audit Security State Change (Success)
+  ```

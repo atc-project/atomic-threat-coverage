@@ -324,8 +324,6 @@ class ATCutils:
 
         resp = json.loads(response.text)
 
-        # print(resp)
-
         if "data" in resp.keys():
             if "successful" in resp["data"].keys() \
                     and bool(resp["data"]["successful"]):
@@ -530,7 +528,7 @@ class ATCutils:
                     if isinstance(val2, str) or isinstance(val2, int):
                         dictionary_of_fields.append(_field)
                         break
-                    elif isinstance(val,str):
+                    elif isinstance(val2, str):
                         continue
                     else:
                         for val3 in val2:
@@ -542,10 +540,13 @@ class ATCutils:
 
     @staticmethod
     def search_for_event_ids_in_selection(detection_dict):
-        """No need"""
-        # in case of "keywords"
+        """Collect all Event IDs from all elements under 'detection' section"""
+
+        # in case of "keywords", which is list of strings — skip it
         if isinstance(detection_dict, list):
-            return False
+            for item in detection_dict:
+                if isinstance(item, str):
+                    return False
 
         list_of_event_ids = []
 
@@ -570,10 +571,13 @@ class ATCutils:
 
     @staticmethod
     def check_for_command_line_in_selection(detection_dict):
-        """No need"""
-        # in case of "keywords"
+        """Lookup and check if there are any kind of command line in detection logic"""
+
+        # in case of "keywords", which is list of strings — skip it
         if isinstance(detection_dict, list):
-            return False
+            for item in detection_dict:
+                if isinstance(item, str):
+                    return False
 
         for _field in detection_dict:
             if str(_field) in ["condition", "timeframe"]:
@@ -600,26 +604,19 @@ class ATCutils:
     def check_for_event_ids_presence(detection_rule_obj):
         """check if this is event id based detection rule"""
 
-        event_id_based_dr = False
-
         for _field in detection_rule_obj['detection']:
             if _field in ["condition", "timeframe"]:
                 continue
             for __field in detection_rule_obj['detection'][_field]:
                 if isinstance(__field, str) or isinstance(__field, int):
                     if __field == 'EventID':
-                        event_id_based_dr = True
+                        return True
                 elif isinstance(__field, dict):
                     for item in __field:
                         if item == 'EventID':
-                            event_id_based_dr = True
-                            break
-                if event_id_based_dr:
-                    break
-            if event_id_based_dr:
-                    break
+                            return True
 
-        return event_id_based_dr
+        return False
 
     @staticmethod
     def check_for_enrichment_presence(detection_rule_obj):
@@ -637,7 +634,7 @@ class ATCutils:
 
         logsource = {}
         _temp_list = []
-        logsource_optional_fields = [ 'category', 'product', 'service' ]
+        logsource_optional_fields = ['category', 'product', 'service']
 
         if 'logsource' in detection_rule_obj:
             for val in logsource_optional_fields:
@@ -883,7 +880,7 @@ class ATCutils:
 
             if 'platform' in x and 'channel' in x:
                 if x.get('platform') == y.get('platform') and x.get(
-                    'channel') == y.get('channel'):
+                          'channel') == y.get('channel'):
                     list_of_DN_matched_by_logsource.append(dn)
             else:
                 if x.get('platform') == y.get('platform'):

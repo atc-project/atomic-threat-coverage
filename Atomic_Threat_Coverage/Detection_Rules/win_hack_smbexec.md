@@ -8,7 +8,7 @@
 | Trigger              | <ul><li>[T1077: Windows Admin Shares](../Triggers/T1077.md)</li><li>[T1035: Service Execution](../Triggers/T1035.md)</li></ul>  |
 | Severity Level       | critical |
 | False Positives      | <ul><li>Penetration Test</li><li>Unknown</li></ul>  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://blog.ropnop.com/using-credentials-to-own-windows-boxes-part-2-psexec-and-services/](https://blog.ropnop.com/using-credentials-to-own-windows-boxes-part-2-psexec-and-services/)</li></ul>  |
 | Author               | Omer Faruk Celik |
 

@@ -9,7 +9,7 @@
 | Severity Level       | high |
 | False Positives      | <ul><li>Penetration testing</li></ul>  |
 | Development Status   | experimental |
-| References           |  There are no documented References for this Detection Rule yet.  |
+| References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
 
 

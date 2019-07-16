@@ -5,20 +5,20 @@ description: >
   This policy determines whether the operating system generates 
   audit events when changes are made to audit policy
 eventID: 
-  - 4902 #(S): The Per-user audit policy table was created
-  - 4907 #(S): Auditing settings on object were changed
-  - 4904 #(S): An attempt was made to register a security event source
-  - 4905 #(S): An attempt was made to unregister a security event source
-  - 4715 #(S): (policy is not needed) The audit policy (SACL) on an object was changed
-  - 4719 #(S): (policy is not needed) System audit policy was changed
-  - 4817 #(S): (policy is not needed) Auditing settings on object were changed
-  - 4902 #(S): (policy is not needed) The Per-user audit policy table was created
-  - 4906 #(S): (policy is not needed) The CrashOnAuditFail value has changed
-  - 4907 #(S): (policy is not needed) Auditing settings on object were changed
-  - 4908 #(S): (policy is not needed) Special Groups Logon table modified
-  - 4912 #(S): (policy is not needed) Per User Audit Policy was changed
-  - 4904 #(S): (policy is not needed) An attempt was made to register a security event source
-  - 4905 #(S): (policy is not needed) An attempt was made to unregister a security event source
+  - 4902 # (S): The Per-user audit policy table was created
+  - 4907 # (S): Auditing settings on object were changed
+  - 4904 # (S): An attempt was made to register a security event source
+  - 4905 # (S): An attempt was made to unregister a security event source
+  - 4715 # (S): (policy is not needed) The audit policy (SACL) on an object was changed
+  - 4719 # (S): (policy is not needed) System audit policy was changed
+  - 4817 # (S): (policy is not needed) Auditing settings on object were changed
+  - 4902 # (S): (policy is not needed) The Per-user audit policy table was created
+  - 4906 # (S): (policy is not needed) The CrashOnAuditFail value has changed
+  - 4907 # (S): (policy is not needed) Auditing settings on object were changed
+  - 4908 # (S): (policy is not needed) Special Groups Logon table modified
+  - 4912 # (S): (policy is not needed) Per User Audit Policy was changed
+  - 4904 # (S): (policy is not needed) An attempt was made to register a security event source
+  - 4905 # (S): (policy is not needed) An attempt was made to unregister a security event source
 references:
   - https://technet.microsoft.com/en-us/library/dn319116(v=ws.11).aspx
   - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-audit-policy-change.md

@@ -8,9 +8,9 @@ description: >
   wants to access a protected network resource. Kerberos service ticket 
   operation audit events can be used to track user activity
 eventID:
-  - 4769 #(S, F): A Kerberos service ticket was requested
-  - 4770 #(S): A Kerberos service ticket was renewed
-  - 4773 #(F): A Kerberos service ticket request failed
+  - 4769 # (S, F): A Kerberos service ticket was requested
+  - 4770 # (S): A Kerberos service ticket was renewed
+  - 4773 # (F): A Kerberos service ticket request failed
 references:
   - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-kerberos-service-ticket-operations.md
 configuration: |

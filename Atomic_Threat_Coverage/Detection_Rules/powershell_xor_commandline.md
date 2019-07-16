@@ -9,7 +9,7 @@
 | Severity Level       | medium |
 | False Positives      | <ul><li>unknown</li></ul>  |
 | Development Status   | experimental |
-| References           |  There are no documented References for this Detection Rule yet.  |
+| References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Sami Ruohonen |
 
 

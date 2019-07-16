@@ -6,10 +6,10 @@ description: >
   which include mutexes and semaphores. Only kernel objects with a matching 
   system access control list (SACL) generate security audit events
 eventID: 
-  - 4656 #(S, F): A handle to an object was requested
-  - 4658 #(S): The handle to an object was closed
-  - 4660 #(S): An object was deleted
-  - 4663 #(S): An attempt was made to access an object
+  - 4656 # (S, F): A handle to an object was requested
+  - 4658 # (S): The handle to an object was closed
+  - 4660 # (S): An object was deleted
+  - 4663 # (S): An attempt was made to access an object
 references:
   - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/audit-kernel-object.md
   - https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-kernel-object

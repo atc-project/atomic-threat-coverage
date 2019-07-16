@@ -1,0 +1,30 @@
+title: LP_0045_windows_audit_filtering_platform_connection
+default: Not configured
+volume: Extremely High # be careful with this policy, it requires extra filtering. take a look into list of events ("S" for succuss and "F" for failure) to make sure you are enabling only what is needed
+description: >
+  Audit Filtering Platform Connection determines whether the operating 
+  system generates audit events when connections are allowed or blocked 
+  by the Windows Filtering Platform
+eventID:
+  - 5031 # (F): The Windows Firewall Service blocked an application from accepting incoming connections on the network
+  - 5150 # (-): The Windows Filtering Platform blocked a packet
+  - 5151 # (-): A more restrictive Windows Filtering Platform filter has blocked a packet
+  - 5154 # (S): The Windows Filtering Platform has permitted an application or service to listen on a port for incoming connections
+  - 5155 # (F): The Windows Filtering Platform has blocked an application or service from listening on a port for incoming connections
+  - 5156 # (S): The Windows Filtering Platform has permitted a connection
+  - 5157 # (F): The Windows Filtering Platform has blocked a connection
+  - 5158 # (S): The Windows Filtering Platform has permitted a bind to a local port
+  - 5159 # (F): The Windows Filtering Platform has blocked a bind to a local port
+references:
+  - https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-filtering-platform-connection
+configuration: |
+  Steps to implement logging policy with Group Policies:
+  ```
+  Computer Configuration >
+  Windows Settings >
+  Security Settings >
+  Advanced Security Audit Policy Settings >
+  Audit Policies >
+  Object Access >
+  Audit Filtering Platform Connection (Success,Failure)
+  ```

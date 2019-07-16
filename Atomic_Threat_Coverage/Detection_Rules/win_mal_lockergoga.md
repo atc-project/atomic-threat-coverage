@@ -7,8 +7,8 @@
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1064: Scripting](../Triggers/T1064.md)</li></ul>  |
 | Severity Level       | high |
-| False Positives      |  There are no documented False Positives for this Detection Rule yet.  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
+| False Positives      |  There are no documented False Positives for this Detection Rule yet  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://abuse.io/lockergoga.txt](https://abuse.io/lockergoga.txt)</li></ul>  |
 | Author               | Florian Roth |
 

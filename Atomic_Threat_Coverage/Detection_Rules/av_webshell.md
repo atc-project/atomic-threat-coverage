@@ -8,7 +8,7 @@
 | Trigger              | <ul><li>[T1100: Web Shell](../Triggers/T1100.md)</li></ul>  |
 | Severity Level       | critical |
 | False Positives      | <ul><li>Unlikely</li></ul>  |
-| Development Status   |  Development Status for this Detection Rule has not been defined yet.  |
+| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://www.nextron-systems.com/2018/09/08/antivirus-event-analysis-cheat-sheet-v1-4/](https://www.nextron-systems.com/2018/09/08/antivirus-event-analysis-cheat-sheet-v1-4/)</li></ul>  |
 | Author               | Florian Roth |
 

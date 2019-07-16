@@ -6,11 +6,11 @@ description: >
   shares: creation, deletion, modification, and access attempts. 
   Also, it shows failed SMB SPN checks.
 eventID:
-  - 5140
-  - 5142
-  - 5143
-  - 5144
-  - 5168
+  - 5140 # (S, F): A network share object was accessed
+  - 5142 # (S): A network share object was added
+  - 5143 # (S): A network share object was modified
+  - 5144 # (S): A network share object was deleted
+  - 5168 # (F): SPN check for SMB/SMB2 failed
 references:
     - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/audit-file-share.md
 configuration: |

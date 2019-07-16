@@ -4,25 +4,25 @@ volume: Low
 description: >
   Audit User Account Management determines whether the operating 
   system generates audit events when specific user account 
-  management tasks are performed.
+  management tasks are performed
 eventID:
-  - 4720
-  - 4722
-  - 4723
-  - 4724
-  - 4725
-  - 4726
-  - 4738
-  - 4740
-  - 4765
-  - 4766
-  - 4767
-  - 4780
-  - 4781
-  - 4794
-  - 4798
-  - 5376
-  - 5377
+  - 4720 # (S): A user account was created
+  - 4722 # (S): A user account was enabled
+  - 4723 # (S, F): An attempt was made to change an account's password
+  - 4724 # (S, F): An attempt was made to reset an account's password
+  - 4725 # (S): A user account was disabled
+  - 4726 # (S): A user account was deleted
+  - 4738 # (S): A user account was changed
+  - 4740 # (S): A user account was locked out
+  - 4765 # (S): SID History was added to an account
+  - 4766 # (F): An attempt to add SID History to an account failed
+  - 4767 # (S): A user account was unlocked
+  - 4780 # (S): The ACL was set on accounts which are members of administrators groups
+  - 4781 # (S): The name of an account was changed
+  - 4794 # (S, F): An attempt was made to set the Directory Services Restore Mode administrator password
+  - 4798 # (S): A user's local group membership was enumerated
+  - 5376 # (S): Credential Manager credentials were backed up
+  - 5377 # (S): Credential Manager credentials were restored from a backup
 references:
     - https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/audit-user-account-management.md
 configuration: |

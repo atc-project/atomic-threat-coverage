@@ -9,7 +9,7 @@
 | Severity Level       | low |
 | False Positives      | <ul><li>Software installation</li><li>Software updates</li></ul>  |
 | Development Status   | experimental |
-| References           |  There are no documented References for this Detection Rule yet.  |
+| References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
 | Other Tags           | <ul><li>car.2013-09-005</li><li>car.2013-09-005</li></ul> | 
 

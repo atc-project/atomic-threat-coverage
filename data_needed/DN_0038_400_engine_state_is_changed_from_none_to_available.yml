@@ -1,8 +1,8 @@
-title: DN_0038_400_windows_powershell_engine_lifecycle
+title: DN_0038_400_engine_state_is_changed_from_none_to_available
 description: >
-  TODO
+  Information about PowerShell engine state. Engine state is changed from None to Available
 loggingpolicy: 
-  - TODO
+  - None
 references:
   - https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/powershell/events/event-400.md
 category: OS Logs
