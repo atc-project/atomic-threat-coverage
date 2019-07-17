@@ -1,0 +1,44 @@
+title: DN_0075_4766_attempt_to_add_sid_history_to_an_account_failed
+description: An attempt to add SID History to an account failed
+loggingpolicy: 
+  - LP_0026_windows_audit_user_account_management
+references: 
+  - https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4766
+category: OS Logs
+platform: Windows
+type: Windows Log
+channel: Security
+provider: Microsoft-Windows-Security-Auditing
+fields: 
+  - EventID
+  - ComputerName        # redundant
+  - Computer
+  - Hostname            # redundant
+  - Subject
+  - SecurityID
+  - AccountName
+  - AccountDomain
+  - LogonID
+  - TargetAccount
+  - SecurityID
+  - AccountName
+  - AccountDomain
+  - SourceAccount
+  - AccountName
+  - AdditionalInformation
+  - Privileges
+sample: | # Event Schema only
+  An attempt to add SID History to an account failed.
+  Subject:
+  Security ID:-
+  Account Name:%5
+  Account Domain:%6
+  Logon ID:%7
+  Target Account:
+  Security ID:%4
+  Account Name:%2
+  Account Domain:%3
+  Source Account:
+  Account Name:%1
+  Additional Information:
+  Privileges:%8
