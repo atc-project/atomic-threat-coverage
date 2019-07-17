@@ -1,0 +1,48 @@
+title: DN_0074_4765_sid_history_was_added_to_an_account
+description: SID History was added to an account
+loggingpolicy: 
+  - LP_0026_windows_audit_user_account_management
+references: 
+  - https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4765
+category: OS Logs
+platform: Windows
+type: Windows Log
+channel: Security
+provider: Microsoft-Windows-Security-Auditing
+fields:
+  - EventID
+  - ComputerName        # redundant
+  - Computer
+  - Hostname            # redundant
+  - Subject
+  - SecurityID
+  - AccountName
+  - AccountDomain
+  - LogonID
+  - TargetAccount
+  - SecurityID
+  - AccountName
+  - AccountDomain
+  - SourceAccount
+  - SecurityID
+  - AccountName
+  - AdditionalInformation
+  - Privileges
+  - SIDList
+sample: | # Event Schema only
+  SID History was added to an account.
+  Subject:
+  Security ID:%6
+  Account Name:%7
+  Account Domain:%8
+  Logon ID:%9
+  Target Account:
+  Security ID:%5
+  Account Name:%3
+  Account Domain:%4
+  Source Account:
+  Security ID:%2
+  Account Name:%1
+  Additional Information:
+  Privileges:%10
+  SID List:%11

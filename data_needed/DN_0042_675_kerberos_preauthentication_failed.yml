@@ -1,0 +1,31 @@
+title: DN_0042_675_kerberos_preauthentication_failed
+description: Kerberos pre-authentication failed
+loggingpolicy: 
+  - LP_0004_windows_audit_logon
+references: 
+  - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=675
+category: OS Logs
+platform: Windows
+type: Windows Log
+channel: Security
+provider: Microsoft-Windows-Security-Auditing # technically there were no providers win 2k3/XP time
+fields:
+  - EventID
+  - ComputerName        # redundant
+  - Computer
+  - Hostname            # redundant
+  - UserName
+  - UserID              # SID
+  - UserSid             # redundant
+  - ServiceName
+  - PreAuthenticationType
+  - FailureCode
+  - ClientAddress
+sample: |
+  2019-07-18 00:56:03 ATC AUDIT_FAILURE 675 NT AUTHORITY\SYSTEM Pre-authentication failed:
+    User Name:  Administrator
+    User ID:    %{S-1-5-21-3160476663-3818360063-188177334-500}
+    Service Name: krbtgt/DC
+    Pre-Authentication Type:  0x2
+    Failure Code: 0x18
+    Client Address: 127.0.0.1
