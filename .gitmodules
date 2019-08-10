@@ -4,3 +4,6 @@
 [submodule "triggers/atomic-red-team"]
 	path = triggers/atomic-red-team
 	url = https://github.com/redcanaryco/atomic-red-team
+[submodule "atomic-mitigation"]
+	path = atomic-mitigation
+	url = https://github.com/atomic-threat-coverage/atomic-mitigation
