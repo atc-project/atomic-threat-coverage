@@ -1,3 +1,53 @@
+ta_mapping = {
+    "attack.initial_access": [
+        "Initial Access",
+        "TA0001"
+    ],
+    "attack.execution": [
+        "Execution",
+        "TA0002"
+    ],
+    "attack.persistence": [
+        "Persistence",
+        "TA0003"
+    ],
+    "attack.privilege_escalation": [
+        "Privilege Escalation",
+        "TA0004"
+    ],
+    "attack.defense_evasion": [
+        "Defense Evasion",
+        "TA0005"
+    ],
+    "attack.credential_access": [
+        "Credential Access",
+        "TA0006"
+    ],
+    "attack.discovery": [
+        "Discovery",
+        "TA0007"
+    ],
+    "attack.lateral_movement": [
+        "Lateral Movement",
+        "TA0008"
+    ],
+    "attack.collection": [
+        "Collection",
+        "TA0009"
+    ],
+    "attack.exfiltration": [
+        "Exfiltration",
+        "TA0010"
+    ],
+    "attack.command_and_control": [
+        "Command and Control",
+        "TA0011"
+    ],
+    "attack.impact": [
+        "Impact",
+        "TA0040"
+    ]
+}
 te_mapping = {
     "T1156": ".bash_profile and .bashrc",
     "T1134": "Access Token Manipulation",
@@ -159,7 +209,7 @@ te_mapping = {
     "T1086": "PowerShell",
     "T1145": "Private Keys",
     "T1057": "Process Discovery",
-    "T1186": "Process Doppelgänging",
+    "T1186": "Process Doppelg\u00e4nging",
     "T1093": "Process Hollowing",
     "T1055": "Process Injection",
     "T1012": "Query Registry",
@@ -242,19 +292,47 @@ te_mapping = {
     "T1084": "Windows Management Instrumentation Event Subscription",
     "T1028": "Windows Remote Management",
     "T1004": "Winlogon Helper DLL",
-    "T1220": "XSL Script Processing",
+    "T1220": "XSL Script Processing"
 }
-ta_mapping = {
-    "attack.initial_access": ("Initial Access", "TA0001"),
-    "attack.execution": ("Execution", "TA0002"),
-    "attack.persistence": ("Persistence", "TA0003"),
-    "attack.privilege_escalation": ("Privilege Escalation", "TA0004"),
-    "attack.defense_evasion": ("Defense Evasion", "TA0005"),
-    "attack.credential_access": ("Credential Access", "TA0006"),
-    "attack.discovery": ("Discovery", "TA0007"),
-    "attack.lateral_movement": ("Lateral Movement", "TA0008"),
-    "attack.collection": ("Collection", "TA0009"),
-    "attack.exfiltration": ("Exfiltration", "TA0010"),
-    "attack.command_and_control": ("Command and Control", "TA0011"),
-    "attack.impact": ("Impact", "TA0040"),
+mi_mapping = {
+    "M1036": "Account Use Policies",
+    "M1015": "Active Directory Configuration",
+    "M1049": "Antivirus/Antimalware",
+    "M1048": "Application Isolation and Sandboxing",
+    "M1047": "Audit",
+    "M1040": "Behavior Prevention on Endpoint",
+    "M1046": "Boot Integrity",
+    "M1045": "Code Signing",
+    "M1043": "Credential Access Protection",
+    "M1053": "Data Backup",
+    "M1042": "Disable or Remove Feature or Program",
+    "M1055": "Do Not Mitigate",
+    "M1041": "Encrypt Sensitive Information",
+    "M1039": "Environment Variable Permissions",
+    "M1038": "Execution Prevention",
+    "M1050": "Exploit Protection",
+    "M1037": "Filter Network Traffic",
+    "M1035": "Limit Access to Resource Over Network",
+    "M1034": "Limit Hardware Installation",
+    "M1033": "Limit Software Installation",
+    "M1032": "Multi-factor Authentication",
+    "M1031": "Network Intrusion Prevention",
+    "M1030": "Network Segmentation",
+    "M1028": "Operating System Configuration",
+    "M1027": "Password Policies",
+    "M1026": "Privileged Account Management",
+    "M1025": "Privileged Process Integrity",
+    "M1029": "Remote Data Storage",
+    "M1022": "Restrict File and Directory Permissions",
+    "M1044": "Restrict Library Loading",
+    "M1024": "Restrict Registry Permissions",
+    "M1021": "Restrict Web-Based Content",
+    "M1020": "SSL/TLS Inspection",
+    "M1054": "Software Configuration",
+    "M1019": "Threat Intelligence Program",
+    "M1051": "Update Software",
+    "M1052": "User Account Control",
+    "M1018": "User Account Management",
+    "M1017": "User Training",
+    "M1016": "Vulnerability Scanning"
 }
