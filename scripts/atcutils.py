@@ -15,6 +15,7 @@ from jinja2 import Environment, FileSystemLoader
 from pprint import pprint
 import warnings
 from yaml.scanner import ScannerError
+from attack_mapping import te_mapping
 
 
 
@@ -224,15 +225,7 @@ class ATCutils:
             * Output: Name, string"""
 
         id = attack_technique_id.replace('t', 'T')
-
-        with open('enterprise-attack.json') as f:
-            data = json.load(f)
-
-        for object in data["objects"]:
-            if object['type'] == "attack-pattern":
-                if object['external_references'][0]['external_id'] == id:
-                    name = object['name']
-                    return name
+        return te_mapping.get(id)
 
     @staticmethod
     def confluence_get_page_id(apipath, auth, space, title):
