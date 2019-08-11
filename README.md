@@ -2,7 +2,7 @@
 
 # Atomic Threat Coverage
 
-Automatically generated actionable analytics designed to combat threats based on MITRE's [ATT&CK](https://attack.mitre.org/).
+Actionable analytics designed to combat threats based on MITRE's [ATT&CK](https://attack.mitre.org/).
 
 ![](images/logo_v1.png)
 
