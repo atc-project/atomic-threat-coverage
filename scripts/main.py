@@ -47,6 +47,10 @@ if __name__ == '__main__':
                         help='Build full repository')
     group2.add_argument('-LP', '--loggingpolicy', action='store_true',
                         help='Build logging policy part')
+    group2.add_argument('-MS', '--mitigationsystem', action='store_true',
+                        help='Build mitigation systems part')
+    group2.add_argument('-MP', '--mitigationpolicy', action='store_true',
+                        help='Build mitigation policies part')
     group2.add_argument('-DN', '--dataneeded', action='store_true',
                         help='Build data needed part')
     group2.add_argument('-DR', '--detectionrule', action='store_true',
@@ -94,6 +98,7 @@ if __name__ == '__main__':
 
     if args.markdown:
         PopulateMarkdown(auto=args.auto, lp=args.loggingpolicy,
+                         ms=args.mitigationsystem, mp=args.mitigationpolicy,
                          dn=args.dataneeded, dr=args.detectionrule,
                          tg=args.triggers, en=args.enrichment,
                          ra=args.responseactions, rp=args.responseplaybook,
@@ -108,6 +113,7 @@ if __name__ == '__main__':
         auth = HTTPBasicAuth(mail, password)
 
         PopulateConfluence(auth=auth, auto=args.auto, lp=args.loggingpolicy,
+                           ms=args.mitigationsystem, mp=args.mitigationpolicy,
                            dn=args.dataneeded, dr=args.detectionrule,
                            tg=args.triggers, en=args.enrichment,
                            ra=args.responseactions, rp=args.responseplaybook,

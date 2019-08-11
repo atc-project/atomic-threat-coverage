@@ -1,0 +1,10 @@
+| Title           | {{ title }}                                                                          |
+|:----------------|:-------------------------------------------------------------------------------------|
+| Platform        | <ul>{% for item in platform %}<li>{{ item }}</li>{% endfor %}</ul>                   |
+| Minimum Version | <ul>{% for version in minimum_version %}<li>{{ version }}</li>{% endfor %}</ul>      |
+| References      | <ul>{% for ref in references %}<li>[{{ ref }}]({{ ref }})</li>{% endfor %}</ul>      |
+
+## Description
+
+{{ description }}
+

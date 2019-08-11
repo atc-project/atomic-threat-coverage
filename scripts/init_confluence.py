@@ -48,7 +48,8 @@ def main(c_auth=None):
 
     spaces = ["Detection Rules", "Logging Policies",
               "Data Needed", "Triggers", "Response Actions",
-              "Response Playbooks", "Enrichments", "Customers"]
+              "Response Playbooks", "Enrichments", "Customers",
+              "Mitigation Systems", "Mitigation Policies"]
 
     for space in spaces:
         print("Creating %s.." % space)
