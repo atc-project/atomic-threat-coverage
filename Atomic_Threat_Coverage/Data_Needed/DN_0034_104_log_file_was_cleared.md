@@ -1,13 +1,14 @@
-| Title          | DN_0034_104_log_file_was_cleared                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | Windows log file was cleared                                                                                                |
-| Logging Policy | <ul><li> Not existing </li></ul> |
-| References     | <ul><li>[http://kb.eventtracker.com/evtpass/evtpages/EventId_104_Microsoft-Windows-Eventlog_64337.asp](http://kb.eventtracker.com/evtpass/evtpages/EventId_104_Microsoft-Windows-Eventlog_64337.asp)</li></ul>                                  |
-| Platform       | Windows   |
-| Type           | Windows Log 		| 
-| Channel        | System    |
-| Provider       | Microsoft-Windows-Eventlog   |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>Channel</li></ul>                                               |
+| Title             | DN_0034_104_log_file_was_cleared                                                                                                      |
+|:------------------|:-----------------------------------------------------------------------------------------------------------------|
+| Description       | Windows log file was cleared                                                                                                |
+| Logging Policy    | <ul><li> Not existing </li></ul> |
+| Mitigation Policy | <ul></ul> |
+| References     		| <ul><li>[http://kb.eventtracker.com/evtpass/evtpages/EventId_104_Microsoft-Windows-Eventlog_64337.asp](http://kb.eventtracker.com/evtpass/evtpages/EventId_104_Microsoft-Windows-Eventlog_64337.asp)</li></ul>                                  |
+| Platform       		| Windows   |
+| Type           		| Windows Log 		| 
+| Channel        		| System    |
+| Provider       		| Microsoft-Windows-Eventlog   |
+| Fields         		| <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>Channel</li></ul>                                               |
 
 
 ## Log Samples

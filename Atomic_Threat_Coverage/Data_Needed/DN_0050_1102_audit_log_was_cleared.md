@@ -1,13 +1,14 @@
-| Title          | DN_0050_1102_audit_log_was_cleared                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | This event generates every time Windows Security audit log was cleared                                                                                                |
-| Logging Policy | <ul><li> Not existing </li></ul> |
-| References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-1102.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-1102.md)</li></ul>                                  |
-| Platform       | Windows   |
-| Type           | Windows Log 		| 
-| Channel        | Security    |
-| Provider       | Microsoft-Windows-Eventlog   |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li></ul>                                               |
+| Title             | DN_0050_1102_audit_log_was_cleared                                                                                                      |
+|:------------------|:-----------------------------------------------------------------------------------------------------------------|
+| Description       | This event generates every time Windows Security audit log was cleared                                                                                                |
+| Logging Policy    | <ul><li> Not existing </li></ul> |
+| Mitigation Policy | <ul></ul> |
+| References     		| <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-1102.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-1102.md)</li></ul>                                  |
+| Platform       		| Windows   |
+| Type           		| Windows Log 		| 
+| Channel        		| Security    |
+| Provider       		| Microsoft-Windows-Eventlog   |
+| Fields         		| <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li></ul>                                               |
 
 
 ## Log Samples

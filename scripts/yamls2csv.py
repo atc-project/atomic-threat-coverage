@@ -95,8 +95,8 @@ def main(**kwargs):
                                 ras = [ra for ra in ras_buf if ra.startswith('RA')]
                                 if len(ras) < 1:
                                     ras = ['title']
-                                if len(rp) > 1:
-                                    print('kek')
+                                #if len(rp) > 1:
+                                    #todo
                                 for ra in ras:
                                     lp['title'] = lp['title'].replace('\n', '')
                                     result.append([customer, tactic, technique_name, alert['title'], dn['category'],

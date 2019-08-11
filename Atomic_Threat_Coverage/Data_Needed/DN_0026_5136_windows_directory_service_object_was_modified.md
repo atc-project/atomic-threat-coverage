@@ -1,13 +1,14 @@
-| Title          | DN_0026_5136_windows_directory_service_object_was_modified                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | A directory service object was modified                                                                                                |
-| Logging Policy | <ul><li>[LP_0025_windows_audit_directory_service_changes](../Logging_Policies/LP_0025_windows_audit_directory_service_changes.md)</li></ul> |
-| References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-5136.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-5136.md)</li></ul>                                  |
-| Platform       | Windows   |
-| Type           | Windows Log 		| 
-| Channel        | Security    |
-| Provider       | Microsoft-Windows-Security-Auditing   |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>OpCorrelationID</li><li>AppCorrelationID</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>DSName</li><li>DSType</li><li>ObjectDN</li><li>ObjectGUID</li><li>ObjectClass</li><li>AttributeLDAPDisplayName</li><li>AttributeSyntaxOID</li><li>AttributeValue</li><li>OperationType</li></ul>                                               |
+| Title             | DN_0026_5136_windows_directory_service_object_was_modified                                                                                                      |
+|:------------------|:-----------------------------------------------------------------------------------------------------------------|
+| Description       | A directory service object was modified                                                                                                |
+| Logging Policy    | <ul><li>[LP_0025_windows_audit_directory_service_changes](../Logging_Policies/LP_0025_windows_audit_directory_service_changes.md)</li></ul> |
+| Mitigation Policy | <ul></ul> |
+| References     		| <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-5136.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-5136.md)</li></ul>                                  |
+| Platform       		| Windows   |
+| Type           		| Windows Log 		| 
+| Channel        		| Security    |
+| Provider       		| Microsoft-Windows-Security-Auditing   |
+| Fields         		| <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>OpCorrelationID</li><li>AppCorrelationID</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>DSName</li><li>DSType</li><li>ObjectDN</li><li>ObjectGUID</li><li>ObjectClass</li><li>AttributeLDAPDisplayName</li><li>AttributeSyntaxOID</li><li>AttributeValue</li><li>OperationType</li></ul>                                               |
 
 
 ## Log Samples

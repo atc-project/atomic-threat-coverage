@@ -3,7 +3,7 @@
 | Description    | Response playbook for Phishing Email case.                                        	|
 | ATT&amp;CK Tactic    |<ul><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul>  |
 | ATT&amp;CK Technique |<ul><li>[T1193: Spearphishing Attachment](https://attack.mitre.org/tactics/T1193)</li><li>[T1192: Spearphishing Link](https://attack.mitre.org/tactics/T1192)</li></ul>                             |
-| Tags    |<ul><li>phishinng</li></ul>    	|
+| Tags    |<ul><li>phishing</li></ul>    	|
 | Severity    | M                                             		|
 | TLP    | AMBER                                                            |
 | PAP    | WHITE                                                            |

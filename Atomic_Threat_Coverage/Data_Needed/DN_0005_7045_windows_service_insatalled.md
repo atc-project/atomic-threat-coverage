@@ -1,13 +1,14 @@
-| Title          | DN_0005_7045_windows_service_insatalled                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | A service was installed in the system                                                                                                |
-| Logging Policy | <ul><li> Not existing </li></ul> |
-| References     | <ul><li>[None](None)</li></ul>                                  |
-| Platform       | Windows   |
-| Type           | Windows Log 		| 
-| Channel        | System    |
-| Provider       | Service Control Manager   |
-| Fields         | <ul><li>EventID</li><li>Hostname</li><li>Computer</li><li>ProcessID</li><li>ServiceName</li><li>ImagePath</li><li>ServiceFileName</li><li>ServiceType</li><li>StartType</li><li>AccountName</li><li>UserSid</li></ul>                                               |
+| Title             | DN_0005_7045_windows_service_insatalled                                                                                                      |
+|:------------------|:-----------------------------------------------------------------------------------------------------------------|
+| Description       | A service was installed in the system                                                                                                |
+| Logging Policy    | <ul><li> Not existing </li></ul> |
+| Mitigation Policy | <ul></ul> |
+| References     		| <ul><li>[None](None)</li></ul>                                  |
+| Platform       		| Windows   |
+| Type           		| Windows Log 		| 
+| Channel        		| System    |
+| Provider       		| Service Control Manager   |
+| Fields         		| <ul><li>EventID</li><li>Hostname</li><li>Computer</li><li>ProcessID</li><li>ServiceName</li><li>ImagePath</li><li>ServiceFileName</li><li>ServiceType</li><li>StartType</li><li>AccountName</li><li>UserSid</li></ul>                                               |
 
 
 ## Log Samples

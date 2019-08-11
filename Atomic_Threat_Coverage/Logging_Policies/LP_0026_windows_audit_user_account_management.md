@@ -1,6 +1,6 @@
 | Title          | LP_0026_windows_audit_user_account_management                                                                     |
 |:---------------|:--------------------------------------------------------------------------------|
-| Description    | Audit User Account Management determines whether the operating  system generates audit events when specific user account  management tasks are performed.                                                               |
+| Description    | Audit User Account Management determines whether the operating  system generates audit events when specific user account  management tasks are performed                                                               |
 | Default        | Not configured                                                                   |
 | Event Volume   | Low                                                                    |
 | EventID        | <ul><li>4720</li><li>4722</li><li>4723</li><li>4724</li><li>4725</li><li>4726</li><li>4738</li><li>4740</li><li>4765</li><li>4766</li><li>4767</li><li>4780</li><li>4781</li><li>4794</li><li>4798</li><li>5376</li><li>5377</li></ul>         |

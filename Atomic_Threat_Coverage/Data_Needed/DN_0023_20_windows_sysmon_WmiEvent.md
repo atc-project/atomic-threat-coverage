@@ -1,13 +1,14 @@
-| Title          | DN_0023_20_windows_sysmon_WmiEvent                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | This event logs the registration of WMI consumers, recording the consumer  name, log, and destination                                                                                                |
-| Logging Policy | <ul><li>[LP_0010_windows_sysmon_WmiEvent](../Logging_Policies/LP_0010_windows_sysmon_WmiEvent.md)</li></ul> |
-| References     | <ul><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-20.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-20.md)</li><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90020](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90020)</li></ul>                                  |
-| Platform       | Windows   |
-| Type           | Applications and Services Logs 		| 
-| Channel        | Microsoft-Windows-Sysmon/Operational    |
-| Provider       | Microsoft-Windows-Sysmon   |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>EventType</li><li>Operation</li><li>User</li><li>Name</li><li>Type</li><li>Destination</li><li>RuleName</li></ul>                                               |
+| Title             | DN_0023_20_windows_sysmon_WmiEvent                                                                                                      |
+|:------------------|:-----------------------------------------------------------------------------------------------------------------|
+| Description       | This event logs the registration of WMI consumers, recording the consumer  name, log, and destination                                                                                                |
+| Logging Policy    | <ul><li>[LP_0010_windows_sysmon_WmiEvent](../Logging_Policies/LP_0010_windows_sysmon_WmiEvent.md)</li></ul> |
+| Mitigation Policy | <ul></ul> |
+| References     		| <ul><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-20.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-20.md)</li><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90020](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90020)</li></ul>                                  |
+| Platform       		| Windows   |
+| Type           		| Applications and Services Logs 		| 
+| Channel        		| Microsoft-Windows-Sysmon/Operational    |
+| Provider       		| Microsoft-Windows-Sysmon   |
+| Fields         		| <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>EventType</li><li>Operation</li><li>User</li><li>Name</li><li>Type</li><li>Destination</li><li>RuleName</li></ul>                                               |
 
 
 ## Log Samples
