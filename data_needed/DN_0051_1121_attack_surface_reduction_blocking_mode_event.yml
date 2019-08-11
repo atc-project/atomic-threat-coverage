@@ -1,5 +1,7 @@
 title: DN_0051_1121_attack_surface_reduction_blocking_mode_event
 description: Event generated when an attack surface reduction rule fires in block mode
+loggingpolicy:
+  - None
 mitigation_policy:
   - MP_0001_windows_asr_block_credential_stealing_from_lsass
 references:
