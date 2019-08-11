@@ -371,13 +371,12 @@ Oczywiście. My również mamy kilka reguł, które nie są automatycznie konwer
 
 ## TODO
 
-- [ ] Wydewelopowanie generowania szablonów TheHive Case bazując na Response Playbooks
+- [x] Wydewelopowanie generowania szablonów TheHive Case bazując na Response Playbooks
 - [ ] wydewelopowanie dokumentacji dla customowego modułu danych ATC (Data Needed, Logging Policies, etc)
-- [ ] Wydewelopowanie kontenera docker dla tego narzędzia
-- [ ] Implementacja modułu "Mitigation Systems"
+- [x] Wydewelopowanie kontenera docker dla tego narzędzia
+- [x] Implementacja modułu "Mitigation Systems"
 - [ ] Implementacja modułu "Hardening Policies" 
-- [ ] Implementacja jednolitego Modelu Danych (nazwy pól)
-- [ ] Implementacja nowego modułu - "Visualisation" jako pliki yaml z wizaulizacją/dashboardami Kibana z możliwością przekonwertowania do komend curl w celu wrzucenia ich do Elasticsearch
+- [x] Implementacja nowego modułu - "Visualisation" jako pliki yaml z wizaulizacją/dashboardami Kibana z możliwością przekonwertowania do komend curl w celu wrzucenia ich do Elasticsearch
 
 ## Linki
 
