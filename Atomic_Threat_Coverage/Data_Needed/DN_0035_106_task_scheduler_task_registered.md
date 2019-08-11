@@ -1,13 +1,14 @@
-| Title          | DN_0035_106_task_scheduler_task_registered                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | General Windows Task Registration                                                                                                |
-| Logging Policy | <ul><li> Not existing </li></ul> |
-| References     | <ul><li>[https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc774938(v=ws.10)](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc774938(v=ws.10))</li></ul>                                  |
-| Platform       | Windows   |
-| Type           | Applications and Services Logs 		| 
-| Channel        | Microsoft-Windows-TaskScheduler/Operational    |
-| Provider       | Microsoft-Windows-TaskScheduler   |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>TaskName</li><li>UserContext</li></ul>                                               |
+| Title             | DN_0035_106_task_scheduler_task_registered                                                                                                      |
+|:------------------|:-----------------------------------------------------------------------------------------------------------------|
+| Description       | General Windows Task Registration                                                                                                |
+| Logging Policy    | <ul><li> Not existing </li></ul> |
+| Mitigation Policy | <ul></ul> |
+| References     		| <ul><li>[https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc774938(v=ws.10)](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc774938(v=ws.10))</li></ul>                                  |
+| Platform       		| Windows   |
+| Type           		| Applications and Services Logs 		| 
+| Channel        		| Microsoft-Windows-TaskScheduler/Operational    |
+| Provider       		| Microsoft-Windows-TaskScheduler   |
+| Fields         		| <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>TaskName</li><li>UserContext</li></ul>                                               |
 
 
 ## Log Samples

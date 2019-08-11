@@ -1,13 +1,14 @@
-| Title          | DN_0061_4660_object_was_deleted                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | This event generates when an object was deleted. The object could be a  file system, kernel, or registry object. This event generates only if  "Delete" auditing is set in object’s SACL. This event doesn’t contain  the name of the deleted object (only the Handle ID). It is better to  use "4663(S): An attempt was made to access an object" with DELETE  access to track object deletion. The advantage of this event is that  it’s generated only during real delete operations. In contrast,  "4663(S): An attempt was made to access an object" also generates  during other actions, such as object renaming                                                                                                |
-| Logging Policy | <ul><li>[LP_0102_windows_audit_file_system](../Logging_Policies/LP_0102_windows_audit_file_system.md)</li><li>[LP_0039_windows_audit_kernel_object](../Logging_Policies/LP_0039_windows_audit_kernel_object.md)</li><li>[LP_0103_windows_audit_registry](../Logging_Policies/LP_0103_windows_audit_registry.md)</li></ul> |
-| References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4660.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4660.md)</li></ul>                                  |
-| Platform       | Windows   |
-| Type           | Windows Log 		| 
-| Channel        | Security    |
-| Provider       | Microsoft-Windows-Security-Auditing   |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>ObjectServer</li><li>HandleId</li><li>ProcessId</li><li>ProcessName</li><li>TransactionId</li></ul>                                               |
+| Title             | DN_0061_4660_object_was_deleted                                                                                                      |
+|:------------------|:-----------------------------------------------------------------------------------------------------------------|
+| Description       | This event generates when an object was deleted. The object could be a  file system, kernel, or registry object. This event generates only if  "Delete" auditing is set in object’s SACL. This event doesn’t contain  the name of the deleted object (only the Handle ID). It is better to  use "4663(S): An attempt was made to access an object" with DELETE  access to track object deletion. The advantage of this event is that  it’s generated only during real delete operations. In contrast,  "4663(S): An attempt was made to access an object" also generates  during other actions, such as object renaming                                                                                                |
+| Logging Policy    | <ul><li>[LP_0102_windows_audit_file_system](../Logging_Policies/LP_0102_windows_audit_file_system.md)</li><li>[LP_0039_windows_audit_kernel_object](../Logging_Policies/LP_0039_windows_audit_kernel_object.md)</li><li>[LP_0103_windows_audit_registry](../Logging_Policies/LP_0103_windows_audit_registry.md)</li></ul> |
+| Mitigation Policy | <ul></ul> |
+| References     		| <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4660.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4660.md)</li></ul>                                  |
+| Platform       		| Windows   |
+| Type           		| Windows Log 		| 
+| Channel        		| Security    |
+| Provider       		| Microsoft-Windows-Security-Auditing   |
+| Fields         		| <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>ObjectServer</li><li>HandleId</li><li>ProcessId</li><li>ProcessName</li><li>TransactionId</li></ul>                                               |
 
 
 ## Log Samples

@@ -18,7 +18,7 @@ Windows Settings >
 Security Settings >
 Advanced Audit Configuration >
 Detailed Tracking >
-Audit Process Creation (Success,Failure)
+Audit Process Creation (Success)
 ```
 
 

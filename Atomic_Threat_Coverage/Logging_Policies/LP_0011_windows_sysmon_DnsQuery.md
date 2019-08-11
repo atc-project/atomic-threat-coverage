@@ -10,7 +10,7 @@
 
 ## Configuration
 
-This configuration should be further tunned according to baseline (filtration required).
+This configuration should be further tuned according to baseline (filtration required).
 
 Sample configuration:
 ```

@@ -3,6 +3,8 @@
 # Import ATC classes
 from dataneeded import DataNeeded
 from detectionrule import DetectionRule
+from mitigationsystem import MitigationSystem
+from mitigationpolicy import MitigationPolicy
 from loggingpolicy import LoggingPolicy
 # from triggers import Triggers
 from enrichment import Enrichment
@@ -27,10 +29,11 @@ class PopulateMarkdown:
     """Class for populating markdown repo"""
 
     def __init__(self, lp=False, dn=False, dr=False, en=False, tg=False,
-                 ra=False, rp=False, cu=False, auto=False, art_dir=False,
-                 atc_dir=False, lp_path=False, dn_path=False, dr_path=False,
-                 en_path=False, tg_path=False, ra_path=False, rp_path=False,
-                 cu_path=False, init=False):
+                 ra=False, rp=False, cu=False, ms=False, mp=False, auto=False,
+                 art_dir=False, atc_dir=False, lp_path=False, dn_path=False, 
+                 dr_path=False, en_path=False, tg_path=False, ra_path=False, 
+                 rp_path=False, cu_path=False, ms_path=False, mp_path=False,
+                 init=False):
         """Init"""
 
         # Check if atc_dir provided
@@ -57,6 +60,8 @@ class PopulateMarkdown:
         # Main logic
         if auto:
             self.logging_policy(lp_path)
+            self.mitigation_system(ms_path)
+            self.mitigation_policy(mp_path)
             self.data_needed(dn_path)
             self.enrichment(en_path)
             self.triggers(tg_path)
@@ -67,6 +72,12 @@ class PopulateMarkdown:
 
         if lp:
             self.logging_policy(lp_path)
+
+        if ms:
+            self.mitigation_system(ms_path)
+
+        if mp:
+            self.mitigation_policy(mp_path)
 
         if dn:
             self.data_needed(dn_path)
@@ -88,6 +99,7 @@ class PopulateMarkdown:
 
         if cu:
             self.customer(cu_path)
+    
 
     def init_export(self):
         try:
@@ -96,8 +108,54 @@ class PopulateMarkdown:
         except:
             return False
 
+    def mitigation_system(self, ms_path):
+        """Populate Mitigation Systems"""
+
+        print("Populating Mitigation Systems..")
+        if ms_path:
+            ms_list = glob.glob(ms_path + '*.yml')
+        else:
+            ms_dir = ATCconfig.get('mitigation_systems_directory')
+            ms_list = glob.glob(ms_dir + '/*.yml')
+        for ms_file in ms_list:
+            try:
+                ms = MitigationSystem(ms_file)
+                ms.render_template("markdown")
+                ms.save_markdown_file(atc_dir=self.atc_dir)
+            except Exception as e:
+                print(ms_file + " failed\n\n%s\n\n" % e)
+                print("Err message: %s" % e)
+                print('-' * 60)
+                traceback.print_exc(file=sys.stdout)
+                print('-' * 60)
+
+        print("Mitigation Systems populated!")
+
+    def mitigation_policy(self, mp_path):
+        """Populate Mitigation Policies"""
+
+        print("Populating Mitigation Policies..")
+        if mp_path:
+            mp_list = glob.glob(mp_path + '*.yml')
+        else:
+            mp_dir = ATCconfig.get('mitigation_policies_directory')
+            mp_list = glob.glob(mp_dir + '/*.yml')
+        for mp_file in mp_list:
+            try:
+                mp = MitigationPolicy(mp_file)
+                mp.render_template("markdown")
+                mp.save_markdown_file(atc_dir=self.atc_dir)
+            except Exception as e:
+                print(mp_file + " failed\n\n%s\n\n" % e)
+                print("Err message: %s" % e)
+                print('-' * 60)
+                traceback.print_exc(file=sys.stdout)
+                print('-' * 60)
+
+        print("Mitigation Policies populated!")
+
     def triggers(self, tg_path):
-        """Populate triggers"""
+        """Populate Triggers"""
 
         print("Populating Triggers..")
         if self.art_dir and self.atc_dir:
@@ -117,7 +175,7 @@ class PopulateMarkdown:
         return r
 
     def logging_policy(self, lp_path):
-        """Desc"""
+        """Populate Logging Policies"""
 
         print("Populating Logging Policies..")
         if lp_path:
@@ -140,7 +198,7 @@ class PopulateMarkdown:
         print("Logging Policies populated!")
 
     def data_needed(self, dn_path):
-        """Desc"""
+        """Populate Data Needed"""
 
         print("Populating Data Needed..")
         if dn_path:
@@ -162,7 +220,7 @@ class PopulateMarkdown:
         print("Data Needed populated!")
 
     def detection_rule(self, dr_path):
-        """Desc"""
+        """Populate Detection Rules"""
 
         print("Populating Detection Rules..")
         if dr_path:
@@ -191,7 +249,7 @@ class PopulateMarkdown:
         print("Detection Rules populated!")
 
     def enrichment(self, en_path):
-        """Nothing here yet"""
+        """Populate Enrichments"""
 
         print("Populating Enrichments..")
         if en_path:
@@ -213,7 +271,7 @@ class PopulateMarkdown:
         print("Enrichments populated!")
 
     def response_action(self, ra_path):
-        """Nothing here yet"""
+        """Populate Response Actions"""
 
         print("Populating Response Actions..")
         if ra_path:
@@ -235,7 +293,7 @@ class PopulateMarkdown:
         print("Response Actions populated!")
 
     def response_playbook(self, rp_path):
-        """Nothing here yet"""
+        """Populate Response Playbooks"""
 
         print("Populating Response Playbooks..")
         if rp_path:
@@ -257,7 +315,7 @@ class PopulateMarkdown:
         print("Response Playbooks populated!")
 
     def customer(self, cu_path):
-        """Nothing here yet"""
+        """Populate Customers"""
 
         print("Populating Customers..")
         if cu_path:

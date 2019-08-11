@@ -1,13 +1,14 @@
-| Title          | DN_0010_6_windows_sysmon_driver_loaded                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | The driver loaded events provides information about a driver being loaded on  the system. The configured hashes are provided as well as signature  information                                                                                                |
-| Logging Policy | <ul><li> Not existing </li></ul> |
-| References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90006](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90006)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-6.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-6.md)</li></ul>                                  |
-| Platform       | Windows   |
-| Type           | Applications and Services Logs 		| 
-| Channel        | Microsoft-Windows-Sysmon/Operational    |
-| Provider       | Microsoft-Windows-Sysmon   |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>ImageLoaded</li><li>Hashes</li><li>Sha256hash</li><li>Md5hash</li><li>Signed</li><li>Signature</li><li>SignatureStatus</li></ul>                                               |
+| Title             | DN_0010_6_windows_sysmon_driver_loaded                                                                                                      |
+|:------------------|:-----------------------------------------------------------------------------------------------------------------|
+| Description       | The driver loaded events provides information about a driver being loaded on  the system. The configured hashes are provided as well as signature  information                                                                                                |
+| Logging Policy    | <ul><li> Not existing </li></ul> |
+| Mitigation Policy | <ul></ul> |
+| References     		| <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90006](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90006)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-6.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-6.md)</li></ul>                                  |
+| Platform       		| Windows   |
+| Type           		| Applications and Services Logs 		| 
+| Channel        		| Microsoft-Windows-Sysmon/Operational    |
+| Provider       		| Microsoft-Windows-Sysmon   |
+| Fields         		| <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>ImageLoaded</li><li>Hashes</li><li>Sha256hash</li><li>Md5hash</li><li>Signed</li><li>Signature</li><li>SignatureStatus</li></ul>                                               |
 
 
 ## Log Samples
@@ -29,7 +30,7 @@
     <Correlation /> 
     <Execution ProcessID="2996" ThreadID="3992" /> 
     <Channel>Microsoft-Windows-Sysmon/Operational</Channel> 
-    <Computer>atc-win-10.atc.local</Computer> 
+    <Computer>atc-win-10</Computer> 
     <Security UserID="S-1-5-18" /> 
   </System>
   - <EventData>

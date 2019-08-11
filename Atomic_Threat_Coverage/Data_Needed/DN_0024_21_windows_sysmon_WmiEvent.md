@@ -1,13 +1,14 @@
-| Title          | DN_0024_21_windows_sysmon_WmiEvent                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | When a consumer binds to a filter, this event logs the consumer name and  filter path                                                                                                |
-| Logging Policy | <ul><li>[LP_0010_windows_sysmon_WmiEvent](../Logging_Policies/LP_0010_windows_sysmon_WmiEvent.md)</li></ul> |
-| References     | <ul><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-21.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-21.md)</li><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90021](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90021)</li></ul>                                  |
-| Platform       | Windows   |
-| Type           | Applications and Services Logs 		| 
-| Channel        | Microsoft-Windows-Sysmon/Operational    |
-| Provider       | Microsoft-Windows-Sysmon   |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>EventType</li><li>Operation</li><li>User</li><li>Consumer</li><li>RuleName</li><li>Filter</li></ul>                                               |
+| Title             | DN_0024_21_windows_sysmon_WmiEvent                                                                                                      |
+|:------------------|:-----------------------------------------------------------------------------------------------------------------|
+| Description       | When a consumer binds to a filter, this event logs the consumer name and  filter path                                                                                                |
+| Logging Policy    | <ul><li>[LP_0010_windows_sysmon_WmiEvent](../Logging_Policies/LP_0010_windows_sysmon_WmiEvent.md)</li></ul> |
+| Mitigation Policy | <ul></ul> |
+| References     		| <ul><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-21.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-21.md)</li><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90021](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90021)</li></ul>                                  |
+| Platform       		| Windows   |
+| Type           		| Applications and Services Logs 		| 
+| Channel        		| Microsoft-Windows-Sysmon/Operational    |
+| Provider       		| Microsoft-Windows-Sysmon   |
+| Fields         		| <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>EventType</li><li>Operation</li><li>User</li><li>Consumer</li><li>RuleName</li><li>Filter</li></ul>                                               |
 
 
 ## Log Samples

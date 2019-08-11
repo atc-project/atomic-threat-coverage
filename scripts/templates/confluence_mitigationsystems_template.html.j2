@@ -1,0 +1,54 @@
+<p class="auto-cursor-target"><br /></p>
+<ac:structured-macro ac:name="details" ac:schema-version="1" ac:macro-id="28b7d879-550c-4376-96ff-fdbdfddf710b">
+   <ac:rich-text-body>
+      <p class="auto-cursor-target"><br /></p>
+      <table class="wrapped confluenceTable">
+         <colgroup>
+            <col />
+            <col />
+         </colgroup>
+         <tbody>
+            <tr>
+               <th class="confluenceTh">Title</th>
+               <td class="confluenceTd">{{ title|e}}<br /></td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">Platform</th>
+               <td class="confluenceTd">
+               {%- if platform |length > 1 -%}<ul>{%endif%}
+                     {% for item in platform %}
+                     {%- if platform |length > 1 -%}<li>{%endif%}{{ item|e }}{%- if platform |length > 1 -%}</li>{%endif%}
+                     {% endfor %}
+               {%- if platform |length > 1 -%}</ul>{%endif%}
+               </td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">Minimum Version</th>
+               <td class="confluenceTd">
+               {%- if minimum_version |length > 1 -%}<ul>{%endif%}
+                     {% for item in minimum_version %}
+                     {%- if minimum_version |length > 1 -%}<li>{%endif%}{{ item|e }}{%- if minimum_version |length > 1 -%}</li>{%endif%}
+                     {% endfor %}
+               {%- if minimum_version |length > 1 -%}</ul>{%endif%}
+               </td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">References</th>
+               <td class="confluenceTd">
+                  {%- if references |length > 1 -%}<ul>{%endif%}
+                     {% for ref in references %}
+                     {%- if references |length > 1 -%}<li>{%endif%}<a href="{{ ref |e }}">{{ ref |e }}</a>{%- if references |length > 1 -%}</li>{%endif%}
+                     {% endfor %}
+                  {%- if references |length > 1 -%}</ul>{%endif%}
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <p class="auto-cursor-target"><br /></p>
+   </ac:rich-text-body>
+</ac:structured-macro>
+<h1>Description</h1>
+<pre><br/></pre>
+<ac:structured-macro ac:name="markdown"><ac:plain-text-body>
+	<![CDATA[{{ description }}]]>
+</ac:plain-text-body></ac:structured-macro>

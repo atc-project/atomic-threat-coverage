@@ -1,13 +1,14 @@
-| Title          | DN_0083_16_access_history_in_hive_was_cleared                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | The access history in hive was cleared updating X keys and creating Y modified pages                                                                                                |
-| Logging Policy | <ul><li> Not existing </li></ul> |
-| References     | <ul><li>[http://www.eventid.net/display-eventid-16-source-Microsoft-Windows-Kernel-General-eventno-11563-phase-1.htm](http://www.eventid.net/display-eventid-16-source-Microsoft-Windows-Kernel-General-eventno-11563-phase-1.htm)</li></ul>                                  |
-| Platform       | Windows   |
-| Type           | Windows Log 		| 
-| Channel        | System    |
-| Provider       | Microsoft-Windows-Kernel-General   |
-| Fields         | <ul><li>EventID</li><li>Hostname</li><li>Computer</li><li>HiveNameLength</li><li>HiveName</li><li>KeysUpdated</li><li>DirtyPages</li></ul>                                               |
+| Title             | DN_0083_16_access_history_in_hive_was_cleared                                                                                                      |
+|:------------------|:-----------------------------------------------------------------------------------------------------------------|
+| Description       | The access history in hive was cleared updating X keys and creating Y modified pages                                                                                                |
+| Logging Policy    | <ul><li> Not existing </li></ul> |
+| Mitigation Policy | <ul></ul> |
+| References     		| <ul><li>[http://www.eventid.net/display-eventid-16-source-Microsoft-Windows-Kernel-General-eventno-11563-phase-1.htm](http://www.eventid.net/display-eventid-16-source-Microsoft-Windows-Kernel-General-eventno-11563-phase-1.htm)</li></ul>                                  |
+| Platform       		| Windows   |
+| Type           		| Windows Log 		| 
+| Channel        		| System    |
+| Provider       		| Microsoft-Windows-Kernel-General   |
+| Fields         		| <ul><li>EventID</li><li>Hostname</li><li>Computer</li><li>HiveNameLength</li><li>HiveName</li><li>KeysUpdated</li><li>DirtyPages</li></ul>                                               |
 
 
 ## Log Samples

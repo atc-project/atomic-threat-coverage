@@ -1,0 +1,15 @@
+| Title                 | {{ title }}                                                                          |
+|:----------------------|:-------------------------------------------------------------------------------------|
+| Description           | {{ description }}                                                                    |
+| Platform              | <ul>{% for item in platform %}<li>{{ item }}</li>{% endfor %}</ul>                   |
+| ATT&amp;CK Tactic     | {% if tactics is defined and tactics is not none and tactics|length %}<ul>{% for tactic_name, tactic_id in tactics  %}<li>[{{tactic_id}}: {{tactic_name}}](https://attack.mitre.org/tactics/{{tactic_id}})</li>{% endfor %}</ul> {% else %} This Mitigation Policy wasn't mapped to ATT&amp;CK Tactic yet {% endif %} |
+| ATT&amp;CK Technique  | {% if techniques is defined and techniques is not none and techniques|length %}<ul>{% for technique_name, technique_id in techniques  %}<li>[{{technique_id}}: {{technique_name}}](https://attack.mitre.org/techniques/{{technique_id}})</li>{% endfor %}</ul> {% else %} This Mitigation Policy wasn't mapped to ATT&amp;CK Technique yet {% endif %} |
+| ATT&amp;CK Mitigation | {% if mitigations is defined and mitigations is not none and mitigations|length %}<ul>{% for mitigation_name, mitigation_id in mitigations  %}<li>[{{mitigation_id}}: {{mitigation_name}}](https://attack.mitre.org/mitigations/{{mitigation_id}})</li>{% endfor %}</ul> {% else %} This Mitigation Policy wasn't mapped to ATT&amp;CK Mitigation yet {% endif %} |
+| Mitigation System     | {% if mitigation_system is defined and mitigation_system is not none and mitigation_system|length %}<ul>{% for system in mitigation_system %}<li>[{{ system }}](../Mitigation_Systems/{{system}}.md)</li>{% endfor %}</ul> {% else %} This Mitigation Policy wasn't mapped to Mitigation System yet {% endif %} |
+| Prerequisites         | <ul>{% for req in prerequisites %}<li>{{ req }}</li>{% endfor %}</ul>                |
+| References            | <ul>{% for ref in references %}<li>[{{ ref }}]({{ ref }})</li>{% endfor %}</ul>      |
+{% if other_tags is defined and other_tags|length %}| Other Tags | <ul>{% for tag in other_tags %}<li>{{ tag }}</li>{% endfor %}</ul> | {% else %}{% endif %}
+
+## Configuration
+
+{{ configuration }}

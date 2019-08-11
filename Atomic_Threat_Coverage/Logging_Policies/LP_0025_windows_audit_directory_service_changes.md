@@ -1,6 +1,6 @@
 | Title          | LP_0025_audit_directory_service_changes                                                                     |
 |:---------------|:--------------------------------------------------------------------------------|
-| Description    | Audit Directory Service Changes determines whether  the operating system generates audit events when changes  are made to objects in Active Directory Domain Services (AD DS).                                                               |
+| Description    | Audit Directory Service Changes determines whether  the operating system generates audit events when changes  are made to objects in Active Directory Domain Services (AD DS)                                                               |
 | Default        | Partially (Other)                                                                   |
 | Event Volume   | High                                                                    |
 | EventID        | <ul><li>5136</li><li>5137</li><li>5138</li><li>5139</li><li>5141</li></ul>         |

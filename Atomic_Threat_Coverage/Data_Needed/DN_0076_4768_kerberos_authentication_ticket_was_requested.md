@@ -1,13 +1,14 @@
-| Title          | DN_0076_4768_kerberos_authentication_ticket_was_requested                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | This event generates every time Key Distribution Center issues a  Kerberos Ticket Granting Ticket (TGT). This event generates only  on domain controllers. If TGT issue fails then you will see  Failure event with Result Code field not equal to "0x0"                                                                                                |
-| Logging Policy | <ul><li>[LP_0038_windows_audit_kerberos_authentication_service](../Logging_Policies/LP_0038_windows_audit_kerberos_authentication_service.md)</li></ul> |
-| References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4768.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4768.md)</li></ul>                                  |
-| Platform       | Windows   |
-| Type           | Windows Log 		| 
-| Channel        | Security    |
-| Provider       | Microsoft-Windows-Security-Auditing   |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>TargetUserName</li><li>TargetDomainName</li><li>TargetSid</li><li>ServiceName</li><li>ServiceSid</li><li>TicketOptions</li><li>Status</li><li>TicketEncryptionType</li><li>PreAuthType</li><li>IpAddress</li><li>IpPort</li><li>CertIssuerName</li><li>CertSerialNumber</li><li>CertThumbprint</li></ul>                                               |
+| Title             | DN_0076_4768_kerberos_authentication_ticket_was_requested                                                                                                      |
+|:------------------|:-----------------------------------------------------------------------------------------------------------------|
+| Description       | This event generates every time Key Distribution Center issues a  Kerberos Ticket Granting Ticket (TGT). This event generates only  on domain controllers. If TGT issue fails then you will see  Failure event with Result Code field not equal to "0x0"                                                                                                |
+| Logging Policy    | <ul><li>[LP_0038_windows_audit_kerberos_authentication_service](../Logging_Policies/LP_0038_windows_audit_kerberos_authentication_service.md)</li></ul> |
+| Mitigation Policy | <ul></ul> |
+| References     		| <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4768.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4768.md)</li></ul>                                  |
+| Platform       		| Windows   |
+| Type           		| Windows Log 		| 
+| Channel        		| Security    |
+| Provider       		| Microsoft-Windows-Security-Auditing   |
+| Fields         		| <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>TargetUserName</li><li>TargetDomainName</li><li>TargetSid</li><li>ServiceName</li><li>ServiceSid</li><li>TicketOptions</li><li>Status</li><li>TicketEncryptionType</li><li>PreAuthType</li><li>IpAddress</li><li>IpPort</li><li>CertIssuerName</li><li>CertSerialNumber</li><li>CertThumbprint</li></ul>                                               |
 
 
 ## Log Samples

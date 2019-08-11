@@ -3,6 +3,8 @@
 # Import ATC classes
 from dataneeded import DataNeeded
 from detectionrule import DetectionRule
+from mitigationsystem import MitigationSystem
+from mitigationpolicy import MitigationPolicy
 from loggingpolicy import LoggingPolicy
 from triggers import Triggers
 from enrichment import Enrichment
@@ -27,10 +29,11 @@ class PopulateConfluence:
     """Desc"""
 
     def __init__(self, auth, lp=False, dn=False, dr=False, en=False, tg=False,
-                 ra=False, rp=False, cu=False, auto=False, art_dir=False,
-                 atc_dir=False, lp_path=False, dn_path=False, dr_path=False,
-                 en_path=False, tg_path=False, ra_path=False, rp_path=False,
-                 cu_path=False, init=False):
+                 ra=False, rp=False, cu=False, ms=False, mp=False, auto=False,
+                 art_dir=False, atc_dir=False, lp_path=False, dn_path=False,
+                 dr_path=False, en_path=False, tg_path=False, ra_path=False,
+                 rp_path=False, cu_path=False, ms_path=False, mp_path=False,
+                 init=False):
         """Desc"""
 
         self.auth = auth
@@ -69,6 +72,8 @@ class PopulateConfluence:
 
         # Main logic
         if auto:
+            self.mitigation_system(ms_path)
+            self.mitigation_policy(mp_path)
             self.logging_policy(lp_path)
             self.data_needed(dn_path)
             self.enrichment(en_path)
@@ -78,6 +83,12 @@ class PopulateConfluence:
             self.detection_rule(dr_path)
             self.customer(cu_path)
 
+        if ms:
+            self.mitigation_system(ms_path)
+
+        if mp:
+            self.mitigation_policy(mp_path)
+        
         if lp:
             self.logging_policy(lp_path)
 
@@ -144,6 +155,73 @@ class PopulateConfluence:
                 print('-' * 60)
 
         print("Triggers populated!")
+
+    def mitigation_system(self, ms_path):
+        """Populate Mitigation Systems"""
+
+        print("Populating Mitigation Systems..")
+        if ms_path:
+            ms_list = glob.glob(ms_path + '*.yml')
+        else:
+            ms_dir = ATCconfig.get('mitigation_systems_directory')
+            ms_list = glob.glob(ms_dir + '/*.yml')
+
+        for ms_file in ms_list:
+            try:
+                ms = MitigationSystem(ms_file)
+                ms.render_template("confluence")
+                confluence_data = {
+                    "title": ms.ms_parsed_file["title"],
+                    "spacekey": self.space,
+                    "parentid": str(ATCutils.confluence_get_page_id(
+                        self.apipath, self.auth, self.space,
+                        "Mitigation Systems")),
+                    "confluencecontent": ms.content,
+                }
+
+                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                                            self.auth)
+            except Exception as err:
+                print(ms_file + " failed")
+                print("Err message: %s" % err)
+                print('-' * 60)
+                traceback.print_exc(file=sys.stdout)
+                print('-' * 60)
+        print("Mitigation Systems populated!")
+
+    def mitigation_policy(self, mp_path):
+        """Populate Mitigation Policies"""
+
+        print("Populating Mitigation Policies..")
+        if mp_path:
+            mp_list = glob.glob(mp_path + '*.yml')
+        else:
+            mp_dir = ATCconfig.get('mitigation_policies_directory')
+            mp_list = glob.glob(mp_dir + '/*.yml')
+
+        for mp_file in mp_list:
+            try:
+                mp = MitigationPolicy(mp_file, apipath=self.apipath,
+                               auth=self.auth, space=self.space)
+                mp.render_template("confluence")
+                confluence_data = {
+                    "title": mp.mp_parsed_file["title"],
+                    "spacekey": self.space,
+                    "parentid": str(ATCutils.confluence_get_page_id(
+                        self.apipath, self.auth, self.space,
+                        "Mitigation Policies")),
+                    "confluencecontent": mp.content,
+                }
+
+                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                                            self.auth)
+            except Exception as err:
+                print(mp_file + " failed")
+                print("Err message: %s" % err)
+                print('-' * 60)
+                traceback.print_exc(file=sys.stdout)
+                print('-' * 60)
+        print("Mitigation Policies populated!")
 
     def logging_policy(self, lp_path):
         """Desc"""
