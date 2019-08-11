@@ -585,7 +585,7 @@ Absolutely. We also have some Detection Rules which couldn't be automatically co
 - [x] Develop TheHive Case Templates generation based on Response Playbooks
 - [x] Develop docker container for the project
 - [ ] Develop specification for custom ATC data entities (Data Needed, Logging Policies etc)
-- [ ] Implement "Mitigation Systems" entity
+- [x] Implement "Mitigation Systems" entity
 - [ ] Implement "Hardening Policies" entity
 - [x] Implement new entity — "Visualisation" with Kibana visualisations/dashboards stored in yaml files and option to convert them into curl commands for uploading them into Elasticsearch
 
