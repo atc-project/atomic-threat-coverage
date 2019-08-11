@@ -1,6 +1,6 @@
-The code for Atomic Threat Coverage is hosted on GitHub. [Pull requests](https://help.github.com/articles/about-pull-requests/) are welcome, for both code or documentation. You may also report an issue or bug [here](https://github.com/krakow2600/atomic-threat-coverage/issues).
+The code for Atomic Threat Coverage is hosted on GitHub. [Pull requests](https://help.github.com/articles/about-pull-requests/) are welcome, for both code or documentation. You may also report an issue or bug [here](https://github.com/atomic-threat-coverage/atomic-threat-coverage/issues).
 
-If you don't feel confident in your Git and/or Python skills, you can get up-to-speed with [these tutorials](http://matthew-brett.github.com/pydagogue/). If you would like to share an idea for improvement you can create [issue](https://github.com/krakow2600/atomic-threat-coverage/issues) or contact us in [Slack](https://join.slack.com/t/atomicthreatcoverage/shared_invite/enQtNTMwNDUyMjY2MTE5LTk1ZTY4NTBhYjFjNjhmN2E3OTMwYzc4MTEyNTVlMTVjMDZmMDg2OWYzMWRhMmViMjM5YmM1MjhkOWFmYjE5MjA) or [Telegram](https://t.me/atomic_threat_coverage) to discuss it.
+If you don't feel confident in your Git and/or Python skills, you can get up-to-speed with [these tutorials](http://matthew-brett.github.com/pydagogue/). If you would like to share an idea for improvement you can create [issue](https://github.com/atomic-threat-coverage/atomic-threat-coverage/issues) or contact us in [Slack](https://join.slack.com/t/atomicthreatcoverage/shared_invite/enQtNTMwNDUyMjY2MTE5LTk1ZTY4NTBhYjFjNjhmN2E3OTMwYzc4MTEyNTVlMTVjMDZmMDg2OWYzMWRhMmViMjM5YmM1MjhkOWFmYjE5MjA) or [Telegram](https://t.me/atomic_threat_coverage) to discuss it.
 
 # Documentation
 
@@ -84,4 +84,4 @@ git merge --no-ff master
 git push origin develop
 ```
 
-Add text description in [Tags](https://github.com/krakow2600/atomic-threat-coverage/tags).
+Add text description in [Tags](https://github.com/atomic-threat-coverage/atomic-threat-coverage/tags).
