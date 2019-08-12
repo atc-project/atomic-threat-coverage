@@ -443,7 +443,7 @@ At the same time it highlights which fields could be found only with specific en
 
 If you just want to try it with default dataset, you can use docker:
 
-1. Clone the repository or download an [archive](https://github.com/atomic-threat-coverage/atomic-threat-coverage/archive/master.zip) with it
+1. Clone the repository or download an [archive](https://github.com/atc-project/atomic-threat-coverage/archive/master.zip) with it
 2. Go to the project directory
 3. Download and update Sigma and Atomic Red Team projects using git submodules:
 ```bash
