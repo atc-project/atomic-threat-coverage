@@ -2,13 +2,13 @@
 
 First, please refer to [contribution-guide.org](http://www.contribution-guide.org/) for the steps we expect from contributors before submitting an issue or bug report. Be as concrete as possible, include relevant logs, package versions etc.
 
-Also, please check our [FAQ](https://github.com/atomic-threat-coverage/atomic-threat-coverage#faq).
+Also, please check our [FAQ](https://github.com/atc-project/atomic-threat-coverage#faq).
 
 The proper place for open-ended questions is [Slack](https://join.slack.com/t/atomicthreatcoverage/shared_invite/enQtNTMwNDUyMjY2MTE5LTk1ZTY4NTBhYjFjNjhmN2E3OTMwYzc4MTEyNTVlMTVjMDZmMDg2OWYzMWRhMmViMjM5YmM1MjhkOWFmYjE5MjA) or [Telegram](https://t.me/atomic_threat_coverage). 
 
 # How to add a new feature or create a pull request?
 
-1. Fork the [ATC repository](https://github.com/atomic-threat-coverage/atomic-threat-coverage)
+1. Fork the [ATC repository](https://github.com/atc-project/atomic-threat-coverage)
 2. Clone your fork: `git clone git clone https://gitlab.com/<YOUR GITLAB USERNAME>/atomic-threat-coverage.git`
 3. Create a new branch based on `develop`: `git checkout -b my-feature develop`
 4. Setup your Python enviroment
@@ -27,6 +27,6 @@ The proper place for open-ended questions is [Slack](https://join.slack.com/t/at
    - Any other useful information: links to other related Github or mailing list issues and discussions, benchmark graphs, academic papers…
    - Note that your Pull Request should be into **develop** branch, **not master**
 
-<!-- P.S. for developers: see our [Developer Page](https://gitlab.com/krakow2600/atomic-threat-coverage/wikis/Developer-guide) for details on the code style, CI, testing and similar. -->
+<!-- P.S. for developers: see our [Developer Page](https://github.com/atc-project/atomic-threat-coverage/wikis/Developer-guide) for details on the code style, CI, testing and similar. -->
 
 **Thanks and let's improve the open source world together!**
