@@ -85,46 +85,26 @@
                     </td>
                 </tr>
 {% endif %}
-            <tr>
-               <th class="confluenceTh">Mitigation System</th>
-               <td class="confluenceTd">
-                  {%- if mitigation_system |length > 1 -%}<ul>{%endif%}
-                     {% for ms_name, ms_page_id in mitigation_system %}
-                     {%- if mitigation_system |length > 1 -%}<li>{%endif%}<a href="{{confluence_viewpage_url}}{{ms_page_id}}">{{ ms_name }}</a>{%- if mitigation_system |length > 1 -%}</li>{%endif%}
-                     {% endfor %}
-                  {%- if mitigation_system |length > 1 -%}</ul>{%endif%}
-               </td>
-            </tr>
-            <tr>
-               <th class="confluenceTh">Platform</th>
-               <td class="confluenceTd">
-               {%- if platform |length > 1 -%}<ul>{%endif%}
-                     {% for item in platform %}
-                     {%- if platform |length > 1 -%}<li>{%endif%}{{ item|e }}{%- if platform |length > 1 -%}</li>{%endif%}
-                     {% endfor %}
-               {%- if platform |length > 1 -%}</ul>{%endif%}
-               </td>
-            </tr>
-            <tr>
-               <th class="confluenceTh">Minimum Version</th>
-               <td class="confluenceTd">
-               {%- if minimum_version |length > 1 -%}<ul>{%endif%}
-                     {% for item in minimum_version %}
-                     {%- if minimum_version |length > 1 -%}<li>{%endif%}{{ item|e }}{%- if minimum_version |length > 1 -%}</li>{%endif%}
-                     {% endfor %}
-               {%- if minimum_version |length > 1 -%}</ul>{%endif%}
-               </td>
-            </tr>
-            <tr>
-               <th class="confluenceTh">Prerequisites</th>
-               <td class="confluenceTd">
-                        {%- if prerequisites |length > 1 -%}<ul>{%endif%}
-                        {%- for tag in prerequisites %}
-                            {%- if prerequisites |length > 1 -%}<li>{%endif%}{{ tag }}{%- if prerequisites |length > 1 -%}</li>{%endif%}
-                        {%- endfor %}
-                        {%- if prerequisites |length > 1 -%}</ul>{%endif%}
-               </td>
-            </tr>
+                <tr>
+                   <th class="confluenceTh">Platform</th>
+                   <td class="confluenceTd">
+                   {%- if platform |length > 1 -%}<ul>{%endif%}
+                         {% for item in platform %}
+                         {%- if platform |length > 1 -%}<li>{%endif%}{{ item|e }}{%- if platform |length > 1 -%}</li>{%endif%}
+                         {% endfor %}
+                   {%- if platform |length > 1 -%}</ul>{%endif%}
+                   </td>
+                </tr>
+                <tr>
+                   <th class="confluenceTh">Minimum Version</th>
+                   <td class="confluenceTd">
+                   {%- if minimum_version |length > 1 -%}<ul>{%endif%}
+                         {% for item in minimum_version %}
+                         {%- if minimum_version |length > 1 -%}<li>{%endif%}{{ item|e }}{%- if minimum_version |length > 1 -%}</li>{%endif%}
+                         {% endfor %}
+                   {%- if minimum_version |length > 1 -%}</ul>{%endif%}
+                   </td>
+                </tr>
             <tr>
                <th class="confluenceTh">References</th>
                <td class="confluenceTd">

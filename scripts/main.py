@@ -51,6 +51,8 @@ if __name__ == '__main__':
                         help='Build mitigation systems part')
     group2.add_argument('-MP', '--mitigationpolicy', action='store_true',
                         help='Build mitigation policies part')
+    group2.add_argument('-HP', '--hardeningpolicy', action='store_true',
+                        help='Build hardening policy part')
     group2.add_argument('-DN', '--dataneeded', action='store_true',
                         help='Build data needed part')
     group2.add_argument('-DR', '--detectionrule', action='store_true',
@@ -102,7 +104,8 @@ if __name__ == '__main__':
                          dn=args.dataneeded, dr=args.detectionrule,
                          tg=args.triggers, en=args.enrichment,
                          ra=args.responseactions, rp=args.responseplaybook,
-                         cu=args.customers, init=args.init)
+                         cu=args.customers, hp=args.hardeningpolicy, 
+                         init=args.init)
 
     elif args.confluence:
         print("Provide confluence credentials\n")
@@ -117,7 +120,8 @@ if __name__ == '__main__':
                            dn=args.dataneeded, dr=args.detectionrule,
                            tg=args.triggers, en=args.enrichment,
                            ra=args.responseactions, rp=args.responseplaybook,
-                           cu=args.customers, init=args.init)
+                           cu=args.customers, hp=args.hardeningpolicy, 
+                           init=args.init)
 
     elif args.visualisations:
         ATCconfig = ATCutils.load_config("config.yml")
