@@ -3,6 +3,7 @@
 # Import ATC classes
 from dataneeded import DataNeeded
 from detectionrule import DetectionRule
+from hardeningpolicy import HardeningPolicy
 from mitigationsystem import MitigationSystem
 from mitigationpolicy import MitigationPolicy
 from loggingpolicy import LoggingPolicy
@@ -30,10 +31,10 @@ class PopulateMarkdown:
 
     def __init__(self, lp=False, dn=False, dr=False, en=False, tg=False,
                  ra=False, rp=False, cu=False, ms=False, mp=False, auto=False,
-                 art_dir=False, atc_dir=False, lp_path=False, dn_path=False, 
-                 dr_path=False, en_path=False, tg_path=False, ra_path=False, 
-                 rp_path=False, cu_path=False, ms_path=False, mp_path=False,
-                 init=False):
+                 hp=False, art_dir=False, atc_dir=False, lp_path=False, 
+                 dn_path=False, dr_path=False, en_path=False, tg_path=False, 
+                 ra_path=False, rp_path=False, cu_path=False, ms_path=False, 
+                 mp_path=False, hp_path=False, init=False):
         """Init"""
 
         # Check if atc_dir provided
@@ -59,6 +60,7 @@ class PopulateMarkdown:
 
         # Main logic
         if auto:
+            self.hardening_policy(hp_path)
             self.logging_policy(lp_path)
             self.mitigation_system(ms_path)
             self.mitigation_policy(mp_path)
@@ -69,6 +71,9 @@ class PopulateMarkdown:
             self.response_playbook(rp_path)
             self.detection_rule(dr_path)
             self.customer(cu_path)
+
+        if hp:
+            self.hardening_policy(hp_path)
 
         if lp:
             self.logging_policy(lp_path)
@@ -107,6 +112,29 @@ class PopulateMarkdown:
             return True
         except:
             return False
+
+    def hardening_policy(self, hp_path):
+        """Populate Hardening Policies"""
+
+        print("Populating Hardening Policies..")
+        if hp_path:
+            hp_list = glob.glob(hp_path + '*.yml')
+        else:
+            hp_dir = ATCconfig.get('hardening_policies_directory')
+            hp_list = glob.glob(hp_dir + '/*.yml')
+        for hp_file in hp_list:
+            try:
+                hp = HardeningPolicy(hp_file)
+                hp.render_template("markdown")
+                hp.save_markdown_file(atc_dir=self.atc_dir)
+            except Exception as e:
+                print(hp_file + " failed\n\n%s\n\n" % e)
+                print("Err message: %s" % e)
+                print('-' * 60)
+                traceback.print_exc(file=sys.stdout)
+                print('-' * 60)
+
+        print("Hardening Policies populated!")    
 
     def mitigation_system(self, ms_path):
         """Populate Mitigation Systems"""

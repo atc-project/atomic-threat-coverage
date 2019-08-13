@@ -5,6 +5,7 @@ from dataneeded import DataNeeded
 from detectionrule import DetectionRule
 from mitigationsystem import MitigationSystem
 from mitigationpolicy import MitigationPolicy
+from hardeningpolicy import HardeningPolicy
 from loggingpolicy import LoggingPolicy
 from triggers import Triggers
 from enrichment import Enrichment
@@ -29,11 +30,11 @@ class PopulateConfluence:
     """Desc"""
 
     def __init__(self, auth, lp=False, dn=False, dr=False, en=False, tg=False,
-                 ra=False, rp=False, cu=False, ms=False, mp=False, auto=False,
-                 art_dir=False, atc_dir=False, lp_path=False, dn_path=False,
-                 dr_path=False, en_path=False, tg_path=False, ra_path=False,
-                 rp_path=False, cu_path=False, ms_path=False, mp_path=False,
-                 init=False):
+                 ra=False, rp=False, cu=False, ms=False, mp=False, hp=False,
+                 auto=False, art_dir=False, atc_dir=False, lp_path=False,
+                 dn_path=False, dr_path=False, en_path=False, tg_path=False,
+                 ra_path=False, rp_path=False, cu_path=False, hp_path=False,
+                 ms_path=False, mp_path=False, init=False):
         """Desc"""
 
         self.auth = auth
@@ -72,6 +73,7 @@ class PopulateConfluence:
 
         # Main logic
         if auto:
+            self.hardening_policy(hp_path)
             self.mitigation_system(ms_path)
             self.mitigation_policy(mp_path)
             self.logging_policy(lp_path)
@@ -82,6 +84,9 @@ class PopulateConfluence:
             self.response_playbook(rp_path)
             self.detection_rule(dr_path)
             self.customer(cu_path)
+
+        if hp:
+            self.hardening_policy(hp_path)
 
         if ms:
             self.mitigation_system(ms_path)
@@ -155,6 +160,39 @@ class PopulateConfluence:
                 print('-' * 60)
 
         print("Triggers populated!")
+
+    def hardening_policy(self, hp_path):
+        """Populate Hardening Policies"""
+
+        print("Populating Hardening Policies..")
+        if hp_path:
+            hp_list = glob.glob(hp_path + '*.yml')
+        else:
+            hp_dir = ATCconfig.get('hardening_policies_directory')
+            hp_list = glob.glob(hp_dir + '/*.yml')
+
+        for hp_file in hp_list:
+            try:
+                hp = HardeningPolicy(hp_file)
+                hp.render_template("confluence")
+                confluence_data = {
+                    "title": hp.hp_parsed_file["title"],
+                    "spacekey": self.space,
+                    "parentid": str(ATCutils.confluence_get_page_id(
+                        self.apipath, self.auth, self.space,
+                        "Hardening Policies")),
+                    "confluencecontent": hp.content,
+                }
+
+                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                                            self.auth)
+            except Exception as err:
+                print(hp_file + " failed")
+                print("Err message: %s" % err)
+                print('-' * 60)
+                traceback.print_exc(file=sys.stdout)
+                print('-' * 60)
+        print("Hardening Policies populated!")
 
     def mitigation_system(self, ms_path):
         """Populate Mitigation Systems"""

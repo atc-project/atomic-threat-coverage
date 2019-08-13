@@ -62,6 +62,13 @@ class MitigationSystem:
 
             self.ms_parsed_file.update({'platform': platform})
 
+            minimum_version = self.ms_parsed_file.get("minimum_version")
+
+            if isinstance(minimum_version, str):
+                minimum_version = [minimum_version]
+
+            self.ms_parsed_file.update({'minimum_version': minimum_version})
+
             self.ms_parsed_file.update(
                 {'description': self.ms_parsed_file.get('description').strip()}
             )
@@ -79,6 +86,13 @@ class MitigationSystem:
                 platform = [platform]
 
             self.ms_parsed_file.update({'platform': platform})
+
+            minimum_version = self.ms_parsed_file.get("minimum_version")
+
+            if isinstance(minimum_version, str):
+                minimum_version = [minimum_version]
+
+            self.ms_parsed_file.update({'minimum_version': minimum_version})
 
             self.ms_parsed_file.update(
                 {'description': self.ms_parsed_file.get('description').strip()}
