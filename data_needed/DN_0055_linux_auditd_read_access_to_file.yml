@@ -1,0 +1,33 @@
+title: DN_0055_linux_auditd_read_access_to_file
+description: >
+  Linux auditd log of read access to file
+loggingpolicy:
+  - LP_0034_linux_auditd_read_access_to_file
+references:
+  - https://github.com/linux-audit/audit-documentation
+  - https://github.com/linux-audit/audit-documentation/blob/master/specs/fields/field-dictionary.csv
+  - https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/app-audit_reference
+category: OS Logs
+platform: Linux
+type: PATH
+channel: auditd
+provider: auditd
+fields:
+  - type     # the audit record's type
+  - msg      # the payload of the audit record
+  - item     # which item is being recorded
+  - name     # file name in avcs
+  - inode    # inode number
+  - dev      # device name as found in /dev
+  - mode     # mode flags on a file
+  - ouid     # file owner user ID
+  - ogid     # file owner group ID
+  - rdev     # the device identifier (special files only)
+  - obj      # lspp object context string
+  - objtype  # object in the context of a syscall
+  - cap_fp   # file permitted capability map
+  - cap_fi   # file inherited capability map
+  - cap_fe   # file assigned effective capability map
+  - cap_fver # file system capabilities version number
+sample: |
+  type=PATH msg=audit(1564423065.282:742): item=0 name="/etc/passwd" inode=24673227 dev=fd:00 mode=0100644 ouid=0 ogid=0 rdev=00:00 obj=system_u:object_r:passwd_file_t:s0 objtype=NORMAL cap_fp=0000000000000000 cap_fi=0000000000000000 cap_fe=0 cap_fver=0

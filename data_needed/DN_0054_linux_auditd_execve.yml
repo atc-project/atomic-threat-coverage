@@ -1,0 +1,25 @@
+title: DN_0054_linux_auditd_execve
+description: >
+  Linux auditd log of process (binary) execution (execeve syscall)
+  with command line arguments
+loggingpolicy:
+  - LP_0031_linux_auditd_execve
+references:
+  - https://github.com/linux-audit/audit-documentation
+  - https://github.com/linux-audit/audit-documentation/blob/master/specs/fields/field-dictionary.csv
+  - https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/app-audit_reference
+category: OS Logs
+platform: Linux
+type: EXECVE
+channel: auditd
+provider: auditd
+fields:
+  - type # the audit record's type
+  - msg  # the payload of the audit record
+  - argc # the number of arguments to an execve syscall
+  - a0   # a[[:digit:]+]\[.*\] — the arguments to the execve syscall
+  - a1
+  - a2
+  - a3
+sample: |
+  type=EXECVE msg=audit(1564425065.452:651): argc=3 a0="ls" a1="-l" a2="/var/lib/pgsql"
