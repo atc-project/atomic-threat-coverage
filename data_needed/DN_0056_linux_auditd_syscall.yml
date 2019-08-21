@@ -1,0 +1,47 @@
+title: DN_0056_linux_auditd_syscall
+description: >
+  Linux auditd log of specific system call (syscall)
+loggingpolicy:
+  - LP_0033_linux_auditd_syscall
+references:
+  - https://github.com/linux-audit/audit-documentation
+  - https://github.com/linux-audit/audit-documentation/blob/master/specs/fields/field-dictionary.csv
+  - https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/app-audit_reference
+  - https://access.redhat.com/solutions/36278
+  - https://filippo.io/linux-syscall-table/
+category: OS Logs
+platform: Linux
+type: SYSCALL
+channel: auditd
+provider: auditd
+fields:
+  - type    # the audit record's type
+  - msg     # the payload of the audit record
+  - arch    # the elf architecture flags
+  - syscall # syscall number in effect when the event occurred
+  - success # whether the syscall was successful or not
+  - exit    # syscall exit code
+  - a0      # argument of the system call, encoded in hexadecimal notation
+  - a1      # argument of the system call, encoded in hexadecimal notation
+  - a2      # argument of the system call, encoded in hexadecimal notation
+  - a3      # argument of the system call, encoded in hexadecimal notation
+  - items   # the number of path records in the event
+  - ppid    # parent process ID
+  - pid     # process ID
+  - auid    # login user ID
+  - uid     # real user ID of the user who started the analyzed process
+  - gid     # group ID
+  - euid    # effective user ID
+  - suid    # set user ID of the user who started the analyzed process
+  - fsuid   # file system user ID of the user who started the analyzed process
+  - egid    # effective group ID of the user who started the analyzed process
+  - sgid    # set group ID of the user who started the analyzed process
+  - fsgid   # file system group ID of the user who started the analyzed process
+  - tty     # name of the controlling terminal. The value (none) is used if the process has no controlling terminal
+  - ses     # login session ID
+  - comm    # command line program name
+  - exe     # executable name
+  - subj    # SELinux context with which the analyzed process was labeled at the time of execution
+  - key     # administrator-defined string associated with the rule that generated this event in the Audit log
+sample: |
+  type=SYSCALL msg=audit(1529507591.700:304): arch=c000003e syscall=62 success=yes exit=0 a0=829 a1=9 a2=0 a3=829 items=0 ppid=1783 pid=1784 auid=1001 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=pts0 ses=1 comm="bash" exe="/usr/bin/bash" subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 key="kill_rule"

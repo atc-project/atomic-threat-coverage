@@ -1,0 +1,31 @@
+title: LP_0033_linux_auditd_syscall
+default: Not configured
+volume: High # Medium to high, depend on specific syscall
+description: >
+  Policy to enable auditd to log of specific system call (syscall)
+references:
+  - https://github.com/linux-audit/audit-documentation
+  - https://filippo.io/linux-syscall-table/
+  - https://access.redhat.com/solutions/36278
+  - https://github.com/Neo23x0/auditd
+configuration: |
+  Command to log kill syscall for x64 CPU architecture:
+  
+  ```
+  auditctl -a exit,always -F arch=b64 -S kill
+  ```
+
+  You can configure variety of [syscalls](https://filippo.io/linux-syscall-table/).
+  If the system is 32 bit OS, you need to set it with "arch=b32".
+
+  To permanently implement auditd rules, edit `/etc/audit/rules.d/audit.rules` file:
+
+  ```
+  -a exit,always -F arch=b64 -S kill -k kill_signal
+  ```
+
+  Command to enable rules (execute as root):
+
+  ```
+  augenrules --load
+  ```
