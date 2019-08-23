@@ -1,0 +1,18 @@
+title: DN_0092_unix_generic_syslog
+description: >
+  Unix generic syslog
+loggingpolicy:
+  - None
+references:
+  - https://github.com/Neo23x0/sigma/blob/master/rules/linux/lnx_buffer_overflows.yml
+category: OS Logs
+platform: Unix
+type: generic
+channel: syslog
+provider: syslog
+fields:
+  - timestamp
+  - uid
+  - message
+sample: | # Solaris syslog
+  Nov 12 18:47:02 foo.bar.baz unix: rpc.ttdbserverd[1932] attempt to execute code on stack by uid 0
