@@ -2,7 +2,7 @@ title: DN_0084_av_alert
 description: >
   Anti-virus alert
 loggingpolicy:
-  - None          # well, some of them require additional configuraiotn to provide filehash
+  - None          # some of the AVs require additional configuraiotn to log filehash
 references:
   - None
 category: AV Alerts
