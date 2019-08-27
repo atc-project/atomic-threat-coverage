@@ -13,6 +13,7 @@ sigma_mapping = {
     'vsftpd': 'vsftpd.log',
     'clamav': 'ClamAV',
     'auth': 'auth.log',
+    'sshd': 'auth.log',
     'firewall': 'Firewall',
     'ruby_on_rails': 'Ruby on Rails',
     'spring': 'Spring',

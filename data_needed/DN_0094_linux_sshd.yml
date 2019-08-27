@@ -7,12 +7,14 @@ references:
   - https://en.wikibooks.org/wiki/OpenSSH/Logging_and_Troubleshooting
 category: OS Logs
 platform: Linux
-type: None
-channel: sshd
-provider: auth.log # log filename; tbd
+type: auth
+channel: auth.log
+provider: sshd
 fields:
   - Hostname
   - UserName
+  - Daemon # redundant, alias to Program
+  - Program
   - Message
 sample: |
   May 18 16:41:20 username sshd[890]: error: buffer_get_string_ret: buffer_get failed
