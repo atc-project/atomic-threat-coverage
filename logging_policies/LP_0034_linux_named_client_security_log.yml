@@ -1,0 +1,28 @@
+title: LP_0034_linux_named_client_security_log
+default: Not configured
+volume: Low
+description: >
+  Policy to enable BIND (named) DNS server client_security log
+references:
+  - https://kb.isc.org/docs/aa-01526
+configuration: |
+  Edit `/etc/bind/named.conf` file, adding the next configuration:
+
+  ```
+  logging {
+        channel client_security_log {
+                file "/var/named/log/client_security" versions 3 size 20m;
+                print-time yes;
+                print-category yes;
+                print-severity yes;
+                severity info;
+        };
+        category security { client_security_log; };
+        category client{ client_security_log; };
+  ```
+
+  Restart service to implementation configuration:
+
+  ```
+  systemctl restart bind9.service
+  ```

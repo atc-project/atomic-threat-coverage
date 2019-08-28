@@ -1,6 +1,6 @@
-title: DN_0093_linux_clamav
+title: DN_0093_linux_clamav_log
 description: >
-  Linux ClamAV anti-virus alert
+  Linux ClamAV anti-virus logs
 loggingpolicy:
   - None
 references:

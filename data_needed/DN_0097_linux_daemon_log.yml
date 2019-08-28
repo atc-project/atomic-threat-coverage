@@ -1,0 +1,20 @@
+title: DN_0097_linux_daemon_log
+description: >
+  The daemons log at /var/log/daemon.log and contains information about running 
+  system and application daemons
+loggingpolicy:
+  - None
+references:
+  - https://help.ubuntu.com/community/LinuxLogFiles
+category: OS Logs
+platform: Linux
+type: daemon
+channel: daemon.log
+provider: many
+fields:
+  - Hostname
+  - Daemon # redundant, alias to Program
+  - Program
+  - Message
+sample: |
+  Aug 28 23:39:09 debian-9-x64-atc named[32010]: exiting (due to fatal error)

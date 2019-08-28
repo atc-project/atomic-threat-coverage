@@ -1,4 +1,4 @@
-title: DN_0094_linux_sshd
+title: DN_0094_linux_sshd_log
 description: >
   OpenSSH SSH daemon (sshd) log
 loggingpolicy:
