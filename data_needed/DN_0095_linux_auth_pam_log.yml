@@ -1,6 +1,6 @@
-title: DN_0095_linux_auth_pam
+title: DN_0095_linux_auth_pam_log
 description: >
-  Linux Pluggable Authentication Modules (PAM) authentication logs
+  Linux Pluggable Authentication Modules (PAM) authentication log
 loggingpolicy:
   - None
 references:

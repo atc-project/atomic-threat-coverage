@@ -1,4 +1,4 @@
-title: DN_0091_linux_modsecurity
+title: DN_0091_linux_modsecurity_log
 description: >
   Mod_security (Web Application Firewall) audit/error log
 loggingpolicy:
