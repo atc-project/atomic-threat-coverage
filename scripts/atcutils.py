@@ -7,13 +7,14 @@ import json
 import os
 import subprocess
 import requests
+import warnings
 
+from sigma_mapping import sigma_mapping
 from os import listdir
 from os.path import isfile, join
 from requests.auth import HTTPBasicAuth
 from jinja2 import Environment, FileSystemLoader
 from pprint import pprint
-import warnings
 from yaml.scanner import ScannerError
 from attack_mapping import te_mapping
 
@@ -413,26 +414,7 @@ class ATCutils:
         """Get sigma logsource dict and rename key/values into our model,
         so we could use it for Data Needed calculation"""
 
-        sigma_to_real_world_mapping = {
-            'sysmon': 'Microsoft-Windows-Sysmon/Operational',
-            'security': 'Security',
-            'system': 'System',
-            'product': 'platform',
-            'windows': 'Windows',
-            'service': 'channel',
-            'dns-server': 'DNS Server',
-            'taskscheduler': 'Microsoft-Windows-TaskScheduler/Operational',
-            'wmi': 'Microsoft-Windows-WMI-Activity/Operational',
-            'driver-framework':
-                'Microsoft-Windows-DriverFrameworks-UserMode/Operational',
-            'dhcp': 'Microsoft-Windows-DHCP-Server/Operational',
-            'powershell': 'Microsoft-Windows-PowerShell/Operational',
-            'powershell-classic': 'Windows PowerShell',
-            'ntlm': 'Microsoft-Windows-NTLM/Operational',
-            'dns-server-audit': 'Microsoft-Windows-DNS-Server/Audit',
-        }
-
-        sigma_keys = [*sigma_to_real_world_mapping]
+        sigma_keys = [*sigma_mapping]
 
         proper_logsource_dict = {}
 
@@ -441,19 +423,19 @@ class ATCutils:
                 if val in sigma_keys:
                     # Transalte both key and value
                     proper_logsource_dict.update([
-                        (sigma_to_real_world_mapping[key],
-                         sigma_to_real_world_mapping[val])
+                        (sigma_mapping[key],
+                         sigma_mapping[val])
                     ])
                 else:
                     # Translate only key
                     proper_logsource_dict.update([
-                        (sigma_to_real_world_mapping[key], val)
+                        (sigma_mapping[key], val)
                     ])
             else:
                 if val in sigma_keys:
                     # Translate only value
                     proper_logsource_dict.update([
-                        (key, sigma_to_real_world_mapping[val])
+                        (key, sigma_mapping[val])
                     ])
                 else:
                     # Don't translate anything

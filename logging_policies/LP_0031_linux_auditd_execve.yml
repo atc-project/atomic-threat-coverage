@@ -1,0 +1,33 @@
+title: LP_0031_linux_auditd_execve
+default: Not configured
+volume: High # Medium to high, depend on system usage
+description: >
+  Policy to enable auditd to log process (binary) execution (execeve syscall) 
+  with command line arguments
+references:
+  - https://github.com/linux-audit/audit-documentation
+  - https://github.com/Neo23x0/auditd
+configuration: |
+  Command to log the execve system call:
+  
+  ```
+  auditctl -a exit,always -S execve
+  ```
+
+  Command to enable logging of specific executable invocation:
+
+  ```
+  auditctl -a exit,always -S execve -F path=/usr/bin/rrdtool
+  ```
+
+  To permanently implement auditd rules, edit `/etc/audit/rules.d/audit.rules` file:
+
+  ```
+  -a exit,always -S execve                           # log everything
+  ```
+
+  Command to enable rules (execute as root):
+
+  ```
+  augenrules --load
+  ```

@@ -1,0 +1,21 @@
+title: DN_0093_linux_clamav_log
+description: >
+  Linux ClamAV anti-virus logs
+loggingpolicy:
+  - None
+references:
+  - https://www.clamav.net
+  - https://docs.pivotal.io/addon-antivirus/1-4/monitoring-logs.html
+  - https://github.com/ossec/ossec-hids/blob/master/etc/rules/clam_av_rules.xml
+category: AV Alerts
+platform: Linux
+type: None
+channel: ClamAV # required for parsing
+provider: ClamAV
+fields:
+  - Hostname
+  - Signature
+  - FileName
+  - FilePath
+sample: |
+  /var/vcap/data/test.txt: Eicar-Test-Signature FOUND

@@ -1,0 +1,36 @@
+title: DN_0095_linux_auth_pam_log
+description: >
+  Linux Pluggable Authentication Modules (PAM) authentication log
+loggingpolicy:
+  - None
+references:
+  - http://manpages.ubuntu.com/manpages/trusty/en/man7/pam.7.html
+category: OS Logs
+platform: Linux
+type: auth
+channel: auth.log
+provider: pam
+fields:
+  - Hostname
+  - UserName
+  - Daemon
+  - Message
+  - pam_service
+  - pam_user
+  - pam_unix
+  - pam_tty
+  - pam_ruser
+  - pam_rhost
+  - pam_type
+  - pam_authtok
+  - pam_message
+  - uid
+  - logname
+  - uid
+  - euid
+  - tty
+  - ruser
+  - rhost
+sample: |
+  May 18 16:41:20 hostname service: (pam_unix) authentication failure; logname= uid=33 euid=33 tty= ruser= rhost= user=root
+

@@ -1,0 +1,21 @@
+title: DN_0096_linux_named_client_security_log
+description: >
+  Linux named (BIND) messages relating to client access and security
+loggingpolicy:
+  - LP_0034_linux_named_client_security_log
+references:
+  - https://kb.isc.org/docs/aa-01526
+  - http://jhurani.com/linux/2013/02/12/named-disable-xfer.html
+category: OS Logs
+platform: Linux
+type: client_security_log
+channel: client_security_log
+provider: named
+fields:
+  - Hostname
+  - ClientIP
+  - ClientPort
+  - ZoneTransferDomain
+  - Message
+sample: |
+  28-Aug-2019 02:03:13.739 security: error: client 192.168.0.2#53274 (atc.local): zone transfer 'atc.local/AXFR/IN' denied

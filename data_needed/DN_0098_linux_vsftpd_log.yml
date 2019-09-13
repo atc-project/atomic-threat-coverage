@@ -1,0 +1,22 @@
+title: DN_0098_linux_vsftpd_log
+description: >
+  vsftpd (FTP server) log
+loggingpolicy:
+  - None
+references:
+  - https://en.wikipedia.org/wiki/Vsftpd
+  - https://security.appspot.com/vsftpd.html
+category: OS Logs
+platform: Linux # and Unix: todo
+type: vsftpd.log
+channel: vsftpd.log
+provider: vsftpd
+fields:
+  - Hostname
+  - Daemon # redundant, alias to Program
+  - Program
+  - ClientIP
+  - PID
+  - Message
+sample: |
+  Sat Jun  2 11:20:19 2018 [pid 3616] CONNECT: Client "ip", "Connection refused: too many sessions for this address."

@@ -1,0 +1,20 @@
+title: DN_0094_linux_sshd_log
+description: >
+  OpenSSH SSH daemon (sshd) log
+loggingpolicy:
+  - None
+references:
+  - https://en.wikibooks.org/wiki/OpenSSH/Logging_and_Troubleshooting
+category: OS Logs
+platform: Linux
+type: auth
+channel: auth.log
+provider: sshd
+fields:
+  - Hostname
+  - UserName
+  - Daemon # redundant, alias to Program
+  - Program
+  - Message
+sample: |
+  May 18 16:41:20 hostname sshd[890]: error: buffer_get_string_ret: buffer_get failed

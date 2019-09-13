@@ -1,0 +1,20 @@
+title: DN_0091_linux_modsecurity_log
+description: >
+  Mod_security (Web Application Firewall) audit/error log
+loggingpolicy:
+  - None
+references:
+  - https://www.nginx.com/blog/modsecurity-logging-and-debugging/
+  - https://www.cryptobells.com/mod_security-json-audit-logs-revisited/
+category: OS Logs
+platform: Linux
+type: modsecurity
+channel: modsecurity
+provider: modsecurity
+fields:
+  - timestamp
+  - hostname
+  - client
+  - uri
+sample: |
+  [Thu Jul 02 04:14:31 2018] [error] [client 190.222.135.100] mod_security: Access denied with code 500. Pattern match "SomePattern" at HEADER("USER-AGENT") [hostname "samplesite.com"] [uri "/some/uri"]

@@ -185,10 +185,16 @@ class DetectionRule:
             sigma_rule = ATCutils.read_rule_file(self.yaml_file)
             self.fields.update({'sigma_rule': sigma_rule})
 
-            outputs = ["es-qs", "xpack-watcher", "graylog"]
+            #outputs = ["es-qs", "xpack-watcher", "graylog"]
 
-            for output in outputs:
-                cmd = ATCconfig.get('sigmac_path') + " -t " + \
+            queries = ATCconfig.get('detection_queries').split(",")
+
+            # dict to store query key + query values
+            det_queries = {}
+
+            for output in queries:
+                cmd = ATCconfig.get('sigmac_path') + \
+                    " --shoot-yourself-in-the-foot -t " + \
                     output + " --ignore-backend-errors " + self.yaml_file + \
                     " 2> /dev/null"
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
