@@ -9,7 +9,7 @@
       "attributes": {
         "description": "",
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0004: Privilege Escalation\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"tactic:\\\"TA0004: Privilege Escalation\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         },
         "title": "Privilege Escalation",
         "uiStateJSON": "{}",
@@ -29,7 +29,7 @@
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0005: Defense Evasion\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"tactic:\\\"TA0005: Defense Evasion\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     },
@@ -45,7 +45,7 @@
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0003: Persistence\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"tactic:\\\"TA0003: Persistence\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     },
@@ -61,7 +61,7 @@
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0002: Execution\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"tactic:\\\"TA0002: Execution\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     },
@@ -72,12 +72,12 @@
       "version": 10,
       "attributes": {
         "title": "Distribution of Detection Rules implemented per Customer",
-        "visState": "{\"title\":\"Distribution of Detection Rules implemented per Customer\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":true,\"labels\":{\"show\":true,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"customer\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
+        "visState": "{\"title\":\"Distribution of Detection Rules implemented per Customer\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":true,\"labels\":{\"show\":true,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"customer.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
         "uiStateJSON": "{}",
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     },
@@ -89,7 +89,7 @@
       "attributes": {
         "description": "",
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0006: Credential Access\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"tactic:\\\"TA0006: Credential Access\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         },
         "title": "Credential Access",
         "visState": "{\"title\":\"Credential Access\",\"type\":\"metric\",\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":false},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":60}}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}]}",
@@ -109,7 +109,7 @@
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0008: Lateral Movement\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"tactic:\\\"TA0008: Lateral Movement\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     },
@@ -121,7 +121,7 @@
       "attributes": {
         "description": "",
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0001: Initial Access\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"tactic:\\\"TA0001: Initial Access\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         },
         "title": "Initial Access",
         "uiStateJSON": "{}",
@@ -141,7 +141,7 @@
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0010: Exfiltration\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"tactic:\\\"TA0010: Exfiltration\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     },
@@ -157,7 +157,7 @@
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0009: Collection\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"tactic:\\\"TA0009: Collection\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     },
@@ -173,7 +173,7 @@
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0011: Command and Control\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"tactic:\\\"TA0011: Command and Control\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     },
@@ -189,7 +189,7 @@
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0007: Discovery\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"tactic:\\\"TA0007: Discovery\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     },
@@ -200,12 +200,12 @@
       "version": 9,
       "attributes": {
         "title": "Distribution of Detection Rules development statuses",
-        "visState": "{\"title\":\"Distribution of Detection Rules development statuses\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":true,\"labels\":{\"show\":true,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"detection_rule_development_status\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
+        "visState": "{\"title\":\"Distribution of Detection Rules development statuses\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":true,\"labels\":{\"show\":true,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"detection_rule_development_status.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
         "uiStateJSON": "{}",
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     },
@@ -216,12 +216,12 @@
       "version": 9,
       "attributes": {
         "title": "Distribution of Detection Rules severity per Data Needed provider",
-        "visState": "{\"title\":\"Distribution of Detection Rules severity per Data Needed provider\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Count\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Count\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"provider\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"detection_rule_severity\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
+        "visState": "{\"title\":\"Distribution of Detection Rules severity per Data Needed provider\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Count\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Count\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"provider.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"detection_rule_severity.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
         "uiStateJSON": "{\"vis\":{\"colors\":{\"critical\":\"#BF1B00\",\"high\":\"#EF843C\",\"medium\":\"#EAB839\",\"low\":\"#7EB26D\"}}}",
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     },
@@ -232,12 +232,12 @@
       "version": 9,
       "attributes": {
         "title": "Distribution of Data Needed providers",
-        "visState": "{\"title\":\"Distribution of Data Needed providers\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":true,\"labels\":{\"show\":true,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"provider\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
+        "visState": "{\"title\":\"Distribution of Data Needed providers\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":true,\"labels\":{\"show\":true,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"provider.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
         "uiStateJSON": "{}",
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     },
@@ -248,7 +248,7 @@
       "version": 9,
       "attributes": {
         "title": "ATC Analytics Dashboard legend",
-        "visState": "{\"title\":\"ATC Analytics Dashboard legend\",\"type\":\"markdown\",\"params\":{\"fontSize\":12,\"openLinksInNewTab\":true,\"markdown\":\"ATC Analytics Dashboard was built upon 223 (all for 26 of July 2019) public [Sigma](https://github.com/Neo23x0/sigma) rules for Windows OS.\\n\\nInformation about data source has been automatically calculated by Atomic Threat Coverage project upon [Data Needed](https://github.com/atc-project/atomic-threat-coverage/tree/master#data-needed) entities.\\n\\nInformation about Detection Rules implementation for specific customers has been built upon demo [Customers](https://github.com/atc-project/atomic-threat-coverage/tree/master#customers) entities.\\n\\nYou can build the same dashboard for your own analytics following [this](https://github.com/atc-project/atomic-threat-coverage/tree/master#setting-up-kibana-dashboard) guideline.\"},\"aggs\":[]}",
+        "visState": "{\"title\":\"ATC Analytics Dashboard legend\",\"type\":\"markdown\",\"params\":{\"fontSize\":12,\"openLinksInNewTab\":true,\"markdown\":\"ATC Analytics Dashboard was built upon 233 (all for 13 of September 2019) public [Sigma](https://github.com/Neo23x0/sigma) rules for Windows OS.\\n\\nInformation about data source has been automatically calculated by Atomic Threat Coverage project upon [Data Needed](https://github.com/atc-project/atomic-threat-coverage/tree/master#data-needed) entities.\\n\\nInformation about Detection Rules implementation for specific customers has been built upon demo [Customers](https://github.com/atc-project/atomic-threat-coverage/tree/master#customers) entities.\\n\\nYou can build the same dashboard for your own analytics following [this](https://github.com/atc-project/atomic-threat-coverage/tree/master#setting-up-kibana-dashboard) guideline.\"},\"aggs\":[]}",
         "uiStateJSON": "{}",
         "description": "",
         "version": 1,
@@ -264,12 +264,12 @@
       "version": 9,
       "attributes": {
         "title": "TOP 10 Detection Rules Authors",
-        "visState": "{\"title\":\"TOP 10 Detection Rules Authors\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMetricsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"detection_rule_author\",\"size\":10,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
+        "visState": "{\"title\":\"TOP 10 Detection Rules Authors\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMetricsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"detection_rule_author.keyword\",\"size\":10,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
         "uiStateJSON": "{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}",
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"detection_rule_author :*\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"detection_rule_author :*\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     },
@@ -285,7 +285,7 @@
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"tactic:\\\"TA0040: Impact\\\"\",\"language\":\"lucene\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"tactic:\\\"TA0040: Impact\\\"\",\"language\":\"lucene\"},\"filter\":[]}"
         }
       }
     },
@@ -296,12 +296,12 @@
       "version": 1,
       "attributes": {
         "title": "TOP 10 Data Needed",
-        "visState": "{\"title\":\"TOP 10 Data Needed\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMetricsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"data_needed\",\"size\":10,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
+        "visState": "{\"title\":\"TOP 10 Data Needed\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMetricsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"data_needed.keyword\",\"size\":10,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"}}]}",
         "uiStateJSON": "{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}",
         "description": "",
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"atc-analytics\",\"query\":{\"query\":\"NOT data_needed:\\\"not defined\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"42272fa0-cde5-11e9-667e-6f37d60dcef0\",\"query\":{\"query\":\"NOT data_needed:\\\"not defined\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     },

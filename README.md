@@ -481,7 +481,7 @@ If you want to partially regenerate/update analytics you can investigate `Makefi
 
 ### Uploading ATC Analytics Dashboard
 
-You need both Elasticsearch and Kibana up and running.
+You need both Elasticsearch and Kibana up and running (relevant for version 7.3.1).
 
 Define variables:
 
@@ -492,21 +492,12 @@ USER=""
 PASSWORD=""
 ```
 
-First upload index template to Elasticsearch:
-
-```bash
-curl -k --user ${USER}:${PASSWORD} -H "Content-Type: application/json"\
-  -H "kbn-xsrf: true"\
-  -XPUT "${ELASTICSEARCH_URL}/_template/atc-analytics"\
-  -d@analytics/predefined/atc-analytics-index-template.json
-```
-
 Then upload index pattern to Kibana:
 
 ```bash
 curl -k --user ${USER}:${PASSWORD} -H "Content-Type: application/json"\
   -H "kbn-xsrf: true"\
-  -XPOST "${KIBANA_URL}/api/kibana/dashboards/import?force=true"\
+  -XPOST "${KIBANA_URL}/api/saved_objects/index-pattern/42272fa0-cde5-11e9-667e-6f37d60dcef0"\
   -d@analytics/predefined/atc-analytics-index-pattern.json
 ```
 
