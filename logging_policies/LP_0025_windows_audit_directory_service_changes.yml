@@ -1,4 +1,4 @@
-title: LP_0025_audit_directory_service_changes
+title: LP_0025_windows_audit_directory_service_changes
 default: Partially (Other)
 volume: High # on domain controllers
 description: >
