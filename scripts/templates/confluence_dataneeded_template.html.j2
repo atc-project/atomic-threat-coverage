@@ -16,16 +16,38 @@
                <th class="confluenceTh">Description</th>
                <td class="confluenceTd">{{ description|e }}<br /></td>
             </tr>
-            <tr>
-               <th class="confluenceTh">Logging Policy</th>
-               <td class="confluenceTd">
-                  {%- if loggingpolicy |length > 1 -%}<ul>{%endif%}
-                     {% for policy_name, policy_id in loggingpolicy %}
-                     {%- if loggingpolicy |length > 1 -%}<li>{%endif%}<a href="{{confluence_viewpage_url}}{{policy_id}}">{{ policy_name }}</a>{%- if loggingpolicy |length > 1 -%}</li>{%endif%}
-                     {% endfor %}
-                  {%- if loggingpolicy |length > 1 -%}</ul>{%endif%}
-               </td>
-            </tr>
+{% if loggingpolicy is defined and loggingpolicy != 'None' |length %}
+               <tr>
+                  <th class="confluenceTh">Logging Policy</th>
+                  <td class="confluenceTd">
+                     {%- if loggingpolicy |length > 1 -%}<ul>{%endif%}
+                        {% for policy_name, policy_id in loggingpolicy %}
+                        {%- if loggingpolicy |length > 1 -%}<li>{%endif%}<a href="{{confluence_viewpage_url}}{{policy_id}}">{{ policy_name }}</a>{%- if loggingpolicy |length > 1 -%}</li>{%endif%}
+                        {% endfor %}
+                     {%- if loggingpolicy |length > 1 -%}</ul>{%endif%}
+                  </td>
+               </tr>
+{% else %}
+                <tr>
+                    <th class="confluenceTh">Logging Policy</th>
+                    <td class="confluenceTd">
+                        This Data Needed doesn't require any Logging Policy configuration
+                    </td>
+                </tr>
+{% endif %}
+{% if mitigation_policy is defined and mitigation_policy|length %}
+               <tr>
+                  <th class="confluenceTh">Mitigation Policy</th>
+                  <td class="confluenceTd">
+                     {%- if mitigation_policy |length > 1 -%}<ul>{%endif%}
+                        {% for policy_name, policy_id in mitigation_policy %}
+                        {%- if mitigation_policy |length > 1 -%}<li>{%endif%}<a href="{{confluence_viewpage_url}}{{policy_id}}">{{ policy_name }}</a>{%- if mitigation_policy |length > 1 -%}</li>{%endif%}
+                        {% endfor %}
+                     {%- if mitigation_policy |length > 1 -%}</ul>{%endif%}
+                  </td>
+               </tr>
+{% else %}
+{% endif %}
             <tr>
                <th class="confluenceTh">References</th>
                <td class="confluenceTd">
