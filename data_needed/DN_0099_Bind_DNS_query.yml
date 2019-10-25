@@ -1,0 +1,26 @@
+title: DN_0099_Bind_DNS_query
+description: >
+  DNS Query from BIND Server
+loggingpolicy:
+  - LP_0047_BIND_DNS_queries
+references:
+  - None
+category: DNS Logs
+platform: Linux
+type: queries log
+channel: queries_log
+provider: BIND
+fields:
+  - date
+  - record_type
+  - client_ip
+  - src_ip          # redundant
+  - domain_name
+  - query           # redundant
+  - dns_query       # redundant
+  - destination_ip
+  - dst_ip          # redundant
+  - parent_domain   # actually requires enrichment. todo
+  - question_length # actually requires enrichment. todo  
+sample: |
+  25-Oct-2019 01:22:19.421 queries: info: client 192.168.1.200#51364 (yahoo.com): query: yahoo.com IN TXT + (192.168.1.235)

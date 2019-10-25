@@ -1,0 +1,28 @@
+title: LP_0048_Passive_DNS_logging
+default: Not configured
+volume: High
+description: >
+  Configuration to enable logging of all fields logging in Passive DNS
+eventID: 
+  - None
+references:
+    - None
+configuration: |
+    #/etc/default/passivedns
+    #Manually set the values to log:
+  
+    # FIELDS:
+    #  H: YMD-HMS Stamp S: Timestamp(s)  M: Timestamp(ms)  c: Client IP 
+    #  s: Server IP     C: Class         Q: Query          T: Type      
+    #  A: Answer        t: TTL           n: Count
+      
+    LOGFIELDS=SMcsCQTAtn
+      
+    #Manually set DNS RR Types to care about
+      
+    # FLAGS:
+    #  4:A    6:AAAA  C:CNAME  D:DNAME  N:NAPTR  O:SOA
+    #  P:PTR  R:RP    S:SRV    T:TXT    M:MX     n:NS
+    #  x:NXD
+      
+    DNSRRTYPES=46CDNOPRSTMnx

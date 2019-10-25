@@ -53,6 +53,7 @@ class DataNeeded:
         self.title = self.dn_fields.get("title")
         self.description = self.dn_fields.get("description")
         self.loggingpolicy = self.dn_fields.get("loggingpolicy")
+        self.mitigation_policy = self.dn_fields.get("mitigation_policy")
         self.platform = self.dn_fields.get("platform")
         self.type = self.dn_fields.get("type")
         self.channel = self.dn_fields.get("channel")
@@ -84,13 +85,20 @@ class DataNeeded:
             if isinstance(logging_policies, str):
                 logging_policies = [logging_policies]
 
-            refs = self.dn_fields.get("references")
-
             self.dn_fields.update({'loggingpolicy': logging_policies})
+
+            mitigation_policy = self.dn_fields.get("mitigation_policy")
+
+            if isinstance(mitigation_policy, str):
+                mitigation_policy = [mitigation_policy]
+
+            self.dn_fields.update({'mitigation_policy': mitigation_policy})
 
             self.dn_fields.update(
                 {'description': self.dn_fields.get('description').strip()}
             )
+
+            refs = self.dn_fields.get("references")
 
             if isinstance(refs, str):
                 self.dn_fields.update({'references': [refs]})
@@ -121,13 +129,33 @@ class DataNeeded:
                 lp = (lp, logging_policies_id)
                 logging_policies_with_id.append(lp)
 
+            self.dn_fields.update({'loggingpolicy': logging_policies_with_id})
+
+
+            mitigation_policies = self.dn_fields.get("mitigation_policy")
+
+            if not mitigation_policies:
+                mitigation_policies = ["None", ]
+
+            mitigation_policies_with_id = []
+
+            for mp in mitigation_policies:
+                if mp != "None" and self.apipath and self.auth and self.space:
+                    mitigation_policies_id = str(ATCutils.confluence_get_page_id(
+                        self.apipath, self.auth, self.space, mp))
+                else:
+                    mitigation_policies_id = ""
+                mp = (mp, mitigation_policies_id)
+                mitigation_policies_with_id.append(mp)
+
+            self.dn_fields.update({'mitigation_policy': mitigation_policies_with_id})
+
 
             refs = self.dn_fields.get("references")
 
             if isinstance(refs, str):
                 self.dn_fields.update({'references': [refs]})
 
-            self.dn_fields.update({'loggingpolicy': logging_policies_with_id})
 
         self.content = template.render(self.dn_fields)
 

@@ -1,0 +1,28 @@
+title: DN_0100_Passive_DNS_log
+description: >
+  Log from Passive DNS
+loggingpolicy:
+  - LP_0048_Passive_DNS_logging
+references:
+  - None
+category: DNS Logs
+platform: Linux
+type: queries log
+channel: passivedns
+provider: Passive DNS
+fields:
+  - date
+  - record_type
+  - client_ip
+  - src_ip          # redundant
+  - destination_ip
+  - dst_ip          # redundant
+  - ttl
+  - domain_name
+  - query           # redundant
+  - dns_query       # redundant
+  - answer
+  - parent_domain   # actually requires enrichment. todo
+  - question_length # actually requires enrichment. todo  
+sample: |
+  1523230478.705932||192.168.1.235||8.8.8.8||IN||facebook.com.||TXT||"v=spf1 redirect=_spf.facebook.com"||21323||1

@@ -1,0 +1,19 @@
+title: LP_0047_BIND_DNS_queries
+default: Not configured
+volume: High
+description: >
+  Configuration to enable DNS queries log on BIND server
+eventID: 
+  - None
+references:
+    - None
+configuration: |
+    logging {
+            channel queries_log {
+                    file "/var/named/log/queries" versions 600 size 40m;
+                    print-category yes;
+                    print-severity yes;
+                    print-time yes;
+                    severity info;
+            };
+            category queries { queries_log; };
