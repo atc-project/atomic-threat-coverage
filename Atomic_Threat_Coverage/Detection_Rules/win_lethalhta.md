@@ -19,6 +19,7 @@
 
 ```
 title: MSHTA spwaned by SVCHOST as seen in LethalHTA
+id: ed5d72a6-f8f4-479d-ba79-02f6a80d7471
 status: experimental
 description: Detects MSHTA.EXE spwaned by SVCHOST described in report
 references:
@@ -47,27 +48,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-(ParentImage.keyword:*\\\\svchost.exe AND Image.keyword:*\\\\mshta.exe)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/MSHTA-spwaned-by-SVCHOST-as-seen-in-LethalHTA <<EOF\n{\n  "metadata": {\n    "title": "MSHTA spwaned by SVCHOST as seen in LethalHTA",\n    "description": "Detects MSHTA.EXE spwaned by SVCHOST described in report",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.execution",\n      "attack.t1170"\n    ],\n    "query": "(ParentImage.keyword:*\\\\\\\\svchost.exe AND Image.keyword:*\\\\\\\\mshta.exe)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(ParentImage.keyword:*\\\\\\\\svchost.exe AND Image.keyword:*\\\\\\\\mshta.exe)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'MSHTA spwaned by SVCHOST as seen in LethalHTA\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(ParentImage:"*\\\\svchost.exe" AND Image:"*\\\\mshta.exe")
-```
-
-
 ### splunk
     
 ```
@@ -75,18 +55,44 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(ParentImage="*\\\\svchost.exe" Image="*\\\\mshta.exe")
+Generated with Sigma2SplunkAlert
+[MSHTA spwaned by SVCHOST as seen in LethalHTA]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: MSHTA spwaned by SVCHOST as seen in LethalHTA status: experimental \
+description: Detects MSHTA.EXE spwaned by SVCHOST described in report \
+references: ['https://codewhitesec.blogspot.com/2018/07/lethalhta.html'] \
+tags: ['attack.defense_evasion', 'attack.execution', 'attack.t1170'] \
+author: Markus Neis \
+date:  \
+falsepositives: ['Unknown'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects MSHTA.EXE spwaned by SVCHOST described in report
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (ParentImage="*\\svchost.exe" Image="*\\mshta.exe") | stats values(*) AS * by _time | search NOT [| inputlookup MSHTA_spwaned_by_SVCHOST_as_seen_in_LethalHTA_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.execution,sigma_tag=attack.t1170,level=high"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*.*\\svchost\\.exe)(?=.*.*\\mshta\\.exe))'
-```
-
-
-

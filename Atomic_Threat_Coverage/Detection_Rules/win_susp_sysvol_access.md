@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious SYSVOL Domain Group Policy Access
+id: 05f3c945-dcc8-4393-9f3d-af65077a8f86
 status: experimental
 description: Detects Access to Domain Group Policies stored in SYSVOL
 references:
@@ -47,27 +48,6 @@ level: medium
 
 
 
-### es-qs
-    
-```
-CommandLine.keyword:*\\\\SYSVOL\\\\*\\\\policies\\\\*
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-SYSVOL-Domain-Group-Policy-Access <<EOF\n{\n  "metadata": {\n    "title": "Suspicious SYSVOL Domain Group Policy Access",\n    "description": "Detects Access to Domain Group Policies stored in SYSVOL",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003"\n    ],\n    "query": "CommandLine.keyword:*\\\\\\\\SYSVOL\\\\\\\\*\\\\\\\\policies\\\\\\\\*"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:*\\\\\\\\SYSVOL\\\\\\\\*\\\\\\\\policies\\\\\\\\*",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious SYSVOL Domain Group Policy Access\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-CommandLine:"*\\\\SYSVOL\\\\*\\\\policies\\\\*"
-```
-
-
 ### splunk
     
 ```
@@ -75,18 +55,44 @@ CommandLine="*\\\\SYSVOL\\\\*\\\\policies\\\\*"
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-CommandLine="*\\\\SYSVOL\\\\*\\\\policies\\\\*"
+Generated with Sigma2SplunkAlert
+[Suspicious SYSVOL Domain Group Policy Access]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Suspicious SYSVOL Domain Group Policy Access status: experimental \
+description: Detects Access to Domain Group Policies stored in SYSVOL \
+references: ['https://adsecurity.org/?p=2288', 'https://www.hybrid-analysis.com/sample/f2943f5e45befa52fb12748ca7171d30096e1d4fc3c365561497c618341299d5?environmentId=100'] \
+tags: ['attack.credential_access', 'attack.t1003'] \
+author: Markus Neis \
+date:  \
+falsepositives: ['administrative activity'] \
+level: medium
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects Access to Domain Group Policies stored in SYSVOL
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = CommandLine="*\\SYSVOL\\*\\policies\\*" | stats values(*) AS * by _time | search NOT [| inputlookup Suspicious_SYSVOL_Domain_Group_Policy_Access_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.t1003,level=medium"
 ```
-
-
-### grep
-    
-```
-grep -P '^.*\\SYSVOL\\\\.*\\policies\\\\.*'
-```
-
-
-

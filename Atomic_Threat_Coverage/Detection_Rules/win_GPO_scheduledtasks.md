@@ -63,5 +63,37 @@ level: high
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Persistence and Execution at scale via GPO scheduled task]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Persistence and Execution at scale via GPO scheduled task status:  \\\ndescription: Detect lateral movement using GPO scheduled task, ususally used to deploy ransomware at scale \\\nreferences: [\'https://twitter.com/menasec1/status/1106899890377052160\'] \\\ntags: [\'attack.persistence\', \'attack.lateral_movement\', \'attack.t1053\'] \\\nauthor: Samir Bousseaden \\\ndate:  \\\nfalsepositives: ["if the source IP is not localhost then it\'s super suspicious, better to monitor both local and remote changes to GPO scheduledtasks"] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detect lateral movement using GPO scheduled task, ususally used to deploy ransomware at scale\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="5145" ShareName="\\\\*\\\\SYSVOL" RelativeTargetName="*ScheduledTasks.xml" Accesses="*WriteData*") | stats values(*) AS * by _time | search NOT [| inputlookup Persistence_and_Execution_at_scale_via_GPO_scheduled_task_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.persistence,sigma_tag=attack.lateral_movement,sigma_tag=attack.t1053,level=high"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Persistence and Execution at scale via GPO scheduled task]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Persistence and Execution at scale via GPO scheduled task status:  \
+description: Detect lateral movement using GPO scheduled task, ususally used to deploy ransomware at scale \
+references: ['https://twitter.com/menasec1/status/1106899890377052160'] \
+tags: ['attack.persistence', 'attack.lateral_movement', 'attack.t1053'] \
+author: Samir Bousseaden \
+date:  \
+falsepositives: ["if the source IP is not localhost then it's super suspicious, better to monitor both local and remote changes to GPO scheduledtasks"] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detect lateral movement using GPO scheduled task, ususally used to deploy ransomware at scale
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="5145" ShareName="\\*\\SYSVOL" RelativeTargetName="*ScheduledTasks.xml" Accesses="*WriteData*") | stats values(*) AS * by _time | search NOT [| inputlookup Persistence_and_Execution_at_scale_via_GPO_scheduled_task_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.persistence,sigma_tag=attack.lateral_movement,sigma_tag=attack.t1053,level=high"
 ```

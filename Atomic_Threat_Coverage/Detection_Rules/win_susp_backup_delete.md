@@ -62,5 +62,37 @@ level: medium
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Backup Catalog Deleted]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Backup Catalog Deleted status: experimental \\\ndescription: Detects backup catalog deletions \\\nreferences: [\'https://technet.microsoft.com/en-us/library/cc742154(v=ws.11).aspx\', \'https://www.hybrid-analysis.com/sample/ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa?environmentId=100\'] \\\ntags: [\'attack.defense_evasion\', \'attack.t1107\'] \\\nauthor: Florian Roth (rule), Tom U. @c_APT_ure (collection) \\\ndate:  \\\nfalsepositives: [\'Unknown\'] \\\nlevel: medium\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects backup catalog deletions\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="524" Source="Backup") | stats values(*) AS * by _time | search NOT [| inputlookup Backup_Catalog_Deleted_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.t1107,level=medium"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Backup Catalog Deleted]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Backup Catalog Deleted status: experimental \
+description: Detects backup catalog deletions \
+references: ['https://technet.microsoft.com/en-us/library/cc742154(v=ws.11).aspx', 'https://www.hybrid-analysis.com/sample/ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa?environmentId=100'] \
+tags: ['attack.defense_evasion', 'attack.t1107'] \
+author: Florian Roth (rule), Tom U. @c_APT_ure (collection) \
+date:  \
+falsepositives: ['Unknown'] \
+level: medium
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects backup catalog deletions
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="524" Source="Backup") | stats values(*) AS * by _time | search NOT [| inputlookup Backup_Catalog_Deleted_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.t1107,level=medium"
 ```

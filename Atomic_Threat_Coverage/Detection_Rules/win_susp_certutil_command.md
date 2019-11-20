@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Certutil Command
+id: e011a729-98a6-4139-b5c4-bf6f6dd8239a
 status: experimental
 description: Detects a suspicious Microsoft certutil execution with sub commands like 'decode' sub command, which is sometimes used to decode malicious code with
     the built-in certutil utility
@@ -72,27 +73,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-CommandLine.keyword:(*\\ \\-decode\\ * OR *\\ \\/decode\\ * OR *\\ \\-decodehex\\ * OR *\\ \\/decodehex\\ * OR *\\ \\-urlcache\\ * OR *\\ \\/urlcache\\ * OR *\\ \\-verifyctl\\ * OR *\\ \\/verifyctl\\ * OR *\\ \\-encode\\ * OR *\\ \\/encode\\ * OR *certutil*\\ \\-URL* OR *certutil*\\ \\/URL* OR *certutil*\\ \\-ping* OR *certutil*\\ \\/ping*)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Certutil-Command <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Certutil Command",\n    "description": "Detects a suspicious Microsoft certutil execution with sub commands like \'decode\' sub command, which is sometimes used to decode malicious code with the built-in certutil utility",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1140",\n      "attack.t1105",\n      "attack.s0189",\n      "attack.g0007"\n    ],\n    "query": "CommandLine.keyword:(*\\\\ \\\\-decode\\\\ * OR *\\\\ \\\\/decode\\\\ * OR *\\\\ \\\\-decodehex\\\\ * OR *\\\\ \\\\/decodehex\\\\ * OR *\\\\ \\\\-urlcache\\\\ * OR *\\\\ \\\\/urlcache\\\\ * OR *\\\\ \\\\-verifyctl\\\\ * OR *\\\\ \\\\/verifyctl\\\\ * OR *\\\\ \\\\-encode\\\\ * OR *\\\\ \\\\/encode\\\\ * OR *certutil*\\\\ \\\\-URL* OR *certutil*\\\\ \\\\/URL* OR *certutil*\\\\ \\\\-ping* OR *certutil*\\\\ \\\\/ping*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:(*\\\\ \\\\-decode\\\\ * OR *\\\\ \\\\/decode\\\\ * OR *\\\\ \\\\-decodehex\\\\ * OR *\\\\ \\\\/decodehex\\\\ * OR *\\\\ \\\\-urlcache\\\\ * OR *\\\\ \\\\/urlcache\\\\ * OR *\\\\ \\\\-verifyctl\\\\ * OR *\\\\ \\\\/verifyctl\\\\ * OR *\\\\ \\\\-encode\\\\ * OR *\\\\ \\\\/encode\\\\ * OR *certutil*\\\\ \\\\-URL* OR *certutil*\\\\ \\\\/URL* OR *certutil*\\\\ \\\\-ping* OR *certutil*\\\\ \\\\/ping*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Certutil Command\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-CommandLine:("* \\-decode *" "* \\/decode *" "* \\-decodehex *" "* \\/decodehex *" "* \\-urlcache *" "* \\/urlcache *" "* \\-verifyctl *" "* \\/verifyctl *" "* \\-encode *" "* \\/encode *" "*certutil* \\-URL*" "*certutil* \\/URL*" "*certutil* \\-ping*" "*certutil* \\/ping*")
-```
-
-
 ### splunk
     
 ```
@@ -100,18 +80,46 @@ CommandLine:("* \\-decode *" "* \\/decode *" "* \\-decodehex *" "* \\/decodehex 
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-CommandLine IN ["* -decode *", "* /decode *", "* -decodehex *", "* /decodehex *", "* -urlcache *", "* /urlcache *", "* -verifyctl *", "* /verifyctl *", "* -encode *", "* /encode *", "*certutil* -URL*", "*certutil* /URL*", "*certutil* -ping*", "*certutil* /ping*"]
+Generated with Sigma2SplunkAlert
+[Suspicious Certutil Command]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:  \
+CommandLine: $result.CommandLine$ \
+ParentCommandLine: $result.ParentCommandLine$  \
+title: Suspicious Certutil Command status: experimental \
+description: Detects a suspicious Microsoft certutil execution with sub commands like 'decode' sub command, which is sometimes used to decode malicious code with the built-in certutil utility \
+references: ['https://twitter.com/JohnLaTwC/status/835149808817991680', 'https://twitter.com/subTee/status/888102593838362624', 'https://twitter.com/subTee/status/888071631528235010', 'https://blogs.technet.microsoft.com/pki/2006/11/30/basic-crl-checking-with-certutil/', 'https://www.trustedsec.com/2017/07/new-tool-release-nps_payload/', 'https://twitter.com/egre55/status/1087685529016193025', 'https://lolbas-project.github.io/lolbas/Binaries/Certutil/'] \
+tags: ['attack.defense_evasion', 'attack.t1140', 'attack.t1105', 'attack.s0189', 'attack.g0007'] \
+author: Florian Roth, juju4, keepwatch \
+date:  \
+falsepositives: ['False positives depend on scripts and administrative tools used in the monitored environment'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects a suspicious Microsoft certutil execution with sub commands like 'decode' sub command, which is sometimes used to decode malicious code with the built-in certutil utility
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (CommandLine="* -decode *" OR CommandLine="* /decode *" OR CommandLine="* -decodehex *" OR CommandLine="* /decodehex *" OR CommandLine="* -urlcache *" OR CommandLine="* /urlcache *" OR CommandLine="* -verifyctl *" OR CommandLine="* /verifyctl *" OR CommandLine="* -encode *" OR CommandLine="* /encode *" OR CommandLine="*certutil* -URL*" OR CommandLine="*certutil* /URL*" OR CommandLine="*certutil* -ping*" OR CommandLine="*certutil* /ping*") | table CommandLine,ParentCommandLine,host | search NOT [| inputlookup Suspicious_Certutil_Command_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.t1140,sigma_tag=attack.t1105,sigma_tag=attack.s0189,sigma_tag=attack.g0007,level=high"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*.* -decode .*|.*.* /decode .*|.*.* -decodehex .*|.*.* /decodehex .*|.*.* -urlcache .*|.*.* /urlcache .*|.*.* -verifyctl .*|.*.* /verifyctl .*|.*.* -encode .*|.*.* /encode .*|.*.*certutil.* -URL.*|.*.*certutil.* /URL.*|.*.*certutil.* -ping.*|.*.*certutil.* /ping.*)'
-```
-
-
-

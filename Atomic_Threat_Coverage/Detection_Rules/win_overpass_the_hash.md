@@ -64,5 +64,37 @@ level: high
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Successful Overpass the Hash Attempt]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Successful Overpass the Hash Attempt status: experimental \\\ndescription: Detects successful logon with logon type 9 (NewCredentials) which matches the Overpass the Hash behavior of e.g Mimikatz\'s sekurlsa::pth module. \\\nreferences: [\'https://cyberwardog.blogspot.de/2017/04/chronicles-of-threat-hunter-hunting-for.html\'] \\\ntags: [\'attack.lateral_movement\', \'attack.t1075\', \'attack.s0002\'] \\\nauthor: Roberto Rodriguez (source), Dominik Schaudel (rule) \\\ndate:  \\\nfalsepositives: [\'Runas command-line tool using /netonly parameter\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects successful logon with logon type 9 (NewCredentials) which matches the Overpass the Hash behavior of e.g Mimikatz\'s sekurlsa::pth module.\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="4624" LogonType="9" LogonProcessName="seclogo" AuthenticationPackageName="Negotiate") | stats values(*) AS * by _time | search NOT [| inputlookup Successful_Overpass_the_Hash_Attempt_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.t1075,sigma_tag=attack.s0002,level=high"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Successful Overpass the Hash Attempt]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Successful Overpass the Hash Attempt status: experimental \
+description: Detects successful logon with logon type 9 (NewCredentials) which matches the Overpass the Hash behavior of e.g Mimikatz's sekurlsa::pth module. \
+references: ['https://cyberwardog.blogspot.de/2017/04/chronicles-of-threat-hunter-hunting-for.html'] \
+tags: ['attack.lateral_movement', 'attack.t1075', 'attack.s0002'] \
+author: Roberto Rodriguez (source), Dominik Schaudel (rule) \
+date:  \
+falsepositives: ['Runas command-line tool using /netonly parameter'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects successful logon with logon type 9 (NewCredentials) which matches the Overpass the Hash behavior of e.g Mimikatz's sekurlsa::pth module.
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="4624" LogonType="9" LogonProcessName="seclogo" AuthenticationPackageName="Negotiate") | stats values(*) AS * by _time | search NOT [| inputlookup Successful_Overpass_the_Hash_Attempt_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.t1075,sigma_tag=attack.s0002,level=high"
 ```

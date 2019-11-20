@@ -19,6 +19,7 @@
 
 ```
 title: MSHTA Spawning Windows Shell
+id: 03cc0c25-389f-4bf8-b48d-11878079f1ca
 status: experimental
 description: Detects a Windows command line executable started from MSHTA.
 references:
@@ -62,27 +63,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-(ParentImage.keyword:*\\\\mshta.exe AND Image.keyword:(*\\\\cmd.exe OR *\\\\powershell.exe OR *\\\\wscript.exe OR *\\\\cscript.exe OR *\\\\sh.exe OR *\\\\bash.exe OR *\\\\reg.exe OR *\\\\regsvr32.exe OR *\\\\BITSADMIN*))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/MSHTA-Spawning-Windows-Shell <<EOF\n{\n  "metadata": {\n    "title": "MSHTA Spawning Windows Shell",\n    "description": "Detects a Windows command line executable started from MSHTA.",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.execution",\n      "attack.t1170",\n      "car.2013-02-003",\n      "car.2013-03-001",\n      "car.2014-04-003"\n    ],\n    "query": "(ParentImage.keyword:*\\\\\\\\mshta.exe AND Image.keyword:(*\\\\\\\\cmd.exe OR *\\\\\\\\powershell.exe OR *\\\\\\\\wscript.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\sh.exe OR *\\\\\\\\bash.exe OR *\\\\\\\\reg.exe OR *\\\\\\\\regsvr32.exe OR *\\\\\\\\BITSADMIN*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(ParentImage.keyword:*\\\\\\\\mshta.exe AND Image.keyword:(*\\\\\\\\cmd.exe OR *\\\\\\\\powershell.exe OR *\\\\\\\\wscript.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\sh.exe OR *\\\\\\\\bash.exe OR *\\\\\\\\reg.exe OR *\\\\\\\\regsvr32.exe OR *\\\\\\\\BITSADMIN*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'MSHTA Spawning Windows Shell\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(ParentImage:"*\\\\mshta.exe" AND Image:("*\\\\cmd.exe" "*\\\\powershell.exe" "*\\\\wscript.exe" "*\\\\cscript.exe" "*\\\\sh.exe" "*\\\\bash.exe" "*\\\\reg.exe" "*\\\\regsvr32.exe" "*\\\\BITSADMIN*"))
-```
-
-
 ### splunk
     
 ```
@@ -90,18 +70,46 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(ParentImage="*\\\\mshta.exe" Image IN ["*\\\\cmd.exe", "*\\\\powershell.exe", "*\\\\wscript.exe", "*\\\\cscript.exe", "*\\\\sh.exe", "*\\\\bash.exe", "*\\\\reg.exe", "*\\\\regsvr32.exe", "*\\\\BITSADMIN*"])
+Generated with Sigma2SplunkAlert
+[MSHTA Spawning Windows Shell]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:  \
+CommandLine: $result.CommandLine$ \
+ParentCommandLine: $result.ParentCommandLine$  \
+title: MSHTA Spawning Windows Shell status: experimental \
+description: Detects a Windows command line executable started from MSHTA. \
+references: ['https://www.trustedsec.com/july-2015/malicious-htas/'] \
+tags: ['attack.defense_evasion', 'attack.execution', 'attack.t1170', 'car.2013-02-003', 'car.2013-03-001', 'car.2014-04-003'] \
+author: Michael Haag \
+date:  \
+falsepositives: ['Printer software / driver installations', 'HP software'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects a Windows command line executable started from MSHTA.
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (ParentImage="*\\mshta.exe" (Image="*\\cmd.exe" OR Image="*\\powershell.exe" OR Image="*\\wscript.exe" OR Image="*\\cscript.exe" OR Image="*\\sh.exe" OR Image="*\\bash.exe" OR Image="*\\reg.exe" OR Image="*\\regsvr32.exe" OR Image="*\\BITSADMIN*")) | table CommandLine,ParentCommandLine,host | search NOT [| inputlookup MSHTA_Spawning_Windows_Shell_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.execution,sigma_tag=attack.t1170,sigma_tag=car.2013-02-003,sigma_tag=car.2013-03-001,sigma_tag=car.2014-04-003,level=high"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*.*\\mshta\\.exe)(?=.*(?:.*.*\\cmd\\.exe|.*.*\\powershell\\.exe|.*.*\\wscript\\.exe|.*.*\\cscript\\.exe|.*.*\\sh\\.exe|.*.*\\bash\\.exe|.*.*\\reg\\.exe|.*.*\\regsvr32\\.exe|.*.*\\BITSADMIN.*)))'
-```
-
-
-

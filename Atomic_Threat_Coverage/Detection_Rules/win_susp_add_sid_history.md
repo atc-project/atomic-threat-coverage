@@ -3,7 +3,7 @@
 | Description          | An attacker can use the SID history attribute to gain additional privileges.                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1178: SID-History Injection](https://attack.mitre.org/techniques/T1178)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0074_4765_sid_history_was_added_to_an_account](../Data_Needed/DN_0074_4765_sid_history_was_added_to_an_account.md)</li><li>[DN_0075_4766_attempt_to_add_sid_history_to_an_account_failed](../Data_Needed/DN_0075_4766_attempt_to_add_sid_history_to_an_account_failed.md)</li><li>[DN_0027_4738_user_account_was_changed](../Data_Needed/DN_0027_4738_user_account_was_changed.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0075_4766_attempt_to_add_sid_history_to_an_account_failed](../Data_Needed/DN_0075_4766_attempt_to_add_sid_history_to_an_account_failed.md)</li><li>[DN_0074_4765_sid_history_was_added_to_an_account](../Data_Needed/DN_0074_4765_sid_history_was_added_to_an_account.md)</li><li>[DN_0027_4738_user_account_was_changed](../Data_Needed/DN_0027_4738_user_account_was_changed.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1178: SID-History Injection](../Triggers/T1178.md)</li></ul>  |
 | Severity Level       | low |
@@ -68,5 +68,37 @@ level: low
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Addition of SID History to Active Directory Object]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Addition of SID History to Active Directory Object status: stable \\\ndescription: An attacker can use the SID history attribute to gain additional privileges. \\\nreferences: [\'https://adsecurity.org/?p=1772\'] \\\ntags: [\'attack.persistence\', \'attack.privilege_escalation\', \'attack.t1178\'] \\\nauthor: Thomas Patzke, @atc_project (improvements) \\\ndate:  \\\nfalsepositives: [\'Migration of an account into a new domain\'] \\\nlevel: low\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = An attacker can use the SID history attribute to gain additional privileges.\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = ((EventID="4765" OR EventID="4766") OR (EventID="4738" NOT ((SidHistory="-" OR SidHistory="%%1793")))) | stats values(*) AS * by _time | search NOT [| inputlookup Addition_of_SID_History_to_Active_Directory_Object_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.persistence,sigma_tag=attack.privilege_escalation,sigma_tag=attack.t1178,level=low"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Addition of SID History to Active Directory Object]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Addition of SID History to Active Directory Object status: stable \
+description: An attacker can use the SID history attribute to gain additional privileges. \
+references: ['https://adsecurity.org/?p=1772'] \
+tags: ['attack.persistence', 'attack.privilege_escalation', 'attack.t1178'] \
+author: Thomas Patzke, @atc_project (improvements) \
+date:  \
+falsepositives: ['Migration of an account into a new domain'] \
+level: low
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = An attacker can use the SID history attribute to gain additional privileges.
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = ((EventID="4765" OR EventID="4766") OR (EventID="4738" NOT ((SidHistory="-" OR SidHistory="%%1793")))) | stats values(*) AS * by _time | search NOT [| inputlookup Addition_of_SID_History_to_Active_Directory_Object_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.persistence,sigma_tag=attack.privilege_escalation,sigma_tag=attack.t1178,level=low"
 ```

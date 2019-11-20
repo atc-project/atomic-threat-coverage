@@ -19,6 +19,7 @@
 
 ```
 title: Microsoft Office Product Spawning Windows Shell
+id: 438025f9-5856-4663-83f7-52f878a70a50
 status: experimental
 description: Detects a Windows command line executable started from Microsoft Word, Excel, Powerpoint, Publisher and Visio.
 references:
@@ -56,7 +57,7 @@ detection:
             - '*\schtasks.exe'
             - '*\regsvr32.exe'
             - '*\hh.exe'
-            - '*\wmic.exe'
+            - '*\wmic.exe'  # https://app.any.run/tasks/c903e9c8-0350-440c-8688-3881b556b8e0/
             - '*\mshta.exe'
             - '*\rundll32.exe'
             - '*\msiexec.exe'
@@ -79,27 +80,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-(ParentImage.keyword:(*\\\\WINWORD.EXE OR *\\\\EXCEL.EXE OR *\\\\POWERPNT.exe OR *\\\\MSPUB.exe OR *\\\\VISIO.exe OR *\\\\OUTLOOK.EXE) AND Image.keyword:(*\\\\cmd.exe OR *\\\\powershell.exe OR *\\\\wscript.exe OR *\\\\cscript.exe OR *\\\\sh.exe OR *\\\\bash.exe OR *\\\\scrcons.exe OR *\\\\schtasks.exe OR *\\\\regsvr32.exe OR *\\\\hh.exe OR *\\\\wmic.exe OR *\\\\mshta.exe OR *\\\\rundll32.exe OR *\\\\msiexec.exe OR *\\\\forfiles.exe OR *\\\\scriptrunner.exe OR *\\\\mftrace.exe OR *\\\\AppVLP.exe OR *\\\\svchost.exe))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Microsoft-Office-Product-Spawning-Windows-Shell <<EOF\n{\n  "metadata": {\n    "title": "Microsoft Office Product Spawning Windows Shell",\n    "description": "Detects a Windows command line executable started from Microsoft Word, Excel, Powerpoint, Publisher and Visio.",\n    "tags": [\n      "attack.execution",\n      "attack.defense_evasion",\n      "attack.t1059",\n      "attack.t1202",\n      "car.2013-02-003",\n      "car.2014-04-003"\n    ],\n    "query": "(ParentImage.keyword:(*\\\\\\\\WINWORD.EXE OR *\\\\\\\\EXCEL.EXE OR *\\\\\\\\POWERPNT.exe OR *\\\\\\\\MSPUB.exe OR *\\\\\\\\VISIO.exe OR *\\\\\\\\OUTLOOK.EXE) AND Image.keyword:(*\\\\\\\\cmd.exe OR *\\\\\\\\powershell.exe OR *\\\\\\\\wscript.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\sh.exe OR *\\\\\\\\bash.exe OR *\\\\\\\\scrcons.exe OR *\\\\\\\\schtasks.exe OR *\\\\\\\\regsvr32.exe OR *\\\\\\\\hh.exe OR *\\\\\\\\wmic.exe OR *\\\\\\\\mshta.exe OR *\\\\\\\\rundll32.exe OR *\\\\\\\\msiexec.exe OR *\\\\\\\\forfiles.exe OR *\\\\\\\\scriptrunner.exe OR *\\\\\\\\mftrace.exe OR *\\\\\\\\AppVLP.exe OR *\\\\\\\\svchost.exe))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(ParentImage.keyword:(*\\\\\\\\WINWORD.EXE OR *\\\\\\\\EXCEL.EXE OR *\\\\\\\\POWERPNT.exe OR *\\\\\\\\MSPUB.exe OR *\\\\\\\\VISIO.exe OR *\\\\\\\\OUTLOOK.EXE) AND Image.keyword:(*\\\\\\\\cmd.exe OR *\\\\\\\\powershell.exe OR *\\\\\\\\wscript.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\sh.exe OR *\\\\\\\\bash.exe OR *\\\\\\\\scrcons.exe OR *\\\\\\\\schtasks.exe OR *\\\\\\\\regsvr32.exe OR *\\\\\\\\hh.exe OR *\\\\\\\\wmic.exe OR *\\\\\\\\mshta.exe OR *\\\\\\\\rundll32.exe OR *\\\\\\\\msiexec.exe OR *\\\\\\\\forfiles.exe OR *\\\\\\\\scriptrunner.exe OR *\\\\\\\\mftrace.exe OR *\\\\\\\\AppVLP.exe OR *\\\\\\\\svchost.exe))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Microsoft Office Product Spawning Windows Shell\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(ParentImage:("*\\\\WINWORD.EXE" "*\\\\EXCEL.EXE" "*\\\\POWERPNT.exe" "*\\\\MSPUB.exe" "*\\\\VISIO.exe" "*\\\\OUTLOOK.EXE") AND Image:("*\\\\cmd.exe" "*\\\\powershell.exe" "*\\\\wscript.exe" "*\\\\cscript.exe" "*\\\\sh.exe" "*\\\\bash.exe" "*\\\\scrcons.exe" "*\\\\schtasks.exe" "*\\\\regsvr32.exe" "*\\\\hh.exe" "*\\\\wmic.exe" "*\\\\mshta.exe" "*\\\\rundll32.exe" "*\\\\msiexec.exe" "*\\\\forfiles.exe" "*\\\\scriptrunner.exe" "*\\\\mftrace.exe" "*\\\\AppVLP.exe" "*\\\\svchost.exe"))
-```
-
-
 ### splunk
     
 ```
@@ -107,18 +87,46 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(ParentImage IN ["*\\\\WINWORD.EXE", "*\\\\EXCEL.EXE", "*\\\\POWERPNT.exe", "*\\\\MSPUB.exe", "*\\\\VISIO.exe", "*\\\\OUTLOOK.EXE"] Image IN ["*\\\\cmd.exe", "*\\\\powershell.exe", "*\\\\wscript.exe", "*\\\\cscript.exe", "*\\\\sh.exe", "*\\\\bash.exe", "*\\\\scrcons.exe", "*\\\\schtasks.exe", "*\\\\regsvr32.exe", "*\\\\hh.exe", "*\\\\wmic.exe", "*\\\\mshta.exe", "*\\\\rundll32.exe", "*\\\\msiexec.exe", "*\\\\forfiles.exe", "*\\\\scriptrunner.exe", "*\\\\mftrace.exe", "*\\\\AppVLP.exe", "*\\\\svchost.exe"])
+Generated with Sigma2SplunkAlert
+[Microsoft Office Product Spawning Windows Shell]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:  \
+CommandLine: $result.CommandLine$ \
+ParentCommandLine: $result.ParentCommandLine$  \
+title: Microsoft Office Product Spawning Windows Shell status: experimental \
+description: Detects a Windows command line executable started from Microsoft Word, Excel, Powerpoint, Publisher and Visio. \
+references: ['https://www.hybrid-analysis.com/sample/465aabe132ccb949e75b8ab9c5bda36d80cf2fd503d52b8bad54e295f28bbc21?environmentId=100', 'https://mgreen27.github.io/posts/2018/04/02/DownloadCradle.html'] \
+tags: ['attack.execution', 'attack.defense_evasion', 'attack.t1059', 'attack.t1202', 'car.2013-02-003', 'car.2014-04-003'] \
+author: Michael Haag, Florian Roth, Markus Neis \
+date:  \
+falsepositives: ['unknown'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects a Windows command line executable started from Microsoft Word, Excel, Powerpoint, Publisher and Visio.
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = ((ParentImage="*\\WINWORD.EXE" OR ParentImage="*\\EXCEL.EXE" OR ParentImage="*\\POWERPNT.exe" OR ParentImage="*\\MSPUB.exe" OR ParentImage="*\\VISIO.exe" OR ParentImage="*\\OUTLOOK.EXE") (Image="*\\cmd.exe" OR Image="*\\powershell.exe" OR Image="*\\wscript.exe" OR Image="*\\cscript.exe" OR Image="*\\sh.exe" OR Image="*\\bash.exe" OR Image="*\\scrcons.exe" OR Image="*\\schtasks.exe" OR Image="*\\regsvr32.exe" OR Image="*\\hh.exe" OR Image="*\\wmic.exe" OR Image="*\\mshta.exe" OR Image="*\\rundll32.exe" OR Image="*\\msiexec.exe" OR Image="*\\forfiles.exe" OR Image="*\\scriptrunner.exe" OR Image="*\\mftrace.exe" OR Image="*\\AppVLP.exe" OR Image="*\\svchost.exe")) | table CommandLine,ParentCommandLine,host | search NOT [| inputlookup Microsoft_Office_Product_Spawning_Windows_Shell_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.execution,sigma_tag=attack.defense_evasion,sigma_tag=attack.t1059,sigma_tag=attack.t1202,sigma_tag=car.2013-02-003,sigma_tag=car.2014-04-003,level=high"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*(?:.*.*\\WINWORD\\.EXE|.*.*\\EXCEL\\.EXE|.*.*\\POWERPNT\\.exe|.*.*\\MSPUB\\.exe|.*.*\\VISIO\\.exe|.*.*\\OUTLOOK\\.EXE))(?=.*(?:.*.*\\cmd\\.exe|.*.*\\powershell\\.exe|.*.*\\wscript\\.exe|.*.*\\cscript\\.exe|.*.*\\sh\\.exe|.*.*\\bash\\.exe|.*.*\\scrcons\\.exe|.*.*\\schtasks\\.exe|.*.*\\regsvr32\\.exe|.*.*\\hh\\.exe|.*.*\\wmic\\.exe|.*.*\\mshta\\.exe|.*.*\\rundll32\\.exe|.*.*\\msiexec\\.exe|.*.*\\forfiles\\.exe|.*.*\\scriptrunner\\.exe|.*.*\\mftrace\\.exe|.*.*\\AppVLP\\.exe|.*.*\\svchost\\.exe)))'
-```
-
-
-

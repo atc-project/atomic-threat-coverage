@@ -19,8 +19,10 @@
 
 ```
 title: Antivirus Password Dumper Detection
+id: 78cc2dd2-7d20-4d32-93ff-057084c38b93
 description: Detects a highly relevant Antivirus alert that reports a password dumper
 date: 2018/09/09
+modified: 2019/10/04
 author: Florian Roth
 references:
     - https://www.nextron-systems.com/2018/09/08/antivirus-event-analysis-cheat-sheet-v1-4/
@@ -38,6 +40,8 @@ detection:
             - "HTool/WCE"
             - "*PSWtool*"
             - "*PWDump*"
+            - "*SecurityTool*"
+            - "*PShlSpy*"
     condition: selection
 fields:
     - FileName
@@ -52,46 +56,53 @@ level: critical
 
 
 
-### es-qs
-    
-```
-Signature.keyword:(*DumpCreds* OR *Mimikatz* OR *PWCrack* OR HTool\\/WCE OR *PSWtool* OR *PWDump*)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Antivirus-Password-Dumper-Detection <<EOF\n{\n  "metadata": {\n    "title": "Antivirus Password Dumper Detection",\n    "description": "Detects a highly relevant Antivirus alert that reports a password dumper",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003"\n    ],\n    "query": "Signature.keyword:(*DumpCreds* OR *Mimikatz* OR *PWCrack* OR HTool\\\\/WCE OR *PSWtool* OR *PWDump*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "Signature.keyword:(*DumpCreds* OR *Mimikatz* OR *PWCrack* OR HTool\\\\/WCE OR *PSWtool* OR *PWDump*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Antivirus Password Dumper Detection\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nFileName = {{_source.FileName}}\\n    User = {{_source.User}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-Signature:("*DumpCreds*" "*Mimikatz*" "*PWCrack*" "HTool\\/WCE" "*PSWtool*" "*PWDump*")
-```
-
-
 ### splunk
     
 ```
-(Signature="*DumpCreds*" OR Signature="*Mimikatz*" OR Signature="*PWCrack*" OR Signature="HTool/WCE" OR Signature="*PSWtool*" OR Signature="*PWDump*") | table FileName,User
-```
-
-
-### logpoint
-    
-```
-Signature IN ["*DumpCreds*", "*Mimikatz*", "*PWCrack*", "HTool/WCE", "*PSWtool*", "*PWDump*"]
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*.*DumpCreds.*|.*.*Mimikatz.*|.*.*PWCrack.*|.*HTool/WCE|.*.*PSWtool.*|.*.*PWDump.*)'
+(Signature="*DumpCreds*" OR Signature="*Mimikatz*" OR Signature="*PWCrack*" OR Signature="HTool/WCE" OR Signature="*PSWtool*" OR Signature="*PWDump*" OR Signature="*SecurityTool*" OR Signature="*PShlSpy*") | table FileName,User
 ```
 
 
 
+
+
+
+### Saved Search for Splunk
+
+```
+Generated with Sigma2SplunkAlert
+[Antivirus Password Dumper Detection]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:  \
+FileName: $result.FileName$ \
+User: $result.User$  \
+title: Antivirus Password Dumper Detection status:  \
+description: Detects a highly relevant Antivirus alert that reports a password dumper \
+references: ['https://www.nextron-systems.com/2018/09/08/antivirus-event-analysis-cheat-sheet-v1-4/'] \
+tags: ['attack.credential_access', 'attack.t1003'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['Unlikely'] \
+level: critical
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects a highly relevant Antivirus alert that reports a password dumper
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (Signature="*DumpCreds*" OR Signature="*Mimikatz*" OR Signature="*PWCrack*" OR Signature="HTool/WCE" OR Signature="*PSWtool*" OR Signature="*PWDump*" OR Signature="*SecurityTool*" OR Signature="*PShlSpy*") | table FileName,User,host | search NOT [| inputlookup Antivirus_Password_Dumper_Detection_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.t1003,level=critical"
+```

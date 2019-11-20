@@ -73,5 +73,37 @@ level: critical
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Mimikatz Use]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Mimikatz Use status:  \\\ndescription: This method detects mimikatz keywords in different Eventlogs (some of them only appear in older Mimikatz version that are however still used by different threat groups) \\\nreferences:  \\\ntags: [\'attack.s0002\', \'attack.t1003\', \'attack.lateral_movement\', \'attack.credential_access\', \'car.2013-07-001\', \'car.2019-04-004\'] \\\nauthor: Florian Roth \\\ndate:  \\\nfalsepositives: [\'Naughty administrators\', \'Penetration test\'] \\\nlevel: critical\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = This method detects mimikatz keywords in different Eventlogs (some of them only appear in older Mimikatz version that are however still used by different threat groups)\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (Message="* mimikatz *" OR Message="* mimilib *" OR Message="* <3 eo.oe *" OR Message="* eo.oe.kiwi *" OR Message="* privilege::debug *" OR Message="* sekurlsa::logonpasswords *" OR Message="* lsadump::sam *" OR Message="* mimidrv.sys *" OR Message="* p::d *" OR Message="* s::l *") | stats values(*) AS * by _time | search NOT [| inputlookup Mimikatz_Use_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.s0002,sigma_tag=attack.t1003,sigma_tag=attack.lateral_movement,sigma_tag=attack.credential_access,sigma_tag=car.2013-07-001,sigma_tag=car.2019-04-004,level=critical"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Mimikatz Use]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Mimikatz Use status:  \
+description: This method detects mimikatz keywords in different Eventlogs (some of them only appear in older Mimikatz version that are however still used by different threat groups) \
+references:  \
+tags: ['attack.s0002', 'attack.t1003', 'attack.lateral_movement', 'attack.credential_access', 'car.2013-07-001', 'car.2019-04-004'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['Naughty administrators', 'Penetration test'] \
+level: critical
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = This method detects mimikatz keywords in different Eventlogs (some of them only appear in older Mimikatz version that are however still used by different threat groups)
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (Message="* mimikatz *" OR Message="* mimilib *" OR Message="* <3 eo.oe *" OR Message="* eo.oe.kiwi *" OR Message="* privilege::debug *" OR Message="* sekurlsa::logonpasswords *" OR Message="* lsadump::sam *" OR Message="* mimidrv.sys *" OR Message="* p::d *" OR Message="* s::l *") | stats values(*) AS * by _time | search NOT [| inputlookup Mimikatz_Use_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.s0002,sigma_tag=attack.t1003,sigma_tag=attack.lateral_movement,sigma_tag=attack.credential_access,sigma_tag=car.2013-07-001,sigma_tag=car.2019-04-004,level=critical"
 ```

@@ -19,6 +19,7 @@
 
 ```
 title: Activity Related to NTDS.dit Domain Hash Retrieval
+id: b932b60f-fdda-4d53-8eda-a170c1d97bbd
 status: experimental
 description: Detects suspicious commands that could be related to activity that uses volume shadow copy to steal and retrieve hashes from the NTDS.dit file remotely
 author: Florian Roth, Michael Haag
@@ -58,27 +59,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-CommandLine.keyword:(vssadmin.exe\\ Delete\\ Shadows OR vssadmin\\ create\\ shadow\\ \\/for\\=C\\: OR copy\\ \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\windows\\\\ntds\\\\ntds.dit OR copy\\ \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\config\\\\SAM OR vssadmin\\ delete\\ shadows\\ \\/for\\=C\\: OR reg\\ SAVE\\ HKLM\\\\SYSTEM\\  OR esentutl.exe\\ \\/y\\ \\/vss\\ *\\\\ntds.dit*)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Activity-Related-to-NTDS.dit-Domain-Hash-Retrieval <<EOF\n{\n  "metadata": {\n    "title": "Activity Related to NTDS.dit Domain Hash Retrieval",\n    "description": "Detects suspicious commands that could be related to activity that uses volume shadow copy to steal and retrieve hashes from the NTDS.dit file remotely",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003"\n    ],\n    "query": "CommandLine.keyword:(vssadmin.exe\\\\ Delete\\\\ Shadows OR vssadmin\\\\ create\\\\ shadow\\\\ \\\\/for\\\\=C\\\\: OR copy\\\\ \\\\\\\\?\\\\\\\\GLOBALROOT\\\\\\\\Device\\\\\\\\*\\\\\\\\windows\\\\\\\\ntds\\\\\\\\ntds.dit OR copy\\\\ \\\\\\\\?\\\\\\\\GLOBALROOT\\\\\\\\Device\\\\\\\\*\\\\\\\\config\\\\\\\\SAM OR vssadmin\\\\ delete\\\\ shadows\\\\ \\\\/for\\\\=C\\\\: OR reg\\\\ SAVE\\\\ HKLM\\\\\\\\SYSTEM\\\\  OR esentutl.exe\\\\ \\\\/y\\\\ \\\\/vss\\\\ *\\\\\\\\ntds.dit*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:(vssadmin.exe\\\\ Delete\\\\ Shadows OR vssadmin\\\\ create\\\\ shadow\\\\ \\\\/for\\\\=C\\\\: OR copy\\\\ \\\\\\\\?\\\\\\\\GLOBALROOT\\\\\\\\Device\\\\\\\\*\\\\\\\\windows\\\\\\\\ntds\\\\\\\\ntds.dit OR copy\\\\ \\\\\\\\?\\\\\\\\GLOBALROOT\\\\\\\\Device\\\\\\\\*\\\\\\\\config\\\\\\\\SAM OR vssadmin\\\\ delete\\\\ shadows\\\\ \\\\/for\\\\=C\\\\: OR reg\\\\ SAVE\\\\ HKLM\\\\\\\\SYSTEM\\\\  OR esentutl.exe\\\\ \\\\/y\\\\ \\\\/vss\\\\ *\\\\\\\\ntds.dit*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Activity Related to NTDS.dit Domain Hash Retrieval\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-CommandLine:("vssadmin.exe Delete Shadows" "vssadmin create shadow \\/for=C\\:" "copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\windows\\\\ntds\\\\ntds.dit" "copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\config\\\\SAM" "vssadmin delete shadows \\/for=C\\:" "reg SAVE HKLM\\\\SYSTEM " "esentutl.exe \\/y \\/vss *\\\\ntds.dit*")
-```
-
-
 ### splunk
     
 ```
@@ -86,18 +66,46 @@ CommandLine:("vssadmin.exe Delete Shadows" "vssadmin create shadow \\/for=C\\:" 
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-CommandLine IN ["vssadmin.exe Delete Shadows", "vssadmin create shadow /for=C:", "copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\windows\\\\ntds\\\\ntds.dit", "copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\config\\\\SAM", "vssadmin delete shadows /for=C:", "reg SAVE HKLM\\\\SYSTEM ", "esentutl.exe /y /vss *\\\\ntds.dit*"]
+Generated with Sigma2SplunkAlert
+[Activity Related to NTDS.dit Domain Hash Retrieval]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:  \
+CommandLine: $result.CommandLine$ \
+ParentCommandLine: $result.ParentCommandLine$  \
+title: Activity Related to NTDS.dit Domain Hash Retrieval status: experimental \
+description: Detects suspicious commands that could be related to activity that uses volume shadow copy to steal and retrieve hashes from the NTDS.dit file remotely \
+references: ['https://www.swordshield.com/2015/07/getting-hashes-from-ntds-dit-file/', 'https://room362.com/post/2013/2013-06-10-volume-shadow-copy-ntdsdit-domain-hashes-remotely-part-1/', 'https://www.trustwave.com/Resources/SpiderLabs-Blog/Tutorial-for-NTDS-goodness-(VSSADMIN,-WMIS,-NTDS-dit,-SYSTEM)/', 'https://securingtomorrow.mcafee.com/mcafee-labs/new-teslacrypt-ransomware-arrives-via-spam/', 'https://dfironthemountain.wordpress.com/2018/12/06/locked-file-access-using-esentutl-exe/'] \
+tags: ['attack.credential_access', 'attack.t1003'] \
+author: Florian Roth, Michael Haag \
+date:  \
+falsepositives: ['Administrative activity'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects suspicious commands that could be related to activity that uses volume shadow copy to steal and retrieve hashes from the NTDS.dit file remotely
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (CommandLine="vssadmin.exe Delete Shadows" OR CommandLine="vssadmin create shadow /for=C:" OR CommandLine="copy \\?\\GLOBALROOT\\Device\\*\\windows\\ntds\\ntds.dit" OR CommandLine="copy \\?\\GLOBALROOT\\Device\\*\\config\\SAM" OR CommandLine="vssadmin delete shadows /for=C:" OR CommandLine="reg SAVE HKLM\\SYSTEM " OR CommandLine="esentutl.exe /y /vss *\\ntds.dit*") | table CommandLine,ParentCommandLine,host | search NOT [| inputlookup Activity_Related_to_NTDS.dit_Domain_Hash_Retrieval_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.t1003,level=high"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*vssadmin\\.exe Delete Shadows|.*vssadmin create shadow /for=C:|.*copy \\\\?\\GLOBALROOT\\Device\\\\.*\\windows\\ntds\\ntds\\.dit|.*copy \\\\?\\GLOBALROOT\\Device\\\\.*\\config\\SAM|.*vssadmin delete shadows /for=C:|.*reg SAVE HKLM\\SYSTEM |.*esentutl\\.exe /y /vss .*\\ntds\\.dit.*)'
-```
-
-
-

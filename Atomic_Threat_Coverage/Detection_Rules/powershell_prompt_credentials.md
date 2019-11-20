@@ -19,6 +19,7 @@
 
 ```
 title: PowerShell Credential Prompt
+id: ca8b77a9-d499-4095-b793-5d5f330d450e
 status: experimental
 description: Detects PowerShell calling a credential prompt
 references:
@@ -37,7 +38,8 @@ detection:
     selection:
         EventID: 4104
     keyword:
-        - 'PromptForCredential'
+        Message:
+            - '*PromptForCredential*'
     condition: all of them
 falsepositives:
     - Unknown
@@ -49,46 +51,51 @@ level: high
 
 
 
-### es-qs
-    
-```
-(EventID:"4104" AND "PromptForCredential")
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/PowerShell-Credential-Prompt <<EOF\n{\n  "metadata": {\n    "title": "PowerShell Credential Prompt",\n    "description": "Detects PowerShell calling a credential prompt",\n    "tags": [\n      "attack.execution",\n      "attack.credential_access",\n      "attack.t1086"\n    ],\n    "query": "(EventID:\\"4104\\" AND \\"PromptForCredential\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4104\\" AND \\"PromptForCredential\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'PowerShell Credential Prompt\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:"4104" AND "PromptForCredential")
-```
-
-
 ### splunk
     
 ```
-(EventID="4104" "PromptForCredential")
-```
-
-
-### logpoint
-    
-```
-(EventID="4104" "PromptForCredential")
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*4104)(?=.*PromptForCredential))'
+(EventID="4104" (Message="*PromptForCredential*"))
 ```
 
 
 
+
+
+
+### Saved Search for Splunk
+
+```
+Generated with Sigma2SplunkAlert
+[PowerShell Credential Prompt]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: PowerShell Credential Prompt status: experimental \
+description: Detects PowerShell calling a credential prompt \
+references: ['https://twitter.com/JohnLaTwC/status/850381440629981184', 'https://t.co/ezOTGy1a1G'] \
+tags: ['attack.execution', 'attack.credential_access', 'attack.t1086'] \
+author: John Lambert (idea), Florian Roth (rule) \
+date:  \
+falsepositives: ['Unknown'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects PowerShell calling a credential prompt
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="4104" (Message="*PromptForCredential*")) | stats values(*) AS * by _time | search NOT [| inputlookup PowerShell_Credential_Prompt_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.execution,sigma_tag=attack.credential_access,sigma_tag=attack.t1086,level=high"
+```

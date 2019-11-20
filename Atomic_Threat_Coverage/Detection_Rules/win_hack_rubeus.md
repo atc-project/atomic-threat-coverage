@@ -19,6 +19,7 @@
 
 ```
 title: Rubeus Hack Tool
+id: 7ec2c172-dceb-4c10-92c9-87c1881b7e18
 description: Detects command line parameters used by Rubeus hack tool
 author: Florian Roth
 references:
@@ -54,27 +55,6 @@ level: critical
 
 
 
-### es-qs
-    
-```
-CommandLine.keyword:(*\\ asreproast\\ * OR *\\ dump\\ \\/service\\:krbtgt\\ * OR *\\ kerberoast\\ * OR *\\ createnetonly\\ \\/program\\:* OR *\\ ptt\\ \\/ticket\\:* OR *\\ \\/impersonateuser\\:* OR *\\ renew\\ \\/ticket\\:* OR *\\ asktgt\\ \\/user\\:* OR *\\ harvest\\ \\/interval\\:*)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Rubeus-Hack-Tool <<EOF\n{\n  "metadata": {\n    "title": "Rubeus Hack Tool",\n    "description": "Detects command line parameters used by Rubeus hack tool",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003",\n      "attack.s0005"\n    ],\n    "query": "CommandLine.keyword:(*\\\\ asreproast\\\\ * OR *\\\\ dump\\\\ \\\\/service\\\\:krbtgt\\\\ * OR *\\\\ kerberoast\\\\ * OR *\\\\ createnetonly\\\\ \\\\/program\\\\:* OR *\\\\ ptt\\\\ \\\\/ticket\\\\:* OR *\\\\ \\\\/impersonateuser\\\\:* OR *\\\\ renew\\\\ \\\\/ticket\\\\:* OR *\\\\ asktgt\\\\ \\\\/user\\\\:* OR *\\\\ harvest\\\\ \\\\/interval\\\\:*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:(*\\\\ asreproast\\\\ * OR *\\\\ dump\\\\ \\\\/service\\\\:krbtgt\\\\ * OR *\\\\ kerberoast\\\\ * OR *\\\\ createnetonly\\\\ \\\\/program\\\\:* OR *\\\\ ptt\\\\ \\\\/ticket\\\\:* OR *\\\\ \\\\/impersonateuser\\\\:* OR *\\\\ renew\\\\ \\\\/ticket\\\\:* OR *\\\\ asktgt\\\\ \\\\/user\\\\:* OR *\\\\ harvest\\\\ \\\\/interval\\\\:*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Rubeus Hack Tool\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-CommandLine:("* asreproast *" "* dump \\/service\\:krbtgt *" "* kerberoast *" "* createnetonly \\/program\\:*" "* ptt \\/ticket\\:*" "* \\/impersonateuser\\:*" "* renew \\/ticket\\:*" "* asktgt \\/user\\:*" "* harvest \\/interval\\:*")
-```
-
-
 ### splunk
     
 ```
@@ -82,18 +62,44 @@ CommandLine:("* asreproast *" "* dump \\/service\\:krbtgt *" "* kerberoast *" "*
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-CommandLine IN ["* asreproast *", "* dump /service:krbtgt *", "* kerberoast *", "* createnetonly /program:*", "* ptt /ticket:*", "* /impersonateuser:*", "* renew /ticket:*", "* asktgt /user:*", "* harvest /interval:*"]
+Generated with Sigma2SplunkAlert
+[Rubeus Hack Tool]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Rubeus Hack Tool status:  \
+description: Detects command line parameters used by Rubeus hack tool \
+references: ['https://www.harmj0y.net/blog/redteaming/from-kekeo-to-rubeus/'] \
+tags: ['attack.credential_access', 'attack.t1003', 'attack.s0005'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['unlikely'] \
+level: critical
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects command line parameters used by Rubeus hack tool
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (CommandLine="* asreproast *" OR CommandLine="* dump /service:krbtgt *" OR CommandLine="* kerberoast *" OR CommandLine="* createnetonly /program:*" OR CommandLine="* ptt /ticket:*" OR CommandLine="* /impersonateuser:*" OR CommandLine="* renew /ticket:*" OR CommandLine="* asktgt /user:*" OR CommandLine="* harvest /interval:*") | stats values(*) AS * by _time | search NOT [| inputlookup Rubeus_Hack_Tool_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.t1003,sigma_tag=attack.s0005,level=critical"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*.* asreproast .*|.*.* dump /service:krbtgt .*|.*.* kerberoast .*|.*.* createnetonly /program:.*|.*.* ptt /ticket:.*|.*.* /impersonateuser:.*|.*.* renew /ticket:.*|.*.* asktgt /user:.*|.*.* harvest /interval:.*)'
-```
-
-
-

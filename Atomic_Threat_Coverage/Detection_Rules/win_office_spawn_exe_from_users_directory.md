@@ -18,12 +18,13 @@
 ### Sigma rule
 
 ```
-title: MS Office Product Spawning Exe in User Dir 
+title: MS Office Product Spawning Exe in User Dir
+id: aa3a6f94-890e-4e22-b634-ffdfd54792cc
 status: experimental
 description: Detects an executable in the users directory started from Microsoft Word, Excel, Powerpoint, Publisher or Visio
 references:
     - sha256=23160972c6ae07f740800fa28e421a81d7c0ca5d5cab95bc082b4a986fbac57c
-    - https://blog.morphisec.com/fin7-not-finished-morphisec-spots-new-campaign 
+    - https://blog.morphisec.com/fin7-not-finished-morphisec-spots-new-campaign
 tags:
     - attack.execution
     - attack.defense_evasion
@@ -61,27 +62,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-(ParentImage.keyword:(*\\\\WINWORD.EXE OR *\\\\EXCEL.EXE OR *\\\\POWERPNT.exe OR *\\\\MSPUB.exe OR *\\\\VISIO.exe OR *\\\\OUTLOOK.EXE) AND Image.keyword:(C\\:\\\\users\\\\*.exe))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/MS-Office-Product-Spawning-Exe-in-User-Dir <<EOF\n{\n  "metadata": {\n    "title": "MS Office Product Spawning Exe in User Dir",\n    "description": "Detects an executable in the users directory started from Microsoft Word, Excel, Powerpoint, Publisher or Visio",\n    "tags": [\n      "attack.execution",\n      "attack.defense_evasion",\n      "attack.t1059",\n      "attack.t1202",\n      "FIN7",\n      "car.2013-05-002"\n    ],\n    "query": "(ParentImage.keyword:(*\\\\\\\\WINWORD.EXE OR *\\\\\\\\EXCEL.EXE OR *\\\\\\\\POWERPNT.exe OR *\\\\\\\\MSPUB.exe OR *\\\\\\\\VISIO.exe OR *\\\\\\\\OUTLOOK.EXE) AND Image.keyword:(C\\\\:\\\\\\\\users\\\\\\\\*.exe))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(ParentImage.keyword:(*\\\\\\\\WINWORD.EXE OR *\\\\\\\\EXCEL.EXE OR *\\\\\\\\POWERPNT.exe OR *\\\\\\\\MSPUB.exe OR *\\\\\\\\VISIO.exe OR *\\\\\\\\OUTLOOK.EXE) AND Image.keyword:(C\\\\:\\\\\\\\users\\\\\\\\*.exe))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'MS Office Product Spawning Exe in User Dir\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(ParentImage:("*\\\\WINWORD.EXE" "*\\\\EXCEL.EXE" "*\\\\POWERPNT.exe" "*\\\\MSPUB.exe" "*\\\\VISIO.exe" "*\\\\OUTLOOK.EXE") AND Image:("C\\:\\\\users\\\\*.exe"))
-```
-
-
 ### splunk
     
 ```
@@ -89,18 +69,46 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(ParentImage IN ["*\\\\WINWORD.EXE", "*\\\\EXCEL.EXE", "*\\\\POWERPNT.exe", "*\\\\MSPUB.exe", "*\\\\VISIO.exe", "*\\\\OUTLOOK.EXE"] Image IN ["C:\\\\users\\\\*.exe"])
+Generated with Sigma2SplunkAlert
+[MS Office Product Spawning Exe in User Dir]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:  \
+CommandLine: $result.CommandLine$ \
+ParentCommandLine: $result.ParentCommandLine$  \
+title: MS Office Product Spawning Exe in User Dir status: experimental \
+description: Detects an executable in the users directory started from Microsoft Word, Excel, Powerpoint, Publisher or Visio \
+references: ['sha256=23160972c6ae07f740800fa28e421a81d7c0ca5d5cab95bc082b4a986fbac57c', 'https://blog.morphisec.com/fin7-not-finished-morphisec-spots-new-campaign'] \
+tags: ['attack.execution', 'attack.defense_evasion', 'attack.t1059', 'attack.t1202', 'FIN7', 'car.2013-05-002'] \
+author: Jason Lynch \
+date:  \
+falsepositives: ['unknown'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects an executable in the users directory started from Microsoft Word, Excel, Powerpoint, Publisher or Visio
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = ((ParentImage="*\\WINWORD.EXE" OR ParentImage="*\\EXCEL.EXE" OR ParentImage="*\\POWERPNT.exe" OR ParentImage="*\\MSPUB.exe" OR ParentImage="*\\VISIO.exe" OR ParentImage="*\\OUTLOOK.EXE") (Image="C:\\users\\*.exe")) | table CommandLine,ParentCommandLine,host | search NOT [| inputlookup MS_Office_Product_Spawning_Exe_in_User_Dir_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.execution,sigma_tag=attack.defense_evasion,sigma_tag=attack.t1059,sigma_tag=attack.t1202,sigma_tag=FIN7,sigma_tag=car.2013-05-002,level=high"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*(?:.*.*\\WINWORD\\.EXE|.*.*\\EXCEL\\.EXE|.*.*\\POWERPNT\\.exe|.*.*\\MSPUB\\.exe|.*.*\\VISIO\\.exe|.*.*\\OUTLOOK\\.EXE))(?=.*(?:.*C:\\users\\\\.*\\.exe)))'
-```
-
-
-

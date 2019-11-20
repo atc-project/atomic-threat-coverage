@@ -66,5 +66,39 @@ level: critical
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[smbexec.py Service Installation]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:  \\\nServiceName: $result.ServiceName$ \\\nServiceFileName: $result.ServiceFileName$  \\\ntitle: smbexec.py Service Installation status:  \\\ndescription: Detects the use of smbexec.py tool by detecting a specific service installation \\\nreferences: [\'https://blog.ropnop.com/using-credentials-to-own-windows-boxes-part-2-psexec-and-services/\'] \\\ntags: [\'attack.lateral_movement\', \'attack.execution\', \'attack.t1077\', \'attack.t1035\'] \\\nauthor: Omer Faruk Celik \\\ndate:  \\\nfalsepositives: [\'Penetration Test\', \'Unknown\'] \\\nlevel: critical\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects the use of smbexec.py tool by detecting a specific service installation\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="7045" ServiceName="BTOBTO" ServiceFileName="*\\\\execute.bat") | table ServiceName,ServiceFileName,host | search NOT [| inputlookup smbexec.py_Service_Installation_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.execution,sigma_tag=attack.t1077,sigma_tag=attack.t1035,level=critical"\n\n\n'
+Generated with Sigma2SplunkAlert
+[smbexec.py Service Installation]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:  \
+ServiceName: $result.ServiceName$ \
+ServiceFileName: $result.ServiceFileName$  \
+title: smbexec.py Service Installation status:  \
+description: Detects the use of smbexec.py tool by detecting a specific service installation \
+references: ['https://blog.ropnop.com/using-credentials-to-own-windows-boxes-part-2-psexec-and-services/'] \
+tags: ['attack.lateral_movement', 'attack.execution', 'attack.t1077', 'attack.t1035'] \
+author: Omer Faruk Celik \
+date:  \
+falsepositives: ['Penetration Test', 'Unknown'] \
+level: critical
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects the use of smbexec.py tool by detecting a specific service installation
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="7045" ServiceName="BTOBTO" ServiceFileName="*\\execute.bat") | table ServiceName,ServiceFileName,host | search NOT [| inputlookup smbexec.py_Service_Installation_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.execution,sigma_tag=attack.t1077,sigma_tag=attack.t1035,level=critical"
 ```

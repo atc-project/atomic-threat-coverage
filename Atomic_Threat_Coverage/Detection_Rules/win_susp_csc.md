@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Parent of Csc.exe
+id: b730a276-6b63-41b8-bcf8-55930c8fc6ee
 description: Detects a suspicious parent of csc.exe, which could by a sign of payload delivery
 status: experimental
 references:
@@ -49,27 +50,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-(Image.keyword:*\\\\csc.exe* AND ParentImage.keyword:(*\\\\wscript.exe OR *\\\\cscript.exe OR *\\\\mshta.exe))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Parent-of-Csc.exe <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Parent of Csc.exe",\n    "description": "Detects a suspicious parent of csc.exe, which could by a sign of payload delivery",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036"\n    ],\n    "query": "(Image.keyword:*\\\\\\\\csc.exe* AND ParentImage.keyword:(*\\\\\\\\wscript.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\mshta.exe))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(Image.keyword:*\\\\\\\\csc.exe* AND ParentImage.keyword:(*\\\\\\\\wscript.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\mshta.exe))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Parent of Csc.exe\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(Image:"*\\\\csc.exe*" AND ParentImage:("*\\\\wscript.exe" "*\\\\cscript.exe" "*\\\\mshta.exe"))
-```
-
-
 ### splunk
     
 ```
@@ -77,18 +57,44 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(Image="*\\\\csc.exe*" ParentImage IN ["*\\\\wscript.exe", "*\\\\cscript.exe", "*\\\\mshta.exe"])
+Generated with Sigma2SplunkAlert
+[Suspicious Parent of Csc.exe]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Suspicious Parent of Csc.exe status: experimental \
+description: Detects a suspicious parent of csc.exe, which could by a sign of payload delivery \
+references: ['https://twitter.com/SBousseaden/status/1094924091256176641'] \
+tags: ['attack.defense_evasion', 'attack.t1036'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['Unkown'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects a suspicious parent of csc.exe, which could by a sign of payload delivery
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (Image="*\\csc.exe*" (ParentImage="*\\wscript.exe" OR ParentImage="*\\cscript.exe" OR ParentImage="*\\mshta.exe")) | stats values(*) AS * by _time | search NOT [| inputlookup Suspicious_Parent_of_Csc.exe_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.t1036,level=high"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*.*\\csc\\.exe.*)(?=.*(?:.*.*\\wscript\\.exe|.*.*\\cscript\\.exe|.*.*\\mshta\\.exe)))'
-```
-
-
-

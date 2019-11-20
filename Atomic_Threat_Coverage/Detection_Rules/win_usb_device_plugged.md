@@ -3,7 +3,7 @@
 | Description          | Detects plugged USB devices                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1200: Hardware Additions](https://attack.mitre.org/techniques/T1200)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0052_2003_query_to_load_usb_drivers](../Data_Needed/DN_0052_2003_query_to_load_usb_drivers.md)</li><li>[DN_0053_2100_pnp_or_power_operation_for_usb_device](../Data_Needed/DN_0053_2100_pnp_or_power_operation_for_usb_device.md)</li><li>[DN_0054_2102_pnp_or_power_operation_for_usb_device](../Data_Needed/DN_0054_2102_pnp_or_power_operation_for_usb_device.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0054_2102_pnp_or_power_operation_for_usb_device](../Data_Needed/DN_0054_2102_pnp_or_power_operation_for_usb_device.md)</li><li>[DN_0053_2100_pnp_or_power_operation_for_usb_device](../Data_Needed/DN_0053_2100_pnp_or_power_operation_for_usb_device.md)</li><li>[DN_0052_2003_query_to_load_usb_drivers](../Data_Needed/DN_0052_2003_query_to_load_usb_drivers.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1200: Hardware Additions](../Triggers/T1200.md)</li></ul>  |
 | Severity Level       | low |
@@ -63,5 +63,37 @@ level: low
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[USB Device Plugged]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: USB Device Plugged status: experimental \\\ndescription: Detects plugged USB devices \\\nreferences: [\'https://df-stream.com/2014/01/the-windows-7-event-log-and-usb-device/\', \'https://www.techrepublic.com/article/how-to-track-down-usb-flash-drive-usage-in-windows-10s-event-viewer/\'] \\\ntags: [\'attack.initial_access\', \'attack.t1200\'] \\\nauthor: Florian Roth \\\ndate:  \\\nfalsepositives: [\'Legitimate administrative activity\'] \\\nlevel: low\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects plugged USB devices\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="2003" OR EventID="2100" OR EventID="2102") | stats values(*) AS * by _time | search NOT [| inputlookup USB_Device_Plugged_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.initial_access,sigma_tag=attack.t1200,level=low"\n\n\n'
+Generated with Sigma2SplunkAlert
+[USB Device Plugged]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: USB Device Plugged status: experimental \
+description: Detects plugged USB devices \
+references: ['https://df-stream.com/2014/01/the-windows-7-event-log-and-usb-device/', 'https://www.techrepublic.com/article/how-to-track-down-usb-flash-drive-usage-in-windows-10s-event-viewer/'] \
+tags: ['attack.initial_access', 'attack.t1200'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['Legitimate administrative activity'] \
+level: low
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects plugged USB devices
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="2003" OR EventID="2100" OR EventID="2102") | stats values(*) AS * by _time | search NOT [| inputlookup USB_Device_Plugged_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.initial_access,sigma_tag=attack.t1200,level=low"
 ```

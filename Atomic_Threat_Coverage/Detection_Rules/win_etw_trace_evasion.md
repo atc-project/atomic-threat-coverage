@@ -19,6 +19,7 @@
 
 ```
 title: Disable of ETW Trace
+id: a238b5d0-ce2d-4414-a676-7a531b3d13d6
 description: Detects a command that clears or disables any ETW trace log which could indicate a logging evasion.
 references:
     - https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/wevtutil
@@ -51,27 +52,6 @@ detection:
 
 
 
-### es-qs
-    
-```
-(CommandLine.keyword:*\\ cl\\ *\\/Trace* OR CommandLine.keyword:*\\ clear\\-log\\ *\\/Trace* OR CommandLine.keyword:*\\ sl*\\ \\/e\\:false* OR CommandLine.keyword:*\\ set\\-log*\\ \\/e\\:false*)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Disable-of-ETW-Trace <<EOF\n{\n  "metadata": {\n    "title": "Disable of ETW Trace",\n    "description": "Detects a command that clears or disables any ETW trace log which could indicate a logging evasion.",\n    "tags": [\n      "attack.execution",\n      "attack.t1070",\n      "car.2016-04-002"\n    ],\n    "query": "(CommandLine.keyword:*\\\\ cl\\\\ *\\\\/Trace* OR CommandLine.keyword:*\\\\ clear\\\\-log\\\\ *\\\\/Trace* OR CommandLine.keyword:*\\\\ sl*\\\\ \\\\/e\\\\:false* OR CommandLine.keyword:*\\\\ set\\\\-log*\\\\ \\\\/e\\\\:false*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(CommandLine.keyword:*\\\\ cl\\\\ *\\\\/Trace* OR CommandLine.keyword:*\\\\ clear\\\\-log\\\\ *\\\\/Trace* OR CommandLine.keyword:*\\\\ sl*\\\\ \\\\/e\\\\:false* OR CommandLine.keyword:*\\\\ set\\\\-log*\\\\ \\\\/e\\\\:false*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Disable of ETW Trace\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(CommandLine:"* cl *\\/Trace*" OR CommandLine:"* clear\\-log *\\/Trace*" OR CommandLine:"* sl* \\/e\\:false*" OR CommandLine:"* set\\-log* \\/e\\:false*")
-```
-
-
 ### splunk
     
 ```
@@ -79,18 +59,44 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(CommandLine="* cl */Trace*" OR CommandLine="* clear-log */Trace*" OR CommandLine="* sl* /e:false*" OR CommandLine="* set-log* /e:false*")
+Generated with Sigma2SplunkAlert
+[Disable of ETW Trace]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Disable of ETW Trace status:  \
+description: Detects a command that clears or disables any ETW trace log which could indicate a logging evasion. \
+references: ['https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/wevtutil', 'https://github.com/Neo23x0/sigma/blob/master/rules/windows/process_creation/win_mal_lockergoga.yml', 'https://abuse.io/lockergoga.txt'] \
+tags: ['attack.execution', 'attack.t1070', 'car.2016-04-002'] \
+author: @neu5ron, Florian Roth \
+date:  \
+falsepositives:  \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects a command that clears or disables any ETW trace log which could indicate a logging evasion.
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (CommandLine="* cl */Trace*" OR CommandLine="* clear-log */Trace*" OR CommandLine="* sl* /e:false*" OR CommandLine="* set-log* /e:false*") | stats values(*) AS * by _time | search NOT [| inputlookup Disable_of_ETW_Trace_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.execution,sigma_tag=attack.t1070,sigma_tag=car.2016-04-002,level=high"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?:.*.* cl .*/Trace.*|.*.* clear-log .*/Trace.*|.*.* sl.* /e:false.*|.*.* set-log.* /e:false.*))'
-```
-
-
-

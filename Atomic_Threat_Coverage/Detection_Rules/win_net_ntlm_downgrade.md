@@ -3,7 +3,7 @@
 | Description          | Detects post exploitation using NetNTLM downgrade attacks                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1212: Exploitation for Credential Access](https://attack.mitre.org/techniques/T1212)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0059_4657_registry_value_was_modified](../Data_Needed/DN_0059_4657_registry_value_was_modified.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li><li>[DN_0059_4657_registry_value_was_modified](../Data_Needed/DN_0059_4657_registry_value_was_modified.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1212: Exploitation for Credential Access](../Triggers/T1212.md)</li></ul>  |
 | Severity Level       | critical |
@@ -80,5 +80,38 @@ detection:
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[NetNTLM Downgrade Attack]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: NetNTLM Downgrade Attack status:  \\\ndescription: Detects post exploitation using NetNTLM downgrade attacks \\\nreferences: [\'https://www.optiv.com/blog/post-exploitation-using-netntlm-downgrade-attacks\'] \\\ntags: [\'attack.credential_access\', \'attack.t1212\'] \\\nauthor: Florian Roth \\\ndate:  \\\nfalsepositives: [\'Unknown\'] \\\nlevel: critical\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects post exploitation using NetNTLM downgrade attacks\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="13" (TargetObject="*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\lmcompatibilitylevel" OR TargetObject="*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\NtlmMinClientSec" OR TargetObject="*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\RestrictSendingNTLMTraffic"))\n(EventID="4657" ObjectName="\\\\REGISTRY\\\\MACHINE\\\\SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa" (ObjectValueName="LmCompatibilityLevel" OR ObjectValueName="NtlmMinClientSec" OR ObjectValueName="RestrictSendingNTLMTraffic")) | stats values(*) AS * by _time | search NOT [| inputlookup NetNTLM_Downgrade_Attack_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.t1212,level=critical"\n\n\n'
+Generated with Sigma2SplunkAlert
+[NetNTLM Downgrade Attack]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: NetNTLM Downgrade Attack status:  \
+description: Detects post exploitation using NetNTLM downgrade attacks \
+references: ['https://www.optiv.com/blog/post-exploitation-using-netntlm-downgrade-attacks'] \
+tags: ['attack.credential_access', 'attack.t1212'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['Unknown'] \
+level: critical
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects post exploitation using NetNTLM downgrade attacks
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="13" (TargetObject="*SYSTEM\\*ControlSet*\\Control\\Lsa\\lmcompatibilitylevel" OR TargetObject="*SYSTEM\\*ControlSet*\\Control\\Lsa\\NtlmMinClientSec" OR TargetObject="*SYSTEM\\*ControlSet*\\Control\\Lsa\\RestrictSendingNTLMTraffic"))
+(EventID="4657" ObjectName="\\REGISTRY\\MACHINE\\SYSTEM\\*ControlSet*\\Control\\Lsa" (ObjectValueName="LmCompatibilityLevel" OR ObjectValueName="NtlmMinClientSec" OR ObjectValueName="RestrictSendingNTLMTraffic")) | stats values(*) AS * by _time | search NOT [| inputlookup NetNTLM_Downgrade_Attack_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.t1212,level=critical"
 ```

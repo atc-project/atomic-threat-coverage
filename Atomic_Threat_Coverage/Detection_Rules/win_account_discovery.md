@@ -74,5 +74,37 @@ level: high
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[AD Privileged Users or Groups Reconnaissance]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: AD Privileged Users or Groups Reconnaissance status: experimental \\\ndescription: Detect priv users or groups recon based on 4661 eventid and known privileged users or groups SIDs \\\nreferences: [\'https://blog.menasec.net/2019/02/threat-hunting-5-detecting-enumeration.html\'] \\\ntags: [\'attack.discovery\', \'attack.t1087\'] \\\nauthor: Samir Bousseaden \\\ndate:  \\\nfalsepositives: [\'if source account name is not an admin then its super suspicious\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detect priv users or groups recon based on 4661 eventid and known privileged users or groups SIDs\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="4661" (ObjectType="SAM_USER" OR ObjectType="SAM_GROUP") (ObjectName="*-512" OR ObjectName="*-502" OR ObjectName="*-500" OR ObjectName="*-505" OR ObjectName="*-519" OR ObjectName="*-520" OR ObjectName="*-544" OR ObjectName="*-551" OR ObjectName="*-555" OR ObjectName="*admin*")) | stats values(*) AS * by _time | search NOT [| inputlookup AD_Privileged_Users_or_Groups_Reconnaissance_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.discovery,sigma_tag=attack.t1087,level=high"\n\n\n'
+Generated with Sigma2SplunkAlert
+[AD Privileged Users or Groups Reconnaissance]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: AD Privileged Users or Groups Reconnaissance status: experimental \
+description: Detect priv users or groups recon based on 4661 eventid and known privileged users or groups SIDs \
+references: ['https://blog.menasec.net/2019/02/threat-hunting-5-detecting-enumeration.html'] \
+tags: ['attack.discovery', 'attack.t1087'] \
+author: Samir Bousseaden \
+date:  \
+falsepositives: ['if source account name is not an admin then its super suspicious'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detect priv users or groups recon based on 4661 eventid and known privileged users or groups SIDs
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="4661" (ObjectType="SAM_USER" OR ObjectType="SAM_GROUP") (ObjectName="*-512" OR ObjectName="*-502" OR ObjectName="*-500" OR ObjectName="*-505" OR ObjectName="*-519" OR ObjectName="*-520" OR ObjectName="*-544" OR ObjectName="*-551" OR ObjectName="*-555" OR ObjectName="*admin*")) | stats values(*) AS * by _time | search NOT [| inputlookup AD_Privileged_Users_or_Groups_Reconnaissance_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.discovery,sigma_tag=attack.t1087,level=high"
 ```

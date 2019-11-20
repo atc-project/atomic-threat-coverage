@@ -19,6 +19,7 @@
 
 ```
 title: Possible Ransomware or unauthorized MBR modifications
+id: c9fbe8e9-119d-40a6-9b59-dd58a5d84429
 status: experimental
 description: Detects, possibly, malicious unauthorized usage of bcdedit.exe
 references:
@@ -49,27 +50,6 @@ level: medium
 
 
 
-### es-qs
-    
-```
-(NewProcessName.keyword:*\\\\bcdedit.exe AND ProcessCommandLine.keyword:(*delete* OR *deletevalue* OR *import*))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Possible-Ransomware-or-unauthorized-MBR-modifications <<EOF\n{\n  "metadata": {\n    "title": "Possible Ransomware or unauthorized MBR modifications",\n    "description": "Detects, possibly, malicious unauthorized usage of bcdedit.exe",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1070",\n      "attack.persistence",\n      "attack.t1067"\n    ],\n    "query": "(NewProcessName.keyword:*\\\\\\\\bcdedit.exe AND ProcessCommandLine.keyword:(*delete* OR *deletevalue* OR *import*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(NewProcessName.keyword:*\\\\\\\\bcdedit.exe AND ProcessCommandLine.keyword:(*delete* OR *deletevalue* OR *import*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Possible Ransomware or unauthorized MBR modifications\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(NewProcessName:"*\\\\bcdedit.exe" AND ProcessCommandLine:("*delete*" "*deletevalue*" "*import*"))
-```
-
-
 ### splunk
     
 ```
@@ -77,18 +57,44 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(NewProcessName="*\\\\bcdedit.exe" ProcessCommandLine IN ["*delete*", "*deletevalue*", "*import*"])
+Generated with Sigma2SplunkAlert
+[Possible Ransomware or unauthorized MBR modifications]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Possible Ransomware or unauthorized MBR modifications status: experimental \
+description: Detects, possibly, malicious unauthorized usage of bcdedit.exe \
+references: ['https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/bcdedit--set'] \
+tags: ['attack.defense_evasion', 'attack.t1070', 'attack.persistence', 'attack.t1067'] \
+author: @neu5ron \
+date:  \
+falsepositives:  \
+level: medium
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects, possibly, malicious unauthorized usage of bcdedit.exe
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (NewProcessName="*\\bcdedit.exe" (ProcessCommandLine="*delete*" OR ProcessCommandLine="*deletevalue*" OR ProcessCommandLine="*import*")) | stats values(*) AS * by _time | search NOT [| inputlookup Possible_Ransomware_or_unauthorized_MBR_modifications_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.t1070,sigma_tag=attack.persistence,sigma_tag=attack.t1067,level=medium"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*.*\\bcdedit\\.exe)(?=.*(?:.*.*delete.*|.*.*deletevalue.*|.*.*import.*)))'
-```
-
-
-

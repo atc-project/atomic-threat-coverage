@@ -19,6 +19,7 @@
 
 ```
 title: Encoded FromBase64String
+id: fdb62a13-9a81-4e5c-a38f-ea93a16f6d7c
 status: experimental
 description: Detects a base64 encoded FromBase64String keyword in a process command line
 author: Florian Roth
@@ -48,27 +49,6 @@ level: critical
 
 
 
-### es-qs
-    
-```
-CommandLine.keyword:(*OjpGcm9tQmFzZTY0U3RyaW5n* OR *o6RnJvbUJhc2U2NFN0cmluZ* OR *6OkZyb21CYXNlNjRTdHJpbm*)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Encoded-FromBase64String <<EOF\n{\n  "metadata": {\n    "title": "Encoded FromBase64String",\n    "description": "Detects a base64 encoded FromBase64String keyword in a process command line",\n    "tags": [\n      "attack.t1086",\n      "attack.t1140",\n      "attack.execution",\n      "attack.defense_evasion"\n    ],\n    "query": "CommandLine.keyword:(*OjpGcm9tQmFzZTY0U3RyaW5n* OR *o6RnJvbUJhc2U2NFN0cmluZ* OR *6OkZyb21CYXNlNjRTdHJpbm*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:(*OjpGcm9tQmFzZTY0U3RyaW5n* OR *o6RnJvbUJhc2U2NFN0cmluZ* OR *6OkZyb21CYXNlNjRTdHJpbm*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Encoded FromBase64String\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-CommandLine:("*OjpGcm9tQmFzZTY0U3RyaW5n*" "*o6RnJvbUJhc2U2NFN0cmluZ*" "*6OkZyb21CYXNlNjRTdHJpbm*")
-```
-
-
 ### splunk
     
 ```
@@ -76,18 +56,46 @@ CommandLine:("*OjpGcm9tQmFzZTY0U3RyaW5n*" "*o6RnJvbUJhc2U2NFN0cmluZ*" "*6OkZyb21
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-CommandLine IN ["*OjpGcm9tQmFzZTY0U3RyaW5n*", "*o6RnJvbUJhc2U2NFN0cmluZ*", "*6OkZyb21CYXNlNjRTdHJpbm*"]
+Generated with Sigma2SplunkAlert
+[Encoded FromBase64String]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:  \
+CommandLine: $result.CommandLine$ \
+ParentCommandLine: $result.ParentCommandLine$  \
+title: Encoded FromBase64String status: experimental \
+description: Detects a base64 encoded FromBase64String keyword in a process command line \
+references:  \
+tags: ['attack.t1086', 'attack.t1140', 'attack.execution', 'attack.defense_evasion'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['unknown'] \
+level: critical
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects a base64 encoded FromBase64String keyword in a process command line
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (CommandLine="*OjpGcm9tQmFzZTY0U3RyaW5n*" OR CommandLine="*o6RnJvbUJhc2U2NFN0cmluZ*" OR CommandLine="*6OkZyb21CYXNlNjRTdHJpbm*") | table CommandLine,ParentCommandLine,host | search NOT [| inputlookup Encoded_FromBase64String_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.t1086,sigma_tag=attack.t1140,sigma_tag=attack.execution,sigma_tag=attack.defense_evasion,level=critical"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*.*OjpGcm9tQmFzZTY0U3RyaW5n.*|.*.*o6RnJvbUJhc2U2NFN0cmluZ.*|.*.*6OkZyb21CYXNlNjRTdHJpbm.*)'
-```
-
-
-

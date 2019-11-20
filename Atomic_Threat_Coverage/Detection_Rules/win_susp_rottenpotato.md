@@ -65,5 +65,37 @@ level: high
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[RottenPotato Like Attack Pattern]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: RottenPotato Like Attack Pattern status: experimental \\\ndescription: Detects logon events that have characteristics of events generated during an attack with RottenPotato and the like \\\nreferences: [\'https://twitter.com/SBousseaden/status/1195284233729777665\'] \\\ntags: [\'attack.privilege_escalation\', \'attack.credential_access\', \'attack.t1171\'] \\\nauthor: @SBousseaden, Florian Roth \\\ndate:  \\\nfalsepositives: [\'Unknown\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects logon events that have characteristics of events generated during an attack with RottenPotato and the like\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="4624" LogonType="3" TargetUserName="ANONYMOUS_LOGON" WorkstationName="-" SourceNetworkAddress="127.0.0.1") | stats values(*) AS * by _time | search NOT [| inputlookup RottenPotato_Like_Attack_Pattern_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.privilege_escalation,sigma_tag=attack.credential_access,sigma_tag=attack.t1171,level=high"\n\n\n'
+Generated with Sigma2SplunkAlert
+[RottenPotato Like Attack Pattern]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: RottenPotato Like Attack Pattern status: experimental \
+description: Detects logon events that have characteristics of events generated during an attack with RottenPotato and the like \
+references: ['https://twitter.com/SBousseaden/status/1195284233729777665'] \
+tags: ['attack.privilege_escalation', 'attack.credential_access', 'attack.t1171'] \
+author: @SBousseaden, Florian Roth \
+date:  \
+falsepositives: ['Unknown'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects logon events that have characteristics of events generated during an attack with RottenPotato and the like
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="4624" LogonType="3" TargetUserName="ANONYMOUS_LOGON" WorkstationName="-" SourceNetworkAddress="127.0.0.1") | stats values(*) AS * by _time | search NOT [| inputlookup RottenPotato_Like_Attack_Pattern_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.privilege_escalation,sigma_tag=attack.credential_access,sigma_tag=attack.t1171,level=high"
 ```

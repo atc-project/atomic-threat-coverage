@@ -68,5 +68,37 @@ level: high
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Weak Encryption Enabled and Kerberoast]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Weak Encryption Enabled and Kerberoast status:  \\\ndescription: Detects scenario where weak encryption is enabled for a user profile which could be used for hash/password cracking. \\\nreferences: [\'https://adsecurity.org/?p=2053\', \'https://www.harmj0y.net/blog/activedirectory/roasting-as-reps/\'] \\\ntags: [\'attack.defense_evasion\', \'attack.t1089\'] \\\nauthor: @neu5ron \\\ndate:  \\\nfalsepositives: [\'Unknown\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects scenario where weak encryption is enabled for a user profile which could be used for hash/password cracking.\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="4738" (Message="*DES*" OR Message="*Preauth*" OR Message="*Encrypted*") (Message="*Enabled*")) | stats values(*) AS * by _time | search NOT [| inputlookup Weak_Encryption_Enabled_and_Kerberoast_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.t1089,level=high"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Weak Encryption Enabled and Kerberoast]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Weak Encryption Enabled and Kerberoast status:  \
+description: Detects scenario where weak encryption is enabled for a user profile which could be used for hash/password cracking. \
+references: ['https://adsecurity.org/?p=2053', 'https://www.harmj0y.net/blog/activedirectory/roasting-as-reps/'] \
+tags: ['attack.defense_evasion', 'attack.t1089'] \
+author: @neu5ron \
+date:  \
+falsepositives: ['Unknown'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects scenario where weak encryption is enabled for a user profile which could be used for hash/password cracking.
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="4738" (Message="*DES*" OR Message="*Preauth*" OR Message="*Encrypted*") (Message="*Enabled*")) | stats values(*) AS * by _time | search NOT [| inputlookup Weak_Encryption_Enabled_and_Kerberoast_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.t1089,level=high"
 ```

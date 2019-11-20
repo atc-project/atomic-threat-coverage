@@ -19,15 +19,17 @@
 
 ```
 title: Windows Processes Suspicious Parent Directory
+id: 96036718-71cc-4027-a538-d1587e0006a7
 status: experimental
 description: Detect suspicious parent processes of well-known Windows processes
-author: 'vburov'
+author: vburov
 references:
     - https://securitybytes.io/blue-team-fundamentals-part-two-windows-processes-759fe15965e2
     - https://www.carbonblack.com/2014/06/10/screenshot-demo-hunt-evil-faster-than-ever-with-carbon-black/
     - https://www.13cubed.com/downloads/windows_process_genealogy_v2.pdf
     - https://attack.mitre.org/techniques/T1036/
 date: 2019/02/23
+modified: 2019/08/20
 tags:
     - attack.defense_evasion
     - attack.t1036
@@ -50,6 +52,8 @@ detection:
         ParentImage:
             - '*\System32\\*'
             - '*\SysWOW64\\*'
+            - '*\SavService.exe'
+            - '*\Windows Defender\\*\MsMpEng.exe'
     filter_null:
         ParentImage: null
     condition: selection and not filter and not filter_null
@@ -63,46 +67,51 @@ level: low
 
 
 
-### es-qs
-    
-```
-((Image.keyword:(*\\\\svchost.exe OR *\\\\taskhost.exe OR *\\\\lsm.exe OR *\\\\lsass.exe OR *\\\\services.exe OR *\\\\lsaiso.exe OR *\\\\csrss.exe OR *\\\\wininit.exe OR *\\\\winlogon.exe) AND (NOT (ParentImage.keyword:(*\\\\System32\\\\* OR *\\\\SysWOW64\\\\*)))) AND (NOT (NOT _exists_:ParentImage)))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Windows-Processes-Suspicious-Parent-Directory <<EOF\n{\n  "metadata": {\n    "title": "Windows Processes Suspicious Parent Directory",\n    "description": "Detect suspicious parent processes of well-known Windows processes",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036"\n    ],\n    "query": "((Image.keyword:(*\\\\\\\\svchost.exe OR *\\\\\\\\taskhost.exe OR *\\\\\\\\lsm.exe OR *\\\\\\\\lsass.exe OR *\\\\\\\\services.exe OR *\\\\\\\\lsaiso.exe OR *\\\\\\\\csrss.exe OR *\\\\\\\\wininit.exe OR *\\\\\\\\winlogon.exe) AND (NOT (ParentImage.keyword:(*\\\\\\\\System32\\\\\\\\* OR *\\\\\\\\SysWOW64\\\\\\\\*)))) AND (NOT (NOT _exists_:ParentImage)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Image.keyword:(*\\\\\\\\svchost.exe OR *\\\\\\\\taskhost.exe OR *\\\\\\\\lsm.exe OR *\\\\\\\\lsass.exe OR *\\\\\\\\services.exe OR *\\\\\\\\lsaiso.exe OR *\\\\\\\\csrss.exe OR *\\\\\\\\wininit.exe OR *\\\\\\\\winlogon.exe) AND (NOT (ParentImage.keyword:(*\\\\\\\\System32\\\\\\\\* OR *\\\\\\\\SysWOW64\\\\\\\\*)))) AND (NOT (NOT _exists_:ParentImage)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Windows Processes Suspicious Parent Directory\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-((Image:("*\\\\svchost.exe" "*\\\\taskhost.exe" "*\\\\lsm.exe" "*\\\\lsass.exe" "*\\\\services.exe" "*\\\\lsaiso.exe" "*\\\\csrss.exe" "*\\\\wininit.exe" "*\\\\winlogon.exe") AND NOT (ParentImage:("*\\\\System32\\\\*" "*\\\\SysWOW64\\\\*"))) AND NOT (NOT _exists_:ParentImage))
-```
-
-
 ### splunk
     
 ```
-(((Image="*\\\\svchost.exe" OR Image="*\\\\taskhost.exe" OR Image="*\\\\lsm.exe" OR Image="*\\\\lsass.exe" OR Image="*\\\\services.exe" OR Image="*\\\\lsaiso.exe" OR Image="*\\\\csrss.exe" OR Image="*\\\\wininit.exe" OR Image="*\\\\winlogon.exe") NOT ((ParentImage="*\\\\System32\\\\*" OR ParentImage="*\\\\SysWOW64\\\\*"))) NOT (NOT ParentImage="*"))
-```
-
-
-### logpoint
-    
-```
-((Image IN ["*\\\\svchost.exe", "*\\\\taskhost.exe", "*\\\\lsm.exe", "*\\\\lsass.exe", "*\\\\services.exe", "*\\\\lsaiso.exe", "*\\\\csrss.exe", "*\\\\wininit.exe", "*\\\\winlogon.exe"]  -(ParentImage IN ["*\\\\System32\\\\*", "*\\\\SysWOW64\\\\*"]))  -(-ParentImage=*))
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*(?:.*(?=.*(?:.*.*\\svchost\\.exe|.*.*\\taskhost\\.exe|.*.*\\lsm\\.exe|.*.*\\lsass\\.exe|.*.*\\services\\.exe|.*.*\\lsaiso\\.exe|.*.*\\csrss\\.exe|.*.*\\wininit\\.exe|.*.*\\winlogon\\.exe))(?=.*(?!.*(?:.*(?=.*(?:.*.*\\System32\\\\.*|.*.*\\SysWOW64\\\\.*)))))))(?=.*(?!.*(?:.*(?=.*(?!ParentImage))))))'
+(((Image="*\\\\svchost.exe" OR Image="*\\\\taskhost.exe" OR Image="*\\\\lsm.exe" OR Image="*\\\\lsass.exe" OR Image="*\\\\services.exe" OR Image="*\\\\lsaiso.exe" OR Image="*\\\\csrss.exe" OR Image="*\\\\wininit.exe" OR Image="*\\\\winlogon.exe") NOT ((ParentImage="*\\\\System32\\\\*" OR ParentImage="*\\\\SysWOW64\\\\*" OR ParentImage="*\\\\SavService.exe" OR ParentImage="*\\\\Windows Defender\\\\*\\\\MsMpEng.exe"))) NOT (NOT ParentImage="*"))
 ```
 
 
 
+
+
+
+### Saved Search for Splunk
+
+```
+Generated with Sigma2SplunkAlert
+[Windows Processes Suspicious Parent Directory]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Windows Processes Suspicious Parent Directory status: experimental \
+description: Detect suspicious parent processes of well-known Windows processes \
+references: ['https://securitybytes.io/blue-team-fundamentals-part-two-windows-processes-759fe15965e2', 'https://www.carbonblack.com/2014/06/10/screenshot-demo-hunt-evil-faster-than-ever-with-carbon-black/', 'https://www.13cubed.com/downloads/windows_process_genealogy_v2.pdf', 'https://attack.mitre.org/techniques/T1036/'] \
+tags: ['attack.defense_evasion', 'attack.t1036'] \
+author: vburov \
+date:  \
+falsepositives: ['Some security products seem to spawn these'] \
+level: low
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detect suspicious parent processes of well-known Windows processes
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (((Image="*\\svchost.exe" OR Image="*\\taskhost.exe" OR Image="*\\lsm.exe" OR Image="*\\lsass.exe" OR Image="*\\services.exe" OR Image="*\\lsaiso.exe" OR Image="*\\csrss.exe" OR Image="*\\wininit.exe" OR Image="*\\winlogon.exe") NOT ((ParentImage="*\\System32\\*" OR ParentImage="*\\SysWOW64\\*" OR ParentImage="*\\SavService.exe" OR ParentImage="*\\Windows Defender\\*\\MsMpEng.exe"))) NOT (NOT ParentImage="*")) | stats values(*) AS * by _time | search NOT [| inputlookup Windows_Processes_Suspicious_Parent_Directory_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.t1036,level=low"
+```

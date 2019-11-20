@@ -62,5 +62,37 @@ level: medium
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Remote Service Activity Detected via SVCCTL named pipe]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Remote Service Activity Detected via SVCCTL named pipe status:  \\\ndescription: Detects remote remote service activity via remote access to the svcctl named pipe \\\nreferences: [\'https://blog.menasec.net/2019/03/threat-hunting-26-remote-windows.html\'] \\\ntags: [\'attack.lateral_movement\', \'attack.persistence\'] \\\nauthor: Samir Bousseaden \\\ndate:  \\\nfalsepositives: [\'pentesting\'] \\\nlevel: medium\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects remote remote service activity via remote access to the svcctl named pipe\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName="svcctl" Accesses="*WriteData*") | stats values(*) AS * by _time | search NOT [| inputlookup Remote_Service_Activity_Detected_via_SVCCTL_named_pipe_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.persistence,level=medium"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Remote Service Activity Detected via SVCCTL named pipe]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Remote Service Activity Detected via SVCCTL named pipe status:  \
+description: Detects remote remote service activity via remote access to the svcctl named pipe \
+references: ['https://blog.menasec.net/2019/03/threat-hunting-26-remote-windows.html'] \
+tags: ['attack.lateral_movement', 'attack.persistence'] \
+author: Samir Bousseaden \
+date:  \
+falsepositives: ['pentesting'] \
+level: medium
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects remote remote service activity via remote access to the svcctl named pipe
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="5145" ShareName="\\*\\IPC$" RelativeTargetName="svcctl" Accesses="*WriteData*") | stats values(*) AS * by _time | search NOT [| inputlookup Remote_Service_Activity_Detected_via_SVCCTL_named_pipe_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.persistence,level=medium"
 ```

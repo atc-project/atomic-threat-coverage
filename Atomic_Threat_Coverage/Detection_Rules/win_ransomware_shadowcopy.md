@@ -19,6 +19,7 @@
 
 ```
 title: Ransomware Deletes Volume Shadow Copies
+id: 4eebe114-4b24-4a9d-9a6c-c7bd7c8eaa61
 status: experimental
 description: Detects commands that delete all local volume shadow copies as used by different Ransomware families
 references:
@@ -48,27 +49,6 @@ level: critical
 
 
 
-### es-qs
-    
-```
-CommandLine.keyword:(*vssadmin\\ delete\\ shadows* OR *wmic\\ SHADOWCOPY\\ DELETE*)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Ransomware-Deletes-Volume-Shadow-Copies <<EOF\n{\n  "metadata": {\n    "title": "Ransomware Deletes Volume Shadow Copies",\n    "description": "Detects commands that delete all local volume shadow copies as used by different Ransomware families",\n    "tags": "",\n    "query": "CommandLine.keyword:(*vssadmin\\\\ delete\\\\ shadows* OR *wmic\\\\ SHADOWCOPY\\\\ DELETE*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:(*vssadmin\\\\ delete\\\\ shadows* OR *wmic\\\\ SHADOWCOPY\\\\ DELETE*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Ransomware Deletes Volume Shadow Copies\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-CommandLine:("*vssadmin delete shadows*" "*wmic SHADOWCOPY DELETE*")
-```
-
-
 ### splunk
     
 ```
@@ -76,18 +56,46 @@ CommandLine:("*vssadmin delete shadows*" "*wmic SHADOWCOPY DELETE*")
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-CommandLine IN ["*vssadmin delete shadows*", "*wmic SHADOWCOPY DELETE*"]
+Generated with Sigma2SplunkAlert
+[Ransomware Deletes Volume Shadow Copies]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:  \
+CommandLine: $result.CommandLine$ \
+ParentCommandLine: $result.ParentCommandLine$  \
+title: Ransomware Deletes Volume Shadow Copies status: experimental \
+description: Detects commands that delete all local volume shadow copies as used by different Ransomware families \
+references: ['https://www.bleepingcomputer.com/news/security/why-everyone-should-disable-vssadmin-exe-now/', 'https://www.hybrid-analysis.com/sample/ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa?environmentId=100'] \
+tags:  \
+author: Florian Roth \
+date:  \
+falsepositives: ['Adminsitrative scripts - e.g. to prepare image for golden image creation'] \
+level: critical
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects commands that delete all local volume shadow copies as used by different Ransomware families
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (CommandLine="*vssadmin delete shadows*" OR CommandLine="*wmic SHADOWCOPY DELETE*") | table CommandLine,ParentCommandLine,host | search NOT [| inputlookup Ransomware_Deletes_Volume_Shadow_Copies_whitelist.csv]
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*.*vssadmin delete shadows.*|.*.*wmic SHADOWCOPY DELETE.*)'
-```
-
-
-

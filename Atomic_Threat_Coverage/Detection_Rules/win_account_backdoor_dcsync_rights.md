@@ -66,5 +66,37 @@ level: critical
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Powerview Add-DomainObjectAcl DCSync AD Extend Right]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Powerview Add-DomainObjectAcl DCSync AD Extend Right status: experimental \\\ndescription: backdooring domain object to grant the rights associated with DCSync to a regular user or machine account using Powerview\\Add-DomainObjectAcl DCSync Extended Right cmdlet, will allow to re-obtain the pwd hashes of any user/computer \\\nreferences: [\'https://twitter.com/menasec1/status/1111556090137903104\', \'https://www.specterops.io/assets/resources/an_ace_up_the_sleeve.pdf\'] \\\ntags: [\'attack.credential_access\', \'attack.persistence\'] \\\nauthor: Samir Bousseaden \\\ndate:  \\\nfalsepositives: ["New Domain Controller computer account, check user SIDs witin the value attribute of event 5136 and verify if it\'s a regular user or DC computer account."] \\\nlevel: critical\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = backdooring domain object to grant the rights associated with DCSync to a regular user or machine account using Powerview\\Add-DomainObjectAcl DCSync Extended Right cmdlet, will allow to re-obtain the pwd hashes of any user/computer\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="5136" LDAPDisplayName="ntSecurityDescriptor" (Value="*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2*" OR Value="*1131f6aa-9c07-11d1-f79f-00c04fc2dcd2*")) | stats values(*) AS * by _time | search NOT [| inputlookup Powerview_Add-DomainObjectAcl_DCSync_AD_Extend_Right_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.persistence,level=critical"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Powerview Add-DomainObjectAcl DCSync AD Extend Right]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Powerview Add-DomainObjectAcl DCSync AD Extend Right status: experimental \
+description: backdooring domain object to grant the rights associated with DCSync to a regular user or machine account using Powerview\Add-DomainObjectAcl DCSync Extended Right cmdlet, will allow to re-obtain the pwd hashes of any user/computer \
+references: ['https://twitter.com/menasec1/status/1111556090137903104', 'https://www.specterops.io/assets/resources/an_ace_up_the_sleeve.pdf'] \
+tags: ['attack.credential_access', 'attack.persistence'] \
+author: Samir Bousseaden \
+date:  \
+falsepositives: ["New Domain Controller computer account, check user SIDs witin the value attribute of event 5136 and verify if it's a regular user or DC computer account."] \
+level: critical
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = backdooring domain object to grant the rights associated with DCSync to a regular user or machine account using Powerview\Add-DomainObjectAcl DCSync Extended Right cmdlet, will allow to re-obtain the pwd hashes of any user/computer
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="5136" LDAPDisplayName="ntSecurityDescriptor" (Value="*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2*" OR Value="*1131f6aa-9c07-11d1-f79f-00c04fc2dcd2*")) | stats values(*) AS * by _time | search NOT [| inputlookup Powerview_Add-DomainObjectAcl_DCSync_AD_Extend_Right_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.persistence,level=critical"
 ```

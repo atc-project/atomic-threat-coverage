@@ -61,5 +61,37 @@ EventID="7045" | eventstats count as val by ServiceFileName| search val < 5
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Rare Service Installs]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Rare Service Installs status: experimental \\\ndescription: Detects rare service installs that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious services \\\nreferences:  \\\ntags: [\'attack.persistence\', \'attack.privilege_escalation\', \'attack.t1050\', \'car.2013-09-005\'] \\\nauthor: Florian Roth \\\ndate:  \\\nfalsepositives: [\'Software installation\', \'Software updates\'] \\\nlevel: low\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects rare service installs that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious services\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = EventID="7045" | eventstats count as val by ServiceFileName| search val < 5 | stats values(*) AS * by _time | search NOT [| inputlookup Rare_Service_Installs_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.persistence,sigma_tag=attack.privilege_escalation,sigma_tag=attack.t1050,sigma_tag=car.2013-09-005,level=low"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Rare Service Installs]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Rare Service Installs status: experimental \
+description: Detects rare service installs that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious services \
+references:  \
+tags: ['attack.persistence', 'attack.privilege_escalation', 'attack.t1050', 'car.2013-09-005'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['Software installation', 'Software updates'] \
+level: low
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects rare service installs that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious services
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = EventID="7045" | eventstats count as val by ServiceFileName| search val < 5 | stats values(*) AS * by _time | search NOT [| inputlookup Rare_Service_Installs_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.persistence,sigma_tag=attack.privilege_escalation,sigma_tag=attack.t1050,sigma_tag=car.2013-09-005,level=low"
 ```

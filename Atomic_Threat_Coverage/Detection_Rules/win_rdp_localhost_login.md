@@ -66,5 +66,37 @@ level: high
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[RDP Login from localhost]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: RDP Login from localhost status: experimental \\\ndescription: RDP login with localhost source address may be a tunnelled login \\\nreferences: [\'https://www.fireeye.com/blog/threat-research/2019/01/bypassing-network-restrictions-through-rdp-tunneling.html\'] \\\ntags: [\'attack.lateral_movement\', \'attack.t1076\', \'car.2013-07-002\'] \\\nauthor: Thomas Patzke \\\ndate:  \\\nfalsepositives: [\'Unknown\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = RDP login with localhost source address may be a tunnelled login\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="4624" LogonType="10" (SourceNetworkAddress="::1" OR SourceNetworkAddress="127.0.0.1")) | stats values(*) AS * by _time | search NOT [| inputlookup RDP_Login_from_localhost_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.t1076,sigma_tag=car.2013-07-002,level=high"\n\n\n'
+Generated with Sigma2SplunkAlert
+[RDP Login from localhost]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: RDP Login from localhost status: experimental \
+description: RDP login with localhost source address may be a tunnelled login \
+references: ['https://www.fireeye.com/blog/threat-research/2019/01/bypassing-network-restrictions-through-rdp-tunneling.html'] \
+tags: ['attack.lateral_movement', 'attack.t1076', 'car.2013-07-002'] \
+author: Thomas Patzke \
+date:  \
+falsepositives: ['Unknown'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = RDP login with localhost source address may be a tunnelled login
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="4624" LogonType="10" (SourceNetworkAddress="::1" OR SourceNetworkAddress="127.0.0.1")) | stats values(*) AS * by _time | search NOT [| inputlookup RDP_Login_from_localhost_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.t1076,sigma_tag=car.2013-07-002,level=high"
 ```

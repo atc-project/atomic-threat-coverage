@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious RASdial Activity
+id: 6bba49bf-7f8c-47d6-a1bb-6b4dece4640e
 description: Detects suspicious process related to rasdial.exe
 status: experimental
 references:
@@ -46,27 +47,6 @@ level: medium
 
 
 
-### es-qs
-    
-```
-CommandLine:("rasdial")
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-RASdial-Activity <<EOF\n{\n  "metadata": {\n    "title": "Suspicious RASdial Activity",\n    "description": "Detects suspicious process related to rasdial.exe",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.execution",\n      "attack.t1064"\n    ],\n    "query": "CommandLine:(\\"rasdial\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine:(\\"rasdial\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious RASdial Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-CommandLine:("rasdial")
-```
-
-
 ### splunk
     
 ```
@@ -74,18 +54,44 @@ CommandLine:("rasdial")
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-CommandLine IN ["rasdial"]
+Generated with Sigma2SplunkAlert
+[Suspicious RASdial Activity]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Suspicious RASdial Activity status: experimental \
+description: Detects suspicious process related to rasdial.exe \
+references: ['https://twitter.com/subTee/status/891298217907830785'] \
+tags: ['attack.defense_evasion', 'attack.execution', 'attack.t1064'] \
+author: juju4 \
+date:  \
+falsepositives: ['False positives depend on scripts and administrative tools used in the monitored environment'] \
+level: medium
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects suspicious process related to rasdial.exe
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (CommandLine="rasdial") | stats values(*) AS * by _time | search NOT [| inputlookup Suspicious_RASdial_Activity_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.execution,sigma_tag=attack.t1064,level=medium"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*rasdial)'
-```
-
-
-

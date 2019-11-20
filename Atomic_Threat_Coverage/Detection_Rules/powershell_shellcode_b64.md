@@ -19,6 +19,7 @@
 
 ```
 title: PowerShell ShellCode
+id: 16b37b70-6fcf-4814-a092-c36bd3aafcbd
 status: experimental
 description: Detects Base64 encoded Shellcode
 references:
@@ -53,27 +54,6 @@ level: critical
 
 
 
-### es-qs
-    
-```
-((EventID:"4104" AND "*AAAAYInlM*") AND ("*OiCAAAAYInlM*" OR "*OiJAAAAYInlM*"))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/PowerShell-ShellCode <<EOF\n{\n  "metadata": {\n    "title": "PowerShell ShellCode",\n    "description": "Detects Base64 encoded Shellcode",\n    "tags": [\n      "attack.privilege_escalation",\n      "attack.execution",\n      "attack.t1055",\n      "attack.t1086"\n    ],\n    "query": "((EventID:\\"4104\\" AND \\"*AAAAYInlM*\\") AND (\\"*OiCAAAAYInlM*\\" OR \\"*OiJAAAAYInlM*\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((EventID:\\"4104\\" AND \\"*AAAAYInlM*\\") AND (\\"*OiCAAAAYInlM*\\" OR \\"*OiJAAAAYInlM*\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'PowerShell ShellCode\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-((EventID:"4104" AND "*AAAAYInlM*") AND ("*OiCAAAAYInlM*" OR "*OiJAAAAYInlM*"))
-```
-
-
 ### splunk
     
 ```
@@ -81,18 +61,44 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-((EventID="4104" "*AAAAYInlM*") ("*OiCAAAAYInlM*" OR "*OiJAAAAYInlM*"))
+Generated with Sigma2SplunkAlert
+[PowerShell ShellCode]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: PowerShell ShellCode status: experimental \
+description: Detects Base64 encoded Shellcode \
+references: ['https://twitter.com/cyb3rops/status/1063072865992523776'] \
+tags: ['attack.privilege_escalation', 'attack.execution', 'attack.t1055', 'attack.t1086'] \
+author: David Ledbetter (shellcode), Florian Roth (rule) \
+date:  \
+falsepositives: ['Unknown'] \
+level: critical
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects Base64 encoded Shellcode
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = ((EventID="4104" "*AAAAYInlM*") ("*OiCAAAAYInlM*" OR "*OiJAAAAYInlM*")) | stats values(*) AS * by _time | search NOT [| inputlookup PowerShell_ShellCode_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.privilege_escalation,sigma_tag=attack.execution,sigma_tag=attack.t1055,sigma_tag=attack.t1086,level=critical"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*(?:.*(?=.*4104)(?=.*.*AAAAYInlM.*)))(?=.*(?:.*(?:.*.*OiCAAAAYInlM.*|.*.*OiJAAAAYInlM.*))))'
-```
-
-
-

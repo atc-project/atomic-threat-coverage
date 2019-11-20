@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Rundll32 Activity
+id: e593cf51-88db-4ee1-b920-37e89012a3c9
 description: Detects suspicious process related to rundll32 based on arguments
 status: experimental
 references:
@@ -60,27 +61,6 @@ level: medium
 
 
 
-### es-qs
-    
-```
-CommandLine.keyword:(*\\\\rundll32.exe*\\ url.dll,*OpenURL\\ * OR *\\\\rundll32.exe*\\ url.dll,*OpenURLA\\ * OR *\\\\rundll32.exe*\\ url.dll,*FileProtocolHandler\\ * OR *\\\\rundll32.exe*\\ zipfldr.dll,*RouteTheCall\\ * OR *\\\\rundll32.exe*\\ Shell32.dll,*Control_RunDLL\\ * OR *\\\\rundll32.exe\\ javascript\\:* OR *\\ url.dll,*OpenURL\\ * OR *\\ url.dll,*OpenURLA\\ * OR *\\ url.dll,*FileProtocolHandler\\ * OR *\\ zipfldr.dll,*RouteTheCall\\ * OR *\\ Shell32.dll,*Control_RunDLL\\ * OR *\\ javascript\\:* OR *.RegisterXLL*)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Rundll32-Activity <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Rundll32 Activity",\n    "description": "Detects suspicious process related to rundll32 based on arguments",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.execution",\n      "attack.t1085"\n    ],\n    "query": "CommandLine.keyword:(*\\\\\\\\rundll32.exe*\\\\ url.dll,*OpenURL\\\\ * OR *\\\\\\\\rundll32.exe*\\\\ url.dll,*OpenURLA\\\\ * OR *\\\\\\\\rundll32.exe*\\\\ url.dll,*FileProtocolHandler\\\\ * OR *\\\\\\\\rundll32.exe*\\\\ zipfldr.dll,*RouteTheCall\\\\ * OR *\\\\\\\\rundll32.exe*\\\\ Shell32.dll,*Control_RunDLL\\\\ * OR *\\\\\\\\rundll32.exe\\\\ javascript\\\\:* OR *\\\\ url.dll,*OpenURL\\\\ * OR *\\\\ url.dll,*OpenURLA\\\\ * OR *\\\\ url.dll,*FileProtocolHandler\\\\ * OR *\\\\ zipfldr.dll,*RouteTheCall\\\\ * OR *\\\\ Shell32.dll,*Control_RunDLL\\\\ * OR *\\\\ javascript\\\\:* OR *.RegisterXLL*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:(*\\\\\\\\rundll32.exe*\\\\ url.dll,*OpenURL\\\\ * OR *\\\\\\\\rundll32.exe*\\\\ url.dll,*OpenURLA\\\\ * OR *\\\\\\\\rundll32.exe*\\\\ url.dll,*FileProtocolHandler\\\\ * OR *\\\\\\\\rundll32.exe*\\\\ zipfldr.dll,*RouteTheCall\\\\ * OR *\\\\\\\\rundll32.exe*\\\\ Shell32.dll,*Control_RunDLL\\\\ * OR *\\\\\\\\rundll32.exe\\\\ javascript\\\\:* OR *\\\\ url.dll,*OpenURL\\\\ * OR *\\\\ url.dll,*OpenURLA\\\\ * OR *\\\\ url.dll,*FileProtocolHandler\\\\ * OR *\\\\ zipfldr.dll,*RouteTheCall\\\\ * OR *\\\\ Shell32.dll,*Control_RunDLL\\\\ * OR *\\\\ javascript\\\\:* OR *.RegisterXLL*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Rundll32 Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-CommandLine:("*\\\\rundll32.exe* url.dll,*OpenURL *" "*\\\\rundll32.exe* url.dll,*OpenURLA *" "*\\\\rundll32.exe* url.dll,*FileProtocolHandler *" "*\\\\rundll32.exe* zipfldr.dll,*RouteTheCall *" "*\\\\rundll32.exe* Shell32.dll,*Control_RunDLL *" "*\\\\rundll32.exe javascript\\:*" "* url.dll,*OpenURL *" "* url.dll,*OpenURLA *" "* url.dll,*FileProtocolHandler *" "* zipfldr.dll,*RouteTheCall *" "* Shell32.dll,*Control_RunDLL *" "* javascript\\:*" "*.RegisterXLL*")
-```
-
-
 ### splunk
     
 ```
@@ -88,18 +68,44 @@ CommandLine:("*\\\\rundll32.exe* url.dll,*OpenURL *" "*\\\\rundll32.exe* url.dll
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-CommandLine IN ["*\\\\rundll32.exe* url.dll,*OpenURL *", "*\\\\rundll32.exe* url.dll,*OpenURLA *", "*\\\\rundll32.exe* url.dll,*FileProtocolHandler *", "*\\\\rundll32.exe* zipfldr.dll,*RouteTheCall *", "*\\\\rundll32.exe* Shell32.dll,*Control_RunDLL *", "*\\\\rundll32.exe javascript:*", "* url.dll,*OpenURL *", "* url.dll,*OpenURLA *", "* url.dll,*FileProtocolHandler *", "* zipfldr.dll,*RouteTheCall *", "* Shell32.dll,*Control_RunDLL *", "* javascript:*", "*.RegisterXLL*"]
+Generated with Sigma2SplunkAlert
+[Suspicious Rundll32 Activity]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Suspicious Rundll32 Activity status: experimental \
+description: Detects suspicious process related to rundll32 based on arguments \
+references: ['http://www.hexacorn.com/blog/2017/05/01/running-programs-via-proxy-jumping-on-a-edr-bypass-trampoline/', 'https://twitter.com/Hexacorn/status/885258886428725250', 'https://gist.github.com/ryhanson/227229866af52e2d963cf941af135a52'] \
+tags: ['attack.defense_evasion', 'attack.execution', 'attack.t1085'] \
+author: juju4 \
+date:  \
+falsepositives: ['False positives depend on scripts and administrative tools used in the monitored environment'] \
+level: medium
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects suspicious process related to rundll32 based on arguments
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (CommandLine="*\\rundll32.exe* url.dll,*OpenURL *" OR CommandLine="*\\rundll32.exe* url.dll,*OpenURLA *" OR CommandLine="*\\rundll32.exe* url.dll,*FileProtocolHandler *" OR CommandLine="*\\rundll32.exe* zipfldr.dll,*RouteTheCall *" OR CommandLine="*\\rundll32.exe* Shell32.dll,*Control_RunDLL *" OR CommandLine="*\\rundll32.exe javascript:*" OR CommandLine="* url.dll,*OpenURL *" OR CommandLine="* url.dll,*OpenURLA *" OR CommandLine="* url.dll,*FileProtocolHandler *" OR CommandLine="* zipfldr.dll,*RouteTheCall *" OR CommandLine="* Shell32.dll,*Control_RunDLL *" OR CommandLine="* javascript:*" OR CommandLine="*.RegisterXLL*") | stats values(*) AS * by _time | search NOT [| inputlookup Suspicious_Rundll32_Activity_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.execution,sigma_tag=attack.t1085,level=medium"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*.*\\rundll32\\.exe.* url\\.dll,.*OpenURL .*|.*.*\\rundll32\\.exe.* url\\.dll,.*OpenURLA .*|.*.*\\rundll32\\.exe.* url\\.dll,.*FileProtocolHandler .*|.*.*\\rundll32\\.exe.* zipfldr\\.dll,.*RouteTheCall .*|.*.*\\rundll32\\.exe.* Shell32\\.dll,.*Control_RunDLL .*|.*.*\\rundll32\\.exe javascript:.*|.*.* url\\.dll,.*OpenURL .*|.*.* url\\.dll,.*OpenURLA .*|.*.* url\\.dll,.*FileProtocolHandler .*|.*.* zipfldr\\.dll,.*RouteTheCall .*|.*.* Shell32\\.dll,.*Control_RunDLL .*|.*.* javascript:.*|.*.*\\.RegisterXLL.*)'
-```
-
-
-

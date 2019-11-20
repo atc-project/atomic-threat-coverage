@@ -19,8 +19,10 @@
 
 ```
 title: Command Line Execution with suspicious URL and AppData Strings
+id: 1ac8666b-046f-4201-8aba-1951aaec03a3
 status: experimental
-description: Detects a suspicious command line execution that includes an URL and AppData string in the command line parameters as used by several droppers (js/vbs > powershell)
+description: Detects a suspicious command line execution that includes an URL and AppData string in the command line parameters as used by several droppers (js/vbs
+    > powershell)
 references:
     - https://www.hybrid-analysis.com/sample/3a1f01206684410dbe8f1900bbeaaa543adfcd07368ba646b499fa5274b9edf6?environmentId=100
     - https://www.hybrid-analysis.com/sample/f16c729aad5c74f19784a24257236a8bbe27f7cdc4a89806031ec7f1bebbd475?environmentId=100
@@ -50,27 +52,6 @@ level: medium
 
 
 
-### es-qs
-    
-```
-CommandLine.keyword:(cmd.exe\\ \\/c\\ *http\\:\\/\\/*%AppData% OR cmd.exe\\ \\/c\\ *https\\:\\/\\/*%AppData%)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Command-Line-Execution-with-suspicious-URL-and-AppData-Strings <<EOF\n{\n  "metadata": {\n    "title": "Command Line Execution with suspicious URL and AppData Strings",\n    "description": "Detects a suspicious command line execution that includes an URL and AppData string in the command line parameters as used by several droppers (js/vbs > powershell)",\n    "tags": [\n      "attack.execution",\n      "attack.t1059"\n    ],\n    "query": "CommandLine.keyword:(cmd.exe\\\\ \\\\/c\\\\ *http\\\\:\\\\/\\\\/*%AppData% OR cmd.exe\\\\ \\\\/c\\\\ *https\\\\:\\\\/\\\\/*%AppData%)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:(cmd.exe\\\\ \\\\/c\\\\ *http\\\\:\\\\/\\\\/*%AppData% OR cmd.exe\\\\ \\\\/c\\\\ *https\\\\:\\\\/\\\\/*%AppData%)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Command Line Execution with suspicious URL and AppData Strings\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-CommandLine:("cmd.exe \\/c *http\\:\\/\\/*%AppData%" "cmd.exe \\/c *https\\:\\/\\/*%AppData%")
-```
-
-
 ### splunk
     
 ```
@@ -78,18 +59,46 @@ CommandLine:("cmd.exe \\/c *http\\:\\/\\/*%AppData%" "cmd.exe \\/c *https\\:\\/\
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-CommandLine IN ["cmd.exe /c *http://*%AppData%", "cmd.exe /c *https://*%AppData%"]
+Generated with Sigma2SplunkAlert
+[Command Line Execution with suspicious URL and AppData Strings]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:  \
+CommandLine: $result.CommandLine$ \
+ParentCommandLine: $result.ParentCommandLine$  \
+title: Command Line Execution with suspicious URL and AppData Strings status: experimental \
+description: Detects a suspicious command line execution that includes an URL and AppData string in the command line parameters as used by several droppers (js/vbs > powershell) \
+references: ['https://www.hybrid-analysis.com/sample/3a1f01206684410dbe8f1900bbeaaa543adfcd07368ba646b499fa5274b9edf6?environmentId=100', 'https://www.hybrid-analysis.com/sample/f16c729aad5c74f19784a24257236a8bbe27f7cdc4a89806031ec7f1bebbd475?environmentId=100'] \
+tags: ['attack.execution', 'attack.t1059'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['High'] \
+level: medium
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects a suspicious command line execution that includes an URL and AppData string in the command line parameters as used by several droppers (js/vbs > powershell)
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (CommandLine="cmd.exe /c *http://*%AppData%" OR CommandLine="cmd.exe /c *https://*%AppData%") | table CommandLine,ParentCommandLine,host | search NOT [| inputlookup Command_Line_Execution_with_suspicious_URL_and_AppData_Strings_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.execution,sigma_tag=attack.t1059,level=medium"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*cmd\\.exe /c .*http://.*%AppData%|.*cmd\\.exe /c .*https://.*%AppData%)'
-```
-
-
-

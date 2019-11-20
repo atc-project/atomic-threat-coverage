@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Encoded PowerShell Command Line
+id: ca2092a1-c273-4878-9b4b-0d60115bf5ea
 description: Detects suspicious powershell process starts with base64 encoded commands
 status: experimental
 references:
@@ -64,27 +65,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-(CommandLine.keyword:(*\\ \\-e\\ JAB* OR *\\ \\-e\\ \\ JAB* OR *\\ \\-e\\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ \\ \\ JAB* OR *\\ \\-enc\\ JAB* OR *\\ \\-enco\\ JAB* OR *\\ \\-encodedcommand\\ JAB* OR *\\ BA\\^J\\ e\\- OR *\\ \\-e\\ SUVYI* OR *\\ \\-e\\ aWV4I* OR *\\ \\-e\\ SQBFAFgA* OR *\\ \\-e\\ aQBlAHgA* OR *\\ \\-enc\\ SUVYI* OR *\\ \\-enc\\ aWV4I* OR *\\ \\-enc\\ SQBFAFgA* OR *\\ \\-enc\\ aQBlAHgA*) AND (NOT (CommandLine.keyword:*\\ \\-ExecutionPolicy\\ remotesigned\\ *)))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Encoded-PowerShell-Command-Line <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Encoded PowerShell Command Line",\n    "description": "Detects suspicious powershell process starts with base64 encoded commands",\n    "tags": [\n      "attack.execution",\n      "attack.t1086"\n    ],\n    "query": "(CommandLine.keyword:(*\\\\ \\\\-e\\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ \\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-enc\\\\ JAB* OR *\\\\ \\\\-enco\\\\ JAB* OR *\\\\ \\\\-encodedcommand\\\\ JAB* OR *\\\\ BA\\\\^J\\\\ e\\\\- OR *\\\\ \\\\-e\\\\ SUVYI* OR *\\\\ \\\\-e\\\\ aWV4I* OR *\\\\ \\\\-e\\\\ SQBFAFgA* OR *\\\\ \\\\-e\\\\ aQBlAHgA* OR *\\\\ \\\\-enc\\\\ SUVYI* OR *\\\\ \\\\-enc\\\\ aWV4I* OR *\\\\ \\\\-enc\\\\ SQBFAFgA* OR *\\\\ \\\\-enc\\\\ aQBlAHgA*) AND (NOT (CommandLine.keyword:*\\\\ \\\\-ExecutionPolicy\\\\ remotesigned\\\\ *)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(CommandLine.keyword:(*\\\\ \\\\-e\\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ \\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-enc\\\\ JAB* OR *\\\\ \\\\-enco\\\\ JAB* OR *\\\\ \\\\-encodedcommand\\\\ JAB* OR *\\\\ BA\\\\^J\\\\ e\\\\- OR *\\\\ \\\\-e\\\\ SUVYI* OR *\\\\ \\\\-e\\\\ aWV4I* OR *\\\\ \\\\-e\\\\ SQBFAFgA* OR *\\\\ \\\\-e\\\\ aQBlAHgA* OR *\\\\ \\\\-enc\\\\ SUVYI* OR *\\\\ \\\\-enc\\\\ aWV4I* OR *\\\\ \\\\-enc\\\\ SQBFAFgA* OR *\\\\ \\\\-enc\\\\ aQBlAHgA*) AND (NOT (CommandLine.keyword:*\\\\ \\\\-ExecutionPolicy\\\\ remotesigned\\\\ *)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Encoded PowerShell Command Line\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(CommandLine:("* \\-e JAB*" "* \\-e  JAB*" "* \\-e   JAB*" "* \\-e    JAB*" "* \\-e     JAB*" "* \\-e      JAB*" "* \\-enc JAB*" "* \\-enco JAB*" "* \\-encodedcommand JAB*" "* BA\\^J e\\-" "* \\-e SUVYI*" "* \\-e aWV4I*" "* \\-e SQBFAFgA*" "* \\-e aQBlAHgA*" "* \\-enc SUVYI*" "* \\-enc aWV4I*" "* \\-enc SQBFAFgA*" "* \\-enc aQBlAHgA*") AND NOT (CommandLine:"* \\-ExecutionPolicy remotesigned *"))
-```
-
-
 ### splunk
     
 ```
@@ -92,18 +72,44 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(CommandLine IN ["* -e JAB*", "* -e  JAB*", "* -e   JAB*", "* -e    JAB*", "* -e     JAB*", "* -e      JAB*", "* -enc JAB*", "* -enco JAB*", "* -encodedcommand JAB*", "* BA^J e-", "* -e SUVYI*", "* -e aWV4I*", "* -e SQBFAFgA*", "* -e aQBlAHgA*", "* -enc SUVYI*", "* -enc aWV4I*", "* -enc SQBFAFgA*", "* -enc aQBlAHgA*"]  -(CommandLine="* -ExecutionPolicy remotesigned *"))
+Generated with Sigma2SplunkAlert
+[Suspicious Encoded PowerShell Command Line]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Suspicious Encoded PowerShell Command Line status: experimental \
+description: Detects suspicious powershell process starts with base64 encoded commands \
+references: ['https://app.any.run/tasks/6217d77d-3189-4db2-a957-8ab239f3e01e'] \
+tags: ['attack.execution', 'attack.t1086'] \
+author: Florian Roth, Markus Neis \
+date:  \
+falsepositives:  \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects suspicious powershell process starts with base64 encoded commands
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = ((CommandLine="* -e JAB*" OR CommandLine="* -e  JAB*" OR CommandLine="* -e   JAB*" OR CommandLine="* -e    JAB*" OR CommandLine="* -e     JAB*" OR CommandLine="* -e      JAB*" OR CommandLine="* -enc JAB*" OR CommandLine="* -enco JAB*" OR CommandLine="* -encodedcommand JAB*" OR CommandLine="* BA^J e-" OR CommandLine="* -e SUVYI*" OR CommandLine="* -e aWV4I*" OR CommandLine="* -e SQBFAFgA*" OR CommandLine="* -e aQBlAHgA*" OR CommandLine="* -enc SUVYI*" OR CommandLine="* -enc aWV4I*" OR CommandLine="* -enc SQBFAFgA*" OR CommandLine="* -enc aQBlAHgA*") NOT (CommandLine="* -ExecutionPolicy remotesigned *")) | stats values(*) AS * by _time | search NOT [| inputlookup Suspicious_Encoded_PowerShell_Command_Line_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.execution,sigma_tag=attack.t1086,level=high"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*(?:.*.* -e JAB.*|.*.* -e  JAB.*|.*.* -e   JAB.*|.*.* -e    JAB.*|.*.* -e     JAB.*|.*.* -e      JAB.*|.*.* -enc JAB.*|.*.* -enco JAB.*|.*.* -encodedcommand JAB.*|.*.* BA\\^J e-|.*.* -e SUVYI.*|.*.* -e aWV4I.*|.*.* -e SQBFAFgA.*|.*.* -e aQBlAHgA.*|.*.* -enc SUVYI.*|.*.* -enc aWV4I.*|.*.* -enc SQBFAFgA.*|.*.* -enc aQBlAHgA.*))(?=.*(?!.*(?:.*(?=.*.* -ExecutionPolicy remotesigned .*)))))'
-```
-
-
-

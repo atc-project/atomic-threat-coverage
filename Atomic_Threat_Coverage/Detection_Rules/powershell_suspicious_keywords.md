@@ -3,7 +3,7 @@
 | Description          | Detects keywords that could indicate the use of some PowerShell exploitation framework                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li><li>[DN_0037_4103_windows_powershell_executing_pipeline](../Data_Needed/DN_0037_4103_windows_powershell_executing_pipeline.md)</li></ul>  |
+| Data Needed          |  There is no documented Data Needed for this Detection Rule yet  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious PowerShell Keywords
+id: 1f49f2ab-26bc-48b3-96cc-dcffbc93eadf
 status: experimental
 description: Detects keywords that could indicate the use of some PowerShell exploitation framework
 date: 2019/02/11
@@ -34,7 +35,8 @@ logsource:
     definition: 'It is recommended to use the new "Script Block Logging" of PowerShell v5 https://adsecurity.org/?p=2277'
 detection:
     keywords:
-        - System.Reflection.Assembly.Load
+        Message:
+            - "*[System.Reflection.Assembly]::Load*"
     condition: keywords
 falsepositives:
     - Penetration tests
@@ -46,46 +48,51 @@ level: high
 
 
 
-### es-qs
-    
-```
-System.Reflection.Assembly.Load
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-PowerShell-Keywords <<EOF\n{\n  "metadata": {\n    "title": "Suspicious PowerShell Keywords",\n    "description": "Detects keywords that could indicate the use of some PowerShell exploitation framework",\n    "tags": [\n      "attack.execution",\n      "attack.t1086"\n    ],\n    "query": "System.Reflection.Assembly.Load"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "System.Reflection.Assembly.Load",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious PowerShell Keywords\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-"System.Reflection.Assembly.Load"
-```
-
-
 ### splunk
     
 ```
-"System.Reflection.Assembly.Load"
-```
-
-
-### logpoint
-    
-```
-"System.Reflection.Assembly.Load"
-```
-
-
-### grep
-    
-```
-grep -P '^System\\.Reflection\\.Assembly\\.Load'
+(Message="*[System.Reflection.Assembly]::Load*")
 ```
 
 
 
+
+
+
+### Saved Search for Splunk
+
+```
+Generated with Sigma2SplunkAlert
+[Suspicious PowerShell Keywords]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Suspicious PowerShell Keywords status: experimental \
+description: Detects keywords that could indicate the use of some PowerShell exploitation framework \
+references: ['https://posts.specterops.io/entering-a-covenant-net-command-and-control-e11038bcf462'] \
+tags: ['attack.execution', 'attack.t1086'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['Penetration tests'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects keywords that could indicate the use of some PowerShell exploitation framework
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (Message="*[System.Reflection.Assembly]::Load*") | stats values(*) AS * by _time | search NOT [| inputlookup Suspicious_PowerShell_Keywords_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.execution,sigma_tag=attack.t1086,level=high"
+```

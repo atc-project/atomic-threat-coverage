@@ -70,5 +70,37 @@ level: high
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Suspicious access to sensitive file extensions]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Suspicious access to sensitive file extensions status:  \\\ndescription: Detects known sensitive file extensions \\\nreferences:  \\\ntags: [\'attack.collection\'] \\\nauthor: Samir Bousseaden \\\ndate:  \\\nfalsepositives: [\'Help Desk operator doing backup or re-imaging end user machine or pentest or backup software\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects known sensitive file extensions\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = ((EventID="5145") (RelativeTargetName="*.pst" OR RelativeTargetName="*.ost" OR RelativeTargetName="*.msg" OR RelativeTargetName="*.nst" OR RelativeTargetName="*.oab" OR RelativeTargetName="*.edb" OR RelativeTargetName="*.nsf" OR RelativeTargetName="*.bak" OR RelativeTargetName="*.dmp" OR RelativeTargetName="*.kirbi" OR RelativeTargetName="*\\\\ntds.dit" OR RelativeTargetName="*\\\\groups.xml" OR RelativeTargetName="*.rdp")) | stats values(*) AS * by _time | search NOT [| inputlookup Suspicious_access_to_sensitive_file_extensions_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.collection,level=high"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Suspicious access to sensitive file extensions]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Suspicious access to sensitive file extensions status:  \
+description: Detects known sensitive file extensions \
+references:  \
+tags: ['attack.collection'] \
+author: Samir Bousseaden \
+date:  \
+falsepositives: ['Help Desk operator doing backup or re-imaging end user machine or pentest or backup software'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects known sensitive file extensions
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = ((EventID="5145") (RelativeTargetName="*.pst" OR RelativeTargetName="*.ost" OR RelativeTargetName="*.msg" OR RelativeTargetName="*.nst" OR RelativeTargetName="*.oab" OR RelativeTargetName="*.edb" OR RelativeTargetName="*.nsf" OR RelativeTargetName="*.bak" OR RelativeTargetName="*.dmp" OR RelativeTargetName="*.kirbi" OR RelativeTargetName="*\\ntds.dit" OR RelativeTargetName="*\\groups.xml" OR RelativeTargetName="*.rdp")) | stats values(*) AS * by _time | search NOT [| inputlookup Suspicious_access_to_sensitive_file_extensions_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.collection,level=high"
 ```

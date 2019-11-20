@@ -64,5 +64,37 @@ EventID="4698" | eventstats count as val by TaskName| search val < 5
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Rare Schtasks Creations]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Rare Schtasks Creations status: experimental \\\ndescription: Detects rare scheduled tasks creations that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious code \\\nreferences:  \\\ntags: [\'attack.execution\', \'attack.privilege_escalation\', \'attack.persistence\', \'attack.t1053\', \'car.2013-08-001\'] \\\nauthor: Florian Roth \\\ndate:  \\\nfalsepositives: [\'Software installation\', \'Software updates\'] \\\nlevel: low\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects rare scheduled tasks creations that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious code\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = EventID="4698" | eventstats count as val by TaskName| search val < 5 | stats values(*) AS * by _time | search NOT [| inputlookup Rare_Schtasks_Creations_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.execution,sigma_tag=attack.privilege_escalation,sigma_tag=attack.persistence,sigma_tag=attack.t1053,sigma_tag=car.2013-08-001,level=low"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Rare Schtasks Creations]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Rare Schtasks Creations status: experimental \
+description: Detects rare scheduled tasks creations that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious code \
+references:  \
+tags: ['attack.execution', 'attack.privilege_escalation', 'attack.persistence', 'attack.t1053', 'car.2013-08-001'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['Software installation', 'Software updates'] \
+level: low
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects rare scheduled tasks creations that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious code
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = EventID="4698" | eventstats count as val by TaskName| search val < 5 | stats values(*) AS * by _time | search NOT [| inputlookup Rare_Schtasks_Creations_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.execution,sigma_tag=attack.privilege_escalation,sigma_tag=attack.persistence,sigma_tag=attack.t1053,sigma_tag=car.2013-08-001,level=low"
 ```

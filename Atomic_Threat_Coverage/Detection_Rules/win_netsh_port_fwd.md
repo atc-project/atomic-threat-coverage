@@ -19,6 +19,7 @@
 
 ```
 title: Netsh Port Forwarding
+id: 322ed9ec-fcab-4f67-9a34-e7c6aef43614
 description: Detects netsh commands that configure a port forwarding
 references:
     - https://www.fireeye.com/blog/threat-research/2019/01/bypassing-network-restrictions-through-rdp-tunneling.html
@@ -47,27 +48,6 @@ level: medium
 
 
 
-### es-qs
-    
-```
-CommandLine.keyword:(netsh\\ interface\\ portproxy\\ add\\ v4tov4\\ *)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Netsh-Port-Forwarding <<EOF\n{\n  "metadata": {\n    "title": "Netsh Port Forwarding",\n    "description": "Detects netsh commands that configure a port forwarding",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.command_and_control",\n      "attack.t1090"\n    ],\n    "query": "CommandLine.keyword:(netsh\\\\ interface\\\\ portproxy\\\\ add\\\\ v4tov4\\\\ *)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:(netsh\\\\ interface\\\\ portproxy\\\\ add\\\\ v4tov4\\\\ *)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Netsh Port Forwarding\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-CommandLine:("netsh interface portproxy add v4tov4 *")
-```
-
-
 ### splunk
     
 ```
@@ -75,18 +55,44 @@ CommandLine:("netsh interface portproxy add v4tov4 *")
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-CommandLine IN ["netsh interface portproxy add v4tov4 *"]
+Generated with Sigma2SplunkAlert
+[Netsh Port Forwarding]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Netsh Port Forwarding status: experimental \
+description: Detects netsh commands that configure a port forwarding \
+references: ['https://www.fireeye.com/blog/threat-research/2019/01/bypassing-network-restrictions-through-rdp-tunneling.html'] \
+tags: ['attack.lateral_movement', 'attack.command_and_control', 'attack.t1090'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['Legitimate administration'] \
+level: medium
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects netsh commands that configure a port forwarding
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (CommandLine="netsh interface portproxy add v4tov4 *") | stats values(*) AS * by _time | search NOT [| inputlookup Netsh_Port_Forwarding_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.command_and_control,sigma_tag=attack.t1090,level=medium"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*netsh interface portproxy add v4tov4 .*)'
-```
-
-
-

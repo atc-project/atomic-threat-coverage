@@ -19,6 +19,7 @@
 
 ```
 title: Whoami Execution
+id: e28a5a99-da44-436d-b7a0-2afc20a5f413
 status: experimental
 description: Detects the execution of whoami, which is often used by attackers after exloitation / privilege escalation but rarely used by administrators
 references:
@@ -50,27 +51,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-(Image.keyword:*\\\\whoami.exe OR OriginalFileName:"whoami.exe")
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Whoami-Execution <<EOF\n{\n  "metadata": {\n    "title": "Whoami Execution",\n    "description": "Detects the execution of whoami, which is often used by attackers after exloitation / privilege escalation but rarely used by administrators",\n    "tags": [\n      "attack.discovery",\n      "attack.t1033",\n      "car.2016-03-001"\n    ],\n    "query": "(Image.keyword:*\\\\\\\\whoami.exe OR OriginalFileName:\\"whoami.exe\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(Image.keyword:*\\\\\\\\whoami.exe OR OriginalFileName:\\"whoami.exe\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Whoami Execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(Image:"*\\\\whoami.exe" OR OriginalFileName:"whoami.exe")
-```
-
-
 ### splunk
     
 ```
@@ -78,18 +58,44 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(Image="*\\\\whoami.exe" OR OriginalFileName="whoami.exe")
+Generated with Sigma2SplunkAlert
+[Whoami Execution]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Whoami Execution status: experimental \
+description: Detects the execution of whoami, which is often used by attackers after exloitation / privilege escalation but rarely used by administrators \
+references: ['https://brica.de/alerts/alert/public/1247926/agent-tesla-keylogger-delivered-inside-a-power-iso-daa-archive/', 'https://app.any.run/tasks/7eaba74e-c1ea-400f-9c17-5e30eee89906/'] \
+tags: ['attack.discovery', 'attack.t1033', 'car.2016-03-001'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['Admin activity', 'Scripts and administrative tools used in the monitored environment'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects the execution of whoami, which is often used by attackers after exloitation / privilege escalation but rarely used by administrators
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (Image="*\\whoami.exe" OR OriginalFileName="whoami.exe") | stats values(*) AS * by _time | search NOT [| inputlookup Whoami_Execution_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.discovery,sigma_tag=attack.t1033,sigma_tag=car.2016-03-001,level=high"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?:.*.*\\whoami\\.exe|.*whoami\\.exe))'
-```
-
-
-

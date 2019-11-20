@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Commandline Escape
+id: f0cdd048-82dc-4f7a-8a7a-b87a52b6d0fd
 description: Detects suspicious process that use escape characters
 status: experimental
 references:
@@ -38,7 +39,7 @@ logsource:
 detection:
     selection:
         CommandLine:
-            - <TAB>
+            # - <TAB>   # no TAB modifier in sigmac yet, so this matches <TAB> (or TAB in elasticsearch backends without DSL queries)
             - ^h^t^t^p
             - h"t"t"p
     condition: selection
@@ -52,46 +53,51 @@ level: low
 
 
 
-### es-qs
-    
-```
-CommandLine:("TAB" OR "\\^h\\^t\\^t\\^p" OR "h\\"t\\"t\\"p")
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Commandline-Escape <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Commandline Escape",\n    "description": "Detects suspicious process that use escape characters",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1140"\n    ],\n    "query": "CommandLine:(\\"TAB\\" OR \\"\\\\^h\\\\^t\\\\^t\\\\^p\\" OR \\"h\\\\\\"t\\\\\\"t\\\\\\"p\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine:(\\"TAB\\" OR \\"\\\\^h\\\\^t\\\\^t\\\\^p\\" OR \\"h\\\\\\"t\\\\\\"t\\\\\\"p\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Commandline Escape\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-CommandLine:("<TAB>" "\\^h\\^t\\^t\\^p" "h\\"t\\"t\\"p")
-```
-
-
 ### splunk
     
 ```
-(CommandLine="<TAB>" OR CommandLine="^h^t^t^p" OR CommandLine="h\\"t\\"t\\"p")
-```
-
-
-### logpoint
-    
-```
-CommandLine IN ["<TAB>", "^h^t^t^p", "h\\"t\\"t\\"p"]
-```
-
-
-### grep
-    
-```
-grep -P \'^(?:.*<TAB>|.*\\^h\\^t\\^t\\^p|.*h"t"t"p)\'
+(CommandLine="^h^t^t^p" OR CommandLine="h\\"t\\"t\\"p")
 ```
 
 
 
+
+
+
+### Saved Search for Splunk
+
+```
+Generated with Sigma2SplunkAlert
+[Suspicious Commandline Escape]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Suspicious Commandline Escape status: experimental \
+description: Detects suspicious process that use escape characters \
+references: ['https://twitter.com/vysecurity/status/885545634958385153', 'https://twitter.com/Hexacorn/status/885553465417756673', 'https://twitter.com/Hexacorn/status/885570278637678592', 'https://www.fireeye.com/blog/threat-research/2017/06/obfuscation-in-the-wild.html', 'http://www.windowsinspired.com/understanding-the-command-line-string-and-arguments-received-by-a-windows-program/'] \
+tags: ['attack.defense_evasion', 'attack.t1140'] \
+author: juju4 \
+date:  \
+falsepositives: ['False positives depend on scripts and administrative tools used in the monitored environment'] \
+level: low
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects suspicious process that use escape characters
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (CommandLine="^h^t^t^p" OR CommandLine="h\"t\"t\"p") | stats values(*) AS * by _time | search NOT [| inputlookup Suspicious_Commandline_Escape_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.t1140,level=low"
+```

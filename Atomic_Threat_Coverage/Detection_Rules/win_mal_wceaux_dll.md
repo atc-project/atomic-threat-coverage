@@ -3,7 +3,7 @@
 | Description          | Detects wceaux.dll access while WCE pass-the-hash remote command execution on source host                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0060_4658_handle_to_an_object_was_closed](../Data_Needed/DN_0060_4658_handle_to_an_object_was_closed.md)</li><li>[DN_0062_4663_attempt_was_made_to_access_an_object](../Data_Needed/DN_0062_4663_attempt_was_made_to_access_an_object.md)</li><li>[DN_0061_4660_object_was_deleted](../Data_Needed/DN_0061_4660_object_was_deleted.md)</li><li>[DN_0058_4656_handle_to_an_object_was_requested](../Data_Needed/DN_0058_4656_handle_to_an_object_was_requested.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0060_4658_handle_to_an_object_was_closed](../Data_Needed/DN_0060_4658_handle_to_an_object_was_closed.md)</li><li>[DN_0061_4660_object_was_deleted](../Data_Needed/DN_0061_4660_object_was_deleted.md)</li><li>[DN_0058_4656_handle_to_an_object_was_requested](../Data_Needed/DN_0058_4656_handle_to_an_object_was_requested.md)</li><li>[DN_0062_4663_attempt_was_made_to_access_an_object](../Data_Needed/DN_0062_4663_attempt_was_made_to_access_an_object.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | Severity Level       | critical |
@@ -66,5 +66,37 @@ level: critical
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[WCE wceaux.dll Access]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: WCE wceaux.dll Access status: experimental \\\ndescription: Detects wceaux.dll access while WCE pass-the-hash remote command execution on source host \\\nreferences: [\'https://www.jpcert.or.jp/english/pub/sr/ir_research.html\', \'https://jpcertcc.github.io/ToolAnalysisResultSheet\'] \\\ntags: [\'attack.credential_access\', \'attack.t1003\', \'attack.s0005\'] \\\nauthor: Thomas Patzke \\\ndate:  \\\nfalsepositives: [\'Penetration testing\'] \\\nlevel: critical\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects wceaux.dll access while WCE pass-the-hash remote command execution on source host\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = ((EventID="4656" OR EventID="4658" OR EventID="4660" OR EventID="4663") ObjectName="*\\\\wceaux.dll") | stats values(*) AS * by _time | search NOT [| inputlookup WCE_wceaux.dll_Access_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.t1003,sigma_tag=attack.s0005,level=critical"\n\n\n'
+Generated with Sigma2SplunkAlert
+[WCE wceaux.dll Access]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: WCE wceaux.dll Access status: experimental \
+description: Detects wceaux.dll access while WCE pass-the-hash remote command execution on source host \
+references: ['https://www.jpcert.or.jp/english/pub/sr/ir_research.html', 'https://jpcertcc.github.io/ToolAnalysisResultSheet'] \
+tags: ['attack.credential_access', 'attack.t1003', 'attack.s0005'] \
+author: Thomas Patzke \
+date:  \
+falsepositives: ['Penetration testing'] \
+level: critical
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects wceaux.dll access while WCE pass-the-hash remote command execution on source host
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = ((EventID="4656" OR EventID="4658" OR EventID="4660" OR EventID="4663") ObjectName="*\\wceaux.dll") | stats values(*) AS * by _time | search NOT [| inputlookup WCE_wceaux.dll_Access_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.t1003,sigma_tag=attack.s0005,level=critical"
 ```

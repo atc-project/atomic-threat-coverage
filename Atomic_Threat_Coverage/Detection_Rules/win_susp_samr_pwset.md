@@ -61,5 +61,5 @@ level: medium
 ### Saved Search for Splunk
 
 ```
-b'# Failure converting the Sigma File: ../detection_rules/sigma/rules/windows/builtin/win_susp_samr_pwset.yml\n\n'
+Failure converting the Sigma File: ../detection_rules/sigma/rules/windows/builtin/win_susp_samr_pwset.yml
 ```

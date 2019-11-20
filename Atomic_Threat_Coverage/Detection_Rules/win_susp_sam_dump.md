@@ -61,5 +61,37 @@ level: high
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[SAM Dump to AppData]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: SAM Dump to AppData status: experimental \\\ndescription: Detects suspicious SAM dump activity as cause by QuarksPwDump and other password dumpers \\\nreferences:  \\\ntags: [\'attack.credential_access\', \'attack.t1003\'] \\\nauthor: Florian Roth \\\ndate:  \\\nfalsepositives: [\'Penetration testing\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects suspicious SAM dump activity as cause by QuarksPwDump and other password dumpers\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="16" (Message="*\\\\AppData\\\\Local\\\\Temp\\\\SAM-*.dmp *")) | stats values(*) AS * by _time | search NOT [| inputlookup SAM_Dump_to_AppData_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.t1003,level=high"\n\n\n'
+Generated with Sigma2SplunkAlert
+[SAM Dump to AppData]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: SAM Dump to AppData status: experimental \
+description: Detects suspicious SAM dump activity as cause by QuarksPwDump and other password dumpers \
+references:  \
+tags: ['attack.credential_access', 'attack.t1003'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['Penetration testing'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects suspicious SAM dump activity as cause by QuarksPwDump and other password dumpers
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="16" (Message="*\\AppData\\Local\\Temp\\SAM-*.dmp *")) | stats values(*) AS * by _time | search NOT [| inputlookup SAM_Dump_to_AppData_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.t1003,level=high"
 ```

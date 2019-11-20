@@ -70,5 +70,37 @@ level: high
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Reconnaissance Activity]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Reconnaissance Activity status: experimental \\\ndescription: Detects activity as "net user administrator /domain" and "net group domain admins /domain" \\\nreferences: [\'https://findingbad.blogspot.de/2017/01/hunting-what-does-it-look-like.html\'] \\\ntags: [\'attack.discovery\', \'attack.t1087\', \'attack.t1069\', \'attack.s0039\'] \\\nauthor: Florian Roth (rule), Jack Croock (method) \\\ndate:  \\\nfalsepositives: [\'Administrator activity\', \'Penetration tests\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects activity as "net user administrator /domain" and "net group domain admins /domain"\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="4661" AccessMask="0x2d" ((ObjectType="SAM_USER" ObjectName="S-1-5-21-*-500") OR (ObjectType="SAM_GROUP" ObjectName="S-1-5-21-*-512"))) | stats values(*) AS * by _time | search NOT [| inputlookup Reconnaissance_Activity_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.discovery,sigma_tag=attack.t1087,sigma_tag=attack.t1069,sigma_tag=attack.s0039,level=high"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Reconnaissance Activity]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Reconnaissance Activity status: experimental \
+description: Detects activity as "net user administrator /domain" and "net group domain admins /domain" \
+references: ['https://findingbad.blogspot.de/2017/01/hunting-what-does-it-look-like.html'] \
+tags: ['attack.discovery', 'attack.t1087', 'attack.t1069', 'attack.s0039'] \
+author: Florian Roth (rule), Jack Croock (method) \
+date:  \
+falsepositives: ['Administrator activity', 'Penetration tests'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects activity as "net user administrator /domain" and "net group domain admins /domain"
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (EventID="4661" AccessMask="0x2d" ((ObjectType="SAM_USER" ObjectName="S-1-5-21-*-500") OR (ObjectType="SAM_GROUP" ObjectName="S-1-5-21-*-512"))) | stats values(*) AS * by _time | search NOT [| inputlookup Reconnaissance_Activity_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.discovery,sigma_tag=attack.t1087,sigma_tag=attack.t1069,sigma_tag=attack.s0039,level=high"
 ```

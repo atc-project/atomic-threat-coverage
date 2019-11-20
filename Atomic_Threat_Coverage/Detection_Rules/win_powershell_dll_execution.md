@@ -19,6 +19,7 @@
 
 ```
 title: Detection of PowerShell Execution via DLL
+id: 6812a10b-60ea-420c-832f-dfcc33b646ba
 status: experimental
 description: Detects PowerShell Strings applied to rundllas seen in PowerShdll.dll
 references:
@@ -54,27 +55,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-((Image.keyword:(*\\\\rundll32.exe) OR Description.keyword:(*Windows\\-Hostprozess\\ \\(Rundll32\\)*)) AND CommandLine.keyword:(*Default.GetString* OR *FromBase64String*))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Detection-of-PowerShell-Execution-via-DLL <<EOF\n{\n  "metadata": {\n    "title": "Detection of PowerShell Execution via DLL",\n    "description": "Detects PowerShell Strings applied to rundllas seen in PowerShdll.dll",\n    "tags": [\n      "attack.execution",\n      "attack.t1086",\n      "car.2014-04-003"\n    ],\n    "query": "((Image.keyword:(*\\\\\\\\rundll32.exe) OR Description.keyword:(*Windows\\\\-Hostprozess\\\\ \\\\(Rundll32\\\\)*)) AND CommandLine.keyword:(*Default.GetString* OR *FromBase64String*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Image.keyword:(*\\\\\\\\rundll32.exe) OR Description.keyword:(*Windows\\\\-Hostprozess\\\\ \\\\(Rundll32\\\\)*)) AND CommandLine.keyword:(*Default.GetString* OR *FromBase64String*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Detection of PowerShell Execution via DLL\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-((Image:("*\\\\rundll32.exe") OR Description:("*Windows\\-Hostprozess \\(Rundll32\\)*")) AND CommandLine:("*Default.GetString*" "*FromBase64String*"))
-```
-
-
 ### splunk
     
 ```
@@ -82,18 +62,44 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-((Image IN ["*\\\\rundll32.exe"] OR Description IN ["*Windows-Hostprozess (Rundll32)*"]) CommandLine IN ["*Default.GetString*", "*FromBase64String*"])
+Generated with Sigma2SplunkAlert
+[Detection of PowerShell Execution via DLL]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Detection of PowerShell Execution via DLL status: experimental \
+description: Detects PowerShell Strings applied to rundllas seen in PowerShdll.dll \
+references: ['https://github.com/p3nt4/PowerShdll/blob/master/README.md'] \
+tags: ['attack.execution', 'attack.t1086', 'car.2014-04-003'] \
+author: Markus Neis \
+date:  \
+falsepositives: ['Unknown'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects PowerShell Strings applied to rundllas seen in PowerShdll.dll
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (((Image="*\\rundll32.exe") OR (Description="*Windows-Hostprozess (Rundll32)*")) (CommandLine="*Default.GetString*" OR CommandLine="*FromBase64String*")) | stats values(*) AS * by _time | search NOT [| inputlookup Detection_of_PowerShell_Execution_via_DLL_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.execution,sigma_tag=attack.t1086,sigma_tag=car.2014-04-003,level=high"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*(?:.*(?:.*(?:.*.*\\rundll32\\.exe)|.*(?:.*.*Windows-Hostprozess \\(Rundll32\\).*))))(?=.*(?:.*.*Default\\.GetString.*|.*.*FromBase64String.*)))'
-```
-
-
-

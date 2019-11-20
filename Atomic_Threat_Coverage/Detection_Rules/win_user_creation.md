@@ -67,5 +67,40 @@ EventID="4720" | table EventCode,AccountName,AccountDomain
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Detects local user creation]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:  \\\nEventCode: $result.EventCode$ \\\nAccountName: $result.AccountName$ \\\nAccountDomain: $result.AccountDomain$  \\\ntitle: Detects local user creation status: experimental \\\ndescription: Detects local user creation on windows servers, which shouldn\'t happen in an Active Directory environment. Apply this Sigma Use Case on your windows server logs and not on your DC logs. \\\nreferences: [\'https://patrick-bareiss.com/detecting-local-user-creation-in-ad-with-sigma/\'] \\\ntags: [\'attack.persistence\', \'attack.t1136\'] \\\nauthor: Patrick Bareiss \\\ndate:  \\\nfalsepositives: [\'Domain Controller Logs\', \'Local accounts managed by privileged account management tools\'] \\\nlevel: low\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects local user creation on windows servers, which shouldn\'t happen in an Active Directory environment. Apply this Sigma Use Case on your windows server logs and not on your DC logs.\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = EventID="4720" | table EventCode,AccountName,AccountDomain,host | search NOT [| inputlookup Detects_local_user_creation_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.persistence,sigma_tag=attack.t1136,level=low"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Detects local user creation]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:  \
+EventCode: $result.EventCode$ \
+AccountName: $result.AccountName$ \
+AccountDomain: $result.AccountDomain$  \
+title: Detects local user creation status: experimental \
+description: Detects local user creation on windows servers, which shouldn't happen in an Active Directory environment. Apply this Sigma Use Case on your windows server logs and not on your DC logs. \
+references: ['https://patrick-bareiss.com/detecting-local-user-creation-in-ad-with-sigma/'] \
+tags: ['attack.persistence', 'attack.t1136'] \
+author: Patrick Bareiss \
+date:  \
+falsepositives: ['Domain Controller Logs', 'Local accounts managed by privileged account management tools'] \
+level: low
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects local user creation on windows servers, which shouldn't happen in an Active Directory environment. Apply this Sigma Use Case on your windows server logs and not on your DC logs.
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = EventID="4720" | table EventCode,AccountName,AccountDomain,host | search NOT [| inputlookup Detects_local_user_creation_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.persistence,sigma_tag=attack.t1136,level=low"
 ```

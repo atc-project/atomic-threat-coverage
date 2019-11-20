@@ -60,5 +60,37 @@ EventID="4794"
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Password Change on Directory Service Restore Mode (DSRM) Account]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Password Change on Directory Service Restore Mode (DSRM) Account status: stable \\\ndescription: The Directory Service Restore Mode (DSRM) account is a local administrator account on Domain Controllers. Attackers may change the password to gain persistence. \\\nreferences: [\'https://adsecurity.org/?p=1714\'] \\\ntags: [\'attack.persistence\', \'attack.privilege_escalation\', \'attack.t1098\'] \\\nauthor: Thomas Patzke \\\ndate:  \\\nfalsepositives: [\'Initial installation of a domain controller\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = The Directory Service Restore Mode (DSRM) account is a local administrator account on Domain Controllers. Attackers may change the password to gain persistence.\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = EventID="4794" | stats values(*) AS * by _time | search NOT [| inputlookup Password_Change_on_Directory_Service_Restore_Mode_DSRM_Account_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.persistence,sigma_tag=attack.privilege_escalation,sigma_tag=attack.t1098,level=high"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Password Change on Directory Service Restore Mode (DSRM) Account]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Password Change on Directory Service Restore Mode (DSRM) Account status: stable \
+description: The Directory Service Restore Mode (DSRM) account is a local administrator account on Domain Controllers. Attackers may change the password to gain persistence. \
+references: ['https://adsecurity.org/?p=1714'] \
+tags: ['attack.persistence', 'attack.privilege_escalation', 'attack.t1098'] \
+author: Thomas Patzke \
+date:  \
+falsepositives: ['Initial installation of a domain controller'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = The Directory Service Restore Mode (DSRM) account is a local administrator account on Domain Controllers. Attackers may change the password to gain persistence.
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = EventID="4794" | stats values(*) AS * by _time | search NOT [| inputlookup Password_Change_on_Directory_Service_Restore_Mode_DSRM_Account_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.persistence,sigma_tag=attack.privilege_escalation,sigma_tag=attack.t1098,level=high"
 ```

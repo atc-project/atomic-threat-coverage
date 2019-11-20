@@ -19,6 +19,7 @@
 
 ```
 title: CMSTP UAC Bypass via COM Object Access
+id: 4b60e6f2-bf39-47b4-b4ea-398e33cfe253
 status: stable
 description: Detects UAC Bypass Attempt Using Microsoft Connection Manager Profile Installer Autoelevate-capable COM Objects
 tags:
@@ -59,27 +60,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-(ParentCommandLine.keyword:*\\\\DllHost.exe AND ParentCommandLine.keyword:(*\\{3E5FC7F9\\-9A51\\-4367\\-9063\\-A120244FBEC7\\} OR *\\{3E000D72\\-A845\\-4CD9\\-BD83\\-80C07C3B881F\\}))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/CMSTP-UAC-Bypass-via-COM-Object-Access <<EOF\n{\n  "metadata": {\n    "title": "CMSTP UAC Bypass via COM Object Access",\n    "description": "Detects UAC Bypass Attempt Using Microsoft Connection Manager Profile Installer Autoelevate-capable COM Objects",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.privilege_escalation",\n      "attack.execution",\n      "attack.t1088",\n      "attack.t1191",\n      "attack.g0069",\n      "car.2019-04-001"\n    ],\n    "query": "(ParentCommandLine.keyword:*\\\\\\\\DllHost.exe AND ParentCommandLine.keyword:(*\\\\{3E5FC7F9\\\\-9A51\\\\-4367\\\\-9063\\\\-A120244FBEC7\\\\} OR *\\\\{3E000D72\\\\-A845\\\\-4CD9\\\\-BD83\\\\-80C07C3B881F\\\\}))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(ParentCommandLine.keyword:*\\\\\\\\DllHost.exe AND ParentCommandLine.keyword:(*\\\\{3E5FC7F9\\\\-9A51\\\\-4367\\\\-9063\\\\-A120244FBEC7\\\\} OR *\\\\{3E000D72\\\\-A845\\\\-4CD9\\\\-BD83\\\\-80C07C3B881F\\\\}))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'CMSTP UAC Bypass via COM Object Access\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}\\n           Hashes = {{_source.Hashes}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(ParentCommandLine:"*\\\\DllHost.exe" AND ParentCommandLine:("*\\{3E5FC7F9\\-9A51\\-4367\\-9063\\-A120244FBEC7\\}" "*\\{3E000D72\\-A845\\-4CD9\\-BD83\\-80C07C3B881F\\}"))
-```
-
-
 ### splunk
     
 ```
@@ -87,18 +67,47 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(ParentCommandLine="*\\\\DllHost.exe" ParentCommandLine IN ["*{3E5FC7F9-9A51-4367-9063-A120244FBEC7}", "*{3E000D72-A845-4CD9-BD83-80C07C3B881F}"])
+Generated with Sigma2SplunkAlert
+[CMSTP UAC Bypass via COM Object Access]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:  \
+CommandLine: $result.CommandLine$ \
+ParentCommandLine: $result.ParentCommandLine$ \
+Hashes: $result.Hashes$  \
+title: CMSTP UAC Bypass via COM Object Access status: stable \
+description: Detects UAC Bypass Attempt Using Microsoft Connection Manager Profile Installer Autoelevate-capable COM Objects \
+references: ['http://www.endurant.io/cmstp/detecting-cmstp-enabled-code-execution-and-uac-bypass-with-sysmon/', 'https://twitter.com/hFireF0X/status/897640081053364225'] \
+tags: ['attack.defense_evasion', 'attack.privilege_escalation', 'attack.execution', 'attack.t1088', 'attack.t1191', 'attack.g0069', 'car.2019-04-001'] \
+author: Nik Seetharaman \
+date:  \
+falsepositives: ['Legitimate CMSTP use (unlikely in modern enterprise environments)'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects UAC Bypass Attempt Using Microsoft Connection Manager Profile Installer Autoelevate-capable COM Objects
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (ParentCommandLine="*\\DllHost.exe" (ParentCommandLine="*{3E5FC7F9-9A51-4367-9063-A120244FBEC7}" OR ParentCommandLine="*{3E000D72-A845-4CD9-BD83-80C07C3B881F}")) | table CommandLine,ParentCommandLine,Hashes,host | search NOT [| inputlookup CMSTP_UAC_Bypass_via_COM_Object_Access_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.privilege_escalation,sigma_tag=attack.execution,sigma_tag=attack.t1088,sigma_tag=attack.t1191,sigma_tag=attack.g0069,sigma_tag=car.2019-04-001,level=high"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*.*\\DllHost\\.exe)(?=.*(?:.*.*\\{3E5FC7F9-9A51-4367-9063-A120244FBEC7\\}|.*.*\\{3E000D72-A845-4CD9-BD83-80C07C3B881F\\})))'
-```
-
-
-

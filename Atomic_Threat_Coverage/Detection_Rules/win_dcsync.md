@@ -73,5 +73,37 @@ level: high
 ### Saved Search for Splunk
 
 ```
-b'# Generated with Sigma2SplunkAlert\n[Mimikatz DC Sync]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Mimikatz DC Sync status: experimental \\\ndescription: Detects Mimikatz DC sync security events \\\nreferences: [\'https://twitter.com/gentilkiwi/status/1003236624925413376\', \'https://gist.github.com/gentilkiwi/dcc132457408cf11ad2061340dcb53c2\'] \\\ntags: [\'attack.credential_access\', \'attack.s0002\', \'attack.t1003\'] \\\nauthor: Benjamin Delpy, Florian Roth \\\ndate:  \\\nfalsepositives: [\'Valid DC Sync that is not covered by the filters; please report\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects Mimikatz DC sync security events\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (((EventID="4662" (Properties="*Replicating Directory Changes All*" OR Properties="*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2*")) NOT (SubjectDomainName="Window Manager")) NOT ((SubjectUserName="NT AUTHORITY*" OR SubjectUserName="*$"))) | stats values(*) AS * by _time | search NOT [| inputlookup Mimikatz_DC_Sync_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.s0002,sigma_tag=attack.t1003,level=high"\n\n\n'
+Generated with Sigma2SplunkAlert
+[Mimikatz DC Sync]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Mimikatz DC Sync status: experimental \
+description: Detects Mimikatz DC sync security events \
+references: ['https://twitter.com/gentilkiwi/status/1003236624925413376', 'https://gist.github.com/gentilkiwi/dcc132457408cf11ad2061340dcb53c2'] \
+tags: ['attack.credential_access', 'attack.s0002', 'attack.t1003'] \
+author: Benjamin Delpy, Florian Roth \
+date:  \
+falsepositives: ['Valid DC Sync that is not covered by the filters; please report'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects Mimikatz DC sync security events
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (((EventID="4662" (Properties="*Replicating Directory Changes All*" OR Properties="*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2*")) NOT (SubjectDomainName="Window Manager")) NOT ((SubjectUserName="NT AUTHORITY*" OR SubjectUserName="*$"))) | stats values(*) AS * by _time | search NOT [| inputlookup Mimikatz_DC_Sync_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.s0002,sigma_tag=attack.t1003,level=high"
 ```

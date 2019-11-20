@@ -19,6 +19,7 @@
 
 ```
 title: Windows Shell Spawning Suspicious Program
+id: 3a6586ad-127a-4d3b-a677-1e6eacdf8fde
 status: experimental
 description: Detects a suspicious child process of a Windows shell
 references:
@@ -38,7 +39,7 @@ detection:
         ParentImage:
             - '*\mshta.exe'
             - '*\powershell.exe'
-            - '*\cmd.exe'
+            # - '*\cmd.exe'  # too many false positives
             - '*\rundll32.exe'
             - '*\cscript.exe'
             - '*\wscript.exe'
@@ -66,46 +67,53 @@ level: high
 
 
 
-### es-qs
-    
-```
-((ParentImage.keyword:(*\\\\mshta.exe OR *\\\\powershell.exe OR *\\\\cmd.exe OR *\\\\rundll32.exe OR *\\\\cscript.exe OR *\\\\wscript.exe OR *\\\\wmiprvse.exe) AND Image.keyword:(*\\\\schtasks.exe OR *\\\\nslookup.exe OR *\\\\certutil.exe OR *\\\\bitsadmin.exe OR *\\\\mshta.exe)) AND (NOT (CurrentDirectory.keyword:*\\\\ccmcache\\\\*)))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Windows-Shell-Spawning-Suspicious-Program <<EOF\n{\n  "metadata": {\n    "title": "Windows Shell Spawning Suspicious Program",\n    "description": "Detects a suspicious child process of a Windows shell",\n    "tags": [\n      "attack.execution",\n      "attack.defense_evasion",\n      "attack.t1064"\n    ],\n    "query": "((ParentImage.keyword:(*\\\\\\\\mshta.exe OR *\\\\\\\\powershell.exe OR *\\\\\\\\cmd.exe OR *\\\\\\\\rundll32.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\wscript.exe OR *\\\\\\\\wmiprvse.exe) AND Image.keyword:(*\\\\\\\\schtasks.exe OR *\\\\\\\\nslookup.exe OR *\\\\\\\\certutil.exe OR *\\\\\\\\bitsadmin.exe OR *\\\\\\\\mshta.exe)) AND (NOT (CurrentDirectory.keyword:*\\\\\\\\ccmcache\\\\\\\\*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((ParentImage.keyword:(*\\\\\\\\mshta.exe OR *\\\\\\\\powershell.exe OR *\\\\\\\\cmd.exe OR *\\\\\\\\rundll32.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\wscript.exe OR *\\\\\\\\wmiprvse.exe) AND Image.keyword:(*\\\\\\\\schtasks.exe OR *\\\\\\\\nslookup.exe OR *\\\\\\\\certutil.exe OR *\\\\\\\\bitsadmin.exe OR *\\\\\\\\mshta.exe)) AND (NOT (CurrentDirectory.keyword:*\\\\\\\\ccmcache\\\\\\\\*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Windows Shell Spawning Suspicious Program\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-((ParentImage:("*\\\\mshta.exe" "*\\\\powershell.exe" "*\\\\cmd.exe" "*\\\\rundll32.exe" "*\\\\cscript.exe" "*\\\\wscript.exe" "*\\\\wmiprvse.exe") AND Image:("*\\\\schtasks.exe" "*\\\\nslookup.exe" "*\\\\certutil.exe" "*\\\\bitsadmin.exe" "*\\\\mshta.exe")) AND NOT (CurrentDirectory:"*\\\\ccmcache\\\\*"))
-```
-
-
 ### splunk
     
 ```
-(((ParentImage="*\\\\mshta.exe" OR ParentImage="*\\\\powershell.exe" OR ParentImage="*\\\\cmd.exe" OR ParentImage="*\\\\rundll32.exe" OR ParentImage="*\\\\cscript.exe" OR ParentImage="*\\\\wscript.exe" OR ParentImage="*\\\\wmiprvse.exe") (Image="*\\\\schtasks.exe" OR Image="*\\\\nslookup.exe" OR Image="*\\\\certutil.exe" OR Image="*\\\\bitsadmin.exe" OR Image="*\\\\mshta.exe")) NOT (CurrentDirectory="*\\\\ccmcache\\\\*")) | table CommandLine,ParentCommandLine
-```
-
-
-### logpoint
-    
-```
-((ParentImage IN ["*\\\\mshta.exe", "*\\\\powershell.exe", "*\\\\cmd.exe", "*\\\\rundll32.exe", "*\\\\cscript.exe", "*\\\\wscript.exe", "*\\\\wmiprvse.exe"] Image IN ["*\\\\schtasks.exe", "*\\\\nslookup.exe", "*\\\\certutil.exe", "*\\\\bitsadmin.exe", "*\\\\mshta.exe"])  -(CurrentDirectory="*\\\\ccmcache\\\\*"))
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*(?:.*(?=.*(?:.*.*\\mshta\\.exe|.*.*\\powershell\\.exe|.*.*\\cmd\\.exe|.*.*\\rundll32\\.exe|.*.*\\cscript\\.exe|.*.*\\wscript\\.exe|.*.*\\wmiprvse\\.exe))(?=.*(?:.*.*\\schtasks\\.exe|.*.*\\nslookup\\.exe|.*.*\\certutil\\.exe|.*.*\\bitsadmin\\.exe|.*.*\\mshta\\.exe))))(?=.*(?!.*(?:.*(?=.*.*\\ccmcache\\\\.*)))))'
+(((ParentImage="*\\\\mshta.exe" OR ParentImage="*\\\\powershell.exe" OR ParentImage="*\\\\rundll32.exe" OR ParentImage="*\\\\cscript.exe" OR ParentImage="*\\\\wscript.exe" OR ParentImage="*\\\\wmiprvse.exe") (Image="*\\\\schtasks.exe" OR Image="*\\\\nslookup.exe" OR Image="*\\\\certutil.exe" OR Image="*\\\\bitsadmin.exe" OR Image="*\\\\mshta.exe")) NOT (CurrentDirectory="*\\\\ccmcache\\\\*")) | table CommandLine,ParentCommandLine
 ```
 
 
 
+
+
+
+### Saved Search for Splunk
+
+```
+Generated with Sigma2SplunkAlert
+[Windows Shell Spawning Suspicious Program]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:  \
+CommandLine: $result.CommandLine$ \
+ParentCommandLine: $result.ParentCommandLine$  \
+title: Windows Shell Spawning Suspicious Program status: experimental \
+description: Detects a suspicious child process of a Windows shell \
+references: ['https://mgreen27.github.io/posts/2018/04/02/DownloadCradle.html'] \
+tags: ['attack.execution', 'attack.defense_evasion', 'attack.t1064'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['Administrative scripts', 'Microsoft SCCM'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects a suspicious child process of a Windows shell
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (((ParentImage="*\\mshta.exe" OR ParentImage="*\\powershell.exe" OR ParentImage="*\\rundll32.exe" OR ParentImage="*\\cscript.exe" OR ParentImage="*\\wscript.exe" OR ParentImage="*\\wmiprvse.exe") (Image="*\\schtasks.exe" OR Image="*\\nslookup.exe" OR Image="*\\certutil.exe" OR Image="*\\bitsadmin.exe" OR Image="*\\mshta.exe")) NOT (CurrentDirectory="*\\ccmcache\\*")) | table CommandLine,ParentCommandLine,host | search NOT [| inputlookup Windows_Shell_Spawning_Suspicious_Program_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.execution,sigma_tag=attack.defense_evasion,sigma_tag=attack.t1064,level=high"
+```

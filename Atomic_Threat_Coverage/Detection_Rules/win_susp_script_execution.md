@@ -19,6 +19,7 @@
 
 ```
 title: WSF/JSE/JS/VBA/VBE File Execution
+id: 1e33157c-53b1-41ad-bbcc-780b80b58288
 status: experimental
 description: Detects suspicious file execution by wscript and cscript
 author: Michael Haag
@@ -52,27 +53,6 @@ level: medium
 
 
 
-### es-qs
-    
-```
-(Image.keyword:(*\\\\wscript.exe OR *\\\\cscript.exe) AND CommandLine.keyword:(*.jse OR *.vbe OR *.js OR *.vba))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/WSF/JSE/JS/VBA/VBE-File-Execution <<EOF\n{\n  "metadata": {\n    "title": "WSF/JSE/JS/VBA/VBE File Execution",\n    "description": "Detects suspicious file execution by wscript and cscript",\n    "tags": [\n      "attack.execution",\n      "attack.t1064"\n    ],\n    "query": "(Image.keyword:(*\\\\\\\\wscript.exe OR *\\\\\\\\cscript.exe) AND CommandLine.keyword:(*.jse OR *.vbe OR *.js OR *.vba))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(Image.keyword:(*\\\\\\\\wscript.exe OR *\\\\\\\\cscript.exe) AND CommandLine.keyword:(*.jse OR *.vbe OR *.js OR *.vba))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'WSF/JSE/JS/VBA/VBE File Execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(Image:("*\\\\wscript.exe" "*\\\\cscript.exe") AND CommandLine:("*.jse" "*.vbe" "*.js" "*.vba"))
-```
-
-
 ### splunk
     
 ```
@@ -80,18 +60,46 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(Image IN ["*\\\\wscript.exe", "*\\\\cscript.exe"] CommandLine IN ["*.jse", "*.vbe", "*.js", "*.vba"])
+Generated with Sigma2SplunkAlert
+[WSF/JSE/JS/VBA/VBE File Execution]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:  \
+CommandLine: $result.CommandLine$ \
+ParentCommandLine: $result.ParentCommandLine$  \
+title: WSF/JSE/JS/VBA/VBE File Execution status: experimental \
+description: Detects suspicious file execution by wscript and cscript \
+references:  \
+tags: ['attack.execution', 'attack.t1064'] \
+author: Michael Haag \
+date:  \
+falsepositives: ['Will need to be tuned. I recommend adding the user profile path in CommandLine if it is getting too noisy.'] \
+level: medium
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects suspicious file execution by wscript and cscript
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = ((Image="*\\wscript.exe" OR Image="*\\cscript.exe") (CommandLine="*.jse" OR CommandLine="*.vbe" OR CommandLine="*.js" OR CommandLine="*.vba")) | table CommandLine,ParentCommandLine,host | search NOT [| inputlookup WSF_JSE_JS_VBA_VBE_File_Execution_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.execution,sigma_tag=attack.t1064,level=medium"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*(?:.*.*\\wscript\\.exe|.*.*\\cscript\\.exe))(?=.*(?:.*.*\\.jse|.*.*\\.vbe|.*.*\\.js|.*.*\\.vba)))'
-```
-
-
-

@@ -19,6 +19,7 @@
 
 ```
 title: Netsh RDP Port Forwarding
+id: 782d6f3e-4c5d-4b8c-92a3-1d05fed72e63
 description: Detects netsh commands that configure a port forwarding of port 3389 used for RDP
 references:
     - https://www.fireeye.com/blog/threat-research/2019/01/bypassing-network-restrictions-through-rdp-tunneling.html
@@ -47,27 +48,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-CommandLine.keyword:(netsh\\ i*\\ p*\\=3389\\ c*)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Netsh-RDP-Port-Forwarding <<EOF\n{\n  "metadata": {\n    "title": "Netsh RDP Port Forwarding",\n    "description": "Detects netsh commands that configure a port forwarding of port 3389 used for RDP",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1021",\n      "car.2013-07-002"\n    ],\n    "query": "CommandLine.keyword:(netsh\\\\ i*\\\\ p*\\\\=3389\\\\ c*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:(netsh\\\\ i*\\\\ p*\\\\=3389\\\\ c*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Netsh RDP Port Forwarding\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-CommandLine:("netsh i* p*=3389 c*")
-```
-
-
 ### splunk
     
 ```
@@ -75,18 +55,44 @@ CommandLine:("netsh i* p*=3389 c*")
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-CommandLine IN ["netsh i* p*=3389 c*"]
+Generated with Sigma2SplunkAlert
+[Netsh RDP Port Forwarding]
+action.email = 1
+action.email.subject.alert = Splunk Alert: $name$
+action.email.to = test@test.de
+action.email.message.alert = Splunk Alert $name$ triggered \
+List of interesting fields:   \
+title: Netsh RDP Port Forwarding status: experimental \
+description: Detects netsh commands that configure a port forwarding of port 3389 used for RDP \
+references: ['https://www.fireeye.com/blog/threat-research/2019/01/bypassing-network-restrictions-through-rdp-tunneling.html'] \
+tags: ['attack.lateral_movement', 'attack.t1021', 'car.2013-07-002'] \
+author: Florian Roth \
+date:  \
+falsepositives: ['Legitimate administration'] \
+level: high
+action.email.useNSSubject = 1
+alert.severity = 1
+alert.suppress = 0
+alert.track = 1
+alert.expires = 24h
+counttype = number of events
+cron_schedule = */10 * * * *
+allow_skew = 50%
+schedule_window = auto
+description = Detects netsh commands that configure a port forwarding of port 3389 used for RDP
+dispatch.earliest_time = -10m
+dispatch.latest_time = now
+enableSched = 1
+quantity = 0
+relation = greater than
+request.ui_dispatch_app = sigma_hunting_app
+request.ui_dispatch_view = search
+search = (CommandLine="netsh i* p*=3389 c*") | stats values(*) AS * by _time | search NOT [| inputlookup Netsh_RDP_Port_Forwarding_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.t1021,sigma_tag=car.2013-07-002,level=high"
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*netsh i.* p.*=3389 c.*)'
-```
-
-
-
