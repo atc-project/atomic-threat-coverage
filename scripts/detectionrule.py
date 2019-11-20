@@ -142,9 +142,6 @@ class DetectionRule:
                     else:
                         other_tags.append(tag)
 
-                    if not tactic_re.match(tag) and not \
-                            technique_re.match(tag):
-                        other_tags.append(tag)
 
                 if len(tactic):
                     self.fields.update({'tactics': tactic})
@@ -256,9 +253,6 @@ class DetectionRule:
                     else:
                         other_tags.append(tag)
 
-                    if not tactic_re.match(tag) and not \
-                            technique_re.match(tag):
-                        other_tags.append(tag)
 
                 if len(tactic):
                     self.fields.update({'tactics': tactic})
