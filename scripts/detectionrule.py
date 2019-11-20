@@ -302,6 +302,20 @@ class DetectionRule:
 
             self.fields.update({'triggers': triggers})
 
+            if ATCconfig.get('splunk_saved_search'):
+                cmd = ATCconfig.get('sigma2splunkalert_path') + \
+                    ' --config ' + ATCconfig.get('sigma2splunkalert_config') + \
+                    ' --sigma-config ' + ATCconfig.get('sigma2splunkalert_config') + \
+                    ' --template ' + ATCconfig.get('sigma2splunkalert_template') + \
+                    ' ' + self.yaml_file
+                
+                p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+
+                (saved_search, err) = p.communicate()
+                p.wait()
+
+                self.fields.update({'saved_search': saved_search[2:-1].decode('utf-8').strip()})
+
         self.content = template.render(self.fields)
         # Need to convert ampersand into HTML "save" format
         # Otherwise confluence throws an error

@@ -257,3 +257,31 @@
 </ac:structured-macro>
 {% else %}
 {% endif %}
+{% if splunk is defined and splunk|length %}
+<ac:structured-macro ac:name="expand">
+    <ac:parameter ac:name="title">Splunk</ac:parameter>
+    <ac:rich-text-body>
+        <ac:structured-macro ac:name="code">
+            <ac:parameter ac:name="language">text</ac:parameter>
+            <ac:plain-text-body>
+                <![CDATA[{{ splunk }}]]>
+            </ac:plain-text-body>
+        </ac:structured-macro>
+    </ac:rich-text-body>
+</ac:structured-macro>
+{% else %}
+{% endif %}
+{% if saved_search is defined and saved_search|length %}
+<ac:structured-macro ac:name="expand">
+    <ac:parameter ac:name="title">Saved Search for Splunk</ac:parameter>
+    <ac:rich-text-body>
+        <ac:structured-macro ac:name="code">
+            <ac:parameter ac:name="language">text</ac:parameter>
+            <ac:plain-text-body>
+                <![CDATA[{{ saved_search }}]]>
+            </ac:plain-text-body>
+        </ac:structured-macro>
+    </ac:rich-text-body>
+</ac:structured-macro>
+{% else %}
+{% endif %}
