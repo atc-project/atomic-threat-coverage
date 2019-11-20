@@ -24,6 +24,11 @@ confluence_rest_api_url: 'https://atomicthreatcoverage.atlassian.net/wiki/rest/a
 confluence_viewpage_url: 'https://atomicthreatcoverage.atlassian.net/wiki/pages/viewpage.action?pageId='
 sigmac_path: '../detection_rules/sigma/tools/sigmac'
 detection_queries: 'es-qs,xpack-watcher,graylog,splunk,logpoint,grep'
+splunk_saved_search: True
+sigma2splunkalert_path: '../splunk_alert/Sigma2SplunkAlert/sigma2splunkalert'
+sigma2splunkalert_config: "../splunk_alert/Sigma2SplunkAlert/config/config.yml"
+sigma2splunkalert_sigma_config: "../splunk_alert/Sigma2SplunkAlert/sigma_config/splunk-all.yml"
+sigma2splunkalert_template: "../splunk_alert/Sigma2SplunkAlert/templates/template"
 customers_directory: '../customers'
 response_playbooks_dir: '../response_playbooks'
 response_actions_dir: '../response_actions'
