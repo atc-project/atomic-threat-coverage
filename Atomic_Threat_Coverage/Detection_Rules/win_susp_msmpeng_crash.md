@@ -19,6 +19,7 @@
 
 ```
 title: Microsoft Malware Protection Engine Crash
+id: 6c82cf5c-090d-4d57-9188-533577631108
 description: This rule detects a suspicious crash of the Microsoft Malware Protection Engine
 tags:
     - attack.defense_evasion
@@ -41,8 +42,9 @@ detection:
         Source: 'Windows Error Reporting'
         EventID: 1001
     keywords:
-        - 'MsMpEng.exe'
-        - 'mpengine.dll'
+        Message:
+            - '*MsMpEng.exe*'
+            - '*mpengine.dll*'
     condition: 1 of selection* and all of keywords
 falsepositives:
     - MsMpEng.exe can crash when C:\ is full
@@ -54,46 +56,19 @@ level: high
 
 
 
-### es-qs
-    
-```
-(((Source:"Application\\ Error" AND EventID:"1000") OR (Source:"Windows\\ Error\\ Reporting" AND EventID:"1001")) AND ("MsMpEng.exe" AND "mpengine.dll"))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Microsoft-Malware-Protection-Engine-Crash <<EOF\n{\n  "metadata": {\n    "title": "Microsoft Malware Protection Engine Crash",\n    "description": "This rule detects a suspicious crash of the Microsoft Malware Protection Engine",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1089",\n      "attack.t1211"\n    ],\n    "query": "(((Source:\\"Application\\\\ Error\\" AND EventID:\\"1000\\") OR (Source:\\"Windows\\\\ Error\\\\ Reporting\\" AND EventID:\\"1001\\")) AND (\\"MsMpEng.exe\\" AND \\"mpengine.dll\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(((Source:\\"Application\\\\ Error\\" AND EventID:\\"1000\\") OR (Source:\\"Windows\\\\ Error\\\\ Reporting\\" AND EventID:\\"1001\\")) AND (\\"MsMpEng.exe\\" AND \\"mpengine.dll\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Microsoft Malware Protection Engine Crash\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(((Source:"Application Error" AND EventID:"1000") OR (Source:"Windows Error Reporting" AND EventID:"1001")) AND ("MsMpEng.exe" AND "mpengine.dll"))
-```
-
-
 ### splunk
     
 ```
-(((Source="Application Error" EventID="1000") OR (Source="Windows Error Reporting" EventID="1001")) ("MsMpEng.exe" "mpengine.dll"))
-```
-
-
-### logpoint
-    
-```
-(((Source="Application Error" EventID="1000") OR (Source="Windows Error Reporting" EventID="1001")) ("MsMpEng.exe" "mpengine.dll"))
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*(?:.*(?:.*(?:.*(?=.*Application Error)(?=.*1000))|.*(?:.*(?=.*Windows Error Reporting)(?=.*1001)))))(?=.*(?:.*(?=.*MsMpEng\\.exe)(?=.*mpengine\\.dll))))'
+(((Source="Application Error" EventID="1000") OR (Source="Windows Error Reporting" EventID="1001")) (Message="*MsMpEng.exe*" OR Message="*mpengine.dll*"))
 ```
 
 
 
+
+
+
+### Saved Search for Splunk
+
+```
+b'# Generated with Sigma2SplunkAlert\n[Microsoft Malware Protection Engine Crash]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Microsoft Malware Protection Engine Crash status: experimental \\\ndescription: This rule detects a suspicious crash of the Microsoft Malware Protection Engine \\\nreferences: [\'https://bugs.chromium.org/p/project-zero/issues/detail?id=1252&desc=5\', \'https://technet.microsoft.com/en-us/library/security/4022344\'] \\\ntags: [\'attack.defense_evasion\', \'attack.t1089\', \'attack.t1211\'] \\\nauthor: Florian Roth \\\ndate:  \\\nfalsepositives: [\'MsMpEng.exe can crash when C:\\\\ is full\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = This rule detects a suspicious crash of the Microsoft Malware Protection Engine\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (((Source="Application Error" EventID="1000") OR (Source="Windows Error Reporting" EventID="1001")) (Message="*MsMpEng.exe*" OR Message="*mpengine.dll*")) | stats values(*) AS * by _time | search NOT [| inputlookup Microsoft_Malware_Protection_Engine_Crash_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.t1089,sigma_tag=attack.t1211,level=high"\n\n\n'
+```

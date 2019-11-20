@@ -19,6 +19,7 @@
 
 ```
 title: Possible Impacket SecretDump remote activity
+id: 252902e3-5830-4cf6-bf21-c22083dfd5cf
 description: Detect AD credential dumping using impacket secretdump HKTL
 author: Samir Bousseaden
 references:
@@ -34,7 +35,7 @@ detection:
     selection:
         EventID: 5145
         ShareName: \\*\ADMIN$
-        RelativeTargetName: 'SYSTEM32\*.tmp'
+        RelativeTargetName: 'SYSTEM32\\*.tmp'
     condition: selection
 falsepositives: 
     - pentesting
@@ -46,46 +47,19 @@ level: high
 
 
 
-### es-qs
-    
-```
-(EventID:"5145" AND ShareName.keyword:\\\\*\\\\ADMIN$ AND RelativeTargetName:"SYSTEM32\\*.tmp")
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Possible-Impacket-SecretDump-remote-activity <<EOF\n{\n  "metadata": {\n    "title": "Possible Impacket SecretDump remote activity",\n    "description": "Detect AD credential dumping using impacket secretdump HKTL",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003"\n    ],\n    "query": "(EventID:\\"5145\\" AND ShareName.keyword:\\\\\\\\*\\\\\\\\ADMIN$ AND RelativeTargetName:\\"SYSTEM32\\\\*.tmp\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"5145\\" AND ShareName.keyword:\\\\\\\\*\\\\\\\\ADMIN$ AND RelativeTargetName:\\"SYSTEM32\\\\*.tmp\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Possible Impacket SecretDump remote activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:"5145" AND ShareName:"\\\\*\\\\ADMIN$" AND RelativeTargetName:"SYSTEM32\\*.tmp")
-```
-
-
 ### splunk
     
 ```
-(EventID="5145" ShareName="\\\\*\\\\ADMIN$" RelativeTargetName="SYSTEM32\\*.tmp")
-```
-
-
-### logpoint
-    
-```
-(EventID="5145" ShareName="\\\\*\\\\ADMIN$" RelativeTargetName="SYSTEM32\\*.tmp")
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*5145)(?=.*\\\\.*\\ADMIN\\$)(?=.*SYSTEM32\\.*\\.tmp))'
+(EventID="5145" ShareName="\\\\*\\\\ADMIN$" RelativeTargetName="SYSTEM32\\\\*.tmp")
 ```
 
 
 
+
+
+
+### Saved Search for Splunk
+
+```
+b'# Generated with Sigma2SplunkAlert\n[Possible Impacket SecretDump remote activity]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Possible Impacket SecretDump remote activity status:  \\\ndescription: Detect AD credential dumping using impacket secretdump HKTL \\\nreferences: [\'https://blog.menasec.net/2019/02/threat-huting-10-impacketsecretdump.html\'] \\\ntags: [\'attack.credential_access\', \'attack.t1003\'] \\\nauthor: Samir Bousseaden \\\ndate:  \\\nfalsepositives: [\'pentesting\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detect AD credential dumping using impacket secretdump HKTL\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="5145" ShareName="\\\\*\\\\ADMIN$" RelativeTargetName="SYSTEM32\\\\*.tmp") | stats values(*) AS * by _time | search NOT [| inputlookup Possible_Impacket_SecretDump_remote_activity_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.t1003,level=high"\n\n\n'
+```

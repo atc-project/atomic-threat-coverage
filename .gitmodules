@@ -13,3 +13,6 @@
 [submodule "mitigations/atc-mitigation"]
 	path = mitigations/atc-mitigation
 	url = https://github.com/atc-project/atc-mitigation
+[submodule "splunk_alert/Sigma2SplunkAlert"]
+	path = splunk_alert/Sigma2SplunkAlert
+	url = https://github.com/P4T12ICK/Sigma2SplunkAlert

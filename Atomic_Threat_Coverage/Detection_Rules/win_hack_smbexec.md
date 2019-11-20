@@ -19,6 +19,7 @@
 
 ```
 title: smbexec.py Service Installation
+id: 52a85084-6989-40c3-8f32-091e12e13f09
 description: Detects the use of smbexec.py tool by detecting a specific service installation
 author: Omer Faruk Celik
 date: 2018/03/20
@@ -51,27 +52,6 @@ level: critical
 
 
 
-### es-qs
-    
-```
-(EventID:"7045" AND ServiceName:"BTOBTO" AND ServiceFileName.keyword:*\\\\execute.bat)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/smbexec.py-Service-Installation <<EOF\n{\n  "metadata": {\n    "title": "smbexec.py Service Installation",\n    "description": "Detects the use of smbexec.py tool by detecting a specific service installation",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.execution",\n      "attack.t1077",\n      "attack.t1035"\n    ],\n    "query": "(EventID:\\"7045\\" AND ServiceName:\\"BTOBTO\\" AND ServiceFileName.keyword:*\\\\\\\\execute.bat)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"7045\\" AND ServiceName:\\"BTOBTO\\" AND ServiceFileName.keyword:*\\\\\\\\execute.bat)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'smbexec.py Service Installation\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n    ServiceName = {{_source.ServiceName}}\\nServiceFileName = {{_source.ServiceFileName}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:"7045" AND ServiceName:"BTOBTO" AND ServiceFileName:"*\\\\execute.bat")
-```
-
-
 ### splunk
     
 ```
@@ -79,18 +59,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(EventID="7045" ServiceName="BTOBTO" ServiceFileName="*\\\\execute.bat")
+b'# Generated with Sigma2SplunkAlert\n[smbexec.py Service Installation]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:  \\\nServiceName: $result.ServiceName$ \\\nServiceFileName: $result.ServiceFileName$  \\\ntitle: smbexec.py Service Installation status:  \\\ndescription: Detects the use of smbexec.py tool by detecting a specific service installation \\\nreferences: [\'https://blog.ropnop.com/using-credentials-to-own-windows-boxes-part-2-psexec-and-services/\'] \\\ntags: [\'attack.lateral_movement\', \'attack.execution\', \'attack.t1077\', \'attack.t1035\'] \\\nauthor: Omer Faruk Celik \\\ndate:  \\\nfalsepositives: [\'Penetration Test\', \'Unknown\'] \\\nlevel: critical\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects the use of smbexec.py tool by detecting a specific service installation\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="7045" ServiceName="BTOBTO" ServiceFileName="*\\\\execute.bat") | table ServiceName,ServiceFileName,host | search NOT [| inputlookup smbexec.py_Service_Installation_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.execution,sigma_tag=attack.t1077,sigma_tag=attack.t1035,level=critical"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*7045)(?=.*BTOBTO)(?=.*.*\\execute\\.bat))'
-```
-
-
-

@@ -19,6 +19,7 @@
 
 ```
 title: NTLM Logon
+id: 98c3bcf1-56f2-49dc-9d8d-c66cf190238b
 status: experimental
 description: Detects logons using NTLM, which could be caused by a legacy source or attackers
 references:
@@ -48,27 +49,6 @@ level: low
 
 
 
-### es-qs
-    
-```
-(EventID:"8002" AND CallingProcessName.keyword:*)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/NTLM-Logon <<EOF\n{\n  "metadata": {\n    "title": "NTLM Logon",\n    "description": "Detects logons using NTLM, which could be caused by a legacy source or attackers",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1075"\n    ],\n    "query": "(EventID:\\"8002\\" AND CallingProcessName.keyword:*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"8002\\" AND CallingProcessName.keyword:*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'NTLM Logon\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:"8002" AND CallingProcessName:"*")
-```
-
-
 ### splunk
     
 ```
@@ -76,18 +56,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(EventID="8002" CallingProcessName="*")
+b'# Generated with Sigma2SplunkAlert\n[NTLM Logon]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: NTLM Logon status: experimental \\\ndescription: Detects logons using NTLM, which could be caused by a legacy source or attackers \\\nreferences: [\'https://twitter.com/JohnLaTwC/status/1004895028995477505\', \'https://goo.gl/PsqrhT\'] \\\ntags: [\'attack.lateral_movement\', \'attack.t1075\'] \\\nauthor: Florian Roth \\\ndate:  \\\nfalsepositives: [\'Legacy hosts\'] \\\nlevel: low\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects logons using NTLM, which could be caused by a legacy source or attackers\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="8002" CallingProcessName="*") | stats values(*) AS * by _time | search NOT [| inputlookup NTLM_Logon_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.t1075,level=low"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*8002)(?=.*.*))'
-```
-
-
-

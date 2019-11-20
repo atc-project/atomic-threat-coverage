@@ -37,3 +37,11 @@
 {% endif %}
 {% else %}
 {% endif %}
+
+{% if saved_search is defined and saved_search|length%}
+### Saved Search for Splunk
+
+```
+{{ saved_search }}
+```
+{% endif %}

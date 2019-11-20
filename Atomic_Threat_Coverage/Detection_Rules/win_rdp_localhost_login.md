@@ -19,6 +19,7 @@
 
 ```
 title: RDP Login from localhost
+id: 51e33403-2a37-4d66-a574-1fda1782cc31
 description: RDP login with localhost source address may be a tunnelled login
 references:
     - https://www.fireeye.com/blog/threat-research/2019/01/bypassing-network-restrictions-through-rdp-tunneling.html
@@ -51,27 +52,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-(EventID:"4624" AND LogonType:"10" AND SourceNetworkAddress:("\\:\\:1" OR "127.0.0.1"))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/RDP-Login-from-localhost <<EOF\n{\n  "metadata": {\n    "title": "RDP Login from localhost",\n    "description": "RDP login with localhost source address may be a tunnelled login",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1076",\n      "car.2013-07-002"\n    ],\n    "query": "(EventID:\\"4624\\" AND LogonType:\\"10\\" AND SourceNetworkAddress:(\\"\\\\:\\\\:1\\" OR \\"127.0.0.1\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4624\\" AND LogonType:\\"10\\" AND SourceNetworkAddress:(\\"\\\\:\\\\:1\\" OR \\"127.0.0.1\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'RDP Login from localhost\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:"4624" AND LogonType:"10" AND SourceNetworkAddress:("\\:\\:1" "127.0.0.1"))
-```
-
-
 ### splunk
     
 ```
@@ -79,18 +59,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(EventID="4624" LogonType="10" SourceNetworkAddress IN ["::1", "127.0.0.1"])
+b'# Generated with Sigma2SplunkAlert\n[RDP Login from localhost]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: RDP Login from localhost status: experimental \\\ndescription: RDP login with localhost source address may be a tunnelled login \\\nreferences: [\'https://www.fireeye.com/blog/threat-research/2019/01/bypassing-network-restrictions-through-rdp-tunneling.html\'] \\\ntags: [\'attack.lateral_movement\', \'attack.t1076\', \'car.2013-07-002\'] \\\nauthor: Thomas Patzke \\\ndate:  \\\nfalsepositives: [\'Unknown\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = RDP login with localhost source address may be a tunnelled login\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="4624" LogonType="10" (SourceNetworkAddress="::1" OR SourceNetworkAddress="127.0.0.1")) | stats values(*) AS * by _time | search NOT [| inputlookup RDP_Login_from_localhost_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.t1076,sigma_tag=car.2013-07-002,level=high"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*4624)(?=.*10)(?=.*(?:.*::1|.*127\\.0\\.0\\.1)))'
-```
-
-
-

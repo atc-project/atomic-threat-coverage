@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | Linux Pluggable Authentication Modules (PAM) authentication log                                                                                                |
 | Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[http://manpages.ubuntu.com/manpages/trusty/en/man7/pam.7.html](http://manpages.ubuntu.com/manpages/trusty/en/man7/pam.7.html)</li></ul>                                  |
 | Platform       		| Linux   |
 | Type           		| auth 		| 

@@ -3,7 +3,7 @@
 | Description          | This rule detects a DHCP server error in which a specified Callout DLL (in registry) could not be loaded                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0047_1032_dhcp_service_callout_dll_file_has_caused_an_exception](../Data_Needed/DN_0047_1032_dhcp_service_callout_dll_file_has_caused_an_exception.md)</li><li>[DN_0049_1034_dhcp_service_failed_to_load_callout_dlls](../Data_Needed/DN_0049_1034_dhcp_service_failed_to_load_callout_dlls.md)</li><li>[DN_0046_1031_dhcp_service_callout_dll_file_has_caused_an_exception](../Data_Needed/DN_0046_1031_dhcp_service_callout_dll_file_has_caused_an_exception.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0049_1034_dhcp_service_failed_to_load_callout_dlls](../Data_Needed/DN_0049_1034_dhcp_service_failed_to_load_callout_dlls.md)</li><li>[DN_0046_1031_dhcp_service_callout_dll_file_has_caused_an_exception](../Data_Needed/DN_0046_1031_dhcp_service_callout_dll_file_has_caused_an_exception.md)</li><li>[DN_0047_1032_dhcp_service_callout_dll_file_has_caused_an_exception](../Data_Needed/DN_0047_1032_dhcp_service_callout_dll_file_has_caused_an_exception.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li></ul>  |
 | Severity Level       | critical |
@@ -19,6 +19,7 @@
 
 ```
 title: DHCP Server Error Failed Loading the CallOut DLL
+id: 75edd3fd-7146-48e5-9848-3013d7f0282c
 description: This rule detects a DHCP server error in which a specified Callout DLL (in registry) could not be loaded
 status: experimental
 references:
@@ -52,27 +53,6 @@ level: critical
 
 
 
-### es-qs
-    
-```
-(EventID:("1031" OR "1032" OR "1034") AND Source:"Microsoft\\-Windows\\-DHCP\\-Server")
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/DHCP-Server-Error-Failed-Loading-the-CallOut-DLL <<EOF\n{\n  "metadata": {\n    "title": "DHCP Server Error Failed Loading the CallOut DLL",\n    "description": "This rule detects a DHCP server error in which a specified Callout DLL (in registry) could not be loaded",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1073"\n    ],\n    "query": "(EventID:(\\"1031\\" OR \\"1032\\" OR \\"1034\\") AND Source:\\"Microsoft\\\\-Windows\\\\-DHCP\\\\-Server\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:(\\"1031\\" OR \\"1032\\" OR \\"1034\\") AND Source:\\"Microsoft\\\\-Windows\\\\-DHCP\\\\-Server\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'DHCP Server Error Failed Loading the CallOut DLL\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:("1031" "1032" "1034") AND Source:"Microsoft\\-Windows\\-DHCP\\-Server")
-```
-
-
 ### splunk
     
 ```
@@ -80,18 +60,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(EventID IN ["1031", "1032", "1034"] Source="Microsoft-Windows-DHCP-Server")
+b'# Generated with Sigma2SplunkAlert\n[DHCP Server Error Failed Loading the CallOut DLL]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: DHCP Server Error Failed Loading the CallOut DLL status: experimental \\\ndescription: This rule detects a DHCP server error in which a specified Callout DLL (in registry) could not be loaded \\\nreferences: [\'https://blog.3or.de/mimilib-dhcp-server-callout-dll-injection.html\', \'https://technet.microsoft.com/en-us/library/cc726884(v=ws.10).aspx\', \'https://msdn.microsoft.com/de-de/library/windows/desktop/aa363389(v=vs.85).aspx\'] \\\ntags: [\'attack.defense_evasion\', \'attack.t1073\'] \\\nauthor: Dimitrios Slamaris, @atc_project (fix) \\\ndate:  \\\nfalsepositives: [\'Unknown\'] \\\nlevel: critical\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = This rule detects a DHCP server error in which a specified Callout DLL (in registry) could not be loaded\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = ((EventID="1031" OR EventID="1032" OR EventID="1034") Source="Microsoft-Windows-DHCP-Server") | stats values(*) AS * by _time | search NOT [| inputlookup DHCP_Server_Error_Failed_Loading_the_CallOut_DLL_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.t1073,level=critical"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*(?:.*1031|.*1032|.*1034))(?=.*Microsoft-Windows-DHCP-Server))'
-```
-
-
-

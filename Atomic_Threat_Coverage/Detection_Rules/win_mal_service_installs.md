@@ -19,6 +19,7 @@
 
 ```
 title: Malicious Service Installations
+id: 5a105d34-05fc-401e-8553-272b45c1522d
 description: Detects known malicious service installs that only appear in cases of lateral movement, credential dumping and other suspicious activity
 author: Florian Roth
 tags:
@@ -62,27 +63,6 @@ level: critical
 
 
 
-### es-qs
-    
-```
-(EventID:"7045" AND (ServiceName:("WCESERVICE" OR "WCE\\ SERVICE") OR ServiceFileName.keyword:*\\\\PAExec* OR ServiceFileName.keyword:winexesvc.exe* OR ServiceFileName.keyword:*\\\\DumpSvc.exe OR ServiceName:"mssecsvc2.0" OR ServiceFileName.keyword:*\\ net\\ user\\ * OR ServiceName.keyword:(pwdump* OR gsecdump* OR cachedump*)))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Malicious-Service-Installations <<EOF\n{\n  "metadata": {\n    "title": "Malicious Service Installations",\n    "description": "Detects known malicious service installs that only appear in cases of lateral movement, credential dumping and other suspicious activity",\n    "tags": [\n      "attack.persistence",\n      "attack.privilege_escalation",\n      "attack.t1050",\n      "car.2013-09-005"\n    ],\n    "query": "(EventID:\\"7045\\" AND (ServiceName:(\\"WCESERVICE\\" OR \\"WCE\\\\ SERVICE\\") OR ServiceFileName.keyword:*\\\\\\\\PAExec* OR ServiceFileName.keyword:winexesvc.exe* OR ServiceFileName.keyword:*\\\\\\\\DumpSvc.exe OR ServiceName:\\"mssecsvc2.0\\" OR ServiceFileName.keyword:*\\\\ net\\\\ user\\\\ * OR ServiceName.keyword:(pwdump* OR gsecdump* OR cachedump*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"7045\\" AND (ServiceName:(\\"WCESERVICE\\" OR \\"WCE\\\\ SERVICE\\") OR ServiceFileName.keyword:*\\\\\\\\PAExec* OR ServiceFileName.keyword:winexesvc.exe* OR ServiceFileName.keyword:*\\\\\\\\DumpSvc.exe OR ServiceName:\\"mssecsvc2.0\\" OR ServiceFileName.keyword:*\\\\ net\\\\ user\\\\ * OR ServiceName.keyword:(pwdump* OR gsecdump* OR cachedump*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Malicious Service Installations\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:"7045" AND (ServiceName:("WCESERVICE" "WCE SERVICE") OR ServiceFileName:"*\\\\PAExec*" OR ServiceFileName:"winexesvc.exe*" OR ServiceFileName:"*\\\\DumpSvc.exe" OR ServiceName:"mssecsvc2.0" OR ServiceFileName:"* net user *" OR ServiceName:("pwdump*" "gsecdump*" "cachedump*")))
-```
-
-
 ### splunk
     
 ```
@@ -90,18 +70,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(EventID="7045" (ServiceName IN ["WCESERVICE", "WCE SERVICE"] OR ServiceFileName="*\\\\PAExec*" OR ServiceFileName="winexesvc.exe*" OR ServiceFileName="*\\\\DumpSvc.exe" OR ServiceName="mssecsvc2.0" OR ServiceFileName="* net user *" OR ServiceName IN ["pwdump*", "gsecdump*", "cachedump*"]))
+b'# Generated with Sigma2SplunkAlert\n[Malicious Service Installations]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Malicious Service Installations status:  \\\ndescription: Detects known malicious service installs that only appear in cases of lateral movement, credential dumping and other suspicious activity \\\nreferences:  \\\ntags: [\'attack.persistence\', \'attack.privilege_escalation\', \'attack.t1050\', \'car.2013-09-005\'] \\\nauthor: Florian Roth \\\ndate:  \\\nfalsepositives: [\'Penetration testing\'] \\\nlevel: critical\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects known malicious service installs that only appear in cases of lateral movement, credential dumping and other suspicious activity\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="7045" ((ServiceName="WCESERVICE" OR ServiceName="WCE SERVICE") OR ServiceFileName="*\\\\PAExec*" OR ServiceFileName="winexesvc.exe*" OR ServiceFileName="*\\\\DumpSvc.exe" OR ServiceName="mssecsvc2.0" OR ServiceFileName="* net user *" OR (ServiceName="pwdump*" OR ServiceName="gsecdump*" OR ServiceName="cachedump*"))) | stats values(*) AS * by _time | search NOT [| inputlookup Malicious_Service_Installations_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.persistence,sigma_tag=attack.privilege_escalation,sigma_tag=attack.t1050,sigma_tag=car.2013-09-005,level=critical"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*7045)(?=.*(?:.*(?:.*(?:.*WCESERVICE|.*WCE SERVICE)|.*.*\\PAExec.*|.*winexesvc\\.exe.*|.*.*\\DumpSvc\\.exe|.*mssecsvc2\\.0|.*.* net user .*|.*(?:.*pwdump.*|.*gsecdump.*|.*cachedump.*)))))'
-```
-
-
-

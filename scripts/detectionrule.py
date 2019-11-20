@@ -175,6 +175,21 @@ class DetectionRule:
                 {'description': self.fields.get('description').strip()})
             self.fields.update({'triggers': triggers})
 
+            if ATCconfig.get('splunk_saved_search'):
+                cmd = ATCconfig.get('sigma2splunkalert_path') + \
+                    ' --config ' + ATCconfig.get('sigma2splunkalert_config') + \
+                    ' --sigma-config ' + ATCconfig.get('sigma2splunkalert_config') + \
+                    ' --template ' + ATCconfig.get('sigma2splunkalert_template') + \
+                    ' ' + self.yaml_file
+                
+                p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+
+                (saved_search, err) = p.communicate()
+                p.wait()
+
+                self.fields.update({'saved_search': saved_search[2:-1].decode('utf-8').strip()})
+
+
         elif template_type == "confluence":
             template = env.get_template(
                 'confluence_alert_template.html.j2')
@@ -205,7 +220,7 @@ class DetectionRule:
                 # have to remove '-' due to problems with
                 # Jinja2 variable naming,e.g es-qs throws error
                 # 'no es variable'
-                self.fields.update({output.replace("-", ""): str(query)[2:-3]})
+                self.fields.update({output.replace("-", ""): str(query)[2:-3].strip()})
 
             # Data Needed
             data_needed = ATCutils.main_dn_calculatoin_func(self.yaml_file)

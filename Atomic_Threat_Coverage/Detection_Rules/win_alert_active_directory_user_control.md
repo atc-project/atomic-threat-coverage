@@ -19,6 +19,7 @@
 
 ```
 title: Enabled User Right in AD to Control User Objects
+id: 311b6ce2-7890-4383-a8c2-663a9f6b43cd
 description: Detects scenario where if a user is assigned the SeEnableDelegationPrivilege right in Active Directory it would allow control of other AD user objects.
 tags:
     - attack.privilege_escalation
@@ -34,7 +35,8 @@ detection:
     selection:
         EventID: 4704
     keywords:
-        - 'SeEnableDelegationPrivilege'
+        Message:
+            - '*SeEnableDelegationPrivilege*'
     condition: all of them
 falsepositives: 
     - Unknown
@@ -46,46 +48,19 @@ level: high
 
 
 
-### es-qs
-    
-```
-(EventID:"4704" AND "SeEnableDelegationPrivilege")
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Enabled-User-Right-in-AD-to-Control-User-Objects <<EOF\n{\n  "metadata": {\n    "title": "Enabled User Right in AD to Control User Objects",\n    "description": "Detects scenario where if a user is assigned the SeEnableDelegationPrivilege right in Active Directory it would allow control of other AD user objects.",\n    "tags": [\n      "attack.privilege_escalation",\n      "attack.t1078"\n    ],\n    "query": "(EventID:\\"4704\\" AND \\"SeEnableDelegationPrivilege\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4704\\" AND \\"SeEnableDelegationPrivilege\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Enabled User Right in AD to Control User Objects\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:"4704" AND "SeEnableDelegationPrivilege")
-```
-
-
 ### splunk
     
 ```
-(EventID="4704" "SeEnableDelegationPrivilege")
-```
-
-
-### logpoint
-    
-```
-(EventID="4704" "SeEnableDelegationPrivilege")
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*4704)(?=.*SeEnableDelegationPrivilege))'
+(EventID="4704" (Message="*SeEnableDelegationPrivilege*"))
 ```
 
 
 
+
+
+
+### Saved Search for Splunk
+
+```
+b'# Generated with Sigma2SplunkAlert\n[Enabled User Right in AD to Control User Objects]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Enabled User Right in AD to Control User Objects status:  \\\ndescription: Detects scenario where if a user is assigned the SeEnableDelegationPrivilege right in Active Directory it would allow control of other AD user objects. \\\nreferences: [\'https://www.harmj0y.net/blog/activedirectory/the-most-dangerous-user-right-you-probably-have-never-heard-of/\'] \\\ntags: [\'attack.privilege_escalation\', \'attack.t1078\'] \\\nauthor: @neu5ron \\\ndate:  \\\nfalsepositives: [\'Unknown\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects scenario where if a user is assigned the SeEnableDelegationPrivilege right in Active Directory it would allow control of other AD user objects.\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="4704" (Message="*SeEnableDelegationPrivilege*")) | stats values(*) AS * by _time | search NOT [| inputlookup Enabled_User_Right_in_AD_to_Control_User_Objects_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.privilege_escalation,sigma_tag=attack.t1078,level=high"\n\n\n'
+```

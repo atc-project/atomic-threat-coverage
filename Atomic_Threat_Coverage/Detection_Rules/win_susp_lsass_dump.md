@@ -19,6 +19,7 @@
 
 ```
 title: Password Dumper Activity on LSASS
+id: aa1697b7-d611-4f9a-9cb2-5125b4ccfd5c
 description: Detects process handle on LSASS process with certain access mask and object type SAM_DOMAIN
 status: experimental
 references:
@@ -46,27 +47,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-(EventID:"4656" AND ProcessName:"C\\:\\\\Windows\\\\System32\\\\lsass.exe" AND AccessMask:"0x705" AND ObjectType:"SAM_DOMAIN")
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Password-Dumper-Activity-on-LSASS <<EOF\n{\n  "metadata": {\n    "title": "Password Dumper Activity on LSASS",\n    "description": "Detects process handle on LSASS process with certain access mask and object type SAM_DOMAIN",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003"\n    ],\n    "query": "(EventID:\\"4656\\" AND ProcessName:\\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\lsass.exe\\" AND AccessMask:\\"0x705\\" AND ObjectType:\\"SAM_DOMAIN\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4656\\" AND ProcessName:\\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\lsass.exe\\" AND AccessMask:\\"0x705\\" AND ObjectType:\\"SAM_DOMAIN\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Password Dumper Activity on LSASS\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:"4656" AND ProcessName:"C\\:\\\\Windows\\\\System32\\\\lsass.exe" AND AccessMask:"0x705" AND ObjectType:"SAM_DOMAIN")
-```
-
-
 ### splunk
     
 ```
@@ -74,18 +54,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(EventID="4656" ProcessName="C:\\\\Windows\\\\System32\\\\lsass.exe" AccessMask="0x705" ObjectType="SAM_DOMAIN")
+b'# Generated with Sigma2SplunkAlert\n[Password Dumper Activity on LSASS]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Password Dumper Activity on LSASS status: experimental \\\ndescription: Detects process handle on LSASS process with certain access mask and object type SAM_DOMAIN \\\nreferences: [\'https://twitter.com/jackcr/status/807385668833968128\'] \\\ntags: [\'attack.credential_access\', \'attack.t1003\'] \\\nauthor:  \\\ndate:  \\\nfalsepositives: [\'Unkown\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects process handle on LSASS process with certain access mask and object type SAM_DOMAIN\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="4656" ProcessName="C:\\\\Windows\\\\System32\\\\lsass.exe" AccessMask="0x705" ObjectType="SAM_DOMAIN") | stats values(*) AS * by _time | search NOT [| inputlookup Password_Dumper_Activity_on_LSASS_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.t1003,level=high"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*4656)(?=.*C:\\Windows\\System32\\lsass\\.exe)(?=.*0x705)(?=.*SAM_DOMAIN))'
-```
-
-
-

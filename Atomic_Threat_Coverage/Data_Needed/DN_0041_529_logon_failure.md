@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | Logon Failure - Unknown user name or bad password                                                                                                |
 | Logging Policy    | <ul><li>[LP_0004_windows_audit_logon](../Logging_Policies/LP_0004_windows_audit_logon.md)</li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=529](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=529)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Windows Log 		| 

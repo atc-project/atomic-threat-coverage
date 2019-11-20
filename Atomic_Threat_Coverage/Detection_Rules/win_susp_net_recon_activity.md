@@ -19,8 +19,9 @@
 
 ```
 title: Reconnaissance Activity
+id: 968eef52-9cff-4454-8992-1e74b9cbad6c
 status: experimental
-description: 'Detects activity as "net user administrator /domain" and "net group domain admins /domain"'
+description: Detects activity as "net user administrator /domain" and "net group domain admins /domain"
 references:
     - https://findingbad.blogspot.de/2017/01/hunting-what-does-it-look-like.html
 author: Florian Roth (rule), Jack Croock (method)
@@ -55,27 +56,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-(EventID:"4661" AND AccessMask:"0x2d" AND ((ObjectType:"SAM_USER" AND ObjectName.keyword:S\\-1\\-5\\-21\\-*\\-500) OR (ObjectType:"SAM_GROUP" AND ObjectName.keyword:S\\-1\\-5\\-21\\-*\\-512)))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Reconnaissance-Activity <<EOF\n{\n  "metadata": {\n    "title": "Reconnaissance Activity",\n    "description": "Detects activity as \\"net user administrator /domain\\" and \\"net group domain admins /domain\\"",\n    "tags": [\n      "attack.discovery",\n      "attack.t1087",\n      "attack.t1069",\n      "attack.s0039"\n    ],\n    "query": "(EventID:\\"4661\\" AND AccessMask:\\"0x2d\\" AND ((ObjectType:\\"SAM_USER\\" AND ObjectName.keyword:S\\\\-1\\\\-5\\\\-21\\\\-*\\\\-500) OR (ObjectType:\\"SAM_GROUP\\" AND ObjectName.keyword:S\\\\-1\\\\-5\\\\-21\\\\-*\\\\-512)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4661\\" AND AccessMask:\\"0x2d\\" AND ((ObjectType:\\"SAM_USER\\" AND ObjectName.keyword:S\\\\-1\\\\-5\\\\-21\\\\-*\\\\-500) OR (ObjectType:\\"SAM_GROUP\\" AND ObjectName.keyword:S\\\\-1\\\\-5\\\\-21\\\\-*\\\\-512)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Reconnaissance Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:"4661" AND AccessMask:"0x2d" AND ((ObjectType:"SAM_USER" AND ObjectName:"S\\-1\\-5\\-21\\-*\\-500") OR (ObjectType:"SAM_GROUP" AND ObjectName:"S\\-1\\-5\\-21\\-*\\-512")))
-```
-
-
 ### splunk
     
 ```
@@ -83,18 +63,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(EventID="4661" AccessMask="0x2d" ((ObjectType="SAM_USER" ObjectName="S-1-5-21-*-500") OR (ObjectType="SAM_GROUP" ObjectName="S-1-5-21-*-512")))
+b'# Generated with Sigma2SplunkAlert\n[Reconnaissance Activity]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Reconnaissance Activity status: experimental \\\ndescription: Detects activity as "net user administrator /domain" and "net group domain admins /domain" \\\nreferences: [\'https://findingbad.blogspot.de/2017/01/hunting-what-does-it-look-like.html\'] \\\ntags: [\'attack.discovery\', \'attack.t1087\', \'attack.t1069\', \'attack.s0039\'] \\\nauthor: Florian Roth (rule), Jack Croock (method) \\\ndate:  \\\nfalsepositives: [\'Administrator activity\', \'Penetration tests\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects activity as "net user administrator /domain" and "net group domain admins /domain"\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="4661" AccessMask="0x2d" ((ObjectType="SAM_USER" ObjectName="S-1-5-21-*-500") OR (ObjectType="SAM_GROUP" ObjectName="S-1-5-21-*-512"))) | stats values(*) AS * by _time | search NOT [| inputlookup Reconnaissance_Activity_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.discovery,sigma_tag=attack.t1087,sigma_tag=attack.t1069,sigma_tag=attack.s0039,level=high"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*4661)(?=.*0x2d)(?=.*(?:.*(?:.*(?:.*(?=.*SAM_USER)(?=.*S-1-5-21-.*-500))|.*(?:.*(?=.*SAM_GROUP)(?=.*S-1-5-21-.*-512))))))'
-```
-
-
-

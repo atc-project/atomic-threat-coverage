@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | The access history in hive was cleared updating X keys and creating Y modified pages                                                                                                |
 | Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[http://www.eventid.net/display-eventid-16-source-Microsoft-Windows-Kernel-General-eventno-11563-phase-1.htm](http://www.eventid.net/display-eventid-16-source-Microsoft-Windows-Kernel-General-eventno-11563-phase-1.htm)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Windows Log 		| 

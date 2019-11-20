@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Kerberos RC4 Ticket Encryption
+id: 496a0e47-0a33-4dca-b009-9e6ca3591f39
 status: experimental
 references:
     - https://adsecurity.org/?p=3458
@@ -49,27 +50,6 @@ level: medium
 
 
 
-### es-qs
-    
-```
-((EventID:"4769" AND TicketOptions:"0x40810000" AND TicketEncryptionType:"0x17") AND (NOT (ServiceName.keyword:$*)))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Kerberos-RC4-Ticket-Encryption <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Kerberos RC4 Ticket Encryption",\n    "description": "Detects service ticket requests using RC4 encryption type",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1208"\n    ],\n    "query": "((EventID:\\"4769\\" AND TicketOptions:\\"0x40810000\\" AND TicketEncryptionType:\\"0x17\\") AND (NOT (ServiceName.keyword:$*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((EventID:\\"4769\\" AND TicketOptions:\\"0x40810000\\" AND TicketEncryptionType:\\"0x17\\") AND (NOT (ServiceName.keyword:$*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Kerberos RC4 Ticket Encryption\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-((EventID:"4769" AND TicketOptions:"0x40810000" AND TicketEncryptionType:"0x17") AND NOT (ServiceName:"$*"))
-```
-
-
 ### splunk
     
 ```
@@ -77,18 +57,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-((EventID="4769" TicketOptions="0x40810000" TicketEncryptionType="0x17")  -(ServiceName="$*"))
+b'# Generated with Sigma2SplunkAlert\n[Suspicious Kerberos RC4 Ticket Encryption]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Suspicious Kerberos RC4 Ticket Encryption status: experimental \\\ndescription: Detects service ticket requests using RC4 encryption type \\\nreferences: [\'https://adsecurity.org/?p=3458\', \'https://www.trimarcsecurity.com/single-post/TrimarcResearch/Detecting-Kerberoasting-Activity\'] \\\ntags: [\'attack.credential_access\', \'attack.t1208\'] \\\nauthor:  \\\ndate:  \\\nfalsepositives: [\'Service accounts used on legacy systems (e.g. NetApp)\', \'Windows Domains with DFL 2003 and legacy systems\'] \\\nlevel: medium\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects service ticket requests using RC4 encryption type\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = ((EventID="4769" TicketOptions="0x40810000" TicketEncryptionType="0x17") NOT (ServiceName="$*")) | stats values(*) AS * by _time | search NOT [| inputlookup Suspicious_Kerberos_RC4_Ticket_Encryption_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.credential_access,sigma_tag=attack.t1208,level=medium"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*(?:.*(?=.*4769)(?=.*0x40810000)(?=.*0x17)))(?=.*(?!.*(?:.*(?:.*(?=.*\\$.*))))))'
-```
-
-
-

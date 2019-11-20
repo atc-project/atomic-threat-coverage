@@ -19,6 +19,7 @@
 
 ```
 title: Scanner PoC for CVE-2019-0708 RDP RCE vuln
+id: 8400629e-79a9-4737-b387-5db940ab2367
 description: Detects the use of a scanner by zerosum0x0 that discovers targets vulnerable to  CVE-2019-0708 RDP RCE aka BlueKeep
 references:
     - https://twitter.com/AdamTheAnalyst/status/1134394070045003776
@@ -47,27 +48,6 @@ level: critical
 
 
 
-### es-qs
-    
-```
-(EventID:"4625" AND AccountName:"AAAAAAA")
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Scanner-PoC-for-CVE-2019-0708-RDP-RCE-vuln <<EOF\n{\n  "metadata": {\n    "title": "Scanner PoC for CVE-2019-0708 RDP RCE vuln",\n    "description": "Detects the use of a scanner by zerosum0x0 that discovers targets vulnerable to  CVE-2019-0708 RDP RCE aka BlueKeep",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1210",\n      "car.2013-07-002"\n    ],\n    "query": "(EventID:\\"4625\\" AND AccountName:\\"AAAAAAA\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4625\\" AND AccountName:\\"AAAAAAA\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Scanner PoC for CVE-2019-0708 RDP RCE vuln\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:"4625" AND AccountName:"AAAAAAA")
-```
-
-
 ### splunk
     
 ```
@@ -75,18 +55,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(EventID="4625" AccountName="AAAAAAA")
+b'# Generated with Sigma2SplunkAlert\n[Scanner PoC for CVE-2019-0708 RDP RCE vuln]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Scanner PoC for CVE-2019-0708 RDP RCE vuln status:  \\\ndescription: Detects the use of a scanner by zerosum0x0 that discovers targets vulnerable to  CVE-2019-0708 RDP RCE aka BlueKeep \\\nreferences: [\'https://twitter.com/AdamTheAnalyst/status/1134394070045003776\', \'https://github.com/zerosum0x0/CVE-2019-0708\'] \\\ntags: [\'attack.lateral_movement\', \'attack.t1210\', \'car.2013-07-002\'] \\\nauthor: Florian Roth (rule), Adam Bradbury (idea) \\\ndate:  \\\nfalsepositives: [\'Unlikely\'] \\\nlevel: critical\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects the use of a scanner by zerosum0x0 that discovers targets vulnerable to  CVE-2019-0708 RDP RCE aka BlueKeep\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="4625" AccountName="AAAAAAA") | stats values(*) AS * by _time | search NOT [| inputlookup Scanner_PoC_for_CVE-2019-0708_RDP_RCE_vuln_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.t1210,sigma_tag=car.2013-07-002,level=critical"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*4625)(?=.*AAAAAAA))'
-```
-
-
-

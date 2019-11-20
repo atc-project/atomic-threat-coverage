@@ -19,6 +19,7 @@
 
 ```
 title: RDP over Reverse SSH Tunnel WFP
+id: 5bed80b6-b3e8-428e-a3ae-d3c757589e41
 status: experimental
 description: Detects svchost hosting RDP termsvcs communicating with the loopback address and on TCP port 3389
 references:
@@ -57,27 +58,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-(EventID:"5156" AND ((SourcePort:"3389" AND DestinationAddress.keyword:(127.* OR \\:\\:1)) OR (DestinationPort:"3389" AND SourceAddress.keyword:(127.* OR \\:\\:1))))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/RDP-over-Reverse-SSH-Tunnel-WFP <<EOF\n{\n  "metadata": {\n    "title": "RDP over Reverse SSH Tunnel WFP",\n    "description": "Detects svchost hosting RDP termsvcs communicating with the loopback address and on TCP port 3389",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.command_and_control",\n      "attack.t1076",\n      "car.2013-07-002"\n    ],\n    "query": "(EventID:\\"5156\\" AND ((SourcePort:\\"3389\\" AND DestinationAddress.keyword:(127.* OR \\\\:\\\\:1)) OR (DestinationPort:\\"3389\\" AND SourceAddress.keyword:(127.* OR \\\\:\\\\:1))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"5156\\" AND ((SourcePort:\\"3389\\" AND DestinationAddress.keyword:(127.* OR \\\\:\\\\:1)) OR (DestinationPort:\\"3389\\" AND SourceAddress.keyword:(127.* OR \\\\:\\\\:1))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'RDP over Reverse SSH Tunnel WFP\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:"5156" AND ((SourcePort:"3389" AND DestinationAddress:("127.*" "\\:\\:1")) OR (DestinationPort:"3389" AND SourceAddress:("127.*" "\\:\\:1"))))
-```
-
-
 ### splunk
     
 ```
@@ -85,18 +65,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(EventID="5156" ((SourcePort="3389" DestinationAddress IN ["127.*", "::1"]) OR (DestinationPort="3389" SourceAddress IN ["127.*", "::1"])))
+b'# Generated with Sigma2SplunkAlert\n[RDP over Reverse SSH Tunnel WFP]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: RDP over Reverse SSH Tunnel WFP status: experimental \\\ndescription: Detects svchost hosting RDP termsvcs communicating with the loopback address and on TCP port 3389 \\\nreferences: [\'https://twitter.com/SBousseaden/status/1096148422984384514\'] \\\ntags: [\'attack.defense_evasion\', \'attack.command_and_control\', \'attack.t1076\', \'car.2013-07-002\'] \\\nauthor: Samir Bousseaden \\\ndate:  \\\nfalsepositives: [\'unknown\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects svchost hosting RDP termsvcs communicating with the loopback address and on TCP port 3389\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="5156" ((SourcePort="3389" (DestinationAddress="127.*" OR DestinationAddress="::1")) OR (DestinationPort="3389" (SourceAddress="127.*" OR SourceAddress="::1")))) | stats values(*) AS * by _time | search NOT [| inputlookup RDP_over_Reverse_SSH_Tunnel_WFP_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.command_and_control,sigma_tag=attack.t1076,sigma_tag=car.2013-07-002,level=high"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*5156)(?=.*(?:.*(?:.*(?:.*(?=.*3389)(?=.*(?:.*127\\..*|.*::1)))|.*(?:.*(?=.*3389)(?=.*(?:.*127\\..*|.*::1)))))))'
-```
-
-
-

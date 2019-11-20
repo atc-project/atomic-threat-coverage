@@ -19,6 +19,7 @@
 
 ```
 title: Admin User Remote Logon
+id: 0f63e1ef-1eb9-4226-9d54-8927ca08520a
 description: Detect remote login by Administrator user depending on internal pattern
 references:
     - https://car.mitre.org/wiki/CAR-2016-04-005
@@ -49,27 +50,6 @@ level: low
 
 
 
-### es-qs
-    
-```
-(EventID:"4624" AND LogonType:"10" AND AuthenticationPackageName:"Negotiate" AND AccountName.keyword:Admin\\-*)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Admin-User-Remote-Logon <<EOF\n{\n  "metadata": {\n    "title": "Admin User Remote Logon",\n    "description": "Detect remote login by Administrator user depending on internal pattern",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1078",\n      "car.2016-04-005"\n    ],\n    "query": "(EventID:\\"4624\\" AND LogonType:\\"10\\" AND AuthenticationPackageName:\\"Negotiate\\" AND AccountName.keyword:Admin\\\\-*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4624\\" AND LogonType:\\"10\\" AND AuthenticationPackageName:\\"Negotiate\\" AND AccountName.keyword:Admin\\\\-*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Admin User Remote Logon\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:"4624" AND LogonType:"10" AND AuthenticationPackageName:"Negotiate" AND AccountName:"Admin\\-*")
-```
-
-
 ### splunk
     
 ```
@@ -77,18 +57,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(EventID="4624" LogonType="10" AuthenticationPackageName="Negotiate" AccountName="Admin-*")
+b'# Generated with Sigma2SplunkAlert\n[Admin User Remote Logon]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Admin User Remote Logon status: experimental \\\ndescription: Detect remote login by Administrator user depending on internal pattern \\\nreferences: [\'https://car.mitre.org/wiki/CAR-2016-04-005\'] \\\ntags: [\'attack.lateral_movement\', \'attack.t1078\', \'car.2016-04-005\'] \\\nauthor: juju4 \\\ndate:  \\\nfalsepositives: [\'Legitimate administrative activity\'] \\\nlevel: low\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detect remote login by Administrator user depending on internal pattern\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="4624" LogonType="10" AuthenticationPackageName="Negotiate" AccountName="Admin-*") | stats values(*) AS * by _time | search NOT [| inputlookup Admin_User_Remote_Logon_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.t1078,sigma_tag=car.2016-04-005,level=low"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*4624)(?=.*10)(?=.*Negotiate)(?=.*Admin-.*))'
-```
-
-
-

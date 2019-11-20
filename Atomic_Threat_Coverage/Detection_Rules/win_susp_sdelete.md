@@ -19,6 +19,7 @@
 
 ```
 title: Secure Deletion with SDelete
+id: 39a80702-d7ca-4a83-b776-525b1f86a36d
 status: experimental
 description: Detects renaming of file while deletion with SDelete tool
 author: Thomas Patzke
@@ -54,27 +55,6 @@ level: medium
 
 
 
-### es-qs
-    
-```
-(EventID:("4656" OR "4663" OR "4658") AND ObjectName.keyword:(*.AAA OR *.ZZZ))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Secure-Deletion-with-SDelete <<EOF\n{\n  "metadata": {\n    "title": "Secure Deletion with SDelete",\n    "description": "Detects renaming of file while deletion with SDelete tool",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1107",\n      "attack.t1066",\n      "attack.s0195"\n    ],\n    "query": "(EventID:(\\"4656\\" OR \\"4663\\" OR \\"4658\\") AND ObjectName.keyword:(*.AAA OR *.ZZZ))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:(\\"4656\\" OR \\"4663\\" OR \\"4658\\") AND ObjectName.keyword:(*.AAA OR *.ZZZ))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Secure Deletion with SDelete\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:("4656" "4663" "4658") AND ObjectName:("*.AAA" "*.ZZZ"))
-```
-
-
 ### splunk
     
 ```
@@ -82,18 +62,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(EventID IN ["4656", "4663", "4658"] ObjectName IN ["*.AAA", "*.ZZZ"])
+b'# Generated with Sigma2SplunkAlert\n[Secure Deletion with SDelete]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Secure Deletion with SDelete status: experimental \\\ndescription: Detects renaming of file while deletion with SDelete tool \\\nreferences: [\'https://jpcertcc.github.io/ToolAnalysisResultSheet\', \'https://www.jpcert.or.jp/english/pub/sr/ir_research.html\', \'https://technet.microsoft.com/en-us/en-en/sysinternals/sdelete.aspx\'] \\\ntags: [\'attack.defense_evasion\', \'attack.t1107\', \'attack.t1066\', \'attack.s0195\'] \\\nauthor: Thomas Patzke \\\ndate:  \\\nfalsepositives: [\'Legitime usage of SDelete\'] \\\nlevel: medium\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects renaming of file while deletion with SDelete tool\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = ((EventID="4656" OR EventID="4663" OR EventID="4658") (ObjectName="*.AAA" OR ObjectName="*.ZZZ")) | stats values(*) AS * by _time | search NOT [| inputlookup Secure_Deletion_with_SDelete_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.t1107,sigma_tag=attack.t1066,sigma_tag=attack.s0195,level=medium"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*(?:.*4656|.*4663|.*4658))(?=.*(?:.*.*\\.AAA|.*.*\\.ZZZ)))'
-```
-
-
-

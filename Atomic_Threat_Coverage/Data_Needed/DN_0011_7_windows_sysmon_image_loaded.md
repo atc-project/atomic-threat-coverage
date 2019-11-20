@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | The image loaded event logs when a module is loaded in a specific process                                                                                                |
 | Logging Policy    | <ul><li>[LP_0006_windows_sysmon_image_loaded](../Logging_Policies/LP_0006_windows_sysmon_image_loaded.md)</li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90007](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90007)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-7.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-7.md)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Applications and Services Logs 		| 

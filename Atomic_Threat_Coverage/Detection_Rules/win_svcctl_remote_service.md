@@ -19,6 +19,7 @@
 
 ```
 title: Remote Service Activity Detected via SVCCTL named pipe
+id: 586a8d6b-6bfe-4ad9-9d78-888cd2fe50c3
 description: Detects remote remote service activity via remote access to the svcctl named pipe
 author: Samir Bousseaden
 references:
@@ -47,27 +48,6 @@ level: medium
 
 
 
-### es-qs
-    
-```
-(EventID:"5145" AND ShareName.keyword:\\\\*\\\\IPC$ AND RelativeTargetName:"svcctl" AND Accesses.keyword:*WriteData*)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Remote-Service-Activity-Detected-via-SVCCTL-named-pipe <<EOF\n{\n  "metadata": {\n    "title": "Remote Service Activity Detected via SVCCTL named pipe",\n    "description": "Detects remote remote service activity via remote access to the svcctl named pipe",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.persistence"\n    ],\n    "query": "(EventID:\\"5145\\" AND ShareName.keyword:\\\\\\\\*\\\\\\\\IPC$ AND RelativeTargetName:\\"svcctl\\" AND Accesses.keyword:*WriteData*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"5145\\" AND ShareName.keyword:\\\\\\\\*\\\\\\\\IPC$ AND RelativeTargetName:\\"svcctl\\" AND Accesses.keyword:*WriteData*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Remote Service Activity Detected via SVCCTL named pipe\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:"5145" AND ShareName:"\\\\*\\\\IPC$" AND RelativeTargetName:"svcctl" AND Accesses:"*WriteData*")
-```
-
-
 ### splunk
     
 ```
@@ -75,18 +55,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(EventID="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName="svcctl" Accesses="*WriteData*")
+b'# Generated with Sigma2SplunkAlert\n[Remote Service Activity Detected via SVCCTL named pipe]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Remote Service Activity Detected via SVCCTL named pipe status:  \\\ndescription: Detects remote remote service activity via remote access to the svcctl named pipe \\\nreferences: [\'https://blog.menasec.net/2019/03/threat-hunting-26-remote-windows.html\'] \\\ntags: [\'attack.lateral_movement\', \'attack.persistence\'] \\\nauthor: Samir Bousseaden \\\ndate:  \\\nfalsepositives: [\'pentesting\'] \\\nlevel: medium\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects remote remote service activity via remote access to the svcctl named pipe\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName="svcctl" Accesses="*WriteData*") | stats values(*) AS * by _time | search NOT [| inputlookup Remote_Service_Activity_Detected_via_SVCCTL_named_pipe_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.persistence,level=medium"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*5145)(?=.*\\\\.*\\IPC\\$)(?=.*svcctl)(?=.*.*WriteData.*))'
-```
-
-
-

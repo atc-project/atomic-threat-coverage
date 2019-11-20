@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | The RDP protocol component <component> detected an error in the  protocol stream and has disconnected the client                                                                                                |
 | Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[http://www.eventid.net/display-eventid-50-source-TermDD-eventno-606-phase-1.htm](http://www.eventid.net/display-eventid-50-source-TermDD-eventno-606-phase-1.htm)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Windows Log 		| 

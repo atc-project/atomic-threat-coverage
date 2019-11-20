@@ -19,9 +19,10 @@
 
 ```
 title: Successful Overpass the Hash Attempt
+id: 192a0330-c20b-4356-90b6-7b7049ae0b87
 status: experimental
 description: Detects successful logon with logon type 9 (NewCredentials) which matches the Overpass the Hash behavior of e.g Mimikatz's sekurlsa::pth module.
-references: 
+references:
     - https://cyberwardog.blogspot.de/2017/04/chronicles-of-threat-hunter-hunting-for.html
 author: Roberto Rodriguez (source), Dominik Schaudel (rule)
 date: 2018/02/12
@@ -49,27 +50,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-(EventID:"4624" AND LogonType:"9" AND LogonProcessName:"seclogo" AND AuthenticationPackageName:"Negotiate")
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Successful-Overpass-the-Hash-Attempt <<EOF\n{\n  "metadata": {\n    "title": "Successful Overpass the Hash Attempt",\n    "description": "Detects successful logon with logon type 9 (NewCredentials) which matches the Overpass the Hash behavior of e.g Mimikatz\'s sekurlsa::pth module.",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1075",\n      "attack.s0002"\n    ],\n    "query": "(EventID:\\"4624\\" AND LogonType:\\"9\\" AND LogonProcessName:\\"seclogo\\" AND AuthenticationPackageName:\\"Negotiate\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4624\\" AND LogonType:\\"9\\" AND LogonProcessName:\\"seclogo\\" AND AuthenticationPackageName:\\"Negotiate\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Successful Overpass the Hash Attempt\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(EventID:"4624" AND LogonType:"9" AND LogonProcessName:"seclogo" AND AuthenticationPackageName:"Negotiate")
-```
-
-
 ### splunk
     
 ```
@@ -77,18 +57,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(EventID="4624" LogonType="9" LogonProcessName="seclogo" AuthenticationPackageName="Negotiate")
+b'# Generated with Sigma2SplunkAlert\n[Successful Overpass the Hash Attempt]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Successful Overpass the Hash Attempt status: experimental \\\ndescription: Detects successful logon with logon type 9 (NewCredentials) which matches the Overpass the Hash behavior of e.g Mimikatz\'s sekurlsa::pth module. \\\nreferences: [\'https://cyberwardog.blogspot.de/2017/04/chronicles-of-threat-hunter-hunting-for.html\'] \\\ntags: [\'attack.lateral_movement\', \'attack.t1075\', \'attack.s0002\'] \\\nauthor: Roberto Rodriguez (source), Dominik Schaudel (rule) \\\ndate:  \\\nfalsepositives: [\'Runas command-line tool using /netonly parameter\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detects successful logon with logon type 9 (NewCredentials) which matches the Overpass the Hash behavior of e.g Mimikatz\'s sekurlsa::pth module.\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = (EventID="4624" LogonType="9" LogonProcessName="seclogo" AuthenticationPackageName="Negotiate") | stats values(*) AS * by _time | search NOT [| inputlookup Successful_Overpass_the_Hash_Attempt_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.lateral_movement,sigma_tag=attack.t1075,sigma_tag=attack.s0002,level=high"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*4624)(?=.*9)(?=.*seclogo)(?=.*Negotiate))'
-```
-
-
-

@@ -3,7 +3,7 @@
 | Description          | Detection for mshta.exe suspicious execution patterns sometimes involving file polyglotism                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1140: Deobfuscate/Decode Files or Information](https://attack.mitre.org/techniques/T1140)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1140: Deobfuscate/Decode Files or Information](../Triggers/T1140.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: MSHTA Suspicious Execution 01
+id: cc7abbd0-762b-41e3-8a26-57ad50d2eea3
 status: experimental
 description: Detection for mshta.exe suspicious execution patterns sometimes involving file polyglotism
 date: 22/02/2019
@@ -64,27 +65,6 @@ detection:
 
 
 
-### es-qs
-    
-```
-(CommandLine.keyword:(*mshta\\ vbscript\\:CreateObject\\(\\"Wscript.Shell\\"\\)* OR *mshta\\ vbscript\\:Execute\\(\\"Execute* OR *mshta\\ vbscript\\:CreateObject\\(\\"Wscript.Shell\\"\\).Run\\(\\"mshta.exe*) OR (Image:("C\\:\\\\Windows\\\\system32\\\\mshta.exe") AND CommandLine.keyword:(*.jpg* OR *.png* OR *.lnk* OR *.xls* OR *.doc* OR *.zip*)))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/MSHTA-Suspicious-Execution-01 <<EOF\n{\n  "metadata": {\n    "title": "MSHTA Suspicious Execution 01",\n    "description": "Detection for mshta.exe suspicious execution patterns sometimes involving file polyglotism",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1140"\n    ],\n    "query": "(CommandLine.keyword:(*mshta\\\\ vbscript\\\\:CreateObject\\\\(\\\\\\"Wscript.Shell\\\\\\"\\\\)* OR *mshta\\\\ vbscript\\\\:Execute\\\\(\\\\\\"Execute* OR *mshta\\\\ vbscript\\\\:CreateObject\\\\(\\\\\\"Wscript.Shell\\\\\\"\\\\).Run\\\\(\\\\\\"mshta.exe*) OR (Image:(\\"C\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\mshta.exe\\") AND CommandLine.keyword:(*.jpg* OR *.png* OR *.lnk* OR *.xls* OR *.doc* OR *.zip*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(CommandLine.keyword:(*mshta\\\\ vbscript\\\\:CreateObject\\\\(\\\\\\"Wscript.Shell\\\\\\"\\\\)* OR *mshta\\\\ vbscript\\\\:Execute\\\\(\\\\\\"Execute* OR *mshta\\\\ vbscript\\\\:CreateObject\\\\(\\\\\\"Wscript.Shell\\\\\\"\\\\).Run\\\\(\\\\\\"mshta.exe*) OR (Image:(\\"C\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\mshta.exe\\") AND CommandLine.keyword:(*.jpg* OR *.png* OR *.lnk* OR *.xls* OR *.doc* OR *.zip*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'MSHTA Suspicious Execution 01\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(CommandLine:("*mshta vbscript\\:CreateObject\\(\\"Wscript.Shell\\"\\)*" "*mshta vbscript\\:Execute\\(\\"Execute*" "*mshta vbscript\\:CreateObject\\(\\"Wscript.Shell\\"\\).Run\\(\\"mshta.exe*") OR (Image:("C\\:\\\\Windows\\\\system32\\\\mshta.exe") AND CommandLine:("*.jpg*" "*.png*" "*.lnk*" "*.xls*" "*.doc*" "*.zip*")))
-```
-
-
 ### splunk
     
 ```
@@ -92,18 +72,12 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-(CommandLine IN ["*mshta vbscript:CreateObject(\\"Wscript.Shell\\")*", "*mshta vbscript:Execute(\\"Execute*", "*mshta vbscript:CreateObject(\\"Wscript.Shell\\").Run(\\"mshta.exe*"] OR (Image IN ["C:\\\\Windows\\\\system32\\\\mshta.exe"] CommandLine IN ["*.jpg*", "*.png*", "*.lnk*", "*.xls*", "*.doc*", "*.zip*"]))
+b'# Generated with Sigma2SplunkAlert\n[MSHTA Suspicious Execution 01]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: MSHTA Suspicious Execution 01 status: experimental \\\ndescription: Detection for mshta.exe suspicious execution patterns sometimes involving file polyglotism \\\nreferences: [\'http://blog.sevagas.com/?Hacking-around-HTA-files\', \'https://0x00sec.org/t/clientside-exploitation-in-2018-how-pentesting-has-changed/7356\', \'https://docs.microsoft.com/en-us/dotnet/standard/data/xml/xslt-stylesheet-scripting-using-msxsl-script\', \'https://medium.com/tsscyber/pentesting-and-hta-bypassing-powershell-constrained-language-mode-53a42856c997\'] \\\ntags: [\'attack.defense_evasion\', \'attack.t1140\'] \\\nauthor: Diego Perez (@darkquassar) \\\ndate:  \\\nfalsepositives: [\'False positives depend on scripts and administrative tools used in the monitored environment\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = Detection for mshta.exe suspicious execution patterns sometimes involving file polyglotism\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = ((CommandLine="*mshta vbscript:CreateObject(\\"Wscript.Shell\\")*" OR CommandLine="*mshta vbscript:Execute(\\"Execute*" OR CommandLine="*mshta vbscript:CreateObject(\\"Wscript.Shell\\").Run(\\"mshta.exe*") OR ((Image="C:\\\\Windows\\\\system32\\\\mshta.exe") (CommandLine="*.jpg*" OR CommandLine="*.png*" OR CommandLine="*.lnk*" OR CommandLine="*.xls*" OR CommandLine="*.doc*" OR CommandLine="*.zip*"))) | stats values(*) AS * by _time | search NOT [| inputlookup MSHTA_Suspicious_Execution_01_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.defense_evasion,sigma_tag=attack.t1140,level=high"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P \'^(?:.*(?:.*(?:.*.*mshta vbscript:CreateObject\\("Wscript\\.Shell"\\).*|.*.*mshta vbscript:Execute\\("Execute.*|.*.*mshta vbscript:CreateObject\\("Wscript\\.Shell"\\)\\.Run\\("mshta\\.exe.*)|.*(?:.*(?=.*(?:.*C:\\Windows\\system32\\mshta\\.exe))(?=.*(?:.*.*\\.jpg.*|.*.*\\.png.*|.*.*\\.lnk.*|.*.*\\.xls.*|.*.*\\.doc.*|.*.*\\.zip.*)))))\'
-```
-
-
-

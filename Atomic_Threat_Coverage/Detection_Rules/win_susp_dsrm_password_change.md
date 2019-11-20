@@ -19,6 +19,7 @@
 
 ```
 title: Password Change on Directory Service Restore Mode (DSRM) Account
+id: 53ad8e36-f573-46bf-97e4-15ba5bf4bb51
 status: stable
 description: The Directory Service Restore Mode (DSRM) account is a local administrator account on Domain Controllers. Attackers may change the password to gain persistence.
 references:
@@ -45,27 +46,6 @@ level: high
 
 
 
-### es-qs
-    
-```
-EventID:"4794"
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Password-Change-on-Directory-Service-Restore-Mode-DSRM-Account <<EOF\n{\n  "metadata": {\n    "title": "Password Change on Directory Service Restore Mode (DSRM) Account",\n    "description": "The Directory Service Restore Mode (DSRM) account is a local administrator account on Domain Controllers. Attackers may change the password to gain persistence.",\n    "tags": [\n      "attack.persistence",\n      "attack.privilege_escalation",\n      "attack.t1098"\n    ],\n    "query": "EventID:\\"4794\\""\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "EventID:\\"4794\\"",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Password Change on Directory Service Restore Mode (DSRM) Account\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-EventID:"4794"
-```
-
-
 ### splunk
     
 ```
@@ -73,18 +53,12 @@ EventID="4794"
 ```
 
 
-### logpoint
-    
+
+
+
+
+### Saved Search for Splunk
+
 ```
-EventID="4794"
+b'# Generated with Sigma2SplunkAlert\n[Password Change on Directory Service Restore Mode (DSRM) Account]\naction.email = 1\naction.email.subject.alert = Splunk Alert: $name$\naction.email.to = test@test.de\naction.email.message.alert = Splunk Alert $name$ triggered \\\nList of interesting fields:   \\\ntitle: Password Change on Directory Service Restore Mode (DSRM) Account status: stable \\\ndescription: The Directory Service Restore Mode (DSRM) account is a local administrator account on Domain Controllers. Attackers may change the password to gain persistence. \\\nreferences: [\'https://adsecurity.org/?p=1714\'] \\\ntags: [\'attack.persistence\', \'attack.privilege_escalation\', \'attack.t1098\'] \\\nauthor: Thomas Patzke \\\ndate:  \\\nfalsepositives: [\'Initial installation of a domain controller\'] \\\nlevel: high\naction.email.useNSSubject = 1\nalert.severity = 1\nalert.suppress = 0\nalert.track = 1\nalert.expires = 24h\ncounttype = number of events\ncron_schedule = */10 * * * *\nallow_skew = 50%\nschedule_window = auto\ndescription = The Directory Service Restore Mode (DSRM) account is a local administrator account on Domain Controllers. Attackers may change the password to gain persistence.\ndispatch.earliest_time = -10m\ndispatch.latest_time = now\nenableSched = 1\nquantity = 0\nrelation = greater than\nrequest.ui_dispatch_app = sigma_hunting_app\nrequest.ui_dispatch_view = search\nsearch = EventID="4794" | stats values(*) AS * by _time | search NOT [| inputlookup Password_Change_on_Directory_Service_Restore_Mode_DSRM_Account_whitelist.csv] | collect index=threat-hunting marker="sigma_tag=attack.persistence,sigma_tag=attack.privilege_escalation,sigma_tag=attack.t1098,level=high"\n\n\n'
 ```
-
-
-### grep
-    
-```
-grep -P '^4794'
-```
-
-
-
