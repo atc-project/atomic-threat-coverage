@@ -11,7 +11,7 @@
 | Development Status   | experimental |
 | References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2013-08-001</li><li>car.2013-08-001</li></ul> | 
+| Other Tags           | <ul><li>car.2013-08-001</li></ul> | 
 
 ## Detection Rules
 
@@ -19,7 +19,9 @@
 
 ```
 title: Rare Schtasks Creations
-description: Detects rare scheduled tasks creations that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious code
+id: b0d77106-7bb0-41fe-bd94-d1752164d066
+description: Detects rare scheduled tasks creations that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types
+    of malicious code
 status: experimental
 author: Florian Roth
 tags:
@@ -48,45 +50,10 @@ level: low
 
 
 
-### es-qs
-    
-```
-
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Rare-Schtasks-Creations <<EOF\n{\n  "metadata": {\n    "title": "Rare Schtasks Creations",\n    "description": "Detects rare scheduled tasks creations that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious code",\n    "tags": [\n      "attack.execution",\n      "attack.privilege_escalation",\n      "attack.persistence",\n      "attack.t1053",\n      "car.2013-08-001"\n    ],\n    "query": "EventID:\\"4698\\""\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "7d"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "EventID:\\"4698\\"",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          },\n          "aggs": {\n            "by": {\n              "terms": {\n                "field": "TaskName.keyword",\n                "size": 10,\n                "order": {\n                  "_count": "asc"\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.aggregations.by.buckets.0.doc_count": {\n        "lt": 5\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Rare Schtasks Creations\'",\n        "body": "Hits:\\n{{#aggregations.by.buckets}}\\n {{key}} {{doc_count}}\\n{{/aggregations.by.buckets}}\\n",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-
-```
-
-
 ### splunk
     
 ```
 EventID="4698" | eventstats count as val by TaskName| search val < 5
-```
-
-
-### logpoint
-    
-```
-EventID="4698" | chart count() as val by TaskName | search val < 5
-```
-
-
-### grep
-    
-```
-grep -P '^4698'
 ```
 
 

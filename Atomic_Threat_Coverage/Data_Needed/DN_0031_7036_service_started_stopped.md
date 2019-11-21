@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | Service entered the running/stopped state                                                                                                |
 | Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[http://www.eventid.net/display-eventid-7036-source-Service%20Control%20Manager-eventno-1529-phase-1.htm](http://www.eventid.net/display-eventid-7036-source-Service%20Control%20Manager-eventno-1529-phase-1.htm)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Windows Log 		| 

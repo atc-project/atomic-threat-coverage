@@ -19,6 +19,7 @@
 
 ```
 title: Ryuk Ransomware
+id: 0acaad27-9f02-4136-a243-c357202edd74
 description: Detects Ryuk Ransomware command lines
 status: experimental
 references:
@@ -45,45 +46,10 @@ level: critical
 
 
 
-### es-qs
-    
-```
-CommandLine.keyword:(*\\\\net.exe\\ stop\\ \\"samss\\"\\ * OR *\\\\net.exe\\ stop\\ \\"audioendpointbuilder\\"\\ * OR *\\\\net.exe\\ stop\\ \\"unistoresvc_?????\\"\\ *)
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Ryuk-Ransomware <<EOF\n{\n  "metadata": {\n    "title": "Ryuk Ransomware",\n    "description": "Detects Ryuk Ransomware command lines",\n    "tags": "",\n    "query": "CommandLine.keyword:(*\\\\\\\\net.exe\\\\ stop\\\\ \\\\\\"samss\\\\\\"\\\\ * OR *\\\\\\\\net.exe\\\\ stop\\\\ \\\\\\"audioendpointbuilder\\\\\\"\\\\ * OR *\\\\\\\\net.exe\\\\ stop\\\\ \\\\\\"unistoresvc_?????\\\\\\"\\\\ *)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:(*\\\\\\\\net.exe\\\\ stop\\\\ \\\\\\"samss\\\\\\"\\\\ * OR *\\\\\\\\net.exe\\\\ stop\\\\ \\\\\\"audioendpointbuilder\\\\\\"\\\\ * OR *\\\\\\\\net.exe\\\\ stop\\\\ \\\\\\"unistoresvc_?????\\\\\\"\\\\ *)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Ryuk Ransomware\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-CommandLine:("*\\\\net.exe stop \\"samss\\" *" "*\\\\net.exe stop \\"audioendpointbuilder\\" *" "*\\\\net.exe stop \\"unistoresvc_?????\\" *")
-```
-
-
 ### splunk
     
 ```
 (CommandLine="*\\\\net.exe stop \\"samss\\" *" OR CommandLine="*\\\\net.exe stop \\"audioendpointbuilder\\" *" OR CommandLine="*\\\\net.exe stop \\"unistoresvc_?????\\" *")
-```
-
-
-### logpoint
-    
-```
-CommandLine IN ["*\\\\net.exe stop \\"samss\\" *", "*\\\\net.exe stop \\"audioendpointbuilder\\" *", "*\\\\net.exe stop \\"unistoresvc_?????\\" *"]
-```
-
-
-### grep
-    
-```
-grep -P \'^(?:.*.*\\net\\.exe stop "samss" .*|.*.*\\net\\.exe stop "audioendpointbuilder" .*|.*.*\\net\\.exe stop "unistoresvc_?????" .*)\'
 ```
 
 

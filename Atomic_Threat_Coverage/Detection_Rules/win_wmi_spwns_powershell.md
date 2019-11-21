@@ -19,8 +19,9 @@
 
 ```
 title: WMI Spawning Windows PowerShell
+id: 692f0bec-83ba-4d04-af7e-e884a96059b6
 status: experimental
-description: Detects WMI spawning PowerShell 
+description: Detects WMI spawning PowerShell
 references:
     - https://github.com/Neo23x0/sigma/blob/master/rules/windows/process_creation/win_shell_spawn_susp_program.yml
     - https://any.run/report/68bc255f9b0db6a0d30a8f2dadfbee3256acfe12497bf93943bc1eab0735e45e/a2385d6f-34f7-403c-90d3-b1f9d2a90a5e
@@ -51,45 +52,10 @@ level: high
 
 
 
-### es-qs
-    
-```
-(ParentImage.keyword:(*\\\\wmiprvse.exe) AND Image.keyword:(*\\\\powershell.exe))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/WMI-Spawning-Windows-PowerShell <<EOF\n{\n  "metadata": {\n    "title": "WMI Spawning Windows PowerShell",\n    "description": "Detects WMI spawning PowerShell",\n    "tags": [\n      "attack.execution",\n      "attack.defense_evasion",\n      "attack.t1064"\n    ],\n    "query": "(ParentImage.keyword:(*\\\\\\\\wmiprvse.exe) AND Image.keyword:(*\\\\\\\\powershell.exe))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(ParentImage.keyword:(*\\\\\\\\wmiprvse.exe) AND Image.keyword:(*\\\\\\\\powershell.exe))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'WMI Spawning Windows PowerShell\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(ParentImage:("*\\\\wmiprvse.exe") AND Image:("*\\\\powershell.exe"))
-```
-
-
 ### splunk
     
 ```
 ((ParentImage="*\\\\wmiprvse.exe") (Image="*\\\\powershell.exe"))
-```
-
-
-### logpoint
-    
-```
-(ParentImage IN ["*\\\\wmiprvse.exe"] Image IN ["*\\\\powershell.exe"])
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?=.*(?:.*.*\\wmiprvse\\.exe))(?=.*(?:.*.*\\powershell\\.exe)))'
 ```
 
 

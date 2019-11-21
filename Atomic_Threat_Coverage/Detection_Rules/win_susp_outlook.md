@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Execution from Outlook
+id: e212d415-0e93-435f-9e1a-f29005bb4723
 status: experimental
 description: Detects EnableUnsafeClientMailRules used for Script Execution from Outlook
 references:
@@ -50,45 +51,10 @@ level: high
 
 
 
-### es-qs
-    
-```
-(CommandLine.keyword:*EnableUnsafeClientMailRules* OR (ParentImage.keyword:*\\\\outlook.exe AND CommandLine.keyword:\\\\\\\\*\\\\*.exe))
-```
-
-
-### xpack-watcher
-    
-```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Execution-from-Outlook <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Execution from Outlook",\n    "description": "Detects EnableUnsafeClientMailRules used for Script Execution from Outlook",\n    "tags": [\n      "attack.execution",\n      "attack.t1059",\n      "attack.t1202"\n    ],\n    "query": "(CommandLine.keyword:*EnableUnsafeClientMailRules* OR (ParentImage.keyword:*\\\\\\\\outlook.exe AND CommandLine.keyword:\\\\\\\\\\\\\\\\*\\\\\\\\*.exe))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(CommandLine.keyword:*EnableUnsafeClientMailRules* OR (ParentImage.keyword:*\\\\\\\\outlook.exe AND CommandLine.keyword:\\\\\\\\\\\\\\\\*\\\\\\\\*.exe))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Execution from Outlook\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
-```
-
-
-### graylog
-    
-```
-(CommandLine:"*EnableUnsafeClientMailRules*" OR (ParentImage:"*\\\\outlook.exe" AND CommandLine:"\\\\\\\\*\\\\*.exe"))
-```
-
-
 ### splunk
     
 ```
 (CommandLine="*EnableUnsafeClientMailRules*" OR (ParentImage="*\\\\outlook.exe" CommandLine="\\\\\\\\*\\\\*.exe"))
-```
-
-
-### logpoint
-    
-```
-(CommandLine="*EnableUnsafeClientMailRules*" OR (ParentImage="*\\\\outlook.exe" CommandLine="\\\\\\\\*\\\\*.exe"))
-```
-
-
-### grep
-    
-```
-grep -P '^(?:.*(?:.*.*EnableUnsafeClientMailRules.*|.*(?:.*(?=.*.*\\outlook\\.exe)(?=.*\\\\\\\\.*\\\\.*\\.exe))))'
 ```
 
 
