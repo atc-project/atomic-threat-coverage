@@ -11,7 +11,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/](https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/)</li><li>[https://www.hybrid-analysis.com/sample/e122bc8bf291f15cab182a5d2d27b8db1e7019e4e96bb5cdbd1dfe7446f3f51f?environmentId=100](https://www.hybrid-analysis.com/sample/e122bc8bf291f15cab182a5d2d27b8db1e7019e4e96bb5cdbd1dfe7446f3f51f?environmentId=100)</li></ul>  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2019-04-001</li><li>car.2019-04-001</li></ul> | 
+| Other Tags           | <ul><li>car.2019-04-001</li></ul> | 
 
 ## Detection Rules
 
@@ -19,6 +19,7 @@
 
 ```
 title: UAC Bypass via Event Viewer
+id: 7c81fec3-1c1d-43b0-996a-46753041b1b6
 status: experimental
 description: Detects UAC bypass method using Windows event viewer
 references:
@@ -72,7 +73,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((EventID:"13" AND TargetObject:"HKEY_USERS\\\\*\\\\mscfile\\\\shell\\\\open\\\\command") OR ((EventID:"1" AND ParentImage:"*\\\\eventvwr.exe") AND NOT (Image:"*\\\\mmc.exe")))
+((EventID:"13" AND TargetObject.keyword:HKEY_USERS\\\\*\\\\mscfile\\\\shell\\\\open\\\\command) OR ((EventID:"1" AND ParentImage.keyword:*\\\\eventvwr.exe) AND (NOT (Image.keyword:*\\\\mmc.exe))))
 ```
 
 
@@ -86,7 +87,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((EventID="13" TargetObject="HKEY_USERS\\\\*\\\\mscfile\\\\shell\\\\open\\\\command") OR ((EventID="1" ParentImage="*\\\\eventvwr.exe")  -(Image="*\\\\mmc.exe")))
+((event_id="13" TargetObject="HKEY_USERS\\\\*\\\\mscfile\\\\shell\\\\open\\\\command") OR ((event_id="1" ParentImage="*\\\\eventvwr.exe")  -(Image="*\\\\mmc.exe")))
 ```
 
 

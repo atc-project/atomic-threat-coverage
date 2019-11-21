@@ -58,10 +58,45 @@ level: high
 
 
 
+### es-qs
+    
+```
+(EventID:"5156" AND ((SourcePort:"3389" AND DestinationAddress.keyword:(127.* OR \\:\\:1)) OR (DestinationPort:"3389" AND SourceAddress.keyword:(127.* OR \\:\\:1))))
+```
+
+
+### xpack-watcher
+    
+```
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/RDP-over-Reverse-SSH-Tunnel-WFP <<EOF\n{\n  "metadata": {\n    "title": "RDP over Reverse SSH Tunnel WFP",\n    "description": "Detects svchost hosting RDP termsvcs communicating with the loopback address and on TCP port 3389",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.command_and_control",\n      "attack.t1076",\n      "car.2013-07-002"\n    ],\n    "query": "(EventID:\\"5156\\" AND ((SourcePort:\\"3389\\" AND DestinationAddress.keyword:(127.* OR \\\\:\\\\:1)) OR (DestinationPort:\\"3389\\" AND SourceAddress.keyword:(127.* OR \\\\:\\\\:1))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"5156\\" AND ((SourcePort:\\"3389\\" AND DestinationAddress.keyword:(127.* OR \\\\:\\\\:1)) OR (DestinationPort:\\"3389\\" AND SourceAddress.keyword:(127.* OR \\\\:\\\\:1))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'RDP over Reverse SSH Tunnel WFP\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+```
+
+
+### graylog
+    
+```
+(EventID:"5156" AND ((SourcePort:"3389" AND DestinationAddress.keyword:(127.* \\:\\:1)) OR (DestinationPort:"3389" AND SourceAddress.keyword:(127.* \\:\\:1))))
+```
+
+
 ### splunk
     
 ```
 (EventID="5156" ((SourcePort="3389" (DestinationAddress="127.*" OR DestinationAddress="::1")) OR (DestinationPort="3389" (SourceAddress="127.*" OR SourceAddress="::1"))))
+```
+
+
+### logpoint
+    
+```
+(event_source="Microsoft-Windows-Security-Auditing" event_id="5156" ((SourcePort="3389" DestinationAddress IN ["127.*", "::1"]) OR (DestinationPort="3389" SourceAddress IN ["127.*", "::1"])))
+```
+
+
+### grep
+    
+```
+grep -P '^(?:.*(?=.*5156)(?=.*(?:.*(?:.*(?:.*(?=.*3389)(?=.*(?:.*127\\..*|.*::1)))|.*(?:.*(?=.*3389)(?=.*(?:.*127\\..*|.*::1)))))))'
 ```
 
 

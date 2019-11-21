@@ -19,6 +19,7 @@
 
 ```
 title: QuarksPwDump Dump File
+id: 847def9e-924d-4e90-b7c4-5f581395a2b4
 status: experimental
 description: Detects a dump file written by QuarksPwDump password dumper
 references:
@@ -65,7 +66,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"11" AND TargetFilename:"*\\\\AppData\\\\Local\\\\Temp\\\\SAM\\-*.dmp*")
+(EventID:"11" AND TargetFilename.keyword:*\\\\AppData\\\\Local\\\\Temp\\\\SAM\\-*.dmp*)
 ```
 
 
@@ -79,7 +80,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="11" TargetFilename="*\\\\AppData\\\\Local\\\\Temp\\\\SAM-*.dmp*")
+(event_id="11" TargetFilename="*\\\\AppData\\\\Local\\\\Temp\\\\SAM-*.dmp*")
 ```
 
 

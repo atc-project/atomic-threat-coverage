@@ -55,10 +55,45 @@ falsepositives:
 
 
 
+### es-qs
+    
+```
+((Image.keyword:*\\\\odbcconf.exe AND CommandLine.keyword:(*\\-f* OR *regsvr*)) OR (ParentImage.keyword:*\\\\odbcconf.exe AND Image.keyword:*\\\\rundll32.exe))
+```
+
+
+### xpack-watcher
+    
+```
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Possible-Application-Whitelisting-Bypass-via-dll-loaded-by-odbcconf.exe <<EOF\n{\n  "metadata": {\n    "title": "Possible Application Whitelisting Bypass via dll loaded by odbcconf.exe",\n    "description": "Detects defence evasion attempt via odbcconf.exe execution to load DLL",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.execution",\n      "attack.t1218"\n    ],\n    "query": "((Image.keyword:*\\\\\\\\odbcconf.exe AND CommandLine.keyword:(*\\\\-f* OR *regsvr*)) OR (ParentImage.keyword:*\\\\\\\\odbcconf.exe AND Image.keyword:*\\\\\\\\rundll32.exe))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Image.keyword:*\\\\\\\\odbcconf.exe AND CommandLine.keyword:(*\\\\-f* OR *regsvr*)) OR (ParentImage.keyword:*\\\\\\\\odbcconf.exe AND Image.keyword:*\\\\\\\\rundll32.exe))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Possible Application Whitelisting Bypass via dll loaded by odbcconf.exe\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+```
+
+
+### graylog
+    
+```
+((Image.keyword:*\\\\odbcconf.exe AND CommandLine.keyword:(*\\-f* *regsvr*)) OR (ParentImage.keyword:*\\\\odbcconf.exe AND Image.keyword:*\\\\rundll32.exe))
+```
+
+
 ### splunk
     
 ```
 ((Image="*\\\\odbcconf.exe" (CommandLine="*-f*" OR CommandLine="*regsvr*")) OR (ParentImage="*\\\\odbcconf.exe" Image="*\\\\rundll32.exe"))
+```
+
+
+### logpoint
+    
+```
+(event_id="1" ((Image="*\\\\odbcconf.exe" CommandLine IN ["*-f*", "*regsvr*"]) OR (ParentImage="*\\\\odbcconf.exe" Image="*\\\\rundll32.exe")))
+```
+
+
+### grep
+    
+```
+grep -P '^(?:.*(?:.*(?:.*(?=.*.*\\odbcconf\\.exe)(?=.*(?:.*.*-f.*|.*.*regsvr.*)))|.*(?:.*(?=.*.*\\odbcconf\\.exe)(?=.*.*\\rundll32\\.exe))))'
 ```
 
 

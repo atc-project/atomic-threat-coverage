@@ -53,10 +53,45 @@ level: high
 
 
 
+### es-qs
+    
+```
+(\\*.keyword:(*\\ \\-enc\\ * OR *\\ \\-EncodedCommand\\ *) AND \\*.keyword:(*\\ \\-w\\ hidden\\ * OR *\\ \\-window\\ hidden\\ * OR *\\ \\-\\ windowstyle\\ hidden\\ *) AND \\*.keyword:(*\\ \\-noni\\ * OR *\\ \\-noninteractive\\ *))
+```
+
+
+### xpack-watcher
+    
+```
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-PowerShell-Invocations---Generic <<EOF\n{\n  "metadata": {\n    "title": "Suspicious PowerShell Invocations - Generic",\n    "description": "Detects suspicious PowerShell invocation command parameters",\n    "tags": [\n      "attack.execution",\n      "attack.t1086"\n    ],\n    "query": "(\\\\*.keyword:(*\\\\ \\\\-enc\\\\ * OR *\\\\ \\\\-EncodedCommand\\\\ *) AND \\\\*.keyword:(*\\\\ \\\\-w\\\\ hidden\\\\ * OR *\\\\ \\\\-window\\\\ hidden\\\\ * OR *\\\\ \\\\-\\\\ windowstyle\\\\ hidden\\\\ *) AND \\\\*.keyword:(*\\\\ \\\\-noni\\\\ * OR *\\\\ \\\\-noninteractive\\\\ *))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(\\\\*.keyword:(*\\\\ \\\\-enc\\\\ * OR *\\\\ \\\\-EncodedCommand\\\\ *) AND \\\\*.keyword:(*\\\\ \\\\-w\\\\ hidden\\\\ * OR *\\\\ \\\\-window\\\\ hidden\\\\ * OR *\\\\ \\\\-\\\\ windowstyle\\\\ hidden\\\\ *) AND \\\\*.keyword:(*\\\\ \\\\-noni\\\\ * OR *\\\\ \\\\-noninteractive\\\\ *))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious PowerShell Invocations - Generic\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+```
+
+
+### graylog
+    
+```
+(\\*.keyword:(* \\-enc * OR * \\-EncodedCommand *) AND \\*.keyword:(* \\-w hidden * OR * \\-window hidden * OR * \\- windowstyle hidden *) AND \\*.keyword:(* \\-noni * OR * \\-noninteractive *))
+```
+
+
 ### splunk
     
 ```
 ((" -enc " OR " -EncodedCommand ") (" -w hidden " OR " -window hidden " OR " - windowstyle hidden ") (" -noni " OR " -noninteractive "))
+```
+
+
+### logpoint
+    
+```
+((" -enc " OR " -EncodedCommand ") (" -w hidden " OR " -window hidden " OR " - windowstyle hidden ") (" -noni " OR " -noninteractive "))
+```
+
+
+### grep
+    
+```
+grep -P '^(?:.*(?=.*(?:.*(?:.* -enc |.* -EncodedCommand )))(?=.*(?:.*(?:.* -w hidden |.* -window hidden |.* - windowstyle hidden )))(?=.*(?:.*(?:.* -noni |.* -noninteractive ))))'
 ```
 
 

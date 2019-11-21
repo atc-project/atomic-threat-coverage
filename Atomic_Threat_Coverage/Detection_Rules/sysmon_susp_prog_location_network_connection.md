@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Program Location with Network Connections
+id: 7b434893-c57d-4f41-908d-6a17bf1ae98f
 status: experimental
 description: Detects programs with network connections running in suspicious files system locations
 references:
@@ -73,7 +74,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"3" AND Image:("*\\\\$Recycle.bin" "*\\\\Users\\\\All Users\\\\*" "*\\\\Users\\\\Default\\\\*" "*\\\\Users\\\\Public\\\\*" "*\\\\Users\\\\Contacts\\\\*" "*\\\\Users\\\\Searches\\\\*" "C\\:\\\\Perflogs\\\\*" "*\\\\config\\\\systemprofile\\\\*" "*\\\\Windows\\\\Fonts\\\\*" "*\\\\Windows\\\\IME\\\\*" "*\\\\Windows\\\\addins\\\\*"))
+(EventID:"3" AND Image.keyword:(*\\\\$Recycle.bin *\\\\Users\\\\All Users\\\\* *\\\\Users\\\\Default\\\\* *\\\\Users\\\\Public\\\\* *\\\\Users\\\\Contacts\\\\* *\\\\Users\\\\Searches\\\\* C\\:\\\\Perflogs\\\\* *\\\\config\\\\systemprofile\\\\* *\\\\Windows\\\\Fonts\\\\* *\\\\Windows\\\\IME\\\\* *\\\\Windows\\\\addins\\\\*))
 ```
 
 
@@ -87,7 +88,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="3" Image IN ["*\\\\$Recycle.bin", "*\\\\Users\\\\All Users\\\\*", "*\\\\Users\\\\Default\\\\*", "*\\\\Users\\\\Public\\\\*", "*\\\\Users\\\\Contacts\\\\*", "*\\\\Users\\\\Searches\\\\*", "C:\\\\Perflogs\\\\*", "*\\\\config\\\\systemprofile\\\\*", "*\\\\Windows\\\\Fonts\\\\*", "*\\\\Windows\\\\IME\\\\*", "*\\\\Windows\\\\addins\\\\*"])
+(event_id="3" Image IN ["*\\\\$Recycle.bin", "*\\\\Users\\\\All Users\\\\*", "*\\\\Users\\\\Default\\\\*", "*\\\\Users\\\\Public\\\\*", "*\\\\Users\\\\Contacts\\\\*", "*\\\\Users\\\\Searches\\\\*", "C:\\\\Perflogs\\\\*", "*\\\\config\\\\systemprofile\\\\*", "*\\\\Windows\\\\Fonts\\\\*", "*\\\\Windows\\\\IME\\\\*", "*\\\\Windows\\\\addins\\\\*"])
 ```
 
 

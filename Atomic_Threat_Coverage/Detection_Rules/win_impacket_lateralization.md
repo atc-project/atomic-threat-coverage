@@ -83,10 +83,45 @@ level: critical
 
 
 
+### es-qs
+    
+```
+((ParentImage.keyword:(*\\\\wmiprvse.exe OR *\\\\mmc.exe OR *\\\\explorer.exe OR *\\\\services.exe) AND CommandLine.keyword:(*cmd.exe*\\ \\/Q\\ \\/c\\ *\\ \\\\\\\\127.0.0.1\\\\*&1*)) OR (ParentCommandLine.keyword:(*svchost.exe\\ \\-k\\ netsvcs OR taskeng.exe*) AND CommandLine.keyword:(cmd.exe\\ \\/C\\ *Windows\\\\Temp\\\\*&1)))
+```
+
+
+### xpack-watcher
+    
+```
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Impacket-Lateralization-Detection <<EOF\n{\n  "metadata": {\n    "title": "Impacket Lateralization Detection",\n    "description": "Detects wmiexec/dcomexec/atexec/smbexec from Impacket framework",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1047",\n      "attack.t1175"\n    ],\n    "query": "((ParentImage.keyword:(*\\\\\\\\wmiprvse.exe OR *\\\\\\\\mmc.exe OR *\\\\\\\\explorer.exe OR *\\\\\\\\services.exe) AND CommandLine.keyword:(*cmd.exe*\\\\ \\\\/Q\\\\ \\\\/c\\\\ *\\\\ \\\\\\\\\\\\\\\\127.0.0.1\\\\\\\\*&1*)) OR (ParentCommandLine.keyword:(*svchost.exe\\\\ \\\\-k\\\\ netsvcs OR taskeng.exe*) AND CommandLine.keyword:(cmd.exe\\\\ \\\\/C\\\\ *Windows\\\\\\\\Temp\\\\\\\\*&1)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((ParentImage.keyword:(*\\\\\\\\wmiprvse.exe OR *\\\\\\\\mmc.exe OR *\\\\\\\\explorer.exe OR *\\\\\\\\services.exe) AND CommandLine.keyword:(*cmd.exe*\\\\ \\\\/Q\\\\ \\\\/c\\\\ *\\\\ \\\\\\\\\\\\\\\\127.0.0.1\\\\\\\\*&1*)) OR (ParentCommandLine.keyword:(*svchost.exe\\\\ \\\\-k\\\\ netsvcs OR taskeng.exe*) AND CommandLine.keyword:(cmd.exe\\\\ \\\\/C\\\\ *Windows\\\\\\\\Temp\\\\\\\\*&1)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Impacket Lateralization Detection\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+```
+
+
+### graylog
+    
+```
+((ParentImage.keyword:(*\\\\wmiprvse.exe *\\\\mmc.exe *\\\\explorer.exe *\\\\services.exe) AND CommandLine.keyword:(*cmd.exe* \\/Q \\/c * \\\\\\\\127.0.0.1\\\\*&1*)) OR (ParentCommandLine.keyword:(*svchost.exe \\-k netsvcs taskeng.exe*) AND CommandLine.keyword:(cmd.exe \\/C *Windows\\\\Temp\\\\*&1)))
+```
+
+
 ### splunk
     
 ```
 (((ParentImage="*\\\\wmiprvse.exe" OR ParentImage="*\\\\mmc.exe" OR ParentImage="*\\\\explorer.exe" OR ParentImage="*\\\\services.exe") (CommandLine="*cmd.exe* /Q /c * \\\\\\\\127.0.0.1\\\\*&1*")) OR ((ParentCommandLine="*svchost.exe -k netsvcs" OR ParentCommandLine="taskeng.exe*") (CommandLine="cmd.exe /C *Windows\\\\Temp\\\\*&1"))) | table CommandLine,ParentCommandLine
+```
+
+
+### logpoint
+    
+```
+(event_id="1" ((ParentImage IN ["*\\\\wmiprvse.exe", "*\\\\mmc.exe", "*\\\\explorer.exe", "*\\\\services.exe"] CommandLine IN ["*cmd.exe* /Q /c * \\\\\\\\127.0.0.1\\\\*&1*"]) OR (ParentCommandLine IN ["*svchost.exe -k netsvcs", "taskeng.exe*"] CommandLine IN ["cmd.exe /C *Windows\\\\Temp\\\\*&1"])))
+```
+
+
+### grep
+    
+```
+grep -P '^(?:.*(?:.*(?:.*(?=.*(?:.*.*\\wmiprvse\\.exe|.*.*\\mmc\\.exe|.*.*\\explorer\\.exe|.*.*\\services\\.exe))(?=.*(?:.*.*cmd\\.exe.* /Q /c .* \\\\\\\\127\\.0\\.0\\.1\\\\.*&1.*)))|.*(?:.*(?=.*(?:.*.*svchost\\.exe -k netsvcs|.*taskeng\\.exe.*))(?=.*(?:.*cmd\\.exe /C .*Windows\\\\Temp\\\\.*&1)))))'
 ```
 
 

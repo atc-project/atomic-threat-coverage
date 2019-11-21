@@ -50,10 +50,45 @@ level: medium
 
 
 
+### es-qs
+    
+```
+((EventID:"4769" AND TicketOptions:"0x40810000" AND TicketEncryptionType:"0x17") AND (NOT (ServiceName.keyword:$*)))
+```
+
+
+### xpack-watcher
+    
+```
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Kerberos-RC4-Ticket-Encryption <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Kerberos RC4 Ticket Encryption",\n    "description": "Detects service ticket requests using RC4 encryption type",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1208"\n    ],\n    "query": "((EventID:\\"4769\\" AND TicketOptions:\\"0x40810000\\" AND TicketEncryptionType:\\"0x17\\") AND (NOT (ServiceName.keyword:$*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((EventID:\\"4769\\" AND TicketOptions:\\"0x40810000\\" AND TicketEncryptionType:\\"0x17\\") AND (NOT (ServiceName.keyword:$*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Kerberos RC4 Ticket Encryption\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+```
+
+
+### graylog
+    
+```
+((EventID:"4769" AND TicketOptions:"0x40810000" AND TicketEncryptionType:"0x17") AND (NOT (ServiceName.keyword:$*)))
+```
+
+
 ### splunk
     
 ```
 ((EventID="4769" TicketOptions="0x40810000" TicketEncryptionType="0x17") NOT (ServiceName="$*"))
+```
+
+
+### logpoint
+    
+```
+(event_source="Microsoft-Windows-Security-Auditing" (event_id="4769" ticket_options="0x40810000" TicketEncryptionType="0x17")  -(service="$*"))
+```
+
+
+### grep
+    
+```
+grep -P '^(?:.*(?=.*(?:.*(?=.*4769)(?=.*0x40810000)(?=.*0x17)))(?=.*(?!.*(?:.*(?:.*(?=.*\\$.*))))))'
 ```
 
 

@@ -60,10 +60,45 @@ tags:
 
 
 
+### es-qs
+    
+```
+(CommandLine.keyword:*cmd* AND CommandLine.keyword:*\\/c* AND CommandLine.keyword:*assoc*)
+```
+
+
+### xpack-watcher
+    
+```
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Change-Default-File-Association <<EOF\n{\n  "metadata": {\n    "title": "Change Default File Association",\n    "description": "When a file is opened, the default program used to open the file (also called the file association or handler) is checked. File association selections are stored in the Windows Registry and can be edited by users, administrators, or programs that have Registry access or by administrators using the built-in assoc utility. Applications can modify the file association for a given file extension to call an arbitrary program when a file with the given extension is opened.",\n    "tags": [\n      "attack.persistence",\n      "attack.t1042"\n    ],\n    "query": "(CommandLine.keyword:*cmd* AND CommandLine.keyword:*\\\\/c* AND CommandLine.keyword:*assoc*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(CommandLine.keyword:*cmd* AND CommandLine.keyword:*\\\\/c* AND CommandLine.keyword:*assoc*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Change Default File Association\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n            Image = {{_source.Image}}\\n      CommandLine = {{_source.CommandLine}}\\n             User = {{_source.User}}\\n        LogonGuid = {{_source.LogonGuid}}\\n           Hashes = {{_source.Hashes}}\\nParentProcessGuid = {{_source.ParentProcessGuid}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+```
+
+
+### graylog
+    
+```
+(CommandLine.keyword:*cmd* AND CommandLine.keyword:*\\/c* AND CommandLine.keyword:*assoc*)
+```
+
+
 ### splunk
     
 ```
 (CommandLine="*cmd*" CommandLine="*/c*" CommandLine="*assoc*") | table Image,CommandLine,User,LogonGuid,Hashes,ParentProcessGuid,ParentCommandLine
+```
+
+
+### logpoint
+    
+```
+(event_id="1" CommandLine="*cmd*" CommandLine="*/c*" CommandLine="*assoc*")
+```
+
+
+### grep
+    
+```
+grep -P '^(?:.*(?=.*.*cmd.*)(?=.*.*/c.*)(?=.*.*assoc.*))'
 ```
 
 

@@ -56,10 +56,45 @@ tags:
 
 
 
+### es-qs
+    
+```
+(EventID:"4104" AND \\*.keyword:(*Set\\-ItemProperty* OR *New\\-Item*) AND "*CurrentVersion\\\\Winlogon*")
+```
+
+
+### xpack-watcher
+    
+```
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Winlogon-Helper-DLL <<EOF\n{\n  "metadata": {\n    "title": "Winlogon Helper DLL",\n    "description": "Winlogon.exe is a Windows component responsible for actions at logon/logoff as well as the secure attention sequence (SAS) triggered by Ctrl-Alt-Delete. Registry entries in HKLM\\\\Software[Wow6432Node]Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Winlogon\\\\ and HKCU\\\\Software\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Winlogon\\\\ are used to manage additional helper programs and functionalities that support Winlogon. Malicious modifications to these Registry keys may cause Winlogon to load and execute malicious DLLs and/or executables.",\n    "tags": [\n      "attack.persistence",\n      "attack.t1004"\n    ],\n    "query": "(EventID:\\"4104\\" AND \\\\*.keyword:(*Set\\\\-ItemProperty* OR *New\\\\-Item*) AND \\"*CurrentVersion\\\\\\\\Winlogon*\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4104\\" AND \\\\*.keyword:(*Set\\\\-ItemProperty* OR *New\\\\-Item*) AND \\"*CurrentVersion\\\\\\\\Winlogon*\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Winlogon Helper DLL\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+```
+
+
+### graylog
+    
+```
+(EventID:"4104" AND \\*.keyword:(*Set\\-ItemProperty* OR *New\\-Item*) AND "*CurrentVersion\\\\Winlogon*")
+```
+
+
 ### splunk
     
 ```
 (EventID="4104" ("*Set-ItemProperty*" OR "*New-Item*") "*CurrentVersion\\\\Winlogon*")
+```
+
+
+### logpoint
+    
+```
+(event_id="4104" ("*Set-ItemProperty*" OR "*New-Item*") "*CurrentVersion\\\\Winlogon*")
+```
+
+
+### grep
+    
+```
+grep -P '^(?:.*(?=.*4104)(?=.*(?:.*(?:.*.*Set-ItemProperty.*|.*.*New-Item.*)))(?=.*.*CurrentVersion\\Winlogon.*))'
 ```
 
 

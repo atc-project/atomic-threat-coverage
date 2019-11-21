@@ -53,10 +53,45 @@ falsepositives:
 
 
 
+### es-qs
+    
+```
+(Image.keyword:(*\\\\powerpnt.exe OR *\\\\winword.exe OR *\\\\excel.exe) AND CommandLine.keyword:*http*)
+```
+
+
+### xpack-watcher
+    
+```
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Malicious-payload-download-via-Office-binaries <<EOF\n{\n  "metadata": {\n    "title": "Malicious payload download via Office binaries",\n    "description": "Downloads payload from remote server",\n    "tags": [\n      "attack.command_and_control",\n      "attack.t1105"\n    ],\n    "query": "(Image.keyword:(*\\\\\\\\powerpnt.exe OR *\\\\\\\\winword.exe OR *\\\\\\\\excel.exe) AND CommandLine.keyword:*http*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(Image.keyword:(*\\\\\\\\powerpnt.exe OR *\\\\\\\\winword.exe OR *\\\\\\\\excel.exe) AND CommandLine.keyword:*http*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Malicious payload download via Office binaries\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+```
+
+
+### graylog
+    
+```
+(Image.keyword:(*\\\\powerpnt.exe *\\\\winword.exe *\\\\excel.exe) AND CommandLine.keyword:*http*)
+```
+
+
 ### splunk
     
 ```
 ((Image="*\\\\powerpnt.exe" OR Image="*\\\\winword.exe" OR Image="*\\\\excel.exe") CommandLine="*http*")
+```
+
+
+### logpoint
+    
+```
+(event_id="1" Image IN ["*\\\\powerpnt.exe", "*\\\\winword.exe", "*\\\\excel.exe"] CommandLine="*http*")
+```
+
+
+### grep
+    
+```
+grep -P '^(?:.*(?=.*(?:.*.*\\powerpnt\\.exe|.*.*\\winword\\.exe|.*.*\\excel\\.exe))(?=.*.*http.*))'
 ```
 
 

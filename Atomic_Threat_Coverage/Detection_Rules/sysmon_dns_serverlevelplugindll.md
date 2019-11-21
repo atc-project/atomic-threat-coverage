@@ -18,11 +18,12 @@
 ### Sigma rule
 
 ```
----
 action: global
 title: DNS ServerLevelPluginDll Install
+id: e61e8a88-59a9-451c-874e-70fcc9740d67
 status: experimental
-description: Detects the installation of a plugin DLL via ServerLevelPluginDll parameter in Registry, which can be used to execute code in context of the DNS server (restart required)
+description: Detects the installation of a plugin DLL via ServerLevelPluginDll parameter in Registry, which can be used to execute code in context of the DNS server
+    (restart required)
 references:
     - https://medium.com/@esnesenon/feature-not-bug-dnsadmin-to-dc-compromise-in-one-line-a0f779b8dc83
 date: 2017/05/08
@@ -80,7 +81,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"13" AND TargetObject:"*\\\\services\\\\DNS\\\\Parameters\\\\ServerLevelPluginDll")\nCommandLine:"dnscmd.exe \\/config \\/serverlevelplugindll *"
+(EventID:"13" AND TargetObject.keyword:*\\\\services\\\\DNS\\\\Parameters\\\\ServerLevelPluginDll)\nCommandLine.keyword:dnscmd.exe \\/config \\/serverlevelplugindll *
 ```
 
 
@@ -94,7 +95,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="13" TargetObject="*\\\\services\\\\DNS\\\\Parameters\\\\ServerLevelPluginDll")\nCommandLine="dnscmd.exe /config /serverlevelplugindll *"
+(event_id="13" TargetObject="*\\\\services\\\\DNS\\\\Parameters\\\\ServerLevelPluginDll")\n(event_id="1" CommandLine="dnscmd.exe /config /serverlevelplugindll *")
 ```
 
 
