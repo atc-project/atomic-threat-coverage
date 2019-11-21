@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | {{ description }}                                                                                                |
 | Logging Policy    | <ul>{% for policy in loggingpolicy %}<li>{% if policy != "None" %}[{{ policy }}](../Logging_Policies/{{policy}}.md){% else %} Not existing {% endif %}</li>{% endfor %}</ul> |
-| Mitigation Policy | <ul>{% for mpolicy in mitigation_policy %}<li>{% if mpolicy != "None" %}[{{ mpolicy }}](../Mitigation_Policies/{{mpolicy}}.md){% else %} Not existing {% endif %}</li>{% endfor %}</ul> |
+| Mitigation Policy | {% if mitigation_policy is defined and mitigation_policy is not none and mitigation_policy|length %}<ul>{% for mpolicy in mitigation_policy %}<li>{% if mpolicy != "None" %}[{{ mpolicy }}](../Mitigation_Policies/{{mpolicy}}.md){% else %} Not existing {% endif %}</li>{% endfor %}</ul> {% endif %}|
 | References     		| <ul>{% for ref in references %}<li>[{{ ref }}]({{ ref }})</li>{% endfor %}</ul>                                  |
 | Platform       		| {{ platform }}   |
 | Type           		| {{ type }} 		| 
