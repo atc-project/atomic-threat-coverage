@@ -2,6 +2,7 @@
 
 from atcutils import ATCutils
 from attack_mapping import te_mapping, ta_mapping, mi_mapping
+from amitt_mapping import amitt_tactic_mapping, amitt_technique_mapping, amitt_mitigation_mapping
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -72,10 +73,13 @@ class HardeningPolicy:
 
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')
+            amitt_tactic_re = re.compile(r'amitt\.\w\D+$')
             technique = []
             technique_re = re.compile(r'attack\.t\d{1,5}$')
+            amitt_technique_re = re.compile(r'amitt\.t\d{1,5}$')
             mitigation = []
             mitigation_re = re.compile(r'attack\.m\d{1,5}$')
+            amitt_mitigation_re = re.compile(r'amitt\.m\d{1,5}$')
             other_tags = []
 
             if self.hp_parsed_file.get('tags'):
@@ -85,12 +89,23 @@ class HardeningPolicy:
                             tactic.append(ta_mapping.get(tag))
                         else:
                             other_tags.append(tag)
+                    elif amitt_tactic_re.match(tag):
+                        if amitt_tactic_mapping.get(tag):
+                            tactic.append(amitt_tactic_mapping.get(tag))
+                        else:
+                            other_tags.append(tag)
                     elif technique_re.match(tag):
                         te = tag.upper()[7:]
                         technique.append((te_mapping.get(te), te))
+                    elif amitt_technique_re.match(tag):
+                        te = tag.upper()[6:]
+                        technique.append((amitt_technique_mapping.get(te), te))
                     elif mitigation_re.match(tag):
                         mi = tag.upper()[7:]
                         mitigation.append((mi_mapping.get(mi), mi))
+                    elif amitt_mitigation_re.match(tag):
+                        te = tag.upper()[6:]
+                        mitigation.append((amitt_mitigation_mapping.get(te), te))
                     else:
                         other_tags.append(tag)
 
@@ -129,10 +144,13 @@ class HardeningPolicy:
 
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')
+            amitt_tactic_re = re.compile(r'amitt\.\w\D+$')
             technique = []
             technique_re = re.compile(r'attack\.t\d{1,5}$')
+            amitt_technique_re = re.compile(r'amitt\.t\d{1,5}$')
             mitigation = []
             mitigation_re = re.compile(r'attack\.m\d{1,5}$')
+            amitt_mitigation_re = re.compile(r'amitt\.m\d{1,5}$')
             other_tags = []
 
             if self.hp_parsed_file.get('tags'):
@@ -142,12 +160,23 @@ class HardeningPolicy:
                             tactic.append(ta_mapping.get(tag))
                         else:
                             other_tags.append(tag)
+                    elif amitt_tactic_re.match(tag):
+                        if amitt_tactic_mapping.get(tag):
+                            tactic.append(amitt_tactic_mapping.get(tag))
+                        else:
+                            other_tags.append(tag)
                     elif technique_re.match(tag):
                         te = tag.upper()[7:]
                         technique.append((te_mapping.get(te), te))
+                    elif amitt_technique_re.match(tag):
+                        te = tag.upper()[6:]
+                        technique.append((amitt_technique_mapping.get(te), te))
                     elif mitigation_re.match(tag):
                         mi = tag.upper()[7:]
                         mitigation.append((mi_mapping.get(mi), mi))
+                    elif amitt_mitigation_re.match(tag):
+                        te = tag.upper()[6:]
+                        mitigation.append((amitt_mitigation_mapping.get(te), te))
                     else:
                         other_tags.append(tag)
 

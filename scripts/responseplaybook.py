@@ -4,6 +4,7 @@ from atcutils import ATCutils
 
 from jinja2 import Environment, FileSystemLoader
 from attack_mapping import te_mapping, ta_mapping
+from amitt_mapping import amitt_tactic_mapping, amitt_technique_mapping, amitt_mitigation_mapping
 
 import os
 import re
@@ -61,8 +62,10 @@ class ResponsePlaybook:
 
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')
+            amitt_tactic_re = re.compile(r'amitt\.\w\D+$')
             technique = []
             technique_re = re.compile(r'attack\.t\d{1,5}$')
+            amitt_technique_re = re.compile(r'amitt\.t\d{1,5}$')
             other_tags = []
 
             for tag in self.rp_parsed_file.get('tags'):
@@ -71,6 +74,11 @@ class ResponsePlaybook:
                 elif technique_re.match(tag):
                     te = tag.upper()[7:]
                     technique.append((te_mapping.get(te), te))
+                elif amitt_tactic_re.match(tag):
+                    tactic.append(amitt_tactic_mapping.get(tag))
+                elif amitt_technique_re.match(tag):
+                    te = tag.upper()[6:]
+                    technique.append((amitt_technique_mapping.get(te), te))
                 else:
                     other_tags.append(tag)
 
@@ -126,8 +134,10 @@ class ResponsePlaybook:
 
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')
+            amitt_tactic_re = re.compile(r'amitt\.\w\D+$')
             technique = []
             technique_re = re.compile(r'attack\.t\d{1,5}$')
+            amitt_technique_re = re.compile(r'amitt\.t\d{1,5}$')
             other_tags = []
 
             for tag in self.rp_parsed_file.get('tags'):
@@ -136,6 +146,11 @@ class ResponsePlaybook:
                 elif technique_re.match(tag):
                     te = tag.upper()[7:]
                     technique.append((te_mapping.get(te), te))
+                elif amitt_tactic_re.match(tag):
+                    tactic.append(amitt_tactic_mapping.get(tag))
+                elif amitt_technique_re.match(tag):
+                    te = tag.upper()[6:]
+                    technique.append((amitt_technique_mapping.get(te), te))
                 else:
                     other_tags.append(tag)
 
