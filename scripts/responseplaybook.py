@@ -60,12 +60,17 @@ class ResponsePlaybook:
                 'markdown_responseplaybook_template.md.j2'
             )
 
+            # MITRE ATT&CK Tactics and Techniques
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')
-            amitt_tactic_re = re.compile(r'amitt\.\w\D+$')
             technique = []
             technique_re = re.compile(r'attack\.t\d{1,5}$')
+            # AM!TT Tactics and Techniques
+            amitt_tactic = []
+            amitt_tactic_re = re.compile(r'amitt\.\w\D+$')
+            amitt_technique = []
             amitt_technique_re = re.compile(r'amitt\.t\d{1,5}$')
+
             other_tags = []
 
             for tag in self.rp_parsed_file.get('tags'):
@@ -75,15 +80,19 @@ class ResponsePlaybook:
                     te = tag.upper()[7:]
                     technique.append((te_mapping.get(te), te))
                 elif amitt_tactic_re.match(tag):
-                    tactic.append(amitt_tactic_mapping.get(tag))
+                    amitt_tactic.append(amitt_tactic_mapping.get(tag))
                 elif amitt_technique_re.match(tag):
                     te = tag.upper()[6:]
-                    technique.append((amitt_technique_mapping.get(te), te))
+                    amitt_technique.append((amitt_technique_mapping.get(te), te))
                 else:
                     other_tags.append(tag)
 
+            # Add MITRE ATT&CK Tactics and Techniques to J2
             self.rp_parsed_file.update({'tactics': tactic})
             self.rp_parsed_file.update({'techniques': technique})
+            # Add AM!TT Tactics and Techniques to J2
+            self.rp_parsed_file.update({'amitt_tactics': amitt_tactic})
+            self.rp_parsed_file.update({'amitt_techniques': amitt_technique})
             self.rp_parsed_file.update({'other_tags': other_tags})
 
             identification = []
@@ -132,12 +141,17 @@ class ResponsePlaybook:
             self.rp_parsed_file.update(
                 {'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
 
+            # MITRE ATT&CK Tactics and Techniques
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')
-            amitt_tactic_re = re.compile(r'amitt\.\w\D+$')
             technique = []
             technique_re = re.compile(r'attack\.t\d{1,5}$')
+            # AM!TT Tactics and Techniques
+            amitt_tactic = []
+            amitt_tactic_re = re.compile(r'amitt\.\w\D+$')
+            amitt_technique = []
             amitt_technique_re = re.compile(r'amitt\.t\d{1,5}$')
+
             other_tags = []
 
             for tag in self.rp_parsed_file.get('tags'):
@@ -147,15 +161,19 @@ class ResponsePlaybook:
                     te = tag.upper()[7:]
                     technique.append((te_mapping.get(te), te))
                 elif amitt_tactic_re.match(tag):
-                    tactic.append(amitt_tactic_mapping.get(tag))
+                    amitt_tactic.append(amitt_tactic_mapping.get(tag))
                 elif amitt_technique_re.match(tag):
                     te = tag.upper()[6:]
-                    technique.append((amitt_technique_mapping.get(te), te))
+                    amitt_technique.append((amitt_technique_mapping.get(te), te))
                 else:
                     other_tags.append(tag)
 
+            # Add MITRE ATT&CK Tactics and Techniques to J2
             self.rp_parsed_file.update({'tactics': tactic})
             self.rp_parsed_file.update({'techniques': technique})
+            # Add AM!TT Tactics and Techniques to J2
+            self.rp_parsed_file.update({'amitt_tactics': amitt_tactic})
+            self.rp_parsed_file.update({'amitt_techniques': amitt_technique})
             self.rp_parsed_file.update({'other_tags': other_tags})
 
             # get links to response action

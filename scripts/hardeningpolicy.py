@@ -71,15 +71,24 @@ class HardeningPolicy:
                 {'configuration': self.hp_parsed_file.get('configuration').strip()}
             )
 
+            # MITRE ATT&CK Tactics and Techniques
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')
-            amitt_tactic_re = re.compile(r'amitt\.\w\D+$')
             technique = []
             technique_re = re.compile(r'attack\.t\d{1,5}$')
+            # AM!TT Tactics and Techniques
+            amitt_tactic = []
+            amitt_tactic_re = re.compile(r'amitt\.\w\D+$')
+            amitt_technique = []
             amitt_technique_re = re.compile(r'amitt\.t\d{1,5}$')
+
+            # MITRE ATT&CK Mitigation
             mitigation = []
             mitigation_re = re.compile(r'attack\.m\d{1,5}$')
+            # AM!TT Mitigation
+            amitt_mitigation = []
             amitt_mitigation_re = re.compile(r'amitt\.m\d{1,5}$')
+
             other_tags = []
 
             if self.hp_parsed_file.get('tags'):
@@ -118,6 +127,10 @@ class HardeningPolicy:
                     self.hp_parsed_file.update({'tactics': tactic})
                 if len(technique):
                     self.hp_parsed_file.update({'techniques': technique})
+                if len(amitt_tactic):
+                    self.hp_parsed_file.update({'amitt_tactics': amitt_tactic})
+                if len(amitt_technique):
+                    self.hp_parsed_file.update({'amitt_techniques': amitt_technique})
                 if len(mitigation):
                     self.hp_parsed_file.update({'mitigations': mitigation})    
                 if len(other_tags):
@@ -142,15 +155,24 @@ class HardeningPolicy:
                 {'description': self.hp_parsed_file.get('description').strip()}
             )
 
+            # MITRE ATT&CK Tactics and Techniques
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')
-            amitt_tactic_re = re.compile(r'amitt\.\w\D+$')
             technique = []
             technique_re = re.compile(r'attack\.t\d{1,5}$')
+            # AM!TT Tactics and Techniques
+            amitt_tactic = []
+            amitt_tactic_re = re.compile(r'amitt\.\w\D+$')
+            amitt_technique = []
             amitt_technique_re = re.compile(r'amitt\.t\d{1,5}$')
+
+            # MITRE ATT&CK Mitigation
             mitigation = []
             mitigation_re = re.compile(r'attack\.m\d{1,5}$')
+            # AM!TT Mitigation
+            amitt_mitigation = []
             amitt_mitigation_re = re.compile(r'amitt\.m\d{1,5}$')
+
             other_tags = []
 
             if self.hp_parsed_file.get('tags'):
@@ -162,7 +184,7 @@ class HardeningPolicy:
                             other_tags.append(tag)
                     elif amitt_tactic_re.match(tag):
                         if amitt_tactic_mapping.get(tag):
-                            tactic.append(amitt_tactic_mapping.get(tag))
+                            amitt_tactic.append(amitt_tactic_mapping.get(tag))
                         else:
                             other_tags.append(tag)
                     elif technique_re.match(tag):
@@ -170,13 +192,13 @@ class HardeningPolicy:
                         technique.append((te_mapping.get(te), te))
                     elif amitt_technique_re.match(tag):
                         te = tag.upper()[6:]
-                        technique.append((amitt_technique_mapping.get(te), te))
+                        amitt_technique.append((amitt_technique_mapping.get(te), te))
                     elif mitigation_re.match(tag):
                         mi = tag.upper()[7:]
                         mitigation.append((mi_mapping.get(mi), mi))
                     elif amitt_mitigation_re.match(tag):
                         te = tag.upper()[6:]
-                        mitigation.append((amitt_mitigation_mapping.get(te), te))
+                        amitt_mitigation.append((amitt_mitigation_mapping.get(te), te))
                     else:
                         other_tags.append(tag)
 
@@ -189,8 +211,14 @@ class HardeningPolicy:
                     self.hp_parsed_file.update({'tactics': tactic})
                 if len(technique):
                     self.hp_parsed_file.update({'techniques': technique})
+                if len(amitt_tactic):
+                    self.hp_parsed_file.update({'amitt_tactics': amitt_tactic})
+                if len(amitt_technique):
+                    self.hp_parsed_file.update({'amitt_techniques': amitt_technique})
                 if len(mitigation):
                     self.hp_parsed_file.update({'mitigations': mitigation})
+                if len(amitt_mitigation):
+                    self.hp_parsed_file.update({'amitt_mitigations': amitt_mitigation})
                 if len(other_tags):
                     self.hp_parsed_file.update({'other_tags': other_tags})
 

@@ -3,6 +3,8 @@
 | Description    | {{ description }}                                        	|
 | ATT&amp;CK Tactic    | {%- if tactics is defined and tactics|length %}<ul>{% for tactic_name, tactic_id in tactics  %}<li>[{{tactic_id}}: {{tactic_name}}](https://attack.mitre.org/tactics/{{tactic_id}})</li>{% endfor %}</ul>{% else %} None{%endif%}  |
 | ATT&amp;CK Technique | {%- if techniques is defined and techniques|length %}<ul>{% for technique_name, technique_id in techniques  %}<li>[{{technique_id}}: {{technique_name}}](https://attack.mitre.org/tactics/{{technique_id}})</li>{% endfor %}</ul>{% else %} None{%endif%}                             |
+| AM&excl;TT Tactic    | {%- if amitt_tactics is defined and amitt_tactics|length %}<ul>{% for tactic_name, tactic_id in amitt_tactics  %}<li>[{{tactic_id}}: {{tactic_name}}](https://vvx7.xyz/tactics/{{tactic_id}})</li>{% endfor %}</ul>{% else %} None{%endif%}  |
+| AM&excl;TT Technique | {%- if amitt_techniques is defined and amitt_techniques|length %}<ul>{% for technique_name, technique_id in amitt_techniques  %}<li>[{{technique_id}}: {{technique_name}}](https://vvx7.xyz/tactics/{{technique_id}})</li>{% endfor %}</ul>{% else %} None{%endif%}                             |
 | Tags    | {%- if other_tags is defined and other_tags|length %}<ul>{% for tag in other_tags %}<li>{{ tag }}</li>{% endfor %}</ul>{% else %} None{%endif%}    	|
 | Severity    | {{ severity }}                                             		|
 | TLP    | {{ tlp }}                                                            |
