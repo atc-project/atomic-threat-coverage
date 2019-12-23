@@ -1,5 +1,7 @@
 import sys
 import re
+import yaml
+import pprint
 import getopt
 import json
 import os
@@ -36,6 +38,29 @@ def main(**kwargs):
             techniques = []
             list_of_customers = []
 
+            # raw Sigma rule without fields that are present separately
+            dr_raw = alert.copy()
+
+            fields_to_remove_from_raw_dr = [
+                'title', 
+                'id', 
+                'status', 
+                'date',
+                'modified',
+                'description', 
+                'references', 
+                'author', 
+                'tags', 
+                'logsource', 
+                'falsepositives', 
+                'level'
+            ]
+
+            for field in fields_to_remove_from_raw_dr:
+                dr_raw.pop(field, None)
+
+            dr_raw = str(yaml.dump((dr_raw), default_flow_style=False))
+
             for customer in cu_list:
                 if 'detectionrule' in customer:
                     if alert['title'] in customer['detectionrule'] and customer['customer_name'] not in list_of_customers:
@@ -59,7 +84,6 @@ def main(**kwargs):
                     pass
 
             enrichments  = [er for er in enrichments_list if er['title'] in alert.get('enrichment', [{'title':'-'}])]
-            #print(enrichments)
             if len(enrichments) < 1:
                 enrichments = [{'title': 'not defined'}]
             dn_titles = ATCutils.main_dn_calculatoin_func(path)
@@ -102,6 +126,24 @@ def main(**kwargs):
                 #date_created = datetime.datetime.now().isoformat() 
                 date_created = '2019-03-01T22:50:37.587060'
                 
+                        # we use date of creation to have timelines of progress
+            if 'modified' in alert:
+                
+                try:
+                    date_modified = datetime.datetime.strptime(alert['modified'], '%Y/%m/%d').isoformat()
+                except:
+                    pass
+                
+                if not date_modified:
+                    try:
+                        # in case somebody mixed up month and date, like in "Detection of SafetyKatz"
+                        date_modified = datetime.datetime.strptime(alert['modified'], '%Y/%d/%m').isoformat()                
+                    except:
+                        date_modified = None
+            else:
+                # temporary solution to avoid errors. all internal DRs must have date of creation
+                #date_created = datetime.datetime.now().isoformat() 
+                date_modified = None
 
             # we create index document based on DR title, which is unique (supposed to be).
             # this way we will update existing documents in case of changes,
@@ -145,6 +187,11 @@ def main(**kwargs):
                 dr_author = alert['author']
             else:
                 dr_author = 'not defined'
+
+            if 'id' in alert:
+                dr_id = alert['id']
+            else:
+                dr_id = 'not defined'
 
             if 'internal_responsible' in alert:
                 dr_internal_responsible = alert['internal_responsible']
@@ -196,10 +243,13 @@ def main(**kwargs):
 
             _index.update({
                     "date_created": date_created,
+                    "date_modified": date_modified,
                     "customer": list_of_customers,
                     "tactic": list_of_tactics,
+                    "dr_id": dr_id,
                     "technique": list_of_techniques,
-                    "detection_rule": dr_title,
+                    "raw_detection_rule": dr_raw,
+                    "detection_rule_title": dr_title,
                     "detection_rule_author": dr_author,
                     "detection_rule_internal_responsible": dr_internal_responsible,
                     "detection_rule_development_status": dr_status,
