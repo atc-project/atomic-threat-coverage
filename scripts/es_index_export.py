@@ -188,6 +188,16 @@ def main(**kwargs):
             else:
                 dr_author = 'not defined'
 
+            if 'description' in alert:
+                dr_description = alert['description']
+            else:
+                dr_description = 'not defined'
+             
+            if 'references' in alert:
+                dr_references = alert['references']
+            else:
+                dr_references = 'not defined'
+
             if 'id' in alert:
                 dr_id = alert['id']
             else:
@@ -243,7 +253,10 @@ def main(**kwargs):
 
             _index.update({
                     "date_created": date_created,
+                    "sigma_rule_path": path[25:],
                     "date_modified": date_modified,
+                    "description": dr_description,
+                    "references": dr_references,
                     "customer": list_of_customers,
                     "tactic": list_of_tactics,
                     "dr_id": dr_id,
