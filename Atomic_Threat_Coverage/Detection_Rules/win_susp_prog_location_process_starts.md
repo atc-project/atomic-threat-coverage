@@ -3,7 +3,7 @@
 | Description          | Detects programs running in suspicious files system locations                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Program Location Process Starts
+id: f50bfd8b-e2a3-4c15-9373-7900b5a4c6d5
 status: experimental
 description: Detects programs running in suspicious files system locations
 references:
@@ -69,7 +70,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-Image:("*\\\\$Recycle.bin" "*\\\\Users\\\\Public\\\\*" "C\\:\\\\Perflogs\\\\*" "*\\\\Windows\\\\Fonts\\\\*" "*\\\\Windows\\\\IME\\\\*" "*\\\\Windows\\\\addins\\\\*" "*\\\\Windows\\\\debug\\\\*")
+Image.keyword:(*\\\\$Recycle.bin *\\\\Users\\\\Public\\\\* C\\:\\\\Perflogs\\\\* *\\\\Windows\\\\Fonts\\\\* *\\\\Windows\\\\IME\\\\* *\\\\Windows\\\\addins\\\\* *\\\\Windows\\\\debug\\\\*)
 ```
 
 
@@ -83,7 +84,7 @@ Image:("*\\\\$Recycle.bin" "*\\\\Users\\\\Public\\\\*" "C\\:\\\\Perflogs\\\\*" "
 ### logpoint
     
 ```
-Image IN ["*\\\\$Recycle.bin", "*\\\\Users\\\\Public\\\\*", "C:\\\\Perflogs\\\\*", "*\\\\Windows\\\\Fonts\\\\*", "*\\\\Windows\\\\IME\\\\*", "*\\\\Windows\\\\addins\\\\*", "*\\\\Windows\\\\debug\\\\*"]
+(event_id="1" Image IN ["*\\\\$Recycle.bin", "*\\\\Users\\\\Public\\\\*", "C:\\\\Perflogs\\\\*", "*\\\\Windows\\\\Fonts\\\\*", "*\\\\Windows\\\\IME\\\\*", "*\\\\Windows\\\\addins\\\\*", "*\\\\Windows\\\\debug\\\\*"])
 ```
 
 

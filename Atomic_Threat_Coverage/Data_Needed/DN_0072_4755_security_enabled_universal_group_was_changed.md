@@ -1,8 +1,7 @@
 | Title             | DN_0072_4755_security_enabled_universal_group_was_changed                                                                                                      |
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | Security-enabled universal group was changed                                                                                                |
-| Logging Policy    | <ul><li>[LP_0101_windows_audit_security_group_management](../Logging_Policies/LP_0101_windows_audit_security_group_management.md)</li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Logging Policy    | <ul><li>[LP_0101_windows_audit_security_group_management](../Logging_Policies/LP_0101_windows_audit_security_group_management.md)</li></ul> | 
 | References     		| <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=4755](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=4755)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Windows Log 		| 

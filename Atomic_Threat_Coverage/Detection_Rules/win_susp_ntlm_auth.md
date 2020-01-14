@@ -19,6 +19,7 @@
 
 ```
 title: NTLM Logon
+id: 98c3bcf1-56f2-49dc-9d8d-c66cf190238b
 status: experimental
 description: Detects logons using NTLM, which could be caused by a legacy source or attackers
 references:
@@ -65,7 +66,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"8002" AND CallingProcessName:"*")
+(EventID:"8002" AND CallingProcessName.keyword:*)
 ```
 
 
@@ -79,7 +80,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="8002" CallingProcessName="*")
+(event_id="8002" CallingProcessName="*")
 ```
 
 

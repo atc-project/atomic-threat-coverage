@@ -19,6 +19,7 @@
 
 ```
 title: Admin User Remote Logon
+id: 0f63e1ef-1eb9-4226-9d54-8927ca08520a
 description: Detect remote login by Administrator user depending on internal pattern
 references:
     - https://car.mitre.org/wiki/CAR-2016-04-005
@@ -66,7 +67,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"4624" AND LogonType:"10" AND AuthenticationPackageName:"Negotiate" AND AccountName:"Admin\\-*")
+(EventID:"4624" AND LogonType:"10" AND AuthenticationPackageName:"Negotiate" AND AccountName.keyword:Admin\\-*)
 ```
 
 
@@ -80,7 +81,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="4624" LogonType="10" AuthenticationPackageName="Negotiate" AccountName="Admin-*")
+(event_source="Microsoft-Windows-Security-Auditing" event_id="4624" logon_type="10" AuthenticationPackageName="Negotiate" AccountName="Admin-*")
 ```
 
 

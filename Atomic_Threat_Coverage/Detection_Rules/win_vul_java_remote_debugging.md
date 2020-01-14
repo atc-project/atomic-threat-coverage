@@ -3,7 +3,7 @@
 | Description          | Detects a JAVA process running with remote debugging allowing more than just localhost to connect                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1046: Network Service Scanning](https://attack.mitre.org/techniques/T1046)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1046: Network Service Scanning](../Triggers/T1046.md)</li></ul>  |
 | Severity Level       | medium |
@@ -19,6 +19,7 @@
 
 ```
 title: Java Running with Remote Debugging
+id: 8f88e3f6-2a49-48f5-a5c4-2f7eedf78710
 description: Detects a JAVA process running with remote debugging allowing more than just localhost to connect
 author: Florian Roth
 tags:
@@ -64,7 +65,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(CommandLine:"*transport=dt_socket,address=*" AND NOT (CommandLine:"*address=127.0.0.1*" OR CommandLine:"*address=localhost*"))
+(CommandLine.keyword:*transport=dt_socket,address=* AND (NOT (CommandLine.keyword:*address=127.0.0.1* OR CommandLine.keyword:*address=localhost*)))
 ```
 
 
@@ -78,7 +79,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(CommandLine="*transport=dt_socket,address=*"  -(CommandLine="*address=127.0.0.1*" OR CommandLine="*address=localhost*"))
+(event_id="1" CommandLine="*transport=dt_socket,address=*"  -(CommandLine="*address=127.0.0.1*" OR CommandLine="*address=localhost*"))
 ```
 
 

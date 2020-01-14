@@ -3,7 +3,7 @@
 | Description          | Detects suspicious command line activity on Windows systems                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1087: Account Discovery](../Triggers/T1087.md)</li></ul>  |
 | Severity Level       | medium |
@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Reconnaissance Activity
+id: d95de845-b83c-4a9a-8a6a-4fc802ebf6c0
 status: experimental
 description: Detects suspicious command line activity on Windows systems
 author: Florian Roth
@@ -82,7 +83,7 @@ CommandLine:("net group \\"domain admins\\" \\/domain" "net localgroup administr
 ### logpoint
     
 ```
-CommandLine IN ["net group \\"domain admins\\" /domain", "net localgroup administrators"]
+(event_id="1" CommandLine IN ["net group \\"domain admins\\" /domain", "net localgroup administrators"])
 ```
 
 

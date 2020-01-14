@@ -19,6 +19,7 @@
 
 ```
 title: Possible Ransomware or unauthorized MBR modifications
+id: c9fbe8e9-119d-40a6-9b59-dd58a5d84429
 status: experimental
 description: Detects, possibly, malicious unauthorized usage of bcdedit.exe
 references:
@@ -66,7 +67,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(NewProcessName:"*\\\\bcdedit.exe" AND ProcessCommandLine:("*delete*" "*deletevalue*" "*import*"))
+(NewProcessName.keyword:*\\\\bcdedit.exe AND ProcessCommandLine.keyword:(*delete* *deletevalue* *import*))
 ```
 
 
@@ -80,7 +81,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(NewProcessName="*\\\\bcdedit.exe" ProcessCommandLine IN ["*delete*", "*deletevalue*", "*import*"])
+(event_id="1" NewProcessName="*\\\\bcdedit.exe" ProcessCommandLine IN ["*delete*", "*deletevalue*", "*import*"])
 ```
 
 

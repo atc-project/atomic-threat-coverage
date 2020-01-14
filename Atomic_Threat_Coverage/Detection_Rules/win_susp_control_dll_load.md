@@ -3,7 +3,7 @@
 | Description          | Detects suspicious Rundll32 execution from control.exe as used by Equation Group and Exploit Kits                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li><li>[T1085: Rundll32](../Triggers/T1085.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Control Panel DLL Load
+id: d7eb979b-c2b5-4a6f-a3a7-c87ce6763819
 status: experimental
 description: Detects suspicious Rundll32 execution from control.exe as used by Equation Group and Exploit Kits
 author: Florian Roth
@@ -70,7 +71,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((ParentImage:"*\\\\System32\\\\control.exe" AND CommandLine:"*\\\\rundll32.exe *") AND NOT (CommandLine:"*Shell32.dll*"))
+((ParentImage.keyword:*\\\\System32\\\\control.exe AND CommandLine.keyword:*\\\\rundll32.exe *) AND (NOT (CommandLine.keyword:*Shell32.dll*)))
 ```
 
 
@@ -84,7 +85,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((ParentImage="*\\\\System32\\\\control.exe" CommandLine="*\\\\rundll32.exe *")  -(CommandLine="*Shell32.dll*"))
+(event_id="1" (ParentImage="*\\\\System32\\\\control.exe" CommandLine="*\\\\rundll32.exe *")  -(CommandLine="*Shell32.dll*"))
 ```
 
 

@@ -19,6 +19,7 @@
 
 ```
 title: LSASS Memory Dump
+id: 5ef9853e-4d0e-4a70-846f-a9ca37d876da
 status: experimental
 description: Detects process LSASS memory dump using procdump or taskmgr based on the CallTrace pointing to dbghelp.dll or dbgcore.dll for win10
 author: Samir Bousseaden
@@ -67,7 +68,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"10" AND TargetImage:"C\\:\\\\windows\\\\system32\\\\lsass.exe" AND GrantedAccess:"0x1fffff" AND CallTrace:("*dbghelp.dll*" "*dbgcore.dll*"))
+(EventID:"10" AND TargetImage:"C\\:\\\\windows\\\\system32\\\\lsass.exe" AND GrantedAccess:"0x1fffff" AND CallTrace.keyword:(*dbghelp.dll* *dbgcore.dll*))
 ```
 
 
@@ -81,7 +82,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="10" TargetImage="C:\\\\windows\\\\system32\\\\lsass.exe" GrantedAccess="0x1fffff" CallTrace IN ["*dbghelp.dll*", "*dbgcore.dll*"])
+(event_id="10" TargetImage="C:\\\\windows\\\\system32\\\\lsass.exe" GrantedAccess="0x1fffff" CallTrace IN ["*dbghelp.dll*", "*dbgcore.dll*"])
 ```
 
 

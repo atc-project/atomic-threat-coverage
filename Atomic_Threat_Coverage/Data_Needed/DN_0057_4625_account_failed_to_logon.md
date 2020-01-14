@@ -1,8 +1,7 @@
 | Title             | DN_0057_4625_account_failed_to_logon                                                                                                      |
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | An account failed to log on                                                                                                |
-| Logging Policy    | <ul><li>[LP_0004_windows_audit_logon](../Logging_Policies/LP_0004_windows_audit_logon.md)</li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Logging Policy    | <ul><li>[LP_0004_windows_audit_logon](../Logging_Policies/LP_0004_windows_audit_logon.md)</li></ul> | 
 | References     		| <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4625.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4625.md)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Windows Log 		| 

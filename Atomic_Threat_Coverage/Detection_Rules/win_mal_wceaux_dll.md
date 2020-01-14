@@ -3,7 +3,7 @@
 | Description          | Detects wceaux.dll access while WCE pass-the-hash remote command execution on source host                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0060_4658_handle_to_an_object_was_closed](../Data_Needed/DN_0060_4658_handle_to_an_object_was_closed.md)</li><li>[DN_0062_4663_attempt_was_made_to_access_an_object](../Data_Needed/DN_0062_4663_attempt_was_made_to_access_an_object.md)</li><li>[DN_0058_4656_handle_to_an_object_was_requested](../Data_Needed/DN_0058_4656_handle_to_an_object_was_requested.md)</li><li>[DN_0061_4660_object_was_deleted](../Data_Needed/DN_0061_4660_object_was_deleted.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0061_4660_object_was_deleted](../Data_Needed/DN_0061_4660_object_was_deleted.md)</li><li>[DN_0060_4658_handle_to_an_object_was_closed](../Data_Needed/DN_0060_4658_handle_to_an_object_was_closed.md)</li><li>[DN_0058_4656_handle_to_an_object_was_requested](../Data_Needed/DN_0058_4656_handle_to_an_object_was_requested.md)</li><li>[DN_0062_4663_attempt_was_made_to_access_an_object](../Data_Needed/DN_0062_4663_attempt_was_made_to_access_an_object.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | Severity Level       | critical |
@@ -19,6 +19,7 @@
 
 ```
 title: WCE wceaux.dll Access
+id: 1de68c67-af5c-4097-9c85-fe5578e09e67
 status: experimental
 description: Detects wceaux.dll access while WCE pass-the-hash remote command execution on source host
 author: Thomas Patzke
@@ -68,7 +69,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:("4656" "4658" "4660" "4663") AND ObjectName:"*\\\\wceaux.dll")
+(EventID:("4656" "4658" "4660" "4663") AND ObjectName.keyword:*\\\\wceaux.dll)
 ```
 
 
@@ -82,7 +83,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID IN ["4656", "4658", "4660", "4663"] ObjectName="*\\\\wceaux.dll")
+(event_source="Microsoft-Windows-Security-Auditing" event_id IN ["4656", "4658", "4660", "4663"] ObjectName="*\\\\wceaux.dll")
 ```
 
 

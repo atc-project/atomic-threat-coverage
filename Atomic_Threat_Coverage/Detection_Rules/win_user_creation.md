@@ -19,13 +19,15 @@
 
 ```
 title: Detects local user creation
-description: Detects local user creation on windows servers, which shouldn't happen in an Active Directory environment. Apply this Sigma Use Case on your windows server logs and not on your DC logs. 
+id: 66b6be3d-55d0-4f47-9855-d69df21740ea
+description: Detects local user creation on windows servers, which shouldn't happen in an Active Directory environment. Apply this Sigma Use Case on your windows
+    server logs and not on your DC logs.
 status: experimental
 tags:
     - attack.persistence
     - attack.t1136
 references:
-    - https://patrick-bareiss.com/detecting-local-user-creation-in-ad-with-sigma/ 
+    - https://patrick-bareiss.com/detecting-local-user-creation-in-ad-with-sigma/
 author: Patrick Bareiss
 logsource:
     product: windows
@@ -82,7 +84,7 @@ EventID="4720" | table EventCode,AccountName,AccountDomain
 ### logpoint
     
 ```
-EventID="4720"
+(event_source="Microsoft-Windows-Security-Auditing" event_id="4720")
 ```
 
 

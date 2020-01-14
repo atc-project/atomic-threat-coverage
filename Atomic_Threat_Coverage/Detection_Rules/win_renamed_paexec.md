@@ -18,11 +18,12 @@
 ### Sigma rule
 
 ```
-title: Execution of Renamed PaExec 
+title: Execution of Renamed PaExec
+id: 7b0666ad-3e38-4e3d-9bab-78b06de85f7b
 status: experimental
-description: Detects execution of renamed paexec via imphash and executable product string 
+description: Detects execution of renamed paexec via imphash and executable product string
 references:
-    - sha256=01a461ad68d11b5b5096f45eb54df9ba62c5af413fa9eb544eacb598373a26bc 
+    - sha256=01a461ad68d11b5b5096f45eb54df9ba62c5af413fa9eb544eacb598373a26bc
     - https://summit.fireeye.com/content/dam/fireeye-www/summit/cds-2018/presentations/cds18-technical-s05-att&cking-fin7.pdf
 tags:
     - attack.defense_evasion
@@ -74,7 +75,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((Product:("*PAExec*") AND Imphash:("11D40A7B7876288F919AB819CC2D9802" "6444f8a34e99b8f7d9647de66aabe516" "dfd6aa3f7b2b1035b76b718f1ddc689f" "1a6cca4d5460b1710a12dea39e4a592c")) AND NOT (Image:"*paexec*"))
+((Product.keyword:(*PAExec*) AND Imphash:("11D40A7B7876288F919AB819CC2D9802" "6444f8a34e99b8f7d9647de66aabe516" "dfd6aa3f7b2b1035b76b718f1ddc689f" "1a6cca4d5460b1710a12dea39e4a592c")) AND (NOT (Image.keyword:*paexec*)))
 ```
 
 
@@ -88,7 +89,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((Product IN ["*PAExec*"] Imphash IN ["11D40A7B7876288F919AB819CC2D9802", "6444f8a34e99b8f7d9647de66aabe516", "dfd6aa3f7b2b1035b76b718f1ddc689f", "1a6cca4d5460b1710a12dea39e4a592c"])  -(Image="*paexec*"))
+(event_id="1" (event_id="1" Product IN ["*PAExec*"] Imphash IN ["11D40A7B7876288F919AB819CC2D9802", "6444f8a34e99b8f7d9647de66aabe516", "dfd6aa3f7b2b1035b76b718f1ddc689f", "1a6cca4d5460b1710a12dea39e4a592c"])  -(Image="*paexec*"))
 ```
 
 

@@ -19,6 +19,7 @@
 
 ```
 title: DHCP Server Loaded the CallOut DLL
+id: 13fc89a9-971e-4ca6-b9dc-aa53a445bf40
 status: experimental
 description: This rule detects a DHCP server in which a specified Callout DLL (in registry) was loaded
 references:
@@ -78,7 +79,7 @@ EventID="1033"
 ### logpoint
     
 ```
-EventID="1033"
+(event_source="Microsoft-Windows-Security-Auditing" event_id="1033")
 ```
 
 

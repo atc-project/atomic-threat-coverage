@@ -19,6 +19,7 @@
 
 ```
 title: Process dump via comsvcs DLL
+id: 09e6d5c0-05b8-4ff8-9eeb-043046ec774c
 status: experimental
 description: Detects process memory dump via comsvcs.dll and rundll32
 references:
@@ -72,7 +73,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((Image:"*\\\\rundll32.exe" OR OriginalFileName:"RUNDLL32.EXE") AND CommandLine:("*comsvcs*MiniDump*full*" "*comsvcs*MiniDumpW*full*"))
+((Image.keyword:*\\\\rundll32.exe OR OriginalFileName:"RUNDLL32.EXE") AND CommandLine.keyword:(*comsvcs*MiniDump*full* *comsvcs*MiniDumpW*full*))
 ```
 
 
@@ -86,7 +87,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((Image="*\\\\rundll32.exe" OR OriginalFileName="RUNDLL32.EXE") CommandLine IN ["*comsvcs*MiniDump*full*", "*comsvcs*MiniDumpW*full*"])
+(event_id="1" (Image="*\\\\rundll32.exe" OR OriginalFileName="RUNDLL32.EXE") CommandLine IN ["*comsvcs*MiniDump*full*", "*comsvcs*MiniDumpW*full*"])
 ```
 
 

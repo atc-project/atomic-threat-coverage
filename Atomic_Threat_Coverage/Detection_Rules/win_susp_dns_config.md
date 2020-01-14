@@ -19,6 +19,7 @@
 
 ```
 title: DNS Server Error Failed Loading the ServerLevelPluginDLL
+id: cbe51394-cd93-4473-b555-edf0144952d9
 description: This rule detects a DNS server error in which a specified plugin DLL (in registry) could not be loaded
 status: experimental
 date: 2017/05/08
@@ -82,7 +83,7 @@ EventID:("150" "770")
 ### logpoint
     
 ```
-EventID IN ["150", "770"]
+(event_source="DNS Server" event_id IN ["150", "770"])
 ```
 
 

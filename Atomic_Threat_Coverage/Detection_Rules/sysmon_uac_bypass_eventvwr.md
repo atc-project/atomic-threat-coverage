@@ -3,7 +3,7 @@
 | Description          | Detects UAC bypass method using Windows event viewer                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1088: Bypass User Account Control](https://attack.mitre.org/techniques/T1088)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1088: Bypass User Account Control](../Triggers/T1088.md)</li></ul>  |
 | Severity Level       | critical |
@@ -19,6 +19,7 @@
 
 ```
 title: UAC Bypass via Event Viewer
+id: 7c81fec3-1c1d-43b0-996a-46753041b1b6
 status: experimental
 description: Detects UAC bypass method using Windows event viewer
 references:
@@ -72,7 +73,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((EventID:"13" AND TargetObject:"HKEY_USERS\\\\*\\\\mscfile\\\\shell\\\\open\\\\command") OR ((EventID:"1" AND ParentImage:"*\\\\eventvwr.exe") AND NOT (Image:"*\\\\mmc.exe")))
+((EventID:"13" AND TargetObject.keyword:HKEY_USERS\\\\*\\\\mscfile\\\\shell\\\\open\\\\command) OR ((EventID:"1" AND ParentImage.keyword:*\\\\eventvwr.exe) AND (NOT (Image.keyword:*\\\\mmc.exe))))
 ```
 
 
@@ -86,7 +87,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((EventID="13" TargetObject="HKEY_USERS\\\\*\\\\mscfile\\\\shell\\\\open\\\\command") OR ((EventID="1" ParentImage="*\\\\eventvwr.exe")  -(Image="*\\\\mmc.exe")))
+((event_id="13" TargetObject="HKEY_USERS\\\\*\\\\mscfile\\\\shell\\\\open\\\\command") OR ((event_id="1" ParentImage="*\\\\eventvwr.exe")  -(Image="*\\\\mmc.exe")))
 ```
 
 

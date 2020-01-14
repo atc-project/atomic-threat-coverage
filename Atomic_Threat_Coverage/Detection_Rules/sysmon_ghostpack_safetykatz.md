@@ -19,6 +19,7 @@
 
 ```
 title: Detection of SafetyKatz
+id: e074832a-eada-4fd7-94a1-10642b130e16
 status: experimental
 description: Detects possible SafetyKatz Behaviour
 references:
@@ -63,7 +64,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"11" AND TargetFilename:"*\\\\Temp\\\\debug.bin")
+(EventID:"11" AND TargetFilename.keyword:*\\\\Temp\\\\debug.bin)
 ```
 
 
@@ -77,7 +78,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="11" TargetFilename="*\\\\Temp\\\\debug.bin")
+(event_id="11" TargetFilename="*\\\\Temp\\\\debug.bin")
 ```
 
 

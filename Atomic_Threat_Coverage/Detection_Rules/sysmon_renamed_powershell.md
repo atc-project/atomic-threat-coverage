@@ -3,7 +3,7 @@
 | Description          | Detects the execution of a renamed PowerShell often used by attackers or malware                                                                                                                                           |
 | ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
 | ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          | <ul><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              |  There is no documented Trigger for this Detection Rule yet  |
 | Severity Level       | critical |
@@ -19,8 +19,9 @@
 
 ```
 title: Renamed PowerShell
+id: d178a2d7-129a-4ba4-8ee6-d6e1fecd5d20
 status: experimental
-description: Detects the execution of a renamed PowerShell often used by attackers or malware 
+description: Detects the execution of a renamed PowerShell often used by attackers or malware
 references:
     - https://twitter.com/christophetd/status/1164506034720952320
 author: Florian Roth
@@ -66,7 +67,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((Description:"Windows PowerShell" AND Company:"Microsoft Corporation") AND NOT (Image:("*\\\\powershell.exe" "*\\\\powershell_ise.exe")))
+((Description:"Windows PowerShell" AND Company:"Microsoft Corporation") AND (NOT (Image.keyword:(*\\\\powershell.exe *\\\\powershell_ise.exe))))
 ```
 
 

@@ -19,6 +19,7 @@
 
 ```
 title: Whoami Execution
+id: e28a5a99-da44-436d-b7a0-2afc20a5f413
 status: experimental
 description: Detects the execution of whoami, which is often used by attackers after exloitation / privilege escalation but rarely used by administrators
 references:
@@ -67,7 +68,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(Image:"*\\\\whoami.exe" OR OriginalFileName:"whoami.exe")
+(Image.keyword:*\\\\whoami.exe OR OriginalFileName:"whoami.exe")
 ```
 
 
@@ -81,7 +82,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(Image="*\\\\whoami.exe" OR OriginalFileName="whoami.exe")
+(event_id="1" (Image="*\\\\whoami.exe" OR OriginalFileName="whoami.exe"))
 ```
 
 

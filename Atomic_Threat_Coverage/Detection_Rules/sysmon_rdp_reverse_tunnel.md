@@ -19,6 +19,7 @@
 
 ```
 title: RDP over Reverse SSH Tunnel
+id: 5f699bc5-5446-4a4a-a0b7-5ef2885a3eb4
 status: experimental
 description: Detects svchost hosting RDP termsvcs communicating with the loopback address and on TCP port 3389
 references:
@@ -37,6 +38,7 @@ detection:
     selection:
         EventID: 3
         Image: '*\svchost.exe'
+        Initiated: 'true'
         SourcePort: 3389 
         DestinationIp:
             - '127.*'
@@ -45,6 +47,7 @@ detection:
 falsepositives:
     - unknown
 level: high
+
 ```
 
 
@@ -54,42 +57,42 @@ level: high
 ### es-qs
     
 ```
-(EventID:"3" AND Image.keyword:*\\\\svchost.exe AND SourcePort:"3389" AND DestinationIp.keyword:(127.* OR \\:\\:1))
+(EventID:"3" AND Image.keyword:*\\\\svchost.exe AND Initiated:"true" AND SourcePort:"3389" AND DestinationIp.keyword:(127.* OR \\:\\:1))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/RDP-over-Reverse-SSH-Tunnel <<EOF\n{\n  "metadata": {\n    "title": "RDP over Reverse SSH Tunnel",\n    "description": "Detects svchost hosting RDP termsvcs communicating with the loopback address and on TCP port 3389",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.command_and_control",\n      "attack.t1076",\n      "car.2013-07-002"\n    ],\n    "query": "(EventID:\\"3\\" AND Image.keyword:*\\\\\\\\svchost.exe AND SourcePort:\\"3389\\" AND DestinationIp.keyword:(127.* OR \\\\:\\\\:1))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"3\\" AND Image.keyword:*\\\\\\\\svchost.exe AND SourcePort:\\"3389\\" AND DestinationIp.keyword:(127.* OR \\\\:\\\\:1))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'RDP over Reverse SSH Tunnel\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/RDP-over-Reverse-SSH-Tunnel <<EOF\n{\n  "metadata": {\n    "title": "RDP over Reverse SSH Tunnel",\n    "description": "Detects svchost hosting RDP termsvcs communicating with the loopback address and on TCP port 3389",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.command_and_control",\n      "attack.t1076",\n      "car.2013-07-002"\n    ],\n    "query": "(EventID:\\"3\\" AND Image.keyword:*\\\\\\\\svchost.exe AND Initiated:\\"true\\" AND SourcePort:\\"3389\\" AND DestinationIp.keyword:(127.* OR \\\\:\\\\:1))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"3\\" AND Image.keyword:*\\\\\\\\svchost.exe AND Initiated:\\"true\\" AND SourcePort:\\"3389\\" AND DestinationIp.keyword:(127.* OR \\\\:\\\\:1))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'RDP over Reverse SSH Tunnel\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
 ### graylog
     
 ```
-(EventID:"3" AND Image:"*\\\\svchost.exe" AND SourcePort:"3389" AND DestinationIp:("127.*" "\\:\\:1"))
+(EventID:"3" AND Image.keyword:*\\\\svchost.exe AND Initiated:"true" AND SourcePort:"3389" AND DestinationIp.keyword:(127.* \\:\\:1))
 ```
 
 
 ### splunk
     
 ```
-(EventID="3" Image="*\\\\svchost.exe" SourcePort="3389" (DestinationIp="127.*" OR DestinationIp="::1"))
+(EventID="3" Image="*\\\\svchost.exe" Initiated="true" SourcePort="3389" (DestinationIp="127.*" OR DestinationIp="::1"))
 ```
 
 
 ### logpoint
     
 ```
-(EventID="3" Image="*\\\\svchost.exe" SourcePort="3389" DestinationIp IN ["127.*", "::1"])
+(event_id="3" Image="*\\\\svchost.exe" Initiated="true" SourcePort="3389" DestinationIp IN ["127.*", "::1"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*3)(?=.*.*\\svchost\\.exe)(?=.*3389)(?=.*(?:.*127\\..*|.*::1)))'
+grep -P '^(?:.*(?=.*3)(?=.*.*\\svchost\\.exe)(?=.*true)(?=.*3389)(?=.*(?:.*127\\..*|.*::1)))'
 ```
 
 

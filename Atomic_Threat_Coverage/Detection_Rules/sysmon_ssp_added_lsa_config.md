@@ -19,8 +19,9 @@
 
 ```
 title: Security Support Provider (SSP) added to LSA configuration
+id: eeb30123-9fbd-4ee8-aaa0-2e545bbed6dc
 status: experimental
-description: Detects the addition of a SSP to the registry. Upon a reboot or API call, SSP DLLs gain access to encrypted and plaintext passwords stored in Windows. 
+description: Detects the addition of a SSP to the registry. Upon a reboot or API call, SSP DLLs gain access to encrypted and plaintext passwords stored in Windows.
 references:
     - https://attack.mitre.org/techniques/T1101/
     - https://powersploit.readthedocs.io/en/latest/Persistence/Install-SSP/
@@ -70,7 +71,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((EventID:"13" AND TargetObject:("HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\Security Packages" "HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\OSConfig\\\\Security Packages")) AND NOT (Image:"C\\:\\\\Windows\\\\system32\\\\msiexec.exe" OR Image:"C\\:\\\\Windows\\\\syswow64\\\\MsiExec.exe"))
+((EventID:"13" AND TargetObject:("HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\Security Packages" "HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\OSConfig\\\\Security Packages")) AND (NOT (Image:"C\\:\\\\Windows\\\\system32\\\\msiexec.exe" OR Image:"C\\:\\\\Windows\\\\syswow64\\\\MsiExec.exe")))
 ```
 
 
@@ -84,7 +85,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((EventID="13" TargetObject IN ["HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\Security Packages", "HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\OSConfig\\\\Security Packages"])  -(Image="C:\\\\Windows\\\\system32\\\\msiexec.exe" OR Image="C:\\\\Windows\\\\syswow64\\\\MsiExec.exe"))
+((event_id="13" TargetObject IN ["HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\Security Packages", "HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\OSConfig\\\\Security Packages"])  -(Image="C:\\\\Windows\\\\system32\\\\msiexec.exe" OR Image="C:\\\\Windows\\\\syswow64\\\\MsiExec.exe"))
 ```
 
 

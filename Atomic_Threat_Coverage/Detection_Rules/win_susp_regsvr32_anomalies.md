@@ -3,7 +3,7 @@
 | Description          | Detects various anomalies in relation to regsvr32.exe                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1117: Regsvr32](https://attack.mitre.org/techniques/T1117)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1117: Regsvr32](../Triggers/T1117.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Regsvr32 Anomaly
+id: 8e2b24c9-4add-46a0-b4bb-0057b4e6187d
 status: experimental
 description: Detects various anomalies in relation to regsvr32.exe
 author: Florian Roth
@@ -42,13 +43,16 @@ detection:
         ParentImage: '*\powershell.exe'
     selection3:
         Image: '*\regsvr32.exe'
+        ParentImage: '*\cmd.exe'
+    selection4:
+        Image: '*\regsvr32.exe'
         CommandLine:
             - '*/i:http* scrobj.dll'
             - '*/i:ftp* scrobj.dll'
-    selection4:
+    selection5:
         Image: '*\wscript.exe'
         ParentImage: '*\regsvr32.exe'
-    selection5:
+    selection6:
         Image: '*\EXCEL.EXE'
         CommandLine: '*..\..\..\Windows\System32\regsvr32.exe *'
     condition: 1 of them
@@ -68,42 +72,42 @@ level: high
 ### es-qs
     
 ```
-((Image.keyword:*\\\\regsvr32.exe AND CommandLine.keyword:*\\\\Temp\\\\*) OR (Image.keyword:*\\\\regsvr32.exe AND ParentImage.keyword:*\\\\powershell.exe) OR (Image.keyword:*\\\\regsvr32.exe AND CommandLine.keyword:(*\\/i\\:http*\\ scrobj.dll OR *\\/i\\:ftp*\\ scrobj.dll)) OR (Image.keyword:*\\\\wscript.exe AND ParentImage.keyword:*\\\\regsvr32.exe) OR (Image.keyword:*\\\\EXCEL.EXE AND CommandLine.keyword:*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe\\ *))
+((Image.keyword:*\\\\regsvr32.exe AND CommandLine.keyword:*\\\\Temp\\\\*) OR (Image.keyword:*\\\\regsvr32.exe AND ParentImage.keyword:*\\\\powershell.exe) OR (Image.keyword:*\\\\regsvr32.exe AND ParentImage.keyword:*\\\\cmd.exe) OR (Image.keyword:*\\\\regsvr32.exe AND CommandLine.keyword:(*\\/i\\:http*\\ scrobj.dll OR *\\/i\\:ftp*\\ scrobj.dll)) OR (Image.keyword:*\\\\wscript.exe AND ParentImage.keyword:*\\\\regsvr32.exe) OR (Image.keyword:*\\\\EXCEL.EXE AND CommandLine.keyword:*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe\\ *))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Regsvr32-Anomaly <<EOF\n{\n  "metadata": {\n    "title": "Regsvr32 Anomaly",\n    "description": "Detects various anomalies in relation to regsvr32.exe",\n    "tags": [\n      "attack.t1117",\n      "attack.defense_evasion",\n      "attack.execution",\n      "car.2019-04-002",\n      "car.2019-04-003"\n    ],\n    "query": "((Image.keyword:*\\\\\\\\regsvr32.exe AND CommandLine.keyword:*\\\\\\\\Temp\\\\\\\\*) OR (Image.keyword:*\\\\\\\\regsvr32.exe AND ParentImage.keyword:*\\\\\\\\powershell.exe) OR (Image.keyword:*\\\\\\\\regsvr32.exe AND CommandLine.keyword:(*\\\\/i\\\\:http*\\\\ scrobj.dll OR *\\\\/i\\\\:ftp*\\\\ scrobj.dll)) OR (Image.keyword:*\\\\\\\\wscript.exe AND ParentImage.keyword:*\\\\\\\\regsvr32.exe) OR (Image.keyword:*\\\\\\\\EXCEL.EXE AND CommandLine.keyword:*..\\\\\\\\..\\\\\\\\..\\\\\\\\Windows\\\\\\\\System32\\\\\\\\regsvr32.exe\\\\ *))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Image.keyword:*\\\\\\\\regsvr32.exe AND CommandLine.keyword:*\\\\\\\\Temp\\\\\\\\*) OR (Image.keyword:*\\\\\\\\regsvr32.exe AND ParentImage.keyword:*\\\\\\\\powershell.exe) OR (Image.keyword:*\\\\\\\\regsvr32.exe AND CommandLine.keyword:(*\\\\/i\\\\:http*\\\\ scrobj.dll OR *\\\\/i\\\\:ftp*\\\\ scrobj.dll)) OR (Image.keyword:*\\\\\\\\wscript.exe AND ParentImage.keyword:*\\\\\\\\regsvr32.exe) OR (Image.keyword:*\\\\\\\\EXCEL.EXE AND CommandLine.keyword:*..\\\\\\\\..\\\\\\\\..\\\\\\\\Windows\\\\\\\\System32\\\\\\\\regsvr32.exe\\\\ *))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Regsvr32 Anomaly\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Regsvr32-Anomaly <<EOF\n{\n  "metadata": {\n    "title": "Regsvr32 Anomaly",\n    "description": "Detects various anomalies in relation to regsvr32.exe",\n    "tags": [\n      "attack.t1117",\n      "attack.defense_evasion",\n      "attack.execution",\n      "car.2019-04-002",\n      "car.2019-04-003"\n    ],\n    "query": "((Image.keyword:*\\\\\\\\regsvr32.exe AND CommandLine.keyword:*\\\\\\\\Temp\\\\\\\\*) OR (Image.keyword:*\\\\\\\\regsvr32.exe AND ParentImage.keyword:*\\\\\\\\powershell.exe) OR (Image.keyword:*\\\\\\\\regsvr32.exe AND ParentImage.keyword:*\\\\\\\\cmd.exe) OR (Image.keyword:*\\\\\\\\regsvr32.exe AND CommandLine.keyword:(*\\\\/i\\\\:http*\\\\ scrobj.dll OR *\\\\/i\\\\:ftp*\\\\ scrobj.dll)) OR (Image.keyword:*\\\\\\\\wscript.exe AND ParentImage.keyword:*\\\\\\\\regsvr32.exe) OR (Image.keyword:*\\\\\\\\EXCEL.EXE AND CommandLine.keyword:*..\\\\\\\\..\\\\\\\\..\\\\\\\\Windows\\\\\\\\System32\\\\\\\\regsvr32.exe\\\\ *))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Image.keyword:*\\\\\\\\regsvr32.exe AND CommandLine.keyword:*\\\\\\\\Temp\\\\\\\\*) OR (Image.keyword:*\\\\\\\\regsvr32.exe AND ParentImage.keyword:*\\\\\\\\powershell.exe) OR (Image.keyword:*\\\\\\\\regsvr32.exe AND ParentImage.keyword:*\\\\\\\\cmd.exe) OR (Image.keyword:*\\\\\\\\regsvr32.exe AND CommandLine.keyword:(*\\\\/i\\\\:http*\\\\ scrobj.dll OR *\\\\/i\\\\:ftp*\\\\ scrobj.dll)) OR (Image.keyword:*\\\\\\\\wscript.exe AND ParentImage.keyword:*\\\\\\\\regsvr32.exe) OR (Image.keyword:*\\\\\\\\EXCEL.EXE AND CommandLine.keyword:*..\\\\\\\\..\\\\\\\\..\\\\\\\\Windows\\\\\\\\System32\\\\\\\\regsvr32.exe\\\\ *))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Regsvr32 Anomaly\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
 ### graylog
     
 ```
-((Image:"*\\\\regsvr32.exe" AND CommandLine:"*\\\\Temp\\\\*") OR (Image:"*\\\\regsvr32.exe" AND ParentImage:"*\\\\powershell.exe") OR (Image:"*\\\\regsvr32.exe" AND CommandLine:("*\\/i\\:http* scrobj.dll" "*\\/i\\:ftp* scrobj.dll")) OR (Image:"*\\\\wscript.exe" AND ParentImage:"*\\\\regsvr32.exe") OR (Image:"*\\\\EXCEL.EXE" AND CommandLine:"*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe *"))
+((Image.keyword:*\\\\regsvr32.exe AND CommandLine.keyword:*\\\\Temp\\\\*) OR (Image.keyword:*\\\\regsvr32.exe AND ParentImage.keyword:*\\\\powershell.exe) OR (Image.keyword:*\\\\regsvr32.exe AND ParentImage.keyword:*\\\\cmd.exe) OR (Image.keyword:*\\\\regsvr32.exe AND CommandLine.keyword:(*\\/i\\:http* scrobj.dll *\\/i\\:ftp* scrobj.dll)) OR (Image.keyword:*\\\\wscript.exe AND ParentImage.keyword:*\\\\regsvr32.exe) OR (Image.keyword:*\\\\EXCEL.EXE AND CommandLine.keyword:*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe *))
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\\\regsvr32.exe" CommandLine="*\\\\Temp\\\\*") OR (Image="*\\\\regsvr32.exe" ParentImage="*\\\\powershell.exe") OR (Image="*\\\\regsvr32.exe" (CommandLine="*/i:http* scrobj.dll" OR CommandLine="*/i:ftp* scrobj.dll")) OR (Image="*\\\\wscript.exe" ParentImage="*\\\\regsvr32.exe") OR (Image="*\\\\EXCEL.EXE" CommandLine="*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe *")) | table CommandLine,ParentCommandLine
+((Image="*\\\\regsvr32.exe" CommandLine="*\\\\Temp\\\\*") OR (Image="*\\\\regsvr32.exe" ParentImage="*\\\\powershell.exe") OR (Image="*\\\\regsvr32.exe" ParentImage="*\\\\cmd.exe") OR (Image="*\\\\regsvr32.exe" (CommandLine="*/i:http* scrobj.dll" OR CommandLine="*/i:ftp* scrobj.dll")) OR (Image="*\\\\wscript.exe" ParentImage="*\\\\regsvr32.exe") OR (Image="*\\\\EXCEL.EXE" CommandLine="*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe *")) | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-((Image="*\\\\regsvr32.exe" CommandLine="*\\\\Temp\\\\*") OR (Image="*\\\\regsvr32.exe" ParentImage="*\\\\powershell.exe") OR (Image="*\\\\regsvr32.exe" CommandLine IN ["*/i:http* scrobj.dll", "*/i:ftp* scrobj.dll"]) OR (Image="*\\\\wscript.exe" ParentImage="*\\\\regsvr32.exe") OR (Image="*\\\\EXCEL.EXE" CommandLine="*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe *"))
+(event_id="1" ((Image="*\\\\regsvr32.exe" CommandLine="*\\\\Temp\\\\*") OR (Image="*\\\\regsvr32.exe" ParentImage="*\\\\powershell.exe") OR (Image="*\\\\regsvr32.exe" ParentImage="*\\\\cmd.exe") OR (Image="*\\\\regsvr32.exe" CommandLine IN ["*/i:http* scrobj.dll", "*/i:ftp* scrobj.dll"]) OR (Image="*\\\\wscript.exe" ParentImage="*\\\\regsvr32.exe") OR (Image="*\\\\EXCEL.EXE" CommandLine="*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe *")))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?:.*(?:.*(?=.*.*\\regsvr32\\.exe)(?=.*.*\\Temp\\\\.*))|.*(?:.*(?=.*.*\\regsvr32\\.exe)(?=.*.*\\powershell\\.exe))|.*(?:.*(?=.*.*\\regsvr32\\.exe)(?=.*(?:.*.*/i:http.* scrobj\\.dll|.*.*/i:ftp.* scrobj\\.dll)))|.*(?:.*(?=.*.*\\wscript\\.exe)(?=.*.*\\regsvr32\\.exe))|.*(?:.*(?=.*.*\\EXCEL\\.EXE)(?=.*.*\\.\\.\\\\.\\.\\\\.\\.\\Windows\\System32\\regsvr32\\.exe .*))))'
+grep -P '^(?:.*(?:.*(?:.*(?=.*.*\\regsvr32\\.exe)(?=.*.*\\Temp\\\\.*))|.*(?:.*(?=.*.*\\regsvr32\\.exe)(?=.*.*\\powershell\\.exe))|.*(?:.*(?=.*.*\\regsvr32\\.exe)(?=.*.*\\cmd\\.exe))|.*(?:.*(?=.*.*\\regsvr32\\.exe)(?=.*(?:.*.*/i:http.* scrobj\\.dll|.*.*/i:ftp.* scrobj\\.dll)))|.*(?:.*(?=.*.*\\wscript\\.exe)(?=.*.*\\regsvr32\\.exe))|.*(?:.*(?=.*.*\\EXCEL\\.EXE)(?=.*.*\\.\\.\\\\.\\.\\\\.\\.\\Windows\\System32\\regsvr32\\.exe .*))))'
 ```
 
 

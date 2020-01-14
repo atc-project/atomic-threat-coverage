@@ -3,7 +3,7 @@
 | Description          | Detects invocation of Microsoft Workflow Compiler, which may permit the execution of arbitrary unsigned code.                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1127: Trusted Developer Utilities](https://attack.mitre.org/techniques/T1127)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1127: Trusted Developer Utilities](../Triggers/T1127.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Microsoft Workflow Compiler
+id: 419dbf2b-8a9b-4bea-bf99-7544b050ec8d
 status: experimental
 description: Detects invocation of Microsoft Workflow Compiler, which may permit the execution of arbitrary unsigned code.
 tags:
@@ -65,7 +66,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-Image:"*\\\\Microsoft.Workflow.Compiler.exe"
+Image.keyword:*\\\\Microsoft.Workflow.Compiler.exe
 ```
 
 
@@ -79,7 +80,7 @@ Image="*\\\\Microsoft.Workflow.Compiler.exe" | table CommandLine,ParentCommandLi
 ### logpoint
     
 ```
-Image="*\\\\Microsoft.Workflow.Compiler.exe"
+(event_id="1" Image="*\\\\Microsoft.Workflow.Compiler.exe")
 ```
 
 

@@ -19,6 +19,7 @@
 
 ```
 title: Eventlog Cleared
+id: d99b79d2-0a6f-4f46-ad8b-260b6e17f982
 description: One of the Windows Eventlogs has been cleared. e.g. caused by "wevtutil cl" command execution
 references:
     - https://twitter.com/deviouspolack/status/832535435960209408
@@ -78,7 +79,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="104" Source="Microsoft-Windows-Eventlog")
+(event_source="Microsoft-Windows-Security-Auditing" event_id="104" Source="Microsoft-Windows-Eventlog")
 ```
 
 

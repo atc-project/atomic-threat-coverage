@@ -19,7 +19,9 @@
 
 ```
 title: Account Tampering - Suspicious Failed Logon Reasons
-description: This method uses uncommon error codes on failed logons to determine suspicious activity and tampering with accounts that have been disabled or somehow restricted.
+id: 9eb99343-d336-4020-a3cd-67f3819e68ee
+description: This method uses uncommon error codes on failed logons to determine suspicious activity and tampering with accounts that have been disabled or somehow
+    restricted.
 author: Florian Roth
 modified: 2019/03/01
 references:
@@ -85,7 +87,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID IN ["4625", "4776"] Status IN ["0xC0000072", "0xC000006F", "0xC0000070", "0xC0000413", "0xC000018C", "0xC000015B"])
+(event_source="Microsoft-Windows-Security-Auditing" event_id IN ["4625", "4776"] Status IN ["0xC0000072", "0xC000006F", "0xC0000070", "0xC0000413", "0xC000018C", "0xC000015B"])
 ```
 
 

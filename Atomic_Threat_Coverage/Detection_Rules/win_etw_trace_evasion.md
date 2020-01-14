@@ -3,7 +3,7 @@
 | Description          | Detects a command that clears or disables any ETW trace log which could indicate a logging evasion.                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1070: Indicator Removal on Host](https://attack.mitre.org/techniques/T1070)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1070: Indicator Removal on Host](../Triggers/T1070.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Disable of ETW Trace
+id: a238b5d0-ce2d-4414-a676-7a531b3d13d6
 description: Detects a command that clears or disables any ETW trace log which could indicate a logging evasion.
 references:
     - https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/wevtutil
@@ -68,7 +69,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(CommandLine:"* cl *\\/Trace*" OR CommandLine:"* clear\\-log *\\/Trace*" OR CommandLine:"* sl* \\/e\\:false*" OR CommandLine:"* set\\-log* \\/e\\:false*")
+(CommandLine.keyword:* cl *\\/Trace* OR CommandLine.keyword:* clear\\-log *\\/Trace* OR CommandLine.keyword:* sl* \\/e\\:false* OR CommandLine.keyword:* set\\-log* \\/e\\:false*)
 ```
 
 
@@ -82,7 +83,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(CommandLine="* cl */Trace*" OR CommandLine="* clear-log */Trace*" OR CommandLine="* sl* /e:false*" OR CommandLine="* set-log* /e:false*")
+(event_id="1" (CommandLine="* cl */Trace*" OR CommandLine="* clear-log */Trace*" OR CommandLine="* sl* /e:false*" OR CommandLine="* set-log* /e:false*"))
 ```
 
 

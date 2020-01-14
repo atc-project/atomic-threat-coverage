@@ -19,6 +19,7 @@
 
 ```
 title: UAC Bypass via sdclt
+id: 5b872a46-3b90-45c1-8419-f675db8053aa
 status: experimental
 description: Detects changes to HKCU:\Software\Classes\exefile\shell\runas\command\isolatedCommand
 references:
@@ -65,7 +66,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"13" AND TargetObject:"HKEY_USERS\\\\*\\\\Classes\\\\exefile\\\\shell\\\\runas\\\\command\\\\isolatedCommand")
+(EventID:"13" AND TargetObject.keyword:HKEY_USERS\\\\*\\\\Classes\\\\exefile\\\\shell\\\\runas\\\\command\\\\isolatedCommand)
 ```
 
 
@@ -79,7 +80,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="13" TargetObject="HKEY_USERS\\\\*\\\\Classes\\\\exefile\\\\shell\\\\runas\\\\command\\\\isolatedCommand")
+(event_id="13" TargetObject="HKEY_USERS\\\\*\\\\Classes\\\\exefile\\\\shell\\\\runas\\\\command\\\\isolatedCommand")
 ```
 
 

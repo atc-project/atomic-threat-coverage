@@ -19,7 +19,9 @@
 
 ```
 title: Rare Service Installs
-description: Detects rare service installs that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious services 
+id: 66bfef30-22a5-4fcd-ad44-8d81e60922ae
+description: Detects rare service installs that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious
+    services
 status: experimental
 author: Florian Roth
 tags:
@@ -76,7 +78,7 @@ EventID="7045" | eventstats count as val by ServiceFileName| search val < 5
 ### logpoint
     
 ```
-EventID="7045" | chart count() as val by ServiceFileName | search val < 5
+(event_source="Microsoft-Windows-Security-Auditing" event_id="7045") | chart count() as val by ServiceFileName | search val < 5
 ```
 
 

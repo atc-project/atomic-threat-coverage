@@ -3,7 +3,7 @@
 | Description          | Detects installation of a new shim using sdbinst.exe. A shim can be used to load malicious DLLs into applications.                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1138: Application Shimming](https://attack.mitre.org/techniques/T1138)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1138: Application Shimming](../Triggers/T1138.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Possible Shim Database Persistence via sdbinst.exe
+id: 517490a7-115a-48c6-8862-1a481504d5a8
 status: experimental
 description: Detects installation of a new shim using sdbinst.exe. A shim can be used to load malicious DLLs into applications.
 references:
@@ -64,7 +65,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(Image:("*\\\\sdbinst.exe") AND CommandLine:("*.sdb*"))
+(Image.keyword:(*\\\\sdbinst.exe) AND CommandLine.keyword:(*.sdb*))
 ```
 
 
@@ -78,7 +79,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(Image IN ["*\\\\sdbinst.exe"] CommandLine IN ["*.sdb*"])
+(event_id="1" Image IN ["*\\\\sdbinst.exe"] CommandLine IN ["*.sdb*"])
 ```
 
 

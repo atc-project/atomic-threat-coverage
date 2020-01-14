@@ -3,7 +3,7 @@
 | Description          | Detects Request to amsiInitFailed that can be used to disable AMSI Scanning                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Powershell AMSI Bypass via .NET Reflection
+id: 30edb182-aa75-42c0-b0a9-e998bb29067c
 status: experimental
 description: Detects Request to amsiInitFailed that can be used to disable AMSI Scanning
 references:
@@ -68,7 +69,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(CommandLine:("*System.Management.Automation.AmsiUtils*") AND CommandLine:("*amsiInitFailed*"))
+(CommandLine.keyword:(*System.Management.Automation.AmsiUtils*) AND CommandLine.keyword:(*amsiInitFailed*))
 ```
 
 
@@ -82,7 +83,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(CommandLine IN ["*System.Management.Automation.AmsiUtils*"] CommandLine IN ["*amsiInitFailed*"])
+(event_id="1" CommandLine IN ["*System.Management.Automation.AmsiUtils*"] CommandLine IN ["*amsiInitFailed*"])
 ```
 
 

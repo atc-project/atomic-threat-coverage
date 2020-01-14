@@ -3,7 +3,7 @@
 | Description          | Detects a Windows command line executable started from Microsoft Word, Excel, Powerpoint, Publisher and Visio.                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1059: Command-Line Interface](https://attack.mitre.org/techniques/T1059)</li><li>[T1202: Indirect Command Execution](https://attack.mitre.org/techniques/T1202)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1059: Command-Line Interface](../Triggers/T1059.md)</li><li>[T1202: Indirect Command Execution](../Triggers/T1202.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Microsoft Office Product Spawning Windows Shell
+id: 438025f9-5856-4663-83f7-52f878a70a50
 status: experimental
 description: Detects a Windows command line executable started from Microsoft Word, Excel, Powerpoint, Publisher and Visio.
 references:
@@ -56,7 +57,7 @@ detection:
             - '*\schtasks.exe'
             - '*\regsvr32.exe'
             - '*\hh.exe'
-            - '*\wmic.exe'
+            - '*\wmic.exe'  # https://app.any.run/tasks/c903e9c8-0350-440c-8688-3881b556b8e0/
             - '*\mshta.exe'
             - '*\rundll32.exe'
             - '*\msiexec.exe'
@@ -96,7 +97,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(ParentImage:("*\\\\WINWORD.EXE" "*\\\\EXCEL.EXE" "*\\\\POWERPNT.exe" "*\\\\MSPUB.exe" "*\\\\VISIO.exe" "*\\\\OUTLOOK.EXE") AND Image:("*\\\\cmd.exe" "*\\\\powershell.exe" "*\\\\wscript.exe" "*\\\\cscript.exe" "*\\\\sh.exe" "*\\\\bash.exe" "*\\\\scrcons.exe" "*\\\\schtasks.exe" "*\\\\regsvr32.exe" "*\\\\hh.exe" "*\\\\wmic.exe" "*\\\\mshta.exe" "*\\\\rundll32.exe" "*\\\\msiexec.exe" "*\\\\forfiles.exe" "*\\\\scriptrunner.exe" "*\\\\mftrace.exe" "*\\\\AppVLP.exe" "*\\\\svchost.exe"))
+(ParentImage.keyword:(*\\\\WINWORD.EXE *\\\\EXCEL.EXE *\\\\POWERPNT.exe *\\\\MSPUB.exe *\\\\VISIO.exe *\\\\OUTLOOK.EXE) AND Image.keyword:(*\\\\cmd.exe *\\\\powershell.exe *\\\\wscript.exe *\\\\cscript.exe *\\\\sh.exe *\\\\bash.exe *\\\\scrcons.exe *\\\\schtasks.exe *\\\\regsvr32.exe *\\\\hh.exe *\\\\wmic.exe *\\\\mshta.exe *\\\\rundll32.exe *\\\\msiexec.exe *\\\\forfiles.exe *\\\\scriptrunner.exe *\\\\mftrace.exe *\\\\AppVLP.exe *\\\\svchost.exe))
 ```
 
 
@@ -110,7 +111,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(ParentImage IN ["*\\\\WINWORD.EXE", "*\\\\EXCEL.EXE", "*\\\\POWERPNT.exe", "*\\\\MSPUB.exe", "*\\\\VISIO.exe", "*\\\\OUTLOOK.EXE"] Image IN ["*\\\\cmd.exe", "*\\\\powershell.exe", "*\\\\wscript.exe", "*\\\\cscript.exe", "*\\\\sh.exe", "*\\\\bash.exe", "*\\\\scrcons.exe", "*\\\\schtasks.exe", "*\\\\regsvr32.exe", "*\\\\hh.exe", "*\\\\wmic.exe", "*\\\\mshta.exe", "*\\\\rundll32.exe", "*\\\\msiexec.exe", "*\\\\forfiles.exe", "*\\\\scriptrunner.exe", "*\\\\mftrace.exe", "*\\\\AppVLP.exe", "*\\\\svchost.exe"])
+(event_id="1" ParentImage IN ["*\\\\WINWORD.EXE", "*\\\\EXCEL.EXE", "*\\\\POWERPNT.exe", "*\\\\MSPUB.exe", "*\\\\VISIO.exe", "*\\\\OUTLOOK.EXE"] Image IN ["*\\\\cmd.exe", "*\\\\powershell.exe", "*\\\\wscript.exe", "*\\\\cscript.exe", "*\\\\sh.exe", "*\\\\bash.exe", "*\\\\scrcons.exe", "*\\\\schtasks.exe", "*\\\\regsvr32.exe", "*\\\\hh.exe", "*\\\\wmic.exe", "*\\\\mshta.exe", "*\\\\rundll32.exe", "*\\\\msiexec.exe", "*\\\\forfiles.exe", "*\\\\scriptrunner.exe", "*\\\\mftrace.exe", "*\\\\AppVLP.exe", "*\\\\svchost.exe"])
 ```
 
 

@@ -3,7 +3,7 @@
 | Description          | Detects a ping command that uses a hex encoded IP address                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1140: Deobfuscate/Decode Files or Information](https://attack.mitre.org/techniques/T1140)</li><li>[T1027: Obfuscated Files or Information](https://attack.mitre.org/techniques/T1027)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1140: Deobfuscate/Decode Files or Information](../Triggers/T1140.md)</li><li>[T1027: Obfuscated Files or Information](../Triggers/T1027.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Ping Hex IP
+id: 1a0d4aba-7668-4365-9ce4-6d79ab088dfd
 description: Detects a ping command that uses a hex encoded IP address
 references:
     - https://github.com/vysec/Aggressor-VYSEC/blob/master/ping.cna
@@ -67,7 +68,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-CommandLine:("*\\\\ping.exe 0x*" "*\\\\ping 0x*")
+CommandLine.keyword:(*\\\\ping.exe 0x* *\\\\ping 0x*)
 ```
 
 
@@ -81,7 +82,7 @@ CommandLine:("*\\\\ping.exe 0x*" "*\\\\ping 0x*")
 ### logpoint
     
 ```
-CommandLine IN ["*\\\\ping.exe 0x*", "*\\\\ping 0x*"]
+(event_id="1" CommandLine IN ["*\\\\ping.exe 0x*", "*\\\\ping 0x*"])
 ```
 
 

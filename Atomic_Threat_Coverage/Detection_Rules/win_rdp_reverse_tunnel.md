@@ -19,6 +19,7 @@
 
 ```
 title: RDP over Reverse SSH Tunnel WFP
+id: 5bed80b6-b3e8-428e-a3ae-d3c757589e41
 status: experimental
 description: Detects svchost hosting RDP termsvcs communicating with the loopback address and on TCP port 3389
 references:
@@ -74,7 +75,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"5156" AND ((SourcePort:"3389" AND DestinationAddress:("127.*" "\\:\\:1")) OR (DestinationPort:"3389" AND SourceAddress:("127.*" "\\:\\:1"))))
+(EventID:"5156" AND ((SourcePort:"3389" AND DestinationAddress.keyword:(127.* \\:\\:1)) OR (DestinationPort:"3389" AND SourceAddress.keyword:(127.* \\:\\:1))))
 ```
 
 
@@ -88,7 +89,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="5156" ((SourcePort="3389" DestinationAddress IN ["127.*", "::1"]) OR (DestinationPort="3389" SourceAddress IN ["127.*", "::1"])))
+(event_source="Microsoft-Windows-Security-Auditing" event_id="5156" ((SourcePort="3389" DestinationAddress IN ["127.*", "::1"]) OR (DestinationPort="3389" SourceAddress IN ["127.*", "::1"])))
 ```
 
 

@@ -19,6 +19,7 @@
 
 ```
 title: Taskmgr as LOCAL_SYSTEM
+id: 9fff585c-c33e-4a86-b3cd-39312079a65f
 status: experimental
 description: Detects the creation of taskmgr.exe process in context of LOCAL_SYSTEM
 tags:
@@ -61,7 +62,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(User:"NT AUTHORITY\\\\SYSTEM" AND Image:"*\\\\taskmgr.exe")
+(User:"NT AUTHORITY\\\\SYSTEM" AND Image.keyword:*\\\\taskmgr.exe)
 ```
 
 
@@ -75,7 +76,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(User="NT AUTHORITY\\\\SYSTEM" Image="*\\\\taskmgr.exe")
+(event_id="1" User="NT AUTHORITY\\\\SYSTEM" Image="*\\\\taskmgr.exe")
 ```
 
 

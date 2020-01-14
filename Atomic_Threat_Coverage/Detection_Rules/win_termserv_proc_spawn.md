@@ -19,6 +19,7 @@
 
 ```
 title: Terminal Service Process Spawn
+id: 1012f107-b8f1-4271-af30-5aed2de89b39
 status: experimental
 description: Detects a process spawned by the terminal service server process (this could be an indicator for an exploitation of CVE-2019-0708)
 references:
@@ -64,7 +65,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(ParentCommandLine:"*\\\\svchost.exe*termsvcs" AND NOT (Image:"*\\\\rdpclip.exe"))
+(ParentCommandLine.keyword:*\\\\svchost.exe*termsvcs AND (NOT (Image.keyword:*\\\\rdpclip.exe)))
 ```
 
 
@@ -78,7 +79,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(ParentCommandLine="*\\\\svchost.exe*termsvcs"  -(Image="*\\\\rdpclip.exe"))
+(event_id="1" ParentCommandLine="*\\\\svchost.exe*termsvcs"  -(Image="*\\\\rdpclip.exe"))
 ```
 
 

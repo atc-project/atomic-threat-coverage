@@ -19,8 +19,10 @@
 
 ```
 title: DHCP Callout DLL installation
+id: 9d3436ef-9476-4c43-acca-90ce06bdf33a
 status: experimental
-description: Detects the installation of a Callout DLL via CalloutDlls and CalloutEnabled parameter in Registry, which can be used to execute code in context of the DHCP server (restart required)
+description: Detects the installation of a Callout DLL via CalloutDlls and CalloutEnabled parameter in Registry, which can be used to execute code in context of the
+    DHCP server (restart required)
 references:
     - https://blog.3or.de/mimilib-dhcp-server-callout-dll-injection.html
     - https://technet.microsoft.com/en-us/library/cc726884(v=ws.10).aspx
@@ -68,7 +70,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"13" AND TargetObject:("*\\\\Services\\\\DHCPServer\\\\Parameters\\\\CalloutDlls" "*\\\\Services\\\\DHCPServer\\\\Parameters\\\\CalloutEnabled"))
+(EventID:"13" AND TargetObject.keyword:(*\\\\Services\\\\DHCPServer\\\\Parameters\\\\CalloutDlls *\\\\Services\\\\DHCPServer\\\\Parameters\\\\CalloutEnabled))
 ```
 
 
@@ -82,7 +84,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="13" TargetObject IN ["*\\\\Services\\\\DHCPServer\\\\Parameters\\\\CalloutDlls", "*\\\\Services\\\\DHCPServer\\\\Parameters\\\\CalloutEnabled"])
+(event_id="13" TargetObject IN ["*\\\\Services\\\\DHCPServer\\\\Parameters\\\\CalloutDlls", "*\\\\Services\\\\DHCPServer\\\\Parameters\\\\CalloutEnabled"])
 ```
 
 

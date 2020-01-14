@@ -1,8 +1,7 @@
 | Title             | DN_0036_4104_windows_powershell_script_block                                                                                                      |
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | This event records script                                                                                                |
-| Logging Policy    | <ul><li>[TODO](../Logging_Policies/TODO.md)</li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Logging Policy    | <ul><li>[TODO](../Logging_Policies/TODO.md)</li></ul> | 
 | References     		| <ul><li>[https://blogs.msdn.microsoft.com/powershell/2015/06/09/powershell-the-blue-team/](https://blogs.msdn.microsoft.com/powershell/2015/06/09/powershell-the-blue-team/)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/powershell/events/event-4104.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/powershell/events/event-4104.md)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Applications and Services Logs 		| 
