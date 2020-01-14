@@ -3,7 +3,7 @@
 | Description          | Detects the usage of Sysinternals Tools due to accepteula key being added to Registry                                                                                                                                           |
 | ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
 | ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              |  There is no documented Trigger for this Detection Rule yet  |
 | Severity Level       | low |
@@ -18,11 +18,11 @@
 ### Sigma rule
 
 ```
----
 action: global
-title: Usage of Sysinternals Tools 
+title: Usage of Sysinternals Tools
+id: 25ffa65d-76d8-4da5-a832-3f2b0136e133
 status: experimental
-description: Detects the usage of Sysinternals Tools due to accepteula key being added to Registry 
+description: Detects the usage of Sysinternals Tools due to accepteula key being added to Registry
 references:
     - https://twitter.com/Moti_B/status/1008587936735035392
 date: 2017/08/28
@@ -71,7 +71,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"13" AND TargetObject:"*\\\\EulaAccepted")\nCommandLine:"* \\-accepteula*"
+(EventID:"13" AND TargetObject.keyword:*\\\\EulaAccepted)\nCommandLine.keyword:* \\-accepteula*
 ```
 
 
@@ -85,7 +85,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="13" TargetObject="*\\\\EulaAccepted")\nCommandLine="* -accepteula*"
+(event_id="13" TargetObject="*\\\\EulaAccepted")\n(event_id="1" CommandLine="* -accepteula*")
 ```
 
 

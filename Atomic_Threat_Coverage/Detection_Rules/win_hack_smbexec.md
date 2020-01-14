@@ -19,6 +19,7 @@
 
 ```
 title: smbexec.py Service Installation
+id: 52a85084-6989-40c3-8f32-091e12e13f09
 description: Detects the use of smbexec.py tool by detecting a specific service installation
 author: Omer Faruk Celik
 date: 2018/03/20
@@ -68,7 +69,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"7045" AND ServiceName:"BTOBTO" AND ServiceFileName:"*\\\\execute.bat")
+(EventID:"7045" AND ServiceName:"BTOBTO" AND ServiceFileName.keyword:*\\\\execute.bat)
 ```
 
 
@@ -82,7 +83,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="7045" ServiceName="BTOBTO" ServiceFileName="*\\\\execute.bat")
+(event_source="Microsoft-Windows-Security-Auditing" event_id="7045" service="BTOBTO" ServiceFileName="*\\\\execute.bat")
 ```
 
 

@@ -19,6 +19,7 @@
 
 ```
 title: Scanner PoC for CVE-2019-0708 RDP RCE vuln
+id: 8400629e-79a9-4737-b387-5db940ab2367
 description: Detects the use of a scanner by zerosum0x0 that discovers targets vulnerable to  CVE-2019-0708 RDP RCE aka BlueKeep
 references:
     - https://twitter.com/AdamTheAnalyst/status/1134394070045003776
@@ -78,7 +79,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="4625" AccountName="AAAAAAA")
+(event_source="Microsoft-Windows-Security-Auditing" event_id="4625" AccountName="AAAAAAA")
 ```
 
 

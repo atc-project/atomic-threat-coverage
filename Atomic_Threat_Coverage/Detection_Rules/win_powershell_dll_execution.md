@@ -19,6 +19,7 @@
 
 ```
 title: Detection of PowerShell Execution via DLL
+id: 6812a10b-60ea-420c-832f-dfcc33b646ba
 status: experimental
 description: Detects PowerShell Strings applied to rundllas seen in PowerShdll.dll
 references:
@@ -71,7 +72,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((Image:("*\\\\rundll32.exe") OR Description:("*Windows\\-Hostprozess \\(Rundll32\\)*")) AND CommandLine:("*Default.GetString*" "*FromBase64String*"))
+((Image.keyword:(*\\\\rundll32.exe) OR Description.keyword:(*Windows\\-Hostprozess \\(Rundll32\\)*)) AND CommandLine.keyword:(*Default.GetString* *FromBase64String*))
 ```
 
 
@@ -85,7 +86,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((Image IN ["*\\\\rundll32.exe"] OR Description IN ["*Windows-Hostprozess (Rundll32)*"]) CommandLine IN ["*Default.GetString*", "*FromBase64String*"])
+(event_id="1" (Image IN ["*\\\\rundll32.exe"] OR Description IN ["*Windows-Hostprozess (Rundll32)*"]) CommandLine IN ["*Default.GetString*", "*FromBase64String*"])
 ```
 
 

@@ -19,6 +19,7 @@
 
 ```
 title: WMI Event Subscription
+id: 0f06a3a5-6a09-413f-8743-e6cf35561297
 status: experimental
 description: Detects creation of WMI event subscription persistence method
 references:
@@ -79,7 +80,7 @@ EventID:("19" "20" "21")
 ### logpoint
     
 ```
-EventID IN ["19", "20", "21"]
+event_id IN ["19", "20", "21"]
 ```
 
 

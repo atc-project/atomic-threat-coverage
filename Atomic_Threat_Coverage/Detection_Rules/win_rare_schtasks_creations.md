@@ -19,7 +19,9 @@
 
 ```
 title: Rare Schtasks Creations
-description: Detects rare scheduled tasks creations that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious code
+id: b0d77106-7bb0-41fe-bd94-d1752164d066
+description: Detects rare scheduled tasks creations that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types
+    of malicious code
 status: experimental
 author: Florian Roth
 tags:
@@ -79,7 +81,7 @@ EventID="4698" | eventstats count as val by TaskName| search val < 5
 ### logpoint
     
 ```
-EventID="4698" | chart count() as val by TaskName | search val < 5
+(event_source="Microsoft-Windows-Security-Auditing" event_id="4698") | chart count() as val by TaskName | search val < 5
 ```
 
 

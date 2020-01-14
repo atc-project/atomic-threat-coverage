@@ -19,6 +19,7 @@
 
 ```
 title: PsExec Service Start
+id: 3ede524d-21cc-472d-a3ce-d21b568d8db7
 description: Detects a PsExec service start
 author: Florian Roth
 date: 2018/03/13
@@ -75,7 +76,7 @@ ProcessCommandLine="C:\\\\Windows\\\\PSEXESVC.exe"
 ### logpoint
     
 ```
-ProcessCommandLine="C:\\\\Windows\\\\PSEXESVC.exe"
+(event_id="1" ProcessCommandLine="C:\\\\Windows\\\\PSEXESVC.exe")
 ```
 
 

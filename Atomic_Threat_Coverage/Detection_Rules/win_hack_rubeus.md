@@ -3,7 +3,7 @@
 | Description          | Detects command line parameters used by Rubeus hack tool                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | Severity Level       | critical |
@@ -19,6 +19,7 @@
 
 ```
 title: Rubeus Hack Tool
+id: 7ec2c172-dceb-4c10-92c9-87c1881b7e18
 description: Detects command line parameters used by Rubeus hack tool
 author: Florian Roth
 references:
@@ -71,7 +72,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-CommandLine:("* asreproast *" "* dump \\/service\\:krbtgt *" "* kerberoast *" "* createnetonly \\/program\\:*" "* ptt \\/ticket\\:*" "* \\/impersonateuser\\:*" "* renew \\/ticket\\:*" "* asktgt \\/user\\:*" "* harvest \\/interval\\:*")
+CommandLine.keyword:(* asreproast * * dump \\/service\\:krbtgt * * kerberoast * * createnetonly \\/program\\:* * ptt \\/ticket\\:* * \\/impersonateuser\\:* * renew \\/ticket\\:* * asktgt \\/user\\:* * harvest \\/interval\\:*)
 ```
 
 
@@ -85,7 +86,7 @@ CommandLine:("* asreproast *" "* dump \\/service\\:krbtgt *" "* kerberoast *" "*
 ### logpoint
     
 ```
-CommandLine IN ["* asreproast *", "* dump /service:krbtgt *", "* kerberoast *", "* createnetonly /program:*", "* ptt /ticket:*", "* /impersonateuser:*", "* renew /ticket:*", "* asktgt /user:*", "* harvest /interval:*"]
+(event_id="1" CommandLine IN ["* asreproast *", "* dump /service:krbtgt *", "* kerberoast *", "* createnetonly /program:*", "* ptt /ticket:*", "* /impersonateuser:*", "* renew /ticket:*", "* asktgt /user:*", "* harvest /interval:*"])
 ```
 
 

@@ -19,8 +19,9 @@
 
 ```
 title: Suspicious Scripting in a WMI Consumer
+id: fe21810c-2a8c-478f-8dd3-5a287fb2a0e0
 status: experimental
-description: Detects suspicious scripting in WMI Event Consumers 
+description: Detects suspicious scripting in WMI Event Consumers
 author: Florian Roth
 references:
     - https://in.security/an-intro-into-abusing-and-identifying-wmi-event-subscriptions-for-persistence/
@@ -77,7 +78,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"20" AND Destination:("*new\\-object system.net.webclient\\).downloadstring\\(*" "*new\\-object system.net.webclient\\).downloadfile\\(*" "*new\\-object net.webclient\\).downloadstring\\(*" "*new\\-object net.webclient\\).downloadfile\\(*" "* iex\\(*" "*WScript.shell*" "* \\-nop *" "* \\-noprofile *" "* \\-decode *" "* \\-enc *"))
+(EventID:"20" AND Destination.keyword:(*new\\-object system.net.webclient\\).downloadstring\\(* *new\\-object system.net.webclient\\).downloadfile\\(* *new\\-object net.webclient\\).downloadstring\\(* *new\\-object net.webclient\\).downloadfile\\(* * iex\\(* *WScript.shell* * \\-nop * * \\-noprofile * * \\-decode * * \\-enc *))
 ```
 
 
@@ -91,7 +92,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="20" Destination IN ["*new-object system.net.webclient).downloadstring(*", "*new-object system.net.webclient).downloadfile(*", "*new-object net.webclient).downloadstring(*", "*new-object net.webclient).downloadfile(*", "* iex(*", "*WScript.shell*", "* -nop *", "* -noprofile *", "* -decode *", "* -enc *"])
+(event_id="20" Destination IN ["*new-object system.net.webclient).downloadstring(*", "*new-object system.net.webclient).downloadfile(*", "*new-object net.webclient).downloadstring(*", "*new-object net.webclient).downloadfile(*", "* iex(*", "*WScript.shell*", "* -nop *", "* -noprofile *", "* -decode *", "* -enc *"])
 ```
 
 

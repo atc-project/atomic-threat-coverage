@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious access to sensitive file extensions
+id: 91c945bc-2ad1-4799-a591-4d00198a1215
 description: Detects known sensitive file extensions
 author: Samir Bousseaden
 tags:
@@ -41,7 +42,6 @@ detection:
             - '*.bak'
             - '*.dmp'
             - '*.kirbi'
-            - '*\ntds.dit'
             - '*\groups.xml'
             - '*.rdp'
     condition: selection
@@ -58,42 +58,42 @@ level: high
 ### es-qs
     
 ```
-(EventID:("5145") AND RelativeTargetName.keyword:(*.pst OR *.ost OR *.msg OR *.nst OR *.oab OR *.edb OR *.nsf OR *.bak OR *.dmp OR *.kirbi OR *\\\\ntds.dit OR *\\\\groups.xml OR *.rdp))
+(EventID:("5145") AND RelativeTargetName.keyword:(*.pst OR *.ost OR *.msg OR *.nst OR *.oab OR *.edb OR *.nsf OR *.bak OR *.dmp OR *.kirbi OR *\\\\groups.xml OR *.rdp))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-access-to-sensitive-file-extensions <<EOF\n{\n  "metadata": {\n    "title": "Suspicious access to sensitive file extensions",\n    "description": "Detects known sensitive file extensions",\n    "tags": [\n      "attack.collection"\n    ],\n    "query": "(EventID:(\\"5145\\") AND RelativeTargetName.keyword:(*.pst OR *.ost OR *.msg OR *.nst OR *.oab OR *.edb OR *.nsf OR *.bak OR *.dmp OR *.kirbi OR *\\\\\\\\ntds.dit OR *\\\\\\\\groups.xml OR *.rdp))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:(\\"5145\\") AND RelativeTargetName.keyword:(*.pst OR *.ost OR *.msg OR *.nst OR *.oab OR *.edb OR *.nsf OR *.bak OR *.dmp OR *.kirbi OR *\\\\\\\\ntds.dit OR *\\\\\\\\groups.xml OR *.rdp))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious access to sensitive file extensions\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-access-to-sensitive-file-extensions <<EOF\n{\n  "metadata": {\n    "title": "Suspicious access to sensitive file extensions",\n    "description": "Detects known sensitive file extensions",\n    "tags": [\n      "attack.collection"\n    ],\n    "query": "(EventID:(\\"5145\\") AND RelativeTargetName.keyword:(*.pst OR *.ost OR *.msg OR *.nst OR *.oab OR *.edb OR *.nsf OR *.bak OR *.dmp OR *.kirbi OR *\\\\\\\\groups.xml OR *.rdp))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:(\\"5145\\") AND RelativeTargetName.keyword:(*.pst OR *.ost OR *.msg OR *.nst OR *.oab OR *.edb OR *.nsf OR *.bak OR *.dmp OR *.kirbi OR *\\\\\\\\groups.xml OR *.rdp))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious access to sensitive file extensions\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
 ### graylog
     
 ```
-(EventID:("5145") AND RelativeTargetName:("*.pst" "*.ost" "*.msg" "*.nst" "*.oab" "*.edb" "*.nsf" "*.bak" "*.dmp" "*.kirbi" "*\\\\ntds.dit" "*\\\\groups.xml" "*.rdp"))
+(EventID:("5145") AND RelativeTargetName.keyword:(*.pst *.ost *.msg *.nst *.oab *.edb *.nsf *.bak *.dmp *.kirbi *\\\\groups.xml *.rdp))
 ```
 
 
 ### splunk
     
 ```
-((EventID="5145") (RelativeTargetName="*.pst" OR RelativeTargetName="*.ost" OR RelativeTargetName="*.msg" OR RelativeTargetName="*.nst" OR RelativeTargetName="*.oab" OR RelativeTargetName="*.edb" OR RelativeTargetName="*.nsf" OR RelativeTargetName="*.bak" OR RelativeTargetName="*.dmp" OR RelativeTargetName="*.kirbi" OR RelativeTargetName="*\\\\ntds.dit" OR RelativeTargetName="*\\\\groups.xml" OR RelativeTargetName="*.rdp"))
+((EventID="5145") (RelativeTargetName="*.pst" OR RelativeTargetName="*.ost" OR RelativeTargetName="*.msg" OR RelativeTargetName="*.nst" OR RelativeTargetName="*.oab" OR RelativeTargetName="*.edb" OR RelativeTargetName="*.nsf" OR RelativeTargetName="*.bak" OR RelativeTargetName="*.dmp" OR RelativeTargetName="*.kirbi" OR RelativeTargetName="*\\\\groups.xml" OR RelativeTargetName="*.rdp"))
 ```
 
 
 ### logpoint
     
 ```
-(EventID IN ["5145"] RelativeTargetName IN ["*.pst", "*.ost", "*.msg", "*.nst", "*.oab", "*.edb", "*.nsf", "*.bak", "*.dmp", "*.kirbi", "*\\\\ntds.dit", "*\\\\groups.xml", "*.rdp"])
+(event_source="Microsoft-Windows-Security-Auditing" event_id IN ["5145"] RelativeTargetName IN ["*.pst", "*.ost", "*.msg", "*.nst", "*.oab", "*.edb", "*.nsf", "*.bak", "*.dmp", "*.kirbi", "*\\\\groups.xml", "*.rdp"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*5145))(?=.*(?:.*.*\\.pst|.*.*\\.ost|.*.*\\.msg|.*.*\\.nst|.*.*\\.oab|.*.*\\.edb|.*.*\\.nsf|.*.*\\.bak|.*.*\\.dmp|.*.*\\.kirbi|.*.*\\ntds\\.dit|.*.*\\groups\\.xml|.*.*\\.rdp)))'
+grep -P '^(?:.*(?=.*(?:.*5145))(?=.*(?:.*.*\\.pst|.*.*\\.ost|.*.*\\.msg|.*.*\\.nst|.*.*\\.oab|.*.*\\.edb|.*.*\\.nsf|.*.*\\.bak|.*.*\\.dmp|.*.*\\.kirbi|.*.*\\groups\\.xml|.*.*\\.rdp)))'
 ```
 
 

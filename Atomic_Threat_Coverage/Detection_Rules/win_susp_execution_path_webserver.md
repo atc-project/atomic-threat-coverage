@@ -3,7 +3,7 @@
 | Description          | Detects a suspicious program execution in a web service root folder (filter out false positives)                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1100: Web Shell](https://attack.mitre.org/techniques/T1100)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1100: Web Shell](../Triggers/T1100.md)</li></ul>  |
 | Severity Level       | medium |
@@ -19,6 +19,7 @@
 
 ```
 title: Execution in Webserver Root Folder
+id: 35efb964-e6a5-47ad-bbcd-19661854018d
 status: experimental
 description: Detects a suspicious program execution in a web service root folder (filter out false positives)
 author: Florian Roth
@@ -73,7 +74,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(Image:("*\\\\wwwroot\\\\*" "*\\\\wmpub\\\\*" "*\\\\htdocs\\\\*") AND NOT (Image:("*bin\\\\*" "*\\\\Tools\\\\*" "*\\\\SMSComponent\\\\*") AND ParentImage:("*\\\\services.exe")))
+(Image.keyword:(*\\\\wwwroot\\\\* *\\\\wmpub\\\\* *\\\\htdocs\\\\*) AND (NOT (Image.keyword:(*bin\\\\* *\\\\Tools\\\\* *\\\\SMSComponent\\\\*) AND ParentImage.keyword:(*\\\\services.exe))))
 ```
 
 
@@ -87,7 +88,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(Image IN ["*\\\\wwwroot\\\\*", "*\\\\wmpub\\\\*", "*\\\\htdocs\\\\*"]  -(Image IN ["*bin\\\\*", "*\\\\Tools\\\\*", "*\\\\SMSComponent\\\\*"] ParentImage IN ["*\\\\services.exe"]))
+(event_id="1" Image IN ["*\\\\wwwroot\\\\*", "*\\\\wmpub\\\\*", "*\\\\htdocs\\\\*"]  -(Image IN ["*bin\\\\*", "*\\\\Tools\\\\*", "*\\\\SMSComponent\\\\*"] ParentImage IN ["*\\\\services.exe"]))
 ```
 
 

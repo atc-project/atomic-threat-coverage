@@ -1,8 +1,7 @@
 | Title             | DN_0089_56_terminal_server_security_layer_detected_an_error                                                                                                      |
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | The Terminal Server security layer detected an error in the  protocol stream and has disconnected the client                                                                                                |
-| Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Logging Policy    | <ul><li> Not existing </li></ul> | 
 | References     		| <ul><li>[http://www.eventid.net/display-eventid-56-source-TermDD-eventno-9421-phase-1.htm](http://www.eventid.net/display-eventid-56-source-TermDD-eventno-9421-phase-1.htm)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Windows Log 		| 

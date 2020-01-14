@@ -3,7 +3,7 @@
 | Description          | Detects suspicious process run from unusual locations                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
 | Severity Level       | medium |
@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Process Start Locations
+id: 15b75071-74cc-47e0-b4c6-b43744a62a2b
 description: Detects suspicious process run from unusual locations
 status: experimental
 references:
@@ -73,7 +74,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-Image:("*\\:\\\\RECYCLER\\\\*" "*\\:\\\\SystemVolumeInformation\\\\*" "C\\:\\\\Windows\\\\Tasks\\\\*" "C\\:\\\\Windows\\\\debug\\\\*" "C\\:\\\\Windows\\\\fonts\\\\*" "C\\:\\\\Windows\\\\help\\\\*" "C\\:\\\\Windows\\\\drivers\\\\*" "C\\:\\\\Windows\\\\addins\\\\*" "C\\:\\\\Windows\\\\cursors\\\\*" "C\\:\\\\Windows\\\\system32\\\\tasks\\\\*")
+Image.keyword:(*\\:\\\\RECYCLER\\\\* *\\:\\\\SystemVolumeInformation\\\\* C\\:\\\\Windows\\\\Tasks\\\\* C\\:\\\\Windows\\\\debug\\\\* C\\:\\\\Windows\\\\fonts\\\\* C\\:\\\\Windows\\\\help\\\\* C\\:\\\\Windows\\\\drivers\\\\* C\\:\\\\Windows\\\\addins\\\\* C\\:\\\\Windows\\\\cursors\\\\* C\\:\\\\Windows\\\\system32\\\\tasks\\\\*)
 ```
 
 
@@ -87,7 +88,7 @@ Image:("*\\:\\\\RECYCLER\\\\*" "*\\:\\\\SystemVolumeInformation\\\\*" "C\\:\\\\W
 ### logpoint
     
 ```
-Image IN ["*:\\\\RECYCLER\\\\*", "*:\\\\SystemVolumeInformation\\\\*", "C:\\\\Windows\\\\Tasks\\\\*", "C:\\\\Windows\\\\debug\\\\*", "C:\\\\Windows\\\\fonts\\\\*", "C:\\\\Windows\\\\help\\\\*", "C:\\\\Windows\\\\drivers\\\\*", "C:\\\\Windows\\\\addins\\\\*", "C:\\\\Windows\\\\cursors\\\\*", "C:\\\\Windows\\\\system32\\\\tasks\\\\*"]
+(event_id="1" Image IN ["*:\\\\RECYCLER\\\\*", "*:\\\\SystemVolumeInformation\\\\*", "C:\\\\Windows\\\\Tasks\\\\*", "C:\\\\Windows\\\\debug\\\\*", "C:\\\\Windows\\\\fonts\\\\*", "C:\\\\Windows\\\\help\\\\*", "C:\\\\Windows\\\\drivers\\\\*", "C:\\\\Windows\\\\addins\\\\*", "C:\\\\Windows\\\\cursors\\\\*", "C:\\\\Windows\\\\system32\\\\tasks\\\\*"])
 ```
 
 

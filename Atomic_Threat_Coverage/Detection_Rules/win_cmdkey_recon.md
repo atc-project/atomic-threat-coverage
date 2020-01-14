@@ -3,7 +3,7 @@
 | Description          | Detects usage of cmdkey to look for cached credentials                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | Severity Level       | low |
@@ -19,6 +19,7 @@
 
 ```
 title: Cmdkey Cached Credentials Recon
+id: 07f8bdc2-c9b3-472a-9817-5a670b872f53
 status: experimental
 description: Detects usage of cmdkey to look for cached credentials
 references:
@@ -67,7 +68,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(Image:"*\\\\cmdkey.exe" AND CommandLine:"* \\/list *")
+(Image.keyword:*\\\\cmdkey.exe AND CommandLine.keyword:* \\/list *)
 ```
 
 
@@ -81,7 +82,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(Image="*\\\\cmdkey.exe" CommandLine="* /list *")
+(event_id="1" Image="*\\\\cmdkey.exe" CommandLine="* /list *")
 ```
 
 

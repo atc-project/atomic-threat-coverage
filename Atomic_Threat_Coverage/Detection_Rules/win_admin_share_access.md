@@ -19,6 +19,7 @@
 
 ```
 title: Access to ADMIN$ Share
+id: 098d7118-55bc-4912-a836-dc6483a8d150
 description: Detects access to $ADMIN share
 tags:
     - attack.lateral_movement
@@ -63,7 +64,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((EventID:"5140" AND ShareName:"Admin$") AND NOT (SubjectUserName:"*$"))
+((EventID:"5140" AND ShareName:"Admin$") AND (NOT (SubjectUserName.keyword:*$)))
 ```
 
 
@@ -77,7 +78,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((EventID="5140" ShareName="Admin$")  -(SubjectUserName="*$"))
+(event_source="Microsoft-Windows-Security-Auditing" (event_id="5140" ShareName="Admin$")  -(SubjectUserName="*$"))
 ```
 
 

@@ -19,8 +19,9 @@
 
 ```
 title: Reconnaissance Activity
+id: 968eef52-9cff-4454-8992-1e74b9cbad6c
 status: experimental
-description: 'Detects activity as "net user administrator /domain" and "net group domain admins /domain"'
+description: Detects activity as "net user administrator /domain" and "net group domain admins /domain"
 references:
     - https://findingbad.blogspot.de/2017/01/hunting-what-does-it-look-like.html
 author: Florian Roth (rule), Jack Croock (method)
@@ -72,7 +73,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"4661" AND AccessMask:"0x2d" AND ((ObjectType:"SAM_USER" AND ObjectName:"S\\-1\\-5\\-21\\-*\\-500") OR (ObjectType:"SAM_GROUP" AND ObjectName:"S\\-1\\-5\\-21\\-*\\-512")))
+(EventID:"4661" AND AccessMask:"0x2d" AND ((ObjectType:"SAM_USER" AND ObjectName.keyword:S\\-1\\-5\\-21\\-*\\-500) OR (ObjectType:"SAM_GROUP" AND ObjectName.keyword:S\\-1\\-5\\-21\\-*\\-512)))
 ```
 
 
@@ -86,7 +87,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="4661" AccessMask="0x2d" ((ObjectType="SAM_USER" ObjectName="S-1-5-21-*-500") OR (ObjectType="SAM_GROUP" ObjectName="S-1-5-21-*-512")))
+(event_source="Microsoft-Windows-Security-Auditing" event_id="4661" AccessMask="0x2d" ((ObjectType="SAM_USER" ObjectName="S-1-5-21-*-500") OR (ObjectType="SAM_GROUP" ObjectName="S-1-5-21-*-512")))
 ```
 
 

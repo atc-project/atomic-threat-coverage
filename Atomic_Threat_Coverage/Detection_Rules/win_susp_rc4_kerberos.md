@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Kerberos RC4 Ticket Encryption
+id: 496a0e47-0a33-4dca-b009-9e6ca3591f39
 status: experimental
 references:
     - https://adsecurity.org/?p=3458
@@ -66,7 +67,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((EventID:"4769" AND TicketOptions:"0x40810000" AND TicketEncryptionType:"0x17") AND NOT (ServiceName:"$*"))
+((EventID:"4769" AND TicketOptions:"0x40810000" AND TicketEncryptionType:"0x17") AND (NOT (ServiceName.keyword:$*)))
 ```
 
 
@@ -80,7 +81,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((EventID="4769" TicketOptions="0x40810000" TicketEncryptionType="0x17")  -(ServiceName="$*"))
+(event_source="Microsoft-Windows-Security-Auditing" (event_id="4769" ticket_options="0x40810000" TicketEncryptionType="0x17")  -(service="$*"))
 ```
 
 

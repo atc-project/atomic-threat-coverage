@@ -19,6 +19,7 @@
 
 ```
 title: RDP Login from localhost
+id: 51e33403-2a37-4d66-a574-1fda1782cc31
 description: RDP login with localhost source address may be a tunnelled login
 references:
     - https://www.fireeye.com/blog/threat-research/2019/01/bypassing-network-restrictions-through-rdp-tunneling.html
@@ -82,7 +83,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="4624" LogonType="10" SourceNetworkAddress IN ["::1", "127.0.0.1"])
+(event_source="Microsoft-Windows-Security-Auditing" event_id="4624" logon_type="10" SourceNetworkAddress IN ["::1", "127.0.0.1"])
 ```
 
 

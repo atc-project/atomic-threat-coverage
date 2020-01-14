@@ -1,8 +1,7 @@
 | Title             | DN_0081_5861_wmi_activity                                                                                                      |
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | WMI Event which provide ability to catch Timer-based WMI Events and provide  usefult information for identification of suspicious WMI activity                                                                                                |
-| Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Logging Policy    | <ul><li> Not existing </li></ul> | 
 | References     		| <ul><li>[https://www.darkoperator.com/blog/2017/10/14/basics-of-tracking-wmi-activity](https://www.darkoperator.com/blog/2017/10/14/basics-of-tracking-wmi-activity)</li><li>[https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/](https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Applications and Services Logs 		| 

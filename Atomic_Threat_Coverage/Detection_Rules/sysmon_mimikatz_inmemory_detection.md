@@ -19,6 +19,7 @@
 
 ```
 title: Mimikatz In-Memory
+id: c0478ead-5336-46c2-bd5e-b4c84bc3a36e
 status: experimental
 description: Detects certain DLL loads when Mimikatz gets executed
 references:

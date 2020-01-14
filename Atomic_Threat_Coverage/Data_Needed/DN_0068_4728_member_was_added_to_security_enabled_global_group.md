@@ -1,8 +1,7 @@
 | Title             | DN_0068_4728_member_was_added_to_security_enabled_global_group                                                                                                      |
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | Member was added to a security-enabled global group                                                                                                |
-| Logging Policy    | <ul><li>[LP_0101_windows_audit_security_group_management](../Logging_Policies/LP_0101_windows_audit_security_group_management.md)</li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Logging Policy    | <ul><li>[LP_0101_windows_audit_security_group_management](../Logging_Policies/LP_0101_windows_audit_security_group_management.md)</li></ul> | 
 | References     		| <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=4728](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=4728)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Windows Log 		| 

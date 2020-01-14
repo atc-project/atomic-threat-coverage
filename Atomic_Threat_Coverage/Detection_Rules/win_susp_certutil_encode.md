@@ -3,7 +3,7 @@
 | Description          | Detects suspicious a certutil command that used to encode files, which is sometimes used for data exfiltration                                                                                                                                           |
 | ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
 | ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              |  There is no documented Trigger for this Detection Rule yet  |
 | Severity Level       | medium |
@@ -19,6 +19,7 @@
 
 ```
 title: Certutil Encode
+id: e62a9f0c-ca1e-46b2-85d5-a6da77f86d1a
 status: experimental
 description: Detects suspicious a certutil command that used to encode files, which is sometimes used for data exfiltration
 references:
@@ -64,7 +65,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-CommandLine:("certutil \\-f \\-encode *" "certutil.exe \\-f \\-encode *" "certutil \\-encode \\-f *" "certutil.exe \\-encode \\-f *")
+CommandLine.keyword:(certutil \\-f \\-encode * certutil.exe \\-f \\-encode * certutil \\-encode \\-f * certutil.exe \\-encode \\-f *)
 ```
 
 
@@ -78,7 +79,7 @@ CommandLine:("certutil \\-f \\-encode *" "certutil.exe \\-f \\-encode *" "certut
 ### logpoint
     
 ```
-CommandLine IN ["certutil -f -encode *", "certutil.exe -f -encode *", "certutil -encode -f *", "certutil.exe -encode -f *"]
+(event_id="1" CommandLine IN ["certutil -f -encode *", "certutil.exe -f -encode *", "certutil -encode -f *", "certutil.exe -encode -f *"])
 ```
 
 

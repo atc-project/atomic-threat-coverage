@@ -19,6 +19,7 @@
 
 ```
 title: CMSTP UAC Bypass via COM Object Access
+id: 4b60e6f2-bf39-47b4-b4ea-398e33cfe253
 status: stable
 description: Detects UAC Bypass Attempt Using Microsoft Connection Manager Profile Installer Autoelevate-capable COM Objects
 tags:
@@ -76,7 +77,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(ParentCommandLine:"*\\\\DllHost.exe" AND ParentCommandLine:("*\\{3E5FC7F9\\-9A51\\-4367\\-9063\\-A120244FBEC7\\}" "*\\{3E000D72\\-A845\\-4CD9\\-BD83\\-80C07C3B881F\\}"))
+(ParentCommandLine.keyword:*\\\\DllHost.exe AND ParentCommandLine.keyword:(*\\{3E5FC7F9\\-9A51\\-4367\\-9063\\-A120244FBEC7\\} *\\{3E000D72\\-A845\\-4CD9\\-BD83\\-80C07C3B881F\\}))
 ```
 
 
@@ -90,7 +91,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(ParentCommandLine="*\\\\DllHost.exe" ParentCommandLine IN ["*{3E5FC7F9-9A51-4367-9063-A120244FBEC7}", "*{3E000D72-A845-4CD9-BD83-80C07C3B881F}"])
+(event_id="1" ParentCommandLine="*\\\\DllHost.exe" ParentCommandLine IN ["*{3E5FC7F9-9A51-4367-9063-A120244FBEC7}", "*{3E000D72-A845-4CD9-BD83-80C07C3B881F}"])
 ```
 
 

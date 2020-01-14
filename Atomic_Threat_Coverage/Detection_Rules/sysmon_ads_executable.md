@@ -19,6 +19,7 @@
 
 ```
 title: Executable in ADS
+id: b69888d4-380c-45ce-9cf9-d9ce46e67821
 status: experimental
 description: Detects the creation of an ADS data stream that contains an executable (non-empty imphash)
 references:
@@ -70,7 +71,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"15" AND NOT (Imphash:"00000000000000000000000000000000"))
+(EventID:"15" AND (NOT (Imphash:"00000000000000000000000000000000")))
 ```
 
 
@@ -84,7 +85,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="15"  -(Imphash="00000000000000000000000000000000"))
+(event_id="15"  -(Imphash="00000000000000000000000000000000"))
 ```
 
 

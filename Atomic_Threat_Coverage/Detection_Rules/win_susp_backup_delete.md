@@ -19,12 +19,13 @@
 
 ```
 title: Backup Catalog Deleted
+id: 9703792d-fd9a-456d-a672-ff92efe4806a
 status: experimental
 description: Detects backup catalog deletions
 references:
     - https://technet.microsoft.com/en-us/library/cc742154(v=ws.11).aspx
     - https://www.hybrid-analysis.com/sample/ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa?environmentId=100
-author: Florian Roth (rule), Tom U. @c_APT_ure (collection) 
+author: Florian Roth (rule), Tom U. @c_APT_ure (collection)
 tags:
     - attack.defense_evasion
     - attack.t1107
@@ -78,7 +79,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="524" Source="Backup")
+(event_id="524" Source="Backup")
 ```
 
 

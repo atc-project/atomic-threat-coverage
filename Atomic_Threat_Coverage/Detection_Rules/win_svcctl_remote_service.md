@@ -19,6 +19,7 @@
 
 ```
 title: Remote Service Activity Detected via SVCCTL named pipe
+id: 586a8d6b-6bfe-4ad9-9d78-888cd2fe50c3
 description: Detects remote remote service activity via remote access to the svcctl named pipe
 author: Samir Bousseaden
 references:
@@ -64,7 +65,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"5145" AND ShareName:"\\\\*\\\\IPC$" AND RelativeTargetName:"svcctl" AND Accesses:"*WriteData*")
+(EventID:"5145" AND ShareName.keyword:\\\\*\\\\IPC$ AND RelativeTargetName:"svcctl" AND Accesses.keyword:*WriteData*)
 ```
 
 
@@ -78,7 +79,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName="svcctl" Accesses="*WriteData*")
+(event_source="Microsoft-Windows-Security-Auditing" event_id="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName="svcctl" Accesses="*WriteData*")
 ```
 
 

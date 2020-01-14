@@ -19,7 +19,8 @@
 
 ```
 title: Interactive Logon to Server Systems
-description: Detects interactive console logons to 
+id: 3ff152b2-1388-4984-9cd9-a323323fdadf
+description: Detects interactive console logons to
 author: Florian Roth
 tags:
     - attack.lateral_movement
@@ -71,7 +72,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((EventID:("528" "529" "4624" "4625") AND LogonType:"2" AND ComputerName:("%ServerSystems%" "%DomainControllers%")) AND NOT (LogonProcessName:"Advapi" AND ComputerName:"%Workstations%"))
+((EventID:("528" "529" "4624" "4625") AND LogonType:"2" AND ComputerName:("%ServerSystems%" "%DomainControllers%")) AND (NOT (LogonProcessName:"Advapi" AND ComputerName:"%Workstations%")))
 ```
 
 
@@ -85,7 +86,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((EventID IN ["528", "529", "4624", "4625"] LogonType="2" ComputerName IN ["%ServerSystems%", "%DomainControllers%"])  -(LogonProcessName="Advapi" ComputerName="%Workstations%"))
+(event_source="Microsoft-Windows-Security-Auditing" (event_id IN ["528", "529", "4624", "4625"] logon_type="2" ComputerName IN ["%ServerSystems%", "%DomainControllers%"])  -(logon_process="Advapi" ComputerName="%Workstations%"))
 ```
 
 

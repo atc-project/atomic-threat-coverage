@@ -3,7 +3,7 @@
 | Description          | Detection for mshta.exe suspicious execution patterns sometimes involving file polyglotism                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1140: Deobfuscate/Decode Files or Information](https://attack.mitre.org/techniques/T1140)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1140: Deobfuscate/Decode Files or Information](../Triggers/T1140.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: MSHTA Suspicious Execution 01
+id: cc7abbd0-762b-41e3-8a26-57ad50d2eea3
 status: experimental
 description: Detection for mshta.exe suspicious execution patterns sometimes involving file polyglotism
 date: 22/02/2019
@@ -81,7 +82,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(CommandLine:("*mshta vbscript\\:CreateObject\\(\\"Wscript.Shell\\"\\)*" "*mshta vbscript\\:Execute\\(\\"Execute*" "*mshta vbscript\\:CreateObject\\(\\"Wscript.Shell\\"\\).Run\\(\\"mshta.exe*") OR (Image:("C\\:\\\\Windows\\\\system32\\\\mshta.exe") AND CommandLine:("*.jpg*" "*.png*" "*.lnk*" "*.xls*" "*.doc*" "*.zip*")))
+(CommandLine.keyword:(*mshta vbscript\\:CreateObject\\(\\"Wscript.Shell\\"\\)* *mshta vbscript\\:Execute\\(\\"Execute* *mshta vbscript\\:CreateObject\\(\\"Wscript.Shell\\"\\).Run\\(\\"mshta.exe*) OR (Image:("C\\:\\\\Windows\\\\system32\\\\mshta.exe") AND CommandLine.keyword:(*.jpg* *.png* *.lnk* *.xls* *.doc* *.zip*)))
 ```
 
 
@@ -95,7 +96,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(CommandLine IN ["*mshta vbscript:CreateObject(\\"Wscript.Shell\\")*", "*mshta vbscript:Execute(\\"Execute*", "*mshta vbscript:CreateObject(\\"Wscript.Shell\\").Run(\\"mshta.exe*"] OR (Image IN ["C:\\\\Windows\\\\system32\\\\mshta.exe"] CommandLine IN ["*.jpg*", "*.png*", "*.lnk*", "*.xls*", "*.doc*", "*.zip*"]))
+(event_id="1" (CommandLine IN ["*mshta vbscript:CreateObject(\\"Wscript.Shell\\")*", "*mshta vbscript:Execute(\\"Execute*", "*mshta vbscript:CreateObject(\\"Wscript.Shell\\").Run(\\"mshta.exe*"] OR (Image IN ["C:\\\\Windows\\\\system32\\\\mshta.exe"] CommandLine IN ["*.jpg*", "*.png*", "*.lnk*", "*.xls*", "*.doc*", "*.zip*"])))
 ```
 
 

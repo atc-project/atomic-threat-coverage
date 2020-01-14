@@ -19,6 +19,7 @@
 
 ```
 title: Possible SPN Enumeration
+id: 1eeed653-dbc8-4187-ad0c-eeebb20e6599
 description: Detects Service Principal Name Enumeration used for Kerberoasting
 status: experimental
 references:
@@ -66,7 +67,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((Image:"*\\\\setspn.exe" OR Description:"*Query or reset the computer* SPN attribute*") AND CommandLine:"*\\-q*")
+((Image.keyword:*\\\\setspn.exe OR Description.keyword:*Query or reset the computer* SPN attribute*) AND CommandLine.keyword:*\\-q*)
 ```
 
 
@@ -80,7 +81,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((Image="*\\\\setspn.exe" OR Description="*Query or reset the computer* SPN attribute*") CommandLine="*-q*")
+(event_id="1" (Image="*\\\\setspn.exe" OR Description="*Query or reset the computer* SPN attribute*") CommandLine="*-q*")
 ```
 
 

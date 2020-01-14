@@ -19,7 +19,9 @@
 
 ```
 title: First time seen remote named pipe
-description: This detection excludes known namped pipes accessible remotely and notify on newly observed ones, may help to detect lateral movement and remote exec using named pipes
+id: 52d8b0c6-53d6-439a-9e41-52ad442ad9ad
+description: This detection excludes known namped pipes accessible remotely and notify on newly observed ones, may help to detect lateral movement and remote exec
+    using named pipes
 author: Samir Bousseaden
 references:
     - https://twitter.com/menasec1/status/1104489274387451904
@@ -76,7 +78,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((EventID:"5145" AND ShareName:"\\\\*\\\\IPC$") AND NOT (EventID:"5145" AND ShareName:"\\\\*\\\\IPC$" AND RelativeTargetName:("atsvc" "samr" "lsarpc" "winreg" "netlogon" "srvsvc" "protected_storage" "wkssvc" "browser" "netdfs")))
+((EventID:"5145" AND ShareName.keyword:\\\\*\\\\IPC$) AND (NOT (EventID:"5145" AND ShareName.keyword:\\\\*\\\\IPC$ AND RelativeTargetName:("atsvc" "samr" "lsarpc" "winreg" "netlogon" "srvsvc" "protected_storage" "wkssvc" "browser" "netdfs"))))
 ```
 
 
@@ -90,7 +92,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((EventID="5145" ShareName="\\\\*\\\\IPC$")  -(EventID="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName IN ["atsvc", "samr", "lsarpc", "winreg", "netlogon", "srvsvc", "protected_storage", "wkssvc", "browser", "netdfs"]))
+(event_source="Microsoft-Windows-Security-Auditing" (event_id="5145" ShareName="\\\\*\\\\IPC$")  -(event_id="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName IN ["atsvc", "samr", "lsarpc", "winreg", "netlogon", "srvsvc", "protected_storage", "wkssvc", "browser", "netdfs"]))
 ```
 
 

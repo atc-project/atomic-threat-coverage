@@ -3,7 +3,7 @@
 | Description          | Detects multiple suspicious process in a limited timeframe                                                                                                                                           |
 | ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
 | ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              |  There is no documented Trigger for this Detection Rule yet  |
 | Severity Level       | low |
@@ -19,6 +19,7 @@
 
 ```
 title: Quick Execution of a Series of Suspicious Commands
+id: 61ab5496-748e-4818-a92f-de78e20fe7f1
 description: Detects multiple suspicious process in a limited timeframe
 status: experimental
 references:
@@ -114,7 +115,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-CommandLine IN ["arp.exe", "at.exe", "attrib.exe", "cscript.exe", "dsquery.exe", "hostname.exe", "ipconfig.exe", "mimikatz.exe", "nbtstat.exe", "net.exe", "netsh.exe", "nslookup.exe", "ping.exe", "quser.exe", "qwinsta.exe", "reg.exe", "runas.exe", "sc.exe", "schtasks.exe", "ssh.exe", "systeminfo.exe", "taskkill.exe", "telnet.exe", "tracert.exe", "wscript.exe", "xcopy.exe", "pscp.exe", "copy.exe", "robocopy.exe", "certutil.exe", "vssadmin.exe", "powershell.exe", "wevtutil.exe", "psexec.exe", "bcedit.exe", "wbadmin.exe", "icacls.exe", "diskpart.exe"] | chart count() as val by MachineName | search val > 5
+(event_id="1" CommandLine IN ["arp.exe", "at.exe", "attrib.exe", "cscript.exe", "dsquery.exe", "hostname.exe", "ipconfig.exe", "mimikatz.exe", "nbtstat.exe", "net.exe", "netsh.exe", "nslookup.exe", "ping.exe", "quser.exe", "qwinsta.exe", "reg.exe", "runas.exe", "sc.exe", "schtasks.exe", "ssh.exe", "systeminfo.exe", "taskkill.exe", "telnet.exe", "tracert.exe", "wscript.exe", "xcopy.exe", "pscp.exe", "copy.exe", "robocopy.exe", "certutil.exe", "vssadmin.exe", "powershell.exe", "wevtutil.exe", "psexec.exe", "bcedit.exe", "wbadmin.exe", "icacls.exe", "diskpart.exe"]) | chart count() as val by MachineName | search val > 5
 ```
 
 

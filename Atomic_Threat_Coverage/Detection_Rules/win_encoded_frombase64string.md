@@ -3,7 +3,7 @@
 | Description          | Detects a base64 encoded FromBase64String keyword in a process command line                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li><li>[T1140: Deobfuscate/Decode Files or Information](https://attack.mitre.org/techniques/T1140)</li></ul>  |
-| Data Needed          |  There is no documented Data Needed for this Detection Rule yet  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li><li>[T1140: Deobfuscate/Decode Files or Information](../Triggers/T1140.md)</li></ul>  |
 | Severity Level       | critical |
@@ -19,6 +19,7 @@
 
 ```
 title: Encoded FromBase64String
+id: fdb62a13-9a81-4e5c-a38f-ea93a16f6d7c
 status: experimental
 description: Detects a base64 encoded FromBase64String keyword in a process command line
 author: Florian Roth
@@ -65,7 +66,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-CommandLine:("*OjpGcm9tQmFzZTY0U3RyaW5n*" "*o6RnJvbUJhc2U2NFN0cmluZ*" "*6OkZyb21CYXNlNjRTdHJpbm*")
+CommandLine.keyword:(*OjpGcm9tQmFzZTY0U3RyaW5n* *o6RnJvbUJhc2U2NFN0cmluZ* *6OkZyb21CYXNlNjRTdHJpbm*)
 ```
 
 
@@ -79,7 +80,7 @@ CommandLine:("*OjpGcm9tQmFzZTY0U3RyaW5n*" "*o6RnJvbUJhc2U2NFN0cmluZ*" "*6OkZyb21
 ### logpoint
     
 ```
-CommandLine IN ["*OjpGcm9tQmFzZTY0U3RyaW5n*", "*o6RnJvbUJhc2U2NFN0cmluZ*", "*6OkZyb21CYXNlNjRTdHJpbm*"]
+(event_id="1" CommandLine IN ["*OjpGcm9tQmFzZTY0U3RyaW5n*", "*o6RnJvbUJhc2U2NFN0cmluZ*", "*6OkZyb21CYXNlNjRTdHJpbm*"])
 ```
 
 

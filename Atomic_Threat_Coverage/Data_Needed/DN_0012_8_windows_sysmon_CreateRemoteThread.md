@@ -1,8 +1,7 @@
 | Title             | DN_0012_8_windows_sysmon_CreateRemoteThread                                                                                                      |
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | The CreateRemoteThread event detects when a process creates a thread in  another process                                                                                                |
-| Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Logging Policy    | <ul><li> Not existing </li></ul> | 
 | References     		| <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90008](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90008)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-8.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-8.md)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Applications and Services Logs 		| 

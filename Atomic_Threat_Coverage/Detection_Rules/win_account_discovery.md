@@ -19,6 +19,7 @@
 
 ```
 title: AD Privileged Users or Groups Reconnaissance
+id: 35ba1d85-724d-42a3-889f-2e2362bcaf23
 description: Detect priv users or groups recon based on 4661 eventid and known privileged users or groups SIDs
 references:
     - https://blog.menasec.net/2019/02/threat-hunting-5-detecting-enumeration.html
@@ -76,7 +77,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"4661" AND ObjectType:("SAM_USER" "SAM_GROUP") AND ObjectName:("*\\-512" "*\\-502" "*\\-500" "*\\-505" "*\\-519" "*\\-520" "*\\-544" "*\\-551" "*\\-555" "*admin*"))
+(EventID:"4661" AND ObjectType:("SAM_USER" "SAM_GROUP") AND ObjectName.keyword:(*\\-512 *\\-502 *\\-500 *\\-505 *\\-519 *\\-520 *\\-544 *\\-551 *\\-555 *admin*))
 ```
 
 
@@ -90,7 +91,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="4661" ObjectType IN ["SAM_USER", "SAM_GROUP"] ObjectName IN ["*-512", "*-502", "*-500", "*-505", "*-519", "*-520", "*-544", "*-551", "*-555", "*admin*"])
+(event_source="Microsoft-Windows-Security-Auditing" event_id="4661" ObjectType IN ["SAM_USER", "SAM_GROUP"] ObjectName IN ["*-512", "*-502", "*-500", "*-505", "*-519", "*-520", "*-544", "*-551", "*-555", "*admin*"])
 ```
 
 

@@ -1,8 +1,7 @@
 | Title             | DN_0008_4_windows_sysmon_sysmon_service_state_changed                                                                                                      |
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | Sysmon service changed status                                                                                                |
-| Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Logging Policy    | <ul><li> Not existing </li></ul> | 
 | References     		| <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90004](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90004)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-4.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-4.md)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Applications and Services Logs 		| 

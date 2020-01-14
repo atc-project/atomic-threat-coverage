@@ -19,12 +19,13 @@
 
 ```
 title: CACTUSTORCH Remote Thread Creation
+id: 2e4e488a-6164-4811-9ea1-f960c7359c40
 description: Detects remote thread creation from CACTUSTORCH as described in references.
 references:
     - https://twitter.com/SBousseaden/status/1090588499517079552
     - https://github.com/mdsecactivebreach/CACTUSTORCH
 status: experimental
-author: "@SBousseaden (detection), Thomas Patzke (rule)"
+author: '@SBousseaden (detection), Thomas Patzke (rule)'
 logsource:
     product: windows
     service: sysmon
@@ -71,7 +72,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"8" AND SourceImage:("*\\\\System32\\\\cscript.exe" "*\\\\System32\\\\wscript.exe" "*\\\\System32\\\\mshta.exe" "*\\\\winword.exe" "*\\\\excel.exe") AND TargetImage:"*\\\\SysWOW64\\\\*" AND NOT _exists_:StartModule)
+(EventID:"8" AND SourceImage.keyword:(*\\\\System32\\\\cscript.exe *\\\\System32\\\\wscript.exe *\\\\System32\\\\mshta.exe *\\\\winword.exe *\\\\excel.exe) AND TargetImage.keyword:*\\\\SysWOW64\\\\* AND NOT _exists_:StartModule)
 ```
 
 
@@ -85,7 +86,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="8" SourceImage IN ["*\\\\System32\\\\cscript.exe", "*\\\\System32\\\\wscript.exe", "*\\\\System32\\\\mshta.exe", "*\\\\winword.exe", "*\\\\excel.exe"] TargetImage="*\\\\SysWOW64\\\\*" -StartModule=*)
+(event_id="8" SourceImage IN ["*\\\\System32\\\\cscript.exe", "*\\\\System32\\\\wscript.exe", "*\\\\System32\\\\mshta.exe", "*\\\\winword.exe", "*\\\\excel.exe"] TargetImage="*\\\\SysWOW64\\\\*" -StartModule=*)
 ```
 
 

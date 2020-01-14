@@ -3,7 +3,7 @@
 | Description          | Detects javaw.exe in AppData folder as used by Adwind / JRAT                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1064: Scripting](../Triggers/T1064.md)</li></ul>  |
 | Severity Level       | high |
@@ -20,6 +20,7 @@
 ```
 action: global
 title: Adwind RAT / JRAT
+id: 1fac1481-2dbc-48b2-9096-753c49b4ec71
 status: experimental
 description: Detects javaw.exe in AppData folder as used by Adwind / JRAT
 references:
@@ -86,7 +87,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-CommandLine:("*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe *" "*cscript.exe *Retrive*.vbs *")\n(EventID:"11" AND TargetFilename:("*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe" "*\\\\Retrive*.vbs"))\n(EventID:"13" AND TargetObject:"\\\\REGISTRY\\\\MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run*" AND Details:"%AppData%\\\\Roaming\\\\Oracle\\\\bin\\\\*")
+CommandLine.keyword:(*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe * *cscript.exe *Retrive*.vbs *)\n(EventID:"11" AND TargetFilename.keyword:(*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe *\\\\Retrive*.vbs))\n(EventID:"13" AND TargetObject.keyword:\\\\REGISTRY\\\\MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run* AND Details.keyword:%AppData%\\\\Roaming\\\\Oracle\\\\bin\\\\*)
 ```
 
 
@@ -100,7 +101,7 @@ CommandLine:("*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe *" "*cscript.exe *
 ### logpoint
     
 ```
-CommandLine IN ["*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe *", "*cscript.exe *Retrive*.vbs *"]\n(EventID="11" TargetFilename IN ["*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe", "*\\\\Retrive*.vbs"])\n(EventID="13" TargetObject="\\\\REGISTRY\\\\MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run*" Details="%AppData%\\\\Roaming\\\\Oracle\\\\bin\\\\*")
+(event_id="1" CommandLine IN ["*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe *", "*cscript.exe *Retrive*.vbs *"])\n(event_id="11" TargetFilename IN ["*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe", "*\\\\Retrive*.vbs"])\n(event_id="13" TargetObject="\\\\REGISTRY\\\\MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run*" Details="%AppData%\\\\Roaming\\\\Oracle\\\\bin\\\\*")
 ```
 
 

@@ -18,7 +18,8 @@
 ### Sigma rule
 
 ```
-title: Mimikatz through Windows Remote Management  
+title: Mimikatz through Windows Remote Management
+id: aa35a627-33fb-4d04-a165-d33b4afca3e8
 description: Detects usage of mimikatz through WinRM protocol by monitoring access to lsass process by wsmprovhost.exe.
 references:
     - https://pentestlab.blog/2018/05/15/lateral-movement-winrm/
@@ -80,7 +81,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="10" TargetImage="C:\\\\windows\\\\system32\\\\lsass.exe" SourceImage="C:\\\\Windows\\\\system32\\\\wsmprovhost.exe")
+(event_id="10" TargetImage="C:\\\\windows\\\\system32\\\\lsass.exe" SourceImage="C:\\\\Windows\\\\system32\\\\wsmprovhost.exe")
 ```
 
 

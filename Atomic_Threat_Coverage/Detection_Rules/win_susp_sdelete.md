@@ -3,7 +3,7 @@
 | Description          | Detects renaming of file while deletion with SDelete tool                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1107: File Deletion](https://attack.mitre.org/techniques/T1107)</li><li>[T1066: Indicator Removal from Tools](https://attack.mitre.org/techniques/T1066)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0060_4658_handle_to_an_object_was_closed](../Data_Needed/DN_0060_4658_handle_to_an_object_was_closed.md)</li><li>[DN_0062_4663_attempt_was_made_to_access_an_object](../Data_Needed/DN_0062_4663_attempt_was_made_to_access_an_object.md)</li><li>[DN_0058_4656_handle_to_an_object_was_requested](../Data_Needed/DN_0058_4656_handle_to_an_object_was_requested.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0060_4658_handle_to_an_object_was_closed](../Data_Needed/DN_0060_4658_handle_to_an_object_was_closed.md)</li><li>[DN_0058_4656_handle_to_an_object_was_requested](../Data_Needed/DN_0058_4656_handle_to_an_object_was_requested.md)</li><li>[DN_0062_4663_attempt_was_made_to_access_an_object](../Data_Needed/DN_0062_4663_attempt_was_made_to_access_an_object.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1107: File Deletion](../Triggers/T1107.md)</li><li>[T1066: Indicator Removal from Tools](../Triggers/T1066.md)</li></ul>  |
 | Severity Level       | medium |
@@ -19,6 +19,7 @@
 
 ```
 title: Secure Deletion with SDelete
+id: 39a80702-d7ca-4a83-b776-525b1f86a36d
 status: experimental
 description: Detects renaming of file while deletion with SDelete tool
 author: Thomas Patzke
@@ -71,7 +72,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:("4656" "4663" "4658") AND ObjectName:("*.AAA" "*.ZZZ"))
+(EventID:("4656" "4663" "4658") AND ObjectName.keyword:(*.AAA *.ZZZ))
 ```
 
 
@@ -85,7 +86,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID IN ["4656", "4663", "4658"] ObjectName IN ["*.AAA", "*.ZZZ"])
+(event_source="Microsoft-Windows-Security-Auditing" event_id IN ["4656", "4663", "4658"] ObjectName IN ["*.AAA", "*.ZZZ"])
 ```
 
 

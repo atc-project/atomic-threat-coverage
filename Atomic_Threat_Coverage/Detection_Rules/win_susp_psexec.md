@@ -19,7 +19,9 @@
 
 ```
 title: Suspicious PsExec execution
-description: detects execution of psexec or paexec with renamed service name, this rule helps to filter out the noise if psexec is used for legit purposes or if attacker uses a different psexec client other than sysinternal one
+id: c462f537-a1e3-41a6-b5fc-b2c2cef9bf82
+description: detects execution of psexec or paexec with renamed service name, this rule helps to filter out the noise if psexec is used for legit purposes or if attacker
+    uses a different psexec client other than sysinternal one
 author: Samir Bousseaden
 references:
     - https://blog.menasec.net/2019/02/threat-hunting-3-detecting-psexec.html
@@ -70,7 +72,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((EventID:"5145" AND ShareName:"\\\\*\\\\IPC$" AND RelativeTargetName:("*\\-stdin" "*\\-stdout" "*\\-stderr")) AND NOT (EventID:"5145" AND ShareName:"\\\\*\\\\IPC$" AND RelativeTargetName:"PSEXESVC*"))
+((EventID:"5145" AND ShareName.keyword:\\\\*\\\\IPC$ AND RelativeTargetName.keyword:(*\\-stdin *\\-stdout *\\-stderr)) AND (NOT (EventID:"5145" AND ShareName.keyword:\\\\*\\\\IPC$ AND RelativeTargetName.keyword:PSEXESVC*)))
 ```
 
 
@@ -84,7 +86,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((EventID="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName IN ["*-stdin", "*-stdout", "*-stderr"])  -(EventID="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName="PSEXESVC*"))
+(event_source="Microsoft-Windows-Security-Auditing" (event_id="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName IN ["*-stdin", "*-stdout", "*-stderr"])  -(event_id="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName="PSEXESVC*"))
 ```
 
 

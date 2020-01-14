@@ -3,7 +3,7 @@
 | Description          | Detects suspicious process related to rundll32 based on arguments                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1085: Rundll32](../Triggers/T1085.md)</li></ul>  |
 | Severity Level       | medium |
@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Rundll32 Activity
+id: e593cf51-88db-4ee1-b920-37e89012a3c9
 description: Detects suspicious process related to rundll32 based on arguments
 status: experimental
 references:
@@ -77,7 +78,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-CommandLine:("*\\\\rundll32.exe* url.dll,*OpenURL *" "*\\\\rundll32.exe* url.dll,*OpenURLA *" "*\\\\rundll32.exe* url.dll,*FileProtocolHandler *" "*\\\\rundll32.exe* zipfldr.dll,*RouteTheCall *" "*\\\\rundll32.exe* Shell32.dll,*Control_RunDLL *" "*\\\\rundll32.exe javascript\\:*" "* url.dll,*OpenURL *" "* url.dll,*OpenURLA *" "* url.dll,*FileProtocolHandler *" "* zipfldr.dll,*RouteTheCall *" "* Shell32.dll,*Control_RunDLL *" "* javascript\\:*" "*.RegisterXLL*")
+CommandLine.keyword:(*\\\\rundll32.exe* url.dll,*OpenURL * *\\\\rundll32.exe* url.dll,*OpenURLA * *\\\\rundll32.exe* url.dll,*FileProtocolHandler * *\\\\rundll32.exe* zipfldr.dll,*RouteTheCall * *\\\\rundll32.exe* Shell32.dll,*Control_RunDLL * *\\\\rundll32.exe javascript\\:* * url.dll,*OpenURL * * url.dll,*OpenURLA * * url.dll,*FileProtocolHandler * * zipfldr.dll,*RouteTheCall * * Shell32.dll,*Control_RunDLL * * javascript\\:* *.RegisterXLL*)
 ```
 
 
@@ -91,7 +92,7 @@ CommandLine:("*\\\\rundll32.exe* url.dll,*OpenURL *" "*\\\\rundll32.exe* url.dll
 ### logpoint
     
 ```
-CommandLine IN ["*\\\\rundll32.exe* url.dll,*OpenURL *", "*\\\\rundll32.exe* url.dll,*OpenURLA *", "*\\\\rundll32.exe* url.dll,*FileProtocolHandler *", "*\\\\rundll32.exe* zipfldr.dll,*RouteTheCall *", "*\\\\rundll32.exe* Shell32.dll,*Control_RunDLL *", "*\\\\rundll32.exe javascript:*", "* url.dll,*OpenURL *", "* url.dll,*OpenURLA *", "* url.dll,*FileProtocolHandler *", "* zipfldr.dll,*RouteTheCall *", "* Shell32.dll,*Control_RunDLL *", "* javascript:*", "*.RegisterXLL*"]
+(event_id="1" CommandLine IN ["*\\\\rundll32.exe* url.dll,*OpenURL *", "*\\\\rundll32.exe* url.dll,*OpenURLA *", "*\\\\rundll32.exe* url.dll,*FileProtocolHandler *", "*\\\\rundll32.exe* zipfldr.dll,*RouteTheCall *", "*\\\\rundll32.exe* Shell32.dll,*Control_RunDLL *", "*\\\\rundll32.exe javascript:*", "* url.dll,*OpenURL *", "* url.dll,*OpenURLA *", "* url.dll,*FileProtocolHandler *", "* zipfldr.dll,*RouteTheCall *", "* Shell32.dll,*Control_RunDLL *", "* javascript:*", "*.RegisterXLL*"])
 ```
 
 

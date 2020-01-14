@@ -3,7 +3,7 @@
 | Description          | Detects the creation of a named pipe used by known APT malware                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0021_18_windows_sysmon_PipeEvent](../Data_Needed/DN_0021_18_windows_sysmon_PipeEvent.md)</li><li>[DN_0020_17_windows_sysmon_PipeEvent](../Data_Needed/DN_0020_17_windows_sysmon_PipeEvent.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0020_17_windows_sysmon_PipeEvent](../Data_Needed/DN_0020_17_windows_sysmon_PipeEvent.md)</li><li>[DN_0021_18_windows_sysmon_PipeEvent](../Data_Needed/DN_0021_18_windows_sysmon_PipeEvent.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li></ul>  |
 | Severity Level       | critical |
@@ -19,6 +19,7 @@
 
 ```
 title: Malicious Named Pipe
+id: fe3ac066-98bb-432a-b1e7-a5229cb39d4a
 status: experimental
 description: Detects the creation of a named pipe used by known APT malware
 references:
@@ -82,7 +83,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:("17" "18") AND PipeName:("\\\\isapi_http" "\\\\isapi_dg" "\\\\isapi_dg2" "\\\\sdlrpc" "\\\\ahexec" "\\\\winsession" "\\\\lsassw" "\\\\46a676ab7f179e511e30dd2dc41bd388" "\\\\9f81f59bc58452127884ce513865ed20" "\\\\e710f28d59aa529d6792ca6ff0ca1b34" "\\\\rpchlp_3" "\\\\NamePipe_MoreWindows" "\\\\pcheap_reuse" "\\\\msagent_*"))
+(EventID:("17" "18") AND PipeName.keyword:(\\\\isapi_http \\\\isapi_dg \\\\isapi_dg2 \\\\sdlrpc \\\\ahexec \\\\winsession \\\\lsassw \\\\46a676ab7f179e511e30dd2dc41bd388 \\\\9f81f59bc58452127884ce513865ed20 \\\\e710f28d59aa529d6792ca6ff0ca1b34 \\\\rpchlp_3 \\\\NamePipe_MoreWindows \\\\pcheap_reuse \\\\msagent_*))
 ```
 
 
@@ -96,7 +97,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID IN ["17", "18"] PipeName IN ["\\\\isapi_http", "\\\\isapi_dg", "\\\\isapi_dg2", "\\\\sdlrpc", "\\\\ahexec", "\\\\winsession", "\\\\lsassw", "\\\\46a676ab7f179e511e30dd2dc41bd388", "\\\\9f81f59bc58452127884ce513865ed20", "\\\\e710f28d59aa529d6792ca6ff0ca1b34", "\\\\rpchlp_3", "\\\\NamePipe_MoreWindows", "\\\\pcheap_reuse", "\\\\msagent_*"])
+(event_id IN ["17", "18"] PipeName IN ["\\\\isapi_http", "\\\\isapi_dg", "\\\\isapi_dg2", "\\\\sdlrpc", "\\\\ahexec", "\\\\winsession", "\\\\lsassw", "\\\\46a676ab7f179e511e30dd2dc41bd388", "\\\\9f81f59bc58452127884ce513865ed20", "\\\\e710f28d59aa529d6792ca6ff0ca1b34", "\\\\rpchlp_3", "\\\\NamePipe_MoreWindows", "\\\\pcheap_reuse", "\\\\msagent_*"])
 ```
 
 

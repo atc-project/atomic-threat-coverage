@@ -18,7 +18,8 @@
 ### Sigma rule
 
 ```
-title: Possible Process Hollowing Image Loading 
+title: Possible Process Hollowing Image Loading
+id: e32ce4f5-46c6-4c47-ba69-5de3c9193cd7
 status: experimental
 description: Detects Loading of samlib.dll, WinSCard.dll from untypical process e.g. through process hollowing by Mimikatz
 references:
@@ -67,7 +68,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"7" AND Image:("*\\\\notepad.exe") AND ImageLoaded:("*\\\\samlib.dll" "*\\\\WinSCard.dll"))
+(EventID:"7" AND Image.keyword:(*\\\\notepad.exe) AND ImageLoaded.keyword:(*\\\\samlib.dll *\\\\WinSCard.dll))
 ```
 
 
@@ -81,7 +82,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="7" Image IN ["*\\\\notepad.exe"] ImageLoaded IN ["*\\\\samlib.dll", "*\\\\WinSCard.dll"])
+(event_id="7" Image IN ["*\\\\notepad.exe"] ImageLoaded IN ["*\\\\samlib.dll", "*\\\\WinSCard.dll"])
 ```
 
 

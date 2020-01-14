@@ -19,6 +19,7 @@
 
 ```
 title: PowerShell called from an Executable Version Mismatch
+id: c70e019b-1479-4b65-b0cc-cd0c6093a599
 status: experimental
 description: Detects PowerShell called from an executable by the version mismatch method
 references:
@@ -68,7 +69,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"400" AND EngineVersion:("2.*" "4.*" "5.*") AND HostVersion:"3.*")
+(EventID:"400" AND EngineVersion.keyword:(2.* 4.* 5.*) AND HostVersion.keyword:3.*)
 ```
 
 
@@ -82,7 +83,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="400" EngineVersion IN ["2.*", "4.*", "5.*"] HostVersion="3.*")
+(event_id="400" EngineVersion IN ["2.*", "4.*", "5.*"] HostVersion="3.*")
 ```
 
 

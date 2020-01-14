@@ -18,8 +18,10 @@
 ### Sigma rule
 
 ```
-title: Password Dumper Remote Thread in LSASS 
-description: Detects password dumper activity by monitoring remote thread creation EventID 8 in combination with the lsass.exe process as TargetImage. The process in field Process is the malicious program. A single execution can lead to hundreds of events.
+title: Password Dumper Remote Thread in LSASS
+id: f239b326-2f41-4d6b-9dfa-c846a60ef505
+description: Detects password dumper activity by monitoring remote thread creation EventID 8 in combination with the lsass.exe process as TargetImage. The process
+    in field Process is the malicious program. A single execution can lead to hundreds of events.
 references:
     - https://jpcertcc.github.io/ToolAnalysisResultSheet/details/WCE.htm
 status: stable
@@ -78,7 +80,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="8" TargetImage="C:\\\\Windows\\\\System32\\\\lsass.exe" -StartModule=*)
+(event_id="8" TargetImage="C:\\\\Windows\\\\System32\\\\lsass.exe" -StartModule=*)
 ```
 
 

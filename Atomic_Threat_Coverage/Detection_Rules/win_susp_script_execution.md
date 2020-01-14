@@ -3,7 +3,7 @@
 | Description          | Detects suspicious file execution by wscript and cscript                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1064: Scripting](../Triggers/T1064.md)</li></ul>  |
 | Severity Level       | medium |
@@ -19,6 +19,7 @@
 
 ```
 title: WSF/JSE/JS/VBA/VBE File Execution
+id: 1e33157c-53b1-41ad-bbcc-780b80b58288
 status: experimental
 description: Detects suspicious file execution by wscript and cscript
 author: Michael Haag
@@ -69,7 +70,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(Image:("*\\\\wscript.exe" "*\\\\cscript.exe") AND CommandLine:("*.jse" "*.vbe" "*.js" "*.vba"))
+(Image.keyword:(*\\\\wscript.exe *\\\\cscript.exe) AND CommandLine.keyword:(*.jse *.vbe *.js *.vba))
 ```
 
 
@@ -83,7 +84,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(Image IN ["*\\\\wscript.exe", "*\\\\cscript.exe"] CommandLine IN ["*.jse", "*.vbe", "*.js", "*.vba"])
+(event_id="1" Image IN ["*\\\\wscript.exe", "*\\\\cscript.exe"] CommandLine IN ["*.jse", "*.vbe", "*.js", "*.vba"])
 ```
 
 

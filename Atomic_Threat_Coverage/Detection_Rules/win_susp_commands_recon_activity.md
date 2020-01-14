@@ -3,7 +3,7 @@
 | Description          | Detects a set of commands often used in recon stages by different attack groups                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li><li>[T1082: System Information Discovery](https://attack.mitre.org/techniques/T1082)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1087: Account Discovery](../Triggers/T1087.md)</li><li>[T1082: System Information Discovery](../Triggers/T1082.md)</li></ul>  |
 | Severity Level       | medium |
@@ -19,6 +19,7 @@
 
 ```
 title: Reconnaissance Activity with Net Command
+id: 2887e914-ce96-435f-8105-593937e90757
 status: experimental
 description: Detects a set of commands often used in recon stages by different attack groups
 references:
@@ -99,7 +100,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-CommandLine IN ["tasklist", "net time", "systeminfo", "whoami", "nbtstat", "net start", "*\\\\net1 start", "qprocess", "nslookup", "hostname.exe", "*\\\\net1 user /domain", "*\\\\net1 group /domain", "*\\\\net1 group \\"domain admins\\" /domain", "*\\\\net1 group \\"Exchange Trusted Subsystem\\" /domain", "*\\\\net1 accounts /domain", "*\\\\net1 user net localgroup administrators", "netstat -an"] | chart count() as val by CommandLine | search val > 4
+(event_id="1" CommandLine IN ["tasklist", "net time", "systeminfo", "whoami", "nbtstat", "net start", "*\\\\net1 start", "qprocess", "nslookup", "hostname.exe", "*\\\\net1 user /domain", "*\\\\net1 group /domain", "*\\\\net1 group \\"domain admins\\" /domain", "*\\\\net1 group \\"Exchange Trusted Subsystem\\" /domain", "*\\\\net1 accounts /domain", "*\\\\net1 user net localgroup administrators", "netstat -an"]) | chart count() as val by CommandLine | search val > 4
 ```
 
 

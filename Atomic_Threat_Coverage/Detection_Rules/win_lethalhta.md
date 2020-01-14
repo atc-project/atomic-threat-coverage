@@ -3,7 +3,7 @@
 | Description          | Detects MSHTA.EXE spwaned by SVCHOST described in report                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1170: Mshta](../Triggers/T1170.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: MSHTA spwaned by SVCHOST as seen in LethalHTA
+id: ed5d72a6-f8f4-479d-ba79-02f6a80d7471
 status: experimental
 description: Detects MSHTA.EXE spwaned by SVCHOST described in report
 references:
@@ -64,7 +65,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(ParentImage:"*\\\\svchost.exe" AND Image:"*\\\\mshta.exe")
+(ParentImage.keyword:*\\\\svchost.exe AND Image.keyword:*\\\\mshta.exe)
 ```
 
 
@@ -78,7 +79,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(ParentImage="*\\\\svchost.exe" Image="*\\\\mshta.exe")
+(event_id="1" ParentImage="*\\\\svchost.exe" Image="*\\\\mshta.exe")
 ```
 
 
