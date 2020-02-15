@@ -69,7 +69,7 @@ thehive_templates:
 # TODO: make clean works with non default paths from config
 clean:
 	@echo "[*] Cleaning up..."
-	@rm -rf ./Atomic_Threat_Coverage
+	@find ./Atomic_Threat_Coverage -type f -not -path "./Atomic_Threat_Coverage/Pages/*" -delete
 	@rm -f ./analytics/generated/analytics.csv
 	@rm -f ./analytics/generated/atc_es_index.json
 	@rm -f ./analytics/generated/pivoting.csv

@@ -1,0 +1,33 @@
+site_name: Atomic Threat Coverage
+docs_dir: ./Atomic_Threat_Coverage
+
+theme:
+    name: readthedocs
+    highlightjs: true
+    hljs_style: github
+    collapse_navigation: true
+
+pages:
+- Introduction:
+    - Welcome to ATC: ./Pages/welcome.md
+#- Deployment:
+    #- Docker Demo:
+    #- Enterprise
+- Entities:
+    - Triggers: ./Pages/triggers.md
+    - Detection Rules: ./Pages/detection_rules.md
+    - Data Needed: ./Pages/data_needed.md
+    - Logging Policies: ./Pages/logging_policies.md
+    - Enrichments: ./Pages/enrichments.md
+    - Hardening Policies: ./Pages/hardening_policies.md
+    - Mitigation Policies: ./Pages/mitigation_policies.md
+    - Mitigation Systems: ./Pages/mitigation_systems.md
+    - Response Actions: ./Pages/response_actions.md
+    - Response Playbooks: ./Pages/response_playbooks.md
+    - Visualisations: ./Pages/visualisations.md
+    - Customers: ./Pages/customers.md
+#- Development:
+#    - 
+#    - 
+#    - 
+#    - 

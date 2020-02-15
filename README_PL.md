@@ -8,7 +8,7 @@
 
 Automatycznie generowana analityczna baza wiedzy zaprojektowana, aby zwalczać zagrożenia na podstawie [MITRE ATT&CK](https://attack.mitre.org/).
 
-![](images/logo_v1.png)
+![](Atomic_Threat_Coverage/Pages/images/logo_v1.png)
 
 Atomic Threat Coverage jest narzędziem, które pozwala na automatyczne generowanie analitycznej bazy wiedzy zaprojektowanej, aby zwalczać zagrożenia (na podstawie modelu "przeciwnika" przygotowanego przez [MITRE ATT&CK](https://attack.mitre.org/)) poprzez Detekcje, Reakcje, Przeciwdziałanie oraz Symulacje:
 
@@ -109,17 +109,17 @@ Detection Rules — Reguły Wykrywania są niezmodyfikowanymi [regułami Sigma](
 
 <details>
   <summary>Plik yaml Detection Rule (kliknij aby rozwinąć)</summary>
-  <img src="images/sigma_rule.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/sigma_rule.png" />
 </details>
 
 <details>
   <summary>Strona confluence stworzona w pełni automatycznie (kliknij aby rozwinąć)</summary>
-  <img src="images/dr_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dr_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Strona markdown (Gitlab) stworzona w pełni automatycznie (kliknij aby rozwinąć)</summary>
-  <img src="images/dr_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dr_markdown_v1.png" />
 </details>
 
 <br>
@@ -131,17 +131,17 @@ Reguła Sigma, zapytanie dla Kibany, X-Pack Watcher oraz GrayLog są generowane 
 
 <details>
   <summary>Plik yaml Data Needed (kliknij aby rozwinąć)</summary>
-  <img src="images/dataneeded_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dataneeded_v1.png" />
 </details>
 
 <details>
   <summary>Automatycznie wygenerowana strona confluence (kliknij aby rozwinąć)</summary>
-  <img src="images/dn_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dn_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatycznie wygenerowana strona markdown (kliknij aby rozwinąć)</summary>
-  <img src="images/dn_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dn_markdown_v1.png" />
 </details>
 
 <br>
@@ -156,17 +156,17 @@ Ten moduł ma na celu ułatwienie komunikacji z zespołami SIEM/LM/Data Engineer
 
 <details>
   <summary>Plik yaml Logging Policy (kliknij aby rozwinąć)</summary>
-  <img src="images/loggingpolicy.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/loggingpolicy.png" />
 </details>
 
 <details>
   <summary>Automatycznie wygenerowana strona confluence (kliknij aby rozwinąć)</summary>
-  <img src="images/lp_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/lp_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatycznie wygenerowana strona markdown (kliknij aby rozwinąć)</summary>
-  <img src="images/lp_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/lp_markdown_v1.png" />
 </details>
 
 <br>
@@ -177,17 +177,17 @@ Ten moduł ma na celu wyjaśnienie zespołom SIEM/LM/Data Engineering, lub ogól
 
 <details>
   <summary>Plik yaml Enrichments (kliknij aby rozwinąć)</summary>
-  <img src="images/enrichment.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/enrichment.png" />
 </details>
 
 <details>
   <summary>Automatycznie wygenerowana strona confluence (kliknij aby rozwinąć)</summary>
-  <img src="images/enrichment_confluence.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/enrichment_confluence.png" />
 </details>
 
 <details>
   <summary>Automatycznie wygenerowana strona markdown (kliknij aby rozwinąć)</summary>
-  <img src="images/enrichment_markdown.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/enrichment_markdown.png" />
 </details>
 
 <br>
@@ -206,17 +206,17 @@ Wyzwalacze to niezmodyfikowane [testy Atomic Red Team](https://github.com/redcan
 
 <details>
   <summary>Plik yaml Trigger (kliknij aby rozwinąć)</summary>
-  <img src="images/trigger.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/trigger.png" />
 </details>
 
 <details>
   <summary>Automatycznie wygenerowana strona confluence (kliknij aby rozwinąć)</summary>
-  <img src="images/trigger_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/trigger_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatycznie wygenerowana strona markdown (kliknij aby rozwinąć)</summary>
-  <img src="images/tg_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/tg_markdown_v1.png" />
 </details>
 
 <br>
@@ -227,17 +227,17 @@ Ten moduł pozwala na techniczne przetestowanie systemu. Szczegółowy opis moż
 
 <details>
   <summary>Plik yaml Response Actions (kliknij aby rozwinąć)</summary>
-  <img src="images/response_action.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/response_action.png" />
 </details>
 
 <details>
   <summary>Automatycznie wygenerowana strona confluence (kliknij aby rozwinąć)</summary>
-  <img src="images/response_action.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/response_action.png" />
 </details>
 
 <details>
   <summary>Automatycznie wygenerowana strona markdown (kliknij aby rozwinąć)</summary>
-  <img src="images/response_action.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/response_action.png" />
 </details>
 
 <br>
@@ -248,17 +248,17 @@ Ten moduł używany jest do budowania Response Playbooks.
 
 <details>
   <summary>Plik yaml Response Playbooks (kliknij aby rozwinąć)</summary>
-  <img src="images/response_playbook.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/response_playbook.png" />
 </details>
 
 <details>
   <summary>Automatycznie wygenerowana strona confluence (kliknij aby rozwinąć)</summary>
-  <img src="images/response_playbook.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/response_playbook.png" />
 </details>
 
 <details>
   <summary>Automatycznie wygenerowana strona markdown (kliknij aby rozwinąć)</summary>
-  <img src="images/response_playbook.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/response_playbook.png" />
 </details>
 
 <br>
@@ -288,7 +288,7 @@ Atomic Threat Coverage generuje plik [pivoting.csv](pivoting.csv) z listą wszys
 
 <details>
   <summary>Przykład zapytania o wiersze zawierające pole "hash" (kliknij aby rozwinąć)</summary>
-  <img src="images/pivoting_hash_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/pivoting_hash_v1.png" />
 </details>
 
 <br>
@@ -297,7 +297,7 @@ Jednocześnie wskazuje, które pola mogą być znalezione przy konkretnym Enrich
 
 <details>
   <summary>Przykład zapytania o wiersze zawierające pole "ParentImage" (kliknij aby rozwinąć)</summary>
-  <img src="images/pivoting_parent_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/pivoting_parent_v1.png" />
 </details>
 
 ## Nasze cele

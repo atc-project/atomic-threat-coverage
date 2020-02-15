@@ -4,7 +4,7 @@
 
 Actionable analytics designed to combat threats based on MITRE's [ATT&CK](https://attack.mitre.org/).
 
-![](images/logo_v1.png)
+![](Atomic_Threat_Coverage/Pages/images/logo_v1.png)
 
 Atomic Threat Coverage is tool which allows you to automatically generate actionable analytics, designed to combat threats (based on the [MITRE ATT&CK](https://attack.mitre.org/) adversary model) from Detection, Response, Mitigation and Simulation perspectives:
 
@@ -54,7 +54,7 @@ In other words, you don't have to work on data representation layer manually, yo
 
 ### How it works
 
-![](images/atc_scheme_v2.jpg)
+![](Atomic_Threat_Coverage/Pages/images/atc_scheme_v2.jpg)
 
 Everything starts from Sigma rule and ends up with human-readable wiki-style pages and other valuable analytics. Atomic Threat Coverage parses it and:
 
@@ -141,17 +141,17 @@ Detection Rules are unmodified [Sigma rules](https://github.com/Neo23x0/sigma/tr
 
 <details>
   <summary>Detection Rule yaml (click to expand)</summary>
-  <img src="images/sigma_rule.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/sigma_rule.png" />
 </details>
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/dr_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dr_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown (GitLab) page (click to expand)</summary>
-  <img src="images/dr_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dr_markdown_v1.png" />
 </details>
 
 <br>
@@ -163,17 +163,17 @@ Sigma rule, Kibana query, X-Pack Watcher and GrayLog query generated and added a
 
 <details>
   <summary>Data Needed yaml (click to expand)</summary>
-  <img src="images/dataneeded_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dataneeded_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/dn_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dn_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/dn_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dn_markdown_v1.png" />
 </details>
 
 <br>
@@ -188,17 +188,17 @@ This entity expected to simplify communication with SIEM/LM/Data Engineering tea
 
 <details>
   <summary>Logging Policy yaml (click to expand)</summary>
-  <img src="images/loggingpolicy.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/loggingpolicy.png" />
 </details>
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/lp_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/lp_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/lp_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/lp_markdown_v1.png" />
 </details>
 
 <br>
@@ -209,17 +209,17 @@ This entity expected to explain SIEM/LM/Data Engineering teams and IT department
 
 <details>
   <summary>Enrichments yaml (click to expand)</summary>
-  <img src="images/en_yaml_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/en_yaml_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/en_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/en_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/en_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/en_markdown_v1.png" />
 </details>
 
 <br>
@@ -238,17 +238,17 @@ Triggers are unmodified [Atomic Red Team tests](https://github.com/redcanaryco/a
 
 <details>
   <summary>Triggers yaml (click to expand)</summary>
-  <img src="images/trigger.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/trigger.png" />
 </details>
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/trigger_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/trigger_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/tg_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/tg_markdown_v1.png" />
 </details>
 
 <br>
@@ -259,17 +259,17 @@ This entity needed to test specific technical controls and detections. Detailed 
 
 <details>
   <summary>Customers yaml (click to expand)</summary>
-  <img src="images/cu_yaml_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/cu_yaml_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/cu_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/cu_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/cu_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/cu_markdown_v1.png" />
 </details>
 
 <br>
@@ -282,17 +282,17 @@ This entity expected to simplify communication with SIEM/LM/Data Engineering tea
 
 <details>
   <summary>Response Action yaml (click to expand)</summary>
-  <img src="images/ra_yaml_v2.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/ra_yaml_v2.png" />
 </details>
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/ra_confluence_v2.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/ra_confluence_v2.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/ra_markdown_v2.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/ra_markdown_v2.png" />
 </details>
 
 <br>
@@ -303,17 +303,17 @@ This entity used to build Response Playbooks, as well as TheHive Case Templates'
 
 <details>
   <summary>Response Playbook yaml (click to expand)</summary>
-  <img src="images/rp_yaml_v2.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/rp_yaml_v2.png" />
 </details>
 
 <details>
   <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/rp_confluence_v2.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/rp_confluence_v2.png" />
 </details>
 
 <details>
   <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/rp_markdown_v2.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/rp_markdown_v2.png" />
 </details>
 
 <br>
@@ -326,29 +326,29 @@ Atomic Threat Coverage generates [TheHive Case Templates](analytics/generated/th
 
 <details>
   <summary>Exported TheHive Case Template, made of Response Playbook (click to expand)</summary>
-  <img src="images/thehive_case_template_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/thehive_case_template_v1.png" />
 </details>
 
 <details>
   <summary>One of the Tasks in TheHive Case, made of Response Action (click to expand)</summary>
-  <img src="images/thehive_case_task_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/thehive_case_task_v1.png" />
 </details>
 
 #### Visualizations
 
 <details>
   <summary>Visualization yaml (click to expand)</summary>
-  <img src="images/visualisation_yaml_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/visualisation_yaml_v1.png" />
 </details>
 
 <details>
   <summary>Dashboard yaml (click to expand)</summary>
-  <img src="images/dashboard_yaml_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dashboard_yaml_v1.png" />
 </details>
 
 <details>
   <summary>Dashboard in Kibana (click to expand)</summary>
-  <img src="images/dashboard_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dashboard_v1.png" />
 </details>
 
 <br>
@@ -367,7 +367,7 @@ Atomic Threat Coverage generates [Elasticsearch](https://www.elastic.co/products
 
 <details>
   <summary>ATC Analytics Dashboard in Kibana (click to expand)</summary>
-  <img src="images/atc_analytics_dashboard.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/atc_analytics_dashboard.png" />
 </details>
 
 <br>
@@ -395,7 +395,7 @@ Atomic Threat Coverage generates [ATT&CK Navigator](https://mitre-attack.github.
 
 <details>
   <summary>Navigator profile for original Sigma Rules (click to expand)</summary>
-  <img src="images/navigator_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/navigator_v1.png" />
 </details>
 
 #### analytics.csv
@@ -404,7 +404,7 @@ Atomic Threat Coverage generates [analytics.csv](analytics/generated/analytics.c
 
 <details>
   <summary>Example of lookup for "pass the hash" technique (click to expand)</summary>
-  <img src="images/analytics_pth_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/analytics_pth_v1.png" />
 </details>
 
 <br>
@@ -417,7 +417,7 @@ Atomic Threat Coverage generates [pivoting.csv](analytics/generated/pivoting.csv
 
 <details>
   <summary>Example of lookup for "hash" field (click to expand)</summary>
-  <img src="images/pivoting_hash_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/pivoting_hash_v1.png" />
 </details>
 
 <br>
@@ -426,7 +426,7 @@ At the same time it highlights which fields could be found only with specific en
 
 <details>
   <summary>Example of lookup for "ParentImage" field (click to expand)</summary>
-  <img src="images/pivoting_parent_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/pivoting_parent_v1.png" />
 </details>
 
 ## Goals

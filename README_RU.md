@@ -4,7 +4,7 @@
 
 Автоматически генерируемая действенная аналитика, предназначенная для противодействия угрозам, описанным в MITRE [ATT&CK](https://attack.mitre.org/).
 
-![](images/logo_v1.png)
+![](Atomic_Threat_Coverage/Pages/images/logo_v1.png)
 
 Atomic Threat Coverage это утилита которая позволяет автоматически сгенерировать действенную аналитику, предназначенную для противодействия угрозам, описанным в [MITRE ATT&CK](https://attack.mitre.org/) с позиций Обнаружения, Реагирования, Предотвращения и Имитации угроз:
 
@@ -54,7 +54,7 @@ Atomic Threat Coverage это фреймворк для создания **ва�
 
 ### Как это работает
 
-![](images/atc_scheme_v2.jpg)
+![](Atomic_Threat_Coverage/Pages/images/atc_scheme_v2.jpg)
 
 Все начинается с Sigma правила и заканчивается удобными для восприятия человеком статьями и иной действенной аналитикой. Atomic Threat Coverage парсит Sigma правило, после чего:
 
@@ -141,17 +141,17 @@ Detection Rules — Правила Обнаружения — оригиналь
 
 <details>
   <summary>Detection Rule yaml (кликните чтобы раскрыть)</summary>
-  <img src="images/sigma_rule.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/sigma_rule.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Confluence (кликните чтобы раскрыть)</summary>
-  <img src="images/dr_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dr_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Markdown (кликните чтобы раскрыть)</summary>
-  <img src="images/dr_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dr_markdown_v1.png" />
 </details>
 
 <br>
@@ -163,17 +163,17 @@ Sigma правило, запросы для Kibana, X-Pack Watcher и запро
 
 <details>
   <summary>Data Needed yaml (кликните чтобы раскрыть)</summary>
-  <img src="images/dataneeded_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dataneeded_v1.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Confluence (кликните чтобы раскрыть)</summary>
-  <img src="images/dn_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dn_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Markdown (кликните чтобы раскрыть)</summary>
-  <img src="images/dn_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dn_markdown_v1.png" />
 </details>
 
 <br>
@@ -189,17 +189,17 @@ Sigma правило, запросы для Kibana, X-Pack Watcher и запро
 
 <details>
   <summary>Logging Policy yaml (кликните чтобы раскрыть)</summary>
-  <img src="images/loggingpolicy.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/loggingpolicy.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Confluence (кликните чтобы раскрыть)</summary>
-  <img src="images/lp_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/lp_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Markdown (кликните чтобы раскрыть)</summary>
-  <img src="images/lp_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/lp_markdown_v1.png" />
 </details>
 
 <br>
@@ -211,17 +211,17 @@ Sigma правило, запросы для Kibana, X-Pack Watcher и запро
 
 <details>
   <summary>Enrichments yaml (кликните чтобы раскрыть)</summary>
-  <img src="images/en_yaml_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/en_yaml_v1.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Confluence (кликните чтобы раскрыть)</summary>
-  <img src="images/en_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/en_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Markdown (кликните чтобы раскрыть)</summary>
-  <img src="images/en_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/en_markdown_v1.png" />
 </details>
 
 <br>
@@ -241,17 +241,17 @@ Triggers — сценарии имитации атак — оригинальн
 
 <details>
   <summary>Trigger yaml (кликните чтобы раскрыть)</summary>
-  <img src="images/trigger.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/trigger.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Confluence (кликните чтобы раскрыть)</summary>
-  <img src="images/trigger_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/trigger_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Markdown (кликните чтобы раскрыть)</summary>
-  <img src="images/tg_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/tg_markdown_v1.png" />
 </details>
 
 <br>
@@ -263,17 +263,17 @@ Triggers — сценарии имитации атак — оригинальн
 
 <details>
   <summary>Customers yaml (кликните чтобы раскрыть)</summary>
-  <img src="images/cu_yaml_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/cu_yaml_v1.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Confluence (кликните чтобы раскрыть))</summary>
-  <img src="images/cu_confluence_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/cu_confluence_v1.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Markdown (кликните чтобы раскрыть))</summary>
-  <img src="images/cu_markdown_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/cu_markdown_v1.png" />
 </details>
 
 <br>
@@ -287,17 +287,17 @@ Triggers — сценарии имитации атак — оригинальн
 
 <details>
   <summary>Response Action yaml (кликните чтобы раскрыть)</summary>
-  <img src="images/ra_yaml_v2.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/ra_yaml_v2.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Confluence (кликните чтобы раскрыть)</summary>
-  <img src="images/ra_confluence_v2.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/ra_confluence_v2.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Markdown (кликните чтобы раскрыть)</summary>
-  <img src="images/ra_markdown_v2.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/ra_markdown_v2.png" />
 </details>
 
 <br>
@@ -308,17 +308,17 @@ Triggers — сценарии имитации атак — оригинальн
 
 <details>
   <summary>Response Playbook yaml (кликните чтобы раскрыть)</summary>
-  <img src="images/rp_yaml_v2.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/rp_yaml_v2.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Confluence (кликните чтобы раскрыть)</summary>
-  <img src="images/rp_confluence_v2.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/rp_confluence_v2.png" />
 </details>
 
 <details>
   <summary>Автоматически сгенерированная страница в Markdown (кликните чтобы раскрыть)</summary>
-  <img src="images/rp_markdown_v2.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/rp_markdown_v2.png" />
 </details>
 
 <br>
@@ -331,29 +331,29 @@ Atomic Threat Coverage создает [TheHive Case Templates](analytics/generat
 
 <details>
   <summary> Response Playbook, экспортированный в шаблон кейса TheHive  (кликните чтобы раскрыть)</summary>
-  <img src="images/thehive_case_template_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/thehive_case_template_v1.png" />
 </details>
 
 <details>
   <summary>Response Action, экспортированный в таск TheHive (кликните чтобы раскрыть)</summary>
-  <img src="images/thehive_case_task_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/thehive_case_task_v1.png" />
 </details>
 
 #### Visualizations
 
 <details>
   <summary>Visualization yaml (кликните чтобы раскрыть)</summary>
-  <img src="images/visualisation_yaml_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/visualisation_yaml_v1.png" />
 </details>
 
 <details>
   <summary>Dashboard yaml (кликните чтобы раскрыть)</summary>
-  <img src="images/dashboard_yaml_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dashboard_yaml_v1.png" />
 </details>
 
 <details>
   <summary>Дашборд в Kibana (кликните чтобы раскрыть)</summary>
-  <img src="images/dashboard_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/dashboard_v1.png" />
 </details>
 
 <br>
@@ -373,7 +373,7 @@ Atomic Threat Coverage создает [Elasticsearch](https://www.elastic.co/pro
 
 <details>
   <summary>Аналитическая дашборда ATC в Kibana (кликните чтобы раскрыть)</summary>
-  <img src="images/atc_analytics_dashboard.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/atc_analytics_dashboard.png" />
 </details>
 
 <br>
@@ -402,7 +402,7 @@ Atomic Threat Coverage генерирует [ATT&CK Navigator](https://mitre-att
 
 <details>
   <summary>ATT&CK Navigator профайл для оригинальных правил Sigma (кликните чтобы раскрыть)</summary>
-  <img src="images/navigator_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/navigator_v1.png" />
 </details>
 
 
@@ -412,7 +412,7 @@ Atomic Threat Coverage генерирует [analytics.csv](analytics.csv) — �
 
 <details>
   <summary>Пример фильтра по технике "pass the hash" (кликните чтобы раскрыть)</summary>
-  <img src="images/analytics_pth_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/analytics_pth_v1.png" />
 </details>
 
 <br>
@@ -425,7 +425,7 @@ Atomic Threat Coverage генерирует [pivoting.csv](pivoting.csv) — с�
 
 <details>
   <summary>Пример фильтра по полю "hash" (кликните чтобы раскрыть)</summary>
-  <img src="images/pivoting_hash_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/pivoting_hash_v1.png" />
 </details>
 
 <br>
@@ -434,7 +434,7 @@ Atomic Threat Coverage генерирует [pivoting.csv](pivoting.csv) — с�
 
 <details>
   <summary>Пример фильтра по полю "ParentImage" (кликните чтобы раскрыть)</summary>
-  <img src="images/pivoting_parent_v1.png" />
+  <img src="Atomic_Threat_Coverage/Pages/images/pivoting_parent_v1.png" />
 </details>
 
 
