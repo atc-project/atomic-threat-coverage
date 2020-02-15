@@ -19,6 +19,7 @@
 
 ```
 title: WMI Persistence - Command Line Event Consumer
+id: 05936ce2-ee05-4dae-9d03-9a391cf2d2c6
 status: experimental
 description: Detects WMI command line event consumers
 references:
@@ -78,7 +79,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="7" Image="C:\\\\Windows\\\\System32\\\\wbem\\\\WmiPrvSE.exe" ImageLoaded="wbemcons.dll")
+(event_id="7" Image="C:\\\\Windows\\\\System32\\\\wbem\\\\WmiPrvSE.exe" ImageLoaded="wbemcons.dll")
 ```
 
 

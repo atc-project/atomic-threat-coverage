@@ -3,7 +3,7 @@
 | Description          | Detects suspicious sysprep process start with AppData folder as target (as used by Trojan Syndicasec in Thrip report by Symantec)                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              |  There is no documented Trigger for this Detection Rule yet  |
 | Severity Level       | medium |
@@ -19,6 +19,7 @@
 
 ```
 title: Sysprep on AppData Folder
+id: d5b9ae7a-e6fc-405e-80ff-2ff9dcc64e7e
 status: experimental
 description: Detects suspicious sysprep process start with AppData folder as target (as used by Trojan Syndicasec in Thrip report by Symantec)
 references:
@@ -65,7 +66,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-CommandLine:("*\\\\sysprep.exe *\\\\AppData\\\\*" "sysprep.exe *\\\\AppData\\\\*")
+CommandLine.keyword:(*\\\\sysprep.exe *\\\\AppData\\\\* sysprep.exe *\\\\AppData\\\\*)
 ```
 
 
@@ -79,7 +80,7 @@ CommandLine:("*\\\\sysprep.exe *\\\\AppData\\\\*" "sysprep.exe *\\\\AppData\\\\*
 ### logpoint
     
 ```
-CommandLine IN ["*\\\\sysprep.exe *\\\\AppData\\\\*", "sysprep.exe *\\\\AppData\\\\*"]
+(event_id="1" CommandLine IN ["*\\\\sysprep.exe *\\\\AppData\\\\*", "sysprep.exe *\\\\AppData\\\\*"])
 ```
 
 

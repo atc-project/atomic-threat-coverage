@@ -19,6 +19,7 @@
 
 ```
 title: Hiding files with attrib.exe
+id: 4281cb20-2994-4580-aa63-c8b86d019934
 status: experimental
 description: Detects usage of attrib.exe to hide files from users.
 author: Sami Ruohonen
@@ -72,7 +73,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((Image:"*\\\\attrib.exe" AND CommandLine:"* \\+h *") AND NOT ((CommandLine:"*\\\\desktop.ini *" OR (ParentImage:"*\\\\cmd.exe" AND CommandLine:"\\+R \\+H \\+S \\+A \\\\*.cui" AND ParentCommandLine:"C\\:\\\\WINDOWS\\\\system32\\\\*.bat"))))
+((Image.keyword:*\\\\attrib.exe AND CommandLine.keyword:* \\+h *) AND (NOT ((CommandLine.keyword:*\\\\desktop.ini * OR (ParentImage.keyword:*\\\\cmd.exe AND CommandLine.keyword:\\+R \\+H \\+S \\+A \\\\*.cui AND ParentCommandLine.keyword:C\\:\\\\WINDOWS\\\\system32\\\\*.bat)))))
 ```
 
 
@@ -86,7 +87,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((Image="*\\\\attrib.exe" CommandLine="* +h *")  -((CommandLine="*\\\\desktop.ini *" OR (ParentImage="*\\\\cmd.exe" CommandLine="+R +H +S +A \\\\*.cui" ParentCommandLine="C:\\\\WINDOWS\\\\system32\\\\*.bat"))))
+(event_id="1" (Image="*\\\\attrib.exe" CommandLine="* +h *")  -((event_id="1" (CommandLine="*\\\\desktop.ini *" OR (ParentImage="*\\\\cmd.exe" CommandLine="+R +H +S +A \\\\*.cui" ParentCommandLine="C:\\\\WINDOWS\\\\system32\\\\*.bat")))))
 ```
 
 

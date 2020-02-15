@@ -19,6 +19,7 @@
 
 ```
 title: Encoded IEX
+id: 88f680b8-070e-402c-ae11-d2914f2257f1
 status: experimental
 description: Detects a base64 encoded IEX command string in a process command line
 author: Florian Roth
@@ -68,7 +69,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-CommandLine:("*SUVYIChb*" "*lFWCAoW*" "*JRVggKF*" "*aWV4IChb*" "*lleCAoW*" "*pZXggKF*" "*aWV4IChOZX*" "*lleCAoTmV3*" "*pZXggKE5ld*" "*SUVYIChOZX*" "*lFWCAoTmV3*" "*JRVggKE5ld*")
+CommandLine.keyword:(*SUVYIChb* *lFWCAoW* *JRVggKF* *aWV4IChb* *lleCAoW* *pZXggKF* *aWV4IChOZX* *lleCAoTmV3* *pZXggKE5ld* *SUVYIChOZX* *lFWCAoTmV3* *JRVggKE5ld*)
 ```
 
 
@@ -82,7 +83,7 @@ CommandLine:("*SUVYIChb*" "*lFWCAoW*" "*JRVggKF*" "*aWV4IChb*" "*lleCAoW*" "*pZX
 ### logpoint
     
 ```
-CommandLine IN ["*SUVYIChb*", "*lFWCAoW*", "*JRVggKF*", "*aWV4IChb*", "*lleCAoW*", "*pZXggKF*", "*aWV4IChOZX*", "*lleCAoTmV3*", "*pZXggKE5ld*", "*SUVYIChOZX*", "*lFWCAoTmV3*", "*JRVggKE5ld*"]
+(event_id="1" CommandLine IN ["*SUVYIChb*", "*lFWCAoW*", "*JRVggKF*", "*aWV4IChb*", "*lleCAoW*", "*pZXggKF*", "*aWV4IChOZX*", "*lleCAoTmV3*", "*pZXggKE5ld*", "*SUVYIChOZX*", "*lFWCAoTmV3*", "*JRVggKE5ld*"])
 ```
 
 

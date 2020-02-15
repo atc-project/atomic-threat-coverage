@@ -3,7 +3,7 @@
 | Description          | Detects a suspicious execution of csc.exe, which uses a source in a suspicious folder (e.g. AppData)                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1500: Compile After Delivery](https://attack.mitre.org/techniques/T1500)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1500: Compile After Delivery](../Triggers/T1500.md)</li></ul>  |
 | Severity Level       | high |
@@ -18,7 +18,8 @@
 ### Sigma rule
 
 ```
-title: Suspicious Csc.exe Source File Folder 
+title: Suspicious Csc.exe Source File Folder
+id: dcaa3f04-70c3-427a-80b4-b870d73c94c4
 description: Detects a suspicious execution of csc.exe, which uses a source in a suspicious folder (e.g. AppData)
 status: experimental
 references:
@@ -68,7 +69,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(Image:"*\\\\csc.exe" AND CommandLine:("*\\\\AppData\\\\*" "*\\\\Windows\\\\Temp\\\\*"))
+(Image.keyword:*\\\\csc.exe AND CommandLine.keyword:(*\\\\AppData\\\\* *\\\\Windows\\\\Temp\\\\*))
 ```
 
 
@@ -82,7 +83,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(Image="*\\\\csc.exe" CommandLine IN ["*\\\\AppData\\\\*", "*\\\\Windows\\\\Temp\\\\*"])
+(event_id="1" Image="*\\\\csc.exe" CommandLine IN ["*\\\\AppData\\\\*", "*\\\\Windows\\\\Temp\\\\*"])
 ```
 
 

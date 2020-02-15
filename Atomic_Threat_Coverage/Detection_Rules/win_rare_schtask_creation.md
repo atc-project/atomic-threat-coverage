@@ -11,7 +11,7 @@
 | Development Status   | experimental |
 | References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>attack.s0111</li><li>attack.s0111</li></ul> | 
+| Other Tags           | <ul><li>attack.s0111</li></ul> | 
 
 ## Detection Rules
 
@@ -19,8 +19,10 @@
 
 ```
 title: Rare Scheduled Task Creations
+id: b20f6158-9438-41be-83da-a5a16ac90c2b
 status: experimental
-description: This rule detects rare scheduled task creations. Typically software gets installed on multiple systems and not only on a few. The aggregation and count function selects tasks with rare names. 
+description: This rule detects rare scheduled task creations. Typically software gets installed on multiple systems and not only on a few. The aggregation and count
+    function selects tasks with rare names.
 tags:
     - attack.persistence
     - attack.t1053
@@ -75,7 +77,7 @@ EventID="106" | eventstats count as val by TaskName| search val < 5
 ### logpoint
     
 ```
-EventID="106" | chart count() as val by TaskName | search val < 5
+event_id="106" | chart count() as val by TaskName | search val < 5
 ```
 
 

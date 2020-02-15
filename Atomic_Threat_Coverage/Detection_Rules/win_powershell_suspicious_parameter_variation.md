@@ -3,7 +3,7 @@
 | Description          | Detects suspicious PowerShell invocation with a parameter substring                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious PowerShell Parameter Substring
+id: 36210e0d-5b19-485d-a087-c096088885f0
 status: experimental
 description: Detects suspicious PowerShell invocation with a parameter substring
 references:
@@ -103,7 +104,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(Image:("*\\\\Powershell.exe") AND CommandLine:(" \\-windowstyle h " " \\-windowstyl h" " \\-windowsty h" " \\-windowst h" " \\-windows h" " \\-windo h" " \\-wind h" " \\-win h" " \\-wi h" " \\-win h " " \\-win hi " " \\-win hid " " \\-win hidd " " \\-win hidde " " \\-NoPr " " \\-NoPro " " \\-NoProf " " \\-NoProfi " " \\-NoProfil " " \\-nonin " " \\-nonint " " \\-noninte " " \\-noninter " " \\-nonintera " " \\-noninterac " " \\-noninteract " " \\-noninteracti " " \\-noninteractiv " " \\-ec " " \\-encodedComman " " \\-encodedComma " " \\-encodedComm " " \\-encodedCom " " \\-encodedCo " " \\-encodedC " " \\-encoded " " \\-encode " " \\-encod " " \\-enco " " \\-en "))
+(Image.keyword:(*\\\\Powershell.exe) AND CommandLine:(" \\-windowstyle h " " \\-windowstyl h" " \\-windowsty h" " \\-windowst h" " \\-windows h" " \\-windo h" " \\-wind h" " \\-win h" " \\-wi h" " \\-win h " " \\-win hi " " \\-win hid " " \\-win hidd " " \\-win hidde " " \\-NoPr " " \\-NoPro " " \\-NoProf " " \\-NoProfi " " \\-NoProfil " " \\-nonin " " \\-nonint " " \\-noninte " " \\-noninter " " \\-nonintera " " \\-noninterac " " \\-noninteract " " \\-noninteracti " " \\-noninteractiv " " \\-ec " " \\-encodedComman " " \\-encodedComma " " \\-encodedComm " " \\-encodedCom " " \\-encodedCo " " \\-encodedC " " \\-encoded " " \\-encode " " \\-encod " " \\-enco " " \\-en "))
 ```
 
 
@@ -117,7 +118,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(Image IN ["*\\\\Powershell.exe"] CommandLine IN [" -windowstyle h ", " -windowstyl h", " -windowsty h", " -windowst h", " -windows h", " -windo h", " -wind h", " -win h", " -wi h", " -win h ", " -win hi ", " -win hid ", " -win hidd ", " -win hidde ", " -NoPr ", " -NoPro ", " -NoProf ", " -NoProfi ", " -NoProfil ", " -nonin ", " -nonint ", " -noninte ", " -noninter ", " -nonintera ", " -noninterac ", " -noninteract ", " -noninteracti ", " -noninteractiv ", " -ec ", " -encodedComman ", " -encodedComma ", " -encodedComm ", " -encodedCom ", " -encodedCo ", " -encodedC ", " -encoded ", " -encode ", " -encod ", " -enco ", " -en "])
+(event_id="1" Image IN ["*\\\\Powershell.exe"] CommandLine IN [" -windowstyle h ", " -windowstyl h", " -windowsty h", " -windowst h", " -windows h", " -windo h", " -wind h", " -win h", " -wi h", " -win h ", " -win hi ", " -win hid ", " -win hidd ", " -win hidde ", " -NoPr ", " -NoPro ", " -NoProf ", " -NoProfi ", " -NoProfil ", " -nonin ", " -nonint ", " -noninte ", " -noninter ", " -nonintera ", " -noninterac ", " -noninteract ", " -noninteracti ", " -noninteractiv ", " -ec ", " -encodedComman ", " -encodedComma ", " -encodedComm ", " -encodedCom ", " -encodedCo ", " -encodedC ", " -encoded ", " -encode ", " -encod ", " -enco ", " -en "])
 ```
 
 

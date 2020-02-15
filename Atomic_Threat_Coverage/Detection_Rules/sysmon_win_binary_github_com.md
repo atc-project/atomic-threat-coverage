@@ -19,6 +19,7 @@
 
 ```
 title: Microsoft Binary Github Communication
+id: 635dbb88-67b3-4b41-9ea5-a3af2dd88153
 status: experimental
 description: Detects an executable in the Windows folder accessing github.com
 references:
@@ -34,6 +35,7 @@ logsource:
 detection:
     selection:
         EventID: 3
+        Initiated: 'true'
         DestinationHostname: 
             - '*.github.com'
             - '*.githubusercontent.com'
@@ -54,42 +56,42 @@ level: high
 ### es-qs
     
 ```
-(EventID:"3" AND DestinationHostname.keyword:(*.github.com OR *.githubusercontent.com) AND Image.keyword:C\\:\\\\Windows\\\\*)
+(EventID:"3" AND Initiated:"true" AND DestinationHostname.keyword:(*.github.com OR *.githubusercontent.com) AND Image.keyword:C\\:\\\\Windows\\\\*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Microsoft-Binary-Github-Communication <<EOF\n{\n  "metadata": {\n    "title": "Microsoft Binary Github Communication",\n    "description": "Detects an executable in the Windows folder accessing github.com",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1105"\n    ],\n    "query": "(EventID:\\"3\\" AND DestinationHostname.keyword:(*.github.com OR *.githubusercontent.com) AND Image.keyword:C\\\\:\\\\\\\\Windows\\\\\\\\*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"3\\" AND DestinationHostname.keyword:(*.github.com OR *.githubusercontent.com) AND Image.keyword:C\\\\:\\\\\\\\Windows\\\\\\\\*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Microsoft Binary Github Communication\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Microsoft-Binary-Github-Communication <<EOF\n{\n  "metadata": {\n    "title": "Microsoft Binary Github Communication",\n    "description": "Detects an executable in the Windows folder accessing github.com",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1105"\n    ],\n    "query": "(EventID:\\"3\\" AND Initiated:\\"true\\" AND DestinationHostname.keyword:(*.github.com OR *.githubusercontent.com) AND Image.keyword:C\\\\:\\\\\\\\Windows\\\\\\\\*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"3\\" AND Initiated:\\"true\\" AND DestinationHostname.keyword:(*.github.com OR *.githubusercontent.com) AND Image.keyword:C\\\\:\\\\\\\\Windows\\\\\\\\*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Microsoft Binary Github Communication\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
 ### graylog
     
 ```
-(EventID:"3" AND DestinationHostname:("*.github.com" "*.githubusercontent.com") AND Image:"C\\:\\\\Windows\\\\*")
+(EventID:"3" AND Initiated:"true" AND DestinationHostname.keyword:(*.github.com *.githubusercontent.com) AND Image.keyword:C\\:\\\\Windows\\\\*)
 ```
 
 
 ### splunk
     
 ```
-(EventID="3" (DestinationHostname="*.github.com" OR DestinationHostname="*.githubusercontent.com") Image="C:\\\\Windows\\\\*")
+(EventID="3" Initiated="true" (DestinationHostname="*.github.com" OR DestinationHostname="*.githubusercontent.com") Image="C:\\\\Windows\\\\*")
 ```
 
 
 ### logpoint
     
 ```
-(EventID="3" DestinationHostname IN ["*.github.com", "*.githubusercontent.com"] Image="C:\\\\Windows\\\\*")
+(event_id="3" Initiated="true" DestinationHostname IN ["*.github.com", "*.githubusercontent.com"] Image="C:\\\\Windows\\\\*")
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*3)(?=.*(?:.*.*\\.github\\.com|.*.*\\.githubusercontent\\.com))(?=.*C:\\Windows\\\\.*))'
+grep -P '^(?:.*(?=.*3)(?=.*true)(?=.*(?:.*.*\\.github\\.com|.*.*\\.githubusercontent\\.com))(?=.*C:\\Windows\\\\.*))'
 ```
 
 

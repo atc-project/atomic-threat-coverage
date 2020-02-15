@@ -3,7 +3,7 @@
 | Description          | Detects execution of Net.exe, whether suspicious or benign.                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
 | ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              |  There is no documented Trigger for this Detection Rule yet  |
 | Severity Level       | low |
@@ -11,7 +11,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://pentest.blog/windows-privilege-escalation-methods-for-pentesters/](https://pentest.blog/windows-privilege-escalation-methods-for-pentesters/)</li></ul>  |
 | Author               | Michael Haag, Mark Woan (improvements) |
-| Other Tags           | <ul><li>attack.s0039</li><li>attack.s0039</li></ul> | 
+| Other Tags           | <ul><li>attack.s0039</li></ul> | 
 
 ## Detection Rules
 
@@ -19,6 +19,7 @@
 
 ```
 title: Net.exe Execution
+id: 183e7ea8-ac4b-4c23-9aec-b3dac4e401ac
 status: experimental
 description: Detects execution of Net.exe, whether suspicious or benign.
 references:
@@ -76,7 +77,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(Image:("*\\\\net.exe" "*\\\\net1.exe") AND CommandLine:("* group*" "* localgroup*" "* user*" "* view*" "* share" "* accounts*" "* use*" "* stop *"))
+(Image.keyword:(*\\\\net.exe *\\\\net1.exe) AND CommandLine.keyword:(* group* * localgroup* * user* * view* * share * accounts* * use* * stop *))
 ```
 
 
@@ -90,7 +91,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(Image IN ["*\\\\net.exe", "*\\\\net1.exe"] CommandLine IN ["* group*", "* localgroup*", "* user*", "* view*", "* share", "* accounts*", "* use*", "* stop *"])
+(event_id="1" Image IN ["*\\\\net.exe", "*\\\\net1.exe"] CommandLine IN ["* group*", "* localgroup*", "* user*", "* view*", "* share", "* accounts*", "* use*", "* stop *"])
 ```
 
 

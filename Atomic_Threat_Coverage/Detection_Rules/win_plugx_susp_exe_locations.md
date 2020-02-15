@@ -3,7 +3,7 @@
 | Description          | Detects the execution of an executable that is typically used by PlugX for DLL side loading started from an uncommon location                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li></ul>  |
 | Severity Level       | high |
@@ -11,7 +11,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[http://www.hexacorn.com/blog/2016/03/10/beyond-good-ol-run-key-part-36/](http://www.hexacorn.com/blog/2016/03/10/beyond-good-ol-run-key-part-36/)</li><li>[https://countuponsecurity.com/2017/06/07/threat-hunting-in-the-enterprise-with-appcompatprocessor/](https://countuponsecurity.com/2017/06/07/threat-hunting-in-the-enterprise-with-appcompatprocessor/)</li></ul>  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>attack.s0013</li><li>attack.s0013</li></ul> | 
+| Other Tags           | <ul><li>attack.s0013</li></ul> | 
 
 ## Detection Rules
 
@@ -19,6 +19,7 @@
 
 ```
 title: Executable used by PlugX in Uncommon Location - Sysmon Version
+id: aeab5ec5-be14-471a-80e8-e344418305c2
 status: experimental
 description: Detects the execution of an executable that is typically used by PlugX for DLL side loading started from an uncommon location
 references:
@@ -137,7 +138,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((((((((((((Image:"*\\\\CamMute.exe" AND NOT (Image:"*\\\\Lenovo\\\\Communication Utility\\\\*")) OR (Image:"*\\\\chrome_frame_helper.exe" AND NOT (Image:"*\\\\Google\\\\Chrome\\\\application\\\\*"))) OR (Image:"*\\\\dvcemumanager.exe" AND NOT (Image:"*\\\\Microsoft Device Emulator\\\\*"))) OR (Image:"*\\\\Gadget.exe" AND NOT (Image:"*\\\\Windows Media Player\\\\*"))) OR (Image:"*\\\\hcc.exe" AND NOT (Image:"*\\\\HTML Help Workshop\\\\*"))) OR (Image:"*\\\\hkcmd.exe" AND NOT (Image:("*\\\\System32\\\\*" "*\\\\SysNative\\\\*" "*\\\\SysWowo64\\\\*")))) OR (Image:"*\\\\Mc.exe" AND NOT (Image:("*\\\\Microsoft Visual Studio*" "*\\\\Microsoft SDK*" "*\\\\Windows Kit*")))) OR (Image:"*\\\\MsMpEng.exe" AND NOT (Image:("*\\\\Microsoft Security Client\\\\*" "*\\\\Windows Defender\\\\*" "*\\\\AntiMalware\\\\*")))) OR (Image:"*\\\\msseces.exe" AND NOT (Image:("*\\\\Microsoft Security Center\\\\*" "*\\\\Microsoft Security Client\\\\*" "*\\\\Microsoft Security Essentials\\\\*")))) OR (Image:"*\\\\OInfoP11.exe" AND NOT (Image:"*\\\\Common Files\\\\Microsoft Shared\\\\*"))) OR (Image:"*\\\\OleView.exe" AND NOT (Image:("*\\\\Microsoft Visual Studio*" "*\\\\Microsoft SDK*" "*\\\\Windows Kit*" "*\\\\Windows Resource Kit\\\\*")))) OR (Image:"*\\\\rc.exe" AND NOT (Image:("*\\\\Microsoft Visual Studio*" "*\\\\Microsoft SDK*" "*\\\\Windows Kit*" "*\\\\Windows Resource Kit\\\\*" "*\\\\Microsoft.NET\\\\*"))))
+((((((((((((Image.keyword:*\\\\CamMute.exe AND (NOT (Image.keyword:*\\\\Lenovo\\\\Communication Utility\\\\*))) OR (Image.keyword:*\\\\chrome_frame_helper.exe AND (NOT (Image.keyword:*\\\\Google\\\\Chrome\\\\application\\\\*)))) OR (Image.keyword:*\\\\dvcemumanager.exe AND (NOT (Image.keyword:*\\\\Microsoft Device Emulator\\\\*)))) OR (Image.keyword:*\\\\Gadget.exe AND (NOT (Image.keyword:*\\\\Windows Media Player\\\\*)))) OR (Image.keyword:*\\\\hcc.exe AND (NOT (Image.keyword:*\\\\HTML Help Workshop\\\\*)))) OR (Image.keyword:*\\\\hkcmd.exe AND (NOT (Image.keyword:(*\\\\System32\\\\* *\\\\SysNative\\\\* *\\\\SysWowo64\\\\*))))) OR (Image.keyword:*\\\\Mc.exe AND (NOT (Image.keyword:(*\\\\Microsoft Visual Studio* *\\\\Microsoft SDK* *\\\\Windows Kit*))))) OR (Image.keyword:*\\\\MsMpEng.exe AND (NOT (Image.keyword:(*\\\\Microsoft Security Client\\\\* *\\\\Windows Defender\\\\* *\\\\AntiMalware\\\\*))))) OR (Image.keyword:*\\\\msseces.exe AND (NOT (Image.keyword:(*\\\\Microsoft Security Center\\\\* *\\\\Microsoft Security Client\\\\* *\\\\Microsoft Security Essentials\\\\*))))) OR (Image.keyword:*\\\\OInfoP11.exe AND (NOT (Image.keyword:*\\\\Common Files\\\\Microsoft Shared\\\\*)))) OR (Image.keyword:*\\\\OleView.exe AND (NOT (Image.keyword:(*\\\\Microsoft Visual Studio* *\\\\Microsoft SDK* *\\\\Windows Kit* *\\\\Windows Resource Kit\\\\*))))) OR (Image.keyword:*\\\\rc.exe AND (NOT (Image.keyword:(*\\\\Microsoft Visual Studio* *\\\\Microsoft SDK* *\\\\Windows Kit* *\\\\Windows Resource Kit\\\\* *\\\\Microsoft.NET\\\\*)))))
 ```
 
 
@@ -151,7 +152,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((((((((((((Image="*\\\\CamMute.exe"  -(Image="*\\\\Lenovo\\\\Communication Utility\\\\*")) OR (Image="*\\\\chrome_frame_helper.exe"  -(Image="*\\\\Google\\\\Chrome\\\\application\\\\*"))) OR (Image="*\\\\dvcemumanager.exe"  -(Image="*\\\\Microsoft Device Emulator\\\\*"))) OR (Image="*\\\\Gadget.exe"  -(Image="*\\\\Windows Media Player\\\\*"))) OR (Image="*\\\\hcc.exe"  -(Image="*\\\\HTML Help Workshop\\\\*"))) OR (Image="*\\\\hkcmd.exe"  -(Image IN ["*\\\\System32\\\\*", "*\\\\SysNative\\\\*", "*\\\\SysWowo64\\\\*"]))) OR (Image="*\\\\Mc.exe"  -(Image IN ["*\\\\Microsoft Visual Studio*", "*\\\\Microsoft SDK*", "*\\\\Windows Kit*"]))) OR (Image="*\\\\MsMpEng.exe"  -(Image IN ["*\\\\Microsoft Security Client\\\\*", "*\\\\Windows Defender\\\\*", "*\\\\AntiMalware\\\\*"]))) OR (Image="*\\\\msseces.exe"  -(Image IN ["*\\\\Microsoft Security Center\\\\*", "*\\\\Microsoft Security Client\\\\*", "*\\\\Microsoft Security Essentials\\\\*"]))) OR (Image="*\\\\OInfoP11.exe"  -(Image="*\\\\Common Files\\\\Microsoft Shared\\\\*"))) OR (Image="*\\\\OleView.exe"  -(Image IN ["*\\\\Microsoft Visual Studio*", "*\\\\Microsoft SDK*", "*\\\\Windows Kit*", "*\\\\Windows Resource Kit\\\\*"]))) OR (Image="*\\\\rc.exe"  -(Image IN ["*\\\\Microsoft Visual Studio*", "*\\\\Microsoft SDK*", "*\\\\Windows Kit*", "*\\\\Windows Resource Kit\\\\*", "*\\\\Microsoft.NET\\\\*"])))
+(event_id="1" ((((((((((((Image="*\\\\CamMute.exe"  -(Image="*\\\\Lenovo\\\\Communication Utility\\\\*")) OR (Image="*\\\\chrome_frame_helper.exe"  -(Image="*\\\\Google\\\\Chrome\\\\application\\\\*"))) OR (Image="*\\\\dvcemumanager.exe"  -(Image="*\\\\Microsoft Device Emulator\\\\*"))) OR (Image="*\\\\Gadget.exe"  -(Image="*\\\\Windows Media Player\\\\*"))) OR (Image="*\\\\hcc.exe"  -(Image="*\\\\HTML Help Workshop\\\\*"))) OR (Image="*\\\\hkcmd.exe"  -(Image IN ["*\\\\System32\\\\*", "*\\\\SysNative\\\\*", "*\\\\SysWowo64\\\\*"]))) OR (Image="*\\\\Mc.exe"  -(Image IN ["*\\\\Microsoft Visual Studio*", "*\\\\Microsoft SDK*", "*\\\\Windows Kit*"]))) OR (Image="*\\\\MsMpEng.exe"  -(Image IN ["*\\\\Microsoft Security Client\\\\*", "*\\\\Windows Defender\\\\*", "*\\\\AntiMalware\\\\*"]))) OR (Image="*\\\\msseces.exe"  -(Image IN ["*\\\\Microsoft Security Center\\\\*", "*\\\\Microsoft Security Client\\\\*", "*\\\\Microsoft Security Essentials\\\\*"]))) OR (Image="*\\\\OInfoP11.exe"  -(Image="*\\\\Common Files\\\\Microsoft Shared\\\\*"))) OR (Image="*\\\\OleView.exe"  -(Image IN ["*\\\\Microsoft Visual Studio*", "*\\\\Microsoft SDK*", "*\\\\Windows Kit*", "*\\\\Windows Resource Kit\\\\*"]))) OR (Image="*\\\\rc.exe"  -(Image IN ["*\\\\Microsoft Visual Studio*", "*\\\\Microsoft SDK*", "*\\\\Windows Kit*", "*\\\\Windows Resource Kit\\\\*", "*\\\\Microsoft.NET\\\\*"]))))
 ```
 
 

@@ -19,6 +19,7 @@
 
 ```
 title: LSASS Access Detected via Attack Surface Reduction
+id: a0a278fe-2c0e-4de2-ac3c-c68b08a9ba98
 description: Detects Access to LSASS Process
 status: experimental
 references:
@@ -65,7 +66,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"1121" AND Path:"*\\\\lsass.exe")
+(EventID:"1121" AND Path.keyword:*\\\\lsass.exe)
 ```
 
 
@@ -79,7 +80,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="1121" Path="*\\\\lsass.exe")
+(event_id="1121" Path="*\\\\lsass.exe")
 ```
 
 

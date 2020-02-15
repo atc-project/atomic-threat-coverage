@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | The System Catalog has been deleted                                                                                                |
 | Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[http://kb.eventtracker.com/evtpass/evtpages/EventId_524_Microsoft-Windows-Backup_61998.asp](http://kb.eventtracker.com/evtpass/evtpages/EventId_524_Microsoft-Windows-Backup_61998.asp)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Applications and Services Logs 		| 

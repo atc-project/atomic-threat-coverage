@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | Anti-virus alert                                                                                                |
 | Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[None](None)</li></ul>                                  |
 | Platform       		| antivirus   |
 | Type           		| None 		| 

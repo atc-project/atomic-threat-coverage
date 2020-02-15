@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | OpenSSH SSH daemon (sshd) log                                                                                                |
 | Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[https://en.wikibooks.org/wiki/OpenSSH/Logging_and_Troubleshooting](https://en.wikibooks.org/wiki/OpenSSH/Logging_and_Troubleshooting)</li></ul>                                  |
 | Platform       		| Linux   |
 | Type           		| auth 		| 

@@ -11,7 +11,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://brica.de/alerts/alert/public/1247926/agent-tesla-keylogger-delivered-inside-a-power-iso-daa-archive/](https://brica.de/alerts/alert/public/1247926/agent-tesla-keylogger-delivered-inside-a-power-iso-daa-archive/)</li><li>[https://app.any.run/tasks/7eaba74e-c1ea-400f-9c17-5e30eee89906/](https://app.any.run/tasks/7eaba74e-c1ea-400f-9c17-5e30eee89906/)</li></ul>  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2016-03-001</li><li>car.2016-03-001</li></ul> | 
+| Other Tags           | <ul><li>car.2016-03-001</li></ul> | 
 
 ## Detection Rules
 
@@ -19,6 +19,7 @@
 
 ```
 title: Whoami Execution
+id: e28a5a99-da44-436d-b7a0-2afc20a5f413
 status: experimental
 description: Detects the execution of whoami, which is often used by attackers after exloitation / privilege escalation but rarely used by administrators
 references:
@@ -67,7 +68,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(Image:"*\\\\whoami.exe" OR OriginalFileName:"whoami.exe")
+(Image.keyword:*\\\\whoami.exe OR OriginalFileName:"whoami.exe")
 ```
 
 
@@ -81,7 +82,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(Image="*\\\\whoami.exe" OR OriginalFileName="whoami.exe")
+(event_id="1" (Image="*\\\\whoami.exe" OR OriginalFileName="whoami.exe"))
 ```
 
 

@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious access to sensitive file extensions
+id: 91c945bc-2ad1-4799-a591-4d00198a1215
 description: Detects known sensitive file extensions
 author: Samir Bousseaden
 tags:
@@ -72,7 +73,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:("5145") AND RelativeTargetName:("*.pst" "*.ost" "*.msg" "*.nst" "*.oab" "*.edb" "*.nsf" "*.bak" "*.dmp" "*.kirbi" "*\\\\ntds.dit" "*\\\\groups.xml" "*.rdp"))
+(EventID:("5145") AND RelativeTargetName.keyword:(*.pst *.ost *.msg *.nst *.oab *.edb *.nsf *.bak *.dmp *.kirbi *\\\\ntds.dit *\\\\groups.xml *.rdp))
 ```
 
 
@@ -86,7 +87,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID IN ["5145"] RelativeTargetName IN ["*.pst", "*.ost", "*.msg", "*.nst", "*.oab", "*.edb", "*.nsf", "*.bak", "*.dmp", "*.kirbi", "*\\\\ntds.dit", "*\\\\groups.xml", "*.rdp"])
+(event_source="Microsoft-Windows-Security-Auditing" event_id IN ["5145"] RelativeTargetName IN ["*.pst", "*.ost", "*.msg", "*.nst", "*.oab", "*.edb", "*.nsf", "*.bak", "*.dmp", "*.kirbi", "*\\\\ntds.dit", "*\\\\groups.xml", "*.rdp"])
 ```
 
 

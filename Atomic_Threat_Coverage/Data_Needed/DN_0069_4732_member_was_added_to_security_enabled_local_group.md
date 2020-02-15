@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | This event generates every time a new member was added to a  security-enabled (security) local group. This event generates  on domain controllers, member servers, and workstations                                                                                                |
 | Logging Policy    | <ul><li>[LP_0101_windows_audit_security_group_management](../Logging_Policies/LP_0101_windows_audit_security_group_management.md)</li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4732.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4732.md)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Windows Log 		| 

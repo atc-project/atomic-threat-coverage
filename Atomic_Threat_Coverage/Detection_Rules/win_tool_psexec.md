@@ -3,7 +3,7 @@
 | Description          | Detects PsExec service installation and execution events (service and Sysmon)                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0031_7036_service_started_stopped](../Data_Needed/DN_0031_7036_service_started_stopped.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0031_7036_service_started_stopped](../Data_Needed/DN_0031_7036_service_started_stopped.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1035: Service Execution](../Triggers/T1035.md)</li></ul>  |
 | Severity Level       | low |
@@ -11,16 +11,16 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://www.jpcert.or.jp/english/pub/sr/ir_research.html](https://www.jpcert.or.jp/english/pub/sr/ir_research.html)</li><li>[https://jpcertcc.github.io/ToolAnalysisResultSheet](https://jpcertcc.github.io/ToolAnalysisResultSheet)</li></ul>  |
 | Author               | Thomas Patzke |
-| Other Tags           | <ul><li>attack.s0029</li><li>attack.s0029</li></ul> | 
+| Other Tags           | <ul><li>attack.s0029</li></ul> | 
 
 ## Detection Rules
 
 ### Sigma rule
 
 ```
----
 action: global
 title: PsExec Tool Execution
+id: 42c575ea-e41e-41f1-b248-8093c3e82a28
 status: experimental
 description: Detects PsExec service installation and execution events (service and Sysmon)
 author: Thomas Patzke
@@ -87,7 +87,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(ServiceName:"PSEXESVC" AND ((EventID:"7045" AND ServiceFileName:"*\\\\PSEXESVC.exe") OR EventID:"7036"))\n(Image:"*\\\\PSEXESVC.exe" AND User:"NT AUTHORITY\\\\SYSTEM")
+(ServiceName:"PSEXESVC" AND ((EventID:"7045" AND ServiceFileName.keyword:*\\\\PSEXESVC.exe) OR EventID:"7036"))\n(Image.keyword:*\\\\PSEXESVC.exe AND User:"NT AUTHORITY\\\\SYSTEM")
 ```
 
 
@@ -101,7 +101,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(ServiceName="PSEXESVC" ((EventID="7045" ServiceFileName="*\\\\PSEXESVC.exe") OR EventID="7036"))\n(Image="*\\\\PSEXESVC.exe" User="NT AUTHORITY\\\\SYSTEM")
+(event_source="Microsoft-Windows-Security-Auditing" service="PSEXESVC" ((event_id="7045" ServiceFileName="*\\\\PSEXESVC.exe") OR event_id="7036"))\n(event_id="1" Image="*\\\\PSEXESVC.exe" User="NT AUTHORITY\\\\SYSTEM")
 ```
 
 

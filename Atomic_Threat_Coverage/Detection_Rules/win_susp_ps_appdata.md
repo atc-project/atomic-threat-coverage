@@ -3,7 +3,7 @@
 | Description          | Detects a suspicious command line execution that invokes PowerShell with reference to an AppData folder                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | Severity Level       | medium |
@@ -19,6 +19,7 @@
 
 ```
 title: PowerShell Script Run in AppData
+id: ac175779-025a-4f12-98b0-acdaeb77ea85
 status: experimental
 description: Detects a suspicious command line execution that invokes PowerShell with reference to an AppData folder
 references:
@@ -65,7 +66,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-CommandLine:("* \\/c powershell*\\\\AppData\\\\Local\\\\*" "* \\/c powershell*\\\\AppData\\\\Roaming\\\\*")
+CommandLine.keyword:(* \\/c powershell*\\\\AppData\\\\Local\\\\* * \\/c powershell*\\\\AppData\\\\Roaming\\\\*)
 ```
 
 
@@ -79,7 +80,7 @@ CommandLine:("* \\/c powershell*\\\\AppData\\\\Local\\\\*" "* \\/c powershell*\\
 ### logpoint
     
 ```
-CommandLine IN ["* /c powershell*\\\\AppData\\\\Local\\\\*", "* /c powershell*\\\\AppData\\\\Roaming\\\\*"]
+(event_id="1" CommandLine IN ["* /c powershell*\\\\AppData\\\\Local\\\\*", "* /c powershell*\\\\AppData\\\\Roaming\\\\*"])
 ```
 
 

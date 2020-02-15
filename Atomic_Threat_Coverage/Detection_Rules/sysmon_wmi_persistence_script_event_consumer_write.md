@@ -19,6 +19,7 @@
 
 ```
 title: WMI Persistence - Script Event Consumer File Write
+id: 33f41cdd-35ac-4ba8-814b-c6a4244a1ad4
 status: experimental
 description: Detects file writes of WMI script event consumer
 references:
@@ -77,7 +78,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="11" Image="C:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe")
+(event_id="11" Image="C:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe")
 ```
 
 

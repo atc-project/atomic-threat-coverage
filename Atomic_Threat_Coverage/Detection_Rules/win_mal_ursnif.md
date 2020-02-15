@@ -19,8 +19,9 @@
 
 ```
 title: Ursnif
+id: 21f17060-b282-4249-ade0-589ea3591558
 status: experimental
-description: Detects new registry key created by Ursnif malware. 
+description: Detects new registry key created by Ursnif malware.
 references:
     - https://blog.yoroi.company/research/ursnif-long-live-the-steganography/
     - https://blog.trendmicro.com/trendlabs-security-intelligence/phishing-campaign-uses-hijacked-emails-to-deliver-ursnif-by-replying-to-ongoing-threads/
@@ -64,7 +65,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"13" AND TargetObject:"*\\\\Software\\\\AppDataLow\\\\Software\\\\Microsoft\\\\*")
+(EventID:"13" AND TargetObject.keyword:*\\\\Software\\\\AppDataLow\\\\Software\\\\Microsoft\\\\*)
 ```
 
 
@@ -78,7 +79,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="13" TargetObject="*\\\\Software\\\\AppDataLow\\\\Software\\\\Microsoft\\\\*")
+(event_id="13" TargetObject="*\\\\Software\\\\AppDataLow\\\\Software\\\\Microsoft\\\\*")
 ```
 
 

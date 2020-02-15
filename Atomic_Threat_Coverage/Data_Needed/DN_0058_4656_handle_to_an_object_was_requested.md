@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | This event indicates that specific access was requested for an object.  The object could be a file system, kernel, or registry object, or a file  system object on removable storage or a device. If access was declined,  a Failure event is generated. This event generates only if the object’s  SACL has the required ACE to handle the use of specific access rights                                                                                                |
 | Logging Policy    | <ul><li>[LP_0104_windows_audit_removable_storage](../Logging_Policies/LP_0104_windows_audit_removable_storage.md)</li><li>[LP_0039_windows_audit_kernel_object](../Logging_Policies/LP_0039_windows_audit_kernel_object.md)</li><li>[LP_0102_windows_audit_file_system](../Logging_Policies/LP_0102_windows_audit_file_system.md)</li><li>[LP_0103_windows_audit_registry](../Logging_Policies/LP_0103_windows_audit_registry.md)</li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4656.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4656.md)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Windows Log 		| 

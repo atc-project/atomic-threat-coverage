@@ -11,7 +11,7 @@
 | Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>attack.s0029</li><li>attack.s0029</li></ul> | 
+| Other Tags           | <ul><li>attack.s0029</li></ul> | 
 
 ## Detection Rules
 
@@ -19,6 +19,7 @@
 
 ```
 title: PsExec Service Start
+id: 3ede524d-21cc-472d-a3ce-d21b568d8db7
 description: Detects a PsExec service start
 author: Florian Roth
 date: 2018/03/13
@@ -75,7 +76,7 @@ ProcessCommandLine="C:\\\\Windows\\\\PSEXESVC.exe"
 ### logpoint
     
 ```
-ProcessCommandLine="C:\\\\Windows\\\\PSEXESVC.exe"
+(event_id="1" ProcessCommandLine="C:\\\\Windows\\\\PSEXESVC.exe")
 ```
 
 

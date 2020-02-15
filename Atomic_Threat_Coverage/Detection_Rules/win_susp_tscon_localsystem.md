@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious TSCON Start
+id: 9847f263-4a81-424f-970c-875dab15b79b
 status: experimental
 description: Detects a tscon.exe start as LOCAL SYSTEM
 references:
@@ -64,7 +65,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(User:"NT AUTHORITY\\\\SYSTEM" AND Image:"*\\\\tscon.exe")
+(User:"NT AUTHORITY\\\\SYSTEM" AND Image.keyword:*\\\\tscon.exe)
 ```
 
 
@@ -78,7 +79,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(User="NT AUTHORITY\\\\SYSTEM" Image="*\\\\tscon.exe")
+(event_id="1" User="NT AUTHORITY\\\\SYSTEM" Image="*\\\\tscon.exe")
 ```
 
 

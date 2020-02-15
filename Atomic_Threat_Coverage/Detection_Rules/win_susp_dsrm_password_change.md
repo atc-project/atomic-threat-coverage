@@ -19,6 +19,7 @@
 
 ```
 title: Password Change on Directory Service Restore Mode (DSRM) Account
+id: 53ad8e36-f573-46bf-97e4-15ba5bf4bb51
 status: stable
 description: The Directory Service Restore Mode (DSRM) account is a local administrator account on Domain Controllers. Attackers may change the password to gain persistence.
 references:
@@ -76,7 +77,7 @@ EventID="4794"
 ### logpoint
     
 ```
-EventID="4794"
+(event_source="Microsoft-Windows-Security-Auditing" event_id="4794")
 ```
 
 

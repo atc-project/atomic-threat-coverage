@@ -11,7 +11,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://jpcertcc.github.io/ToolAnalysisResultSheet](https://jpcertcc.github.io/ToolAnalysisResultSheet)</li><li>[https://www.jpcert.or.jp/english/pub/sr/ir_research.html](https://www.jpcert.or.jp/english/pub/sr/ir_research.html)</li><li>[https://technet.microsoft.com/en-us/en-en/sysinternals/sdelete.aspx](https://technet.microsoft.com/en-us/en-en/sysinternals/sdelete.aspx)</li></ul>  |
 | Author               | Thomas Patzke |
-| Other Tags           | <ul><li>attack.s0195</li><li>attack.s0195</li></ul> | 
+| Other Tags           | <ul><li>attack.s0195</li></ul> | 
 
 ## Detection Rules
 
@@ -19,6 +19,7 @@
 
 ```
 title: Secure Deletion with SDelete
+id: 39a80702-d7ca-4a83-b776-525b1f86a36d
 status: experimental
 description: Detects renaming of file while deletion with SDelete tool
 author: Thomas Patzke
@@ -71,7 +72,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:("4656" "4663" "4658") AND ObjectName:("*.AAA" "*.ZZZ"))
+(EventID:("4656" "4663" "4658") AND ObjectName.keyword:(*.AAA *.ZZZ))
 ```
 
 
@@ -85,7 +86,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID IN ["4656", "4663", "4658"] ObjectName IN ["*.AAA", "*.ZZZ"])
+(event_source="Microsoft-Windows-Security-Auditing" event_id IN ["4656", "4663", "4658"] ObjectName IN ["*.AAA", "*.ZZZ"])
 ```
 
 

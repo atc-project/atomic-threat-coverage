@@ -3,7 +3,7 @@
 | Description          | Web servers that spawn shell processes could be the result of a successfully placed web shell or an other attack                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1100: Web Shell](https://attack.mitre.org/techniques/T1100)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1100: Web Shell](../Triggers/T1100.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Shells Spawned by Web Servers
+id: 8202070f-edeb-4d31-a010-a26c72ac5600
 status: experimental
 description: Web servers that spawn shell processes could be the result of a successfully placed web shell or an other attack
 author: Thomas Patzke
@@ -72,7 +73,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(ParentImage:("*\\\\w3wp.exe" "*\\\\httpd.exe" "*\\\\nginx.exe" "*\\\\php\\-cgi.exe") AND Image:("*\\\\cmd.exe" "*\\\\sh.exe" "*\\\\bash.exe" "*\\\\powershell.exe"))
+(ParentImage.keyword:(*\\\\w3wp.exe *\\\\httpd.exe *\\\\nginx.exe *\\\\php\\-cgi.exe) AND Image.keyword:(*\\\\cmd.exe *\\\\sh.exe *\\\\bash.exe *\\\\powershell.exe))
 ```
 
 
@@ -86,7 +87,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(ParentImage IN ["*\\\\w3wp.exe", "*\\\\httpd.exe", "*\\\\nginx.exe", "*\\\\php-cgi.exe"] Image IN ["*\\\\cmd.exe", "*\\\\sh.exe", "*\\\\bash.exe", "*\\\\powershell.exe"])
+(event_id="1" ParentImage IN ["*\\\\w3wp.exe", "*\\\\httpd.exe", "*\\\\nginx.exe", "*\\\\php-cgi.exe"] Image IN ["*\\\\cmd.exe", "*\\\\sh.exe", "*\\\\bash.exe", "*\\\\powershell.exe"])
 ```
 
 

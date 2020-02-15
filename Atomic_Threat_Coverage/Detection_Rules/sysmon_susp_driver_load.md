@@ -19,11 +19,12 @@
 
 ```
 title: Suspicious Driver Load from Temp
+id: 2c4523d5-d481-4ed0-8ec3-7fbf0cb41a75
 description: Detects a driver load from a temporary directory
 author: Florian Roth
-tags: 
-  - attack.persistence
-  - attack.t1050
+tags:
+    - attack.persistence
+    - attack.t1050
 logsource:
     product: windows
     service: sysmon
@@ -59,7 +60,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"6" AND ImageLoaded:"*\\\\Temp\\\\*")
+(EventID:"6" AND ImageLoaded.keyword:*\\\\Temp\\\\*)
 ```
 
 
@@ -73,7 +74,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="6" ImageLoaded="*\\\\Temp\\\\*")
+(event_id="6" ImageLoaded="*\\\\Temp\\\\*")
 ```
 
 

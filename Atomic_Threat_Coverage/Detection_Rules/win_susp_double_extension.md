@@ -3,7 +3,7 @@
 | Description          | Detects suspicious use of an .exe extension after a non-executable file extension like .pdf.exe, a set of spaces or underlines to cloak the executable file in spear phishing campaigns                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1193: Spearphishing Attachment](https://attack.mitre.org/techniques/T1193)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1193: Spearphishing Attachment](../Triggers/T1193.md)</li></ul>  |
 | Severity Level       | critical |
@@ -19,7 +19,9 @@
 
 ```
 title: Suspicious Double Extension
-description: Detects suspicious use of an .exe extension after a non-executable file extension like .pdf.exe, a set of spaces or underlines to cloak the executable file in spear phishing campaigns
+id: 1cdd9a09-06c9-4769-99ff-626e2b3991b8
+description: Detects suspicious use of an .exe extension after a non-executable file extension like .pdf.exe, a set of spaces or underlines to cloak the executable
+    file in spear phishing campaigns
 references:
     - https://blu3-team.blogspot.com/2019/06/misleading-extensions-xlsexe-docexe.html
     - https://twitter.com/blackorbird/status/1140519090961825792
@@ -73,7 +75,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-Image:("*.doc.exe" "*.docx.exe" "*.xls.exe" "*.xlsx.exe" "*.ppt.exe" "*.pptx.exe" "*.rtf.exe" "*.pdf.exe" "*.txt.exe" "*      .exe" "*______.exe")
+Image.keyword:(*.doc.exe *.docx.exe *.xls.exe *.xlsx.exe *.ppt.exe *.pptx.exe *.rtf.exe *.pdf.exe *.txt.exe *      .exe *______.exe)
 ```
 
 
@@ -87,7 +89,7 @@ Image:("*.doc.exe" "*.docx.exe" "*.xls.exe" "*.xlsx.exe" "*.ppt.exe" "*.pptx.exe
 ### logpoint
     
 ```
-Image IN ["*.doc.exe", "*.docx.exe", "*.xls.exe", "*.xlsx.exe", "*.ppt.exe", "*.pptx.exe", "*.rtf.exe", "*.pdf.exe", "*.txt.exe", "*      .exe", "*______.exe"]
+(event_id="1" Image IN ["*.doc.exe", "*.docx.exe", "*.xls.exe", "*.xlsx.exe", "*.ppt.exe", "*.pptx.exe", "*.rtf.exe", "*.pdf.exe", "*.txt.exe", "*      .exe", "*______.exe"])
 ```
 
 

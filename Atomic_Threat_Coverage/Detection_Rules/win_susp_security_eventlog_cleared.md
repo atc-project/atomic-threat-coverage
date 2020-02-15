@@ -11,7 +11,7 @@
 | Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2016-04-002</li><li>car.2016-04-002</li></ul> | 
+| Other Tags           | <ul><li>car.2016-04-002</li></ul> | 
 
 ## Detection Rules
 
@@ -19,6 +19,7 @@
 
 ```
 title: Security Eventlog Cleared
+id: f2f01843-e7b8-4f95-a35a-d23584476423
 description: Some threat groups tend to delete the local 'Security' Eventlog using certain utitlities
 tags:
     - attack.defense_evasion
@@ -76,7 +77,7 @@ EventID:("517" "1102")
 ### logpoint
     
 ```
-EventID IN ["517", "1102"]
+(event_source="Microsoft-Windows-Security-Auditing" event_id IN ["517", "1102"])
 ```
 
 

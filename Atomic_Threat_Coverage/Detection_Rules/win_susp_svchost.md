@@ -3,7 +3,7 @@
 | Description          | Detects a suspicious svchost process start                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Svchost Process
+id: 01d2e2a1-5f09-44f7-9fc1-24faa7479b6d
 status: experimental
 description: Detects a suspicious svchost process start
 tags:
@@ -71,7 +72,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((Image:"*\\\\svchost.exe" AND NOT (ParentImage:("*\\\\services.exe" "*\\\\MsMpEng.exe" "*\\\\Mrt.exe" "*\\\\rpcnet.exe"))) AND NOT (NOT _exists_:ParentImage))
+((Image.keyword:*\\\\svchost.exe AND (NOT (ParentImage.keyword:(*\\\\services.exe *\\\\MsMpEng.exe *\\\\Mrt.exe *\\\\rpcnet.exe)))) AND (NOT (NOT _exists_:ParentImage)))
 ```
 
 
@@ -85,7 +86,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((Image="*\\\\svchost.exe"  -(ParentImage IN ["*\\\\services.exe", "*\\\\MsMpEng.exe", "*\\\\Mrt.exe", "*\\\\rpcnet.exe"]))  -(-ParentImage=*))
+(event_id="1" (Image="*\\\\svchost.exe"  -(ParentImage IN ["*\\\\services.exe", "*\\\\MsMpEng.exe", "*\\\\Mrt.exe", "*\\\\rpcnet.exe"]))  -(-ParentImage=*))
 ```
 
 

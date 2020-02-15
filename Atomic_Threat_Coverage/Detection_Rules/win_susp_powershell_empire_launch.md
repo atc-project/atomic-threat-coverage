@@ -3,7 +3,7 @@
 | Description          | Detects suspicious powershell command line parameters used in Empire                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | Severity Level       | critical |
@@ -19,6 +19,7 @@
 
 ```
 title: Empire PowerShell Launch Parameters
+id: 79f4ede3-402e-41c8-bc3e-ebbf5f162581
 description: Detects suspicious powershell command line parameters used in Empire
 status: experimental
 references:
@@ -66,7 +67,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-CommandLine:("* \\-NoP \\-sta \\-NonI \\-W Hidden \\-Enc *" "* \\-noP \\-sta \\-w 1 \\-enc *" "* \\-NoP \\-NonI \\-W Hidden \\-enc *")
+CommandLine.keyword:(* \\-NoP \\-sta \\-NonI \\-W Hidden \\-Enc * * \\-noP \\-sta \\-w 1 \\-enc * * \\-NoP \\-NonI \\-W Hidden \\-enc *)
 ```
 
 
@@ -80,7 +81,7 @@ CommandLine:("* \\-NoP \\-sta \\-NonI \\-W Hidden \\-Enc *" "* \\-noP \\-sta \\-
 ### logpoint
     
 ```
-CommandLine IN ["* -NoP -sta -NonI -W Hidden -Enc *", "* -noP -sta -w 1 -enc *", "* -NoP -NonI -W Hidden -enc *"]
+(event_id="1" CommandLine IN ["* -NoP -sta -NonI -W Hidden -Enc *", "* -noP -sta -w 1 -enc *", "* -NoP -NonI -W Hidden -enc *"])
 ```
 
 

@@ -11,7 +11,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://researchcenter.paloaltonetworks.com/2018/07/unit42-upatre-continues-evolve-new-anti-analysis-techniques/](https://researchcenter.paloaltonetworks.com/2018/07/unit42-upatre-continues-evolve-new-anti-analysis-techniques/)</li></ul>  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>capec.270</li><li>capec.270</li></ul> | 
+| Other Tags           | <ul><li>capec.270</li></ul> | 
 
 ## Detection Rules
 
@@ -19,6 +19,7 @@
 
 ```
 title: Registry Persistence via Explorer Run Key
+id: b7916c2a-fa2f-4795-9477-32b731f70f11
 status: experimental
 description: Detects a possible persistence mechanism using RUN key for Windows Explorer and poiting to a suspicious folder
 author: Florian Roth
@@ -76,7 +77,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"13" AND TargetObject:"*\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Policies\\\\Explorer\\\\Run" AND Details:("C\\:\\\\Windows\\\\Temp\\\\*" "C\\:\\\\ProgramData\\\\*" "*\\\\AppData\\\\*" "C\\:\\\\$Recycle.bin\\\\*" "C\\:\\\\Temp\\\\*" "C\\:\\\\Users\\\\Public\\\\*" "C\\:\\\\Users\\\\Default\\\\*"))
+(EventID:"13" AND TargetObject.keyword:*\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Policies\\\\Explorer\\\\Run AND Details.keyword:(C\\:\\\\Windows\\\\Temp\\\\* C\\:\\\\ProgramData\\\\* *\\\\AppData\\\\* C\\:\\\\$Recycle.bin\\\\* C\\:\\\\Temp\\\\* C\\:\\\\Users\\\\Public\\\\* C\\:\\\\Users\\\\Default\\\\*))
 ```
 
 
@@ -90,7 +91,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="13" TargetObject="*\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Policies\\\\Explorer\\\\Run" Details IN ["C:\\\\Windows\\\\Temp\\\\*", "C:\\\\ProgramData\\\\*", "*\\\\AppData\\\\*", "C:\\\\$Recycle.bin\\\\*", "C:\\\\Temp\\\\*", "C:\\\\Users\\\\Public\\\\*", "C:\\\\Users\\\\Default\\\\*"])
+(event_id="13" TargetObject="*\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Policies\\\\Explorer\\\\Run" Details IN ["C:\\\\Windows\\\\Temp\\\\*", "C:\\\\ProgramData\\\\*", "*\\\\AppData\\\\*", "C:\\\\$Recycle.bin\\\\*", "C:\\\\Temp\\\\*", "C:\\\\Users\\\\Public\\\\*", "C:\\\\Users\\\\Default\\\\*"])
 ```
 
 

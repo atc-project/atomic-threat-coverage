@@ -3,10 +3,10 @@
 | Description          | Detects Executables without FileVersion,Description,Product,Company likely created with py2exe                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1064: Scripting](../Triggers/T1064.md)</li></ul>  |
-| Severity Level       | high |
+| Severity Level       | medium |
 | False Positives      | <ul><li>Unknown</li></ul>  |
 | Development Status   | experimental |
 | References           | <ul><li>[https://securelist.com/muddywater/88059/](https://securelist.com/muddywater/88059/)</li><li>[https://www.virustotal.com/#/file/276a765a10f98cda1a38d3a31e7483585ca3722ecad19d784441293acf1b7beb/detection](https://www.virustotal.com/#/file/276a765a10f98cda1a38d3a31e7483585ca3722ecad19d784441293acf1b7beb/detection)</li></ul>  |
@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious File Characteristics due to Missing Fields
+id: 9637e8a5-7131-4f7f-bdc7-2b05d8670c43
 description: Detects Executables without FileVersion,Description,Product,Company likely created with py2exe
 status: experimental
 references:
@@ -26,6 +27,7 @@ references:
     - https://www.virustotal.com/#/file/276a765a10f98cda1a38d3a31e7483585ca3722ecad19d784441293acf1b7beb/detection
 author: Markus Neis
 date: 2018/11/22
+modified: 2019/11/09
 tags:
     - attack.defense_evasion
     - attack.execution
@@ -49,7 +51,7 @@ fields:
     - ParentCommandLine
 falsepositives:
     - Unknown
-level: high
+level: medium
 
 ```
 

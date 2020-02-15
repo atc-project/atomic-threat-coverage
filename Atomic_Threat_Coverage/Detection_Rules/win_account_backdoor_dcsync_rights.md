@@ -19,7 +19,9 @@
 
 ```
 title: Powerview Add-DomainObjectAcl DCSync AD Extend Right
-description: backdooring domain object to grant the rights associated with DCSync to a regular user or machine account using Powerview\Add-DomainObjectAcl DCSync Extended Right cmdlet, will allow to re-obtain the pwd hashes of any user/computer
+id: 2c99737c-585d-4431-b61a-c911d86ff32f
+description: backdooring domain object to grant the rights associated with DCSync to a regular user or machine account using Powerview\Add-DomainObjectAcl DCSync
+    Extended Right cmdlet, will allow to re-obtain the pwd hashes of any user/computer
 status: experimental
 date: 2019/04/03
 author: Samir Bousseaden
@@ -67,7 +69,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"5136" AND LDAPDisplayName:"ntSecurityDescriptor" AND Value:("*1131f6ad\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2*" "*1131f6aa\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2*"))
+(EventID:"5136" AND LDAPDisplayName:"ntSecurityDescriptor" AND Value.keyword:(*1131f6ad\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2* *1131f6aa\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2*))
 ```
 
 
@@ -81,7 +83,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="5136" LDAPDisplayName="ntSecurityDescriptor" Value IN ["*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2*", "*1131f6aa-9c07-11d1-f79f-00c04fc2dcd2*"])
+(event_source="Microsoft-Windows-Security-Auditing" event_id="5136" LDAPDisplayName="ntSecurityDescriptor" Value IN ["*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2*", "*1131f6aa-9c07-11d1-f79f-00c04fc2dcd2*"])
 ```
 
 

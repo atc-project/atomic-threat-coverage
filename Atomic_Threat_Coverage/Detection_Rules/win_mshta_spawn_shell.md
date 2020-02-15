@@ -3,7 +3,7 @@
 | Description          | Detects a Windows command line executable started from MSHTA.                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1170: Mshta](../Triggers/T1170.md)</li></ul>  |
 | Severity Level       | high |
@@ -11,7 +11,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://www.trustedsec.com/july-2015/malicious-htas/](https://www.trustedsec.com/july-2015/malicious-htas/)</li></ul>  |
 | Author               | Michael Haag |
-| Other Tags           | <ul><li>car.2013-02-003</li><li>car.2013-02-003</li><li>car.2013-03-001</li><li>car.2013-03-001</li><li>car.2014-04-003</li><li>car.2014-04-003</li></ul> | 
+| Other Tags           | <ul><li>car.2013-02-003</li><li>car.2013-03-001</li><li>car.2014-04-003</li></ul> | 
 
 ## Detection Rules
 
@@ -19,6 +19,7 @@
 
 ```
 title: MSHTA Spawning Windows Shell
+id: 03cc0c25-389f-4bf8-b48d-11878079f1ca
 status: experimental
 description: Detects a Windows command line executable started from MSHTA.
 references:
@@ -79,7 +80,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(ParentImage:"*\\\\mshta.exe" AND Image:("*\\\\cmd.exe" "*\\\\powershell.exe" "*\\\\wscript.exe" "*\\\\cscript.exe" "*\\\\sh.exe" "*\\\\bash.exe" "*\\\\reg.exe" "*\\\\regsvr32.exe" "*\\\\BITSADMIN*"))
+(ParentImage.keyword:*\\\\mshta.exe AND Image.keyword:(*\\\\cmd.exe *\\\\powershell.exe *\\\\wscript.exe *\\\\cscript.exe *\\\\sh.exe *\\\\bash.exe *\\\\reg.exe *\\\\regsvr32.exe *\\\\BITSADMIN*))
 ```
 
 
@@ -93,7 +94,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(ParentImage="*\\\\mshta.exe" Image IN ["*\\\\cmd.exe", "*\\\\powershell.exe", "*\\\\wscript.exe", "*\\\\cscript.exe", "*\\\\sh.exe", "*\\\\bash.exe", "*\\\\reg.exe", "*\\\\regsvr32.exe", "*\\\\BITSADMIN*"])
+(event_id="1" ParentImage="*\\\\mshta.exe" Image IN ["*\\\\cmd.exe", "*\\\\powershell.exe", "*\\\\wscript.exe", "*\\\\cscript.exe", "*\\\\sh.exe", "*\\\\bash.exe", "*\\\\reg.exe", "*\\\\regsvr32.exe", "*\\\\BITSADMIN*"])
 ```
 
 

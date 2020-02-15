@@ -19,12 +19,12 @@
 
 ```
 title: Disabling Windows Event Auditing
-description: 'Detects scenarios where system auditing (ie: windows event log auditing) is disabled. This may be used in a scenario
-    where an entity would want to bypass local logging to evade detection when windows event logging is enabled and
-    reviewed. Also, it is recommended to turn off "Local Group Policy Object Processing" via GPO, which will make sure
-    that Active Directory GPOs take precedence over local/edited computer policies via something such as "gpedit.msc".
-    Please note, that disabling "Local Group Policy Object Processing" may cause an issue in scenarios of one off
-    specific GPO modifications -- however it is recommended to perform these modifications in Active Directory anyways.'
+id: 69aeb277-f15f-4d2d-b32a-55e883609563
+description: 'Detects scenarios where system auditing (ie: windows event log auditing) is disabled. This may be used in a scenario where an entity would want to bypass
+    local logging to evade detection when windows event logging is enabled and reviewed. Also, it is recommended to turn off "Local Group Policy Object Processing"
+    via GPO, which will make sure that Active Directory GPOs take precedence over local/edited computer policies via something such as "gpedit.msc". Please note,
+    that disabling "Local Group Policy Object Processing" may cause an issue in scenarios of one off specific GPO modifications -- however it is recommended to perform
+    these modifications in Active Directory anyways.'
 references:
     - https://bit.ly/WinLogsZero2Hero
 tags:
@@ -81,7 +81,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="4719" AuditPolicyChanges="removed")
+(event_source="Microsoft-Windows-Security-Auditing" event_id="4719" AuditPolicyChanges="removed")
 ```
 
 

@@ -32,6 +32,30 @@
                  </td>
              </tr>
 {% endif %}
+{% if amitt_tactics is defined and amitt_tactics|length %}
+             <tr>
+                 <th class="confluenceTh">AM!TT Tactic</th>
+                 <td class="confluenceTd">
+                     {%- if amitt_tactics |length > 1 -%}<ul>{%endif%}
+                     {%- for tactic_name, tactic_id in amitt_tactics %}
+                         {%- if amitt_tactics |length > 1 -%}<li>{%endif%}<a href="https://vvx7.xyz/tactics/{{tactic_id}}">{{tactic_id}}: {{ tactic_name }}</a>{%- if amitt_tactics |length > 1 -%}</li>{%endif%}
+                     {%- endfor %}
+                     {%- if amitt_tactics |length > 1 -%}</ul>{%endif%}
+                 </td>
+             </tr>
+{% endif %}
+{% if amitt_techniques is defined and amitt_techniques|length %}
+             <tr>
+                 <th class="confluenceTh">AM!TT Technique</th>
+                 <td class="confluenceTd">
+                      {%- if amitt_techniques |length > 1 -%}<ul>{%endif%}
+                      {%- for technique_name, technique_id in amitt_techniques %}
+                            {%- if amitt_techniques |length > 1 -%}<li>{%endif%}<a href="https://vvx7.xyz/techniques/{{technique_id}}">{{ technique_id }}: {{technique_name}}</a>{%- if amitt_techniques |length > 1 -%}</li>{%endif%}
+                      {%- endfor %}
+                      {%- if amitt_techniques |length > 1 -%}</ul>{%endif%}
+                 </td>
+             </tr>
+{% endif %}
 {% if other_tags is defined and other_tags|length %}
                 <tr>
                     <th class="confluenceTh">Tags</th>
@@ -41,7 +65,7 @@
                             {%- if other_tags |length > 1 -%}<li>{%endif%}{{ tag }}{%- if other_tags |length > 1 -%}</li>{%endif%}
                         {%- endfor %}
                         {%- if other_tags |length > 1 -%}</ul>{%endif%}
-  
+
                     </td>
                 </tr>
 {% endif %}

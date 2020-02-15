@@ -11,7 +11,7 @@
 | Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://blog.menasec.net/2019/03/threat-hunting-25-scheduled-tasks-for.html](https://blog.menasec.net/2019/03/threat-hunting-25-scheduled-tasks-for.html)</li></ul>  |
 | Author               | Samir Bousseaden |
-| Other Tags           | <ul><li>car.2013-05-004</li><li>car.2013-05-004</li><li>car.2015-04-001</li><li>car.2015-04-001</li></ul> | 
+| Other Tags           | <ul><li>car.2013-05-004</li><li>car.2015-04-001</li></ul> | 
 
 ## Detection Rules
 
@@ -19,6 +19,7 @@
 
 ```
 title: Remote Task Creation via ATSVC named pipe
+id: f6de6525-4509-495a-8a82-1f8b0ed73a00
 description: Detects remote task creation via at.exe or API interacting with ATSVC namedpipe
 author: Samir Bousseaden
 references:
@@ -67,7 +68,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"5145" AND ShareName:"\\\\*\\\\IPC$" AND RelativeTargetName:"atsvc" AND Accesses:"*WriteData*")
+(EventID:"5145" AND ShareName.keyword:\\\\*\\\\IPC$ AND RelativeTargetName:"atsvc" AND Accesses.keyword:*WriteData*)
 ```
 
 
@@ -81,7 +82,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName="atsvc" Accesses="*WriteData*")
+(event_source="Microsoft-Windows-Security-Auditing" event_id="5145" ShareName="\\\\*\\\\IPC$" RelativeTargetName="atsvc" Accesses="*WriteData*")
 ```
 
 

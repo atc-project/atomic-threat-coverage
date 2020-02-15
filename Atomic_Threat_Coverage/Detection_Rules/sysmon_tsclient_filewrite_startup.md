@@ -18,7 +18,8 @@
 ### Sigma rule
 
 ```
-title: Hijack legit RDP session to move laterally  
+title: Hijack legit RDP session to move laterally
+id: 52753ea4-b3a0-4365-910d-36cff487b789
 status: experimental
 description: Detects the usage of tsclient share to place a backdoor on the RDP source machine's startup folder
 date: 2019/02/21
@@ -59,7 +60,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"11" AND Image:"*\\\\mstsc.exe" AND TargetFileName:"*\\\\Microsoft\\\\Windows\\\\Start Menu\\\\Programs\\\\Startup\\\\*")
+(EventID:"11" AND Image.keyword:*\\\\mstsc.exe AND TargetFileName.keyword:*\\\\Microsoft\\\\Windows\\\\Start Menu\\\\Programs\\\\Startup\\\\*)
 ```
 
 
@@ -73,7 +74,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="11" Image="*\\\\mstsc.exe" TargetFileName="*\\\\Microsoft\\\\Windows\\\\Start Menu\\\\Programs\\\\Startup\\\\*")
+(event_id="11" Image="*\\\\mstsc.exe" TargetFileName="*\\\\Microsoft\\\\Windows\\\\Start Menu\\\\Programs\\\\Startup\\\\*")
 ```
 
 

@@ -3,7 +3,7 @@
 | Description          | Detects a Powershell process that contains download commands in its command line string                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | Severity Level       | medium |
@@ -19,6 +19,7 @@
 
 ```
 title: PowerShell Download from URL
+id: 3b6ab547-8ec2-4991-b9d2-2b06702a48d7
 status: experimental
 description: Detects a Powershell process that contains download commands in its command line string
 author: Florian Roth
@@ -67,7 +68,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(Image:"*\\\\powershell.exe" AND CommandLine:("*new\\-object system.net.webclient\\).downloadstring\\(*" "*new\\-object system.net.webclient\\).downloadfile\\(*" "*new\\-object net.webclient\\).downloadstring\\(*" "*new\\-object net.webclient\\).downloadfile\\(*"))
+(Image.keyword:*\\\\powershell.exe AND CommandLine.keyword:(*new\\-object system.net.webclient\\).downloadstring\\(* *new\\-object system.net.webclient\\).downloadfile\\(* *new\\-object net.webclient\\).downloadstring\\(* *new\\-object net.webclient\\).downloadfile\\(*))
 ```
 
 
@@ -81,7 +82,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(Image="*\\\\powershell.exe" CommandLine IN ["*new-object system.net.webclient).downloadstring(*", "*new-object system.net.webclient).downloadfile(*", "*new-object net.webclient).downloadstring(*", "*new-object net.webclient).downloadfile(*"])
+(event_id="1" Image="*\\\\powershell.exe" CommandLine IN ["*new-object system.net.webclient).downloadstring(*", "*new-object system.net.webclient).downloadfile(*", "*new-object net.webclient).downloadstring(*", "*new-object net.webclient).downloadfile(*"])
 ```
 
 

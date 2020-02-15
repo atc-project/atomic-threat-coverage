@@ -3,7 +3,7 @@
 | Description          | Detects a suspicious parent of csc.exe, which could by a sign of payload delivery                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Parent of Csc.exe
+id: b730a276-6b63-41b8-bcf8-55930c8fc6ee
 description: Detects a suspicious parent of csc.exe, which could by a sign of payload delivery
 status: experimental
 references:
@@ -66,7 +67,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(Image:"*\\\\csc.exe*" AND ParentImage:("*\\\\wscript.exe" "*\\\\cscript.exe" "*\\\\mshta.exe"))
+(Image.keyword:*\\\\csc.exe* AND ParentImage.keyword:(*\\\\wscript.exe *\\\\cscript.exe *\\\\mshta.exe))
 ```
 
 
@@ -80,7 +81,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(Image="*\\\\csc.exe*" ParentImage IN ["*\\\\wscript.exe", "*\\\\cscript.exe", "*\\\\mshta.exe"])
+(event_id="1" Image="*\\\\csc.exe*" ParentImage IN ["*\\\\wscript.exe", "*\\\\cscript.exe", "*\\\\mshta.exe"])
 ```
 
 

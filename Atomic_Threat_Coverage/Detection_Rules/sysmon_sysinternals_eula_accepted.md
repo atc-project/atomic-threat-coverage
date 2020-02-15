@@ -18,11 +18,11 @@
 ### Sigma rule
 
 ```
----
 action: global
-title: Usage of Sysinternals Tools 
+title: Usage of Sysinternals Tools
+id: 25ffa65d-76d8-4da5-a832-3f2b0136e133
 status: experimental
-description: Detects the usage of Sysinternals Tools due to accepteula key being added to Registry 
+description: Detects the usage of Sysinternals Tools due to accepteula key being added to Registry
 references:
     - https://twitter.com/Moti_B/status/1008587936735035392
 date: 2017/08/28
@@ -71,7 +71,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"13" AND TargetObject:"*\\\\EulaAccepted")\nCommandLine:"* \\-accepteula*"
+(EventID:"13" AND TargetObject.keyword:*\\\\EulaAccepted)\nCommandLine.keyword:* \\-accepteula*
 ```
 
 
@@ -85,7 +85,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="13" TargetObject="*\\\\EulaAccepted")\nCommandLine="* -accepteula*"
+(event_id="13" TargetObject="*\\\\EulaAccepted")\n(event_id="1" CommandLine="* -accepteula*")
 ```
 
 

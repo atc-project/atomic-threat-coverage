@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious PowerShell Invocation based on Parent Process
+id: 95eadcb2-92e4-4ed1-9031-92547773a6db
 status: experimental
 description: Detects suspicious powershell invocations from interpreters or unusual programs
 author: Florian Roth
@@ -71,7 +72,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((ParentImage:("*\\\\wscript.exe" "*\\\\cscript.exe") AND Image:("*\\\\powershell.exe")) AND NOT (CurrentDirectory:"*\\\\Health Service State\\\\*"))
+((ParentImage.keyword:(*\\\\wscript.exe *\\\\cscript.exe) AND Image.keyword:(*\\\\powershell.exe)) AND (NOT (CurrentDirectory.keyword:*\\\\Health Service State\\\\*)))
 ```
 
 
@@ -85,7 +86,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((ParentImage IN ["*\\\\wscript.exe", "*\\\\cscript.exe"] Image IN ["*\\\\powershell.exe"])  -(CurrentDirectory="*\\\\Health Service State\\\\*"))
+(event_id="1" (ParentImage IN ["*\\\\wscript.exe", "*\\\\cscript.exe"] Image IN ["*\\\\powershell.exe"])  -(CurrentDirectory="*\\\\Health Service State\\\\*"))
 ```
 
 

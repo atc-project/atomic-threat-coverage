@@ -19,6 +19,7 @@
 
 ```
 title: Encoded FromBase64String
+id: fdb62a13-9a81-4e5c-a38f-ea93a16f6d7c
 status: experimental
 description: Detects a base64 encoded FromBase64String keyword in a process command line
 author: Florian Roth
@@ -65,7 +66,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-CommandLine:("*OjpGcm9tQmFzZTY0U3RyaW5n*" "*o6RnJvbUJhc2U2NFN0cmluZ*" "*6OkZyb21CYXNlNjRTdHJpbm*")
+CommandLine.keyword:(*OjpGcm9tQmFzZTY0U3RyaW5n* *o6RnJvbUJhc2U2NFN0cmluZ* *6OkZyb21CYXNlNjRTdHJpbm*)
 ```
 
 
@@ -79,7 +80,7 @@ CommandLine:("*OjpGcm9tQmFzZTY0U3RyaW5n*" "*o6RnJvbUJhc2U2NFN0cmluZ*" "*6OkZyb21
 ### logpoint
     
 ```
-CommandLine IN ["*OjpGcm9tQmFzZTY0U3RyaW5n*", "*o6RnJvbUJhc2U2NFN0cmluZ*", "*6OkZyb21CYXNlNjRTdHJpbm*"]
+(event_id="1" CommandLine IN ["*OjpGcm9tQmFzZTY0U3RyaW5n*", "*o6RnJvbUJhc2U2NFN0cmluZ*", "*6OkZyb21CYXNlNjRTdHJpbm*"])
 ```
 
 

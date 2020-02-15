@@ -19,6 +19,7 @@
 
 ```
 title: Unauthorized System Time Modification
+id: faa031b5-21ed-4e02-8881-2591f98d82ed
 status: experimental
 description: Detect scenarios where a potentially unauthorized application or user is modifying the system time.
 author: '@neu5ron'
@@ -71,7 +72,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"4616" AND NOT (((ProcessName:"C\\:\\\\Program Files\\\\VMware\\\\VMware Tools\\\\vmtoolsd.exe" OR ProcessName:"C\\:\\\\Windows\\\\System32\\\\VBoxService.exe") OR (ProcessName:"C\\:\\\\Windows\\\\System32\\\\svchost.exe" AND SubjectUserSid:"S\\-1\\-5\\-19"))))
+(EventID:"4616" AND (NOT (((ProcessName:"C\\:\\\\Program Files\\\\VMware\\\\VMware Tools\\\\vmtoolsd.exe" OR ProcessName:"C\\:\\\\Windows\\\\System32\\\\VBoxService.exe") OR (ProcessName:"C\\:\\\\Windows\\\\System32\\\\svchost.exe" AND SubjectUserSid:"S\\-1\\-5\\-19")))))
 ```
 
 
@@ -85,7 +86,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="4616"  -(((ProcessName="C:\\\\Program Files\\\\VMware\\\\VMware Tools\\\\vmtoolsd.exe" OR ProcessName="C:\\\\Windows\\\\System32\\\\VBoxService.exe") OR (ProcessName="C:\\\\Windows\\\\System32\\\\svchost.exe" SubjectUserSid="S-1-5-19"))))
+(event_source="Microsoft-Windows-Security-Auditing" event_id="4616"  -((event_source="Microsoft-Windows-Security-Auditing" ((ProcessName="C:\\\\Program Files\\\\VMware\\\\VMware Tools\\\\vmtoolsd.exe" OR ProcessName="C:\\\\Windows\\\\System32\\\\VBoxService.exe") OR (ProcessName="C:\\\\Windows\\\\System32\\\\svchost.exe" SubjectUserSid="S-1-5-19")))))
 ```
 
 

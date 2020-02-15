@@ -3,7 +3,7 @@
 | Description          | Detects suspicious failed logins with different user accounts from a single source system                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1078: Valid Accounts](https://attack.mitre.org/techniques/T1078)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0041_529_logon_failure](../Data_Needed/DN_0041_529_logon_failure.md)</li><li>[DN_0079_4776_computer_attempted_to_validate_the_credentials_for_an_account](../Data_Needed/DN_0079_4776_computer_attempted_to_validate_the_credentials_for_an_account.md)</li><li>[DN_0057_4625_account_failed_to_logon](../Data_Needed/DN_0057_4625_account_failed_to_logon.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0079_4776_computer_attempted_to_validate_the_credentials_for_an_account](../Data_Needed/DN_0079_4776_computer_attempted_to_validate_the_credentials_for_an_account.md)</li><li>[DN_0057_4625_account_failed_to_logon](../Data_Needed/DN_0057_4625_account_failed_to_logon.md)</li><li>[DN_0041_529_logon_failure](../Data_Needed/DN_0041_529_logon_failure.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1078: Valid Accounts](../Triggers/T1078.md)</li></ul>  |
 | Severity Level       | medium |
@@ -19,7 +19,8 @@
 
 ```
 title: Multiple Failed Logins with Different Accounts from Single Source System
-description: Detects suspicious failed logins with different user accounts from a single source system 
+id: e98374a6-e2d9-4076-9b5c-11bdb2569995
+description: Detects suspicious failed logins with different user accounts from a single source system
 author: Florian Roth
 tags:
     - attack.persistence
@@ -89,7 +90,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID IN ["529", "4625"] UserName="*" WorkstationName="*") | chart count(UserName) as val by WorkstationName | search val > 3
+
 ```
 
 

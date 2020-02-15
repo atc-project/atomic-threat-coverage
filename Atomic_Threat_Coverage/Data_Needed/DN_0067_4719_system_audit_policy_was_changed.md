@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | This event generates when the computer's audit policy changes. This event is always logged regardless of the "Audit Policy Change"  sub-category setting                                                                                                |
 | Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4719.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4719.md)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Windows Log 		| 

@@ -19,6 +19,7 @@
 
 ```
 title: Password Dumper Activity on LSASS
+id: aa1697b7-d611-4f9a-9cb2-5125b4ccfd5c
 description: Detects process handle on LSASS process with certain access mask and object type SAM_DOMAIN
 status: experimental
 references:
@@ -77,7 +78,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="4656" ProcessName="C:\\\\Windows\\\\System32\\\\lsass.exe" AccessMask="0x705" ObjectType="SAM_DOMAIN")
+(event_source="Microsoft-Windows-Security-Auditing" event_id="4656" ProcessName="C:\\\\Windows\\\\System32\\\\lsass.exe" AccessMask="0x705" ObjectType="SAM_DOMAIN")
 ```
 
 

@@ -19,6 +19,7 @@
 
 ```
 title: SquiblyTwo
+id: 8d63dadf-b91b-4187-87b6-34a1114577ea
 status: experimental
 description: Detects WMI SquiblyTwo Attack with possible renamed WMI by looking for imphash
 references:
@@ -76,7 +77,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((Image:("*\\\\wmic.exe") AND CommandLine:("wmic * *format\\:\\\\\\"http*" "wmic * \\/format\\:\'http" "wmic * \\/format\\:http*")) OR (Imphash:("1B1A3F43BF37B5BFE60751F2EE2F326E" "37777A96245A3C74EB217308F3546F4C" "9D87C9D67CE724033C0B40CC4CA1B206") AND CommandLine:("* *format\\:\\\\\\"http*" "* \\/format\\:\'http" "* \\/format\\:http*")))
+((Image.keyword:(*\\\\wmic.exe) AND CommandLine.keyword:(wmic * *format\\:\\\\\\"http* wmic * \\/format\\:\'http wmic * \\/format\\:http*)) OR (Imphash:("1B1A3F43BF37B5BFE60751F2EE2F326E" "37777A96245A3C74EB217308F3546F4C" "9D87C9D67CE724033C0B40CC4CA1B206") AND CommandLine.keyword:(* *format\\:\\\\\\"http* * \\/format\\:\'http * \\/format\\:http*)))
 ```
 
 
@@ -90,7 +91,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((Image IN ["*\\\\wmic.exe"] CommandLine IN ["wmic * *format:\\\\\\"http*", "wmic * /format:\'http", "wmic * /format:http*"]) OR (Imphash IN ["1B1A3F43BF37B5BFE60751F2EE2F326E", "37777A96245A3C74EB217308F3546F4C", "9D87C9D67CE724033C0B40CC4CA1B206"] CommandLine IN ["* *format:\\\\\\"http*", "* /format:\'http", "* /format:http*"]))
+(event_id="1" ((Image IN ["*\\\\wmic.exe"] CommandLine IN ["wmic * *format:\\\\\\"http*", "wmic * /format:\'http", "wmic * /format:http*"]) OR (Imphash IN ["1B1A3F43BF37B5BFE60751F2EE2F326E", "37777A96245A3C74EB217308F3546F4C", "9D87C9D67CE724033C0B40CC4CA1B206"] CommandLine IN ["* *format:\\\\\\"http*", "* /format:\'http", "* /format:http*"])))
 ```
 
 

@@ -11,7 +11,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://github.com/iadgov/Event-Forwarding-Guidance/tree/master/Events](https://github.com/iadgov/Event-Forwarding-Guidance/tree/master/Events)</li></ul>  |
 | Author               | Ilias el Matani (rule), The Information Assurance Directorate at the NSA (method) |
-| Other Tags           | <ul><li>car.2016-04-004</li><li>car.2016-04-004</li></ul> | 
+| Other Tags           | <ul><li>car.2016-04-004</li></ul> | 
 
 ## Detection Rules
 
@@ -19,8 +19,9 @@
 
 ```
 title: Pass the Hash Activity
+id: f8d98d6c-7a07-4d74-b064-dd4a3c244528
 status: experimental
-description: 'Detects the attack technique pass the hash which is used to move laterally inside the network'
+description: Detects the attack technique pass the hash which is used to move laterally inside the network
 references:
     - https://github.com/iadgov/Event-Forwarding-Guidance/tree/master/Events
 author: Ilias el Matani (rule), The Information Assurance Directorate at the NSA (method)
@@ -75,7 +76,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((LogonType:"3" AND LogonProcessName:"NtLmSsp" AND WorkstationName:"%Workstations%" AND ComputerName:"%Workstations%" AND (EventID:"4624" OR EventID:"4625")) AND NOT (AccountName:"ANONYMOUS LOGON"))
+((LogonType:"3" AND LogonProcessName:"NtLmSsp" AND WorkstationName:"%Workstations%" AND ComputerName:"%Workstations%" AND (EventID:"4624" OR EventID:"4625")) AND (NOT (AccountName:"ANONYMOUS LOGON")))
 ```
 
 
@@ -89,7 +90,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((LogonType="3" LogonProcessName="NtLmSsp" WorkstationName="%Workstations%" ComputerName="%Workstations%" (EventID="4624" OR EventID="4625"))  -(AccountName="ANONYMOUS LOGON"))
+(event_source="Microsoft-Windows-Security-Auditing" (logon_type="3" logon_process="NtLmSsp" WorkstationName="%Workstations%" ComputerName="%Workstations%" (event_id="4624" OR event_id="4625"))  -(AccountName="ANONYMOUS LOGON"))
 ```
 
 

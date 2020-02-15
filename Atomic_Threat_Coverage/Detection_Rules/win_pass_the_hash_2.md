@@ -19,8 +19,9 @@
 
 ```
 title: Pass the Hash Activity
+id: 8eef149c-bd26-49f2-9e5a-9b00e3af499b
 status: production
-description: 'Detects the attack technique pass the hash which is used to move laterally inside the network'
+description: Detects the attack technique pass the hash which is used to move laterally inside the network
 references:
     - https://github.com/iadgov/Event-Forwarding-Guidance/tree/master/Events
     - https://blog.binarydefense.com/reliably-detecting-pass-the-hash-through-event-log-analysis
@@ -36,7 +37,7 @@ logsource:
 detection:
     selection:
         - EventID: 4624
-          SecurityID: 'NULL SID'
+          SubjectUserSid: 'S-1-0-0'
           LogonType: '3'
           LogonProcessName: 'NtLmSsp'
           KeyLength: '0'
@@ -60,42 +61,42 @@ level: medium
 ### es-qs
     
 ```
-((EventID:"4624" AND ((SecurityID:"NULL\\ SID" AND LogonType:"3" AND LogonProcessName:"NtLmSsp" AND KeyLength:"0") OR (LogonType:"9" AND LogonProcessName:"seclogo"))) AND (NOT (AccountName:"ANONYMOUS\\ LOGON")))
+((EventID:"4624" AND ((SubjectUserSid:"S\\-1\\-0\\-0" AND LogonType:"3" AND LogonProcessName:"NtLmSsp" AND KeyLength:"0") OR (LogonType:"9" AND LogonProcessName:"seclogo"))) AND (NOT (AccountName:"ANONYMOUS\\ LOGON")))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Pass-the-Hash-Activity <<EOF\n{\n  "metadata": {\n    "title": "Pass the Hash Activity",\n    "description": "Detects the attack technique pass the hash which is used to move laterally inside the network",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1075"\n    ],\n    "query": "((EventID:\\"4624\\" AND ((SecurityID:\\"NULL\\\\ SID\\" AND LogonType:\\"3\\" AND LogonProcessName:\\"NtLmSsp\\" AND KeyLength:\\"0\\") OR (LogonType:\\"9\\" AND LogonProcessName:\\"seclogo\\"))) AND (NOT (AccountName:\\"ANONYMOUS\\\\ LOGON\\")))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((EventID:\\"4624\\" AND ((SecurityID:\\"NULL\\\\ SID\\" AND LogonType:\\"3\\" AND LogonProcessName:\\"NtLmSsp\\" AND KeyLength:\\"0\\") OR (LogonType:\\"9\\" AND LogonProcessName:\\"seclogo\\"))) AND (NOT (AccountName:\\"ANONYMOUS\\\\ LOGON\\")))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Pass the Hash Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Pass-the-Hash-Activity <<EOF\n{\n  "metadata": {\n    "title": "Pass the Hash Activity",\n    "description": "Detects the attack technique pass the hash which is used to move laterally inside the network",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1075"\n    ],\n    "query": "((EventID:\\"4624\\" AND ((SubjectUserSid:\\"S\\\\-1\\\\-0\\\\-0\\" AND LogonType:\\"3\\" AND LogonProcessName:\\"NtLmSsp\\" AND KeyLength:\\"0\\") OR (LogonType:\\"9\\" AND LogonProcessName:\\"seclogo\\"))) AND (NOT (AccountName:\\"ANONYMOUS\\\\ LOGON\\")))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((EventID:\\"4624\\" AND ((SubjectUserSid:\\"S\\\\-1\\\\-0\\\\-0\\" AND LogonType:\\"3\\" AND LogonProcessName:\\"NtLmSsp\\" AND KeyLength:\\"0\\") OR (LogonType:\\"9\\" AND LogonProcessName:\\"seclogo\\"))) AND (NOT (AccountName:\\"ANONYMOUS\\\\ LOGON\\")))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Pass the Hash Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
 ### graylog
     
 ```
-((EventID:"4624" AND ((SecurityID:"NULL SID" AND LogonType:"3" AND LogonProcessName:"NtLmSsp" AND KeyLength:"0") OR (LogonType:"9" AND LogonProcessName:"seclogo"))) AND NOT (AccountName:"ANONYMOUS LOGON"))
+((EventID:"4624" AND ((SubjectUserSid:"S\\-1\\-0\\-0" AND LogonType:"3" AND LogonProcessName:"NtLmSsp" AND KeyLength:"0") OR (LogonType:"9" AND LogonProcessName:"seclogo"))) AND (NOT (AccountName:"ANONYMOUS LOGON")))
 ```
 
 
 ### splunk
     
 ```
-((EventID="4624" ((SecurityID="NULL SID" LogonType="3" LogonProcessName="NtLmSsp" KeyLength="0") OR (LogonType="9" LogonProcessName="seclogo"))) NOT (AccountName="ANONYMOUS LOGON"))
+((EventID="4624" ((SubjectUserSid="S-1-0-0" LogonType="3" LogonProcessName="NtLmSsp" KeyLength="0") OR (LogonType="9" LogonProcessName="seclogo"))) NOT (AccountName="ANONYMOUS LOGON"))
 ```
 
 
 ### logpoint
     
 ```
-((EventID="4624" ((SecurityID="NULL SID" LogonType="3" LogonProcessName="NtLmSsp" KeyLength="0") OR (LogonType="9" LogonProcessName="seclogo")))  -(AccountName="ANONYMOUS LOGON"))
+(event_source="Microsoft-Windows-Security-Auditing" (event_id="4624" ((SubjectUserSid="S-1-0-0" logon_type="3" logon_process="NtLmSsp" key_length="0") OR (logon_type="9" logon_process="seclogo")))  -(AccountName="ANONYMOUS LOGON"))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?=.*4624)(?=.*(?:.*(?:.*(?:.*(?=.*NULL SID)(?=.*3)(?=.*NtLmSsp)(?=.*0))|.*(?:.*(?=.*9)(?=.*seclogo)))))))(?=.*(?!.*(?:.*(?=.*ANONYMOUS LOGON)))))'
+grep -P '^(?:.*(?=.*(?:.*(?=.*4624)(?=.*(?:.*(?:.*(?:.*(?=.*S-1-0-0)(?=.*3)(?=.*NtLmSsp)(?=.*0))|.*(?:.*(?=.*9)(?=.*seclogo)))))))(?=.*(?!.*(?:.*(?=.*ANONYMOUS LOGON)))))'
 ```
 
 

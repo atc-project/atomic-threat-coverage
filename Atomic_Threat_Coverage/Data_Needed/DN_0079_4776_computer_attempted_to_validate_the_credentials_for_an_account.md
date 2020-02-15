@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | This event generates every time that a credential validation occurs  using NTLM authentication. This event occurs only on the computer  that is authoritative for the provided credentials. For domain  accounts, the domain controller is authoritative. For local accounts,  the local computer is authoritative                                                                                                |
 | Logging Policy    | <ul><li>[LP_0107_windows_audit_credential_validation](../Logging_Policies/LP_0107_windows_audit_credential_validation.md)</li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4776.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4776.md)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Windows Log 		| 

@@ -3,7 +3,7 @@
 | Description          | Detects WMI spawning PowerShell                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1064: Scripting](../Triggers/T1064.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,8 +19,9 @@
 
 ```
 title: WMI Spawning Windows PowerShell
+id: 692f0bec-83ba-4d04-af7e-e884a96059b6
 status: experimental
-description: Detects WMI spawning PowerShell 
+description: Detects WMI spawning PowerShell
 references:
     - https://github.com/Neo23x0/sigma/blob/master/rules/windows/process_creation/win_shell_spawn_susp_program.yml
     - https://any.run/report/68bc255f9b0db6a0d30a8f2dadfbee3256acfe12497bf93943bc1eab0735e45e/a2385d6f-34f7-403c-90d3-b1f9d2a90a5e
@@ -68,7 +69,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(ParentImage:("*\\\\wmiprvse.exe") AND Image:("*\\\\powershell.exe"))
+(ParentImage.keyword:(*\\\\wmiprvse.exe) AND Image.keyword:(*\\\\powershell.exe))
 ```
 
 
@@ -82,7 +83,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(ParentImage IN ["*\\\\wmiprvse.exe"] Image IN ["*\\\\powershell.exe"])
+(event_id="1" ParentImage IN ["*\\\\wmiprvse.exe"] Image IN ["*\\\\powershell.exe"])
 ```
 
 

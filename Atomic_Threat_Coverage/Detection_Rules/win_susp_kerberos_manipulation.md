@@ -3,7 +3,7 @@
 | Description          | This method triggers on rare Kerberos Failure Codes caused by manipulations of Kerberos messages                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1212: Exploitation for Credential Access](https://attack.mitre.org/techniques/T1212)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0042_675_kerberos_preauthentication_failed](../Data_Needed/DN_0042_675_kerberos_preauthentication_failed.md)</li><li>[DN_0078_4771_kerberos_pre_authentication_failed](../Data_Needed/DN_0078_4771_kerberos_pre_authentication_failed.md)</li><li>[DN_0077_4769_kerberos_service_ticket_was_requested](../Data_Needed/DN_0077_4769_kerberos_service_ticket_was_requested.md)</li><li>[DN_0076_4768_kerberos_authentication_ticket_was_requested](../Data_Needed/DN_0076_4768_kerberos_authentication_ticket_was_requested.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0042_675_kerberos_preauthentication_failed](../Data_Needed/DN_0042_675_kerberos_preauthentication_failed.md)</li><li>[DN_0077_4769_kerberos_service_ticket_was_requested](../Data_Needed/DN_0077_4769_kerberos_service_ticket_was_requested.md)</li><li>[DN_0078_4771_kerberos_pre_authentication_failed](../Data_Needed/DN_0078_4771_kerberos_pre_authentication_failed.md)</li><li>[DN_0076_4768_kerberos_authentication_ticket_was_requested](../Data_Needed/DN_0076_4768_kerberos_authentication_ticket_was_requested.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1212: Exploitation for Credential Access](../Triggers/T1212.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Kerberos Manipulation
+id: f7644214-0eb0-4ace-9455-331ec4c09253
 description: This method triggers on rare Kerberos Failure Codes caused by manipulations of Kerberos messages
 author: Florian Roth
 tags:
@@ -107,7 +108,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID IN ["675", "4768", "4769", "4771"] FailureCode IN ["0x9", "0xA", "0xB", "0xF", "0x10", "0x11", "0x13", "0x14", "0x1A", "0x1F", "0x21", "0x22", "0x23", "0x24", "0x26", "0x27", "0x28", "0x29", "0x2C", "0x2D", "0x2E", "0x2F", "0x31", "0x32", "0x3E", "0x3F", "0x40", "0x41", "0x43", "0x44"])
+(event_source="Microsoft-Windows-Security-Auditing" event_id IN ["675", "4768", "4769", "4771"] result_code IN ["0x9", "0xA", "0xB", "0xF", "0x10", "0x11", "0x13", "0x14", "0x1A", "0x1F", "0x21", "0x22", "0x23", "0x24", "0x26", "0x27", "0x28", "0x29", "0x2C", "0x2D", "0x2E", "0x2F", "0x31", "0x32", "0x3E", "0x3F", "0x40", "0x41", "0x43", "0x44"])
 ```
 
 

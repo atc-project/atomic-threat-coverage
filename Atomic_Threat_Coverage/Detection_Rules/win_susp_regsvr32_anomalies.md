@@ -3,7 +3,7 @@
 | Description          | Detects various anomalies in relation to regsvr32.exe                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1117: Regsvr32](https://attack.mitre.org/techniques/T1117)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1117: Regsvr32](../Triggers/T1117.md)</li></ul>  |
 | Severity Level       | high |
@@ -11,7 +11,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://subt0x10.blogspot.de/2017/04/bypass-application-whitelisting-script.html](https://subt0x10.blogspot.de/2017/04/bypass-application-whitelisting-script.html)</li></ul>  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2019-04-002</li><li>car.2019-04-002</li><li>car.2019-04-003</li><li>car.2019-04-003</li></ul> | 
+| Other Tags           | <ul><li>car.2019-04-002</li><li>car.2019-04-003</li></ul> | 
 
 ## Detection Rules
 
@@ -19,6 +19,7 @@
 
 ```
 title: Regsvr32 Anomaly
+id: 8e2b24c9-4add-46a0-b4bb-0057b4e6187d
 status: experimental
 description: Detects various anomalies in relation to regsvr32.exe
 author: Florian Roth
@@ -82,7 +83,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((Image:"*\\\\regsvr32.exe" AND CommandLine:"*\\\\Temp\\\\*") OR (Image:"*\\\\regsvr32.exe" AND ParentImage:"*\\\\powershell.exe") OR (Image:"*\\\\regsvr32.exe" AND CommandLine:("*\\/i\\:http* scrobj.dll" "*\\/i\\:ftp* scrobj.dll")) OR (Image:"*\\\\wscript.exe" AND ParentImage:"*\\\\regsvr32.exe") OR (Image:"*\\\\EXCEL.EXE" AND CommandLine:"*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe *"))
+((Image.keyword:*\\\\regsvr32.exe AND CommandLine.keyword:*\\\\Temp\\\\*) OR (Image.keyword:*\\\\regsvr32.exe AND ParentImage.keyword:*\\\\powershell.exe) OR (Image.keyword:*\\\\regsvr32.exe AND CommandLine.keyword:(*\\/i\\:http* scrobj.dll *\\/i\\:ftp* scrobj.dll)) OR (Image.keyword:*\\\\wscript.exe AND ParentImage.keyword:*\\\\regsvr32.exe) OR (Image.keyword:*\\\\EXCEL.EXE AND CommandLine.keyword:*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe *))
 ```
 
 
@@ -96,7 +97,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((Image="*\\\\regsvr32.exe" CommandLine="*\\\\Temp\\\\*") OR (Image="*\\\\regsvr32.exe" ParentImage="*\\\\powershell.exe") OR (Image="*\\\\regsvr32.exe" CommandLine IN ["*/i:http* scrobj.dll", "*/i:ftp* scrobj.dll"]) OR (Image="*\\\\wscript.exe" ParentImage="*\\\\regsvr32.exe") OR (Image="*\\\\EXCEL.EXE" CommandLine="*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe *"))
+(event_id="1" ((Image="*\\\\regsvr32.exe" CommandLine="*\\\\Temp\\\\*") OR (Image="*\\\\regsvr32.exe" ParentImage="*\\\\powershell.exe") OR (Image="*\\\\regsvr32.exe" CommandLine IN ["*/i:http* scrobj.dll", "*/i:ftp* scrobj.dll"]) OR (Image="*\\\\wscript.exe" ParentImage="*\\\\regsvr32.exe") OR (Image="*\\\\EXCEL.EXE" CommandLine="*..\\\\..\\\\..\\\\Windows\\\\System32\\\\regsvr32.exe *")))
 ```
 
 

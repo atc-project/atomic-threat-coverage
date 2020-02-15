@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | The Terminal Server security layer detected an error in the  protocol stream and has disconnected the client                                                                                                |
 | Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[http://www.eventid.net/display-eventid-56-source-TermDD-eventno-9421-phase-1.htm](http://www.eventid.net/display-eventid-56-source-TermDD-eventno-9421-phase-1.htm)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Windows Log 		| 

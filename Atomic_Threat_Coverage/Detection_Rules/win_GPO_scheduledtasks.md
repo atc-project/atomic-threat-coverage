@@ -19,6 +19,7 @@
 
 ```
 title: Persistence and Execution at scale via GPO scheduled task
+id: a8f29a7b-b137-4446-80a0-b804272f3da2
 description: Detect lateral movement using GPO scheduled task, ususally used to deploy ransomware at scale
 author: Samir Bousseaden
 references:
@@ -65,7 +66,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"5145" AND ShareName:"\\\\*\\\\SYSVOL" AND RelativeTargetName:"*ScheduledTasks.xml" AND Accesses:"*WriteData*")
+(EventID:"5145" AND ShareName.keyword:\\\\*\\\\SYSVOL AND RelativeTargetName.keyword:*ScheduledTasks.xml AND Accesses.keyword:*WriteData*)
 ```
 
 
@@ -79,7 +80,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="5145" ShareName="\\\\*\\\\SYSVOL" RelativeTargetName="*ScheduledTasks.xml" Accesses="*WriteData*")
+(event_source="Microsoft-Windows-Security-Auditing" event_id="5145" ShareName="\\\\*\\\\SYSVOL" RelativeTargetName="*ScheduledTasks.xml" Accesses="*WriteData*")
 ```
 
 

@@ -18,7 +18,8 @@
 ### Sigma rule
 
 ```
-title: PowerShell PSAttack 
+title: PowerShell PSAttack
+id: b7ec41a4-042c-4f31-a5db-d0fcde9fa5c5
 status: experimental
 description: Detects the use of PSAttack PowerShell hack tool
 references:
@@ -78,7 +79,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="4103" "PS ATTACK!!!")
+(event_id="4103" "PS ATTACK!!!")
 ```
 
 

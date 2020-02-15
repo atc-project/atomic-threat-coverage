@@ -11,7 +11,7 @@
 | Development Status   | experimental |
 | References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>attack.s0111</li><li>attack.s0111</li><li>car.2013-08-001</li><li>car.2013-08-001</li></ul> | 
+| Other Tags           | <ul><li>attack.s0111</li><li>car.2013-08-001</li></ul> | 
 
 ## Detection Rules
 
@@ -19,6 +19,7 @@
 
 ```
 title: Scheduled Task Creation
+id: 92626ddd-662c-49e3-ac59-f6535f12d189
 status: experimental
 description: Detects the creation of scheduled tasks in user session
 author: Florian Roth
@@ -70,7 +71,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-((Image:"*\\\\schtasks.exe" AND CommandLine:"* \\/create *") AND NOT (User:"NT AUTHORITY\\\\SYSTEM"))
+((Image.keyword:*\\\\schtasks.exe AND CommandLine.keyword:* \\/create *) AND (NOT (User:"NT AUTHORITY\\\\SYSTEM")))
 ```
 
 
@@ -84,7 +85,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-((Image="*\\\\schtasks.exe" CommandLine="* /create *")  -(User="NT AUTHORITY\\\\SYSTEM"))
+(event_id="1" (Image="*\\\\schtasks.exe" CommandLine="* /create *")  -(User="NT AUTHORITY\\\\SYSTEM"))
 ```
 
 

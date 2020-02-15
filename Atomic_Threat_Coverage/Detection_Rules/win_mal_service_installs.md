@@ -11,7 +11,7 @@
 | Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2013-09-005</li><li>car.2013-09-005</li></ul> | 
+| Other Tags           | <ul><li>car.2013-09-005</li></ul> | 
 
 ## Detection Rules
 
@@ -19,6 +19,7 @@
 
 ```
 title: Malicious Service Installations
+id: 5a105d34-05fc-401e-8553-272b45c1522d
 description: Detects known malicious service installs that only appear in cases of lateral movement, credential dumping and other suspicious activity
 author: Florian Roth
 tags:
@@ -79,7 +80,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(EventID:"7045" AND (ServiceName:("WCESERVICE" "WCE SERVICE") OR ServiceFileName:"*\\\\PAExec*" OR ServiceFileName:"winexesvc.exe*" OR ServiceFileName:"*\\\\DumpSvc.exe" OR ServiceName:"mssecsvc2.0" OR ServiceFileName:"* net user *" OR ServiceName:("pwdump*" "gsecdump*" "cachedump*")))
+(EventID:"7045" AND (ServiceName:("WCESERVICE" "WCE SERVICE") OR ServiceFileName.keyword:*\\\\PAExec* OR ServiceFileName.keyword:winexesvc.exe* OR ServiceFileName.keyword:*\\\\DumpSvc.exe OR ServiceName:"mssecsvc2.0" OR ServiceFileName.keyword:* net user * OR ServiceName.keyword:(pwdump* gsecdump* cachedump*)))
 ```
 
 
@@ -93,7 +94,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="7045" (ServiceName IN ["WCESERVICE", "WCE SERVICE"] OR ServiceFileName="*\\\\PAExec*" OR ServiceFileName="winexesvc.exe*" OR ServiceFileName="*\\\\DumpSvc.exe" OR ServiceName="mssecsvc2.0" OR ServiceFileName="* net user *" OR ServiceName IN ["pwdump*", "gsecdump*", "cachedump*"]))
+(event_source="Microsoft-Windows-Security-Auditing" event_id="7045" (service IN ["WCESERVICE", "WCE SERVICE"] OR ServiceFileName="*\\\\PAExec*" OR ServiceFileName="winexesvc.exe*" OR ServiceFileName="*\\\\DumpSvc.exe" OR service="mssecsvc2.0" OR ServiceFileName="* net user *" OR service IN ["pwdump*", "gsecdump*", "cachedump*"]))
 ```
 
 

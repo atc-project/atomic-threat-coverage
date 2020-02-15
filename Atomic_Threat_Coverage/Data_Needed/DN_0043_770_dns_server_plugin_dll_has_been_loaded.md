@@ -2,7 +2,7 @@
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | Windows DNS server plug-in DLL has been loaded                                                                                                |
 | Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul></ul> |
+| Mitigation Policy | |
 | References     		| <ul><li>[https://blog.3or.de/hunting-dns-server-level-plugin-dll-injection.html](https://blog.3or.de/hunting-dns-server-level-plugin-dll-injection.html)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Applications and Services Logs 		| 

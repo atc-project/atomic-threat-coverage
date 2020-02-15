@@ -3,7 +3,7 @@
 | Description          | Detects suspicious powershell process starts with base64 encoded commands                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Suspicious Encoded PowerShell Command Line
+id: ca2092a1-c273-4878-9b4b-0d60115bf5ea
 description: Detects suspicious powershell process starts with base64 encoded commands
 status: experimental
 references:
@@ -81,7 +82,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-(CommandLine:("* \\-e JAB*" "* \\-e  JAB*" "* \\-e   JAB*" "* \\-e    JAB*" "* \\-e     JAB*" "* \\-e      JAB*" "* \\-enc JAB*" "* \\-enco JAB*" "* \\-encodedcommand JAB*" "* BA\\^J e\\-" "* \\-e SUVYI*" "* \\-e aWV4I*" "* \\-e SQBFAFgA*" "* \\-e aQBlAHgA*" "* \\-enc SUVYI*" "* \\-enc aWV4I*" "* \\-enc SQBFAFgA*" "* \\-enc aQBlAHgA*") AND NOT (CommandLine:"* \\-ExecutionPolicy remotesigned *"))
+(CommandLine.keyword:(* \\-e JAB* * \\-e  JAB* * \\-e   JAB* * \\-e    JAB* * \\-e     JAB* * \\-e      JAB* * \\-enc JAB* * \\-enco JAB* * \\-encodedcommand JAB* * BA\\^J e\\- * \\-e SUVYI* * \\-e aWV4I* * \\-e SQBFAFgA* * \\-e aQBlAHgA* * \\-enc SUVYI* * \\-enc aWV4I* * \\-enc SQBFAFgA* * \\-enc aQBlAHgA*) AND (NOT (CommandLine.keyword:* \\-ExecutionPolicy remotesigned *)))
 ```
 
 
@@ -95,7 +96,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(CommandLine IN ["* -e JAB*", "* -e  JAB*", "* -e   JAB*", "* -e    JAB*", "* -e     JAB*", "* -e      JAB*", "* -enc JAB*", "* -enco JAB*", "* -encodedcommand JAB*", "* BA^J e-", "* -e SUVYI*", "* -e aWV4I*", "* -e SQBFAFgA*", "* -e aQBlAHgA*", "* -enc SUVYI*", "* -enc aWV4I*", "* -enc SQBFAFgA*", "* -enc aQBlAHgA*"]  -(CommandLine="* -ExecutionPolicy remotesigned *"))
+(event_id="1" CommandLine IN ["* -e JAB*", "* -e  JAB*", "* -e   JAB*", "* -e    JAB*", "* -e     JAB*", "* -e      JAB*", "* -enc JAB*", "* -enco JAB*", "* -encodedcommand JAB*", "* BA^J e-", "* -e SUVYI*", "* -e aWV4I*", "* -e SQBFAFgA*", "* -e aQBlAHgA*", "* -enc SUVYI*", "* -enc aWV4I*", "* -enc SQBFAFgA*", "* -enc aQBlAHgA*"]  -(CommandLine="* -ExecutionPolicy remotesigned *"))
 ```
 
 

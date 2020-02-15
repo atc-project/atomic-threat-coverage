@@ -11,14 +11,15 @@
 | Development Status   | stable |
 | References           | <ul><li>[https://pentestlab.blog/2018/05/15/lateral-movement-winrm/](https://pentestlab.blog/2018/05/15/lateral-movement-winrm/)</li></ul>  |
 | Author               | Patryk Prauze - ING Tech |
-| Other Tags           | <ul><li>attack.s0005</li><li>attack.s0005</li></ul> | 
+| Other Tags           | <ul><li>attack.s0005</li></ul> | 
 
 ## Detection Rules
 
 ### Sigma rule
 
 ```
-title: Mimikatz through Windows Remote Management  
+title: Mimikatz through Windows Remote Management
+id: aa35a627-33fb-4d04-a165-d33b4afca3e8
 description: Detects usage of mimikatz through WinRM protocol by monitoring access to lsass process by wsmprovhost.exe.
 references:
     - https://pentestlab.blog/2018/05/15/lateral-movement-winrm/
@@ -80,7 +81,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="10" TargetImage="C:\\\\windows\\\\system32\\\\lsass.exe" SourceImage="C:\\\\Windows\\\\system32\\\\wsmprovhost.exe")
+(event_id="10" TargetImage="C:\\\\windows\\\\system32\\\\lsass.exe" SourceImage="C:\\\\Windows\\\\system32\\\\wsmprovhost.exe")
 ```
 
 

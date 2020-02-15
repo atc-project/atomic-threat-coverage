@@ -3,7 +3,7 @@
 | Description          | Detects commands that delete all local volume shadow copies as used by different Ransomware families                                                                                                                                           |
 | ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
 | ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              |  There is no documented Trigger for this Detection Rule yet  |
 | Severity Level       | critical |
@@ -19,6 +19,7 @@
 
 ```
 title: Ransomware Deletes Volume Shadow Copies
+id: 4eebe114-4b24-4a9d-9a6c-c7bd7c8eaa61
 status: experimental
 description: Detects commands that delete all local volume shadow copies as used by different Ransomware families
 references:
@@ -65,7 +66,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-CommandLine:("*vssadmin delete shadows*" "*wmic SHADOWCOPY DELETE*")
+CommandLine.keyword:(*vssadmin delete shadows* *wmic SHADOWCOPY DELETE*)
 ```
 
 
@@ -79,7 +80,7 @@ CommandLine:("*vssadmin delete shadows*" "*wmic SHADOWCOPY DELETE*")
 ### logpoint
     
 ```
-CommandLine IN ["*vssadmin delete shadows*", "*wmic SHADOWCOPY DELETE*"]
+(event_id="1" CommandLine IN ["*vssadmin delete shadows*", "*wmic SHADOWCOPY DELETE*"])
 ```
 
 

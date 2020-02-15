@@ -3,7 +3,7 @@
 | Description          | Detects process starts of binaries from a suspicious folder                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Executables Started in Suspicious Folder
+id: 7a38aa19-86a9-4af7-ac51-6bfe4e59f254
 status: experimental
 description: Detects process starts of binaries from a suspicious folder
 author: Florian Roth
@@ -80,7 +81,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-Image:("C\\:\\\\PerfLogs\\\\*" "C\\:\\\\$Recycle.bin\\\\*" "C\\:\\\\Intel\\\\Logs\\\\*" "C\\:\\\\Users\\\\Default\\\\*" "C\\:\\\\Users\\\\Public\\\\*" "C\\:\\\\Users\\\\NetworkService\\\\*" "C\\:\\\\Windows\\\\Fonts\\\\*" "C\\:\\\\Windows\\\\Debug\\\\*" "C\\:\\\\Windows\\\\Media\\\\*" "C\\:\\\\Windows\\\\Help\\\\*" "C\\:\\\\Windows\\\\addins\\\\*" "C\\:\\\\Windows\\\\repair\\\\*" "C\\:\\\\Windows\\\\security\\\\*" "*\\\\RSA\\\\MachineKeys\\\\*" "C\\:\\\\Windows\\\\system32\\\\config\\\\systemprofile\\\\*")
+Image.keyword:(C\\:\\\\PerfLogs\\\\* C\\:\\\\$Recycle.bin\\\\* C\\:\\\\Intel\\\\Logs\\\\* C\\:\\\\Users\\\\Default\\\\* C\\:\\\\Users\\\\Public\\\\* C\\:\\\\Users\\\\NetworkService\\\\* C\\:\\\\Windows\\\\Fonts\\\\* C\\:\\\\Windows\\\\Debug\\\\* C\\:\\\\Windows\\\\Media\\\\* C\\:\\\\Windows\\\\Help\\\\* C\\:\\\\Windows\\\\addins\\\\* C\\:\\\\Windows\\\\repair\\\\* C\\:\\\\Windows\\\\security\\\\* *\\\\RSA\\\\MachineKeys\\\\* C\\:\\\\Windows\\\\system32\\\\config\\\\systemprofile\\\\*)
 ```
 
 
@@ -94,7 +95,7 @@ Image:("C\\:\\\\PerfLogs\\\\*" "C\\:\\\\$Recycle.bin\\\\*" "C\\:\\\\Intel\\\\Log
 ### logpoint
     
 ```
-Image IN ["C:\\\\PerfLogs\\\\*", "C:\\\\$Recycle.bin\\\\*", "C:\\\\Intel\\\\Logs\\\\*", "C:\\\\Users\\\\Default\\\\*", "C:\\\\Users\\\\Public\\\\*", "C:\\\\Users\\\\NetworkService\\\\*", "C:\\\\Windows\\\\Fonts\\\\*", "C:\\\\Windows\\\\Debug\\\\*", "C:\\\\Windows\\\\Media\\\\*", "C:\\\\Windows\\\\Help\\\\*", "C:\\\\Windows\\\\addins\\\\*", "C:\\\\Windows\\\\repair\\\\*", "C:\\\\Windows\\\\security\\\\*", "*\\\\RSA\\\\MachineKeys\\\\*", "C:\\\\Windows\\\\system32\\\\config\\\\systemprofile\\\\*"]
+(event_id="1" Image IN ["C:\\\\PerfLogs\\\\*", "C:\\\\$Recycle.bin\\\\*", "C:\\\\Intel\\\\Logs\\\\*", "C:\\\\Users\\\\Default\\\\*", "C:\\\\Users\\\\Public\\\\*", "C:\\\\Users\\\\NetworkService\\\\*", "C:\\\\Windows\\\\Fonts\\\\*", "C:\\\\Windows\\\\Debug\\\\*", "C:\\\\Windows\\\\Media\\\\*", "C:\\\\Windows\\\\Help\\\\*", "C:\\\\Windows\\\\addins\\\\*", "C:\\\\Windows\\\\repair\\\\*", "C:\\\\Windows\\\\security\\\\*", "*\\\\RSA\\\\MachineKeys\\\\*", "C:\\\\Windows\\\\system32\\\\config\\\\systemprofile\\\\*"])
 ```
 
 

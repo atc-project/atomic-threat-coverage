@@ -3,7 +3,7 @@
 | Description          | This rule detects a DHCP server error in which a specified Callout DLL (in registry) could not be loaded                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0047_1032_dhcp_service_callout_dll_file_has_caused_an_exception](../Data_Needed/DN_0047_1032_dhcp_service_callout_dll_file_has_caused_an_exception.md)</li><li>[DN_0049_1034_dhcp_service_failed_to_load_callout_dlls](../Data_Needed/DN_0049_1034_dhcp_service_failed_to_load_callout_dlls.md)</li><li>[DN_0046_1031_dhcp_service_callout_dll_file_has_caused_an_exception](../Data_Needed/DN_0046_1031_dhcp_service_callout_dll_file_has_caused_an_exception.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0046_1031_dhcp_service_callout_dll_file_has_caused_an_exception](../Data_Needed/DN_0046_1031_dhcp_service_callout_dll_file_has_caused_an_exception.md)</li><li>[DN_0047_1032_dhcp_service_callout_dll_file_has_caused_an_exception](../Data_Needed/DN_0047_1032_dhcp_service_callout_dll_file_has_caused_an_exception.md)</li><li>[DN_0049_1034_dhcp_service_failed_to_load_callout_dlls](../Data_Needed/DN_0049_1034_dhcp_service_failed_to_load_callout_dlls.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li></ul>  |
 | Severity Level       | critical |
@@ -19,6 +19,7 @@
 
 ```
 title: DHCP Server Error Failed Loading the CallOut DLL
+id: 75edd3fd-7146-48e5-9848-3013d7f0282c
 description: This rule detects a DHCP server error in which a specified Callout DLL (in registry) could not be loaded
 status: experimental
 references:
@@ -83,7 +84,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID IN ["1031", "1032", "1034"] Source="Microsoft-Windows-DHCP-Server")
+(event_source="Microsoft-Windows-Security-Auditing" event_id IN ["1031", "1032", "1034"] Source="Microsoft-Windows-DHCP-Server")
 ```
 
 
