@@ -1,8 +1,7 @@
 | Title             | DN_0074_4765_sid_history_was_added_to_an_account                                                                                                      |
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | SID History was added to an account                                                                                                |
-| Logging Policy    | <ul><li>[LP_0026_windows_audit_user_account_management](../Logging_Policies/LP_0026_windows_audit_user_account_management.md)</li></ul> |
-| Mitigation Policy | |
+| Logging Policy    | <ul><li>[LP_0026_windows_audit_user_account_management](../Logging_Policies/LP_0026_windows_audit_user_account_management.md)</li></ul> | 
 | References     		| <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4765](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4765)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Windows Log 		| 

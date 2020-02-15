@@ -1,8 +1,7 @@
 | Title             | DN_0099_Bind_DNS_query                                                                                                      |
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | DNS Query from BIND Server                                                                                                |
-| Logging Policy    | <ul><li>[LP_0047_BIND_DNS_queries](../Logging_Policies/LP_0047_BIND_DNS_queries.md)</li></ul> |
-| Mitigation Policy | |
+| Logging Policy    | <ul><li>[LP_0047_BIND_DNS_queries](../Logging_Policies/LP_0047_BIND_DNS_queries.md)</li></ul> | 
 | References     		| <ul><li>[None](None)</li></ul>                                  |
 | Platform       		| Linux   |
 | Type           		| queries log 		| 

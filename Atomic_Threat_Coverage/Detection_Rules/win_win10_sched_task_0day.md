@@ -11,7 +11,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://github.com/SandboxEscaper/polarbearrepo/tree/master/bearlpe](https://github.com/SandboxEscaper/polarbearrepo/tree/master/bearlpe)</li></ul>  |
 | Author               | Olaf Hartong |
-| Other Tags           | <ul><li>car.2013-08-001</li></ul> | 
+| Other Tags           | <ul><li>car.2013-08-001</li><li>car.2013-08-001</li></ul> | 
 
 ## Detection Rules
 

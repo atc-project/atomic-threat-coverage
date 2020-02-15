@@ -1,8 +1,7 @@
 | Title             | DN_0084_av_alert                                                                                                      |
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | Anti-virus alert                                                                                                |
-| Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | |
+| Logging Policy    | <ul><li> Not existing </li></ul> | 
 | References     		| <ul><li>[None](None)</li></ul>                                  |
 | Platform       		| antivirus   |
 | Type           		| None 		| 

@@ -1,8 +1,7 @@
 | Title             | DN_0038_400_engine_state_is_changed_from_none_to_available                                                                                                      |
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | Information about PowerShell engine state. Engine state is changed from None to Available                                                                                                |
-| Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | |
+| Logging Policy    | <ul><li> Not existing </li></ul> | 
 | References     		| <ul><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/powershell/events/event-400.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/powershell/events/event-400.md)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Applications and Services Logs 		| 

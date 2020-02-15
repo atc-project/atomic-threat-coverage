@@ -111,7 +111,7 @@ If no local configuration is found on the argument path, a warning will be shown
         """Open the yaml file and load it to the variable.
         Return created list"""
         with open(path) as f:
-            yaml_fields = yaml.load_all(f.read())
+            yaml_fields = yaml.load_all(f.read(), Loader=yaml.FullLoader)
 
         buff_results = [x for x in yaml_fields]
         if len(buff_results) > 1:
@@ -150,6 +150,16 @@ class ATCutils:
         return rule_text
 
     @staticmethod
+    def get_normalized_field(field):    
+        # return everything before field modifier (pipe)
+        regex = '^(.*?)\|'
+        try:
+            return re.search(regex, field).group(1)
+        except:
+            return field
+            
+
+    @staticmethod
     def read_yaml_file(path):
         """Open the yaml file and load it to the variable.
         Return created list"""
@@ -162,7 +172,7 @@ class ATCutils:
             return ATCConfig(path).config
 
         with open(path) as f:
-            yaml_fields = yaml.load_all(f.read())
+            yaml_fields = yaml.load_all(f.read(), Loader=yaml.FullLoader)
 
         buff_results = [x for x in yaml_fields]
         if len(buff_results) > 1:
@@ -240,7 +250,7 @@ class ATCutils:
         url = apipath + "content"
         space_page_url = url + '?spaceKey=' + space + '&title=' \
             + title + '&expand=space'
-        # print(space_page_url)
+
         response = requests.request(
             "GET",
             space_page_url,
@@ -254,8 +264,6 @@ class ATCutils:
             exit()
         else:
             response = response.json()
-
-        # print(response)
 
         # Check if response contains proper information and return it if so
         if response.get('results'):
@@ -470,13 +478,16 @@ class ATCutils:
                         list) and _field != 'EventID':
                     for val2 in detection_dict[_field]:
                         if isinstance(val2, str) or isinstance(val2, int):
-                            dictionary_of_fields.append(_field)
+                            normalized_key = ATCutils.get_normalized_field(_field)
+                            dictionary_of_fields.append(normalized_key)
                             break
                         else:
                             for val3 in val2:
-                                dictionary_of_fields.append(val3)
+                                normalized_key = ATCutils.get_normalized_field(val3)
+                                dictionary_of_fields.append(normalized_key)
                 else:
-                    dictionary_of_fields.append(val)
+                    normalized_key = ATCutils.get_normalized_field(val)
+                    dictionary_of_fields.append(normalized_key)
 
         return dictionary_of_fields
 
@@ -501,15 +512,18 @@ class ATCutils:
                     list) and _field != 'EventID':
                 for val2 in detection_dict[_field]:
                     if isinstance(val2, str) or isinstance(val2, int):
-                        dictionary_of_fields.append(_field)
+                        normalized_key = ATCutils.get_normalized_field(_field)
+                        dictionary_of_fields.append(normalized_key)
                         break
                     elif isinstance(val2, str):
                         continue
                     else:
                         for val3 in val2:
-                            dictionary_of_fields.append(val3)
+                            normalized_key = ATCutils.get_normalized_field(val3)
+                            dictionary_of_fields.append(normalized_key)
             else:
-                dictionary_of_fields.append(_field)
+                normalized_key = ATCutils.get_normalized_field(_field)
+                dictionary_of_fields.append(normalized_key)
 
         return dictionary_of_fields
 
@@ -559,6 +573,7 @@ class ATCutils:
                 continue
 
             if isinstance(_field, str):
+                _field = ATCutils.get_normalized_field(_field)
                 if _field == 'CommandLine' or \
                    _field == 'ProcessCommandLine' or \
                    _field == 'ProcesssCommandLine' or \
@@ -567,6 +582,7 @@ class ATCutils:
 
             if isinstance(_field, dict):
                 for item in _field:
+                    item = ATCutils.get_normalized_field(item)
                     if  item == 'CommandLine' or \
                         item == 'ProcessCommandLine' or \
                         item == 'ProcesssCommandLine' or \
@@ -578,18 +594,18 @@ class ATCutils:
     @staticmethod
     def check_for_event_ids_presence(detection_rule_obj):
         """check if this is event id based detection rule"""
-
-        for _field in detection_rule_obj['detection']:
-            if _field in ["condition", "timeframe"]:
-                continue
-            for __field in detection_rule_obj['detection'][_field]:
-                if isinstance(__field, str) or isinstance(__field, int):
-                    if __field == 'EventID':
-                        return True
-                elif isinstance(__field, dict):
-                    for item in __field:
-                        if item == 'EventID':
+        if detection_rule_obj.get('detection'):
+            for _field in detection_rule_obj['detection']:
+                if _field in ["condition", "timeframe"]:
+                    continue
+                for __field in detection_rule_obj['detection'][_field]:
+                    if isinstance(__field, str) or isinstance(__field, int):
+                        if __field == 'EventID':
                             return True
+                    elif isinstance(__field, dict):
+                        for item in __field:
+                            if item == 'EventID':
+                                return True
 
         return False
 
@@ -660,6 +676,7 @@ class ATCutils:
         if not detectionrule.get('action'):
 
             logsource = ATCutils.get_logsource_of_the_document(detectionrule)
+            
             event_id_based_dr = ATCutils.check_for_event_ids_presence(detectionrule)
 
             # if this is event id based detection rule we calculate PER SELECTION
@@ -732,6 +749,7 @@ class ATCutils:
             # check if first document has logsource
             logsource = ATCutils.get_logsource_of_the_document(detectionrule)
             if logsource:
+                
                 event_id_based_dr = ATCutils.check_for_event_ids_presence(detectionrule)
 
                 if event_id_based_dr:
@@ -780,6 +798,7 @@ class ATCutils:
             for addition in detectionrule['additions']:
 
                 logsource = ATCutils.get_logsource_of_the_document(addition)
+                
                 event_id_based_dr = ATCutils.check_for_event_ids_presence(addition)
 
                 if event_id_based_dr:
@@ -801,23 +820,25 @@ class ATCutils:
                 else:
                     full_list_of_fields = []
 
-                    # just in case there are multiple selections in first document
-                    for _field in addition['detection']:
-
-                        if str(_field) in ["condition", "timeframe"]:
-                            continue
-
-                        try:
-                            detection_fields = ATCutils\
-                            .search_for_fields2(addition['detection'][_field])
-                        except Exception as e:
-                            detection_fields = ATCutils\
-                            .search_for_fields(addition['detection'])
-
-                        if detection_fields:
-                            for field in detection_fields:
-                                if field not in full_list_of_fields:
-                                    full_list_of_fields.append(field)
+                    # sometimes docs don't have detection section
+                    if addition.get('detection'):
+                        # just in case there are multiple selections in first document
+                        for _field in addition['detection']:
+    
+                            if str(_field) in ["condition", "timeframe"]:
+                                continue
+    
+                            try:
+                                detection_fields = ATCutils\
+                                .search_for_fields2(addition['detection'][_field])
+                            except Exception as e:
+                                detection_fields = ATCutils\
+                                .search_for_fields(addition['detection'])
+    
+                            if detection_fields:
+                                for field in detection_fields:
+                                    if field not in full_list_of_fields:
+                                        full_list_of_fields.append(field)
 
                     final_list += ATCutils.calculate_dn_for_non_eventid_based_dr(
                         dn_list, full_list_of_fields, logsource)

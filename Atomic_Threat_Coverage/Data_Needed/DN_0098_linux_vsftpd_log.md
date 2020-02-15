@@ -1,8 +1,7 @@
 | Title             | DN_0098_linux_vsftpd_log                                                                                                      |
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | vsftpd (FTP server) log                                                                                                |
-| Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | |
+| Logging Policy    | <ul><li> Not existing </li></ul> | 
 | References     		| <ul><li>[https://en.wikipedia.org/wiki/Vsftpd](https://en.wikipedia.org/wiki/Vsftpd)</li><li>[https://security.appspot.com/vsftpd.html](https://security.appspot.com/vsftpd.html)</li></ul>                                  |
 | Platform       		| Linux   |
 | Type           		| vsftpd.log 		| 

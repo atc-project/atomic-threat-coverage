@@ -39,6 +39,7 @@ detection:
             - '*\MsMpEng.exe'
             - '*\Mrt.exe'
             - '*\rpcnet.exe'
+            - '*\svchost.exe'
     filter_null:
         ParentImage: null
     condition: selection and not filter and not filter_null
@@ -58,42 +59,42 @@ level: high
 ### es-qs
     
 ```
-((Image.keyword:*\\\\svchost.exe AND (NOT (ParentImage.keyword:(*\\\\services.exe OR *\\\\MsMpEng.exe OR *\\\\Mrt.exe OR *\\\\rpcnet.exe)))) AND (NOT (NOT _exists_:ParentImage)))
+((Image.keyword:*\\\\svchost.exe AND (NOT (ParentImage.keyword:(*\\\\services.exe OR *\\\\MsMpEng.exe OR *\\\\Mrt.exe OR *\\\\rpcnet.exe OR *\\\\svchost.exe)))) AND (NOT (NOT _exists_:ParentImage)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Svchost-Process <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Svchost Process",\n    "description": "Detects a suspicious svchost process start",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036"\n    ],\n    "query": "((Image.keyword:*\\\\\\\\svchost.exe AND (NOT (ParentImage.keyword:(*\\\\\\\\services.exe OR *\\\\\\\\MsMpEng.exe OR *\\\\\\\\Mrt.exe OR *\\\\\\\\rpcnet.exe)))) AND (NOT (NOT _exists_:ParentImage)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Image.keyword:*\\\\\\\\svchost.exe AND (NOT (ParentImage.keyword:(*\\\\\\\\services.exe OR *\\\\\\\\MsMpEng.exe OR *\\\\\\\\Mrt.exe OR *\\\\\\\\rpcnet.exe)))) AND (NOT (NOT _exists_:ParentImage)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Svchost Process\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Svchost-Process <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Svchost Process",\n    "description": "Detects a suspicious svchost process start",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036"\n    ],\n    "query": "((Image.keyword:*\\\\\\\\svchost.exe AND (NOT (ParentImage.keyword:(*\\\\\\\\services.exe OR *\\\\\\\\MsMpEng.exe OR *\\\\\\\\Mrt.exe OR *\\\\\\\\rpcnet.exe OR *\\\\\\\\svchost.exe)))) AND (NOT (NOT _exists_:ParentImage)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Image.keyword:*\\\\\\\\svchost.exe AND (NOT (ParentImage.keyword:(*\\\\\\\\services.exe OR *\\\\\\\\MsMpEng.exe OR *\\\\\\\\Mrt.exe OR *\\\\\\\\rpcnet.exe OR *\\\\\\\\svchost.exe)))) AND (NOT (NOT _exists_:ParentImage)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Svchost Process\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
 ### graylog
     
 ```
-((Image.keyword:*\\\\svchost.exe AND (NOT (ParentImage.keyword:(*\\\\services.exe *\\\\MsMpEng.exe *\\\\Mrt.exe *\\\\rpcnet.exe)))) AND (NOT (NOT _exists_:ParentImage)))
+((Image.keyword:*\\\\svchost.exe AND (NOT (ParentImage.keyword:(*\\\\services.exe *\\\\MsMpEng.exe *\\\\Mrt.exe *\\\\rpcnet.exe *\\\\svchost.exe)))) AND (NOT (NOT _exists_:ParentImage)))
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\\\svchost.exe" NOT ((ParentImage="*\\\\services.exe" OR ParentImage="*\\\\MsMpEng.exe" OR ParentImage="*\\\\Mrt.exe" OR ParentImage="*\\\\rpcnet.exe"))) NOT (NOT ParentImage="*")) | table CommandLine,ParentCommandLine
+((Image="*\\\\svchost.exe" NOT ((ParentImage="*\\\\services.exe" OR ParentImage="*\\\\MsMpEng.exe" OR ParentImage="*\\\\Mrt.exe" OR ParentImage="*\\\\rpcnet.exe" OR ParentImage="*\\\\svchost.exe"))) NOT (NOT ParentImage="*")) | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-(event_id="1" (Image="*\\\\svchost.exe"  -(ParentImage IN ["*\\\\services.exe", "*\\\\MsMpEng.exe", "*\\\\Mrt.exe", "*\\\\rpcnet.exe"]))  -(-ParentImage=*))
+(event_id="1" (Image="*\\\\svchost.exe"  -(ParentImage IN ["*\\\\services.exe", "*\\\\MsMpEng.exe", "*\\\\Mrt.exe", "*\\\\rpcnet.exe", "*\\\\svchost.exe"]))  -(-ParentImage=*))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?=.*.*\\svchost\\.exe)(?=.*(?!.*(?:.*(?=.*(?:.*.*\\services\\.exe|.*.*\\MsMpEng\\.exe|.*.*\\Mrt\\.exe|.*.*\\rpcnet\\.exe)))))))(?=.*(?!.*(?:.*(?=.*(?!ParentImage))))))'
+grep -P '^(?:.*(?=.*(?:.*(?=.*.*\\svchost\\.exe)(?=.*(?!.*(?:.*(?=.*(?:.*.*\\services\\.exe|.*.*\\MsMpEng\\.exe|.*.*\\Mrt\\.exe|.*.*\\rpcnet\\.exe|.*.*\\svchost\\.exe)))))))(?=.*(?!.*(?:.*(?=.*(?!ParentImage))))))'
 ```
 
 

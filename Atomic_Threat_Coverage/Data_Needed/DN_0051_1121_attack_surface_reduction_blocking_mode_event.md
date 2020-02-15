@@ -1,8 +1,8 @@
 | Title             | DN_0051_1121_attack_surface_reduction_blocking_mode_event                                                                                                      |
 |:------------------|:-----------------------------------------------------------------------------------------------------------------|
 | Description       | Event generated when an attack surface reduction rule fires in block mode                                                                                                |
-| Logging Policy    | <ul><li> Not existing </li></ul> |
-| Mitigation Policy | <ul><li>[MP_0001_windows_asr_block_credential_stealing_from_lsass](../Mitigation_Policies/MP_0001_windows_asr_block_credential_stealing_from_lsass.md)</li></ul> |
+| Logging Policy    | <ul><li> Not existing </li></ul> |  
+| Mitigation Policy |<ul><li>[MP_0001_windows_asr_block_credential_stealing_from_lsass](../Mitigation_Policies/MP_0001_windows_asr_block_credential_stealing_from_lsass.md)</li></ul> |
 | References     		| <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/d0a832b119a518a2c6b5f19ffd9dc44f0328c9a6/windows/security/threat-protection/windows-defender-exploit-guard/evaluate-attack-surface-reduction.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/d0a832b119a518a2c6b5f19ffd9dc44f0328c9a6/windows/security/threat-protection/windows-defender-exploit-guard/evaluate-attack-surface-reduction.md)</li></ul>                                  |
 | Platform       		| Windows   |
 | Type           		| Applications and Services Logs 		| 
