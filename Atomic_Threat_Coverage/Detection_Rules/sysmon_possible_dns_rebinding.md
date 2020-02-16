@@ -4,7 +4,6 @@
 | ATT&amp;CK Tactic    |  <ul><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1043: Commonly Used Port](https://attack.mitre.org/techniques/T1043)</li></ul>  |
 | Data Needed          | <ul><li>[DN_0085_22_windows_sysmon_DnsQuery](../Data_Needed/DN_0085_22_windows_sysmon_DnsQuery.md)</li></ul>  |
-| Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1043: Commonly Used Port](../Triggers/T1043.md)</li></ul>  |
 | Severity Level       | medium |
 | False Positives      |  There are no documented False Positives for this Detection Rule yet  |

@@ -4,7 +4,6 @@
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1088: Bypass User Account Control](https://attack.mitre.org/techniques/T1088)</li><li>[T1191: CMSTP](https://attack.mitre.org/techniques/T1191)</li></ul>  |
 | Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1088: Bypass User Account Control](../Triggers/T1088.md)</li><li>[T1191: CMSTP](../Triggers/T1191.md)</li></ul>  |
 | Severity Level       | high |
 | False Positives      | <ul><li>Legitimate CMSTP use (unlikely in modern enterprise environments)</li></ul>  |

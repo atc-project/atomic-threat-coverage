@@ -4,7 +4,6 @@
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1009: Binary Padding](https://attack.mitre.org/techniques/T1009)</li></ul>  |
 | Data Needed          |  There is no documented Data Needed for this Detection Rule yet  |
-| Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1009: Binary Padding](../Triggers/T1009.md)</li></ul>  |
 | Severity Level       | low |
 | False Positives      | <ul><li>Disk device errors</li></ul>  |

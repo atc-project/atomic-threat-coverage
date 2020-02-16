@@ -4,7 +4,6 @@
 | ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1122: Component Object Model Hijacking](https://attack.mitre.org/techniques/T1122)</li></ul>  |
 | Data Needed          | <ul><li>[DN_0016_12_windows_sysmon_RegistryEvent](../Data_Needed/DN_0016_12_windows_sysmon_RegistryEvent.md)</li></ul>  |
-| Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1122: Component Object Model Hijacking](../Triggers/T1122.md)</li></ul>  |
 | Severity Level       | medium |
 | False Positives      | <ul><li>Maybe some system utilities in rare cases use linking keys for backward compability</li></ul>  |

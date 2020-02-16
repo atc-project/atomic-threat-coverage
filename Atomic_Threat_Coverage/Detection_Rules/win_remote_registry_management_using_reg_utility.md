@@ -4,7 +4,6 @@
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1112: Modify Registry](https://attack.mitre.org/techniques/T1112)</li><li>[T1012: Query Registry](https://attack.mitre.org/techniques/T1012)</li></ul>  |
 | Data Needed          | <ul><li>[DN_0032_5145_network_share_object_was_accessed_detailed](../Data_Needed/DN_0032_5145_network_share_object_was_accessed_detailed.md)</li></ul>  |
-| Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1112: Modify Registry](../Triggers/T1112.md)</li><li>[T1012: Query Registry](../Triggers/T1012.md)</li></ul>  |
 | Severity Level       | medium |
 | False Positives      | <ul><li>Legitimate usage of remote registry management by administrator</li></ul>  |

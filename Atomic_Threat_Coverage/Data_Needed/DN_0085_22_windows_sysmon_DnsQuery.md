@@ -1,13 +1,13 @@
-| Title             | DN_0085_22_windows_sysmon_DnsQuery                                                                                                      |
-|:------------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description       | This event generates when a process executes a DNS query, whether the result is  successful or fails, cached or not                                                                                                |
-| Logging Policy    | <ul><li>[LP_0011_windows_sysmon_DnsQuery](../Logging_Policies/LP_0011_windows_sysmon_DnsQuery.md)</li></ul> | 
-| References     		| <ul><li>[https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon#event-id-22-dnsevent-dns-query](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon#event-id-22-dnsevent-dns-query)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-22.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-22.md)</li></ul>                                  |
-| Platform       		| Windows   |
-| Type           		| Applications and Services Logs 		| 
-| Channel        		| Microsoft-Windows-Sysmon/Operational    |
-| Provider       		| Microsoft-Windows-Sysmon   |
-| Fields         		| <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>RuleName</li><li>ProcessGuid</li><li>ProcessId</li><li>QueryName</li><li>QueryStatus</li><li>QueryResults</li><li>Image</li></ul>                                               |
+| Title          | DN_0085_22_windows_sysmon_DnsQuery       |
+|:---------------|:------------------|
+| Description    | This event generates when a process executes a DNS query, whether the result is  successful or fails, cached or not |
+| Logging Policy | <ul><li>[LP_0011_windows_sysmon_DnsQuery](../Logging_Policies/LP_0011_windows_sysmon_DnsQuery.md)</li></ul> |
+| References     | <ul><li>[https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon#event-id-22-dnsevent-dns-query](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon#event-id-22-dnsevent-dns-query)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-22.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-22.md)</li></ul> |
+| Platform       | Windows    |
+| Type           | Applications and Services Logs        |
+| Channel        | Microsoft-Windows-Sysmon/Operational     |
+| Provider       | Microsoft-Windows-Sysmon    |
+| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>RuleName</li><li>ProcessGuid</li><li>ProcessId</li><li>QueryName</li><li>QueryStatus</li><li>QueryResults</li><li>Image</li></ul> |
 
 
 ## Log Samples

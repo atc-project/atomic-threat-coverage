@@ -1,13 +1,13 @@
-| Title             | DN_0058_4656_handle_to_an_object_was_requested                                                                                                      |
-|:------------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description       | This event indicates that specific access was requested for an object.  The object could be a file system, kernel, or registry object, or a file  system object on removable storage or a device. If access was declined,  a Failure event is generated. This event generates only if the object’s  SACL has the required ACE to handle the use of specific access rights                                                                                                |
-| Logging Policy    | <ul><li>[LP_0104_windows_audit_removable_storage](../Logging_Policies/LP_0104_windows_audit_removable_storage.md)</li><li>[LP_0039_windows_audit_kernel_object](../Logging_Policies/LP_0039_windows_audit_kernel_object.md)</li><li>[LP_0102_windows_audit_file_system](../Logging_Policies/LP_0102_windows_audit_file_system.md)</li><li>[LP_0103_windows_audit_registry](../Logging_Policies/LP_0103_windows_audit_registry.md)</li></ul> | 
-| References     		| <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4656.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4656.md)</li></ul>                                  |
-| Platform       		| Windows   |
-| Type           		| Windows Log 		| 
-| Channel        		| Security    |
-| Provider       		| Microsoft-Windows-Security-Auditing   |
-| Fields         		| <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>ObjectServer</li><li>ObjectType</li><li>ObjectName</li><li>HandleId</li><li>TransactionId</li><li>AccessList</li><li>AccessReason</li><li>AccessMask</li><li>PrivilegeList</li><li>RestrictedSidCount</li><li>ProcessId</li><li>ProcessName</li><li>ResourceAttributes</li></ul>                                               |
+| Title          | DN_0058_4656_handle_to_an_object_was_requested       |
+|:---------------|:------------------|
+| Description    | This event indicates that specific access was requested for an object.  The object could be a file system, kernel, or registry object, or a file  system object on removable storage or a device. If access was declined,  a Failure event is generated. This event generates only if the object’s  SACL has the required ACE to handle the use of specific access rights |
+| Logging Policy | <ul><li>[LP_0104_windows_audit_removable_storage](../Logging_Policies/LP_0104_windows_audit_removable_storage.md)</li><li>[LP_0039_windows_audit_kernel_object](../Logging_Policies/LP_0039_windows_audit_kernel_object.md)</li><li>[LP_0102_windows_audit_file_system](../Logging_Policies/LP_0102_windows_audit_file_system.md)</li><li>[LP_0103_windows_audit_registry](../Logging_Policies/LP_0103_windows_audit_registry.md)</li></ul> |
+| References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4656.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4656.md)</li></ul> |
+| Platform       | Windows    |
+| Type           | Windows Log        |
+| Channel        | Security     |
+| Provider       | Microsoft-Windows-Security-Auditing    |
+| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>ObjectServer</li><li>ObjectType</li><li>ObjectName</li><li>HandleId</li><li>TransactionId</li><li>AccessList</li><li>AccessReason</li><li>AccessMask</li><li>PrivilegeList</li><li>RestrictedSidCount</li><li>ProcessId</li><li>ProcessName</li><li>ResourceAttributes</li></ul> |
 
 
 ## Log Samples

@@ -3,8 +3,7 @@
 | Description          | Identifies use of various commands to query a system’s time. This technique may be used before executing a scheduled task or to discover the time zone of a target system.                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1124: System Time Discovery](https://attack.mitre.org/techniques/T1124)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
-| Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
+| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | Trigger              | <ul><li>[T1124: System Time Discovery](../Triggers/T1124.md)</li></ul>  |
 | Severity Level       | high |
 | False Positives      | <ul><li>Legitimate use of the system utilities to discover system time for legitimate reason</li></ul>  |
