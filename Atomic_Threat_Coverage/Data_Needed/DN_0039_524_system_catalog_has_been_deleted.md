@@ -1,13 +1,13 @@
-| Title             | DN_0039_524_system_catalog_has_been_deleted                                                                                                      |
-|:------------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description       | The System Catalog has been deleted                                                                                                |
-| Logging Policy    | <ul><li> Not existing </li></ul> | 
-| References     		| <ul><li>[http://kb.eventtracker.com/evtpass/evtpages/EventId_524_Microsoft-Windows-Backup_61998.asp](http://kb.eventtracker.com/evtpass/evtpages/EventId_524_Microsoft-Windows-Backup_61998.asp)</li></ul>                                  |
-| Platform       		| Windows   |
-| Type           		| Applications and Services Logs 		| 
-| Channel        		| Application    |
-| Provider       		| Microsoft-Windows-Backup   |
-| Fields         		| <ul><li>EventID</li><li>ComputerName</li><li>Computer</li><li>Hostname</li></ul>                                               |
+| Title          | DN_0039_524_system_catalog_has_been_deleted       |
+|:---------------|:------------------|
+| Description    | The System Catalog has been deleted |
+| Logging Policy | <ul><li> Not existing </li></ul> |
+| References     | <ul><li>[http://kb.eventtracker.com/evtpass/evtpages/EventId_524_Microsoft-Windows-Backup_61998.asp](http://kb.eventtracker.com/evtpass/evtpages/EventId_524_Microsoft-Windows-Backup_61998.asp)</li></ul> |
+| Platform       | Windows    |
+| Type           | Applications and Services Logs        |
+| Channel        | Application     |
+| Provider       | Microsoft-Windows-Backup    |
+| Fields         | <ul><li>EventID</li><li>ComputerName</li><li>Computer</li><li>Hostname</li></ul> |
 
 
 ## Log Samples

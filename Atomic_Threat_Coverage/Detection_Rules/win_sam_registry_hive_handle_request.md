@@ -4,7 +4,6 @@
 | ATT&amp;CK Tactic    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1012: Query Registry](https://attack.mitre.org/techniques/T1012)</li></ul>  |
 | Data Needed          | <ul><li>[DN_0058_4656_handle_to_an_object_was_requested](../Data_Needed/DN_0058_4656_handle_to_an_object_was_requested.md)</li></ul>  |
-| Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1012: Query Registry](../Triggers/T1012.md)</li></ul>  |
 | Severity Level       | critical |
 | False Positives      | <ul><li>Unknown</li></ul>  |

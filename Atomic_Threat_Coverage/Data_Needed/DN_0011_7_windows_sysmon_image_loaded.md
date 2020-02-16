@@ -1,13 +1,13 @@
-| Title             | DN_0011_7_windows_sysmon_image_loaded                                                                                                      |
-|:------------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description       | The image loaded event logs when a module is loaded in a specific process                                                                                                |
-| Logging Policy    | <ul><li>[LP_0006_windows_sysmon_image_loaded](../Logging_Policies/LP_0006_windows_sysmon_image_loaded.md)</li></ul> | 
-| References     		| <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90007](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90007)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-7.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-7.md)</li></ul>                                  |
-| Platform       		| Windows   |
-| Type           		| Applications and Services Logs 		| 
-| Channel        		| Microsoft-Windows-Sysmon/Operational    |
-| Provider       		| Microsoft-Windows-Sysmon   |
-| Fields         		| <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>ProcessGuid</li><li>ProcessId</li><li>Image</li><li>ImageLoaded</li><li>FileVersion</li><li>Description</li><li>Product</li><li>Company</li><li>OriginalFileName</li><li>Hashes</li><li>Signed</li><li>Signature</li><li>SignatureStatus</li></ul>                                               |
+| Title          | DN_0011_7_windows_sysmon_image_loaded       |
+|:---------------|:------------------|
+| Description    | The image loaded event logs when a module is loaded in a specific process |
+| Logging Policy | <ul><li>[LP_0006_windows_sysmon_image_loaded](../Logging_Policies/LP_0006_windows_sysmon_image_loaded.md)</li></ul> |
+| References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90007](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90007)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-7.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-7.md)</li></ul> |
+| Platform       | Windows    |
+| Type           | Applications and Services Logs        |
+| Channel        | Microsoft-Windows-Sysmon/Operational     |
+| Provider       | Microsoft-Windows-Sysmon    |
+| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>ProcessGuid</li><li>ProcessId</li><li>Image</li><li>ImageLoaded</li><li>FileVersion</li><li>Description</li><li>Product</li><li>Company</li><li>OriginalFileName</li><li>Hashes</li><li>Signed</li><li>Signature</li><li>SignatureStatus</li></ul> |
 
 
 ## Log Samples

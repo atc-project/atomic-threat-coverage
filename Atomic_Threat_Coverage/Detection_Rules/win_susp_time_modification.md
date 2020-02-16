@@ -4,7 +4,6 @@
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1099: Timestomp](https://attack.mitre.org/techniques/T1099)</li></ul>  |
 | Data Needed          | <ul><li>[DN_0088_4616_system_time_was_changed](../Data_Needed/DN_0088_4616_system_time_was_changed.md)</li></ul>  |
-| Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1099: Timestomp](../Triggers/T1099.md)</li></ul>  |
 | Severity Level       | high |
 | False Positives      | <ul><li>HyperV or other virtualization technologies with binary not listed in filter portion of detection</li></ul>  |

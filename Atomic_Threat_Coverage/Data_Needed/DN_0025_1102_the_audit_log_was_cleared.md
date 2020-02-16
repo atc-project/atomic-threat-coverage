@@ -1,13 +1,13 @@
-| Title             | DN_0038_1102_the_audit_log_was_cleared                                                                                                      |
-|:------------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description       | Event 1102 is logged whenever the Security log is cleared,  REGARDLESS of the status of the Audit System Events audit policy                                                                                                |
-| Logging Policy    | <ul><li>[none](../Logging_Policies/none.md)</li></ul> | 
-| References     		| <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-1102#security-monitoring-recommendations](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-1102#security-monitoring-recommendations)</li><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=1102](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=1102)</li></ul>                                  |
-| Platform       		| Windows   |
-| Type           		| Windows Log 		| 
-| Channel        		| Security    |
-| Provider       		| Microsoft-Windows-Eventlog   |
-| Fields         		| <ul><li>EventID</li><li>Hostname</li><li>Computer</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li></ul>                                               |
+| Title          | DN_0038_1102_the_audit_log_was_cleared       |
+|:---------------|:------------------|
+| Description    | Event 1102 is logged whenever the Security log is cleared,  REGARDLESS of the status of the Audit System Events audit policy |
+| Logging Policy | <ul><li>[none](../Logging_Policies/none.md)</li></ul> |
+| References     | <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-1102#security-monitoring-recommendations](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-1102#security-monitoring-recommendations)</li><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=1102](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=1102)</li></ul> |
+| Platform       | Windows    |
+| Type           | Windows Log        |
+| Channel        | Security     |
+| Provider       | Microsoft-Windows-Eventlog    |
+| Fields         | <ul><li>EventID</li><li>Hostname</li><li>Computer</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li></ul> |
 
 
 ## Log Samples
