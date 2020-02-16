@@ -1,13 +1,13 @@
-| Title             | DN_0003_1_windows_sysmon_process_creation                                                                                                      |
-|:------------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description       | Windows process creation log, including command line                                                                                                |
-| Logging Policy    | <ul><li>[LP_0003_windows_sysmon_process_creation](../Logging_Policies/LP_0003_windows_sysmon_process_creation.md)</li></ul> | 
-| References     		| <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90001](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90001)</li></ul>                                  |
-| Platform       		| Windows   |
-| Type           		| Applications and Services Logs 		| 
-| Channel        		| Microsoft-Windows-Sysmon/Operational    |
-| Provider       		| Microsoft-Windows-Sysmon   |
-| Fields         		| <ul><li>EventID</li><li>Hostname</li><li>Computer</li><li>UtcTime</li><li>Username</li><li>User</li><li>ProcessGuid</li><li>ProcessId</li><li>ProcessName</li><li>CommandLine</li><li>LogonGuid</li><li>LogonId</li><li>TerminalSessionid</li><li>IntegrityLevel</li><li>Hashes</li><li>Imphash</li><li>Sha256hash</li><li>Sha1hash</li><li>Md5hash</li><li>Image</li><li>ParentImage</li><li>ParentProcessGuid</li><li>ParentProcessId</li><li>ParentProcessName</li><li>ParentCommandLine</li><li>OriginalFileName</li><li>FileVersion</li><li>Description</li><li>Product</li><li>Company</li><li>CurrentDirectory</li></ul>                                               |
+| Title          | DN_0003_1_windows_sysmon_process_creation       |
+|:---------------|:------------------|
+| Description    | Windows process creation log, including command line |
+| Logging Policy | <ul><li>[LP_0003_windows_sysmon_process_creation](../Logging_Policies/LP_0003_windows_sysmon_process_creation.md)</li></ul> |
+| References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90001](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90001)</li></ul> |
+| Platform       | Windows    |
+| Type           | Applications and Services Logs        |
+| Channel        | Microsoft-Windows-Sysmon/Operational     |
+| Provider       | Microsoft-Windows-Sysmon    |
+| Fields         | <ul><li>EventID</li><li>Hostname</li><li>Computer</li><li>UtcTime</li><li>Username</li><li>User</li><li>ProcessGuid</li><li>ProcessId</li><li>ProcessName</li><li>CommandLine</li><li>LogonGuid</li><li>LogonId</li><li>TerminalSessionid</li><li>IntegrityLevel</li><li>Hashes</li><li>Imphash</li><li>Sha256hash</li><li>Sha1hash</li><li>Md5hash</li><li>Image</li><li>ParentImage</li><li>ParentProcessGuid</li><li>ParentProcessId</li><li>ParentProcessName</li><li>ParentCommandLine</li><li>OriginalFileName</li><li>FileVersion</li><li>Description</li><li>Product</li><li>Company</li><li>CurrentDirectory</li></ul> |
 
 
 ## Log Samples

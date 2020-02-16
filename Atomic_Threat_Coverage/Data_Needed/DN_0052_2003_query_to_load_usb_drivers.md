@@ -1,13 +1,13 @@
-| Title             | DN_0052_2003_query_to_load_usb_drivers                                                                                                      |
-|:------------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description       | Host Process has been asked to load drivers for USB device                                                                                                |
-| Logging Policy    | <ul><li> Not existing </li></ul> | 
-| References     		| <ul><li>[https://www.techrepublic.com/article/how-to-track-down-usb-flash-drive-usage-in-windows-10s-event-viewer/](https://www.techrepublic.com/article/how-to-track-down-usb-flash-drive-usage-in-windows-10s-event-viewer/)</li></ul>                                  |
-| Platform       		| Windows   |
-| Type           		| Applications and Services Logs 		| 
-| Channel        		| Microsoft-Windows-DriverFrameworks-UserMode/Operational    |
-| Provider       		| Microsoft-Windows-DriverFrameworks-UserMode   |
-| Fields         		| <ul><li>EventID</li><li>ComputerName</li><li>Computer</li><li>UMDFHostDeviceArrivalBegin</li><li>lifetime</li><li>instance</li></ul>                                               |
+| Title          | DN_0052_2003_query_to_load_usb_drivers       |
+|:---------------|:------------------|
+| Description    | Host Process has been asked to load drivers for USB device |
+| Logging Policy | <ul><li> Not existing </li></ul> |
+| References     | <ul><li>[https://www.techrepublic.com/article/how-to-track-down-usb-flash-drive-usage-in-windows-10s-event-viewer/](https://www.techrepublic.com/article/how-to-track-down-usb-flash-drive-usage-in-windows-10s-event-viewer/)</li></ul> |
+| Platform       | Windows    |
+| Type           | Applications and Services Logs        |
+| Channel        | Microsoft-Windows-DriverFrameworks-UserMode/Operational     |
+| Provider       | Microsoft-Windows-DriverFrameworks-UserMode    |
+| Fields         | <ul><li>EventID</li><li>ComputerName</li><li>Computer</li><li>UMDFHostDeviceArrivalBegin</li><li>lifetime</li><li>instance</li></ul> |
 
 
 ## Log Samples

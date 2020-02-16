@@ -3,8 +3,7 @@
 | Description          | Detects a windows service to be stopped                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0040: Impact](https://attack.mitre.org/tactics/TA0040)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1489: Service Stop](https://attack.mitre.org/techniques/T1489)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
-| Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
+| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | Trigger              | <ul><li>[T1489: Service Stop](../Triggers/T1489.md)</li></ul>  |
 | Severity Level       | low |
 | False Positives      | <ul><li>Administrator shutting down the service due to upgrade or removal purposes</li></ul>  |

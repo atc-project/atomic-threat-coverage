@@ -3,8 +3,7 @@
 | Description          | This rule detects a DNS server error in which a specified plugin DLL (in registry) could not be loaded                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0043_770_dns_server_plugin_dll_has_been_loaded](../Data_Needed/DN_0043_770_dns_server_plugin_dll_has_been_loaded.md)</li><li>[DN_0036_150_dns_server_could_not_load_dll](../Data_Needed/DN_0036_150_dns_server_could_not_load_dll.md)</li></ul>  |
-| Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
+| Data Needed          | <ul><li>[DN_0036_150_dns_server_could_not_load_dll](../Data_Needed/DN_0036_150_dns_server_could_not_load_dll.md)</li><li>[DN_0043_770_dns_server_plugin_dll_has_been_loaded](../Data_Needed/DN_0043_770_dns_server_plugin_dll_has_been_loaded.md)</li></ul>  |
 | Trigger              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li></ul>  |
 | Severity Level       | critical |
 | False Positives      | <ul><li>Unknown</li></ul>  |

@@ -4,7 +4,6 @@
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1107: File Deletion](https://attack.mitre.org/techniques/T1107)</li></ul>  |
 | Data Needed          |  There is no documented Data Needed for this Detection Rule yet  |
-| Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1107: File Deletion](../Triggers/T1107.md)</li></ul>  |
 | Severity Level       | medium |
 | False Positives      | <ul><li>Unknown</li></ul>  |
