@@ -13,8 +13,7 @@
 {{ workflow }}
 
 {% for stage_name, stage_actions in stages %}
-
-#### {{ stage_name }}
+{% if stage_actions is not none and stage_actions|length %}#### {{ stage_name }}{% endif %}
 {% for action_description, action_workflow in stage_actions%}
 ##### {{ action_description }}
 
