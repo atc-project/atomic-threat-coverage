@@ -6,7 +6,7 @@ amitt_tactic_mapping = {}
 amitt_technique_mapping = {}
 amitt_mitigation_mapping = {}
 
-#amitt_json_url = ("https://raw.githubusercontent.com/VVX7/cti/master/amitt-attack/amitt-attack.json")
+amitt_json_url = ("https://raw.githubusercontent.com/cogsec-collaborative/amitt_cti/master/amitt/amitt-attack.json")
 
 amitt_json = requests.get(amitt_json_url).json()
 
