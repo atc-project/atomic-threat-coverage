@@ -10,7 +10,7 @@
 | Development Status   | stable |
 | References           | <ul><li>[https://jpcertcc.github.io/ToolAnalysisResultSheet/details/WCE.htm](https://jpcertcc.github.io/ToolAnalysisResultSheet/details/WCE.htm)</li></ul>  |
 | Author               | Thomas Patzke |
-| Other Tags           | <ul><li>attack.s0005</li><li>attack.s0005</li></ul> | 
+| Other Tags           | <ul><li>attack.s0005</li></ul> | 
 
 ## Detection Rules
 

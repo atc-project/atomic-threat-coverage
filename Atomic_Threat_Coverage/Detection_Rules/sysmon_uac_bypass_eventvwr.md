@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/](https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/)</li><li>[https://www.hybrid-analysis.com/sample/e122bc8bf291f15cab182a5d2d27b8db1e7019e4e96bb5cdbd1dfe7446f3f51f?environmentId=100](https://www.hybrid-analysis.com/sample/e122bc8bf291f15cab182a5d2d27b8db1e7019e4e96bb5cdbd1dfe7446f3f51f?environmentId=100)</li></ul>  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2019-04-001</li><li>car.2019-04-001</li></ul> | 
+| Other Tags           | <ul><li>car.2019-04-001</li></ul> | 
 
 ## Detection Rules
 

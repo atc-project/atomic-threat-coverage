@@ -11,7 +11,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://onedrive.live.com/view.aspx?resid=D026B4699190F1E6!2843&ithint=file%2cpptx&app=PowerPoint&authkey=!AMvCRTKB_V1J5ow](https://onedrive.live.com/view.aspx?resid=D026B4699190F1E6!2843&ithint=file%2cpptx&app=PowerPoint&authkey=!AMvCRTKB_V1J5ow)</li><li>[https://cyberwardog.blogspot.com/2017/03/chronicles-of-threat-hunter-hunting-for_22.html](https://cyberwardog.blogspot.com/2017/03/chronicles-of-threat-hunter-hunting-for_22.html)</li></ul>  |
 | Author               |  Author of this Detection Rule haven't introduced himself  |
-| Other Tags           | <ul><li>attack.s0002</li><li>attack.s0002</li><li>car.2019-04-004</li><li>car.2019-04-004</li></ul> | 
+| Other Tags           | <ul><li>attack.s0002</li><li>car.2019-04-004</li></ul> | 
 
 ## Detection Rules
 
@@ -19,8 +19,10 @@
 
 ```
 title: Mimikatz Detection LSASS Access
+id: 0d894093-71bc-43c3-8c4d-ecfc28dcf5d9
 status: experimental
-description: Detects process access to LSASS which is typical for Mimikatz (0x1000 PROCESS_QUERY_ LIMITED_INFORMATION, 0x0400 PROCESS_QUERY_ INFORMATION "only old versions", 0x0010 PROCESS_VM_READ)
+description: Detects process access to LSASS which is typical for Mimikatz (0x1000 PROCESS_QUERY_ LIMITED_INFORMATION, 0x0400 PROCESS_QUERY_ INFORMATION "only old
+    versions", 0x0010 PROCESS_VM_READ)
 references:
     - https://onedrive.live.com/view.aspx?resid=D026B4699190F1E6!2843&ithint=file%2cpptx&app=PowerPoint&authkey=!AMvCRTKB_V1J5ow
     - https://cyberwardog.blogspot.com/2017/03/chronicles-of-threat-hunter-hunting-for_22.html
@@ -81,7 +83,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(EventID="10" TargetImage="C:\\\\windows\\\\system32\\\\lsass.exe" GrantedAccess IN ["0x1410", "0x1010"])
+(event_id="10" TargetImage="C:\\\\windows\\\\system32\\\\lsass.exe" GrantedAccess IN ["0x1410", "0x1010"])
 ```
 
 

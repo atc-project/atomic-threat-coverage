@@ -10,7 +10,7 @@
 | Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2016-04-002</li><li>car.2016-04-002</li></ul> | 
+| Other Tags           | <ul><li>car.2016-04-002</li></ul> | 
 
 ## Detection Rules
 

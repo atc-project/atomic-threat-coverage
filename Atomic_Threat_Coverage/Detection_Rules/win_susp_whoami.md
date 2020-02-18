@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://brica.de/alerts/alert/public/1247926/agent-tesla-keylogger-delivered-inside-a-power-iso-daa-archive/](https://brica.de/alerts/alert/public/1247926/agent-tesla-keylogger-delivered-inside-a-power-iso-daa-archive/)</li><li>[https://app.any.run/tasks/7eaba74e-c1ea-400f-9c17-5e30eee89906/](https://app.any.run/tasks/7eaba74e-c1ea-400f-9c17-5e30eee89906/)</li></ul>  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2016-03-001</li><li>car.2016-03-001</li></ul> | 
+| Other Tags           | <ul><li>car.2016-03-001</li></ul> | 
 
 ## Detection Rules
 

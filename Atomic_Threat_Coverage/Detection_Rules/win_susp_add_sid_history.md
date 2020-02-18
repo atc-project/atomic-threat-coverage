@@ -5,7 +5,7 @@
 | ATT&amp;CK Technique | <ul><li>[T1178: SID-History Injection](https://attack.mitre.org/techniques/T1178)</li></ul>  |
 | Data Needed          | <ul><li>[DN_0074_4765_sid_history_was_added_to_an_account](../Data_Needed/DN_0074_4765_sid_history_was_added_to_an_account.md)</li><li>[DN_0027_4738_user_account_was_changed](../Data_Needed/DN_0027_4738_user_account_was_changed.md)</li><li>[DN_0075_4766_attempt_to_add_sid_history_to_an_account_failed](../Data_Needed/DN_0075_4766_attempt_to_add_sid_history_to_an_account_failed.md)</li></ul>  |
 | Trigger              | <ul><li>[T1178: SID-History Injection](../Triggers/T1178.md)</li></ul>  |
-| Severity Level       | medium |
+| Severity Level       | low |
 | False Positives      | <ul><li>Migration of an account into a new domain</li></ul>  |
 | Development Status   | stable |
 | References           | <ul><li>[https://adsecurity.org/?p=1772](https://adsecurity.org/?p=1772)</li></ul>  |
@@ -45,7 +45,7 @@ detection:
     condition: selection1 or (selection2 and not selection3)
 falsepositives:
     - Migration of an account into a new domain
-level: medium
+level: low
 
 ```
 

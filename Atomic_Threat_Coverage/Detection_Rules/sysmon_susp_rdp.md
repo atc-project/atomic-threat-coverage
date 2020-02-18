@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2019-0708](https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2019-0708)</li></ul>  |
 | Author               | Markus Neis - Swisscom |
-| Other Tags           | <ul><li>car.2013-07-002</li><li>car.2013-07-002</li></ul> | 
+| Other Tags           | <ul><li>car.2013-07-002</li></ul> | 
 
 ## Detection Rules
 

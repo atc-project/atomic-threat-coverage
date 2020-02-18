@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[http://www.korznikov.com/2017/03/0-day-or-feature-privilege-escalation.html](http://www.korznikov.com/2017/03/0-day-or-feature-privilege-escalation.html)</li><li>[https://medium.com/@networksecurity/rdp-hijacking-how-to-hijack-rds-and-remoteapp-sessions-transparently-to-move-through-an-da2a1e73a5f6](https://medium.com/@networksecurity/rdp-hijacking-how-to-hijack-rds-and-remoteapp-sessions-transparently-to-move-through-an-da2a1e73a5f6)</li></ul>  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2013-07-002</li><li>car.2013-07-002</li></ul> | 
+| Other Tags           | <ul><li>car.2013-07-002</li></ul> | 
 
 ## Detection Rules
 

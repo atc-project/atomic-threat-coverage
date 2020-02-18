@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://jpcertcc.github.io/ToolAnalysisResultSheet](https://jpcertcc.github.io/ToolAnalysisResultSheet)</li><li>[https://www.jpcert.or.jp/english/pub/sr/ir_research.html](https://www.jpcert.or.jp/english/pub/sr/ir_research.html)</li><li>[https://technet.microsoft.com/en-us/en-en/sysinternals/sdelete.aspx](https://technet.microsoft.com/en-us/en-en/sysinternals/sdelete.aspx)</li></ul>  |
 | Author               | Thomas Patzke |
-| Other Tags           | <ul><li>attack.s0195</li><li>attack.s0195</li></ul> | 
+| Other Tags           | <ul><li>attack.s0195</li></ul> | 
 
 ## Detection Rules
 

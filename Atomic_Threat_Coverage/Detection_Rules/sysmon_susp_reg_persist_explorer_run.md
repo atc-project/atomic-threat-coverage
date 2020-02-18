@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://researchcenter.paloaltonetworks.com/2018/07/unit42-upatre-continues-evolve-new-anti-analysis-techniques/](https://researchcenter.paloaltonetworks.com/2018/07/unit42-upatre-continues-evolve-new-anti-analysis-techniques/)</li></ul>  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>capec.270</li><li>capec.270</li></ul> | 
+| Other Tags           | <ul><li>capec.270</li></ul> | 
 
 ## Detection Rules
 

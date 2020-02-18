@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           |  There are no documented References for this Detection Rule yet  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2013-09-005</li><li>car.2013-09-005</li></ul> | 
+| Other Tags           | <ul><li>car.2013-09-005</li></ul> | 
 
 ## Detection Rules
 

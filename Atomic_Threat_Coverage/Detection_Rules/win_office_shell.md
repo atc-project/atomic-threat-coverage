@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://www.hybrid-analysis.com/sample/465aabe132ccb949e75b8ab9c5bda36d80cf2fd503d52b8bad54e295f28bbc21?environmentId=100](https://www.hybrid-analysis.com/sample/465aabe132ccb949e75b8ab9c5bda36d80cf2fd503d52b8bad54e295f28bbc21?environmentId=100)</li><li>[https://mgreen27.github.io/posts/2018/04/02/DownloadCradle.html](https://mgreen27.github.io/posts/2018/04/02/DownloadCradle.html)</li></ul>  |
 | Author               | Michael Haag, Florian Roth, Markus Neis |
-| Other Tags           | <ul><li>car.2013-02-003</li><li>car.2013-02-003</li><li>car.2014-04-003</li><li>car.2014-04-003</li></ul> | 
+| Other Tags           | <ul><li>car.2013-02-003</li><li>car.2014-04-003</li></ul> | 
 
 ## Detection Rules
 

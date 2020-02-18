@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://www.trendmicro.com/vinfo/hk-en/security/news/cybercrime-and-digital-threats/megacortex-ransomware-spotted-attacking-enterprise-networks](https://www.trendmicro.com/vinfo/hk-en/security/news/cybercrime-and-digital-threats/megacortex-ransomware-spotted-attacking-enterprise-networks)</li></ul>  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2013-05-009</li><li>car.2013-05-009</li></ul> | 
+| Other Tags           | <ul><li>car.2013-05-009</li></ul> | 
 
 ## Detection Rules
 

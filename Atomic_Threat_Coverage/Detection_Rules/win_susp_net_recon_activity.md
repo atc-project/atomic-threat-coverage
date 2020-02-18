@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://findingbad.blogspot.de/2017/01/hunting-what-does-it-look-like.html](https://findingbad.blogspot.de/2017/01/hunting-what-does-it-look-like.html)</li></ul>  |
 | Author               | Florian Roth (rule), Jack Croock (method) |
-| Other Tags           | <ul><li>attack.s0039</li><li>attack.s0039</li></ul> | 
+| Other Tags           | <ul><li>attack.s0039</li></ul> | 
 
 ## Detection Rules
 

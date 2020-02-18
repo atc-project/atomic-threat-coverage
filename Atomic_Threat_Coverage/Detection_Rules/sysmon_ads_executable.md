@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://twitter.com/0xrawsec/status/1002478725605273600?s=21](https://twitter.com/0xrawsec/status/1002478725605273600?s=21)</li></ul>  |
 | Author               | Florian Roth, @0xrawsec |
-| Other Tags           | <ul><li>attack.s0139</li><li>attack.s0139</li></ul> | 
+| Other Tags           | <ul><li>attack.s0139</li></ul> | 
 
 ## Detection Rules
 

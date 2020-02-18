@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[sha256=01a461ad68d11b5b5096f45eb54df9ba62c5af413fa9eb544eacb598373a26bc](sha256=01a461ad68d11b5b5096f45eb54df9ba62c5af413fa9eb544eacb598373a26bc)</li><li>[https://summit.fireeye.com/content/dam/fireeye-www/summit/cds-2018/presentations/cds18-technical-s05-att&cking-fin7.pdf](https://summit.fireeye.com/content/dam/fireeye-www/summit/cds-2018/presentations/cds18-technical-s05-att&cking-fin7.pdf)</li></ul>  |
 | Author               | Jason Lynch |
-| Other Tags           | <ul><li>FIN7</li><li>FIN7</li><li>car.2013-05-009</li><li>car.2013-05-009</li></ul> | 
+| Other Tags           | <ul><li>FIN7</li><li>car.2013-05-009</li></ul> | 
 
 ## Detection Rules
 

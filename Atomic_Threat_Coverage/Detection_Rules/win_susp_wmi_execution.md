@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://digital-forensics.sans.org/blog/2010/06/04/wmic-draft/](https://digital-forensics.sans.org/blog/2010/06/04/wmic-draft/)</li><li>[https://www.hybrid-analysis.com/sample/4be06ecd234e2110bd615649fe4a6fa95403979acf889d7e45a78985eb50acf9?environmentId=1](https://www.hybrid-analysis.com/sample/4be06ecd234e2110bd615649fe4a6fa95403979acf889d7e45a78985eb50acf9?environmentId=1)</li><li>[https://blog.malwarebytes.com/threat-analysis/2016/04/rokku-ransomware/](https://blog.malwarebytes.com/threat-analysis/2016/04/rokku-ransomware/)</li></ul>  |
 | Author               | Michael Haag, Florian Roth, juju4 |
-| Other Tags           | <ul><li>car.2016-03-002</li><li>car.2016-03-002</li></ul> | 
+| Other Tags           | <ul><li>car.2016-03-002</li></ul> | 
 
 ## Detection Rules
 

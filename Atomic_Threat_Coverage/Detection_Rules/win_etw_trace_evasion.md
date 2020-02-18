@@ -10,7 +10,7 @@
 | Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/wevtutil](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/wevtutil)</li><li>[https://github.com/Neo23x0/sigma/blob/master/rules/windows/process_creation/win_mal_lockergoga.yml](https://github.com/Neo23x0/sigma/blob/master/rules/windows/process_creation/win_mal_lockergoga.yml)</li><li>[https://abuse.io/lockergoga.txt](https://abuse.io/lockergoga.txt)</li></ul>  |
 | Author               | @neu5ron, Florian Roth |
-| Other Tags           | <ul><li>car.2016-04-002</li><li>car.2016-04-002</li></ul> | 
+| Other Tags           | <ul><li>car.2016-04-002</li></ul> | 
 
 ## Detection Rules
 

@@ -2,6 +2,7 @@
 
 from atcutils import ATCutils
 from attack_mapping import te_mapping, ta_mapping
+from amitt_mapping import amitt_tactic_mapping, amitt_technique_mapping
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -122,11 +123,18 @@ class DetectionRule:
                 enrichments = [enrichments]
 
             self.fields.update({'enrichment': enrichments})
-            
+
+            # MITRE ATT&CK Tactics and Techniques
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')
             technique = []
             technique_re = re.compile(r'attack\.t\d{1,5}$')
+            # AM!TT Tactics and Techniques
+            amitt_tactic = []
+            amitt_tactic_re = re.compile(r'amitt\.\w\D+$')
+            amitt_technique = []
+            amitt_technique_re = re.compile(r'amitt\.t\d{1,5}$')
+
             other_tags = []
 
             if self.fields.get('tags'):
@@ -136,20 +144,29 @@ class DetectionRule:
                             tactic.append(ta_mapping.get(tag))
                         else:
                             other_tags.append(tag)
+                    elif amitt_tactic_re.match(tag):
+                        if amitt_tactic_mapping.get(tag):
+                            amitt_tactic.append(amitt_tactic_mapping.get(tag))
+                        else:
+                            other_tags.append(tag)
                     elif technique_re.match(tag):
                         te = tag.upper()[7:]
                         technique.append((te_mapping.get(te), te))
+                    elif amitt_technique_re.match(tag):
+                        te = tag.upper()[6:]
+                        amitt_technique.append((amitt_technique_mapping.get(te), te))
                     else:
                         other_tags.append(tag)
 
-                    if not tactic_re.match(tag) and not \
-                            technique_re.match(tag):
-                        other_tags.append(tag)
 
                 if len(tactic):
                     self.fields.update({'tactics': tactic})
                 if len(technique):
                     self.fields.update({'techniques': technique})
+                if len(amitt_tactic):
+                    self.fields.update({'amitt_tactics': amitt_tactic})
+                if len(amitt_technique):
+                    self.fields.update({'amitt_techniques': amitt_technique})
                 if len(other_tags):
                     self.fields.update({'other_tags': other_tags})
 
@@ -237,10 +254,17 @@ class DetectionRule:
 
             self.fields.update({'enrichment': enrichments_with_page_id})
 
+            # MITRE ATT&CK Tactics and Techniques
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')
             technique = []
             technique_re = re.compile(r'attack\.t\d{1,5}$')
+            # AM!TT Tactics and Techniques
+            amitt_tactic = []
+            amitt_tactic_re = re.compile(r'amitt\.\w\D+$')
+            amitt_technique = []
+            amitt_technique_re = re.compile(r'amitt\.t\d{1,5}$')
+
             other_tags = []
 
             if self.fields.get('tags'):
@@ -250,20 +274,29 @@ class DetectionRule:
                             tactic.append(ta_mapping.get(tag))
                         else:
                             other_tags.append(tag)
+                    elif amitt_tactic_re.match(tag):
+                        if amitt_tactic_mapping.get(tag):
+                            amitt_tactic.append(amitt_tactic_mapping.get(tag))
+                        else:
+                            other_tags.append(tag)
                     elif technique_re.match(tag):
                         te = tag.upper()[7:]
                         technique.append((te_mapping.get(te), te))
+                    elif amitt_technique_re.match(tag):
+                        te = tag.upper()[6:]
+                        amitt_technique.append((amitt_technique_mapping.get(te), te))
                     else:
                         other_tags.append(tag)
 
-                    if not tactic_re.match(tag) and not \
-                            technique_re.match(tag):
-                        other_tags.append(tag)
 
                 if len(tactic):
                     self.fields.update({'tactics': tactic})
                 if len(technique):
                     self.fields.update({'techniques': technique})
+                if len(amitt_tactic):
+                    self.fields.update({'amitt_tactics': amitt_tactic})
+                if len(technique):
+                    self.fields.update({'amitt_techniques': amitt_technique})
                 if len(other_tags):
                     self.fields.update({'other_tags': other_tags})
 

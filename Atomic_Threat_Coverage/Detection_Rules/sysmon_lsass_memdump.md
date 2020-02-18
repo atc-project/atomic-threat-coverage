@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://blog.menasec.net/2019/02/threat-hunting-21-procdump-or-taskmgr.html](https://blog.menasec.net/2019/02/threat-hunting-21-procdump-or-taskmgr.html)</li></ul>  |
 | Author               | Samir Bousseaden |
-| Other Tags           | <ul><li>attack.s0002</li><li>attack.s0002</li></ul> | 
+| Other Tags           | <ul><li>attack.s0002</li></ul> | 
 
 ## Detection Rules
 

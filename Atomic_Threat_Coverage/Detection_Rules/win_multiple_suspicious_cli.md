@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://car.mitre.org/wiki/CAR-2013-04-002](https://car.mitre.org/wiki/CAR-2013-04-002)</li></ul>  |
 | Author               | juju4 |
-| Other Tags           | <ul><li>car.2013-04-002</li><li>car.2013-04-002</li></ul> | 
+| Other Tags           | <ul><li>car.2013-04-002</li></ul> | 
 
 ## Detection Rules
 

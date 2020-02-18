@@ -10,7 +10,7 @@
 | Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://www.harmj0y.net/blog/redteaming/from-kekeo-to-rubeus/](https://www.harmj0y.net/blog/redteaming/from-kekeo-to-rubeus/)</li></ul>  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>attack.s0005</li><li>attack.s0005</li></ul> | 
+| Other Tags           | <ul><li>attack.s0005</li></ul> | 
 
 ## Detection Rules
 

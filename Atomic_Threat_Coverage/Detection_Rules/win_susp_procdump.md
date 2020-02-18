@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[Internal Research](Internal Research)</li></ul>  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2013-05-009</li><li>car.2013-05-009</li></ul> | 
+| Other Tags           | <ul><li>car.2013-05-009</li></ul> | 
 
 ## Detection Rules
 
