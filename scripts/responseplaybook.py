@@ -193,11 +193,21 @@ class ResponsePlaybook:
             eradication = []
             recovery = []
             lessons_learned = []
+            detect = []
+            deny = []
+            disrupt = []
+            degrade = []
+            deceive = []
+            destroy = []
+            deter = []
 
             stages = [
                 ('identification', identification),
                 ('containment', containment), ('eradication', eradication),
-                ('recovery', recovery), ('lessons_learned', lessons_learned)
+                ('recovery', recovery), ('lessons_learned', lessons_learned),
+                ('detect', detect), ('deny', deny), ('disrupt', disrupt),
+                ('degrade', degrade), ('deceive', deceive), ('destroy', destroy),
+                ('deter', deter)
             ]
 
             for stage_name, stage_list in stages:
@@ -235,11 +245,21 @@ class ResponsePlaybook:
             eradication = []
             recovery = []
             lessons_learned = []
+            detect = []
+            deny = []
+            disrupt = []
+            degrade = []
+            deceive = []
+            destroy = []
+            deter = []
 
             stages = [
                 ('identification', identification),
                 ('containment', containment), ('eradication', eradication),
-                ('recovery', recovery), ('lessons_learned', lessons_learned)
+                ('recovery', recovery), ('lessons_learned', lessons_learned),
+                ('detect', detect), ('deny', deny), ('disrupt', disrupt),
+                ('degrade', degrade), ('deceive', deceive), ('destroy', destroy),
+                ('deter', deter)
             ]
 
             # grab workflow per action in each IR stages
