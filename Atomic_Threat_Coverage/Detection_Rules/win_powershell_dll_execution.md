@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://github.com/p3nt4/PowerShdll/blob/master/README.md](https://github.com/p3nt4/PowerShdll/blob/master/README.md)</li></ul>  |
 | Author               | Markus Neis |
-| Other Tags           | <ul><li>car.2014-04-003</li><li>car.2014-04-003</li></ul> | 
+| Other Tags           | <ul><li>car.2014-04-003</li></ul> | 
 
 ## Detection Rules
 

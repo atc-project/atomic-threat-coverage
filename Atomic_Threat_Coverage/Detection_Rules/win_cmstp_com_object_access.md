@@ -10,7 +10,7 @@
 | Development Status   | stable |
 | References           | <ul><li>[http://www.endurant.io/cmstp/detecting-cmstp-enabled-code-execution-and-uac-bypass-with-sysmon/](http://www.endurant.io/cmstp/detecting-cmstp-enabled-code-execution-and-uac-bypass-with-sysmon/)</li><li>[https://twitter.com/hFireF0X/status/897640081053364225](https://twitter.com/hFireF0X/status/897640081053364225)</li></ul>  |
 | Author               | Nik Seetharaman |
-| Other Tags           | <ul><li>attack.g0069</li><li>attack.g0069</li><li>car.2019-04-001</li><li>car.2019-04-001</li></ul> | 
+| Other Tags           | <ul><li>attack.g0069</li><li>car.2019-04-001</li></ul> | 
 
 ## Detection Rules
 

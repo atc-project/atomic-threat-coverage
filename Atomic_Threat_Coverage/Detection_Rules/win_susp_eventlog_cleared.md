@@ -10,7 +10,7 @@
 | Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://twitter.com/deviouspolack/status/832535435960209408](https://twitter.com/deviouspolack/status/832535435960209408)</li><li>[https://www.hybrid-analysis.com/sample/027cc450ef5f8c5f653329641ec1fed91f694e0d229928963b30f6b0d7d3a745?environmentId=100](https://www.hybrid-analysis.com/sample/027cc450ef5f8c5f653329641ec1fed91f694e0d229928963b30f6b0d7d3a745?environmentId=100)</li></ul>  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2016-04-002</li><li>car.2016-04-002</li></ul> | 
+| Other Tags           | <ul><li>car.2016-04-002</li></ul> | 
 
 ## Detection Rules
 

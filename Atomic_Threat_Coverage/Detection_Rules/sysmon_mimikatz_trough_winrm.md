@@ -10,7 +10,7 @@
 | Development Status   | stable |
 | References           | <ul><li>[https://pentestlab.blog/2018/05/15/lateral-movement-winrm/](https://pentestlab.blog/2018/05/15/lateral-movement-winrm/)</li></ul>  |
 | Author               | Patryk Prauze - ING Tech |
-| Other Tags           | <ul><li>attack.s0005</li><li>attack.s0005</li></ul> | 
+| Other Tags           | <ul><li>attack.s0005</li></ul> | 
 
 ## Detection Rules
 

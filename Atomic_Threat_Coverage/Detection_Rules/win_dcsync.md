@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://twitter.com/gentilkiwi/status/1003236624925413376](https://twitter.com/gentilkiwi/status/1003236624925413376)</li><li>[https://gist.github.com/gentilkiwi/dcc132457408cf11ad2061340dcb53c2](https://gist.github.com/gentilkiwi/dcc132457408cf11ad2061340dcb53c2)</li></ul>  |
 | Author               | Benjamin Delpy, Florian Roth |
-| Other Tags           | <ul><li>attack.s0002</li><li>attack.s0002</li></ul> | 
+| Other Tags           | <ul><li>attack.s0002</li></ul> | 
 
 ## Detection Rules
 

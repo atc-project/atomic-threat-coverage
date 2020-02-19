@@ -10,7 +10,7 @@
 | Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://twitter.com/AdamTheAnalyst/status/1134394070045003776](https://twitter.com/AdamTheAnalyst/status/1134394070045003776)</li><li>[https://github.com/zerosum0x0/CVE-2019-0708](https://github.com/zerosum0x0/CVE-2019-0708)</li></ul>  |
 | Author               | Florian Roth (rule), Adam Bradbury (idea) |
-| Other Tags           | <ul><li>car.2013-07-002</li><li>car.2013-07-002</li></ul> | 
+| Other Tags           | <ul><li>car.2013-07-002</li></ul> | 
 
 ## Detection Rules
 

@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://enigma0x3.net/2017/03/17/fileless-uac-bypass-using-sdclt-exe/](https://enigma0x3.net/2017/03/17/fileless-uac-bypass-using-sdclt-exe/)</li></ul>  |
 | Author               | Omer Yampel |
-| Other Tags           | <ul><li>car.2019-04-001</li><li>car.2019-04-001</li></ul> | 
+| Other Tags           | <ul><li>car.2019-04-001</li></ul> | 
 
 ## Detection Rules
 

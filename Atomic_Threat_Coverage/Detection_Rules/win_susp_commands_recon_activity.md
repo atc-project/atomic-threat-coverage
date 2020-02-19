@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://twitter.com/haroonmeer/status/939099379834658817](https://twitter.com/haroonmeer/status/939099379834658817)</li><li>[https://twitter.com/c_APT_ure/status/939475433711722497](https://twitter.com/c_APT_ure/status/939475433711722497)</li><li>[https://www.fireeye.com/blog/threat-research/2016/05/targeted_attacksaga.html](https://www.fireeye.com/blog/threat-research/2016/05/targeted_attacksaga.html)</li></ul>  |
 | Author               | Florian Roth, Markus Neis |
-| Other Tags           | <ul><li>car.2016-03-001</li><li>car.2016-03-001</li></ul> | 
+| Other Tags           | <ul><li>car.2016-03-001</li></ul> | 
 
 ## Detection Rules
 

@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://www.jpcert.or.jp/english/pub/sr/ir_research.html](https://www.jpcert.or.jp/english/pub/sr/ir_research.html)</li><li>[https://jpcertcc.github.io/ToolAnalysisResultSheet](https://jpcertcc.github.io/ToolAnalysisResultSheet)</li></ul>  |
 | Author               | Thomas Patzke |
-| Other Tags           | <ul><li>attack.s0029</li><li>attack.s0029</li></ul> | 
+| Other Tags           | <ul><li>attack.s0029</li></ul> | 
 
 ## Detection Rules
 

@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://cyberwardog.blogspot.de/2017/04/chronicles-of-threat-hunter-hunting-for.html](https://cyberwardog.blogspot.de/2017/04/chronicles-of-threat-hunter-hunting-for.html)</li></ul>  |
 | Author               | Roberto Rodriguez (source), Dominik Schaudel (rule) |
-| Other Tags           | <ul><li>attack.s0002</li><li>attack.s0002</li></ul> | 
+| Other Tags           | <ul><li>attack.s0002</li></ul> | 
 
 ## Detection Rules
 

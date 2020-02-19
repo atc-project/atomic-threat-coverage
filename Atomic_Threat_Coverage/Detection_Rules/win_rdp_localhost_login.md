@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://www.fireeye.com/blog/threat-research/2019/01/bypassing-network-restrictions-through-rdp-tunneling.html](https://www.fireeye.com/blog/threat-research/2019/01/bypassing-network-restrictions-through-rdp-tunneling.html)</li></ul>  |
 | Author               | Thomas Patzke |
-| Other Tags           | <ul><li>car.2013-07-002</li><li>car.2013-07-002</li></ul> | 
+| Other Tags           | <ul><li>car.2013-07-002</li></ul> | 
 
 ## Detection Rules
 

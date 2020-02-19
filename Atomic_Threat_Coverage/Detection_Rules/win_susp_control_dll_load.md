@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://twitter.com/rikvduijn/status/853251879320662017](https://twitter.com/rikvduijn/status/853251879320662017)</li></ul>  |
 | Author               | Florian Roth |
-| Other Tags           | <ul><li>car.2013-10-002</li><li>car.2013-10-002</li></ul> | 
+| Other Tags           | <ul><li>car.2013-10-002</li></ul> | 
 
 ## Detection Rules
 

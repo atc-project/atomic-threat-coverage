@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://securityriskadvisors.com/blog/post/detecting-in-memory-mimikatz/](https://securityriskadvisors.com/blog/post/detecting-in-memory-mimikatz/)</li></ul>  |
 | Author               |  Author of this Detection Rule haven't introduced himself  |
-| Other Tags           | <ul><li>attack.s0002</li><li>attack.s0002</li><li>car.2019-04-004</li><li>car.2019-04-004</li></ul> | 
+| Other Tags           | <ul><li>attack.s0002</li><li>car.2019-04-004</li></ul> | 
 
 ## Detection Rules
 

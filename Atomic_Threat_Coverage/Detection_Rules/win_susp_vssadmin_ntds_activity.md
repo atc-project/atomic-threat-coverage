@@ -3,7 +3,7 @@
 | Description          | Detects suspicious commands that could be related to activity that uses volume shadow copy to steal and retrieve hashes from the NTDS.dit file remotely                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | Enrichment           |  Data for this Detection Rule doesn't require any Enrichments.  |
 | Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | Severity Level       | high |
@@ -19,6 +19,7 @@
 
 ```
 title: Activity Related to NTDS.dit Domain Hash Retrieval
+id: b932b60f-fdda-4d53-8eda-a170c1d97bbd
 status: experimental
 description: Detects suspicious commands that could be related to activity that uses volume shadow copy to steal and retrieve hashes from the NTDS.dit file remotely
 author: Florian Roth, Michael Haag
@@ -75,7 +76,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### graylog
     
 ```
-CommandLine:("vssadmin.exe Delete Shadows" "vssadmin create shadow \\/for=C\\:" "copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\windows\\\\ntds\\\\ntds.dit" "copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\config\\\\SAM" "vssadmin delete shadows \\/for=C\\:" "reg SAVE HKLM\\\\SYSTEM " "esentutl.exe \\/y \\/vss *\\\\ntds.dit*")
+CommandLine.keyword:(vssadmin.exe Delete Shadows vssadmin create shadow \\/for=C\\: copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\windows\\\\ntds\\\\ntds.dit copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\config\\\\SAM vssadmin delete shadows \\/for=C\\: reg SAVE HKLM\\\\SYSTEM  esentutl.exe \\/y \\/vss *\\\\ntds.dit*)
 ```
 
 
@@ -89,7 +90,7 @@ CommandLine:("vssadmin.exe Delete Shadows" "vssadmin create shadow \\/for=C\\:" 
 ### logpoint
     
 ```
-CommandLine IN ["vssadmin.exe Delete Shadows", "vssadmin create shadow /for=C:", "copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\windows\\\\ntds\\\\ntds.dit", "copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\config\\\\SAM", "vssadmin delete shadows /for=C:", "reg SAVE HKLM\\\\SYSTEM ", "esentutl.exe /y /vss *\\\\ntds.dit*"]
+(event_id="1" CommandLine IN ["vssadmin.exe Delete Shadows", "vssadmin create shadow /for=C:", "copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\windows\\\\ntds\\\\ntds.dit", "copy \\\\?\\\\GLOBALROOT\\\\Device\\\\*\\\\config\\\\SAM", "vssadmin delete shadows /for=C:", "reg SAVE HKLM\\\\SYSTEM ", "esentutl.exe /y /vss *\\\\ntds.dit*"])
 ```
 
 

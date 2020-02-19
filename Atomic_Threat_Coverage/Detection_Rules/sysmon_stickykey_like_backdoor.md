@@ -10,7 +10,7 @@
 | Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
 | References           | <ul><li>[https://blogs.technet.microsoft.com/jonathantrull/2016/10/03/detecting-sticky-key-backdoors/](https://blogs.technet.microsoft.com/jonathantrull/2016/10/03/detecting-sticky-key-backdoors/)</li></ul>  |
 | Author               | Florian Roth, @twjackomo |
-| Other Tags           | <ul><li>car.2014-11-003</li><li>car.2014-11-003</li><li>car.2014-11-008</li><li>car.2014-11-008</li></ul> | 
+| Other Tags           | <ul><li>car.2014-11-003</li><li>car.2014-11-008</li></ul> | 
 
 ## Detection Rules
 

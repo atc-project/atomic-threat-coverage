@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://github.com/iadgov/Event-Forwarding-Guidance/tree/master/Events](https://github.com/iadgov/Event-Forwarding-Guidance/tree/master/Events)</li></ul>  |
 | Author               | Ilias el Matani (rule), The Information Assurance Directorate at the NSA (method) |
-| Other Tags           | <ul><li>car.2016-04-004</li><li>car.2016-04-004</li></ul> | 
+| Other Tags           | <ul><li>car.2016-04-004</li></ul> | 
 
 ## Detection Rules
 

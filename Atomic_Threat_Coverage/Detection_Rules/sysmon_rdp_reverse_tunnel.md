@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://twitter.com/SBousseaden/status/1096148422984384514](https://twitter.com/SBousseaden/status/1096148422984384514)</li></ul>  |
 | Author               | Samir Bousseaden |
-| Other Tags           | <ul><li>car.2013-07-002</li><li>car.2013-07-002</li></ul> | 
+| Other Tags           | <ul><li>car.2013-07-002</li></ul> | 
 
 ## Detection Rules
 

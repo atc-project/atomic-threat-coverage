@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://www.trustedsec.com/july-2015/malicious-htas/](https://www.trustedsec.com/july-2015/malicious-htas/)</li></ul>  |
 | Author               | Michael Haag |
-| Other Tags           | <ul><li>car.2013-02-003</li><li>car.2013-02-003</li><li>car.2013-03-001</li><li>car.2013-03-001</li><li>car.2014-04-003</li><li>car.2014-04-003</li></ul> | 
+| Other Tags           | <ul><li>car.2013-02-003</li><li>car.2013-03-001</li><li>car.2014-04-003</li></ul> | 
 
 ## Detection Rules
 

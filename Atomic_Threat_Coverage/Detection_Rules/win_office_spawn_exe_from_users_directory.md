@@ -10,7 +10,7 @@
 | Development Status   | experimental |
 | References           | <ul><li>[sha256=23160972c6ae07f740800fa28e421a81d7c0ca5d5cab95bc082b4a986fbac57c](sha256=23160972c6ae07f740800fa28e421a81d7c0ca5d5cab95bc082b4a986fbac57c)</li><li>[https://blog.morphisec.com/fin7-not-finished-morphisec-spots-new-campaign](https://blog.morphisec.com/fin7-not-finished-morphisec-spots-new-campaign)</li></ul>  |
 | Author               | Jason Lynch |
-| Other Tags           | <ul><li>FIN7</li><li>FIN7</li><li>car.2013-05-002</li><li>car.2013-05-002</li></ul> | 
+| Other Tags           | <ul><li>FIN7</li><li>car.2013-05-002</li></ul> | 
 
 ## Detection Rules
 
