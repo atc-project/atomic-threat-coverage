@@ -1,6 +1,6 @@
 .PHONY: all analytics navigator elastic setup clean visualizations thehive
 
-all: markdown confluence analytics navigator elastic
+all: setup_repo markdown confluence analytics navigator elastic
 analytics: create_analytics_and_pivoting_csv
 navigator: create_attack_navigator_profile create_attack_navigator_profile_per_customer
 elastic: create_es_export
