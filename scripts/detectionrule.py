@@ -79,8 +79,8 @@ class DetectionRule:
             for query in queries:
                 # prepare command to execute from shell
                 # (yes, we know)
-                cmd = ATCconfig.get('sigmac_path') + " --shoot-yourself-in-the-foot -t " + \
-                    query + " --ignore-backend-errors " + self.yaml_file
+                cmd = ATCconfig.get('sigmac_path') + ' --shoot-yourself-in-the-foot -t "' + \
+                    query + '" --ignore-backend-errors "' + self.yaml_file + '"'
                     #query + " --ignore-backend-errors " + self.yaml_file + \
                     #" 2> /dev/null"
 
@@ -194,9 +194,9 @@ class DetectionRule:
 
             for output in queries:
                 cmd = ATCconfig.get('sigmac_path') + \
-                    " --shoot-yourself-in-the-foot -t " + \
-                    output + " --ignore-backend-errors " + self.yaml_file + \
-                    " 2> /dev/null"
+                    ' --shoot-yourself-in-the-foot -t "' + \
+                    output + '" --ignore-backend-errors "' + self.yaml_file + \
+                    '" 2> /dev/null'
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
                 (query, err) = p.communicate()
                 # Wait for date to terminate. Get return returncode ##
