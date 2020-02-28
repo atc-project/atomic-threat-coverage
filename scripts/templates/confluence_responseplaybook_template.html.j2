@@ -91,7 +91,6 @@
    <pre><br/></pre>
    <ac:structured-macro ac:name="markdown"><ac:plain-text-body>
    	<![CDATA[{{ workflow }}]]>
-      <br/>
    </ac:plain-text-body></ac:structured-macro>
 
    {% for stage_name, stage_actions in stages %}
@@ -100,7 +99,6 @@
             <h3>{{ action_description }}</h3>
             <ac:structured-macro ac:name="markdown"><ac:plain-text-body>
                <![CDATA[{{ action_workflow }}]]>
-               <br/>
             </ac:plain-text-body></ac:structured-macro>
          {%- endfor %}
    {%- endfor %}
