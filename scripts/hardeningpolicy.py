@@ -168,7 +168,7 @@ class HardeningPolicy:
         # Render
         self.content = template.render(self.hp_parsed_file)
 
-    def save_markdown_file(self, atc_dir='../Atomic_Threat_Coverage/'):
+    def save_markdown_file(self, atc_dir=ATCconfig.get('md_name_of_root_directory')):
         """Write content (md template filled with data) to a file"""
 
         base = os.path.basename(self.yaml_file)

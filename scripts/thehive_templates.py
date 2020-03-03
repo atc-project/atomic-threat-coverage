@@ -222,9 +222,9 @@ class RPTheHive:
             return THC.PAP.RED
 
 
-ATCconfig = {'response_playbooks_dir': '../response_playbooks/',
-             "response_actions_dir": '../response_actions/',
-             'thehive_templates_dir': './templates/'}
+#ATCconfig = {'response_playbooks_dir': '../response_playbooks/',
+#             "response_actions_dir": '../response_actions/',
+#             'thehive_templates_dir': './templates/'}
 if __name__ == '__main__':
     RPTheHive(                inputRP=ATCconfig.get('response_playbooks_dir'),
                 inputRA=ATCconfig.get('response_actions_dir'),
