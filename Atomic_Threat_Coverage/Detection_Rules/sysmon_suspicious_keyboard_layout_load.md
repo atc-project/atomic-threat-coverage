@@ -37,7 +37,7 @@ detection:
         TargetObject: 
             - '*\Keyboard Layout\Preload\*'
             - '*\Keyboard Layout\Substitutes\*'
-        Details: 
+        Details|contains:
             - 00000429  # Persian (Iran)
             - 00050429  # Persian (Iran)
             - 0000042a  # Vietnamese
@@ -55,42 +55,42 @@ level: medium
 ### es-qs
     
 ```
-(EventID:"13" AND TargetObject.keyword:(*\\\\Keyboard\\ Layout\\\\Preload\\* OR *\\\\Keyboard\\ Layout\\\\Substitutes\\*) AND Details:("00000429" OR "00050429" OR "0000042a"))
+(EventID:"13" AND TargetObject.keyword:(*\\\\Keyboard\\ Layout\\\\Preload\\* OR *\\\\Keyboard\\ Layout\\\\Substitutes\\*) AND Details.keyword:(*00000429* OR *00050429* OR *0000042a*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Keyboard-Layout-Load <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Keyboard Layout Load",\n    "description": "Detects the keyboard preload installation with a suspicious keyboard layout, e.g. Chinese, Iranian or Vietnamese layout load in user session on systems maintained by US staff only",\n    "tags": "",\n    "query": "(EventID:\\"13\\" AND TargetObject.keyword:(*\\\\\\\\Keyboard\\\\ Layout\\\\\\\\Preload\\\\* OR *\\\\\\\\Keyboard\\\\ Layout\\\\\\\\Substitutes\\\\*) AND Details:(\\"00000429\\" OR \\"00050429\\" OR \\"0000042a\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"13\\" AND TargetObject.keyword:(*\\\\\\\\Keyboard\\\\ Layout\\\\\\\\Preload\\\\* OR *\\\\\\\\Keyboard\\\\ Layout\\\\\\\\Substitutes\\\\*) AND Details:(\\"00000429\\" OR \\"00050429\\" OR \\"0000042a\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Keyboard Layout Load\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/34aa0252-6039-40ff-951f-939fd6ce47d8 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Keyboard Layout Load",\n    "description": "Detects the keyboard preload installation with a suspicious keyboard layout, e.g. Chinese, Iranian or Vietnamese layout load in user session on systems maintained by US staff only",\n    "tags": "",\n    "query": "(EventID:\\"13\\" AND TargetObject.keyword:(*\\\\\\\\Keyboard\\\\ Layout\\\\\\\\Preload\\\\* OR *\\\\\\\\Keyboard\\\\ Layout\\\\\\\\Substitutes\\\\*) AND Details.keyword:(*00000429* OR *00050429* OR *0000042a*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"13\\" AND TargetObject.keyword:(*\\\\\\\\Keyboard\\\\ Layout\\\\\\\\Preload\\\\* OR *\\\\\\\\Keyboard\\\\ Layout\\\\\\\\Substitutes\\\\*) AND Details.keyword:(*00000429* OR *00050429* OR *0000042a*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Keyboard Layout Load\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
 ### graylog
     
 ```
-(EventID:"13" AND TargetObject.keyword:(*\\\\Keyboard Layout\\\\Preload\\* *\\\\Keyboard Layout\\\\Substitutes\\*) AND Details:("00000429" "00050429" "0000042a"))
+(EventID:"13" AND TargetObject.keyword:(*\\\\Keyboard Layout\\\\Preload\\* *\\\\Keyboard Layout\\\\Substitutes\\*) AND Details.keyword:(*00000429* *00050429* *0000042a*))
 ```
 
 
 ### splunk
     
 ```
-(EventID="13" (TargetObject="*\\\\Keyboard Layout\\\\Preload\\*" OR TargetObject="*\\\\Keyboard Layout\\\\Substitutes\\*") (Details="00000429" OR Details="00050429" OR Details="0000042a"))
+(EventID="13" (TargetObject="*\\\\Keyboard Layout\\\\Preload\\*" OR TargetObject="*\\\\Keyboard Layout\\\\Substitutes\\*") (Details="*00000429*" OR Details="*00050429*" OR Details="*0000042a*"))
 ```
 
 
 ### logpoint
     
 ```
-(event_id="13" TargetObject IN ["*\\\\Keyboard Layout\\\\Preload\\*", "*\\\\Keyboard Layout\\\\Substitutes\\*"] Details IN ["00000429", "00050429", "0000042a"])
+(event_id="13" TargetObject IN ["*\\\\Keyboard Layout\\\\Preload\\*", "*\\\\Keyboard Layout\\\\Substitutes\\*"] Details IN ["*00000429*", "*00050429*", "*0000042a*"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*13)(?=.*(?:.*.*\\Keyboard Layout\\Preload\\.*|.*.*\\Keyboard Layout\\Substitutes\\.*))(?=.*(?:.*00000429|.*00050429|.*0000042a)))'
+grep -P '^(?:.*(?=.*13)(?=.*(?:.*.*\\Keyboard Layout\\Preload\\.*|.*.*\\Keyboard Layout\\Substitutes\\.*))(?=.*(?:.*.*00000429.*|.*.*00050429.*|.*.*0000042a.*)))'
 ```
 
 

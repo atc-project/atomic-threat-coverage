@@ -24,6 +24,7 @@ references:
     - https://adsecurity.org/?p=2053
     - https://www.harmj0y.net/blog/activedirectory/roasting-as-reps/
 author: '@neu5ron'
+date: 2017/07/30
 tags:
     - attack.defense_evasion
     - attack.t1089
@@ -43,7 +44,7 @@ detection:
         Message:
             - '*Enabled*'
     condition: selection and keywords and filters
-falsepositives: 
+falsepositives:
     - Unknown
 level: high
 
@@ -63,7 +64,7 @@ level: high
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Weak-Encryption-Enabled-and-Kerberoast <<EOF\n{\n  "metadata": {\n    "title": "Weak Encryption Enabled and Kerberoast",\n    "description": "Detects scenario where weak encryption is enabled for a user profile which could be used for hash/password cracking.",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1089"\n    ],\n    "query": "(EventID:\\"4738\\" AND Message.keyword:(*DES* OR *Preauth* OR *Encrypted*) AND Message.keyword:(*Enabled*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4738\\" AND Message.keyword:(*DES* OR *Preauth* OR *Encrypted*) AND Message.keyword:(*Enabled*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Weak Encryption Enabled and Kerberoast\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/f6de9536-0441-4b3f-a646-f4e00f300ffd <<EOF\n{\n  "metadata": {\n    "title": "Weak Encryption Enabled and Kerberoast",\n    "description": "Detects scenario where weak encryption is enabled for a user profile which could be used for hash/password cracking.",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1089"\n    ],\n    "query": "(EventID:\\"4738\\" AND Message.keyword:(*DES* OR *Preauth* OR *Encrypted*) AND Message.keyword:(*Enabled*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4738\\" AND Message.keyword:(*DES* OR *Preauth* OR *Encrypted*) AND Message.keyword:(*Enabled*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Weak Encryption Enabled and Kerberoast\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 

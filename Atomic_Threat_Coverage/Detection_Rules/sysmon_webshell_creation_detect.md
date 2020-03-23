@@ -1,4 +1,4 @@
-| Title                | Windows webshell creation                                                                                                                                                 |
+| Title                | Windows Webshell Creation                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Posible webshell file creation on a static web site                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
@@ -17,7 +17,7 @@
 ### Sigma rule
 
 ```
-title: Windows webshell creation
+title: Windows Webshell Creation
 id: 39f1f9f2-9636-45de-98f6-a4046aa8e4b9
 status: experimental
 description: Posible webshell file creation on a static web site
@@ -38,12 +38,12 @@ detection:
         EventID: 11
     selection_2:
         TargetFilename|contains: '\inetpub\wwwroot\'
-    selection_3:        
+    selection_3:
         TargetFilename|contains:
             - '.asp'
             - '.ashx'
             - '.ph'
-    selection_4: 
+    selection_4:
         TargetFilename|contains:
             - '\www\'
             - '\htdocs\'
@@ -51,10 +51,8 @@ detection:
     selection_5:
         TargetFilename|contains: '.ph'
     selection_6:
-        - TargetFilename|contains|all: 
-            - '\'
-            - '.jsp'
-        - TargetFilename|contains|all: 
+        - TargetFilename|endswith: '.jsp'
+        - TargetFilename|contains|all:
             - '\cgi-bin\'
             - '.pl'
     condition: selection_1 and ( selection_2 and selection_3 ) or
@@ -72,42 +70,42 @@ falsepositives:
 ### es-qs
     
 ```
-(EventID:"11" AND ((TargetFilename.keyword:*\\\\inetpub\\\\wwwroot\\* AND TargetFilename.keyword:(*.asp* OR *.ashx* OR *.ph*)) OR (TargetFilename.keyword:(*\\\\www\\* OR *\\\\htdocs\\* OR *\\\\html\\*) AND TargetFilename.keyword:*.ph*) OR (TargetFilename.keyword:*\\* AND TargetFilename.keyword:*.jsp*) OR (TargetFilename.keyword:*\\\\cgi\\-bin\\* AND TargetFilename.keyword:*.pl*)))
+(EventID:"11" AND ((TargetFilename.keyword:*\\\\inetpub\\\\wwwroot\\* AND TargetFilename.keyword:(*.asp* OR *.ashx* OR *.ph*)) OR (TargetFilename.keyword:(*\\\\www\\* OR *\\\\htdocs\\* OR *\\\\html\\*) AND TargetFilename.keyword:*.ph*) OR TargetFilename.keyword:*.jsp OR (TargetFilename.keyword:*\\\\cgi\\-bin\\* AND TargetFilename.keyword:*.pl*)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Windows-webshell-creation <<EOF\n{\n  "metadata": {\n    "title": "Windows webshell creation",\n    "description": "Posible webshell file creation on a static web site",\n    "tags": [\n      "attack.persistence",\n      "attack.t1100"\n    ],\n    "query": "(EventID:\\"11\\" AND ((TargetFilename.keyword:*\\\\\\\\inetpub\\\\\\\\wwwroot\\\\* AND TargetFilename.keyword:(*.asp* OR *.ashx* OR *.ph*)) OR (TargetFilename.keyword:(*\\\\\\\\www\\\\* OR *\\\\\\\\htdocs\\\\* OR *\\\\\\\\html\\\\*) AND TargetFilename.keyword:*.ph*) OR (TargetFilename.keyword:*\\\\* AND TargetFilename.keyword:*.jsp*) OR (TargetFilename.keyword:*\\\\\\\\cgi\\\\-bin\\\\* AND TargetFilename.keyword:*.pl*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"11\\" AND ((TargetFilename.keyword:*\\\\\\\\inetpub\\\\\\\\wwwroot\\\\* AND TargetFilename.keyword:(*.asp* OR *.ashx* OR *.ph*)) OR (TargetFilename.keyword:(*\\\\\\\\www\\\\* OR *\\\\\\\\htdocs\\\\* OR *\\\\\\\\html\\\\*) AND TargetFilename.keyword:*.ph*) OR (TargetFilename.keyword:*\\\\* AND TargetFilename.keyword:*.jsp*) OR (TargetFilename.keyword:*\\\\\\\\cgi\\\\-bin\\\\* AND TargetFilename.keyword:*.pl*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Windows webshell creation\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/39f1f9f2-9636-45de-98f6-a4046aa8e4b9 <<EOF\n{\n  "metadata": {\n    "title": "Windows Webshell Creation",\n    "description": "Posible webshell file creation on a static web site",\n    "tags": [\n      "attack.persistence",\n      "attack.t1100"\n    ],\n    "query": "(EventID:\\"11\\" AND ((TargetFilename.keyword:*\\\\\\\\inetpub\\\\\\\\wwwroot\\\\* AND TargetFilename.keyword:(*.asp* OR *.ashx* OR *.ph*)) OR (TargetFilename.keyword:(*\\\\\\\\www\\\\* OR *\\\\\\\\htdocs\\\\* OR *\\\\\\\\html\\\\*) AND TargetFilename.keyword:*.ph*) OR TargetFilename.keyword:*.jsp OR (TargetFilename.keyword:*\\\\\\\\cgi\\\\-bin\\\\* AND TargetFilename.keyword:*.pl*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"11\\" AND ((TargetFilename.keyword:*\\\\\\\\inetpub\\\\\\\\wwwroot\\\\* AND TargetFilename.keyword:(*.asp* OR *.ashx* OR *.ph*)) OR (TargetFilename.keyword:(*\\\\\\\\www\\\\* OR *\\\\\\\\htdocs\\\\* OR *\\\\\\\\html\\\\*) AND TargetFilename.keyword:*.ph*) OR TargetFilename.keyword:*.jsp OR (TargetFilename.keyword:*\\\\\\\\cgi\\\\-bin\\\\* AND TargetFilename.keyword:*.pl*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Windows Webshell Creation\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
 ### graylog
     
 ```
-(EventID:"11" AND ((TargetFilename.keyword:*\\\\inetpub\\\\wwwroot\\* AND TargetFilename.keyword:(*.asp* *.ashx* *.ph*)) OR (TargetFilename.keyword:(*\\\\www\\* *\\\\htdocs\\* *\\\\html\\*) AND TargetFilename.keyword:*.ph*) OR (TargetFilename.keyword:*\\* AND TargetFilename.keyword:*.jsp*) OR (TargetFilename.keyword:*\\\\cgi\\-bin\\* AND TargetFilename.keyword:*.pl*)))
+(EventID:"11" AND ((TargetFilename.keyword:*\\\\inetpub\\\\wwwroot\\* AND TargetFilename.keyword:(*.asp* *.ashx* *.ph*)) OR (TargetFilename.keyword:(*\\\\www\\* *\\\\htdocs\\* *\\\\html\\*) AND TargetFilename.keyword:*.ph*) OR TargetFilename.keyword:*.jsp OR (TargetFilename.keyword:*\\\\cgi\\-bin\\* AND TargetFilename.keyword:*.pl*)))
 ```
 
 
 ### splunk
     
 ```
-(EventID="11" ((TargetFilename="*\\\\inetpub\\\\wwwroot\\*" (TargetFilename="*.asp*" OR TargetFilename="*.ashx*" OR TargetFilename="*.ph*")) OR ((TargetFilename="*\\\\www\\*" OR TargetFilename="*\\\\htdocs\\*" OR TargetFilename="*\\\\html\\*") TargetFilename="*.ph*") OR (TargetFilename="*\\*" TargetFilename="*.jsp*") OR (TargetFilename="*\\\\cgi-bin\\*" TargetFilename="*.pl*")))
+(EventID="11" ((TargetFilename="*\\\\inetpub\\\\wwwroot\\*" (TargetFilename="*.asp*" OR TargetFilename="*.ashx*" OR TargetFilename="*.ph*")) OR ((TargetFilename="*\\\\www\\*" OR TargetFilename="*\\\\htdocs\\*" OR TargetFilename="*\\\\html\\*") TargetFilename="*.ph*") OR TargetFilename="*.jsp" OR (TargetFilename="*\\\\cgi-bin\\*" TargetFilename="*.pl*")))
 ```
 
 
 ### logpoint
     
 ```
-(event_id="11" ((TargetFilename="*\\\\inetpub\\\\wwwroot\\*" TargetFilename IN ["*.asp*", "*.ashx*", "*.ph*"]) OR (TargetFilename IN ["*\\\\www\\*", "*\\\\htdocs\\*", "*\\\\html\\*"] TargetFilename="*.ph*") OR (TargetFilename="*\\*" TargetFilename="*.jsp*") OR (TargetFilename="*\\\\cgi-bin\\*" TargetFilename="*.pl*")))
+(event_id="11" ((TargetFilename="*\\\\inetpub\\\\wwwroot\\*" TargetFilename IN ["*.asp*", "*.ashx*", "*.ph*"]) OR (TargetFilename IN ["*\\\\www\\*", "*\\\\htdocs\\*", "*\\\\html\\*"] TargetFilename="*.ph*") OR TargetFilename="*.jsp" OR (TargetFilename="*\\\\cgi-bin\\*" TargetFilename="*.pl*")))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*11)(?=.*(?:.*(?:.*(?:.*(?=.*.*\\inetpub\\wwwroot\\.*)(?=.*(?:.*.*\\.asp.*|.*.*\\.ashx.*|.*.*\\.ph.*)))|.*(?:.*(?=.*(?:.*.*\\www\\.*|.*.*\\htdocs\\.*|.*.*\\html\\.*))(?=.*.*\\.ph.*))|.*(?:.*(?=.*.*\\.*)(?=.*.*\\.jsp.*))|.*(?:.*(?=.*.*\\cgi-bin\\.*)(?=.*.*\\.pl.*))))))'
+grep -P '^(?:.*(?=.*11)(?=.*(?:.*(?:.*(?:.*(?=.*.*\\inetpub\\wwwroot\\.*)(?=.*(?:.*.*\\.asp.*|.*.*\\.ashx.*|.*.*\\.ph.*)))|.*(?:.*(?=.*(?:.*.*\\www\\.*|.*.*\\htdocs\\.*|.*.*\\html\\.*))(?=.*.*\\.ph.*))|.*.*\\.jsp|.*(?:.*(?=.*.*\\cgi-bin\\.*)(?=.*.*\\.pl.*))))))'
 ```
 
 

@@ -1,4 +1,4 @@
-| Title                | Raw disk access using illegitimate tools                                                                                                                                                 |
+| Title                | Raw Disk Access Using Illegitimate Tools                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Raw disk access using illegitimate tools, possible defence evasion                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
@@ -17,7 +17,7 @@
 ### Sigma rule
 
 ```
-title: Raw disk access using illegitimate tools
+title: Raw Disk Access Using Illegitimate Tools
 id: db809f10-56ce-4420-8c86-d6a7d793c79c
 description: Raw disk access using illegitimate tools, possible defence evasion
 author: Teymur Kheirkhabarov, oscd.community
@@ -52,6 +52,11 @@ detection:
             - '\vds.exe'
             - '\lsass.exe'
     condition: selection and not filter_1 and not filter_2
+fields:
+    - ComputerName
+    - Image
+    - ProcessID
+    - Device
 falsepositives:
     - Legitimate Administrator using tool for raw access or ongoing forensic investigation
 level: medium
@@ -73,7 +78,7 @@ status: experimental
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Raw-disk-access-using-illegitimate-tools <<EOF\n{\n  "metadata": {\n    "title": "Raw disk access using illegitimate tools",\n    "description": "Raw disk access using illegitimate tools, possible defence evasion",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1006"\n    ],\n    "query": "((EventID:\\"9\\" AND (NOT (Device.keyword:*floppy*))) AND (NOT (Image.keyword:(*\\\\\\\\wmiprvse.exe OR *\\\\\\\\sdiagnhost.exe OR *\\\\\\\\searchindexer.exe OR *\\\\\\\\csrss.exe OR *\\\\\\\\defrag.exe OR *\\\\\\\\smss.exe OR *\\\\\\\\vssvc.exe OR *\\\\\\\\compattelrunner.exe OR *\\\\\\\\wininit.exe OR *\\\\\\\\autochk.exe OR *\\\\\\\\taskhost.exe OR *\\\\\\\\dfsrs.exe OR *\\\\\\\\vds.exe OR *\\\\\\\\lsass.exe))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((EventID:\\"9\\" AND (NOT (Device.keyword:*floppy*))) AND (NOT (Image.keyword:(*\\\\\\\\wmiprvse.exe OR *\\\\\\\\sdiagnhost.exe OR *\\\\\\\\searchindexer.exe OR *\\\\\\\\csrss.exe OR *\\\\\\\\defrag.exe OR *\\\\\\\\smss.exe OR *\\\\\\\\vssvc.exe OR *\\\\\\\\compattelrunner.exe OR *\\\\\\\\wininit.exe OR *\\\\\\\\autochk.exe OR *\\\\\\\\taskhost.exe OR *\\\\\\\\dfsrs.exe OR *\\\\\\\\vds.exe OR *\\\\\\\\lsass.exe))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Raw disk access using illegitimate tools\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/db809f10-56ce-4420-8c86-d6a7d793c79c <<EOF\n{\n  "metadata": {\n    "title": "Raw Disk Access Using Illegitimate Tools",\n    "description": "Raw disk access using illegitimate tools, possible defence evasion",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1006"\n    ],\n    "query": "((EventID:\\"9\\" AND (NOT (Device.keyword:*floppy*))) AND (NOT (Image.keyword:(*\\\\\\\\wmiprvse.exe OR *\\\\\\\\sdiagnhost.exe OR *\\\\\\\\searchindexer.exe OR *\\\\\\\\csrss.exe OR *\\\\\\\\defrag.exe OR *\\\\\\\\smss.exe OR *\\\\\\\\vssvc.exe OR *\\\\\\\\compattelrunner.exe OR *\\\\\\\\wininit.exe OR *\\\\\\\\autochk.exe OR *\\\\\\\\taskhost.exe OR *\\\\\\\\dfsrs.exe OR *\\\\\\\\vds.exe OR *\\\\\\\\lsass.exe))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((EventID:\\"9\\" AND (NOT (Device.keyword:*floppy*))) AND (NOT (Image.keyword:(*\\\\\\\\wmiprvse.exe OR *\\\\\\\\sdiagnhost.exe OR *\\\\\\\\searchindexer.exe OR *\\\\\\\\csrss.exe OR *\\\\\\\\defrag.exe OR *\\\\\\\\smss.exe OR *\\\\\\\\vssvc.exe OR *\\\\\\\\compattelrunner.exe OR *\\\\\\\\wininit.exe OR *\\\\\\\\autochk.exe OR *\\\\\\\\taskhost.exe OR *\\\\\\\\dfsrs.exe OR *\\\\\\\\vds.exe OR *\\\\\\\\lsass.exe))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Raw Disk Access Using Illegitimate Tools\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nComputerName = {{_source.ComputerName}}\\n       Image = {{_source.Image}}\\n   ProcessID = {{_source.ProcessID}}\\n      Device = {{_source.Device}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -87,7 +92,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-((EventID="9" NOT (Device="*floppy*")) NOT ((Image="*\\\\wmiprvse.exe" OR Image="*\\\\sdiagnhost.exe" OR Image="*\\\\searchindexer.exe" OR Image="*\\\\csrss.exe" OR Image="*\\\\defrag.exe" OR Image="*\\\\smss.exe" OR Image="*\\\\vssvc.exe" OR Image="*\\\\compattelrunner.exe" OR Image="*\\\\wininit.exe" OR Image="*\\\\autochk.exe" OR Image="*\\\\taskhost.exe" OR Image="*\\\\dfsrs.exe" OR Image="*\\\\vds.exe" OR Image="*\\\\lsass.exe")))
+((EventID="9" NOT (Device="*floppy*")) NOT ((Image="*\\\\wmiprvse.exe" OR Image="*\\\\sdiagnhost.exe" OR Image="*\\\\searchindexer.exe" OR Image="*\\\\csrss.exe" OR Image="*\\\\defrag.exe" OR Image="*\\\\smss.exe" OR Image="*\\\\vssvc.exe" OR Image="*\\\\compattelrunner.exe" OR Image="*\\\\wininit.exe" OR Image="*\\\\autochk.exe" OR Image="*\\\\taskhost.exe" OR Image="*\\\\dfsrs.exe" OR Image="*\\\\vds.exe" OR Image="*\\\\lsass.exe"))) | table ComputerName,Image,ProcessID,Device
 ```
 
 

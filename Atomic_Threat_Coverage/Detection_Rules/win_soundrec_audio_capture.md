@@ -30,6 +30,9 @@ references:
 tags:
     - attack.collection
     - attack.t1123
+logsource:
+    category: process_creation
+    product: windows
 detection:
     selection:
         Image|endswith: '\SoundRecorder.exe'
@@ -38,9 +41,6 @@ detection:
 falsepositives:
     - Legitimate audio capture by legitimate user
 level: medium
-logsource:
-    category: process_creation
-    product: windows
 
 ```
 
@@ -58,7 +58,7 @@ logsource:
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Audio-Capture-via-SoundRecorder <<EOF\n{\n  "metadata": {\n    "title": "Audio Capture via SoundRecorder",\n    "description": "Detect attacker collecting audio via SoundRecorder application",\n    "tags": [\n      "attack.collection",\n      "attack.t1123"\n    ],\n    "query": "(Image.keyword:*\\\\\\\\SoundRecorder.exe AND CommandLine.keyword:*\\\\/FILE*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(Image.keyword:*\\\\\\\\SoundRecorder.exe AND CommandLine.keyword:*\\\\/FILE*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Audio Capture via SoundRecorder\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/83865853-59aa-449e-9600-74b9d89a6d6e <<EOF\n{\n  "metadata": {\n    "title": "Audio Capture via SoundRecorder",\n    "description": "Detect attacker collecting audio via SoundRecorder application",\n    "tags": [\n      "attack.collection",\n      "attack.t1123"\n    ],\n    "query": "(Image.keyword:*\\\\\\\\SoundRecorder.exe AND CommandLine.keyword:*\\\\/FILE*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(Image.keyword:*\\\\\\\\SoundRecorder.exe AND CommandLine.keyword:*\\\\/FILE*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Audio Capture via SoundRecorder\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 

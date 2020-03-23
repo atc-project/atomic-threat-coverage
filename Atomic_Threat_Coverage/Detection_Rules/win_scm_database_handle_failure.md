@@ -1,4 +1,4 @@
-| Title                | T1000 SCM Database Handle Failure                                                                                                                                                 |
+| Title                | SCM Database Handle Failure                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects non-system users failing to get a handle of the SCM database.                                                                                                                                           |
 | ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
@@ -17,7 +17,7 @@
 ### Sigma rule
 
 ```
-title: T1000 SCM Database Handle Failure
+title: SCM Database Handle Failure
 id: 13addce7-47b2-4ca0-a98f-1de964d1d669
 description: Detects non-system users failing to get a handle of the SCM database.
 status: experimental
@@ -39,6 +39,7 @@ detection:
 falsepositives:
     - Unknown
 level: critical
+
 ```
 
 
@@ -55,7 +56,7 @@ level: critical
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/T1000-SCM-Database-Handle-Failure <<EOF\n{\n  "metadata": {\n    "title": "T1000 SCM Database Handle Failure",\n    "description": "Detects non-system users failing to get a handle of the SCM database.",\n    "tags": "",\n    "query": "(EventID:\\"4656\\" AND ObjectType:\\"SC_MANAGER\\\\ OBJECT\\" AND ObjectName:\\"servicesactive\\" AND Keywords:\\"Audit\\\\ Failure\\" AND SubjectLogonId:\\"0x3e4\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4656\\" AND ObjectType:\\"SC_MANAGER\\\\ OBJECT\\" AND ObjectName:\\"servicesactive\\" AND Keywords:\\"Audit\\\\ Failure\\" AND SubjectLogonId:\\"0x3e4\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'T1000 SCM Database Handle Failure\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/13addce7-47b2-4ca0-a98f-1de964d1d669 <<EOF\n{\n  "metadata": {\n    "title": "SCM Database Handle Failure",\n    "description": "Detects non-system users failing to get a handle of the SCM database.",\n    "tags": "",\n    "query": "(EventID:\\"4656\\" AND ObjectType:\\"SC_MANAGER\\\\ OBJECT\\" AND ObjectName:\\"servicesactive\\" AND Keywords:\\"Audit\\\\ Failure\\" AND SubjectLogonId:\\"0x3e4\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4656\\" AND ObjectType:\\"SC_MANAGER\\\\ OBJECT\\" AND ObjectName:\\"servicesactive\\" AND Keywords:\\"Audit\\\\ Failure\\" AND SubjectLogonId:\\"0x3e4\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'SCM Database Handle Failure\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
