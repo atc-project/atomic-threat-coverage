@@ -158,7 +158,6 @@ class DetectionRule:
                     else:
                         other_tags.append(tag)
 
-
                 if len(tactic):
                     self.fields.update({'tactics': tactic})
                 if len(technique):
@@ -292,7 +291,6 @@ class DetectionRule:
                         amitt_technique.append((amitt_technique_mapping.get(te), te))
                     else:
                         other_tags.append(tag)
-
 
                 if len(tactic):
                     self.fields.update({'tactics': tactic})
