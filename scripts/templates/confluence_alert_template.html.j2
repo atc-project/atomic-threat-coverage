@@ -215,46 +215,24 @@
 </ac:structured-macro>
 {% else %}
 {% endif %}
-{% if esqs is defined and esqs|length %}
+
+{% if det_queries is defined and det_queries|length %}
+{% if queries is defined and queries|length %}
+{% for query in queries %}
 <ac:structured-macro ac:name="expand">
-    <ac:parameter ac:name="title">Kibana query</ac:parameter>
+    <ac:parameter ac:name="title">{{ query }}</ac:parameter>
     <ac:rich-text-body>
         <ac:structured-macro ac:name="code">
             <ac:parameter ac:name="language">text</ac:parameter>
             <ac:plain-text-body>
-                <![CDATA[{{ esqs }}]]>
+                <![CDATA[{{ det_queries[query] }}]]>
             </ac:plain-text-body>
         </ac:structured-macro>
     </ac:rich-text-body>
 </ac:structured-macro>
+{% endfor %}
 {% else %}
 {% endif %}
-{% if xpackwatcher is defined and xpackwatcher|length %}
-<ac:structured-macro ac:name="expand">
-    <ac:parameter ac:name="title">X-Pack Watcher</ac:parameter>
-    <ac:rich-text-body>
-        <ac:structured-macro ac:name="code">
-            <ac:parameter ac:name="language">text</ac:parameter>
-            <ac:plain-text-body>
-                <![CDATA[{{ xpackwatcher }}]]>
-            </ac:plain-text-body>
-        </ac:structured-macro>
-    </ac:rich-text-body>
-</ac:structured-macro>
-{% else %}
-{% endif %}
-{% if graylog is defined and graylog|length %}
-<ac:structured-macro ac:name="expand">
-    <ac:parameter ac:name="title">Graylog</ac:parameter>
-    <ac:rich-text-body>
-        <ac:structured-macro ac:name="code">
-            <ac:parameter ac:name="language">text</ac:parameter>
-            <ac:plain-text-body>
-                <![CDATA[{{ graylog }}]]>
-            </ac:plain-text-body>
-        </ac:structured-macro>
-    </ac:rich-text-body>
-</ac:structured-macro>
 {% else %}
 {% endif %}
 {% if splunk is defined and splunk|length %}

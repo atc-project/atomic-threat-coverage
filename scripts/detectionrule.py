@@ -222,7 +222,12 @@ class DetectionRule:
                 # have to remove '-' due to problems with
                 # Jinja2 variable naming,e.g es-qs throws error
                 # 'no es variable'
-                self.fields.update({output.replace("-", ""): str(query)[2:-3]})
+                #self.fields.update({output.replace("-", ""): str(query)[2:-3]})
+                det_queries[output] = str(query)[2:-3].replace("\\n", "\n")
+                
+            # Update detection rules
+            self.fields.update({"det_queries": det_queries})
+            self.fields.update({"queries": queries})
 
             # Data Needed
             data_needed = ATCutils.main_dn_calculatoin_func(self.yaml_file)
