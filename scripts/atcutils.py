@@ -131,7 +131,7 @@ If no local configuration is found on the argument path, a warning will be shown
     config_project = property(get_config_project, set_config_project)
 
 ## Initialize global config
-ATC_config = ATCConfig()
+ATCconfig = ATCConfig()
 
 
 class ATCutils:
@@ -645,7 +645,7 @@ class ATCutils:
     def main_dn_calculatoin_func(dr_file_path):
         """you need to execute this function to calculate DN for DR file"""
 
-        dn_list = ATCutils.load_yamls('../data_needed')
+        dn_list = ATCutils.load_yamls(ATCconfig.get('data_needed_dir'))
 
         detectionrule = ATCutils.read_yaml_file(dr_file_path)
 
@@ -668,7 +668,7 @@ class ATCutils:
         # we will collect all Data Needed fields from "data_needed" field of 
         # linked Enrichment entities
         if ATCutils.check_for_enrichment_presence(detectionrule):
-            en_obj_list = ATCutils.load_yamls('../enrichments')
+            en_obj_list = ATCutils.load_yamls(ATCconfig.get('enrichments_directory'))
 
             for linked_enrichments in detectionrule['enrichment']:
                 for enrichment in en_obj_list:
