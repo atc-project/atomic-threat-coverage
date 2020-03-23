@@ -114,7 +114,7 @@ class DetectionRule:
             # print("%s || Dataneeded: \n%s\n" %
             #       (self.fields.get("title"), data_needed))
 
-            self.fields.update({'data_needed': data_needed})
+            self.fields.update({'data_needed': sorted(data_needed)})
 
             # Enrichments
             enrichments = self.fields.get("enrichment")
@@ -233,7 +233,7 @@ class DetectionRule:
 
             data_needed_with_id = []
 
-            for data in data_needed:
+            for data in sorted(data_needed):
                 data_needed_id = str(ATCutils.confluence_get_page_id(
                     self.apipath, self.auth, self.space, data))
                 data = (data, data_needed_id)
