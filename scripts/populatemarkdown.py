@@ -209,7 +209,8 @@ class PopulateMarkdown:
         if lp_path:
             lp_list = glob.glob(lp_path + '*.yml')
         else:
-            lp_list = glob.glob('../logging_policies/*.yml')
+            lp_dir = ATCconfig.get('logging_policies_dir')
+            lp_list = glob.glob(lp_dir + '/*.yml')
 
         for lp_file in lp_list:
             try:
@@ -232,7 +233,8 @@ class PopulateMarkdown:
         if dn_path:
             dn_list = glob.glob(dn_path + '*.yml')
         else:
-            dn_list = glob.glob('../data_needed/*.yml')
+            dn_dir = ATCconfig.get('data_needed_dir')
+            dn_list = glob.glob(dn_dir + '/*.yml')
 
         for dn_file in dn_list:
             try:
@@ -283,7 +285,8 @@ class PopulateMarkdown:
         if en_path:
             en_list = glob.glob(en_path + '*.yml')
         else:
-            en_list = glob.glob('../enrichments/*.yml')
+            en_dir = ATCconfig.get('enrichments_directory')
+            en_list = glob.glob(en_dir + '/*.yml')
 
         for en_file in en_list:
             try:
@@ -305,7 +308,8 @@ class PopulateMarkdown:
         if ra_path:
             ra_list = glob.glob(ra_path + '*.yml')
         else:
-            ra_list = glob.glob('../response_actions/*.yml')
+            ra_dir = ATCconfig.get('response_actions_dir')
+            ra_list = glob.glob(ra_dir + '/*.yml')
 
         for ra_file in ra_list:
             try:
@@ -327,7 +331,8 @@ class PopulateMarkdown:
         if rp_path:
             rp_list = glob.glob(rp_path + '*.yml')
         else:
-            rp_list = glob.glob('../response_playbooks/*.yml')
+            rp_dir = ATCconfig.get('response_playbooks_dir')
+            rp_list = glob.glob(rp_dir + '/*.yml')
 
         for rp_file in rp_list:
             try:
@@ -349,8 +354,8 @@ class PopulateMarkdown:
         if cu_path:
             cu_list = glob.glob(cu_path + '*.yml')
         else:
-            cu_list = glob.glob(ATCconfig.get('customers_directory') +
-                                '/*.yml')
+            cu_dir = ATCconfig.get('customers_directory')
+            cu_list = glob.glob(cu_dir + '/*.yml')
 
         for cu_file in cu_list:
             try:

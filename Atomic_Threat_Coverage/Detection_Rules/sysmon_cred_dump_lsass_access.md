@@ -1,4 +1,4 @@
-| Title                | Credentials Dumping tools accessing LSASS memory                                                                                                                                                 |
+| Title                | Credentials Dumping Tools Accessing LSASS Memory                                                                                                                                                 |
 |:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description          | Detects process access LSASS memory which is typical for credentials dumping tools                                                                                                                                           |
 | ATT&amp;CK Tactic    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
@@ -10,14 +10,14 @@
 | Development Status   | experimental |
 | References           | <ul><li>[https://onedrive.live.com/view.aspx?resid=D026B4699190F1E6!2843&ithint=file%2cpptx&app=PowerPoint&authkey=!AMvCRTKB_V1J5ow](https://onedrive.live.com/view.aspx?resid=D026B4699190F1E6!2843&ithint=file%2cpptx&app=PowerPoint&authkey=!AMvCRTKB_V1J5ow)</li><li>[https://cyberwardog.blogspot.com/2017/03/chronicles-of-threat-hunter-hunting-for_22.html](https://cyberwardog.blogspot.com/2017/03/chronicles-of-threat-hunter-hunting-for_22.html)</li><li>[https://www.slideshare.net/heirhabarov/hunting-for-credentials-dumping-in-windows-environment](https://www.slideshare.net/heirhabarov/hunting-for-credentials-dumping-in-windows-environment)</li><li>[http://security-research.dyndns.org/pub/slides/FIRST2017/FIRST-2017_Tom-Ueltschi_Sysmon_FINAL_notes.pdf](http://security-research.dyndns.org/pub/slides/FIRST2017/FIRST-2017_Tom-Ueltschi_Sysmon_FINAL_notes.pdf)</li></ul>  |
 | Author               | Florian Roth, Roberto Rodriguez, Dimitrios Slamaris, Mark Russinovich, Thomas Patzke, Teymur Kheirkhabarov, Sherif Eldeeb, James Dickenson, Aleksey Potapov, oscd.community (update) |
-| Other Tags           | <ul><li>attack.s0002</li><li>attack.s0002</li><li>car.2019-04-004</li><li>car.2019-04-004</li></ul> | 
+| Other Tags           | <ul><li>attack.s0002</li><li>car.2019-04-004</li></ul> | 
 
 ## Detection Rules
 
 ### Sigma rule
 
 ```
-title: Credentials Dumping tools accessing LSASS memory
+title: Credentials Dumping Tools Accessing LSASS Memory
 id: 32d0d3e2-e58d-4d41-926b-18b520b2b32d
 status: experimental
 description: Detects process access LSASS memory which is typical for credentials dumping tools
@@ -67,6 +67,10 @@ detection:
             - '\wininit.exe'
             - '\vmtoolsd.exe'
     condition: selection and not filter
+fields:
+    - ComputerName
+    - User
+    - SourceImage
 falsepositives:
     - Legitimate software accessing LSASS process for legitimate reason; update the whitelist with it
 level: high
@@ -87,7 +91,7 @@ level: high
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Credentials-Dumping-tools-accessing-LSASS-memory <<EOF\n{\n  "metadata": {\n    "title": "Credentials Dumping tools accessing LSASS memory",\n    "description": "Detects process access LSASS memory which is typical for credentials dumping tools",\n    "tags": [\n      "attack.t1003",\n      "attack.s0002",\n      "attack.credential_access",\n      "car.2019-04-004"\n    ],\n    "query": "((EventID:\\"10\\" AND TargetImage.keyword:*\\\\\\\\lsass.exe AND GrantedAccess.keyword:(*0x40* OR *0x1000* OR *0x1400* OR *0x100000* OR *0x1410* OR *0x1010* OR *0x1438* OR *0x143a* OR *0x1418* OR *0x1f0fff* OR *0x1f1fff* OR *0x1f2fff* OR *0x1f3fff*)) AND (NOT (ProcessName.keyword:(*\\\\\\\\wmiprvse.exe OR *\\\\\\\\taskmgr.exe OR *\\\\\\\\procexp64.exe OR *\\\\\\\\procexp.exe OR *\\\\\\\\lsm.exe OR *\\\\\\\\csrss.exe OR *\\\\\\\\wininit.exe OR *\\\\\\\\vmtoolsd.exe))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((EventID:\\"10\\" AND TargetImage.keyword:*\\\\\\\\lsass.exe AND GrantedAccess.keyword:(*0x40* OR *0x1000* OR *0x1400* OR *0x100000* OR *0x1410* OR *0x1010* OR *0x1438* OR *0x143a* OR *0x1418* OR *0x1f0fff* OR *0x1f1fff* OR *0x1f2fff* OR *0x1f3fff*)) AND (NOT (ProcessName.keyword:(*\\\\\\\\wmiprvse.exe OR *\\\\\\\\taskmgr.exe OR *\\\\\\\\procexp64.exe OR *\\\\\\\\procexp.exe OR *\\\\\\\\lsm.exe OR *\\\\\\\\csrss.exe OR *\\\\\\\\wininit.exe OR *\\\\\\\\vmtoolsd.exe))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Credentials Dumping tools accessing LSASS memory\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/32d0d3e2-e58d-4d41-926b-18b520b2b32d <<EOF\n{\n  "metadata": {\n    "title": "Credentials Dumping Tools Accessing LSASS Memory",\n    "description": "Detects process access LSASS memory which is typical for credentials dumping tools",\n    "tags": [\n      "attack.t1003",\n      "attack.s0002",\n      "attack.credential_access",\n      "car.2019-04-004"\n    ],\n    "query": "((EventID:\\"10\\" AND TargetImage.keyword:*\\\\\\\\lsass.exe AND GrantedAccess.keyword:(*0x40* OR *0x1000* OR *0x1400* OR *0x100000* OR *0x1410* OR *0x1010* OR *0x1438* OR *0x143a* OR *0x1418* OR *0x1f0fff* OR *0x1f1fff* OR *0x1f2fff* OR *0x1f3fff*)) AND (NOT (ProcessName.keyword:(*\\\\\\\\wmiprvse.exe OR *\\\\\\\\taskmgr.exe OR *\\\\\\\\procexp64.exe OR *\\\\\\\\procexp.exe OR *\\\\\\\\lsm.exe OR *\\\\\\\\csrss.exe OR *\\\\\\\\wininit.exe OR *\\\\\\\\vmtoolsd.exe))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((EventID:\\"10\\" AND TargetImage.keyword:*\\\\\\\\lsass.exe AND GrantedAccess.keyword:(*0x40* OR *0x1000* OR *0x1400* OR *0x100000* OR *0x1410* OR *0x1010* OR *0x1438* OR *0x143a* OR *0x1418* OR *0x1f0fff* OR *0x1f1fff* OR *0x1f2fff* OR *0x1f3fff*)) AND (NOT (ProcessName.keyword:(*\\\\\\\\wmiprvse.exe OR *\\\\\\\\taskmgr.exe OR *\\\\\\\\procexp64.exe OR *\\\\\\\\procexp.exe OR *\\\\\\\\lsm.exe OR *\\\\\\\\csrss.exe OR *\\\\\\\\wininit.exe OR *\\\\\\\\vmtoolsd.exe))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Credentials Dumping Tools Accessing LSASS Memory\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nComputerName = {{_source.ComputerName}}\\n        User = {{_source.User}}\\n SourceImage = {{_source.SourceImage}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -101,7 +105,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-((EventID="10" TargetImage="*\\\\lsass.exe" (GrantedAccess="*0x40*" OR GrantedAccess="*0x1000*" OR GrantedAccess="*0x1400*" OR GrantedAccess="*0x100000*" OR GrantedAccess="*0x1410*" OR GrantedAccess="*0x1010*" OR GrantedAccess="*0x1438*" OR GrantedAccess="*0x143a*" OR GrantedAccess="*0x1418*" OR GrantedAccess="*0x1f0fff*" OR GrantedAccess="*0x1f1fff*" OR GrantedAccess="*0x1f2fff*" OR GrantedAccess="*0x1f3fff*")) NOT ((ProcessName="*\\\\wmiprvse.exe" OR ProcessName="*\\\\taskmgr.exe" OR ProcessName="*\\\\procexp64.exe" OR ProcessName="*\\\\procexp.exe" OR ProcessName="*\\\\lsm.exe" OR ProcessName="*\\\\csrss.exe" OR ProcessName="*\\\\wininit.exe" OR ProcessName="*\\\\vmtoolsd.exe")))
+((EventID="10" TargetImage="*\\\\lsass.exe" (GrantedAccess="*0x40*" OR GrantedAccess="*0x1000*" OR GrantedAccess="*0x1400*" OR GrantedAccess="*0x100000*" OR GrantedAccess="*0x1410*" OR GrantedAccess="*0x1010*" OR GrantedAccess="*0x1438*" OR GrantedAccess="*0x143a*" OR GrantedAccess="*0x1418*" OR GrantedAccess="*0x1f0fff*" OR GrantedAccess="*0x1f1fff*" OR GrantedAccess="*0x1f2fff*" OR GrantedAccess="*0x1f3fff*")) NOT ((ProcessName="*\\\\wmiprvse.exe" OR ProcessName="*\\\\taskmgr.exe" OR ProcessName="*\\\\procexp64.exe" OR ProcessName="*\\\\procexp.exe" OR ProcessName="*\\\\lsm.exe" OR ProcessName="*\\\\csrss.exe" OR ProcessName="*\\\\wininit.exe" OR ProcessName="*\\\\vmtoolsd.exe"))) | table ComputerName,User,SourceImage
 ```
 
 

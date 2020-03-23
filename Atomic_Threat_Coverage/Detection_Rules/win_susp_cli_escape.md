@@ -28,7 +28,8 @@ references:
     - https://www.fireeye.com/blog/threat-research/2017/06/obfuscation-in-the-wild.html
     - http://www.windowsinspired.com/understanding-the-command-line-string-and-arguments-received-by-a-windows-program/
 author: juju4
-modified: 2018/12/11
+date: 2018/12/11
+modified: 2020/03/14
 tags:
     - attack.defense_evasion
     - attack.t1140
@@ -39,8 +40,8 @@ detection:
     selection:
         CommandLine:
             # - <TAB>   # no TAB modifier in sigmac yet, so this matches <TAB> (or TAB in elasticsearch backends without DSL queries)
-            - ^h^t^t^p
-            - h"t"t"p
+            - '*h^t^t^p*'
+            - '*h"t"t"p*'
     condition: selection
 falsepositives:
     - False positives depend on scripts and administrative tools used in the monitored environment
@@ -55,42 +56,42 @@ level: low
 ### es-qs
     
 ```
-CommandLine:("\\^h\\^t\\^t\\^p" OR "h\\"t\\"t\\"p")
+CommandLine.keyword:(*h\\^t\\^t\\^p* OR *h\\"t\\"t\\"p*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Suspicious-Commandline-Escape <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Commandline Escape",\n    "description": "Detects suspicious process that use escape characters",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1140"\n    ],\n    "query": "CommandLine:(\\"\\\\^h\\\\^t\\\\^t\\\\^p\\" OR \\"h\\\\\\"t\\\\\\"t\\\\\\"p\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine:(\\"\\\\^h\\\\^t\\\\^t\\\\^p\\" OR \\"h\\\\\\"t\\\\\\"t\\\\\\"p\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Commandline Escape\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/f0cdd048-82dc-4f7a-8a7a-b87a52b6d0fd <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Commandline Escape",\n    "description": "Detects suspicious process that use escape characters",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1140"\n    ],\n    "query": "CommandLine.keyword:(*h\\\\^t\\\\^t\\\\^p* OR *h\\\\\\"t\\\\\\"t\\\\\\"p*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:(*h\\\\^t\\\\^t\\\\^p* OR *h\\\\\\"t\\\\\\"t\\\\\\"p*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Commandline Escape\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
 ### graylog
     
 ```
-CommandLine:("\\^h\\^t\\^t\\^p" "h\\"t\\"t\\"p")
+CommandLine.keyword:(*h\\^t\\^t\\^p* *h\\"t\\"t\\"p*)
 ```
 
 
 ### splunk
     
 ```
-(CommandLine="^h^t^t^p" OR CommandLine="h\\"t\\"t\\"p")
+(CommandLine="*h^t^t^p*" OR CommandLine="*h\\"t\\"t\\"p*")
 ```
 
 
 ### logpoint
     
 ```
-(event_id="1" CommandLine IN ["^h^t^t^p", "h\\"t\\"t\\"p"])
+(event_id="1" CommandLine IN ["*h^t^t^p*", "*h\\"t\\"t\\"p*"])
 ```
 
 
 ### grep
     
 ```
-grep -P \'^(?:.*\\^h\\^t\\^t\\^p|.*h"t"t"p)\'
+grep -P \'^(?:.*.*h\\^t\\^t\\^p.*|.*.*h"t"t"p.*)\'
 ```
 
 

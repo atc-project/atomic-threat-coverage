@@ -80,8 +80,8 @@ class DetectionRule:
             for query in queries:
                 # prepare command to execute from shell
                 # (yes, we know)
-                cmd = ATCconfig.get('sigmac_path') + " --shoot-yourself-in-the-foot -t " + \
-                    query + " --ignore-backend-errors " + self.yaml_file
+                cmd = ATCconfig.get('sigmac_path') + ' --shoot-yourself-in-the-foot -t "' + \
+                    query + '" --ignore-backend-errors "' + self.yaml_file + '"'
                     #query + " --ignore-backend-errors " + self.yaml_file + \
                     #" 2> /dev/null"
 
@@ -114,7 +114,7 @@ class DetectionRule:
             # print("%s || Dataneeded: \n%s\n" %
             #       (self.fields.get("title"), data_needed))
 
-            self.fields.update({'data_needed': data_needed})
+            self.fields.update({'data_needed': sorted(data_needed)})
 
             # Enrichments
             enrichments = self.fields.get("enrichment")
@@ -157,7 +157,6 @@ class DetectionRule:
                         amitt_technique.append((amitt_technique_mapping.get(te), te))
                     else:
                         other_tags.append(tag)
-
 
                 if len(tactic):
                     self.fields.update({'tactics': tactic})
@@ -211,9 +210,9 @@ class DetectionRule:
 
             for output in queries:
                 cmd = ATCconfig.get('sigmac_path') + \
-                    " --shoot-yourself-in-the-foot -t " + \
-                    output + " --ignore-backend-errors " + self.yaml_file + \
-                    " 2> /dev/null"
+                    ' --shoot-yourself-in-the-foot -t "' + \
+                    output + '" --ignore-backend-errors "' + self.yaml_file + \
+                    '" 2> /dev/null'
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
                 (query, err) = p.communicate()
                 # Wait for date to terminate. Get return returncode ##
@@ -222,14 +221,19 @@ class DetectionRule:
                 # have to remove '-' due to problems with
                 # Jinja2 variable naming,e.g es-qs throws error
                 # 'no es variable'
-                self.fields.update({output.replace("-", ""): str(query)[2:-3]})
+                #self.fields.update({output.replace("-", ""): str(query)[2:-3]})
+                det_queries[output] = str(query)[2:-3].replace("\\n", "\n")
+                
+            # Update detection rules
+            self.fields.update({"det_queries": det_queries})
+            self.fields.update({"queries": queries})
 
             # Data Needed
             data_needed = ATCutils.main_dn_calculatoin_func(self.yaml_file)
 
             data_needed_with_id = []
 
-            for data in data_needed:
+            for data in sorted(data_needed):
                 data_needed_id = str(ATCutils.confluence_get_page_id(
                     self.apipath, self.auth, self.space, data))
                 data = (data, data_needed_id)
@@ -287,7 +291,6 @@ class DetectionRule:
                         amitt_technique.append((amitt_technique_mapping.get(te), te))
                     else:
                         other_tags.append(tag)
-
 
                 if len(tactic):
                     self.fields.update({'tactics': tactic})

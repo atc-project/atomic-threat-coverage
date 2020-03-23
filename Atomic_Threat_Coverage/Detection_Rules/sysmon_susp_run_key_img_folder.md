@@ -6,7 +6,7 @@
 | Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
 | Trigger              | <ul><li>[T1060: Registry Run Keys / Startup Folder](../Triggers/T1060.md)</li></ul>  |
 | Severity Level       | high |
-| False Positives      | <ul><li>Software with rare behaviour</li></ul>  |
+| False Positives      | <ul><li>Software using the AppData folders for updates</li></ul>  |
 | Development Status   | experimental |
 | References           | <ul><li>[https://www.fireeye.com/blog/threat-research/2018/08/fin7-pursuing-an-enigmatic-and-evasive-global-criminal-operation.html](https://www.fireeye.com/blog/threat-research/2018/08/fin7-pursuing-an-enigmatic-and-evasive-global-criminal-operation.html)</li></ul>  |
 | Author               | Florian Roth, Markus Neis |
@@ -28,7 +28,7 @@ tags:
     - attack.persistence
     - attack.t1060
 date: 2018/25/08
-modified: 2019/10/01
+modified: 2020/02/26
 logsource:
     product: windows
     service: sysmon
@@ -36,25 +36,28 @@ detection:
     selection:
         EventID: 13
         TargetObject: 
-          - '*\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\\*'
-          - '*\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce\\*'
+            - '*\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\\*'
+            - '*\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce\\*'
         Details:
-          - '*C:\Windows\Temp\\*'
-          - '*\AppData\\*'
-          - '%AppData%\\*'
-          - '*C:\$Recycle.bin\\*'
-          - '*C:\Temp\\*'
-          - '*C:\Users\Public\\*'
-          - '%Public%\\*'
-          - '*C:\Users\Default\\*'
-          - '*C:\Users\Desktop\\*'
-          - 'wscript*'
-          - 'cscript*'
-    condition: selection
+            - '*C:\Windows\Temp\\*'
+            - '*\AppData\\*'
+            - '%AppData%\\*'
+            - '*C:\$Recycle.bin\\*'
+            - '*C:\Temp\\*'
+            - '*C:\Users\Public\\*'
+            - '%Public%\\*'
+            - '*C:\Users\Default\\*'
+            - '*C:\Users\Desktop\\*'
+            - 'wscript*'
+            - 'cscript*'
+    filter:
+        Details|contains:
+          - '\AppData\Local\Microsoft\OneDrive\'  # OneDrive False Positives
+    condition: selection and not filter
 fields:
     - Image
 falsepositives:
-    - Software with rare behaviour
+    - Software using the AppData folders for updates
 level: high
 
 ```
@@ -66,42 +69,42 @@ level: high
 ### es-qs
     
 ```
-(EventID:"13" AND TargetObject.keyword:(*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\\* OR *\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\\\\*) AND Details.keyword:(*C\\:\\\\Windows\\\\Temp\\\\* OR *\\\\AppData\\\\* OR %AppData%\\\\* OR *C\\:\\\\$Recycle.bin\\\\* OR *C\\:\\\\Temp\\\\* OR *C\\:\\\\Users\\\\Public\\\\* OR %Public%\\\\* OR *C\\:\\\\Users\\\\Default\\\\* OR *C\\:\\\\Users\\\\Desktop\\\\* OR wscript* OR cscript*))
+((EventID:"13" AND TargetObject.keyword:(*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\\* OR *\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\\\\*) AND Details.keyword:(*C\\:\\\\Windows\\\\Temp\\\\* OR *\\\\AppData\\\\* OR %AppData%\\\\* OR *C\\:\\\\$Recycle.bin\\\\* OR *C\\:\\\\Temp\\\\* OR *C\\:\\\\Users\\\\Public\\\\* OR %Public%\\\\* OR *C\\:\\\\Users\\\\Default\\\\* OR *C\\:\\\\Users\\\\Desktop\\\\* OR wscript* OR cscript*)) AND (NOT (Details.keyword:(*\\\\AppData\\\\Local\\\\Microsoft\\\\OneDrive\\*))))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/New-RUN-Key-Pointing-to-Suspicious-Folder <<EOF\n{\n  "metadata": {\n    "title": "New RUN Key Pointing to Suspicious Folder",\n    "description": "Detects suspicious new RUN key element pointing to an executable in a suspicious folder",\n    "tags": [\n      "attack.persistence",\n      "attack.t1060"\n    ],\n    "query": "(EventID:\\"13\\" AND TargetObject.keyword:(*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run\\\\\\\\* OR *\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\RunOnce\\\\\\\\*) AND Details.keyword:(*C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\* OR *\\\\\\\\AppData\\\\\\\\* OR %AppData%\\\\\\\\* OR *C\\\\:\\\\\\\\$Recycle.bin\\\\\\\\* OR *C\\\\:\\\\\\\\Temp\\\\\\\\* OR *C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\* OR %Public%\\\\\\\\* OR *C\\\\:\\\\\\\\Users\\\\\\\\Default\\\\\\\\* OR *C\\\\:\\\\\\\\Users\\\\\\\\Desktop\\\\\\\\* OR wscript* OR cscript*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"13\\" AND TargetObject.keyword:(*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run\\\\\\\\* OR *\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\RunOnce\\\\\\\\*) AND Details.keyword:(*C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\* OR *\\\\\\\\AppData\\\\\\\\* OR %AppData%\\\\\\\\* OR *C\\\\:\\\\\\\\$Recycle.bin\\\\\\\\* OR *C\\\\:\\\\\\\\Temp\\\\\\\\* OR *C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\* OR %Public%\\\\\\\\* OR *C\\\\:\\\\\\\\Users\\\\\\\\Default\\\\\\\\* OR *C\\\\:\\\\\\\\Users\\\\\\\\Desktop\\\\\\\\* OR wscript* OR cscript*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'New RUN Key Pointing to Suspicious Folder\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nImage = {{_source.Image}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/02ee49e2-e294-4d0f-9278-f5b3212fc588 <<EOF\n{\n  "metadata": {\n    "title": "New RUN Key Pointing to Suspicious Folder",\n    "description": "Detects suspicious new RUN key element pointing to an executable in a suspicious folder",\n    "tags": [\n      "attack.persistence",\n      "attack.t1060"\n    ],\n    "query": "((EventID:\\"13\\" AND TargetObject.keyword:(*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run\\\\\\\\* OR *\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\RunOnce\\\\\\\\*) AND Details.keyword:(*C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\* OR *\\\\\\\\AppData\\\\\\\\* OR %AppData%\\\\\\\\* OR *C\\\\:\\\\\\\\$Recycle.bin\\\\\\\\* OR *C\\\\:\\\\\\\\Temp\\\\\\\\* OR *C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\* OR %Public%\\\\\\\\* OR *C\\\\:\\\\\\\\Users\\\\\\\\Default\\\\\\\\* OR *C\\\\:\\\\\\\\Users\\\\\\\\Desktop\\\\\\\\* OR wscript* OR cscript*)) AND (NOT (Details.keyword:(*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\OneDrive\\\\*))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((EventID:\\"13\\" AND TargetObject.keyword:(*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run\\\\\\\\* OR *\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\RunOnce\\\\\\\\*) AND Details.keyword:(*C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\* OR *\\\\\\\\AppData\\\\\\\\* OR %AppData%\\\\\\\\* OR *C\\\\:\\\\\\\\$Recycle.bin\\\\\\\\* OR *C\\\\:\\\\\\\\Temp\\\\\\\\* OR *C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\* OR %Public%\\\\\\\\* OR *C\\\\:\\\\\\\\Users\\\\\\\\Default\\\\\\\\* OR *C\\\\:\\\\\\\\Users\\\\\\\\Desktop\\\\\\\\* OR wscript* OR cscript*)) AND (NOT (Details.keyword:(*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\OneDrive\\\\*))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'New RUN Key Pointing to Suspicious Folder\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nImage = {{_source.Image}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
 ### graylog
     
 ```
-(EventID:"13" AND TargetObject.keyword:(*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\\* *\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\\\\*) AND Details.keyword:(*C\\:\\\\Windows\\\\Temp\\\\* *\\\\AppData\\\\* %AppData%\\\\* *C\\:\\\\$Recycle.bin\\\\* *C\\:\\\\Temp\\\\* *C\\:\\\\Users\\\\Public\\\\* %Public%\\\\* *C\\:\\\\Users\\\\Default\\\\* *C\\:\\\\Users\\\\Desktop\\\\* wscript* cscript*))
+((EventID:"13" AND TargetObject.keyword:(*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\\* *\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\\\\*) AND Details.keyword:(*C\\:\\\\Windows\\\\Temp\\\\* *\\\\AppData\\\\* %AppData%\\\\* *C\\:\\\\$Recycle.bin\\\\* *C\\:\\\\Temp\\\\* *C\\:\\\\Users\\\\Public\\\\* %Public%\\\\* *C\\:\\\\Users\\\\Default\\\\* *C\\:\\\\Users\\\\Desktop\\\\* wscript* cscript*)) AND (NOT (Details.keyword:(*\\\\AppData\\\\Local\\\\Microsoft\\\\OneDrive\\*))))
 ```
 
 
 ### splunk
     
 ```
-(EventID="13" (TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\\*" OR TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\\\\*") (Details="*C:\\\\Windows\\\\Temp\\\\*" OR Details="*\\\\AppData\\\\*" OR Details="%AppData%\\\\*" OR Details="*C:\\\\$Recycle.bin\\\\*" OR Details="*C:\\\\Temp\\\\*" OR Details="*C:\\\\Users\\\\Public\\\\*" OR Details="%Public%\\\\*" OR Details="*C:\\\\Users\\\\Default\\\\*" OR Details="*C:\\\\Users\\\\Desktop\\\\*" OR Details="wscript*" OR Details="cscript*")) | table Image
+((EventID="13" (TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\\*" OR TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\\\\*") (Details="*C:\\\\Windows\\\\Temp\\\\*" OR Details="*\\\\AppData\\\\*" OR Details="%AppData%\\\\*" OR Details="*C:\\\\$Recycle.bin\\\\*" OR Details="*C:\\\\Temp\\\\*" OR Details="*C:\\\\Users\\\\Public\\\\*" OR Details="%Public%\\\\*" OR Details="*C:\\\\Users\\\\Default\\\\*" OR Details="*C:\\\\Users\\\\Desktop\\\\*" OR Details="wscript*" OR Details="cscript*")) NOT ((Details="*\\\\AppData\\\\Local\\\\Microsoft\\\\OneDrive\\*"))) | table Image
 ```
 
 
 ### logpoint
     
 ```
-(event_id="13" TargetObject IN ["*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\\*", "*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\\\\*"] Details IN ["*C:\\\\Windows\\\\Temp\\\\*", "*\\\\AppData\\\\*", "%AppData%\\\\*", "*C:\\\\$Recycle.bin\\\\*", "*C:\\\\Temp\\\\*", "*C:\\\\Users\\\\Public\\\\*", "%Public%\\\\*", "*C:\\\\Users\\\\Default\\\\*", "*C:\\\\Users\\\\Desktop\\\\*", "wscript*", "cscript*"])
+((event_id="13" TargetObject IN ["*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\\*", "*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\\\\*"] Details IN ["*C:\\\\Windows\\\\Temp\\\\*", "*\\\\AppData\\\\*", "%AppData%\\\\*", "*C:\\\\$Recycle.bin\\\\*", "*C:\\\\Temp\\\\*", "*C:\\\\Users\\\\Public\\\\*", "%Public%\\\\*", "*C:\\\\Users\\\\Default\\\\*", "*C:\\\\Users\\\\Desktop\\\\*", "wscript*", "cscript*"])  -(Details IN ["*\\\\AppData\\\\Local\\\\Microsoft\\\\OneDrive\\*"]))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*13)(?=.*(?:.*.*\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\\\.*|.*.*\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce\\\\.*))(?=.*(?:.*.*C:\\Windows\\Temp\\\\.*|.*.*\\AppData\\\\.*|.*%AppData%\\\\.*|.*.*C:\\\\$Recycle\\.bin\\\\.*|.*.*C:\\Temp\\\\.*|.*.*C:\\Users\\Public\\\\.*|.*%Public%\\\\.*|.*.*C:\\Users\\Default\\\\.*|.*.*C:\\Users\\Desktop\\\\.*|.*wscript.*|.*cscript.*)))'
+grep -P '^(?:.*(?=.*(?:.*(?=.*13)(?=.*(?:.*.*\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\\\.*|.*.*\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce\\\\.*))(?=.*(?:.*.*C:\\Windows\\Temp\\\\.*|.*.*\\AppData\\\\.*|.*%AppData%\\\\.*|.*.*C:\\\\$Recycle\\.bin\\\\.*|.*.*C:\\Temp\\\\.*|.*.*C:\\Users\\Public\\\\.*|.*%Public%\\\\.*|.*.*C:\\Users\\Default\\\\.*|.*.*C:\\Users\\Desktop\\\\.*|.*wscript.*|.*cscript.*))))(?=.*(?!.*(?:.*(?=.*(?:.*.*\\AppData\\Local\\Microsoft\\OneDrive\\.*))))))'
 ```
 
 

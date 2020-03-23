@@ -301,12 +301,12 @@ if __name__ == '__main__':
     else:
         opts_dict = dict(opts)
         kwargs = {
-            'dn_path': opts_dict.get('--dataneeded_path', '../data_needed/'),
-            'lp_path': opts_dict.get('--loggingpolicies_path', '../logging_policies/'),
-            'en_path': opts_dict.get('--enrichments_path', '../enrichments/'),
-            'rp_path': opts_dict.get('--response playbooks path', '../response_playbooks/'),
-            'ra_path': opts_dict.get('--response actions path', '../response_actions/'),
-            'cu_path': opts_dict.get('--customers path', '../customers/')
+            'dn_path': opts_dict.get('--dataneeded_path', ATCconfig.get('data_needed_dir')),
+            'lp_path': opts_dict.get('--loggingpolicies_path', ATCconfig.get('logging_policies_dir')),
+            'en_path': opts_dict.get('--enrichments_path', ATCconfig.get('enrichments_directory')),
+            'rp_path': opts_dict.get('--response playbooks path', ATCconfig.get('response_playbooks_dir')),
+            'ra_path': opts_dict.get('--response actions path', ATCconfig.get('response_actions_dir')),
+            'cu_path': opts_dict.get('--customers path', ATCconfig.get('customers_directory'))
         }
         try:
             os.remove(exported_analytics_directory + '/' + filename)

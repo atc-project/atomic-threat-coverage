@@ -53,8 +53,7 @@ class PopulateConfluence:
             self.atc_dir = atc_dir
 
         else:
-            self.atc_dir = "../" + \
-                ATCconfig.get('md_name_of_root_directory') + '/'
+            self.atc_dir = ATCconfig.get('md_name_of_root_directory')
 
         # Check if art_dir provided
         if art_dir:
@@ -149,8 +148,10 @@ class PopulateConfluence:
                     "confluencecontent": tg.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: TR '" + title + "'")
                 # print("Done: ", tg.fields["attack_technique"])
             except Exception as err:
                 print(tg_file + " failed")
@@ -184,8 +185,10 @@ class PopulateConfluence:
                     "confluencecontent": hp.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: HP '" + hp.hp_parsed_file['title'] + "'")
             except Exception as err:
                 print(hp_file + " failed")
                 print("Err message: %s" % err)
@@ -217,8 +220,10 @@ class PopulateConfluence:
                     "confluencecontent": ms.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: MS '" + ms.ms_parsed_file['title'] + "'")
             except Exception as err:
                 print(ms_file + " failed")
                 print("Err message: %s" % err)
@@ -251,8 +256,10 @@ class PopulateConfluence:
                     "confluencecontent": mp.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: MP '" + mp.mp_parsed_file['title'] + "'")
             except Exception as err:
                 print(mp_file + " failed")
                 print("Err message: %s" % err)
@@ -268,7 +275,8 @@ class PopulateConfluence:
         if lp_path:
             lp_list = glob.glob(lp_path + '*.yml')
         else:
-            lp_list = glob.glob('../logging_policies/*.yml')
+            lp_dir = ATCconfig.get('logging_policies_dir')
+            lp_list = glob.glob(lp_dir + '/*.yml')
 
         for lp_file in lp_list:
             try:
@@ -283,8 +291,10 @@ class PopulateConfluence:
                     "confluencecontent": lp.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: LP '" + lp.fields['title'] + "'")
                 # print("Done: ", lp.fields['title'])
             except Exception as err:
                 print(lp_file + " failed")
@@ -301,7 +311,8 @@ class PopulateConfluence:
         if dn_path:
             dn_list = glob.glob(dn_path + '*.yml')
         else:
-            dn_list = glob.glob('../data_needed/*.yml')
+            dn_dir = ATCconfig.get('data_needed_dir')
+            dn_list = glob.glob(dn_dir + '/*.yml')
 
         for dn_file in dn_list:
             try:
@@ -316,9 +327,10 @@ class PopulateConfluence:
                     "confluencecontent": dn.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
-
+                if res == 'Page updated':
+            	    print("==> updated page: DN '" + dn.dn_fields['title'] + "'")
                 # print("Done: ", dn.dn_fields['title'])
             except Exception as err:
                 print(dn_file + " failed")
@@ -359,8 +371,10 @@ class PopulateConfluence:
                         "Detection Rules")), "confluencecontent": dr.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: DR '" + dr.fields['title'] + "' (" + dr_file + ")")
                 # print("Done: ", dr.fields['title'])
             except Exception as err:
                 print(dr_file + " failed")
@@ -377,7 +391,8 @@ class PopulateConfluence:
         if en_path:
             en_list = glob.glob(en_path + '*.yml')
         else:
-            en_list = glob.glob('../enrichments/*.yml')
+            en_dir = ATCconfig.get('enrichments_directory')
+            en_list = glob.glob(en_dir + '/*.yml')
 
         for en_file in en_list:
             try:
@@ -393,8 +408,10 @@ class PopulateConfluence:
                         "Enrichments")), "confluencecontent": en.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: EN '" + en.en_parsed_file['title'] + "'")
                 # print("Done: ", en.en_parsed_file['title'])
             except Exception as err:
                 print(en_file + " failed")
@@ -411,7 +428,8 @@ class PopulateConfluence:
         if ra_path:
             ra_list = glob.glob(ra_path + '*.yml')
         else:
-            ra_list = glob.glob('../response_actions/*.yml')
+            ra_dir = ATCconfig.get('response_actions_dir')
+            ra_list = glob.glob(ra_dir + '/*.yml')
 
         for ra_file in ra_list:
             try:
@@ -427,8 +445,10 @@ class PopulateConfluence:
                         "Response Actions")), "confluencecontent": ra.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: RA '" + ra.ra_parsed_file['title'] + "'")
                 # print("Done: ", ra.ra_parsed_file['title'])
             except Exception as err:
                 print(ra_file + " failed")
@@ -446,7 +466,8 @@ class PopulateConfluence:
         if rp_path:
             rp_list = glob.glob(rp_path + '*.yml')
         else:
-            rp_list = glob.glob('../response_playbooks/*.yml')
+            rp_dir = ATCconfig.get('response_playbooks_dir')
+            rp_list = glob.glob(rp_dir + '/*.yml')
 
         for rp_file in rp_list:
             try:
@@ -465,8 +486,10 @@ class PopulateConfluence:
                     "confluencecontent": rp.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: RP '" + base + "'")
                 # print("Done: ", rp.rp_parsed_file['title'])
             except Exception as err:
                 print(rp_file + " failed")
@@ -483,8 +506,8 @@ class PopulateConfluence:
         if cu_path:
             cu_list = glob.glob(cu_path + '*.yml')
         else:
-            cu_list = glob.glob(ATCconfig.get('customers_directory') +
-                                '/*.yml')
+            cu_dir = ATCconfig.get('customers_directory')
+            cu_list = glob.glob(cu_dir + '/*.yml')
 
         for cu_file in cu_list:
             try:
@@ -501,8 +524,10 @@ class PopulateConfluence:
                     "confluencecontent": cu.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: CU '" + cu.customer_name + "'")
                 # print("Done: ", cu.title)
             except Exception as err:
                 print(cu_file + " failed")

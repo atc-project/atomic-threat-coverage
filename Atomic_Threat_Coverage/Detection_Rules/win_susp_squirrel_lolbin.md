@@ -27,6 +27,7 @@ references:
 tags:
     - attack.execution
 author: Karneades / Markus Neis
+date: 2019/11/12
 falsepositives:
     - 1Clipboard
     - Beaker Browser
@@ -71,10 +72,8 @@ detection:
         CommandLine:
             - '*--processStart*.exe*'
             - '*--processStartAndWait*.exe*'
-            - '*–createShortcut*.exe*'
-    condition: selection 
-  
-    
+            - '*--createShortcut*.exe*'
+    condition: selection
 
 ```
 
@@ -85,42 +84,42 @@ detection:
 ### es-qs
     
 ```
-(Image.keyword:(*\\\\update.exe) AND CommandLine.keyword:(*\\-\\-processStart*.exe* OR *\\-\\-processStartAndWait*.exe* OR *\xe2\x80\x93createShortcut*.exe*))
+(Image.keyword:(*\\\\update.exe) AND CommandLine.keyword:(*\\-\\-processStart*.exe* OR *\\-\\-processStartAndWait*.exe* OR *\\-\\-createShortcut*.exe*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Squirrel-Lolbin <<EOF\n{\n  "metadata": {\n    "title": "Squirrel Lolbin",\n    "description": "Detects Possible Squirrel Packages Manager as Lolbin",\n    "tags": [\n      "attack.execution"\n    ],\n    "query": "(Image.keyword:(*\\\\\\\\update.exe) AND CommandLine.keyword:(*\\\\-\\\\-processStart*.exe* OR *\\\\-\\\\-processStartAndWait*.exe* OR *\\u2013createShortcut*.exe*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(Image.keyword:(*\\\\\\\\update.exe) AND CommandLine.keyword:(*\\\\-\\\\-processStart*.exe* OR *\\\\-\\\\-processStartAndWait*.exe* OR *\\u2013createShortcut*.exe*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Squirrel Lolbin\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/fa4b21c9-0057-4493-b289-2556416ae4d7 <<EOF\n{\n  "metadata": {\n    "title": "Squirrel Lolbin",\n    "description": "Detects Possible Squirrel Packages Manager as Lolbin",\n    "tags": [\n      "attack.execution"\n    ],\n    "query": "(Image.keyword:(*\\\\\\\\update.exe) AND CommandLine.keyword:(*\\\\-\\\\-processStart*.exe* OR *\\\\-\\\\-processStartAndWait*.exe* OR *\\\\-\\\\-createShortcut*.exe*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(Image.keyword:(*\\\\\\\\update.exe) AND CommandLine.keyword:(*\\\\-\\\\-processStart*.exe* OR *\\\\-\\\\-processStartAndWait*.exe* OR *\\\\-\\\\-createShortcut*.exe*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Squirrel Lolbin\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
 ### graylog
     
 ```
-(Image.keyword:(*\\\\update.exe) AND CommandLine.keyword:(*\\-\\-processStart*.exe* *\\-\\-processStartAndWait*.exe* *\xe2\x80\x93createShortcut*.exe*))
+(Image.keyword:(*\\\\update.exe) AND CommandLine.keyword:(*\\-\\-processStart*.exe* *\\-\\-processStartAndWait*.exe* *\\-\\-createShortcut*.exe*))
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\\\update.exe") (CommandLine="*--processStart*.exe*" OR CommandLine="*--processStartAndWait*.exe*" OR CommandLine="*\xe2\x80\x93createShortcut*.exe*"))
+((Image="*\\\\update.exe") (CommandLine="*--processStart*.exe*" OR CommandLine="*--processStartAndWait*.exe*" OR CommandLine="*--createShortcut*.exe*"))
 ```
 
 
 ### logpoint
     
 ```
-(event_id="1" Image IN ["*\\\\update.exe"] CommandLine IN ["*--processStart*.exe*", "*--processStartAndWait*.exe*", "*\xe2\x80\x93createShortcut*.exe*"])
+(event_id="1" Image IN ["*\\\\update.exe"] CommandLine IN ["*--processStart*.exe*", "*--processStartAndWait*.exe*", "*--createShortcut*.exe*"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*.*\\update\\.exe))(?=.*(?:.*.*--processStart.*\\.exe.*|.*.*--processStartAndWait.*\\.exe.*|.*.*\xe2\x80\x93createShortcut.*\\.exe.*)))'
+grep -P '^(?:.*(?=.*(?:.*.*\\update\\.exe))(?=.*(?:.*.*--processStart.*\\.exe.*|.*.*--processStartAndWait.*\\.exe.*|.*.*--createShortcut.*\\.exe.*)))'
 ```
 
 

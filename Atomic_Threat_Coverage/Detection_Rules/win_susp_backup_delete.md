@@ -25,6 +25,7 @@ references:
     - https://technet.microsoft.com/en-us/library/cc742154(v=ws.11).aspx
     - https://www.hybrid-analysis.com/sample/ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa?environmentId=100
 author: Florian Roth (rule), Tom U. @c_APT_ure (collection)
+date: 2017/05/12
 tags:
     - attack.defense_evasion
     - attack.t1107
@@ -39,7 +40,6 @@ detection:
 falsepositives:
     - Unknown
 level: medium
-
 
 ```
 
@@ -57,7 +57,7 @@ level: medium
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/Backup-Catalog-Deleted <<EOF\n{\n  "metadata": {\n    "title": "Backup Catalog Deleted",\n    "description": "Detects backup catalog deletions",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1107"\n    ],\n    "query": "(EventID:\\"524\\" AND Source:\\"Backup\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"524\\" AND Source:\\"Backup\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Backup Catalog Deleted\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9703792d-fd9a-456d-a672-ff92efe4806a <<EOF\n{\n  "metadata": {\n    "title": "Backup Catalog Deleted",\n    "description": "Detects backup catalog deletions",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1107"\n    ],\n    "query": "(EventID:\\"524\\" AND Source:\\"Backup\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"524\\" AND Source:\\"Backup\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Backup Catalog Deleted\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 

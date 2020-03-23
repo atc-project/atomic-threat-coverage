@@ -123,7 +123,8 @@ class ResponsePlaybook:
                 try:
                     for task in self.rp_parsed_file.get(stage_name):
                         action = ATCutils.read_yaml_file(
-                            '../response_actions/' + task + '.yml'
+                            ATCconfig.get('response_actions_dir')
+                            + '/' + task + '.yml'
                         )
 
                         stage_list.append(
@@ -214,7 +215,8 @@ class ResponsePlaybook:
                 try:
                     for task in self.rp_parsed_file.get(stage_name):
                         action = ATCutils.read_yaml_file(
-                            '../response_actions/' + task + '.yml'
+                            ATCconfig.get('response_actions_dir') 
+                            + '/' + task + '.yml'
                         )
                         action_title = action.get('title')
                         if self.apipath and self.auth and self.space:
@@ -268,7 +270,8 @@ class ResponsePlaybook:
                 try:
                     for task in self.rp_parsed_file.get(stage_name):
                         action = ATCutils.read_yaml_file(
-                            '../response_actions/' + task + '.yml')
+                            ATCconfig.get('response_actions_dir')
+                            + '/' + task + '.yml')
                         stage_list.append(
                             (action.get('description'),
                              action.get('workflow'))
@@ -294,7 +297,7 @@ class ResponsePlaybook:
         # Render
         self.content = template.render(self.rp_parsed_file)
 
-    def save_markdown_file(self, atc_dir='../Atomic_Threat_Coverage/'):
+    def save_markdown_file(self, atc_dir=ATCconfig.get('md_name_of_root_directory')):
         """Write content (md template filled with data) to a file"""
 
         base = os.path.basename(self.yaml_file)
