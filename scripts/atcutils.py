@@ -8,6 +8,7 @@ import os
 import subprocess
 import requests
 import warnings
+import html
 
 from sigma_mapping import sigma_mapping
 from os import listdir
@@ -338,7 +339,7 @@ class ATCutils:
 
             response = requests.request(
                 "GET",
-                url + "/%s?expand=body.storage" % str(cid),
+                url + "/%s?expand=body.storage,version" % str(cid),
                 data=payload,
                 headers=headers,
                 auth=auth
@@ -348,29 +349,31 @@ class ATCutils:
 
             current_content = resp["body"]["storage"]["value"]
 
-            if current_content == data["confluencecontent"]:
+            #if current_content == data["confluencecontent"]:
+            # compare pages: revert changes in confluence page, remove \n \r \t \s
+            conv = {
+                '<ac:structured-macro ac:name="markdown"[^>]*>': '<ac:structured-macro ac:name="markdown">',
+                '<ac:structured-macro ac:name="expand"[^>]*>': '<ac:structured-macroac:name="expand">',
+                '<ac:structured-macro ac:name="code"[^>]*>': '<ac:structured-macroac:name="code">',
+                'â€™': '’', 
+                'Ä€': 'Ā', 
+                '\n': '',
+                '\r': '',
+                '\t': '',
+                ' ': ''
+            }
+            curr = html.unescape(current_content)
+            new = html.unescape(data["confluencecontent"])
+            for str_from, str_to in conv.items():
+                curr = re.sub(str_from, str_to, curr)
+                new = re.sub(str_from, str_to, new)
+
+            if curr == new:
                 return "No update required"
 
-            response = requests.request(
-                "GET",
-                url + "/%s/version" % str(cid),
-                data=payload,
-                headers=headers,
-                auth=auth
-            )
-
-            resp = json.loads(response.text)
-
-            i = 0
-
             try:
-                for item in resp["results"]:
-                    if int(item["number"]) > i:
-                        i = int(item["number"])
-
-                i += 1  # update by one
-
-                dict_payload["version"] = {"number": "%s" % str(i)}
+                i = int(resp["version"]["number"]) + 1
+                dict_payload["version"] = {"number": i}
                 payload = json.dumps(dict_payload)
 
                 response = requests.request(

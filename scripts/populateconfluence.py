@@ -149,8 +149,10 @@ class PopulateConfluence:
                     "confluencecontent": tg.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: TR '" + title + "'")
                 # print("Done: ", tg.fields["attack_technique"])
             except Exception as err:
                 print(tg_file + " failed")
@@ -184,8 +186,10 @@ class PopulateConfluence:
                     "confluencecontent": hp.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: HP '" + hp.hp_parsed_file['title'] + "'")
             except Exception as err:
                 print(hp_file + " failed")
                 print("Err message: %s" % err)
@@ -217,8 +221,10 @@ class PopulateConfluence:
                     "confluencecontent": ms.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: MS '" + ms.ms_parsed_file['title'] + "'")
             except Exception as err:
                 print(ms_file + " failed")
                 print("Err message: %s" % err)
@@ -251,8 +257,10 @@ class PopulateConfluence:
                     "confluencecontent": mp.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: MP '" + mp.mp_parsed_file['title'] + "'")
             except Exception as err:
                 print(mp_file + " failed")
                 print("Err message: %s" % err)
@@ -283,8 +291,10 @@ class PopulateConfluence:
                     "confluencecontent": lp.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: LP '" + lp.fields['title'] + "'")
                 # print("Done: ", lp.fields['title'])
             except Exception as err:
                 print(lp_file + " failed")
@@ -316,9 +326,10 @@ class PopulateConfluence:
                     "confluencecontent": dn.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
-
+                if res == 'Page updated':
+            	    print("==> updated page: DN '" + dn.dn_fields['title'] + "'")
                 # print("Done: ", dn.dn_fields['title'])
             except Exception as err:
                 print(dn_file + " failed")
@@ -359,8 +370,10 @@ class PopulateConfluence:
                         "Detection Rules")), "confluencecontent": dr.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: DR '" + dr.fields['title'] + "' (" + dr_file + ")")
                 # print("Done: ", dr.fields['title'])
             except Exception as err:
                 print(dr_file + " failed")
@@ -393,8 +406,10 @@ class PopulateConfluence:
                         "Enrichments")), "confluencecontent": en.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: EN '" + en.en_parsed_file['title'] + "'")
                 # print("Done: ", en.en_parsed_file['title'])
             except Exception as err:
                 print(en_file + " failed")
@@ -427,8 +442,10 @@ class PopulateConfluence:
                         "Response Actions")), "confluencecontent": ra.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: RA '" + ra.ra_parsed_file['title'] + "'")
                 # print("Done: ", ra.ra_parsed_file['title'])
             except Exception as err:
                 print(ra_file + " failed")
@@ -465,8 +482,10 @@ class PopulateConfluence:
                     "confluencecontent": rp.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: RP '" + base + "'")
                 # print("Done: ", rp.rp_parsed_file['title'])
             except Exception as err:
                 print(rp_file + " failed")
@@ -501,8 +520,10 @@ class PopulateConfluence:
                     "confluencecontent": cu.content,
                 }
 
-                ATCutils.push_to_confluence(confluence_data, self.apipath,
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
                                             self.auth)
+                if res == 'Page updated':
+            	    print("==> updated page: CU '" + cu.customer_name + "'")
                 # print("Done: ", cu.title)
             except Exception as err:
                 print(cu_file + " failed")
