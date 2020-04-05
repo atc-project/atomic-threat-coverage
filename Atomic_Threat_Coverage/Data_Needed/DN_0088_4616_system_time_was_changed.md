@@ -1,13 +1,13 @@
-| Title          | DN_0088_4616_system_time_was_changed       |
-|:---------------|:------------------|
-| Description    | The system time was changed |
-| Logging Policy | <ul><li>[LP_0046_windows_audit_security_state_change](../Logging_Policies/LP_0046_windows_audit_security_state_change.md)</li></ul> |
-| References     | <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4616](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4616)</li></ul> |
-| Platform       | Windows    |
-| Type           | Windows Log        |
-| Channel        | Security     |
-| Provider       | Microsoft-Windows-Security-Auditing    |
-| Fields         | <ul><li>EventID</li><li>ComputerName</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>PreviousTime</li><li>NewTime</li><li>ProcessId</li><li>ProcessName</li></ul> |
+| Title              | DN_0088_4616_system_time_was_changed       |
+|:-------------------|:------------------|
+| **Description**    | The system time was changed |
+| **Logging Policy** | <ul><li>[LP_0046_windows_audit_security_state_change](../Logging_Policies/LP_0046_windows_audit_security_state_change.md)</li></ul> |
+| **References**     | <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4616](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4616)</li></ul> |
+| **Platform**       | Windows    |
+| **Type**           | Windows Log        |
+| **Channel**        | Security     |
+| **Provider**       | Microsoft-Windows-Security-Auditing    |
+| **Fields**         | <ul><li>EventID</li><li>ComputerName</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>PreviousTime</li><li>NewTime</li><li>ProcessId</li><li>ProcessName</li></ul> |
 
 
 ## Log Samples

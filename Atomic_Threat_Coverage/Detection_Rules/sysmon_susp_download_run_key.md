@@ -1,15 +1,15 @@
-| Title                | Suspicious RUN Key from Download                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects the suspicious RUN keys created by software located in Download or temporary Outlook/Internet Explorer directories                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1060: Registry Run Keys / Startup Folder](https://attack.mitre.org/techniques/T1060)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
-| Trigger              | <ul><li>[T1060: Registry Run Keys / Startup Folder](../Triggers/T1060.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Software installers downloaded and used by users</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://app.any.run/tasks/c5bef5b7-f484-4c43-9cf3-d5c5c7839def/](https://app.any.run/tasks/c5bef5b7-f484-4c43-9cf3-d5c5c7839def/)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | Suspicious RUN Key from Download       |
+|:-------------------------|:------------------|
+| **Description**          | Detects the suspicious RUN keys created by software located in Download or temporary Outlook/Internet Explorer directories |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1060: Registry Run Keys / Startup Folder](https://attack.mitre.org/techniques/T1060)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1060: Registry Run Keys / Startup Folder](../Triggers/T1060.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Software installers downloaded and used by users</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://app.any.run/tasks/c5bef5b7-f484-4c43-9cf3-d5c5c7839def/](https://app.any.run/tasks/c5bef5b7-f484-4c43-9cf3-d5c5c7839def/)</li></ul>  |
+| **Author**               | Florian Roth |
 
 
 ## Detection Rules

@@ -1,6 +1,6 @@
 | Title                       | RA_0028_containment_block_threat_on_network_level         |
 |:----------------------------|:--------------------|
-| **Description**             | Aggregated Response Action for blocking threats on Network Level.   |
+| **Description**             | Block threats on the Network Level   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | containment         |

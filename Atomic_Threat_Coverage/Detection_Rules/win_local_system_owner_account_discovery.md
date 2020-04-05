@@ -1,15 +1,15 @@
-| Title                | Local Accounts Discovery                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Local accounts, System Owner/User discovery using operating systems utilities                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1033: System Owner/User Discovery](https://attack.mitre.org/techniques/T1033)</li><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1033: System Owner/User Discovery](../Triggers/T1033.md)</li><li>[T1087: Account Discovery](../Triggers/T1087.md)</li></ul>  |
-| Severity Level       | low |
-| False Positives      | <ul><li>Legitimate administrator or user enumerates local users for legitimate reason</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1033/T1033.yaml](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1033/T1033.yaml)</li></ul>  |
-| Author               | Timur Zinniatullin, Daniil Yugoslavskiy, oscd.community |
+| Title                    | Local Accounts Discovery       |
+|:-------------------------|:------------------|
+| **Description**          | Local accounts, System Owner/User discovery using operating systems utilities |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1033: System Owner/User Discovery](https://attack.mitre.org/techniques/T1033)</li><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1033: System Owner/User Discovery](../Triggers/T1033.md)</li><li>[T1087: Account Discovery](../Triggers/T1087.md)</li></ul>  |
+| **Severity Level**       | low |
+| **False Positives**      | <ul><li>Legitimate administrator or user enumerates local users for legitimate reason</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1033/T1033.yaml](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1033/T1033.yaml)</li></ul>  |
+| **Author**               | Timur Zinniatullin, Daniil Yugoslavskiy, oscd.community |
 
 
 ## Detection Rules

@@ -1,13 +1,13 @@
-| Title          | DN_0086_4720_user_account_was_created       |
-|:---------------|:------------------|
-| Description    | A user account was created |
-| Logging Policy | <ul><li>[LP_0026_windows_audit_user_account_management](../Logging_Policies/LP_0026_windows_audit_user_account_management.md)</li></ul> |
-| References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4720.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4720.md)</li></ul> |
-| Platform       | Windows    |
-| Type           | Windows Log        |
-| Channel        | Security     |
-| Provider       | Microsoft-Windows-Security-Auditing    |
-| Fields         | <ul><li>EventID</li><li>ComputerName</li><li>Computer</li><li>Hostname</li><li>TargetUserName</li><li>TargetDomainName</li><li>TargetSid</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>PrivilegeList</li><li>SamAccountName</li><li>DisplayName</li><li>UserPrincipalName</li><li>HomeDirectory</li><li>HomePath</li><li>ScriptPath</li><li>ProfilePath</li><li>UserWorkstations</li><li>PasswordLastSet</li><li>AccountExpires</li><li>PrimaryGroupId</li><li>AllowedToDelegateTo</li><li>OldUacValue</li><li>NewUacValue</li><li>UserAccountControl</li><li>UserParameters</li><li>SidHistory</li><li>LogonHours</li></ul> |
+| Title              | DN_0086_4720_user_account_was_created       |
+|:-------------------|:------------------|
+| **Description**    | A user account was created |
+| **Logging Policy** | <ul><li>[LP_0026_windows_audit_user_account_management](../Logging_Policies/LP_0026_windows_audit_user_account_management.md)</li></ul> |
+| **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4720.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4720.md)</li></ul> |
+| **Platform**       | Windows    |
+| **Type**           | Windows Log        |
+| **Channel**        | Security     |
+| **Provider**       | Microsoft-Windows-Security-Auditing    |
+| **Fields**         | <ul><li>EventID</li><li>ComputerName</li><li>Computer</li><li>Hostname</li><li>TargetUserName</li><li>TargetDomainName</li><li>TargetSid</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>PrivilegeList</li><li>SamAccountName</li><li>DisplayName</li><li>UserPrincipalName</li><li>HomeDirectory</li><li>HomePath</li><li>ScriptPath</li><li>ProfilePath</li><li>UserWorkstations</li><li>PasswordLastSet</li><li>AccountExpires</li><li>PrimaryGroupId</li><li>AllowedToDelegateTo</li><li>OldUacValue</li><li>NewUacValue</li><li>UserAccountControl</li><li>UserParameters</li><li>SidHistory</li><li>LogonHours</li></ul> |
 
 
 ## Log Samples

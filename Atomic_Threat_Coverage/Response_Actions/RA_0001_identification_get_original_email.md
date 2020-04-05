@@ -1,6 +1,6 @@
 | Title                       | RA_0001_identification_get_original_email         |
 |:----------------------------|:--------------------|
-| **Description**             | Obtain original phishing email   |
+| **Description**             | Obtain the original phishing email   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | identification         |

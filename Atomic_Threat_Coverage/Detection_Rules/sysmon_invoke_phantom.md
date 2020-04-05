@@ -1,15 +1,15 @@
-| Title                | Suspect Svchost Memory Asccess                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects suspect access to svchost process memory such as that used by Invoke-Phantom to kill the winRM windows event logging service.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1089: Disabling Security Tools](https://attack.mitre.org/techniques/T1089)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0014_10_windows_sysmon_ProcessAccess](../Data_Needed/DN_0014_10_windows_sysmon_ProcessAccess.md)</li></ul>  |
-| Trigger              | <ul><li>[T1089: Disabling Security Tools](../Triggers/T1089.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://github.com/hlldz/Invoke-Phant0m](https://github.com/hlldz/Invoke-Phant0m)</li><li>[https://twitter.com/timbmsft/status/900724491076214784](https://twitter.com/timbmsft/status/900724491076214784)</li></ul>  |
-| Author               | Tim Burrell |
+| Title                    | Suspect Svchost Memory Asccess       |
+|:-------------------------|:------------------|
+| **Description**          | Detects suspect access to svchost process memory such as that used by Invoke-Phantom to kill the winRM windows event logging service. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1089: Disabling Security Tools](https://attack.mitre.org/techniques/T1089)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0014_10_windows_sysmon_ProcessAccess](../Data_Needed/DN_0014_10_windows_sysmon_ProcessAccess.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1089: Disabling Security Tools](../Triggers/T1089.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://github.com/hlldz/Invoke-Phant0m](https://github.com/hlldz/Invoke-Phant0m)</li><li>[https://twitter.com/timbmsft/status/900724491076214784](https://twitter.com/timbmsft/status/900724491076214784)</li></ul>  |
+| **Author**               | Tim Burrell |
 
 
 ## Detection Rules

@@ -1,7 +1,7 @@
 | Title                       | RA_0029_recovery_reinstall_host_from_golden_image         |
 |:----------------------------|:--------------------|
 | **Description**             | Response Action for   |
-| **Author**                  | Name Surname        |
+| **Author**                  | name/nickname/twitter        |
 | **Creation Date**           | DD.MM.YYYY |
 | **Stage**                   | recovery         |
 | **Automation**              |<ul><li>thehive</li></ul> |

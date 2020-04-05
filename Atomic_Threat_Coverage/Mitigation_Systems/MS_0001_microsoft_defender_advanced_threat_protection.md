@@ -1,8 +1,8 @@
-| Title           | MS_0001_microsoft_defender_advanced_threat_protection                                                                          |
-|:----------------|:-------------------------------------------------------------------------------------|
-| Platform        | <ul><li>Windows</li></ul>                   |
-| Minimum Version | <ul><li>Windows 10</li><li>Windows Server 2016</li></ul>      |
-| References      | <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/](https://docs.microsoft.com/en-us/windows/security/threat-protection/)</li><li>[https://attackevals.mitre.org/microsoft.1.apt3.1_configuration](https://attackevals.mitre.org/microsoft.1.apt3.1_configuration)</li><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-atp/microsoft-defender-advanced-threat-protection](https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-atp/microsoft-defender-advanced-threat-protection)</li></ul>      |
+| Title               | MS_0001_microsoft_defender_advanced_threat_protection                                                                     |
+|:--------------------|:--------------------------------------------------------------------------------|
+| **Platform**        | <ul><li>Windows</li></ul>              |
+| **Minimum Version** | <ul><li>Windows 10</li><li>Windows Server 2016</li></ul> |
+| **References**      | <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/](https://docs.microsoft.com/en-us/windows/security/threat-protection/)</li><li>[https://attackevals.mitre.org/microsoft.1.apt3.1_configuration](https://attackevals.mitre.org/microsoft.1.apt3.1_configuration)</li><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-atp/microsoft-defender-advanced-threat-protection](https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-atp/microsoft-defender-advanced-threat-protection)</li></ul> |
 
 ## Description
 

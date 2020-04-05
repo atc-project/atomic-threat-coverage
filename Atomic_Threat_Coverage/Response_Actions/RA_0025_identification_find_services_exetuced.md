@@ -1,7 +1,7 @@
 | Title                       | RA_0025_identification_find_services_exetuced         |
 |:----------------------------|:--------------------|
 | **Description**             | Response Action for   |
-| **Author**                  | Name Surname        |
+| **Author**                  | name/nickname/twitter        |
 | **Creation Date**           | DD.MM.YYYY |
 | **Stage**                   | identification         |
 | **Automation**              |<ul><li>thehive</li></ul> |

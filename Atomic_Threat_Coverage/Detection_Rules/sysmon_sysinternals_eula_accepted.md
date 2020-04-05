@@ -1,15 +1,15 @@
-| Title                | Usage of Sysinternals Tools                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects the usage of Sysinternals Tools due to accepteula key being added to Registry                                                                                                                                           |
-| ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
-| ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
-| Trigger              |  There is no documented Trigger for this Detection Rule yet  |
-| Severity Level       | low |
-| False Positives      | <ul><li>Legitimate use of SysInternals tools</li><li>Programs that use the same Registry Key</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://twitter.com/Moti_B/status/1008587936735035392](https://twitter.com/Moti_B/status/1008587936735035392)</li></ul>  |
-| Author               | Markus Neis |
+| Title                    | Usage of Sysinternals Tools       |
+|:-------------------------|:------------------|
+| **Description**          | Detects the usage of Sysinternals Tools due to accepteula key being added to Registry |
+| **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Severity Level**       | low |
+| **False Positives**      | <ul><li>Legitimate use of SysInternals tools</li><li>Programs that use the same Registry Key</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://twitter.com/Moti_B/status/1008587936735035392](https://twitter.com/Moti_B/status/1008587936735035392)</li></ul>  |
+| **Author**               | Markus Neis |
 
 
 ## Detection Rules

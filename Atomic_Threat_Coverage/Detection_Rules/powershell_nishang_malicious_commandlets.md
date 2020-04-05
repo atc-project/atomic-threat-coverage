@@ -1,15 +1,15 @@
-| Title                | Malicious Nishang PowerShell Commandlets                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects Commandlet names and arguments from the Nishang exploitation framework                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li><li>[DN_0037_4103_windows_powershell_executing_pipeline](../Data_Needed/DN_0037_4103_windows_powershell_executing_pipeline.md)</li></ul>  |
-| Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Penetration testing</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://github.com/samratashok/nishang](https://github.com/samratashok/nishang)</li></ul>  |
-| Author               | Alec Costello |
+| Title                    | Malicious Nishang PowerShell Commandlets       |
+|:-------------------------|:------------------|
+| **Description**          | Detects Commandlet names and arguments from the Nishang exploitation framework |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li><li>[DN_0037_4103_windows_powershell_executing_pipeline](../Data_Needed/DN_0037_4103_windows_powershell_executing_pipeline.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Penetration testing</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://github.com/samratashok/nishang](https://github.com/samratashok/nishang)</li></ul>  |
+| **Author**               | Alec Costello |
 
 
 ## Detection Rules

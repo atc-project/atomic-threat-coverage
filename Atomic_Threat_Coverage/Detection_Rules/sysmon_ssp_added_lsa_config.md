@@ -1,15 +1,15 @@
-| Title                | Security Support Provider (SSP) Added to LSA Configuration                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects the addition of a SSP to the registry. Upon a reboot or API call, SSP DLLs gain access to encrypted and plaintext passwords stored in Windows.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1011: Exfiltration Over Other Network Medium](https://attack.mitre.org/techniques/T1011)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
-| Trigger              | <ul><li>[T1011: Exfiltration Over Other Network Medium](../Triggers/T1011.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>Unlikely</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://attack.mitre.org/techniques/T1101/](https://attack.mitre.org/techniques/T1101/)</li><li>[https://powersploit.readthedocs.io/en/latest/Persistence/Install-SSP/](https://powersploit.readthedocs.io/en/latest/Persistence/Install-SSP/)</li></ul>  |
-| Author               | iwillkeepwatch |
+| Title                    | Security Support Provider (SSP) Added to LSA Configuration       |
+|:-------------------------|:------------------|
+| **Description**          | Detects the addition of a SSP to the registry. Upon a reboot or API call, SSP DLLs gain access to encrypted and plaintext passwords stored in Windows. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1011: Exfiltration Over Other Network Medium](https://attack.mitre.org/techniques/T1011)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1011: Exfiltration Over Other Network Medium](../Triggers/T1011.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>Unlikely</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://attack.mitre.org/techniques/T1101/](https://attack.mitre.org/techniques/T1101/)</li><li>[https://powersploit.readthedocs.io/en/latest/Persistence/Install-SSP/](https://powersploit.readthedocs.io/en/latest/Persistence/Install-SSP/)</li></ul>  |
+| **Author**               | iwillkeepwatch |
 
 
 ## Detection Rules

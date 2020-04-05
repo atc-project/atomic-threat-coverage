@@ -1,7 +1,7 @@
 | Title                       | RA_0033_identification_find_files_created         |
 |:----------------------------|:--------------------|
 | **Description**             | Response Action for   |
-| **Author**                  | Name Surname        |
+| **Author**                  | name/nickname/twitter        |
 | **Creation Date**           | DD.MM.YYYY |
 | **Stage**                   | identification         |
 | **Automation**              |<ul><li>thehive</li></ul> |

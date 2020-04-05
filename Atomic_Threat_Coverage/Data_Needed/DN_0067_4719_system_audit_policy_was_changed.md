@@ -1,13 +1,13 @@
-| Title          | DN_0067_4719_system_audit_policy_was_changed       |
-|:---------------|:------------------|
-| Description    | This event generates when the computer's audit policy changes. This event is always logged regardless of the "Audit Policy Change"  sub-category setting |
-| Logging Policy | <ul><li> Not existing </li></ul> |
-| References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4719.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4719.md)</li></ul> |
-| Platform       | Windows    |
-| Type           | Windows Log        |
-| Channel        | Security     |
-| Provider       | Microsoft-Windows-Security-Auditing    |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>CategoryId</li><li>SubcategoryId</li><li>SubcategoryGuid</li><li>AuditPolicyChanges</li></ul> |
+| Title              | DN_0067_4719_system_audit_policy_was_changed       |
+|:-------------------|:------------------|
+| **Description**    | This event generates when the computer's audit policy changes. This event is always logged regardless of the "Audit Policy Change"  sub-category setting |
+| **Logging Policy** | <ul><li> Not existing </li></ul> |
+| **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4719.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4719.md)</li></ul> |
+| **Platform**       | Windows    |
+| **Type**           | Windows Log        |
+| **Channel**        | Security     |
+| **Provider**       | Microsoft-Windows-Security-Auditing    |
+| **Fields**         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>CategoryId</li><li>SubcategoryId</li><li>SubcategoryGuid</li><li>AuditPolicyChanges</li></ul> |
 
 
 ## Log Samples

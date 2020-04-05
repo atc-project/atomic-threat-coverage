@@ -1,15 +1,15 @@
-| Title                | Rare Scheduled Task Creations                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | This rule detects rare scheduled task creations. Typically software gets installed on multiple systems and not only on a few. The aggregation and count function selects tasks with rare names.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1053: Scheduled Task](https://attack.mitre.org/techniques/T1053)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0035_106_task_scheduler_task_registered](../Data_Needed/DN_0035_106_task_scheduler_task_registered.md)</li></ul>  |
-| Trigger              | <ul><li>[T1053: Scheduled Task](../Triggers/T1053.md)</li></ul>  |
-| Severity Level       | low |
-| False Positives      | <ul><li>Software installation</li></ul>  |
-| Development Status   | experimental |
-| References           |  There are no documented References for this Detection Rule yet  |
-| Author               | Florian Roth |
+| Title                    | Rare Scheduled Task Creations       |
+|:-------------------------|:------------------|
+| **Description**          | This rule detects rare scheduled task creations. Typically software gets installed on multiple systems and not only on a few. The aggregation and count function selects tasks with rare names. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1053: Scheduled Task](https://attack.mitre.org/techniques/T1053)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0035_106_task_scheduler_task_registered](../Data_Needed/DN_0035_106_task_scheduler_task_registered.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1053: Scheduled Task](../Triggers/T1053.md)</li></ul>  |
+| **Severity Level**       | low |
+| **False Positives**      | <ul><li>Software installation</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           |  There are no documented References for this Detection Rule yet  |
+| **Author**               | Florian Roth |
 | Other Tags           | <ul><li>attack.s0111</li></ul> | 
 
 ## Detection Rules

@@ -1,15 +1,15 @@
-| Title                | Dnscat Execution                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Dnscat exfiltration tool execution                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0010: Exfiltration](https://attack.mitre.org/tactics/TA0010)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1048: Exfiltration Over Alternative Protocol](https://attack.mitre.org/techniques/T1048)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li></ul>  |
-| Trigger              | <ul><li>[T1048: Exfiltration Over Alternative Protocol](../Triggers/T1048.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>Legitimate usage of PowerShell Dnscat2 — DNS Exfiltration tool (unlikely)</li></ul>  |
-| Development Status   | experimental |
-| References           |  There are no documented References for this Detection Rule yet  |
-| Author               | Daniil Yugoslavskiy, oscd.community |
+| Title                    | Dnscat Execution       |
+|:-------------------------|:------------------|
+| **Description**          | Dnscat exfiltration tool execution |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0010: Exfiltration](https://attack.mitre.org/tactics/TA0010)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1048: Exfiltration Over Alternative Protocol](https://attack.mitre.org/techniques/T1048)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1048: Exfiltration Over Alternative Protocol](../Triggers/T1048.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>Legitimate usage of PowerShell Dnscat2 — DNS Exfiltration tool (unlikely)</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           |  There are no documented References for this Detection Rule yet  |
+| **Author**               | Daniil Yugoslavskiy, oscd.community |
 
 
 ## Detection Rules

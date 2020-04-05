@@ -1,15 +1,15 @@
-| Title                | Windows Webshell Creation                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Posible webshell file creation on a static web site                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1100: Web Shell](https://attack.mitre.org/techniques/T1100)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li></ul>  |
-| Trigger              | <ul><li>[T1100: Web Shell](../Triggers/T1100.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>Legitimate administrator or developer creating legitimate executable files in a web application folder</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[PT ESC rule and personal experience](PT ESC rule and personal experience)</li></ul>  |
-| Author               | Beyu Denis, oscd.community |
+| Title                    | Windows Webshell Creation       |
+|:-------------------------|:------------------|
+| **Description**          | Posible webshell file creation on a static web site |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1100: Web Shell](https://attack.mitre.org/techniques/T1100)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1100: Web Shell](../Triggers/T1100.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>Legitimate administrator or developer creating legitimate executable files in a web application folder</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[PT ESC rule and personal experience](PT ESC rule and personal experience)</li></ul>  |
+| **Author**               | Beyu Denis, oscd.community |
 
 
 ## Detection Rules

@@ -1,6 +1,6 @@
 | Title                       | RA_0010_eradication_delete_malicious_emails         |
 |:----------------------------|:--------------------|
-| **Description**             | Delete malicious emails from Email Server and users' email boxes.   |
+| **Description**             | Delete malicious emails from a Email Server and users' email boxes   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | eradication         |

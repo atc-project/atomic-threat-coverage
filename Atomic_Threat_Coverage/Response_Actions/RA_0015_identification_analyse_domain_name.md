@@ -1,7 +1,7 @@
 | Title                       | RA_0015_identification_analyse_domain_name         |
 |:----------------------------|:--------------------|
 | **Description**             | Response Action for   |
-| **Author**                  | Name Surname        |
+| **Author**                  | name/nickname/twitter        |
 | **Creation Date**           | DD.MM.YYYY |
 | **Stage**                   | identification         |
 | **Automation**              |<ul><li>thehive</li></ul> |

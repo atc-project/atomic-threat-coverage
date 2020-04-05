@@ -1,6 +1,6 @@
 | Title                       | RA_0008_containment_block_domain_on_dns         |
 |:----------------------------|:--------------------|
-| **Description**             | Block domain on DNS server.   |
+| **Description**             | Block a domain on a DNS server   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | containment         |

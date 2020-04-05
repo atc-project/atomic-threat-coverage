@@ -1,15 +1,15 @@
-| Title                | Bypass UAC via CMSTP                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detect child processes of automatically elevated instances of Microsoft Connection Manager Profile Installer (cmstp.exe).                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1191: CMSTP](https://attack.mitre.org/techniques/T1191)</li><li>[T1088: Bypass User Account Control](https://attack.mitre.org/techniques/T1088)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1191: CMSTP](../Triggers/T1191.md)</li><li>[T1088: Bypass User Account Control](../Triggers/T1088.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Legitimate use of cmstp.exe utility by legitimate user</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://eqllib.readthedocs.io/en/latest/analytics/e584f1a1-c303-4885-8a66-21360c90995b.html](https://eqllib.readthedocs.io/en/latest/analytics/e584f1a1-c303-4885-8a66-21360c90995b.html)</li><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1191/T1191.md](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1191/T1191.md)</li></ul>  |
-| Author               | E.M. Anhaus (orignally from Atomic Blue Detections, Endgame), oscd.community |
+| Title                    | Bypass UAC via CMSTP       |
+|:-------------------------|:------------------|
+| **Description**          | Detect child processes of automatically elevated instances of Microsoft Connection Manager Profile Installer (cmstp.exe). |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1191: CMSTP](https://attack.mitre.org/techniques/T1191)</li><li>[T1088: Bypass User Account Control](https://attack.mitre.org/techniques/T1088)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1191: CMSTP](../Triggers/T1191.md)</li><li>[T1088: Bypass User Account Control](../Triggers/T1088.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Legitimate use of cmstp.exe utility by legitimate user</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://eqllib.readthedocs.io/en/latest/analytics/e584f1a1-c303-4885-8a66-21360c90995b.html](https://eqllib.readthedocs.io/en/latest/analytics/e584f1a1-c303-4885-8a66-21360c90995b.html)</li><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1191/T1191.md](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1191/T1191.md)</li></ul>  |
+| **Author**               | E.M. Anhaus (orignally from Atomic Blue Detections, Endgame), oscd.community |
 
 
 ## Detection Rules

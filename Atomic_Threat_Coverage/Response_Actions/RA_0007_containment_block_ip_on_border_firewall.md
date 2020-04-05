@@ -1,6 +1,6 @@
 | Title                       | RA_0007_containment_block_ip_on_border_firewall         |
 |:----------------------------|:--------------------|
-| **Description**             | Block ip address on border firewall.   |
+| **Description**             | Block an IP address on a border firewall   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | containment         |

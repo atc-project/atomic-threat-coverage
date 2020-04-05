@@ -1,10 +1,10 @@
-| Title          | LP_0032_linux_auditd_read_access_to_file                                                                     |
-|:---------------|:--------------------------------------------------------------------------------|
-| Description    | Policy to enable auditd to log read access to file                                                               |
-| Default        | Not configured                                                                   |
-| Event Volume   | Medium                                                                    |
-| EventID        | <ul></ul>         |
-| References     | <ul><li>[https://github.com/linux-audit/audit-documentation](https://github.com/linux-audit/audit-documentation)</li><li>[https://github.com/Neo23x0/auditd](https://github.com/Neo23x0/auditd)</li></ul> |
+| Title            | LP_0032_linux_auditd_read_access_to_file                                                                     |
+|:-----------------|:--------------------------------------------------------------------------------|
+| **Description**  | Policy to enable auditd to log read access to file                                                               |
+| **Default**      | Not configured                                                                   |
+| **Event Volume** | Medium                                                                    |
+| **EventID**      | <ul></ul>         |
+| **References**   | <ul><li>[https://github.com/linux-audit/audit-documentation](https://github.com/linux-audit/audit-documentation)</li><li>[https://github.com/Neo23x0/auditd](https://github.com/Neo23x0/auditd)</li></ul> |
 
 
 

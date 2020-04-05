@@ -1,15 +1,15 @@
-| Title                | Discovery of a System Time                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Identifies use of various commands to query a systems time. This technique may be used before executing a scheduled task or to discover the time zone of a target system.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1124: System Time Discovery](https://attack.mitre.org/techniques/T1124)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1124: System Time Discovery](../Triggers/T1124.md)</li></ul>  |
-| Severity Level       | low |
-| False Positives      | <ul><li>Legitimate use of the system utilities to discover system time for legitimate reason</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://eqllib.readthedocs.io/en/latest/analytics/fcdb99c2-ac3c-4bde-b664-4b336329bed2.html](https://eqllib.readthedocs.io/en/latest/analytics/fcdb99c2-ac3c-4bde-b664-4b336329bed2.html)</li><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1124/T1124.md](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1124/T1124.md)</li></ul>  |
-| Author               | E.M. Anhaus (orignally from Atomic Blue Detections, Endgame), oscd.community |
+| Title                    | Discovery of a System Time       |
+|:-------------------------|:------------------|
+| **Description**          | Identifies use of various commands to query a systems time. This technique may be used before executing a scheduled task or to discover the time zone of a target system. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1124: System Time Discovery](https://attack.mitre.org/techniques/T1124)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1124: System Time Discovery](../Triggers/T1124.md)</li></ul>  |
+| **Severity Level**       | low |
+| **False Positives**      | <ul><li>Legitimate use of the system utilities to discover system time for legitimate reason</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://eqllib.readthedocs.io/en/latest/analytics/fcdb99c2-ac3c-4bde-b664-4b336329bed2.html](https://eqllib.readthedocs.io/en/latest/analytics/fcdb99c2-ac3c-4bde-b664-4b336329bed2.html)</li><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1124/T1124.md](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1124/T1124.md)</li></ul>  |
+| **Author**               | E.M. Anhaus (orignally from Atomic Blue Detections, Endgame), oscd.community |
 
 
 ## Detection Rules

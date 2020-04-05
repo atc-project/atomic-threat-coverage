@@ -1,7 +1,7 @@
 | Title                       | RA_0023_identification_analyse_windows_pe         |
 |:----------------------------|:--------------------|
 | **Description**             | Response Action for   |
-| **Author**                  | Name Surname        |
+| **Author**                  | name/nickname/twitter        |
 | **Creation Date**           | DD.MM.YYYY |
 | **Stage**                   | identification         |
 | **Automation**              |<ul><li>thehive</li></ul> |

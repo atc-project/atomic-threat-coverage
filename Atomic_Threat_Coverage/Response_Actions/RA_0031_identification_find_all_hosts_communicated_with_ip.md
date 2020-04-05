@@ -1,7 +1,7 @@
 | Title                       | RA_0031_identification_find_all_hosts_communicated_with_ip         |
 |:----------------------------|:--------------------|
 | **Description**             | Response Action for   |
-| **Author**                  | Name Surname        |
+| **Author**                  | name/nickname/twitter        |
 | **Creation Date**           | DD.MM.YYYY |
 | **Stage**                   | identification         |
 | **Automation**              |<ul><li>thehive</li></ul> |

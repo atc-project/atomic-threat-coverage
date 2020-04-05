@@ -1,15 +1,15 @@
-| Title                | Svchost DLL Search Order Hijack                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | IKEEXT and SessionEnv service, as they call LoadLibrary on files that do not exist within C:\Windows\System32\ by default. An attacker can place their malicious logic within the PROCESS_ATTACH block of their library and restart the aforementioned services "svchost.exe -k netsvcs" to gain code execution on a remote machine.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li><li>[T1038: DLL Search Order Hijacking](https://attack.mitre.org/techniques/T1038)</li><li>[T1112: Modify Registry](https://attack.mitre.org/techniques/T1112)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li></ul>  |
-| Trigger              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li><li>[T1038: DLL Search Order Hijacking](../Triggers/T1038.md)</li><li>[T1112: Modify Registry](../Triggers/T1112.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Pentest</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://posts.specterops.io/lateral-movement-scm-and-dll-hijacking-primer-d2f61e8ab992](https://posts.specterops.io/lateral-movement-scm-and-dll-hijacking-primer-d2f61e8ab992)</li></ul>  |
-| Author               | SBousseaden |
+| Title                    | Svchost DLL Search Order Hijack       |
+|:-------------------------|:------------------|
+| **Description**          | IKEEXT and SessionEnv service, as they call LoadLibrary on files that do not exist within C:\Windows\System32\ by default. An attacker can place their malicious logic within the PROCESS_ATTACH block of their library and restart the aforementioned services "svchost.exe -k netsvcs" to gain code execution on a remote machine. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li><li>[T1038: DLL Search Order Hijacking](https://attack.mitre.org/techniques/T1038)</li><li>[T1112: Modify Registry](https://attack.mitre.org/techniques/T1112)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li><li>[T1038: DLL Search Order Hijacking](../Triggers/T1038.md)</li><li>[T1112: Modify Registry](../Triggers/T1112.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Pentest</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://posts.specterops.io/lateral-movement-scm-and-dll-hijacking-primer-d2f61e8ab992](https://posts.specterops.io/lateral-movement-scm-and-dll-hijacking-primer-d2f61e8ab992)</li></ul>  |
+| **Author**               | SBousseaden |
 
 
 ## Detection Rules

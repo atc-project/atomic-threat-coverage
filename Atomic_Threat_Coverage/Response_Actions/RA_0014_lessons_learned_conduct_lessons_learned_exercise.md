@@ -1,6 +1,6 @@
 | Title                       | RA_0014_lessons_learned_conduct_lessons_learned_exercise         |
 |:----------------------------|:--------------------|
-| **Description**             | Conduct lessons learned exercise   |
+| **Description**             | Conduct Lessons Learned exercise   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | lessons_learned         |

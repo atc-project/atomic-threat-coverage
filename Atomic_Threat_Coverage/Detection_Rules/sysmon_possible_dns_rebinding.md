@@ -1,15 +1,15 @@
-| Title                | Possible DNS Rebinding                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects several different DNS-answers by one domain with IPs from internal and external networks. Normally, DNS-answer contain TTL >100. (DNS-record will saved in host cache for a while TTL).                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1043: Commonly Used Port](https://attack.mitre.org/techniques/T1043)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0085_22_windows_sysmon_DnsQuery](../Data_Needed/DN_0085_22_windows_sysmon_DnsQuery.md)</li></ul>  |
-| Trigger              | <ul><li>[T1043: Commonly Used Port](../Triggers/T1043.md)</li></ul>  |
-| Severity Level       | medium |
-| False Positives      |  There are no documented False Positives for this Detection Rule yet  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://medium.com/@brannondorsey/attacking-private-networks-from-the-internet-with-dns-rebinding-ea7098a2d325](https://medium.com/@brannondorsey/attacking-private-networks-from-the-internet-with-dns-rebinding-ea7098a2d325)</li></ul>  |
-| Author               | Ilyas Ochkov, oscd.community |
+| Title                    | Possible DNS Rebinding       |
+|:-------------------------|:------------------|
+| **Description**          | Detects several different DNS-answers by one domain with IPs from internal and external networks. Normally, DNS-answer contain TTL >100. (DNS-record will saved in host cache for a while TTL). |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1043: Commonly Used Port](https://attack.mitre.org/techniques/T1043)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0085_22_windows_sysmon_DnsQuery](../Data_Needed/DN_0085_22_windows_sysmon_DnsQuery.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1043: Commonly Used Port](../Triggers/T1043.md)</li></ul>  |
+| **Severity Level**       | medium |
+| **False Positives**      |  There are no documented False Positives for this Detection Rule yet  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://medium.com/@brannondorsey/attacking-private-networks-from-the-internet-with-dns-rebinding-ea7098a2d325](https://medium.com/@brannondorsey/attacking-private-networks-from-the-internet-with-dns-rebinding-ea7098a2d325)</li></ul>  |
+| **Author**               | Ilyas Ochkov, oscd.community |
 
 
 ## Detection Rules

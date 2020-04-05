@@ -1,15 +1,15 @@
-| Title                | Emissary Panda Malware SLLauncher                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects the execution of DLL side-loading malware used by threat group Emissary Panda aka APT27                                                                                                                                           |
-| ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
-| ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              |  There is no documented Trigger for this Detection Rule yet  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://app.any.run/tasks/579e7587-f09d-4aae-8b07-472833262965](https://app.any.run/tasks/579e7587-f09d-4aae-8b07-472833262965)</li><li>[https://twitter.com/cyb3rops/status/1168863899531132929](https://twitter.com/cyb3rops/status/1168863899531132929)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | Emissary Panda Malware SLLauncher       |
+|:-------------------------|:------------------|
+| **Description**          | Detects the execution of DLL side-loading malware used by threat group Emissary Panda aka APT27 |
+| **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://app.any.run/tasks/579e7587-f09d-4aae-8b07-472833262965](https://app.any.run/tasks/579e7587-f09d-4aae-8b07-472833262965)</li><li>[https://twitter.com/cyb3rops/status/1168863899531132929](https://twitter.com/cyb3rops/status/1168863899531132929)</li></ul>  |
+| **Author**               | Florian Roth |
 
 
 ## Detection Rules

@@ -1,15 +1,15 @@
-| Title                | RDP Sensitive Settings Changed                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects changes to RDP terminal service sensitive settings                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
-| Trigger              |  There is no documented Trigger for this Detection Rule yet  |
-| Severity Level       | high |
-| False Positives      | <ul><li>unknown</li></ul>  |
-| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
-| References           | <ul><li>[https://blog.menasec.net/2019/02/threat-hunting-rdp-hijacking-via.html](https://blog.menasec.net/2019/02/threat-hunting-rdp-hijacking-via.html)</li></ul>  |
-| Author               | Samir Bousseaden |
+| Title                    | RDP Sensitive Settings Changed       |
+|:-------------------------|:------------------|
+| **Description**          | Detects changes to RDP terminal service sensitive settings |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
+| **Data Needed**          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>unknown</li></ul>  |
+| **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
+| **References**           | <ul><li>[https://blog.menasec.net/2019/02/threat-hunting-rdp-hijacking-via.html](https://blog.menasec.net/2019/02/threat-hunting-rdp-hijacking-via.html)</li></ul>  |
+| **Author**               | Samir Bousseaden |
 
 
 ## Detection Rules

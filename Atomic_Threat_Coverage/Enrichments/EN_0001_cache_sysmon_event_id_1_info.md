@@ -1,12 +1,12 @@
-| Title          | EN_0001_cache_sysmon_event_id_1_info |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | Cache Sysmon Event ID 1 (Process Create) data for further enrichments. |
-| Data Needed    |<ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul> |
-| Data to enrich | None |
-| References     |<ul><li>[https://www.slideshare.net/heirhabarov/hunting-for-privilege-escalation-in-windows-environment](https://www.slideshare.net/heirhabarov/hunting-for-privilege-escalation-in-windows-environment)</li></ul> |
-| Author    | Teymur Kheirkhabarov 			|
-| Requirements 	 | None |
-| New fields     | None |
+| Title              | EN_0001_cache_sysmon_event_id_1_info |
+|:-------------------|:-----------------------------------------------------------------------------------------------------------------|
+| **Description**    | Cache Sysmon Event ID 1 (Process Create) data for further enrichments. |
+| **Data Needed**    |<ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul> |
+| **Data to enrich** | None |
+| **References**     |<ul><li>[https://www.slideshare.net/heirhabarov/hunting-for-privilege-escalation-in-windows-environment](https://www.slideshare.net/heirhabarov/hunting-for-privilege-escalation-in-windows-environment)</li></ul> |
+| **Author**         | Teymur Kheirkhabarov           |
+| **Requirements**   | None |
+| **New fields**     | None |
 
 
 ### Config

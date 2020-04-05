@@ -1,15 +1,15 @@
-| Title                | Impacket Lateralization Detection                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects wmiexec/dcomexec/atexec/smbexec from Impacket framework                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li><li>[T1175: Component Object Model and Distributed COM](https://attack.mitre.org/techniques/T1175)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li><li>[T1175: Component Object Model and Distributed COM](../Triggers/T1175.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>pentesters</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://github.com/SecureAuthCorp/impacket/blob/master/examples/wmiexec.py](https://github.com/SecureAuthCorp/impacket/blob/master/examples/wmiexec.py)</li><li>[https://github.com/SecureAuthCorp/impacket/blob/master/examples/atexec.py](https://github.com/SecureAuthCorp/impacket/blob/master/examples/atexec.py)</li><li>[https://github.com/SecureAuthCorp/impacket/blob/master/examples/smbexec.py](https://github.com/SecureAuthCorp/impacket/blob/master/examples/smbexec.py)</li><li>[https://github.com/SecureAuthCorp/impacket/blob/master/examples/dcomexec.py](https://github.com/SecureAuthCorp/impacket/blob/master/examples/dcomexec.py)</li></ul>  |
-| Author               | Ecco |
+| Title                    | Impacket Lateralization Detection       |
+|:-------------------------|:------------------|
+| **Description**          | Detects wmiexec/dcomexec/atexec/smbexec from Impacket framework |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li><li>[T1175: Component Object Model and Distributed COM](https://attack.mitre.org/techniques/T1175)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li><li>[T1175: Component Object Model and Distributed COM](../Triggers/T1175.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>pentesters</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://github.com/SecureAuthCorp/impacket/blob/master/examples/wmiexec.py](https://github.com/SecureAuthCorp/impacket/blob/master/examples/wmiexec.py)</li><li>[https://github.com/SecureAuthCorp/impacket/blob/master/examples/atexec.py](https://github.com/SecureAuthCorp/impacket/blob/master/examples/atexec.py)</li><li>[https://github.com/SecureAuthCorp/impacket/blob/master/examples/smbexec.py](https://github.com/SecureAuthCorp/impacket/blob/master/examples/smbexec.py)</li><li>[https://github.com/SecureAuthCorp/impacket/blob/master/examples/dcomexec.py](https://github.com/SecureAuthCorp/impacket/blob/master/examples/dcomexec.py)</li></ul>  |
+| **Author**               | Ecco |
 
 
 ## Detection Rules

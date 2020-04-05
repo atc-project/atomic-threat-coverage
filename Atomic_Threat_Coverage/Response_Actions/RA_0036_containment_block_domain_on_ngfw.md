@@ -1,13 +1,13 @@
 | Title                       | RA_0036_containment_block_domain_on_ngfw         |
 |:----------------------------|:--------------------|
-| **Description**             | Block domain on NGFW.   |
+| **Description**             | Block a domain name with NGFW   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | containment         |
 | **Automation**              | None |
 | **References**              | None |
 | **Linked Response Actions** | None |
-| **Linked Analytics**        |<ul><li>MS_ngfw</li></ul> |
+| **Linked Analytics**        |<ul><li>MS_NGFW</li></ul> |
 
 
 ### Workflow

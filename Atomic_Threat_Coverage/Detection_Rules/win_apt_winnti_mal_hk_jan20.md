@@ -1,15 +1,15 @@
-| Title                | Winnti Malware HK University Campaign                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects specific process characteristics of Winnti malware noticed in Dec/Jan 2020 in a campaign against Honk Kong universities                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>Unlikely</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://www.welivesecurity.com/2020/01/31/winnti-group-targeting-universities-hong-kong/](https://www.welivesecurity.com/2020/01/31/winnti-group-targeting-universities-hong-kong/)</li></ul>  |
-| Author               | Florian Roth, Markus Neis |
+| Title                    | Winnti Malware HK University Campaign       |
+|:-------------------------|:------------------|
+| **Description**          | Detects specific process characteristics of Winnti malware noticed in Dec/Jan 2020 in a campaign against Honk Kong universities |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>Unlikely</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://www.welivesecurity.com/2020/01/31/winnti-group-targeting-universities-hong-kong/](https://www.welivesecurity.com/2020/01/31/winnti-group-targeting-universities-hong-kong/)</li></ul>  |
+| **Author**               | Florian Roth, Markus Neis |
 | Other Tags           | <ul><li>attack.g0044</li></ul> | 
 
 ## Detection Rules

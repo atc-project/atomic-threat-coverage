@@ -1,6 +1,6 @@
 | Title                       | RA_0002_identification_extract_observables_from_email         |
 |:----------------------------|:--------------------|
-| **Description**             | Extract all observables from original phising email   |
+| **Description**             | Extract all observables from the original phishing email   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | identification         |

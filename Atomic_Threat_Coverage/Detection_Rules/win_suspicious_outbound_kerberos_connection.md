@@ -1,15 +1,15 @@
-| Title                | Suspicious Outbound Kerberos Connection                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects suspicious outbound network activity via kerberos default port indicating possible lateral movement or first stage PrivEsc via delegation.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0087_5156_windows_filtering_platform_has_permitted_connection](../Data_Needed/DN_0087_5156_windows_filtering_platform_has_permitted_connection.md)</li></ul>  |
-| Trigger              | <ul><li>[T1208: Kerberoasting](../Triggers/T1208.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Other browsers</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://github.com/GhostPack/Rubeus8](https://github.com/GhostPack/Rubeus8)</li></ul>  |
-| Author               | Ilyas Ochkov, oscd.community |
+| Title                    | Suspicious Outbound Kerberos Connection       |
+|:-------------------------|:------------------|
+| **Description**          | Detects suspicious outbound network activity via kerberos default port indicating possible lateral movement or first stage PrivEsc via delegation. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0087_5156_windows_filtering_platform_has_permitted_connection](../Data_Needed/DN_0087_5156_windows_filtering_platform_has_permitted_connection.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1208: Kerberoasting](../Triggers/T1208.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Other browsers</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://github.com/GhostPack/Rubeus8](https://github.com/GhostPack/Rubeus8)</li></ul>  |
+| **Author**               | Ilyas Ochkov, oscd.community |
 
 
 ## Detection Rules

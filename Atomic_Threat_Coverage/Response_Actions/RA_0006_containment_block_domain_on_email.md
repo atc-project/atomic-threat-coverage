@@ -1,6 +1,6 @@
 | Title                       | RA_0006_containment_block_domain_on_email         |
 |:----------------------------|:--------------------|
-| **Description**             | Block phishing attack origin on Email level.   |
+| **Description**             | Block a phishing attack source on Email-server level   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | containment         |

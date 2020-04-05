@@ -1,6 +1,6 @@
 | Title                       | RA_0011_eradication_revoke_compromised_credentials         |
 |:----------------------------|:--------------------|
-| **Description**             | Response Action for revokation of compromised credentials.   |
+| **Description**             | Response Action for revokation of compromised credentials   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | eradication         |

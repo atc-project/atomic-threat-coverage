@@ -1,15 +1,15 @@
-| Title                | Bloodhound and Sharphound Hack Tool                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects command line parameters used by Bloodhound and Sharphound hack tools                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1087: Account Discovery](../Triggers/T1087.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Other programs that use these command line option and accepts an 'All' parameter</li></ul>  |
-| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
-| References           | <ul><li>[https://github.com/BloodHoundAD/BloodHound](https://github.com/BloodHoundAD/BloodHound)</li><li>[https://github.com/BloodHoundAD/SharpHound](https://github.com/BloodHoundAD/SharpHound)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | Bloodhound and Sharphound Hack Tool       |
+|:-------------------------|:------------------|
+| **Description**          | Detects command line parameters used by Bloodhound and Sharphound hack tools |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1087: Account Discovery](../Triggers/T1087.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Other programs that use these command line option and accepts an 'All' parameter</li></ul>  |
+| **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
+| **References**           | <ul><li>[https://github.com/BloodHoundAD/BloodHound](https://github.com/BloodHoundAD/BloodHound)</li><li>[https://github.com/BloodHoundAD/SharpHound](https://github.com/BloodHoundAD/SharpHound)</li></ul>  |
+| **Author**               | Florian Roth |
 
 
 ## Detection Rules

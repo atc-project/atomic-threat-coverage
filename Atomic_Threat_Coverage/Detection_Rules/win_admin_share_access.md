@@ -1,15 +1,15 @@
-| Title                | Access to ADMIN$ Share                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects access to $ADMIN share                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1077: Windows Admin Shares](https://attack.mitre.org/techniques/T1077)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0033_5140_network_share_object_was_accessed](../Data_Needed/DN_0033_5140_network_share_object_was_accessed.md)</li></ul>  |
-| Trigger              | <ul><li>[T1077: Windows Admin Shares](../Triggers/T1077.md)</li></ul>  |
-| Severity Level       | low |
-| False Positives      | <ul><li>Legitimate administrative activity</li></ul>  |
-| Development Status   | experimental |
-| References           |  There are no documented References for this Detection Rule yet  |
-| Author               | Florian Roth |
+| Title                    | Access to ADMIN$ Share       |
+|:-------------------------|:------------------|
+| **Description**          | Detects access to $ADMIN share |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1077: Windows Admin Shares](https://attack.mitre.org/techniques/T1077)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0033_5140_network_share_object_was_accessed](../Data_Needed/DN_0033_5140_network_share_object_was_accessed.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1077: Windows Admin Shares](../Triggers/T1077.md)</li></ul>  |
+| **Severity Level**       | low |
+| **False Positives**      | <ul><li>Legitimate administrative activity</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           |  There are no documented References for this Detection Rule yet  |
+| **Author**               | Florian Roth |
 
 
 ## Detection Rules

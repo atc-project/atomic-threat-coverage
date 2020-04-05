@@ -1,13 +1,13 @@
-| Title          | DN_0019_15_windows_sysmon_FileCreateStreamHash       |
-|:---------------|:------------------|
-| Description    | This event logs when a named file stream is created, and it generates events  that log the hash of the contents of the file to which the stream is assigned  (the unnamed stream), as well as the contents of the named stream |
-| Logging Policy | <ul><li> Not existing </li></ul> |
-| References     | <ul><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-15.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-15.md)</li><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90015](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90015)</li></ul> |
-| Platform       | Windows    |
-| Type           | Applications and Services Logs        |
-| Channel        | Microsoft-Windows-Sysmon/Operational     |
-| Provider       | Microsoft-Windows-Sysmon    |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>ProcessGuid</li><li>ProcessId</li><li>Image</li><li>TargetFilename</li><li>CreationUtcTime</li><li>Hash</li></ul> |
+| Title              | DN_0019_15_windows_sysmon_FileCreateStreamHash       |
+|:-------------------|:------------------|
+| **Description**    | This event logs when a named file stream is created, and it generates events  that log the hash of the contents of the file to which the stream is assigned  (the unnamed stream), as well as the contents of the named stream |
+| **Logging Policy** | <ul><li> Not existing </li></ul> |
+| **References**     | <ul><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-15.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-15.md)</li><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90015](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90015)</li></ul> |
+| **Platform**       | Windows    |
+| **Type**           | Applications and Services Logs        |
+| **Channel**        | Microsoft-Windows-Sysmon/Operational     |
+| **Provider**       | Microsoft-Windows-Sysmon    |
+| **Fields**         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>ProcessGuid</li><li>ProcessId</li><li>Image</li><li>TargetFilename</li><li>CreationUtcTime</li><li>Hash</li></ul> |
 
 
 ## Log Samples

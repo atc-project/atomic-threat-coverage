@@ -1,13 +1,13 @@
 | Title                       | RA_0035_containment_block_domain_on_ips         |
 |:----------------------------|:--------------------|
-| **Description**             | Block domain on IPS.   |
+| **Description**             | Block a domain name with IPS   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | containment         |
 | **Automation**              | None |
 | **References**              | None |
 | **Linked Response Actions** | None |
-| **Linked Analytics**        |<ul><li>MS_ips</li></ul> |
+| **Linked Analytics**        |<ul><li>MS_IPS</li></ul> |
 
 
 ### Workflow

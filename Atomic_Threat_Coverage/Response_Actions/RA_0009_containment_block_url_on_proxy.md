@@ -1,6 +1,6 @@
 | Title                       | RA_0009_containment_block_url_on_proxy         |
 |:----------------------------|:--------------------|
-| **Description**             | Block url on Proxy server.   |
+| **Description**             | Block an URL on a Proxy server   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | containment         |

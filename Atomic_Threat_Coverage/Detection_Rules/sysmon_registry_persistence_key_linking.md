@@ -1,15 +1,15 @@
-| Title                | Windows Registry Persistence COM Key Linking                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects COM object hijacking via TreatAs subkey                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1122: Component Object Model Hijacking](https://attack.mitre.org/techniques/T1122)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0016_12_windows_sysmon_RegistryEvent](../Data_Needed/DN_0016_12_windows_sysmon_RegistryEvent.md)</li></ul>  |
-| Trigger              | <ul><li>[T1122: Component Object Model Hijacking](../Triggers/T1122.md)</li></ul>  |
-| Severity Level       | medium |
-| False Positives      | <ul><li>Maybe some system utilities in rare cases use linking keys for backward compability</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://bohops.com/2018/08/18/abusing-the-com-registry-structure-part-2-loading-techniques-for-evasion-and-persistence/](https://bohops.com/2018/08/18/abusing-the-com-registry-structure-part-2-loading-techniques-for-evasion-and-persistence/)</li></ul>  |
-| Author               | Kutepov Anton, oscd.community |
+| Title                    | Windows Registry Persistence COM Key Linking       |
+|:-------------------------|:------------------|
+| **Description**          | Detects COM object hijacking via TreatAs subkey |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1122: Component Object Model Hijacking](https://attack.mitre.org/techniques/T1122)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0016_12_windows_sysmon_RegistryEvent](../Data_Needed/DN_0016_12_windows_sysmon_RegistryEvent.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1122: Component Object Model Hijacking](../Triggers/T1122.md)</li></ul>  |
+| **Severity Level**       | medium |
+| **False Positives**      | <ul><li>Maybe some system utilities in rare cases use linking keys for backward compability</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://bohops.com/2018/08/18/abusing-the-com-registry-structure-part-2-loading-techniques-for-evasion-and-persistence/](https://bohops.com/2018/08/18/abusing-the-com-registry-structure-part-2-loading-techniques-for-evasion-and-persistence/)</li></ul>  |
+| **Author**               | Kutepov Anton, oscd.community |
 
 
 ## Detection Rules

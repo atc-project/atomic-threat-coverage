@@ -1,15 +1,15 @@
-| Title                | StoneDrill Service Install                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | This method detects a service install of the malicious Microsoft Network Realtime Inspection Service service described in StoneDrill report by Kaspersky                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li></ul>  |
-| Trigger              | <ul><li>[T1050: New Service](../Triggers/T1050.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Unlikely</li></ul>  |
-| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
-| References           | <ul><li>[https://securelist.com/blog/research/77725/from-shamoon-to-stonedrill/](https://securelist.com/blog/research/77725/from-shamoon-to-stonedrill/)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | StoneDrill Service Install       |
+|:-------------------------|:------------------|
+| **Description**          | This method detects a service install of the malicious Microsoft Network Realtime Inspection Service service described in StoneDrill report by Kaspersky |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1050: New Service](../Triggers/T1050.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Unlikely</li></ul>  |
+| **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
+| **References**           | <ul><li>[https://securelist.com/blog/research/77725/from-shamoon-to-stonedrill/](https://securelist.com/blog/research/77725/from-shamoon-to-stonedrill/)</li></ul>  |
+| **Author**               | Florian Roth |
 | Other Tags           | <ul><li>attack.g0064</li></ul> | 
 
 ## Detection Rules

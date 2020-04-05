@@ -1,6 +1,6 @@
-| Title                       | RA_0003_identification_make_sure_email_is_a_phising         |
+| Title                       | RA_0003_identification_make_sure_email_is_a_phishing         |
 |:----------------------------|:--------------------|
-| **Description**             | Make sure this email is a phising attack   |
+| **Description**             | Make sure the email is a phishing attack   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | identification         |

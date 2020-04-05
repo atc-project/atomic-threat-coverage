@@ -1,13 +1,13 @@
-| Title          | DN_0057_4625_account_failed_to_logon       |
-|:---------------|:------------------|
-| Description    | An account failed to log on |
-| Logging Policy | <ul><li>[LP_0004_windows_audit_logon](../Logging_Policies/LP_0004_windows_audit_logon.md)</li></ul> |
-| References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4625.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4625.md)</li></ul> |
-| Platform       | Windows    |
-| Type           | Windows Log        |
-| Channel        | Security     |
-| Provider       | Microsoft-Windows-Security-Auditing    |
-| Fields         | <ul><li>EventID</li><li>AccountName</li><li>Hostname</li><li>Computer</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>TargetUserSid</li><li>TargetUserName</li><li>TargetDomainName</li><li>Status</li><li>FailureReason</li><li>SubStatus</li><li>LogonType</li><li>LogonProcessName</li><li>AuthenticationPackageName</li><li>WorkstationName</li><li>TransmittedServices</li><li>LmPackageName</li><li>KeyLength</li><li>ProcessId</li><li>ProcessName</li><li>IpAddress</li><li>IpPort</li></ul> |
+| Title              | DN_0057_4625_account_failed_to_logon       |
+|:-------------------|:------------------|
+| **Description**    | An account failed to log on |
+| **Logging Policy** | <ul><li>[LP_0004_windows_audit_logon](../Logging_Policies/LP_0004_windows_audit_logon.md)</li></ul> |
+| **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4625.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4625.md)</li></ul> |
+| **Platform**       | Windows    |
+| **Type**           | Windows Log        |
+| **Channel**        | Security     |
+| **Provider**       | Microsoft-Windows-Security-Auditing    |
+| **Fields**         | <ul><li>EventID</li><li>AccountName</li><li>Hostname</li><li>Computer</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>TargetUserSid</li><li>TargetUserName</li><li>TargetDomainName</li><li>Status</li><li>FailureReason</li><li>SubStatus</li><li>LogonType</li><li>LogonProcessName</li><li>AuthenticationPackageName</li><li>WorkstationName</li><li>TransmittedServices</li><li>LmPackageName</li><li>KeyLength</li><li>ProcessId</li><li>ProcessName</li><li>IpAddress</li><li>IpPort</li></ul> |
 
 
 ## Log Samples

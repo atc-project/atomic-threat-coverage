@@ -1,4 +1,4 @@
-| Title                       | RA_0005_identification_find_all_phising_attack_victims         |
+| Title                       | RA_0005_identification_find_all_phishing_attack_victims         |
 |:----------------------------|:--------------------|
 | **Description**             | Aggregated Response Action for identification of all potential victims of the phishing attack   |
 | **Author**                  | @atc_project        |
@@ -17,5 +17,5 @@ Identify victims of the attack based on results of indicators of compromise anal
 1. If phishing led to password harvesting form, you have to identify all users who opened malicious link with harvesting form using linked Response Actions
 - Make sure that during your identification of network connections with malicious server you work with complete informatoin. For example, if corporate DNS/Proxy could be bypassed, it means that you could miss some victims. In this way you have to rely on other types of data (i.e. network flows)
 - Better to check all available sources of information to be 100% sure that you've identified a potential victims
-- Sometimes phising alerts could be found in AV, IPS, NGFW etc logs. Check it as well
+- Sometimes phishing alerts could be found in AV, IPS, NGFW etc logs. Check it as well
 2. If phishing led to code execution on victim host, immediately start using Generic Post Exploitation Incident Response Playbook

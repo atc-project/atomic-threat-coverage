@@ -13,16 +13,22 @@ Atomic Threat Coverage is tool which allows you to automatically generate action
 - **Logging Policies** need to be configured on data source to be able to collect Data Needed
 - **Enrichments** for specific Data Needed which required for some Detection Rules
 - **Triggers** based on [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) — detection tests based on MITRE's ATT&CK
-- **Response Actions** which executed during Incident Response
-- **Response Playbooks** for reacting on specific threat, constructed from atomic Response Actions
+- **Response Playbooks** based on [atc-response](https://github.com/atc-project/atc-response) — Security Incident Response Playbooks for reacting on specific Threat
+- **Mitigation Policies** based on [atc-mitigation](https://github.com/atc-project/atc-mitigation) need to be deployed and/or configured to mitigate specific Threat
 - **Visualisations** for creating Threat Hunting / Triage Dashboards
-- **Hardening Policies** need to be implemented to mitigate specific Threat
-- **Mitigation Systems** need to be deployed and configured to mitigate specific Threat
-- **Customers** of the analytics — could be internal or external. This entity needed for implementation tracking
+- **Customers** of the analytics — could be internal or external. This entity needed to tracking the implementation 
 
 Atomic Threat Coverage is highly automatable framework for accumulation, development and sharing actionable analytics.
 
 ## Description
+
+Atomic Threat Coverage is a framework that provides you with ability to automatically generate Confluence and Markdown knowledge bases (as well as the [other analytics](https://github.com/atc-project/atomic-threat-coverage#how-it-works)), with a mapping of different entities to each other using MITRE ATT&CK techniques IDs.
+
+Here are links to our demo environment where you can see the outcome of the framework usage:
+
+1. Automatically generated [Atlassian Confluence knowledge base](https://atomicthreatcoverage.atlassian.net/wiki/spaces/ATC/pages/126025996/WMI+Persistence+-+Script+Event+Consumer)
+2. Automatically generated [Markdown knowledge base](Atomic_Threat_Coverage)
+3. Automatically generated [Kibana dashboard](https://kibana.atomicthreatcoverage.com) (user: demo, password: password).
 
 ### Motivation
 
@@ -39,7 +45,7 @@ In practice there are difficulties in collaboration due to:
 
 That's why we decided to create Atomic Threat Coverage — project which connects different functions/processes under unified Threat Centric methodology ([Lockheed Martin Intelligence Driven Defense®](https://www.lockheedmartin.com/en-us/capabilities/cyber/intelligence-driven-defense.html) aka [MITRE Threat-based Security](https://mitre.github.io/unfetter/about/)), threat model ([MITRE ATT&CK](https://attack.mitre.org/)) and provide security teams an efficient tool for collaboration on one main challenge — combating threats.
 
-### Why Atomic Threat Coverage 
+### Why Atomic Threat Coverage
 
 Work with existing <sup>[\[1\]](https://car.mitre.org)[\[2\]](https://eqllib.readthedocs.io/en/latest/)[\[3\]](https://github.com/palantir/alerting-detection-strategy-framework)[\[4\]](https://github.com/ThreatHuntingProject/ThreatHunting)</sup> analytics/detections repositories looks like endless copy/pasting job, manual adaptation of the information into internal analytics knowledge base format, detections data model, mappings to internal valuable metrics and entities etc.
 
@@ -114,15 +120,11 @@ Data in the repository:
 │   ├── LP_0001_windows_audit_process_creation.yml
 │   ├── LP_0002_windows_audit_process_creation_with_commandline.yml
 │   └── loggingpolicy_template.yml
-├── response_actions/
-│   ├── RA_0001_identification_get_original_email.yml
-│   ├── RA_0002_identification_extract_observables_from_email.yml
-│   └── respose_action.yml.template
-├── response_playbooks/
-│   ├── RP_0001_phishing_email.yml
-│   ├── RP_0002_generic_response_playbook_for_postexploitation_activities.yml
-│   └── respose_playbook.yml.template
-├── triggering/
+├── response
+│   └── atc-response/
+├── mitigation
+│   └── atc-mitigation/
+├── triggers/
 │   └── atomic-red-team/
 └── visualizations/
     ├── dashboards/
@@ -135,7 +137,7 @@ Data in the repository:
         └── wmi_activity.yml
 ```
 
-#### Detection Rules
+#### Detection Rule
 
 Detection Rules are unmodified [Sigma rules](https://github.com/Neo23x0/sigma/tree/master/rules). By default Atomic Threat Coverage uses rules from official repository but you can (*should*) use rules from your own private fork with analytics relevant for you.  
 
@@ -184,7 +186,7 @@ This entity expected to simplify communication with SIEM/LM/Data Engineering tea
 - Description of data to collect (Platform/Type/Channel/etc) — needed for calculation of mappings to Detection Rules and general description
 - List of fields also needed for calculation of mappings to Detection Rules and Response Playbooks, as well as for `pivoting.csv` generation
 
-#### Logging Policies
+#### Logging Policy
 
 <details>
   <summary>Logging Policy yaml (click to expand)</summary>
@@ -205,7 +207,7 @@ This entity expected to simplify communication with SIEM/LM/Data Engineering tea
 
 This entity expected to explain SIEM/LM/Data Engineering teams and IT departments which logging policies have to be configured to have proper Data Needed for Detection and Response to specific Threat. It also explains how exactly this policy can be configured.
 
-#### Enrichments
+#### Enrichment
 
 <details>
   <summary>Enrichments yaml (click to expand)</summary>
@@ -232,6 +234,29 @@ This entity expected to simplify communication with SIEM/LM/Data Engineering tea
 
 This way you will be able to simply explain why you need specific enrichments (mapping to Detection Rules) and specific systems for data enrichment (for example, Logstash).
 
+#### Customer
+
+<details>
+  <summary>Customers yaml (click to expand)</summary>
+  <img src="images/cu_yaml_v1.png" />
+</details>
+
+<details>
+  <summary>Automatically created confluence page (click to expand)</summary>
+  <img src="images/cu_confluence_v1.png" />
+</details>
+
+<details>
+  <summary>Automatically created markdown page (click to expand)</summary>
+  <img src="images/cu_markdown_v1.png" />
+</details>
+
+<br>
+
+This entity used to track Logging Policies configuration, Data Needed collection and Detection Rules implementation per customer. Customer could be internal (for example, remote site) or external (in case of Service Providers). It even could be a specific host. There are no limitations for definition of the entity.
+
+This entity expected to simplify communication with SIEM/LM/Data Engineering teams, provide visibility on implementation for Leadership. It used to generate `analytics.csv`, `atc_attack_navigator_profile.json` (per customer) and `atc_es_index.json`.
+
 #### Triggers
 
 Triggers are unmodified [Atomic Red Team tests](https://github.com/redcanaryco/atomic-red-team/tree/master/atomics). By default Atomic Threat Coverage uses atomics from official repository but you can (*should*) use atomics from your own private fork with analytics relevant for you.  
@@ -255,86 +280,17 @@ Triggers are unmodified [Atomic Red Team tests](https://github.com/redcanaryco/a
 
 This entity needed to test specific technical controls and detections. Detailed description could be found in official [site](https://atomicredteam.io).
 
-#### Customers
+#### Mitigation Policy
 
-<details>
-  <summary>Customers yaml (click to expand)</summary>
-  <img src="images/cu_yaml_v1.png" />
-</details>
+is a measure that has to be executed to mitigate a specific threat.
+For more information, please refer to the [atc-mitigation](https://github.com/atc-project/atc-mitigation) repository.
 
-<details>
-  <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/cu_confluence_v1.png" />
-</details>
+#### Response Playbook
 
-<details>
-  <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/cu_markdown_v1.png" />
-</details>
+is an Incident Response plan that represents a complete list of procedures/tasks that has to be executed to respond to a specific threat.
+For more information, please refer to the [atc-response](https://github.com/atc-project/atc-response) repository.
 
-<br>
-
-This entity used to track Logging Policies configuration, Data Needed collection and Detection Rules implementation per customer. Customer could be internal (for example, remote site) or external (in case of Service Providers). It even could be a specific host. There are no limitations for definition of the entity.
-
-This entity expected to simplify communication with SIEM/LM/Data Engineering teams, provide visibility on implementation for Leadership. It used to generate `analytics.csv`, `atc_attack_navigator_profile.json` (per customer) and `atc_es_index.json`.
-
-#### Response Actions
-
-<details>
-  <summary>Response Action yaml (click to expand)</summary>
-  <img src="images/ra_yaml_v2.png" />
-</details>
-
-<details>
-  <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/ra_confluence_v2.png" />
-</details>
-
-<details>
-  <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/ra_markdown_v2.png" />
-</details>
-
-<br>
-
-This entity used to build Response Playbooks, as well as TheHive Case Templates' Tasks.
-
-#### Response Playbooks
-
-<details>
-  <summary>Response Playbook yaml (click to expand)</summary>
-  <img src="images/rp_yaml_v2.png" />
-</details>
-
-<details>
-  <summary>Automatically created confluence page (click to expand)</summary>
-  <img src="images/rp_confluence_v2.png" />
-</details>
-
-<details>
-  <summary>Automatically created markdown page (click to expand)</summary>
-  <img src="images/rp_markdown_v2.png" />
-</details>
-
-<br>
-
-This entity used as an Incident Response plan for specific threat, as well as TheHive Case Templates.
-
-#### TheHive Case Templates
-
-Atomic Threat Coverage generates [TheHive Case Templates](analytics/generated/thehive_templates/) build on top of [Response Playbooks](#response-playbooks). Each task in Case Template is [Response Action](#response-actions), mapped to specific IR Lifecycle step (according to description in Response Playbook).
-
-<details>
-  <summary>Exported TheHive Case Template, made of Response Playbook (click to expand)</summary>
-  <img src="images/thehive_case_template_v1.png" />
-</details>
-
-<details>
-  <summary>One of the Tasks in TheHive Case, made of Response Action (click to expand)</summary>
-  <img src="images/thehive_case_task_v1.png" />
-</details>
-
-#### Visualizations
+#### Visualization
 
 <details>
   <summary>Visualization yaml (click to expand)</summary>
@@ -577,7 +533,7 @@ Absolutely. We also have some Detection Rules which couldn't be automatically co
 - [x] Develop docker container for the project
 - [ ] Develop specification for custom ATC data entities (Data Needed, Logging Policies etc)
 - [x] Implement "Mitigation Systems" entity
-- [ ] Implement "Hardening Policies" entity
+- [x] Implement "Hardening Policies" entity
 - [x] Implement new entity — "Visualisation" with Kibana visualisations/dashboards stored in yaml files and option to convert them into curl commands for uploading them into Elasticsearch
 
 ## Links

@@ -1,10 +1,10 @@
-| Title          | LP_0048_Passive_DNS_logging                                                                     |
-|:---------------|:--------------------------------------------------------------------------------|
-| Description    | Configuration to enable logging of all fields logging in Passive DNS                                                               |
-| Default        | Not configured                                                                   |
-| Event Volume   | High                                                                    |
-| EventID        | <ul><li>None</li></ul>         |
-| References     | <ul><li>[None](None)</li></ul> |
+| Title            | LP_0048_Passive_DNS_logging                                                                     |
+|:-----------------|:--------------------------------------------------------------------------------|
+| **Description**  | Configuration to enable logging of all fields logging in Passive DNS                                                               |
+| **Default**      | Not configured                                                                   |
+| **Event Volume** | High                                                                    |
+| **EventID**      | <ul><li>None</li></ul>         |
+| **References**   | <ul><li>[None](None)</li></ul> |
 
 
 

@@ -1,10 +1,10 @@
-| Title          | LP_0008_windows_sysmon_FileCreate                                                                     |
-|:---------------|:--------------------------------------------------------------------------------|
-| Description    | File create operations are logged when a file is created or overwritten. This event is useful for monitoring autostart locations, like the Startup folder, as well as temporary and download directories, which are common places malware drops during initial infection.                                                               |
-| Default        | Partially (Other)                                                                   |
-| Event Volume   | High                                                                    |
-| EventID        | <ul><li>11</li></ul>         |
-| References     | <ul><li>[https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon)</li></ul> |
+| Title            | LP_0008_windows_sysmon_FileCreate                                                                     |
+|:-----------------|:--------------------------------------------------------------------------------|
+| **Description**  | File create operations are logged when a file is created or overwritten. This event is useful for monitoring autostart locations, like the Startup folder, as well as temporary and download directories, which are common places malware drops during initial infection.                                                               |
+| **Default**      | Partially (Other)                                                                   |
+| **Event Volume** | High                                                                    |
+| **EventID**      | <ul><li>11</li></ul>         |
+| **References**   | <ul><li>[https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon)</li></ul> |
 
 
 

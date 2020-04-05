@@ -1,12 +1,12 @@
-| Title          | EN_0004_enrich_sysmon_event_id_11_with_TargetFilePathFingerprint |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Description    | Enrich Sysmon Event ID 11 (File Create) calculating TargetFilePathFingerprint |
-| Data Needed    |<ul><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li></ul> |
-| Data to enrich |<ul><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li></ul> |
-| References     |<ul><li>[https://www.slideshare.net/heirhabarov/hunting-for-privilege-escalation-in-windows-environment](https://www.slideshare.net/heirhabarov/hunting-for-privilege-escalation-in-windows-environment)</li></ul> |
-| Author    | Teymur Kheirkhabarov 			|
-| Requirements 	 | None |
-| New fields     |<ul><li>event_data.TargetFilePathFingerprint</li><li>TargetFilePathFingerprint</li></ul> |
+| Title              | EN_0004_enrich_sysmon_event_id_11_with_TargetFilePathFingerprint |
+|:-------------------|:-----------------------------------------------------------------------------------------------------------------|
+| **Description**    | Enrich Sysmon Event ID 11 (File Create) calculating TargetFilePathFingerprint |
+| **Data Needed**    |<ul><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li></ul> |
+| **Data to enrich** |<ul><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li></ul> |
+| **References**     |<ul><li>[https://www.slideshare.net/heirhabarov/hunting-for-privilege-escalation-in-windows-environment](https://www.slideshare.net/heirhabarov/hunting-for-privilege-escalation-in-windows-environment)</li></ul> |
+| **Author**         | Teymur Kheirkhabarov           |
+| **Requirements**   | None |
+| **New fields**     |<ul><li>event_data.TargetFilePathFingerprint</li><li>TargetFilePathFingerprint</li></ul> |
 
 
 ### Config

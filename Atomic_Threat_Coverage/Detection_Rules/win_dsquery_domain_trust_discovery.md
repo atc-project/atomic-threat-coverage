@@ -1,15 +1,15 @@
-| Title                | Domain Trust Discovery                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects a discovery of domain trusts                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1482: Domain Trust Discovery](https://attack.mitre.org/techniques/T1482)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1482: Domain Trust Discovery](../Triggers/T1482.md)</li></ul>  |
-| Severity Level       | medium |
-| False Positives      | <ul><li>Administration of systems</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1482/T1482.yaml](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1482/T1482.yaml)</li></ul>  |
-| Author               | Jakob Weinzettl, oscd.community |
+| Title                    | Domain Trust Discovery       |
+|:-------------------------|:------------------|
+| **Description**          | Detects a discovery of domain trusts |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1482: Domain Trust Discovery](https://attack.mitre.org/techniques/T1482)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1482: Domain Trust Discovery](../Triggers/T1482.md)</li></ul>  |
+| **Severity Level**       | medium |
+| **False Positives**      | <ul><li>Administration of systems</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1482/T1482.yaml](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1482/T1482.yaml)</li></ul>  |
+| **Author**               | Jakob Weinzettl, oscd.community |
 
 
 ## Detection Rules

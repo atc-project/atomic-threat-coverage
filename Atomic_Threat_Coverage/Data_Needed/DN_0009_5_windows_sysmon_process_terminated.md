@@ -1,13 +1,13 @@
-| Title          | DN_0009_5_windows_sysmon_process_terminated       |
-|:---------------|:------------------|
-| Description    | Process has been terminated |
-| Logging Policy | <ul><li> Not existing </li></ul> |
-| References     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90005](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90005)</li></ul> |
-| Platform       | Windows    |
-| Type           | Applications and Services Logs        |
-| Channel        | Microsoft-Windows-Sysmon/Operational     |
-| Provider       | Microsoft-Windows-Sysmon    |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>ProcessGuid</li><li>ProcessId</li><li>Image</li></ul> |
+| Title              | DN_0009_5_windows_sysmon_process_terminated       |
+|:-------------------|:------------------|
+| **Description**    | Process has been terminated |
+| **Logging Policy** | <ul><li> Not existing </li></ul> |
+| **References**     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90005](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90005)</li></ul> |
+| **Platform**       | Windows    |
+| **Type**           | Applications and Services Logs        |
+| **Channel**        | Microsoft-Windows-Sysmon/Operational     |
+| **Provider**       | Microsoft-Windows-Sysmon    |
+| **Fields**         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>UtcTime</li><li>ProcessGuid</li><li>ProcessId</li><li>Image</li></ul> |
 
 
 ## Log Samples

@@ -1,13 +1,13 @@
 | Title                       | RA_0037_containment_block_ip_on_ips         |
 |:----------------------------|:--------------------|
-| **Description**             | Block ip on IPS.   |
+| **Description**             | Block an IP address with IPS   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | containment         |
 | **Automation**              | None |
 | **References**              | None |
 | **Linked Response Actions** | None |
-| **Linked Analytics**        |<ul><li>MS_ips</li></ul> |
+| **Linked Analytics**        |<ul><li>MS_IPS</li></ul> |
 
 
 ### Workflow

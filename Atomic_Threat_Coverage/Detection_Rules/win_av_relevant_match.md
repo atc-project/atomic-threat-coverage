@@ -1,15 +1,15 @@
-| Title                | Relevant Anti-Virus Event                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | This detection method points out highly relevant Antivirus events                                                                                                                                           |
-| ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
-| ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          |  There is no documented Data Needed for this Detection Rule yet  |
-| Trigger              |  There is no documented Trigger for this Detection Rule yet  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Some software piracy tools (key generators, cracks) are classified as hack tools</li></ul>  |
-| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
-| References           |  There are no documented References for this Detection Rule yet  |
-| Author               | Florian Roth |
+| Title                    | Relevant Anti-Virus Event       |
+|:-------------------------|:------------------|
+| **Description**          | This detection method points out highly relevant Antivirus events |
+| **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
+| **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Some software piracy tools (key generators, cracks) are classified as hack tools</li></ul>  |
+| **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
+| **References**           |  There are no documented References for this Detection Rule yet  |
+| **Author**               | Florian Roth |
 
 
 ## Detection Rules

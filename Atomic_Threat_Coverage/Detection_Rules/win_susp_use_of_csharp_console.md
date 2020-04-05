@@ -1,15 +1,15 @@
-| Title                | Suspicious Use of CSharp Interactive Console                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects the execution of CSharp interactive console by PowerShell                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1127: Trusted Developer Utilities](https://attack.mitre.org/techniques/T1127)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1127: Trusted Developer Utilities](../Triggers/T1127.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Possible depending on environment. Pair with other factors such as net connections, command-line args, etc.</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://redcanary.com/blog/detecting-attacks-leveraging-the-net-framework/](https://redcanary.com/blog/detecting-attacks-leveraging-the-net-framework/)</li></ul>  |
-| Author               | Michael R. (@nahamike01) |
+| Title                    | Suspicious Use of CSharp Interactive Console       |
+|:-------------------------|:------------------|
+| **Description**          | Detects the execution of CSharp interactive console by PowerShell |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1127: Trusted Developer Utilities](https://attack.mitre.org/techniques/T1127)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1127: Trusted Developer Utilities](../Triggers/T1127.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Possible depending on environment. Pair with other factors such as net connections, command-line args, etc.</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://redcanary.com/blog/detecting-attacks-leveraging-the-net-framework/](https://redcanary.com/blog/detecting-attacks-leveraging-the-net-framework/)</li></ul>  |
+| **Author**               | Michael R. (@nahamike01) |
 
 
 ## Detection Rules

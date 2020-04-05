@@ -14,8 +14,6 @@ detectionrule:
   - SquiblyTwo
   - Cmdkey Cached Credentials Recon
   - CMSTP UAC Bypass via COM Object Access
-  - Suspicious XOR Encoded PowerShell Command Line
-  - Hiding files with attrib.exe
   - CMSTP Execution
   - Exploit for CVE-2015-1641
   - Exploit for CVE-2017-0261
