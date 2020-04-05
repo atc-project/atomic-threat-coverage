@@ -8,6 +8,30 @@
             <col />
          </colgroup>
          <tbody>
+            <tr>
+               <th class="confluenceTh">Description</th>
+               <td class="confluenceTd">{{  description|e }}<br /></td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">Author</th>
+               <td class="confluenceTd">{{  author|e }}<br /></td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">Creation Date</th>
+               <td class="confluenceTd">{{  creation_date }}<br /></td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">Severity</th>
+               <td class="confluenceTd">{{ severity|e}}<br /></td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">TLP</th>
+               <td class="confluenceTd">{{ tlp|e}}<br /></td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">PAP</th>
+               <td class="confluenceTd">{{ pap|e}}<br /></td>
+            </tr>
 {% if tactics is defined and tactics|length %}
              <tr>
                  <th class="confluenceTh">ATT&amp;CK Tactic</th>
@@ -65,46 +89,25 @@
                             {%- if other_tags |length > 1 -%}<li>{%endif%}{{ tag }}{%- if other_tags |length > 1 -%}</li>{%endif%}
                         {%- endfor %}
                         {%- if other_tags |length > 1 -%}</ul>{%endif%}
-
                     </td>
                 </tr>
 {% endif %}
-            <tr>
-               <th class="confluenceTh">Severity</th>
-               <td class="confluenceTd">{{ severity|e}}<br /></td>
-            </tr>
-            <tr>
-               <th class="confluenceTh">TLP</th>
-               <td class="confluenceTd">{{ tlp|e}}<br /></td>
-            </tr>
-            <tr>
-               <th class="confluenceTh">PAP</th>
-               <td class="confluenceTd">{{ pap|e}}<br /></td>
-            </tr>
-            <tr>
-               <th class="confluenceTh">Author</th>
-               <td class="confluenceTd">{{  author|e }}<br /></td>
-            </tr>
-            <tr>
-               <th class="confluenceTh">Creation Date</th>
-               <td class="confluenceTd">{{  creation_date }}<br /></td>
-            </tr>
-{% for stage_name, stage_actions in stages_with_id %}
-             <tr>
-                 <th class="confluenceTh">{{stage_name}}</th>
-                 <td class="confluenceTd">
-                  {%- if stage_actions is defined and stage_actions|length %}
-                     {%- if stage_actions |length > 1 -%}<ul>{%endif%}
-                     {%- for action, action_id in stage_actions %}
-                         {%- if stage_actions |length > 1 -%}<li>{%endif%}<a href="{{confluence_viewpage_url}}{{action_id}}">{{ action }}</a>{%- if stage_actions |length > 1 -%}</li>{%endif%}
-                     {%- endfor %}
-                     {%- if stage_actions |length > 1 -%}</ul>{%endif%}
-                  {%else%}
-                     None
-                  {%endif%}
-                 </td>
-             </tr>
-{% endfor %}
+{% if stages_with_id is defined and stages_with_id is not none and stages_with_id|length %}
+  {% for stage_name, stage_actions in stages_with_id %}
+    {%- if stage_actions is defined and stage_actions|length %}
+               <tr>
+                   <th class="confluenceTh">{{stage_name}}</th>
+                   <td class="confluenceTd">
+                       {%- if stage_actions |length > 1 -%}<ul>{%endif%}
+                       {%- for action, action_id in stage_actions %}
+                           {%- if stage_actions |length > 1 -%}<li>{%endif%}<a href="{{confluence_viewpage_url}}{{action_id}}">{{ action }}</a>{%- if stage_actions |length > 1 -%}</li>{%endif%}
+                       {%- endfor %}
+                       {%- if stage_actions |length > 1 -%}</ul>{%endif%}
+                   </td>
+               </tr>
+    {%endif%}
+  {% endfor %}
+{% endif %}
          </tbody>
       </table>
       <p class="auto-cursor-target"><br /></p>
@@ -116,8 +119,8 @@
    <ac:structured-macro ac:name="markdown"><ac:plain-text-body>
    	<![CDATA[{{ workflow }}]]>
    </ac:plain-text-body></ac:structured-macro>
-
    {% for stage_name, stage_actions in stages %}
+    {%- if stage_actions is defined and stage_actions is not none and stage_actions|length %}
       <h2>{{ stage_name }}</h2>
          {% for action_description, action_workflow in stage_actions%}
             <h3>{{ action_description }}</h3>
@@ -125,6 +128,7 @@
                <![CDATA[{{ action_workflow }}]]>
             </ac:plain-text-body></ac:structured-macro>
          {%- endfor %}
+    {%endif%}
    {%- endfor %}
 {% endif %}
 

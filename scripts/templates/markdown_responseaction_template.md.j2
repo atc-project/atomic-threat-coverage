@@ -1,13 +1,13 @@
-| Title          | {{ title }}                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Stage    | {{ stage }}                                                            |
-| Automation | {%- if automation is defined and automation|length %}<ul>{% for auto in automation %}<li>{{ auto }}</li>{% endfor %}</ul>{% else %} None{%endif%} |
-| Author    | {{ author }}                                                          |
-| Creation Date    | {{ creation_date }}                                            |
-| References     | {%- if references is defined and references|length %}<ul>{% for ref in references %}<li>[{{ ref }}]({{ ref }})</li>{% endfor %}</ul>{% else %} None{%endif%}                                  |
-| Description    | {{ description }}                                                               |
-| Linked Response Actions | {%- if linked_ra is defined and linked_ra|length %}<ul>{% for action in linked_ra %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul>{% else %} None{%endif%} |
-| Linked Analytics | {%- if linked_analytics is defined and linked_analytics|length %}<ul>{% for analytic in linked_analytics %}<li>{{ analytic }}</li>{% endfor %}</ul>{% else %} None{%endif%} |
+| Title                       | {{ title }}         |
+|:----------------------------|:--------------------|
+| **Description**             | {{ description }}   |
+| **Author**                  | {{ author }}        |
+| **Creation Date**           | {{ creation_date }} |
+| **Stage**                   | {{ stage }}         |
+| **Automation**              | {%- if automation is defined and automation|length %}<ul>{% for auto in automation %}<li>{{ auto }}</li>{% endfor %}</ul>{% else %} None{%endif%} |
+| **References**              | {%- if references is defined and references|length %}<ul>{% for ref in references %}<li>[{{ ref }}]({{ ref }})</li>{% endfor %}</ul>{% else %} None{%endif%} |
+| **Linked Response Actions** | {%- if linked_ra is defined and linked_ra|length %}<ul>{% for action in linked_ra %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul>{% else %} None{%endif%} |
+| **Linked Analytics**        | {%- if linked_analytics is defined and linked_analytics|length %}<ul>{% for analytic in linked_analytics %}<li>{{ analytic }}</li>{% endfor %}</ul>{% else %} None{%endif%} |
 
 
 ### Workflow

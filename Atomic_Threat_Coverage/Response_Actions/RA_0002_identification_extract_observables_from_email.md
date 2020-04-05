@@ -1,13 +1,13 @@
-| Title          | RA_0002_identification_extract_observables_from_email                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Stage    | identification                                                            |
-| Automation |<ul><li>thehive</li></ul> |
-| Author    | @atc_project                                                          |
-| Creation Date    | 31.01.2019                                            |
-| References     |<ul><li>[https://ubuntuincident.wordpress.com/2010/09/27/extract-email-attachments/](https://ubuntuincident.wordpress.com/2010/09/27/extract-email-attachments/)</li><li>[https://blog.thehive-project.org/2018/07/31/emlparser-a-new-cortex-analyzer-for-eml-files/](https://blog.thehive-project.org/2018/07/31/emlparser-a-new-cortex-analyzer-for-eml-files/)</li></ul>                                  |
-| Description    | Extract all observables from original phising email                                                               |
-| Linked Response Actions | None |
-| Linked Analytics | None |
+| Title                       | RA_0002_identification_extract_observables_from_email         |
+|:----------------------------|:--------------------|
+| **Description**             | Extract all observables from original phising email   |
+| **Author**                  | @atc_project        |
+| **Creation Date**           | 31.01.2019 |
+| **Stage**                   | identification         |
+| **Automation**              |<ul><li>thehive</li></ul> |
+| **References**              |<ul><li>[https://ubuntuincident.wordpress.com/2010/09/27/extract-email-attachments/](https://ubuntuincident.wordpress.com/2010/09/27/extract-email-attachments/)</li><li>[https://blog.thehive-project.org/2018/07/31/emlparser-a-new-cortex-analyzer-for-eml-files/](https://blog.thehive-project.org/2018/07/31/emlparser-a-new-cortex-analyzer-for-eml-files/)</li></ul> |
+| **Linked Response Actions** | None |
+| **Linked Analytics**        | None |
 
 
 ### Workflow

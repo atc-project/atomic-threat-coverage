@@ -1,13 +1,13 @@
-| Title          | RA_0040_identification_put_on_monitoring_compromised_accounts                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Stage    | identification                                                            |
-| Automation | None |
-| Author    | @atc_project                                                          |
-| Creation Date    | 31.01.2019                                            |
-| References     | None                                  |
-| Description    | Put (potentially) compromised accounts on monitoring                                                               |
-| Linked Response Actions | None |
-| Linked Analytics | None |
+| Title                       | RA_0040_identification_put_on_monitoring_compromised_accounts         |
+|:----------------------------|:--------------------|
+| **Description**             | Put (potentially) compromised accounts on monitoring   |
+| **Author**                  | @atc_project        |
+| **Creation Date**           | 31.01.2019 |
+| **Stage**                   | identification         |
+| **Automation**              | None |
+| **References**              | None |
+| **Linked Response Actions** | None |
+| **Linked Analytics**        | None |
 
 
 ### Workflow

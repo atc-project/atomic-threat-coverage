@@ -1,13 +1,13 @@
-| Title          | RA_0025_identification_find_services_exetuced                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Stage    | identification                                                            |
-| Automation |<ul><li>thehive</li></ul> |
-| Author    | Name Surname                                                          |
-| Creation Date    | DD.MM.YYYY                                            |
-| References     |<ul><li>[https://example.com](https://example.com)</li></ul>                                  |
-| Description    | Response Action for                                                               |
-| Linked Response Actions | None |
-| Linked Analytics | None |
+| Title                       | RA_0025_identification_find_services_exetuced         |
+|:----------------------------|:--------------------|
+| **Description**             | Response Action for   |
+| **Author**                  | Name Surname        |
+| **Creation Date**           | DD.MM.YYYY |
+| **Stage**                   | identification         |
+| **Automation**              |<ul><li>thehive</li></ul> |
+| **References**              |<ul><li>[https://example.com](https://example.com)</li></ul> |
+| **Linked Response Actions** | None |
+| **Linked Analytics**        | None |
 
 
 ### Workflow

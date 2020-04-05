@@ -10,6 +10,3 @@
 [submodule "mitigations/atomic-mitigation"]
 	path = mitigations/atomic-mitigation
 	url = https://github.com/atomic-threat-coverage/atomic-mitigation
-[submodule "mitigations/atc-mitigation"]
-	path = mitigations/atc-mitigation
-	url = https://github.com/atc-project/atc-mitigation

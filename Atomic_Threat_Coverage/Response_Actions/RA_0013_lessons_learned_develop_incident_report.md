@@ -1,13 +1,13 @@
-| Title          | RA_0013_lessons_learned_develop_incident_report                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Stage    | lessons_learned                                                            |
-| Automation | None |
-| Author    | @atc_project                                                          |
-| Creation Date    | 31.01.2019                                            |
-| References     |<ul><li>[https://attack.mitre.org/tactics/enterprise/](https://attack.mitre.org/tactics/enterprise/)</li><li>[https://en.wikipedia.org/wiki/Kill_chain](https://en.wikipedia.org/wiki/Kill_chain)</li></ul>                                  |
-| Description    | Develop Incident Report                                                               |
-| Linked Response Actions | None |
-| Linked Analytics | None |
+| Title                       | RA_0013_lessons_learned_develop_incident_report         |
+|:----------------------------|:--------------------|
+| **Description**             | Develop Incident Report   |
+| **Author**                  | @atc_project        |
+| **Creation Date**           | 31.01.2019 |
+| **Stage**                   | lessons_learned         |
+| **Automation**              | None |
+| **References**              |<ul><li>[https://attack.mitre.org/tactics/enterprise/](https://attack.mitre.org/tactics/enterprise/)</li><li>[https://en.wikipedia.org/wiki/Kill_chain](https://en.wikipedia.org/wiki/Kill_chain)</li></ul> |
+| **Linked Response Actions** | None |
+| **Linked Analytics**        | None |
 
 
 ### Workflow

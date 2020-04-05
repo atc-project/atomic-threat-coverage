@@ -1,13 +1,13 @@
-| Title          | RA_0014_lessons_learned_conduct_lessons_learned_exercise                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Stage    | lessons_learned                                                            |
-| Automation | None |
-| Author    | @atc_project                                                          |
-| Creation Date    | 31.01.2019                                            |
-| References     |<ul><li>[http://shop.oreilly.com/product/0636920043614.do](http://shop.oreilly.com/product/0636920043614.do)</li><li>[https://www.amazon.com/Incident-Response-Computer-Forensics-Third/dp/0071798684](https://www.amazon.com/Incident-Response-Computer-Forensics-Third/dp/0071798684)</li></ul>                                  |
-| Description    | Conduct lessons learned exercise                                                               |
-| Linked Response Actions | None |
-| Linked Analytics | None |
+| Title                       | RA_0014_lessons_learned_conduct_lessons_learned_exercise         |
+|:----------------------------|:--------------------|
+| **Description**             | Conduct lessons learned exercise   |
+| **Author**                  | @atc_project        |
+| **Creation Date**           | 31.01.2019 |
+| **Stage**                   | lessons_learned         |
+| **Automation**              | None |
+| **References**              |<ul><li>[http://shop.oreilly.com/product/0636920043614.do](http://shop.oreilly.com/product/0636920043614.do)</li><li>[https://www.amazon.com/Incident-Response-Computer-Forensics-Third/dp/0071798684](https://www.amazon.com/Incident-Response-Computer-Forensics-Third/dp/0071798684)</li></ul> |
+| **Linked Response Actions** | None |
+| **Linked Analytics**        | None |
 
 
 ### Workflow

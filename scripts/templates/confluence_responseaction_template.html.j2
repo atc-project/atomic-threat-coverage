@@ -9,6 +9,20 @@
          </colgroup>
          <tbody>
             <tr>
+               <th class="confluenceTh">Description</th>
+               <td class="confluenceTd">{{  description|e }}<br /></td>
+            </tr>
+            <tr>
+               <th class="confluenceTh">Author</th>
+               <td class="confluenceTd">{{ author|e }}<br /></td>
+            </tr>
+{% if creation_date is defined and creation_date|length %}
+            <tr>
+               <th class="confluenceTh">Creation Date</th>
+               <td class="confluenceTd">{{ creation_date|e }}<br /></td>
+            </tr>
+{% endif %}
+            <tr>
                <th class="confluenceTh">Stage</th>
                <td class="confluenceTd">{{ stage|e }}<br /></td>
             </tr>
@@ -24,10 +38,6 @@
                </td>
             </tr>
 {% endif %}
-            <tr>
-               <th class="confluenceTh">Author</th>
-               <td class="confluenceTd">{{ author|e }}<br /></td>
-            </tr>
 {% if references is defined and references|length %}
             <tr>
                <th class="confluenceTh">References</th>
@@ -64,10 +74,6 @@
                </td>
             </tr>
 {% endif %}
-            <tr>
-               <th class="confluenceTh">Description</th>
-               <td class="confluenceTd">{{  description|e }}<br /></td>
-            </tr>
          </tbody>
       </table>
       <p class="auto-cursor-target"><br /></p>

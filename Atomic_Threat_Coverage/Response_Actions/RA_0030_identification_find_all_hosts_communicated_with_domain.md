@@ -1,13 +1,13 @@
-| Title          | RA_0030_identification_find_all_hosts_communicated_with_domain                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Stage    | identification                                                            |
-| Automation |<ul><li>thehive</li></ul> |
-| Author    | Name Surname                                                          |
-| Creation Date    | DD.MM.YYYY                                            |
-| References     |<ul><li>[https://example.com](https://example.com)</li></ul>                                  |
-| Description    | Response Action for                                                               |
-| Linked Response Actions | None |
-| Linked Analytics | None |
+| Title                       | RA_0030_identification_find_all_hosts_communicated_with_domain         |
+|:----------------------------|:--------------------|
+| **Description**             | Response Action for   |
+| **Author**                  | Name Surname        |
+| **Creation Date**           | DD.MM.YYYY |
+| **Stage**                   | identification         |
+| **Automation**              |<ul><li>thehive</li></ul> |
+| **References**              |<ul><li>[https://example.com](https://example.com)</li></ul> |
+| **Linked Response Actions** | None |
+| **Linked Analytics**        | None |
 
 
 ### Workflow

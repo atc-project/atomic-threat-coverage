@@ -1,13 +1,13 @@
-| Title          | RA_0008_containment_block_domain_on_dns                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Stage    | containment                                                            |
-| Automation | None |
-| Author    | @atc_project                                                          |
-| Creation Date    | 31.01.2019                                            |
-| References     |<ul><li>[https://en.wikipedia.org/wiki/DNS_sinkhole](https://en.wikipedia.org/wiki/DNS_sinkhole)</li></ul>                                  |
-| Description    | Block domain on DNS server.                                                               |
-| Linked Response Actions | None |
-| Linked Analytics |<ul><li>MS_dns_server</li></ul> |
+| Title                       | RA_0008_containment_block_domain_on_dns         |
+|:----------------------------|:--------------------|
+| **Description**             | Block domain on DNS server.   |
+| **Author**                  | @atc_project        |
+| **Creation Date**           | 31.01.2019 |
+| **Stage**                   | containment         |
+| **Automation**              | None |
+| **References**              |<ul><li>[https://en.wikipedia.org/wiki/DNS_sinkhole](https://en.wikipedia.org/wiki/DNS_sinkhole)</li></ul> |
+| **Linked Response Actions** | None |
+| **Linked Analytics**        |<ul><li>MS_dns_server</li></ul> |
 
 
 ### Workflow

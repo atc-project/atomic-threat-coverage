@@ -1,13 +1,13 @@
-| Title          | RA_0009_containment_block_url_on_proxy                                                                                                      |
-|:---------------|:-----------------------------------------------------------------------------------------------------------------|
-| Stage    | containment                                                            |
-| Automation | None |
-| Author    | @atc_project                                                          |
-| Creation Date    | 31.01.2019                                            |
-| References     | None                                  |
-| Description    | Block url on Proxy server.                                                               |
-| Linked Response Actions | None |
-| Linked Analytics |<ul><li>MS_proxy_server</li></ul> |
+| Title                       | RA_0009_containment_block_url_on_proxy         |
+|:----------------------------|:--------------------|
+| **Description**             | Block url on Proxy server.   |
+| **Author**                  | @atc_project        |
+| **Creation Date**           | 31.01.2019 |
+| **Stage**                   | containment         |
+| **Automation**              | None |
+| **References**              | None |
+| **Linked Response Actions** | None |
+| **Linked Analytics**        |<ul><li>MS_proxy_server</li></ul> |
 
 
 ### Workflow
