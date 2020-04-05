@@ -1,13 +1,13 @@
-| Title          | DN_0063_4697_service_was_installed_in_the_system       |
-|:---------------|:------------------|
-| Description    | A service was installed in the system |
-| Logging Policy | <ul><li>[LP_0100_windows_audit_security_system_extension](../Logging_Policies/LP_0100_windows_audit_security_system_extension.md)</li></ul> |
-| References     | <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4697](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4697)</li></ul> |
-| Platform       | Windows    |
-| Type           | Windows Log        |
-| Channel        | Security     |
-| Provider       | Microsoft-Windows-Security-Auditing    |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>ServiceName</li><li>ServiceFileName</li><li>ServiceType</li><li>ServiceStartType</li><li>ServiceAccount</li></ul> |
+| Title              | DN_0063_4697_service_was_installed_in_the_system       |
+|:-------------------|:------------------|
+| **Description**    | A service was installed in the system |
+| **Logging Policy** | <ul><li>[LP_0100_windows_audit_security_system_extension](../Logging_Policies/LP_0100_windows_audit_security_system_extension.md)</li></ul> |
+| **References**     | <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4697](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4697)</li></ul> |
+| **Platform**       | Windows    |
+| **Type**           | Windows Log        |
+| **Channel**        | Security     |
+| **Provider**       | Microsoft-Windows-Security-Auditing    |
+| **Fields**         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>ServiceName</li><li>ServiceFileName</li><li>ServiceType</li><li>ServiceStartType</li><li>ServiceAccount</li></ul> |
 
 
 ## Log Samples

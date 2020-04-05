@@ -1,13 +1,13 @@
-| Title          | DN_0084_av_alert       |
-|:---------------|:------------------|
-| Description    | Anti-virus alert |
-| Logging Policy | <ul><li> Not existing </li></ul> |
-| References     | <ul><li>[None](None)</li></ul> |
-| Platform       | antivirus    |
-| Type           | None        |
-| Channel        | None     |
-| Provider       | None    |
-| Fields         | <ul><li>Hostname</li><li>Signature</li><li>AlertTitle</li><li>Category</li><li>Severity</li><li>Sha1</li><li>FileName</li><li>FilePath</li><li>IpAddress</li><li>UserName</li><li>UserDomain</li><li>FileHash</li><li>Hashes</li><li>Imphash</li><li>Sha256hash</li><li>Sha1hash</li><li>Md5hash</li></ul> |
+| Title              | DN_0084_av_alert       |
+|:-------------------|:------------------|
+| **Description**    | Anti-virus alert |
+| **Logging Policy** | <ul><li> Not existing </li></ul> |
+| **References**     | <ul><li>[None](None)</li></ul> |
+| **Platform**       | antivirus    |
+| **Type**           | None        |
+| **Channel**        | None     |
+| **Provider**       | None    |
+| **Fields**         | <ul><li>Hostname</li><li>Signature</li><li>AlertTitle</li><li>Category</li><li>Severity</li><li>Sha1</li><li>FileName</li><li>FilePath</li><li>IpAddress</li><li>UserName</li><li>UserDomain</li><li>FileHash</li><li>Hashes</li><li>Imphash</li><li>Sha256hash</li><li>Sha1hash</li><li>Md5hash</li></ul> |
 
 
 ## Log Samples

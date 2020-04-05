@@ -1,15 +1,15 @@
-| Title                | Suspicious In-Memory Module Execution                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects the access to processes by other suspicious processes which have reflectively loaded libraries in their memory space. An example is SilentTrinity C2 behaviour. Generally speaking, when Sysmon EventID 10 cannot reference a stack call to a dll loaded from disk (the standard way), it will display "UNKNOWN" as the module name. Usually this means the stack call points to a module that was reflectively loaded in memory. Adding to this, it is not common to see such few calls in the stack (ntdll.dll --> kernelbase.dll --> unknown) which essentially means that most of the functions required by the process to execute certain routines are already present in memory, not requiring any calls to external libraries. The latter should also be considered suspicious.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0014_10_windows_sysmon_ProcessAccess](../Data_Needed/DN_0014_10_windows_sysmon_ProcessAccess.md)</li></ul>  |
-| Trigger              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>Low</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://azure.microsoft.com/en-ca/blog/detecting-in-memory-attacks-with-sysmon-and-azure-security-center/](https://azure.microsoft.com/en-ca/blog/detecting-in-memory-attacks-with-sysmon-and-azure-security-center/)</li></ul>  |
-| Author               | Perez Diego (@darkquassar), oscd.community |
+| Title                    | Suspicious In-Memory Module Execution       |
+|:-------------------------|:------------------|
+| **Description**          | Detects the access to processes by other suspicious processes which have reflectively loaded libraries in their memory space. An example is SilentTrinity C2 behaviour. Generally speaking, when Sysmon EventID 10 cannot reference a stack call to a dll loaded from disk (the standard way), it will display "UNKNOWN" as the module name. Usually this means the stack call points to a module that was reflectively loaded in memory. Adding to this, it is not common to see such few calls in the stack (ntdll.dll --> kernelbase.dll --> unknown) which essentially means that most of the functions required by the process to execute certain routines are already present in memory, not requiring any calls to external libraries. The latter should also be considered suspicious. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0014_10_windows_sysmon_ProcessAccess](../Data_Needed/DN_0014_10_windows_sysmon_ProcessAccess.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>Low</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://azure.microsoft.com/en-ca/blog/detecting-in-memory-attacks-with-sysmon-and-azure-security-center/](https://azure.microsoft.com/en-ca/blog/detecting-in-memory-attacks-with-sysmon-and-azure-security-center/)</li></ul>  |
+| **Author**               | Perez Diego (@darkquassar), oscd.community |
 
 
 ## Detection Rules

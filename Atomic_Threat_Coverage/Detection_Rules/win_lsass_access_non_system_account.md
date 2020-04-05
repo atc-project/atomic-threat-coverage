@@ -1,15 +1,15 @@
-| Title                | LSASS Access from Non System Account                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects potential mimikatz-like tools accessing LSASS from non system account                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0058_4656_handle_to_an_object_was_requested](../Data_Needed/DN_0058_4656_handle_to_an_object_was_requested.md)</li><li>[DN_0062_4663_attempt_was_made_to_access_an_object](../Data_Needed/DN_0062_4663_attempt_was_made_to_access_an_object.md)</li></ul>  |
-| Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://github.com/Cyb3rWard0g/ThreatHunter-Playbook/tree/master/playbooks/windows/06_credential_access/T1003_credential_dumping/lsass_access_non_system_account.md](https://github.com/Cyb3rWard0g/ThreatHunter-Playbook/tree/master/playbooks/windows/06_credential_access/T1003_credential_dumping/lsass_access_non_system_account.md)</li></ul>  |
-| Author               | Roberto Rodriguez @Cyb3rWard0g |
+| Title                    | LSASS Access from Non System Account       |
+|:-------------------------|:------------------|
+| **Description**          | Detects potential mimikatz-like tools accessing LSASS from non system account |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0058_4656_handle_to_an_object_was_requested](../Data_Needed/DN_0058_4656_handle_to_an_object_was_requested.md)</li><li>[DN_0062_4663_attempt_was_made_to_access_an_object](../Data_Needed/DN_0062_4663_attempt_was_made_to_access_an_object.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://github.com/Cyb3rWard0g/ThreatHunter-Playbook/tree/master/playbooks/windows/06_credential_access/T1003_credential_dumping/lsass_access_non_system_account.md](https://github.com/Cyb3rWard0g/ThreatHunter-Playbook/tree/master/playbooks/windows/06_credential_access/T1003_credential_dumping/lsass_access_non_system_account.md)</li></ul>  |
+| **Author**               | Roberto Rodriguez @Cyb3rWard0g |
 
 
 ## Detection Rules

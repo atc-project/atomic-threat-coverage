@@ -1,15 +1,15 @@
-| Title                | Koadic Execution                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects command line parameters used by Koadic hack tool                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1170: Mshta](../Triggers/T1170.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Pentest</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://unit42.paloaltonetworks.com/unit42-sofacy-groups-parallel-attacks/](https://unit42.paloaltonetworks.com/unit42-sofacy-groups-parallel-attacks/)</li><li>[https://github.com/zerosum0x0/koadic/blob/master/data/stager/js/stdlib.js#L955](https://github.com/zerosum0x0/koadic/blob/master/data/stager/js/stdlib.js#L955)</li><li>[https://blog.f-secure.com/hunting-for-koadic-a-com-based-rootkit/](https://blog.f-secure.com/hunting-for-koadic-a-com-based-rootkit/)</li></ul>  |
-| Author               | wagga |
+| Title                    | Koadic Execution       |
+|:-------------------------|:------------------|
+| **Description**          | Detects command line parameters used by Koadic hack tool |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1170: Mshta](../Triggers/T1170.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Pentest</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://unit42.paloaltonetworks.com/unit42-sofacy-groups-parallel-attacks/](https://unit42.paloaltonetworks.com/unit42-sofacy-groups-parallel-attacks/)</li><li>[https://github.com/zerosum0x0/koadic/blob/master/data/stager/js/stdlib.js#L955](https://github.com/zerosum0x0/koadic/blob/master/data/stager/js/stdlib.js#L955)</li><li>[https://blog.f-secure.com/hunting-for-koadic-a-com-based-rootkit/](https://blog.f-secure.com/hunting-for-koadic-a-com-based-rootkit/)</li></ul>  |
+| **Author**               | wagga |
 
 
 ## Detection Rules

@@ -1,15 +1,15 @@
-| Title                | Suspicious Remote Thread Created                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Offensive tradecraft is switching away from using APIs like "CreateRemoteThread", however, this is still largely observed in the wild. This rule aims to detect suspicious processes (those we would not expect to behave in this way like word.exe or outlook.exe) creating remote threads on other processes. It is a generalistic rule, but it should have a low FP ratio due to the selected range of processes.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0012_8_windows_sysmon_CreateRemoteThread](../Data_Needed/DN_0012_8_windows_sysmon_CreateRemoteThread.md)</li></ul>  |
-| Trigger              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[Personal research, statistical analysis](Personal research, statistical analysis)</li><li>[https://lolbas-project.github.io](https://lolbas-project.github.io)</li></ul>  |
-| Author               | Perez Diego (@darkquassar), oscd.community |
+| Title                    | Suspicious Remote Thread Created       |
+|:-------------------------|:------------------|
+| **Description**          | Offensive tradecraft is switching away from using APIs like "CreateRemoteThread", however, this is still largely observed in the wild. This rule aims to detect suspicious processes (those we would not expect to behave in this way like word.exe or outlook.exe) creating remote threads on other processes. It is a generalistic rule, but it should have a low FP ratio due to the selected range of processes. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0012_8_windows_sysmon_CreateRemoteThread](../Data_Needed/DN_0012_8_windows_sysmon_CreateRemoteThread.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[Personal research, statistical analysis](Personal research, statistical analysis)</li><li>[https://lolbas-project.github.io](https://lolbas-project.github.io)</li></ul>  |
+| **Author**               | Perez Diego (@darkquassar), oscd.community |
 
 
 ## Detection Rules

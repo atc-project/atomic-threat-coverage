@@ -1,15 +1,15 @@
-| Title                | SquiblyTwo                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects WMI SquiblyTwo Attack with possible renamed WMI by looking for imphash                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li></ul>  |
-| Severity Level       | medium |
-| False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://subt0x11.blogspot.ch/2018/04/wmicexe-whitelisting-bypass-hacking.html](https://subt0x11.blogspot.ch/2018/04/wmicexe-whitelisting-bypass-hacking.html)</li><li>[https://twitter.com/mattifestation/status/986280382042595328](https://twitter.com/mattifestation/status/986280382042595328)</li></ul>  |
-| Author               | Markus Neis / Florian Roth |
+| Title                    | SquiblyTwo       |
+|:-------------------------|:------------------|
+| **Description**          | Detects WMI SquiblyTwo Attack with possible renamed WMI by looking for imphash |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li></ul>  |
+| **Severity Level**       | medium |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://subt0x11.blogspot.ch/2018/04/wmicexe-whitelisting-bypass-hacking.html](https://subt0x11.blogspot.ch/2018/04/wmicexe-whitelisting-bypass-hacking.html)</li><li>[https://twitter.com/mattifestation/status/986280382042595328](https://twitter.com/mattifestation/status/986280382042595328)</li></ul>  |
+| **Author**               | Markus Neis / Florian Roth |
 
 
 ## Detection Rules

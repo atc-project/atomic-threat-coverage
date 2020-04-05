@@ -1,16 +1,16 @@
-| Title                | In-memory PowerShell                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects loading of essential DLL used by PowerShell, but not by the process powershell.exe. Detects meterpreter's "load powershell" extension.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li></ul>  |
-| Enrichment |<ul><li>[EN_0001_cache_sysmon_event_id_1_info](../Enrichments/EN_0001_cache_sysmon_event_id_1_info.md)</li><li>[EN_0003_enrich_other_sysmon_events_with_event_id_1_data](../Enrichments/EN_0003_enrich_other_sysmon_events_with_event_id_1_data.md)</li></ul> |
-| Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Used by some .NET binaries, minimal on user workstation.</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://adsecurity.org/?p=2921](https://adsecurity.org/?p=2921)</li><li>[https://github.com/p3nt4/PowerShdll](https://github.com/p3nt4/PowerShdll)</li></ul>  |
-| Author               | Tom Kern, oscd.community |
+| Title                    | In-memory PowerShell       |
+|:-------------------------|:------------------|
+| **Description**          | Detects loading of essential DLL used by PowerShell, but not by the process powershell.exe. Detects meterpreter's "load powershell" extension. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li></ul>  |
+| **Enrichment** |<ul><li>[EN_0001_cache_sysmon_event_id_1_info](../Enrichments/EN_0001_cache_sysmon_event_id_1_info.md)</li><li>[EN_0003_enrich_other_sysmon_events_with_event_id_1_data](../Enrichments/EN_0003_enrich_other_sysmon_events_with_event_id_1_data.md)</li></ul> |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Used by some .NET binaries, minimal on user workstation.</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://adsecurity.org/?p=2921](https://adsecurity.org/?p=2921)</li><li>[https://github.com/p3nt4/PowerShdll](https://github.com/p3nt4/PowerShdll)</li></ul>  |
+| **Author**               | Tom Kern, oscd.community |
 
 
 ## Detection Rules

@@ -1,15 +1,15 @@
-| Title                | PowerShell Execution                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects execution of PowerShell                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li></ul>  |
-| Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
-| Severity Level       | medium |
-| False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://github.com/hunters-forge/ThreatHunter-Playbook/blob/8869b7a58dba1cff63bae1d7ab923974b8c0539b/playbooks/WIN-190410151110.yaml](https://github.com/hunters-forge/ThreatHunter-Playbook/blob/8869b7a58dba1cff63bae1d7ab923974b8c0539b/playbooks/WIN-190410151110.yaml)</li></ul>  |
-| Author               | Roberto Rodriguez @Cyb3rWard0g |
+| Title                    | PowerShell Execution       |
+|:-------------------------|:------------------|
+| **Description**          | Detects execution of PowerShell |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
+| **Severity Level**       | medium |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://github.com/hunters-forge/ThreatHunter-Playbook/blob/8869b7a58dba1cff63bae1d7ab923974b8c0539b/playbooks/WIN-190410151110.yaml](https://github.com/hunters-forge/ThreatHunter-Playbook/blob/8869b7a58dba1cff63bae1d7ab923974b8c0539b/playbooks/WIN-190410151110.yaml)</li></ul>  |
+| **Author**               | Roberto Rodriguez @Cyb3rWard0g |
 
 
 ## Detection Rules

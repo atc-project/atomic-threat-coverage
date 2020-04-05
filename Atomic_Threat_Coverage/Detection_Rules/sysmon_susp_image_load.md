@@ -1,15 +1,15 @@
-| Title                | Possible Process Hollowing Image Loading                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects Loading of samlib.dll, WinSCard.dll from untypical process e.g. through process hollowing by Mimikatz                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li></ul>  |
-| Trigger              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Very likely, needs more tuning</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://cyberwardog.blogspot.com/2017/03/chronicles-of-threat-hunter-hunting-for.html](https://cyberwardog.blogspot.com/2017/03/chronicles-of-threat-hunter-hunting-for.html)</li></ul>  |
-| Author               | Markus Neis |
+| Title                    | Possible Process Hollowing Image Loading       |
+|:-------------------------|:------------------|
+| **Description**          | Detects Loading of samlib.dll, WinSCard.dll from untypical process e.g. through process hollowing by Mimikatz |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Very likely, needs more tuning</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://cyberwardog.blogspot.com/2017/03/chronicles-of-threat-hunter-hunting-for.html](https://cyberwardog.blogspot.com/2017/03/chronicles-of-threat-hunter-hunting-for.html)</li></ul>  |
+| **Author**               | Markus Neis |
 
 
 ## Detection Rules

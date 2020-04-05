@@ -1,15 +1,15 @@
-| Title                | Pandemic Registry Key                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects Pandemic Windows Implant                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1105: Remote File Copy](https://attack.mitre.org/techniques/T1105)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
-| Trigger              | <ul><li>[T1105: Remote File Copy](../Triggers/T1105.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://wikileaks.org/vault7/#Pandemic](https://wikileaks.org/vault7/#Pandemic)</li><li>[https://twitter.com/MalwareJake/status/870349480356454401](https://twitter.com/MalwareJake/status/870349480356454401)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | Pandemic Registry Key       |
+|:-------------------------|:------------------|
+| **Description**          | Detects Pandemic Windows Implant |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1105: Remote File Copy](https://attack.mitre.org/techniques/T1105)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1105: Remote File Copy](../Triggers/T1105.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://wikileaks.org/vault7/#Pandemic](https://wikileaks.org/vault7/#Pandemic)</li><li>[https://twitter.com/MalwareJake/status/870349480356454401](https://twitter.com/MalwareJake/status/870349480356454401)</li></ul>  |
+| **Author**               | Florian Roth |
 
 
 ## Detection Rules

@@ -1,15 +1,15 @@
-| Title                | Narrator's Feedback-Hub Persistence                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects abusing Windows 10 Narrator's Feedback-Hub                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1060: Registry Run Keys / Startup Folder](https://attack.mitre.org/techniques/T1060)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0016_12_windows_sysmon_RegistryEvent](../Data_Needed/DN_0016_12_windows_sysmon_RegistryEvent.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
-| Trigger              | <ul><li>[T1060: Registry Run Keys / Startup Folder](../Triggers/T1060.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://giuliocomi.blogspot.com/2019/10/abusing-windows-10-narrators-feedback.html](https://giuliocomi.blogspot.com/2019/10/abusing-windows-10-narrators-feedback.html)</li></ul>  |
-| Author               | Dmitriy Lifanov, oscd.community |
+| Title                    | Narrator's Feedback-Hub Persistence       |
+|:-------------------------|:------------------|
+| **Description**          | Detects abusing Windows 10 Narrator's Feedback-Hub |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1060: Registry Run Keys / Startup Folder](https://attack.mitre.org/techniques/T1060)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0016_12_windows_sysmon_RegistryEvent](../Data_Needed/DN_0016_12_windows_sysmon_RegistryEvent.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1060: Registry Run Keys / Startup Folder](../Triggers/T1060.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://giuliocomi.blogspot.com/2019/10/abusing-windows-10-narrators-feedback.html](https://giuliocomi.blogspot.com/2019/10/abusing-windows-10-narrators-feedback.html)</li></ul>  |
+| **Author**               | Dmitriy Lifanov, oscd.community |
 
 
 ## Detection Rules

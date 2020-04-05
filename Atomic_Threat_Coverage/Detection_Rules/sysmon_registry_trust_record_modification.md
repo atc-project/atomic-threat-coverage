@@ -1,15 +1,15 @@
-| Title                | Windows Registry Trust Record Modification                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Alerts on trust record modification within the registry, indicating usage of macros                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1193: Spearphishing Attachment](https://attack.mitre.org/techniques/T1193)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0016_12_windows_sysmon_RegistryEvent](../Data_Needed/DN_0016_12_windows_sysmon_RegistryEvent.md)</li></ul>  |
-| Trigger              | <ul><li>[T1193: Spearphishing Attachment](../Triggers/T1193.md)</li></ul>  |
-| Severity Level       | medium |
-| False Positives      | <ul><li>Alerts on legitimate macro usage as well, will need to filter as appropriate</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://outflank.nl/blog/2018/01/16/hunting-for-evil-detect-macros-being-executed/](https://outflank.nl/blog/2018/01/16/hunting-for-evil-detect-macros-being-executed/)</li><li>[http://az4n6.blogspot.com/2016/02/more-on-trust-records-macros-and.html](http://az4n6.blogspot.com/2016/02/more-on-trust-records-macros-and.html)</li></ul>  |
-| Author               | Antonlovesdnb |
+| Title                    | Windows Registry Trust Record Modification       |
+|:-------------------------|:------------------|
+| **Description**          | Alerts on trust record modification within the registry, indicating usage of macros |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1193: Spearphishing Attachment](https://attack.mitre.org/techniques/T1193)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0016_12_windows_sysmon_RegistryEvent](../Data_Needed/DN_0016_12_windows_sysmon_RegistryEvent.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1193: Spearphishing Attachment](../Triggers/T1193.md)</li></ul>  |
+| **Severity Level**       | medium |
+| **False Positives**      | <ul><li>Alerts on legitimate macro usage as well, will need to filter as appropriate</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://outflank.nl/blog/2018/01/16/hunting-for-evil-detect-macros-being-executed/](https://outflank.nl/blog/2018/01/16/hunting-for-evil-detect-macros-being-executed/)</li><li>[http://az4n6.blogspot.com/2016/02/more-on-trust-records-macros-and.html](http://az4n6.blogspot.com/2016/02/more-on-trust-records-macros-and.html)</li></ul>  |
+| **Author**               | Antonlovesdnb |
 
 
 ## Detection Rules

@@ -1,15 +1,15 @@
-| Title                | Windows 10 Scheduled Task SandboxEscaper 0-day                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects Task Scheduler .job import arbitrary DACL write\par                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1053: Scheduled Task](https://attack.mitre.org/techniques/T1053)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1053: Scheduled Task](../Triggers/T1053.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://github.com/SandboxEscaper/polarbearrepo/tree/master/bearlpe](https://github.com/SandboxEscaper/polarbearrepo/tree/master/bearlpe)</li></ul>  |
-| Author               | Olaf Hartong |
+| Title                    | Windows 10 Scheduled Task SandboxEscaper 0-day       |
+|:-------------------------|:------------------|
+| **Description**          | Detects Task Scheduler .job import arbitrary DACL write\par |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1053: Scheduled Task](https://attack.mitre.org/techniques/T1053)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1053: Scheduled Task](../Triggers/T1053.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://github.com/SandboxEscaper/polarbearrepo/tree/master/bearlpe](https://github.com/SandboxEscaper/polarbearrepo/tree/master/bearlpe)</li></ul>  |
+| **Author**               | Olaf Hartong |
 | Other Tags           | <ul><li>car.2013-08-001</li></ul> | 
 
 ## Detection Rules

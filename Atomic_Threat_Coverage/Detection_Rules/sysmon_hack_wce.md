@@ -1,15 +1,15 @@
-| Title                | Windows Credential Editor                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects the use of Windows Credential Editor (WCE)                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
-| Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>Another service that uses a single -s command line switch</li></ul>  |
-| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
-| References           | <ul><li>[https://www.ampliasecurity.com/research/windows-credentials-editor/](https://www.ampliasecurity.com/research/windows-credentials-editor/)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | Windows Credential Editor       |
+|:-------------------------|:------------------|
+| **Description**          | Detects the use of Windows Credential Editor (WCE) |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>Another service that uses a single -s command line switch</li></ul>  |
+| **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
+| **References**           | <ul><li>[https://www.ampliasecurity.com/research/windows-credentials-editor/](https://www.ampliasecurity.com/research/windows-credentials-editor/)</li></ul>  |
+| **Author**               | Florian Roth |
 | Other Tags           | <ul><li>attack.s0005</li></ul> | 
 
 ## Detection Rules

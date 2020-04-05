@@ -1,15 +1,15 @@
-| Title                | New or Renamed User Account with '$' in Attribute 'SamAccountName'.                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects possible bypass EDR and SIEM via abnormal user account name.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0086_4720_user_account_was_created](../Data_Needed/DN_0086_4720_user_account_was_created.md)</li></ul>  |
-| Trigger              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Unkown</li></ul>  |
-| Development Status   | experimental |
-| References           |  There are no documented References for this Detection Rule yet  |
-| Author               | Ilyas Ochkov, oscd.community |
+| Title                    | New or Renamed User Account with '$' in Attribute 'SamAccountName'.       |
+|:-------------------------|:------------------|
+| **Description**          | Detects possible bypass EDR and SIEM via abnormal user account name. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0086_4720_user_account_was_created](../Data_Needed/DN_0086_4720_user_account_was_created.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Unkown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           |  There are no documented References for this Detection Rule yet  |
+| **Author**               | Ilyas Ochkov, oscd.community |
 
 
 ## Detection Rules

@@ -1,15 +1,15 @@
-| Title                | Malicious Service Installations                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects known malicious service installs that only appear in cases of lateral movement, credential dumping and other suspicious activity                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li></ul>  |
-| Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li><li>[T1035: Service Execution](../Triggers/T1035.md)</li><li>[T1050: New Service](../Triggers/T1050.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>Penetration testing</li></ul>  |
-| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
-| References           |  There are no documented References for this Detection Rule yet  |
-| Author               | Florian Roth, Daniil Yugoslavskiy, oscd.community (update) |
+| Title                    | Malicious Service Installations       |
+|:-------------------------|:------------------|
+| **Description**          | Detects known malicious service installs that only appear in cases of lateral movement, credential dumping and other suspicious activity |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li><li>[T1035: Service Execution](../Triggers/T1035.md)</li><li>[T1050: New Service](../Triggers/T1050.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>Penetration testing</li></ul>  |
+| **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
+| **References**           |  There are no documented References for this Detection Rule yet  |
+| **Author**               | Florian Roth, Daniil Yugoslavskiy, oscd.community (update) |
 | Other Tags           | <ul><li>car.2013-09-005</li></ul> | 
 
 ## Detection Rules

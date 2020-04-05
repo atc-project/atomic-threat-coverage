@@ -1,15 +1,15 @@
-| Title                | MSTSC Shadowing                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects RDP session hijacking by using MSTSC shadowing                                                                                                                                           |
-| ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
-| ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              |  There is no documented Trigger for this Detection Rule yet  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://twitter.com/kmkz_security/status/1220694202301976576](https://twitter.com/kmkz_security/status/1220694202301976576)</li><li>[https://github.com/kmkz/Pentesting/blob/master/Post-Exploitation-Cheat-Sheet](https://github.com/kmkz/Pentesting/blob/master/Post-Exploitation-Cheat-Sheet)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | MSTSC Shadowing       |
+|:-------------------------|:------------------|
+| **Description**          | Detects RDP session hijacking by using MSTSC shadowing |
+| **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://twitter.com/kmkz_security/status/1220694202301976576](https://twitter.com/kmkz_security/status/1220694202301976576)</li><li>[https://github.com/kmkz/Pentesting/blob/master/Post-Exploitation-Cheat-Sheet](https://github.com/kmkz/Pentesting/blob/master/Post-Exploitation-Cheat-Sheet)</li></ul>  |
+| **Author**               | Florian Roth |
 
 
 ## Detection Rules

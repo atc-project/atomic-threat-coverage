@@ -1,15 +1,15 @@
-| Title                | Suspicious Bitsadmin Job via PowerShell                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detect download by BITS jobs via PowerShell                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1197: BITS Jobs](https://attack.mitre.org/techniques/T1197)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1197: BITS Jobs](../Triggers/T1197.md)</li></ul>  |
-| Severity Level       | medium |
-| False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://eqllib.readthedocs.io/en/latest/analytics/ec5180c9-721a-460f-bddc-27539a284273.html](https://eqllib.readthedocs.io/en/latest/analytics/ec5180c9-721a-460f-bddc-27539a284273.html)</li><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1197/T1197.md](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1197/T1197.md)</li></ul>  |
-| Author               | Endgame, JHasenbusch (ported to sigma for oscd.community) |
+| Title                    | Suspicious Bitsadmin Job via PowerShell       |
+|:-------------------------|:------------------|
+| **Description**          | Detect download by BITS jobs via PowerShell |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1197: BITS Jobs](https://attack.mitre.org/techniques/T1197)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1197: BITS Jobs](../Triggers/T1197.md)</li></ul>  |
+| **Severity Level**       | medium |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://eqllib.readthedocs.io/en/latest/analytics/ec5180c9-721a-460f-bddc-27539a284273.html](https://eqllib.readthedocs.io/en/latest/analytics/ec5180c9-721a-460f-bddc-27539a284273.html)</li><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1197/T1197.md](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1197/T1197.md)</li></ul>  |
+| **Author**               | Endgame, JHasenbusch (ported to sigma for oscd.community) |
 
 
 ## Detection Rules

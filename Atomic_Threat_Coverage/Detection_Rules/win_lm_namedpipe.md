@@ -1,15 +1,15 @@
-| Title                | First Time Seen Remote Named Pipe                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | This detection excludes known namped pipes accessible remotely and notify on newly observed ones, may help to detect lateral movement and remote exec using named pipes                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1077: Windows Admin Shares](https://attack.mitre.org/techniques/T1077)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0032_5145_network_share_object_was_accessed_detailed](../Data_Needed/DN_0032_5145_network_share_object_was_accessed_detailed.md)</li></ul>  |
-| Trigger              | <ul><li>[T1077: Windows Admin Shares](../Triggers/T1077.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>update the excluded named pipe to filter out any newly observed legit named pipe</li></ul>  |
-| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
-| References           | <ul><li>[https://twitter.com/menasec1/status/1104489274387451904](https://twitter.com/menasec1/status/1104489274387451904)</li></ul>  |
-| Author               | Samir Bousseaden |
+| Title                    | First Time Seen Remote Named Pipe       |
+|:-------------------------|:------------------|
+| **Description**          | This detection excludes known namped pipes accessible remotely and notify on newly observed ones, may help to detect lateral movement and remote exec using named pipes |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1077: Windows Admin Shares](https://attack.mitre.org/techniques/T1077)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0032_5145_network_share_object_was_accessed_detailed](../Data_Needed/DN_0032_5145_network_share_object_was_accessed_detailed.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1077: Windows Admin Shares](../Triggers/T1077.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>update the excluded named pipe to filter out any newly observed legit named pipe</li></ul>  |
+| **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
+| **References**           | <ul><li>[https://twitter.com/menasec1/status/1104489274387451904](https://twitter.com/menasec1/status/1104489274387451904)</li></ul>  |
+| **Author**               | Samir Bousseaden |
 
 
 ## Detection Rules

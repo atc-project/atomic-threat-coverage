@@ -1,15 +1,15 @@
-| Title                | Defrag Deactivation                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects the deactivation of the Scheduled defragmentation task as seen by Slingshot APT group                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1053: Scheduled Task](https://attack.mitre.org/techniques/T1053)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0065_4701_scheduled_task_was_disabled](../Data_Needed/DN_0065_4701_scheduled_task_was_disabled.md)</li></ul>  |
-| Trigger              | <ul><li>[T1053: Scheduled Task](../Triggers/T1053.md)</li></ul>  |
-| Severity Level       | medium |
-| False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
-| References           | <ul><li>[https://securelist.com/apt-slingshot/84312/](https://securelist.com/apt-slingshot/84312/)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | Defrag Deactivation       |
+|:-------------------------|:------------------|
+| **Description**          | Detects the deactivation of the Scheduled defragmentation task as seen by Slingshot APT group |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1053: Scheduled Task](https://attack.mitre.org/techniques/T1053)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0065_4701_scheduled_task_was_disabled](../Data_Needed/DN_0065_4701_scheduled_task_was_disabled.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1053: Scheduled Task](../Triggers/T1053.md)</li></ul>  |
+| **Severity Level**       | medium |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
+| **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
+| **References**           | <ul><li>[https://securelist.com/apt-slingshot/84312/](https://securelist.com/apt-slingshot/84312/)</li></ul>  |
+| **Author**               | Florian Roth |
 | Other Tags           | <ul><li>attack.s0111</li></ul> | 
 
 ## Detection Rules

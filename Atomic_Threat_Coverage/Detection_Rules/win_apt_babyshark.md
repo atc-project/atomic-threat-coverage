@@ -1,15 +1,15 @@
-| Title                | Baby Shark Activity                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects activity that could be related to Baby Shark malware                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1059: Command-Line Interface](https://attack.mitre.org/techniques/T1059)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li><li>[T1012: Query Registry](https://attack.mitre.org/techniques/T1012)</li><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1059: Command-Line Interface](../Triggers/T1059.md)</li><li>[T1086: PowerShell](../Triggers/T1086.md)</li><li>[T1012: Query Registry](../Triggers/T1012.md)</li><li>[T1170: Mshta](../Triggers/T1170.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://unit42.paloaltonetworks.com/new-babyshark-malware-targets-u-s-national-security-think-tanks/](https://unit42.paloaltonetworks.com/new-babyshark-malware-targets-u-s-national-security-think-tanks/)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | Baby Shark Activity       |
+|:-------------------------|:------------------|
+| **Description**          | Detects activity that could be related to Baby Shark malware |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1059: Command-Line Interface](https://attack.mitre.org/techniques/T1059)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li><li>[T1012: Query Registry](https://attack.mitre.org/techniques/T1012)</li><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1059: Command-Line Interface](../Triggers/T1059.md)</li><li>[T1086: PowerShell](../Triggers/T1086.md)</li><li>[T1012: Query Registry](../Triggers/T1012.md)</li><li>[T1170: Mshta](../Triggers/T1170.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://unit42.paloaltonetworks.com/new-babyshark-malware-targets-u-s-national-security-think-tanks/](https://unit42.paloaltonetworks.com/new-babyshark-malware-targets-u-s-national-security-think-tanks/)</li></ul>  |
+| **Author**               | Florian Roth |
 
 
 ## Detection Rules

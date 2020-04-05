@@ -1,10 +1,10 @@
-| Title          | {{ title }}                                                                     |
-|:---------------|:--------------------------------------------------------------------------------|
-| Description    | {{ description }}                                                               |
-| Default        | {{ default }}                                                                   |
-| Event Volume   | {{ volume }}                                                                    |
-| EventID        | <ul>{% for eventid in eventID %}<li>{{ eventid }}</li>{% endfor %}</ul>         |
-| References     | <ul>{% for ref in references %}<li>[{{ ref }}]({{ ref }})</li>{% endfor %}</ul> |
+| Title            | {{ title }}                                                                     |
+|:-----------------|:--------------------------------------------------------------------------------|
+| **Description**  | {{ description }}                                                               |
+| **Default**      | {{ default }}                                                                   |
+| **Event Volume** | {{ volume }}                                                                    |
+| **EventID**      | <ul>{% for eventid in eventID %}<li>{{ eventid }}</li>{% endfor %}</ul>         |
+| **References**   | <ul>{% for ref in references %}<li>[{{ ref }}]({{ ref }})</li>{% endfor %}</ul> |
 
 {% if configuration is defined and configuration|length %}
 

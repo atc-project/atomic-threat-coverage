@@ -1,15 +1,15 @@
-| Title                | Addition of Domain Trusts                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Addition of domains is seldom and should be verified for legitimacy.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          |  There is no documented Data Needed for this Detection Rule yet  |
-| Trigger              |  There is no documented Trigger for this Detection Rule yet  |
-| Severity Level       | medium |
-| False Positives      | <ul><li>Legitimate extension of domain structure</li></ul>  |
-| Development Status   | stable |
-| References           |  There are no documented References for this Detection Rule yet  |
-| Author               | Thomas Patzke |
+| Title                    | Addition of Domain Trusts       |
+|:-------------------------|:------------------|
+| **Description**          | Addition of domains is seldom and should be verified for legitimacy. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
+| **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Severity Level**       | medium |
+| **False Positives**      | <ul><li>Legitimate extension of domain structure</li></ul>  |
+| **Development Status**   | stable |
+| **References**           |  There are no documented References for this Detection Rule yet  |
+| **Author**               | Thomas Patzke |
 
 
 ## Detection Rules

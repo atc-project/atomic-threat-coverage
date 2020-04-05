@@ -1,15 +1,15 @@
-| Title                | Malicious Named Pipe                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects the creation of a named pipe used by known APT malware                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0020_17_windows_sysmon_PipeEvent](../Data_Needed/DN_0020_17_windows_sysmon_PipeEvent.md)</li><li>[DN_0021_18_windows_sysmon_PipeEvent](../Data_Needed/DN_0021_18_windows_sysmon_PipeEvent.md)</li></ul>  |
-| Trigger              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>Unkown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[Various sources](Various sources)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | Malicious Named Pipe       |
+|:-------------------------|:------------------|
+| **Description**          | Detects the creation of a named pipe used by known APT malware |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0020_17_windows_sysmon_PipeEvent](../Data_Needed/DN_0020_17_windows_sysmon_PipeEvent.md)</li><li>[DN_0021_18_windows_sysmon_PipeEvent](../Data_Needed/DN_0021_18_windows_sysmon_PipeEvent.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>Unkown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[Various sources](Various sources)</li></ul>  |
+| **Author**               | Florian Roth |
 
 
 ## Detection Rules

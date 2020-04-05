@@ -1,15 +1,15 @@
-| Title                | Judgement Panda Exfil Activity                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects Russian group activity as described in Global Threat Report 2019 by Crowdstrike                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1081: Credentials in Files](https://attack.mitre.org/techniques/T1081)</li><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1081: Credentials in Files](../Triggers/T1081.md)</li><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>unknown</li></ul>  |
-| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
-| References           | <ul><li>[https://www.crowdstrike.com/resources/reports/2019-crowdstrike-global-threat-report/](https://www.crowdstrike.com/resources/reports/2019-crowdstrike-global-threat-report/)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | Judgement Panda Exfil Activity       |
+|:-------------------------|:------------------|
+| **Description**          | Detects Russian group activity as described in Global Threat Report 2019 by Crowdstrike |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1081: Credentials in Files](https://attack.mitre.org/techniques/T1081)</li><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1081: Credentials in Files](../Triggers/T1081.md)</li><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>unknown</li></ul>  |
+| **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
+| **References**           | <ul><li>[https://www.crowdstrike.com/resources/reports/2019-crowdstrike-global-threat-report/](https://www.crowdstrike.com/resources/reports/2019-crowdstrike-global-threat-report/)</li></ul>  |
+| **Author**               | Florian Roth |
 
 
 ## Detection Rules

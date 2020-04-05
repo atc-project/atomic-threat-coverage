@@ -1,10 +1,10 @@
-| Title          | LP_0033_linux_auditd_syscall                                                                     |
-|:---------------|:--------------------------------------------------------------------------------|
-| Description    | Policy to enable auditd to log of specific system call (syscall)                                                               |
-| Default        | Not configured                                                                   |
-| Event Volume   | High                                                                    |
-| EventID        | <ul></ul>         |
-| References     | <ul><li>[https://github.com/linux-audit/audit-documentation](https://github.com/linux-audit/audit-documentation)</li><li>[https://filippo.io/linux-syscall-table/](https://filippo.io/linux-syscall-table/)</li><li>[https://access.redhat.com/solutions/36278](https://access.redhat.com/solutions/36278)</li><li>[https://github.com/Neo23x0/auditd](https://github.com/Neo23x0/auditd)</li></ul> |
+| Title            | LP_0033_linux_auditd_syscall                                                                     |
+|:-----------------|:--------------------------------------------------------------------------------|
+| **Description**  | Policy to enable auditd to log of specific system call (syscall)                                                               |
+| **Default**      | Not configured                                                                   |
+| **Event Volume** | High                                                                    |
+| **EventID**      | <ul></ul>         |
+| **References**   | <ul><li>[https://github.com/linux-audit/audit-documentation](https://github.com/linux-audit/audit-documentation)</li><li>[https://filippo.io/linux-syscall-table/](https://filippo.io/linux-syscall-table/)</li><li>[https://access.redhat.com/solutions/36278](https://access.redhat.com/solutions/36278)</li><li>[https://github.com/Neo23x0/auditd](https://github.com/Neo23x0/auditd)</li></ul> |
 
 
 

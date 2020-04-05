@@ -1,15 +1,15 @@
-| Title                | External Disk Drive or USB Storage Device                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects external diskdrives or plugged in USB devices                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1091: Replication Through Removable Media](https://attack.mitre.org/techniques/T1091)</li><li>[T1200: Hardware Additions](https://attack.mitre.org/techniques/T1200)</li></ul>  |
-| Data Needed          |  There is no documented Data Needed for this Detection Rule yet  |
-| Trigger              | <ul><li>[T1091: Replication Through Removable Media](../Triggers/T1091.md)</li><li>[T1200: Hardware Additions](../Triggers/T1200.md)</li></ul>  |
-| Severity Level       | low |
-| False Positives      | <ul><li>Legitimate administrative activity</li></ul>  |
-| Development Status   | experimental |
-| References           |  There are no documented References for this Detection Rule yet  |
-| Author               | Keith Wright |
+| Title                    | External Disk Drive or USB Storage Device       |
+|:-------------------------|:------------------|
+| **Description**          | Detects external diskdrives or plugged in USB devices |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1091: Replication Through Removable Media](https://attack.mitre.org/techniques/T1091)</li><li>[T1200: Hardware Additions](https://attack.mitre.org/techniques/T1200)</li></ul>  |
+| **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
+| **Trigger**              | <ul><li>[T1091: Replication Through Removable Media](../Triggers/T1091.md)</li><li>[T1200: Hardware Additions](../Triggers/T1200.md)</li></ul>  |
+| **Severity Level**       | low |
+| **False Positives**      | <ul><li>Legitimate administrative activity</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           |  There are no documented References for this Detection Rule yet  |
+| **Author**               | Keith Wright |
 
 
 ## Detection Rules

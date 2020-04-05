@@ -1,15 +1,15 @@
-| Title                | Suspicious Service Path Modification                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects service path modification to powershell/cmd                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1031: Modify Existing Service](https://attack.mitre.org/techniques/T1031)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1031: Modify Existing Service](../Triggers/T1031.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1031/T1031.yaml](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1031/T1031.yaml)</li></ul>  |
-| Author               | Victor Sergeev, oscd.community |
+| Title                    | Suspicious Service Path Modification       |
+|:-------------------------|:------------------|
+| **Description**          | Detects service path modification to powershell/cmd |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1031: Modify Existing Service](https://attack.mitre.org/techniques/T1031)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1031: Modify Existing Service](../Triggers/T1031.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1031/T1031.yaml](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1031/T1031.yaml)</li></ul>  |
+| **Author**               | Victor Sergeev, oscd.community |
 
 
 ## Detection Rules

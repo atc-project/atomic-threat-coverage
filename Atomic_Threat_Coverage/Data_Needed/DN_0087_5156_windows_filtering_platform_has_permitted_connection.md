@@ -1,13 +1,13 @@
-| Title          | DN_0087_5156_windows_filtering_platform_has_permitted_connection       |
-|:---------------|:------------------|
-| Description    | The Windows Filtering Platform has permitted a connection |
-| Logging Policy | <ul><li>[LP_0045_windows_audit_filtering_platform_connection](../Logging_Policies/LP_0045_windows_audit_filtering_platform_connection.md)</li></ul> |
-| References     | <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-5156](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-5156)</li></ul> |
-| Platform       | Windows    |
-| Type           | Windows Log        |
-| Channel        | Security     |
-| Provider       | Microsoft-Windows-Security-Auditing    |
-| Fields         | <ul><li>EventID</li><li>ComputerName</li><li>Computer</li><li>Hostname</li><li>ProcessID</li><li>Application</li><li>Direction</li><li>SourceAddress</li><li>SourcePort</li><li>DestAddress</li><li>DestPort</li><li>Protocol</li><li>FilterRTID</li><li>LayerName</li><li>LayerRTID</li><li>RemoteUserID</li><li>RemoteMachineID</li></ul> |
+| Title              | DN_0087_5156_windows_filtering_platform_has_permitted_connection       |
+|:-------------------|:------------------|
+| **Description**    | The Windows Filtering Platform has permitted a connection |
+| **Logging Policy** | <ul><li>[LP_0045_windows_audit_filtering_platform_connection](../Logging_Policies/LP_0045_windows_audit_filtering_platform_connection.md)</li></ul> |
+| **References**     | <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-5156](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-5156)</li></ul> |
+| **Platform**       | Windows    |
+| **Type**           | Windows Log        |
+| **Channel**        | Security     |
+| **Provider**       | Microsoft-Windows-Security-Auditing    |
+| **Fields**         | <ul><li>EventID</li><li>ComputerName</li><li>Computer</li><li>Hostname</li><li>ProcessID</li><li>Application</li><li>Direction</li><li>SourceAddress</li><li>SourcePort</li><li>DestAddress</li><li>DestPort</li><li>Protocol</li><li>FilterRTID</li><li>LayerName</li><li>LayerRTID</li><li>RemoteUserID</li><li>RemoteMachineID</li></ul> |
 
 
 ## Log Samples

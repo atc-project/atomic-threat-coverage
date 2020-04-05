@@ -1,15 +1,15 @@
-| Title                | HH.exe Execution                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Identifies usage of hh.exe executing recently modified .chm files.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1223: Compiled HTML File](https://attack.mitre.org/techniques/T1223)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1223: Compiled HTML File](../Triggers/T1223.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>unlike</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1223/T1223.yaml](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1223/T1223.yaml)</li><li>[https://eqllib.readthedocs.io/en/latest/analytics/b25aa548-7937-11e9-8f5c-d46d6d62a49e.html](https://eqllib.readthedocs.io/en/latest/analytics/b25aa548-7937-11e9-8f5c-d46d6d62a49e.html)</li></ul>  |
-| Author               | E.M. Anhaus (orignally from Atomic Blue Detections, Dan Beavin), oscd.community |
+| Title                    | HH.exe Execution       |
+|:-------------------------|:------------------|
+| **Description**          | Identifies usage of hh.exe executing recently modified .chm files. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1223: Compiled HTML File](https://attack.mitre.org/techniques/T1223)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1223: Compiled HTML File](../Triggers/T1223.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>unlike</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1223/T1223.yaml](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1223/T1223.yaml)</li><li>[https://eqllib.readthedocs.io/en/latest/analytics/b25aa548-7937-11e9-8f5c-d46d6d62a49e.html](https://eqllib.readthedocs.io/en/latest/analytics/b25aa548-7937-11e9-8f5c-d46d6d62a49e.html)</li></ul>  |
+| **Author**               | E.M. Anhaus (orignally from Atomic Blue Detections, Dan Beavin), oscd.community |
 
 
 ## Detection Rules

@@ -1,15 +1,15 @@
-| Title                | Backup Catalog Deleted                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects backup catalog deletions                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1107: File Deletion](https://attack.mitre.org/techniques/T1107)</li></ul>  |
-| Data Needed          |  There is no documented Data Needed for this Detection Rule yet  |
-| Trigger              | <ul><li>[T1107: File Deletion](../Triggers/T1107.md)</li></ul>  |
-| Severity Level       | medium |
-| False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://technet.microsoft.com/en-us/library/cc742154(v=ws.11).aspx](https://technet.microsoft.com/en-us/library/cc742154(v=ws.11).aspx)</li><li>[https://www.hybrid-analysis.com/sample/ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa?environmentId=100](https://www.hybrid-analysis.com/sample/ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa?environmentId=100)</li></ul>  |
-| Author               | Florian Roth (rule), Tom U. @c_APT_ure (collection) |
+| Title                    | Backup Catalog Deleted       |
+|:-------------------------|:------------------|
+| **Description**          | Detects backup catalog deletions |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1107: File Deletion](https://attack.mitre.org/techniques/T1107)</li></ul>  |
+| **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
+| **Trigger**              | <ul><li>[T1107: File Deletion](../Triggers/T1107.md)</li></ul>  |
+| **Severity Level**       | medium |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://technet.microsoft.com/en-us/library/cc742154(v=ws.11).aspx](https://technet.microsoft.com/en-us/library/cc742154(v=ws.11).aspx)</li><li>[https://www.hybrid-analysis.com/sample/ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa?environmentId=100](https://www.hybrid-analysis.com/sample/ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa?environmentId=100)</li></ul>  |
+| **Author**               | Florian Roth (rule), Tom U. @c_APT_ure (collection) |
 
 
 ## Detection Rules

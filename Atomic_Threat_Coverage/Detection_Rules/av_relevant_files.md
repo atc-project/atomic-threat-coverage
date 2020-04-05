@@ -1,15 +1,15 @@
-| Title                | Antivirus Relevant File Paths Alerts                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects an Antivirus alert in a highly relevant file path or with a relevant file name                                                                                                                                           |
-| ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
-| ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          | <ul><li>[DN_0084_av_alert](../Data_Needed/DN_0084_av_alert.md)</li></ul>  |
-| Trigger              |  There is no documented Trigger for this Detection Rule yet  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Unlikely</li></ul>  |
-| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
-| References           | <ul><li>[https://www.nextron-systems.com/2018/09/08/antivirus-event-analysis-cheat-sheet-v1-4/](https://www.nextron-systems.com/2018/09/08/antivirus-event-analysis-cheat-sheet-v1-4/)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | Antivirus Relevant File Paths Alerts       |
+|:-------------------------|:------------------|
+| **Description**          | Detects an Antivirus alert in a highly relevant file path or with a relevant file name |
+| **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
+| **Data Needed**          | <ul><li>[DN_0084_av_alert](../Data_Needed/DN_0084_av_alert.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Unlikely</li></ul>  |
+| **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
+| **References**           | <ul><li>[https://www.nextron-systems.com/2018/09/08/antivirus-event-analysis-cheat-sheet-v1-4/](https://www.nextron-systems.com/2018/09/08/antivirus-event-analysis-cheat-sheet-v1-4/)</li></ul>  |
+| **Author**               | Florian Roth |
 
 
 ## Detection Rules

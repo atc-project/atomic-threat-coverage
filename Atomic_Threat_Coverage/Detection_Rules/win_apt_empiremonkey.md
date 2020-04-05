@@ -1,15 +1,15 @@
-| Title                | Empire Monkey                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects EmpireMonkey APT reported Activity                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>Very Unlikely</li></ul>  |
-| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
-| References           | <ul><li>[https://app.any.run/tasks/a4107649-8cb0-41af-ad75-113152d4d57b](https://app.any.run/tasks/a4107649-8cb0-41af-ad75-113152d4d57b)</li></ul>  |
-| Author               | Markus Neis |
+| Title                    | Empire Monkey       |
+|:-------------------------|:------------------|
+| **Description**          | Detects EmpireMonkey APT reported Activity |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>Very Unlikely</li></ul>  |
+| **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
+| **References**           | <ul><li>[https://app.any.run/tasks/a4107649-8cb0-41af-ad75-113152d4d57b](https://app.any.run/tasks/a4107649-8cb0-41af-ad75-113152d4d57b)</li></ul>  |
+| **Author**               | Markus Neis |
 
 
 ## Detection Rules

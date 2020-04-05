@@ -1,15 +1,15 @@
-| Title                | Suspicious Keyboard Layout Load                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects the keyboard preload installation with a suspicious keyboard layout, e.g. Chinese, Iranian or Vietnamese layout load in user session on systems maintained by US staff only                                                                                                                                           |
-| ATT&amp;CK Tactic    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
-| ATT&amp;CK Technique |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| Data Needed          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
-| Trigger              |  There is no documented Trigger for this Detection Rule yet  |
-| Severity Level       | medium |
-| False Positives      | <ul><li>Administrators or users that actually use the selected keyboard layouts (heavily depends on the organisation's user base)</li></ul>  |
-| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
-| References           | <ul><li>[https://renenyffenegger.ch/notes/Windows/registry/tree/HKEY_CURRENT_USER/Keyboard-Layout/Preload/index](https://renenyffenegger.ch/notes/Windows/registry/tree/HKEY_CURRENT_USER/Keyboard-Layout/Preload/index)</li><li>[https://github.com/SwiftOnSecurity/sysmon-config/pull/92/files](https://github.com/SwiftOnSecurity/sysmon-config/pull/92/files)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | Suspicious Keyboard Layout Load       |
+|:-------------------------|:------------------|
+| **Description**          | Detects the keyboard preload installation with a suspicious keyboard layout, e.g. Chinese, Iranian or Vietnamese layout load in user session on systems maintained by US staff only |
+| **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
+| **Data Needed**          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Severity Level**       | medium |
+| **False Positives**      | <ul><li>Administrators or users that actually use the selected keyboard layouts (heavily depends on the organisation's user base)</li></ul>  |
+| **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
+| **References**           | <ul><li>[https://renenyffenegger.ch/notes/Windows/registry/tree/HKEY_CURRENT_USER/Keyboard-Layout/Preload/index](https://renenyffenegger.ch/notes/Windows/registry/tree/HKEY_CURRENT_USER/Keyboard-Layout/Preload/index)</li><li>[https://github.com/SwiftOnSecurity/sysmon-config/pull/92/files](https://github.com/SwiftOnSecurity/sysmon-config/pull/92/files)</li></ul>  |
+| **Author**               | Florian Roth |
 
 
 ## Detection Rules

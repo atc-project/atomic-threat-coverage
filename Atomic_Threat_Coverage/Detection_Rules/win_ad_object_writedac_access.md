@@ -1,15 +1,15 @@
-| Title                | AD Object WriteDAC Access                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects WRITE_DAC access to a domain object                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1222: File and Directory Permissions Modification](https://attack.mitre.org/techniques/T1222)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0030_4662_operation_was_performed_on_an_object](../Data_Needed/DN_0030_4662_operation_was_performed_on_an_object.md)</li></ul>  |
-| Trigger              | <ul><li>[T1222: File and Directory Permissions Modification](../Triggers/T1222.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://github.com/Cyb3rWard0g/ThreatHunter-Playbook/tree/master/playbooks/windows/05_defense_evasion/T1222_file_permissions_modification/ad_replication_user_backdoor.md](https://github.com/Cyb3rWard0g/ThreatHunter-Playbook/tree/master/playbooks/windows/05_defense_evasion/T1222_file_permissions_modification/ad_replication_user_backdoor.md)</li></ul>  |
-| Author               | Roberto Rodriguez @Cyb3rWard0g |
+| Title                    | AD Object WriteDAC Access       |
+|:-------------------------|:------------------|
+| **Description**          | Detects WRITE_DAC access to a domain object |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1222: File and Directory Permissions Modification](https://attack.mitre.org/techniques/T1222)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0030_4662_operation_was_performed_on_an_object](../Data_Needed/DN_0030_4662_operation_was_performed_on_an_object.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1222: File and Directory Permissions Modification](../Triggers/T1222.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://github.com/Cyb3rWard0g/ThreatHunter-Playbook/tree/master/playbooks/windows/05_defense_evasion/T1222_file_permissions_modification/ad_replication_user_backdoor.md](https://github.com/Cyb3rWard0g/ThreatHunter-Playbook/tree/master/playbooks/windows/05_defense_evasion/T1222_file_permissions_modification/ad_replication_user_backdoor.md)</li></ul>  |
+| **Author**               | Roberto Rodriguez @Cyb3rWard0g |
 
 
 ## Detection Rules

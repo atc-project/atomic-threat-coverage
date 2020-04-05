@@ -1,15 +1,15 @@
-| Title                | Unidentified Attacker November 2018                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | A sigma rule detecting an unidetefied attacker who used phishing emails to target high profile orgs on November 2018. The Actor shares some TTPs with YYTRIUM/APT29 campaign in 2016.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li></ul>  |
-| Trigger              | <ul><li>[T1085: Rundll32](../Triggers/T1085.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      |  There are no documented False Positives for this Detection Rule yet  |
-| Development Status   | stable |
-| References           | <ul><li>[https://twitter.com/DrunkBinary/status/1063075530180886529](https://twitter.com/DrunkBinary/status/1063075530180886529)</li></ul>  |
-| Author               | @41thexplorer, Windows Defender ATP |
+| Title                    | Unidentified Attacker November 2018       |
+|:-------------------------|:------------------|
+| **Description**          | A sigma rule detecting an unidetefied attacker who used phishing emails to target high profile orgs on November 2018. The Actor shares some TTPs with YYTRIUM/APT29 campaign in 2016. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1085: Rundll32](../Triggers/T1085.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      |  There are no documented False Positives for this Detection Rule yet  |
+| **Development Status**   | stable |
+| **References**           | <ul><li>[https://twitter.com/DrunkBinary/status/1063075530180886529](https://twitter.com/DrunkBinary/status/1063075530180886529)</li></ul>  |
+| **Author**               | @41thexplorer, Windows Defender ATP |
 
 
 ## Detection Rules

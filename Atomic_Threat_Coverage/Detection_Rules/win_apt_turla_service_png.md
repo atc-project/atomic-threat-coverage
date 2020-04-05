@@ -1,15 +1,15 @@
-| Title                | Turla PNG Dropper Service                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | This method detects malicious services mentioned in Turla PNG dropper report by NCC Group in November 2018                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li></ul>  |
-| Trigger              | <ul><li>[T1050: New Service](../Triggers/T1050.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>unlikely</li></ul>  |
-| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
-| References           | <ul><li>[https://www.nccgroup.trust/uk/about-us/newsroom-and-events/blogs/2018/november/turla-png-dropper-is-back/](https://www.nccgroup.trust/uk/about-us/newsroom-and-events/blogs/2018/november/turla-png-dropper-is-back/)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | Turla PNG Dropper Service       |
+|:-------------------------|:------------------|
+| **Description**          | This method detects malicious services mentioned in Turla PNG dropper report by NCC Group in November 2018 |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1050: New Service](../Triggers/T1050.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>unlikely</li></ul>  |
+| **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
+| **References**           | <ul><li>[https://www.nccgroup.trust/uk/about-us/newsroom-and-events/blogs/2018/november/turla-png-dropper-is-back/](https://www.nccgroup.trust/uk/about-us/newsroom-and-events/blogs/2018/november/turla-png-dropper-is-back/)</li></ul>  |
+| **Author**               | Florian Roth |
 | Other Tags           | <ul><li>attack.g0010</li></ul> | 
 
 ## Detection Rules

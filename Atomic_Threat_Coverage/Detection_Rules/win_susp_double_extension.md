@@ -1,15 +1,15 @@
-| Title                | Suspicious Double Extension                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects suspicious use of an .exe extension after a non-executable file extension like .pdf.exe, a set of spaces or underlines to cloak the executable file in spear phishing campaigns                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1193: Spearphishing Attachment](https://attack.mitre.org/techniques/T1193)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1193: Spearphishing Attachment](../Triggers/T1193.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   |  Development Status wasn't defined for this Detection Rule yet  |
-| References           | <ul><li>[https://blu3-team.blogspot.com/2019/06/misleading-extensions-xlsexe-docexe.html](https://blu3-team.blogspot.com/2019/06/misleading-extensions-xlsexe-docexe.html)</li><li>[https://twitter.com/blackorbird/status/1140519090961825792](https://twitter.com/blackorbird/status/1140519090961825792)</li></ul>  |
-| Author               | Florian Roth (rule), @blu3_team (idea) |
+| Title                    | Suspicious Double Extension       |
+|:-------------------------|:------------------|
+| **Description**          | Detects suspicious use of an .exe extension after a non-executable file extension like .pdf.exe, a set of spaces or underlines to cloak the executable file in spear phishing campaigns |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1193: Spearphishing Attachment](https://attack.mitre.org/techniques/T1193)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1193: Spearphishing Attachment](../Triggers/T1193.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
+| **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
+| **References**           | <ul><li>[https://blu3-team.blogspot.com/2019/06/misleading-extensions-xlsexe-docexe.html](https://blu3-team.blogspot.com/2019/06/misleading-extensions-xlsexe-docexe.html)</li><li>[https://twitter.com/blackorbird/status/1140519090961825792](https://twitter.com/blackorbird/status/1140519090961825792)</li></ul>  |
+| **Author**               | Florian Roth (rule), @blu3_team (idea) |
 
 
 ## Detection Rules

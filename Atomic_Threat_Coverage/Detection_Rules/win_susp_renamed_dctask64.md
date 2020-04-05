@@ -1,15 +1,15 @@
-| Title                | Renamed ZOHO Dctask64                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects a renamed dctask64.exe used for process injection, command execution, process creation with a signed binary by ZOHO Corporation                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Unknown yet</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://twitter.com/gN3mes1s/status/1222088214581825540](https://twitter.com/gN3mes1s/status/1222088214581825540)</li><li>[https://twitter.com/gN3mes1s/status/1222095963789111296](https://twitter.com/gN3mes1s/status/1222095963789111296)</li><li>[https://twitter.com/gN3mes1s/status/1222095371175911424](https://twitter.com/gN3mes1s/status/1222095371175911424)</li></ul>  |
-| Author               | Florian Roth |
+| Title                    | Renamed ZOHO Dctask64       |
+|:-------------------------|:------------------|
+| **Description**          | Detects a renamed dctask64.exe used for process injection, command execution, process creation with a signed binary by ZOHO Corporation |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Unknown yet</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://twitter.com/gN3mes1s/status/1222088214581825540](https://twitter.com/gN3mes1s/status/1222088214581825540)</li><li>[https://twitter.com/gN3mes1s/status/1222095963789111296](https://twitter.com/gN3mes1s/status/1222095963789111296)</li><li>[https://twitter.com/gN3mes1s/status/1222095371175911424](https://twitter.com/gN3mes1s/status/1222095371175911424)</li></ul>  |
+| **Author**               | Florian Roth |
 
 
 ## Detection Rules

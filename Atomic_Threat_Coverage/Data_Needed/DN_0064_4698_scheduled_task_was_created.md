@@ -1,13 +1,13 @@
-| Title          | DN_0064_4698_scheduled_task_was_created       |
-|:---------------|:------------------|
-| Description    | This event generates every time a new scheduled task is created |
-| Logging Policy | <ul><li>[LP_0041_windows_audit_other_object_access_events](../Logging_Policies/LP_0041_windows_audit_other_object_access_events.md)</li></ul> |
-| References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4698.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4698.md)</li></ul> |
-| Platform       | Windows    |
-| Type           | Windows Log        |
-| Channel        | Security     |
-| Provider       | Microsoft-Windows-Security-Auditing    |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>TaskName</li><li>TaskContent</li></ul> |
+| Title              | DN_0064_4698_scheduled_task_was_created       |
+|:-------------------|:------------------|
+| **Description**    | This event generates every time a new scheduled task is created |
+| **Logging Policy** | <ul><li>[LP_0041_windows_audit_other_object_access_events](../Logging_Policies/LP_0041_windows_audit_other_object_access_events.md)</li></ul> |
+| **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4698.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4698.md)</li></ul> |
+| **Platform**       | Windows    |
+| **Type**           | Windows Log        |
+| **Channel**        | Security     |
+| **Provider**       | Microsoft-Windows-Security-Auditing    |
+| **Fields**         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>TaskName</li><li>TaskContent</li></ul> |
 
 
 ## Log Samples

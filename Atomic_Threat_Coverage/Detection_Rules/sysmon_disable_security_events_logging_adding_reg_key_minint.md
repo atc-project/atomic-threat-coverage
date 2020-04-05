@@ -1,15 +1,15 @@
-| Title                | Disable Security Events Logging Adding Reg Key MiniNt                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects the addition of a key 'MiniNt' to the registry. Upon a reboot, Windows Event Log service will stopped write events.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1089: Disabling Security Tools](https://attack.mitre.org/techniques/T1089)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0016_12_windows_sysmon_RegistryEvent](../Data_Needed/DN_0016_12_windows_sysmon_RegistryEvent.md)</li><li>[DN_0018_14_windows_sysmon_RegistryEvent](../Data_Needed/DN_0018_14_windows_sysmon_RegistryEvent.md)</li></ul>  |
-| Trigger              | <ul><li>[T1089: Disabling Security Tools](../Triggers/T1089.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Unkown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://twitter.com/0gtweet/status/1182516740955226112](https://twitter.com/0gtweet/status/1182516740955226112)</li></ul>  |
-| Author               | Ilyas Ochkov, oscd.community |
+| Title                    | Disable Security Events Logging Adding Reg Key MiniNt       |
+|:-------------------------|:------------------|
+| **Description**          | Detects the addition of a key 'MiniNt' to the registry. Upon a reboot, Windows Event Log service will stopped write events. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1089: Disabling Security Tools](https://attack.mitre.org/techniques/T1089)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0016_12_windows_sysmon_RegistryEvent](../Data_Needed/DN_0016_12_windows_sysmon_RegistryEvent.md)</li><li>[DN_0018_14_windows_sysmon_RegistryEvent](../Data_Needed/DN_0018_14_windows_sysmon_RegistryEvent.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1089: Disabling Security Tools](../Triggers/T1089.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Unkown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://twitter.com/0gtweet/status/1182516740955226112](https://twitter.com/0gtweet/status/1182516740955226112)</li></ul>  |
+| **Author**               | Ilyas Ochkov, oscd.community |
 
 
 ## Detection Rules

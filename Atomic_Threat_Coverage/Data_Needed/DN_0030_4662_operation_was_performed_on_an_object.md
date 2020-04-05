@@ -1,13 +1,13 @@
-| Title          | DN_0030_4662_operation_was_performed_on_an_object       |
-|:---------------|:------------------|
-| Description    | An operation was performed on an Active Directory object |
-| Logging Policy | <ul><li>[LP_0027_windows_audit_directory_service_access](../Logging_Policies/LP_0027_windows_audit_directory_service_access.md)</li></ul> |
-| References     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4662.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4662.md)</li></ul> |
-| Platform       | Windows    |
-| Type           | Windows Log        |
-| Channel        | Security     |
-| Provider       | Microsoft-Windows-Security-Auditing    |
-| Fields         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>ObjectServer</li><li>ObjectType</li><li>ObjectName</li><li>OperationType</li><li>HandleId</li><li>AccessList</li><li>AccessMask</li><li>Properties</li><li>AdditionalInfo</li><li>AdditionalInfo2</li></ul> |
+| Title              | DN_0030_4662_operation_was_performed_on_an_object       |
+|:-------------------|:------------------|
+| **Description**    | An operation was performed on an Active Directory object |
+| **Logging Policy** | <ul><li>[LP_0027_windows_audit_directory_service_access](../Logging_Policies/LP_0027_windows_audit_directory_service_access.md)</li></ul> |
+| **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4662.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4662.md)</li></ul> |
+| **Platform**       | Windows    |
+| **Type**           | Windows Log        |
+| **Channel**        | Security     |
+| **Provider**       | Microsoft-Windows-Security-Auditing    |
+| **Fields**         | <ul><li>EventID</li><li>Computer</li><li>Hostname</li><li>SubjectUserSid</li><li>SubjectUserName</li><li>SubjectDomainName</li><li>SubjectLogonId</li><li>ObjectServer</li><li>ObjectType</li><li>ObjectName</li><li>OperationType</li><li>HandleId</li><li>AccessList</li><li>AccessMask</li><li>Properties</li><li>AdditionalInfo</li><li>AdditionalInfo2</li></ul> |
 
 
 ## Log Samples

@@ -1,15 +1,15 @@
-| Title                | Dumping Lsass.exe Memory with MiniDumpWriteDump API                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects the use of MiniDumpWriteDump API for dumping lsass.exe memory in a stealth way. Tools like ProcessHacker and some attacker tradecract use this API found in dbghelp.dll or dbgcore.dll. As an example, SilentTrynity C2 Framework has a module that leverages this API to dump the contents of Lsass.exe and transfer it over the network back to the attacker's machine.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li></ul>  |
-| Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
-| Severity Level       | critical |
-| False Positives      | <ul><li>Penetration tests</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump](https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump)</li><li>[https://www.pinvoke.net/default.aspx/dbghelp/MiniDumpWriteDump.html](https://www.pinvoke.net/default.aspx/dbghelp/MiniDumpWriteDump.html)</li><li>[https://medium.com/@fsx30/bypass-edrs-memory-protection-introduction-to-hooking-2efb21acffd6](https://medium.com/@fsx30/bypass-edrs-memory-protection-introduction-to-hooking-2efb21acffd6)</li></ul>  |
-| Author               | Perez Diego (@darkquassar), oscd.community |
+| Title                    | Dumping Lsass.exe Memory with MiniDumpWriteDump API       |
+|:-------------------------|:------------------|
+| **Description**          | Detects the use of MiniDumpWriteDump API for dumping lsass.exe memory in a stealth way. Tools like ProcessHacker and some attacker tradecract use this API found in dbghelp.dll or dbgcore.dll. As an example, SilentTrynity C2 Framework has a module that leverages this API to dump the contents of Lsass.exe and transfer it over the network back to the attacker's machine. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
+| **Severity Level**       | critical |
+| **False Positives**      | <ul><li>Penetration tests</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump](https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump)</li><li>[https://www.pinvoke.net/default.aspx/dbghelp/MiniDumpWriteDump.html](https://www.pinvoke.net/default.aspx/dbghelp/MiniDumpWriteDump.html)</li><li>[https://medium.com/@fsx30/bypass-edrs-memory-protection-introduction-to-hooking-2efb21acffd6](https://medium.com/@fsx30/bypass-edrs-memory-protection-introduction-to-hooking-2efb21acffd6)</li></ul>  |
+| **Author**               | Perez Diego (@darkquassar), oscd.community |
 
 
 ## Detection Rules

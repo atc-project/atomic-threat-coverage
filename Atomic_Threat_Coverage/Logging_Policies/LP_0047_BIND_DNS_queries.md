@@ -1,10 +1,10 @@
-| Title          | LP_0047_BIND_DNS_queries                                                                     |
-|:---------------|:--------------------------------------------------------------------------------|
-| Description    | Configuration to enable DNS queries log on BIND server                                                               |
-| Default        | Not configured                                                                   |
-| Event Volume   | High                                                                    |
-| EventID        | <ul><li>None</li></ul>         |
-| References     | <ul><li>[None](None)</li></ul> |
+| Title            | LP_0047_BIND_DNS_queries                                                                     |
+|:-----------------|:--------------------------------------------------------------------------------|
+| **Description**  | Configuration to enable DNS queries log on BIND server                                                               |
+| **Default**      | Not configured                                                                   |
+| **Event Volume** | High                                                                    |
+| **EventID**      | <ul><li>None</li></ul>         |
+| **References**   | <ul><li>[None](None)</li></ul> |
 
 
 

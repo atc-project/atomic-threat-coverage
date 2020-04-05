@@ -1,15 +1,15 @@
-| Title                | Tasks Folder Evasion                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | The Tasks folder in system32 and syswow64 are globally writable paths. Adversaries can take advantage of this and load or influence any script hosts or ANY .NET Application in Tasks to load and execute a custom assembly into cscript, wscript, regsvr32, mshta, eventvwr                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li><li>[T1211: Exploitation for Defense Evasion](https://attack.mitre.org/techniques/T1211)</li><li>[T1059: Command-Line Interface](https://attack.mitre.org/techniques/T1059)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1064: Scripting](../Triggers/T1064.md)</li><li>[T1211: Exploitation for Defense Evasion](../Triggers/T1211.md)</li><li>[T1059: Command-Line Interface](../Triggers/T1059.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>Unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://twitter.com/subTee/status/1216465628946563073](https://twitter.com/subTee/status/1216465628946563073)</li><li>[https://gist.github.com/am0nsec/8378da08f848424e4ab0cc5b317fdd26](https://gist.github.com/am0nsec/8378da08f848424e4ab0cc5b317fdd26)</li></ul>  |
-| Author               | Sreeman |
+| Title                    | Tasks Folder Evasion       |
+|:-------------------------|:------------------|
+| **Description**          | The Tasks folder in system32 and syswow64 are globally writable paths. Adversaries can take advantage of this and load or influence any script hosts or ANY .NET Application in Tasks to load and execute a custom assembly into cscript, wscript, regsvr32, mshta, eventvwr |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li><li>[T1211: Exploitation for Defense Evasion](https://attack.mitre.org/techniques/T1211)</li><li>[T1059: Command-Line Interface](https://attack.mitre.org/techniques/T1059)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1064: Scripting](../Triggers/T1064.md)</li><li>[T1211: Exploitation for Defense Evasion](../Triggers/T1211.md)</li><li>[T1059: Command-Line Interface](../Triggers/T1059.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://twitter.com/subTee/status/1216465628946563073](https://twitter.com/subTee/status/1216465628946563073)</li><li>[https://gist.github.com/am0nsec/8378da08f848424e4ab0cc5b317fdd26](https://gist.github.com/am0nsec/8378da08f848424e4ab0cc5b317fdd26)</li></ul>  |
+| **Author**               | Sreeman |
 
 
 ## Detection Rules

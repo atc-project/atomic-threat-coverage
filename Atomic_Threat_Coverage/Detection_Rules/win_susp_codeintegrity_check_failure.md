@@ -1,15 +1,15 @@
-| Title                | Failed Code Integrity Checks                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Code integrity failures may indicate tampered executables.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1009: Binary Padding](https://attack.mitre.org/techniques/T1009)</li></ul>  |
-| Data Needed          |  There is no documented Data Needed for this Detection Rule yet  |
-| Trigger              | <ul><li>[T1009: Binary Padding](../Triggers/T1009.md)</li></ul>  |
-| Severity Level       | low |
-| False Positives      | <ul><li>Disk device errors</li></ul>  |
-| Development Status   | stable |
-| References           |  There are no documented References for this Detection Rule yet  |
-| Author               | Thomas Patzke |
+| Title                    | Failed Code Integrity Checks       |
+|:-------------------------|:------------------|
+| **Description**          | Code integrity failures may indicate tampered executables. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1009: Binary Padding](https://attack.mitre.org/techniques/T1009)</li></ul>  |
+| **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
+| **Trigger**              | <ul><li>[T1009: Binary Padding](../Triggers/T1009.md)</li></ul>  |
+| **Severity Level**       | low |
+| **False Positives**      | <ul><li>Disk device errors</li></ul>  |
+| **Development Status**   | stable |
+| **References**           |  There are no documented References for this Detection Rule yet  |
+| **Author**               | Thomas Patzke |
 
 
 ## Detection Rules

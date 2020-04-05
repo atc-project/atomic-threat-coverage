@@ -1,15 +1,15 @@
-| Title                | LSASS Memory Dump                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects process LSASS memory dump using procdump or taskmgr based on the CallTrace pointing to dbghelp.dll or dbgcore.dll for win10                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0014_10_windows_sysmon_ProcessAccess](../Data_Needed/DN_0014_10_windows_sysmon_ProcessAccess.md)</li></ul>  |
-| Trigger              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://blog.menasec.net/2019/02/threat-hunting-21-procdump-or-taskmgr.html](https://blog.menasec.net/2019/02/threat-hunting-21-procdump-or-taskmgr.html)</li></ul>  |
-| Author               | Samir Bousseaden |
+| Title                    | LSASS Memory Dump       |
+|:-------------------------|:------------------|
+| **Description**          | Detects process LSASS memory dump using procdump or taskmgr based on the CallTrace pointing to dbghelp.dll or dbgcore.dll for win10 |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0014_10_windows_sysmon_ProcessAccess](../Data_Needed/DN_0014_10_windows_sysmon_ProcessAccess.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: Credential Dumping](../Triggers/T1003.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://blog.menasec.net/2019/02/threat-hunting-21-procdump-or-taskmgr.html](https://blog.menasec.net/2019/02/threat-hunting-21-procdump-or-taskmgr.html)</li></ul>  |
+| **Author**               | Samir Bousseaden |
 | Other Tags           | <ul><li>attack.s0002</li></ul> | 
 
 ## Detection Rules

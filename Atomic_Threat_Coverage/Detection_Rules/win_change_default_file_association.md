@@ -1,15 +1,15 @@
-| Title                | Change Default File Association                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | When a file is opened, the default program used to open the file (also called the file association or handler) is checked. File association selections are stored in the Windows Registry and can be edited by users, administrators, or programs that have Registry access or by administrators using the built-in assoc utility. Applications can modify the file association for a given file extension to call an arbitrary program when a file with the given extension is opened.                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1042: Change Default File Association](https://attack.mitre.org/techniques/T1042)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| Trigger              | <ul><li>[T1042: Change Default File Association](../Triggers/T1042.md)</li></ul>  |
-| Severity Level       | low |
-| False Positives      | <ul><li>Admin activity</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1042/T1042.yaml](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1042/T1042.yaml)</li></ul>  |
-| Author               | Timur Zinniatullin, oscd.community |
+| Title                    | Change Default File Association       |
+|:-------------------------|:------------------|
+| **Description**          | When a file is opened, the default program used to open the file (also called the file association or handler) is checked. File association selections are stored in the Windows Registry and can be edited by users, administrators, or programs that have Registry access or by administrators using the built-in assoc utility. Applications can modify the file association for a given file extension to call an arbitrary program when a file with the given extension is opened. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1042: Change Default File Association](https://attack.mitre.org/techniques/T1042)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1042: Change Default File Association](../Triggers/T1042.md)</li></ul>  |
+| **Severity Level**       | low |
+| **False Positives**      | <ul><li>Admin activity</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1042/T1042.yaml](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1042/T1042.yaml)</li></ul>  |
+| **Author**               | Timur Zinniatullin, oscd.community |
 
 
 ## Detection Rules

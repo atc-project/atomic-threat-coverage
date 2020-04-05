@@ -1,15 +1,15 @@
-| Title                | Regsvr32 Network Activity                                                                                                                                                 |
-|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description          | Detects network connections and DNS queries initiated by Regsvr32.exe                                                                                                                                           |
-| ATT&amp;CK Tactic    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| ATT&amp;CK Technique | <ul><li>[T1117: Regsvr32](https://attack.mitre.org/techniques/T1117)</li></ul>  |
-| Data Needed          | <ul><li>[DN_0007_3_windows_sysmon_network_connection](../Data_Needed/DN_0007_3_windows_sysmon_network_connection.md)</li><li>[DN_0085_22_windows_sysmon_DnsQuery](../Data_Needed/DN_0085_22_windows_sysmon_DnsQuery.md)</li></ul>  |
-| Trigger              | <ul><li>[T1117: Regsvr32](../Triggers/T1117.md)</li></ul>  |
-| Severity Level       | high |
-| False Positives      | <ul><li>unknown</li></ul>  |
-| Development Status   | experimental |
-| References           | <ul><li>[https://pentestlab.blog/2017/05/11/applocker-bypass-regsvr32/](https://pentestlab.blog/2017/05/11/applocker-bypass-regsvr32/)</li><li>[https://oddvar.moe/2017/12/13/applocker-case-study-how-insecure-is-it-really-part-1/](https://oddvar.moe/2017/12/13/applocker-case-study-how-insecure-is-it-really-part-1/)</li><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1117/T1117.md](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1117/T1117.md)</li></ul>  |
-| Author               | Dmitriy Lifanov, oscd.community |
+| Title                    | Regsvr32 Network Activity       |
+|:-------------------------|:------------------|
+| **Description**          | Detects network connections and DNS queries initiated by Regsvr32.exe |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1117: Regsvr32](https://attack.mitre.org/techniques/T1117)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0007_3_windows_sysmon_network_connection](../Data_Needed/DN_0007_3_windows_sysmon_network_connection.md)</li><li>[DN_0085_22_windows_sysmon_DnsQuery](../Data_Needed/DN_0085_22_windows_sysmon_DnsQuery.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1117: Regsvr32](../Triggers/T1117.md)</li></ul>  |
+| **Severity Level**       | high |
+| **False Positives**      | <ul><li>unknown</li></ul>  |
+| **Development Status**   | experimental |
+| **References**           | <ul><li>[https://pentestlab.blog/2017/05/11/applocker-bypass-regsvr32/](https://pentestlab.blog/2017/05/11/applocker-bypass-regsvr32/)</li><li>[https://oddvar.moe/2017/12/13/applocker-case-study-how-insecure-is-it-really-part-1/](https://oddvar.moe/2017/12/13/applocker-case-study-how-insecure-is-it-really-part-1/)</li><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1117/T1117.md](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1117/T1117.md)</li></ul>  |
+| **Author**               | Dmitriy Lifanov, oscd.community |
 
 
 ## Detection Rules

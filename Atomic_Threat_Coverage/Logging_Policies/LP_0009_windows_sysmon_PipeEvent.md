@@ -1,10 +1,10 @@
-| Title          | LP_0009_windows_sysmon_PipeEvent                                                                     |
-|:---------------|:--------------------------------------------------------------------------------|
-| Description    | Enables logging of events related to usage or creation of pipes.                                                               |
-| Default        | Not configured                                                                   |
-| Event Volume   | Low                                                                    |
-| EventID        | <ul><li>17</li><li>18</li></ul>         |
-| References     | <ul><li>[https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon)</li></ul> |
+| Title            | LP_0009_windows_sysmon_PipeEvent                                                                     |
+|:-----------------|:--------------------------------------------------------------------------------|
+| **Description**  | Enables logging of events related to usage or creation of pipes.                                                               |
+| **Default**      | Not configured                                                                   |
+| **Event Volume** | Low                                                                    |
+| **EventID**      | <ul><li>17</li><li>18</li></ul>         |
+| **References**   | <ul><li>[https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon)</li></ul> |
 
 
 
