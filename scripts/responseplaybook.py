@@ -149,6 +149,14 @@ class ResponsePlaybook:
                 'confluence_responseplaybook_template.html.j2'
             )
 
+            new_title = self.rp_parsed_file.get('id')\
+              + ": "\
+              + ATCutils.normalize_react_title(self.rp_parsed_file.get('title'))
+            
+            self.rp_parsed_file.update(
+                {'title': new_title }
+            )
+
             self.rp_parsed_file.update(
                 {'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
 
@@ -218,7 +226,11 @@ class ResponsePlaybook:
                             ATCconfig.get('response_actions_dir') 
                             + '/' + task + '.yml'
                         )
-                        action_title = action.get('title')
+
+                        action_title = action.get('id')\
+                            + ": "\
+                            + ATCutils.normalize_react_title(action.get('title'))
+            
                         if self.apipath and self.auth and self.space:
                             stage_list.append(
                                 (action_title,
