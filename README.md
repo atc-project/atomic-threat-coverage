@@ -13,7 +13,7 @@ Atomic Threat Coverage is tool which allows you to automatically generate action
 - **Logging Policies** need to be configured on data source to be able to collect Data Needed
 - **Enrichments** for specific Data Needed which required for some Detection Rules
 - **Triggers** based on [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) — detection tests based on MITRE's ATT&CK
-- **Response Playbooks** based on [atc-response](https://github.com/atc-project/atc-response) — Security Incident Response Playbooks for reacting on specific Threat
+- **Response Playbooks** based on [atc-react](https://github.com/atc-project/atc-react) — Security Incident Response Playbooks for reacting on specific Threat
 - **Mitigation Policies** based on [atc-mitigation](https://github.com/atc-project/atc-mitigation) need to be deployed and/or configured to mitigate specific Threat
 - **Visualisations** for creating Threat Hunting / Triage Dashboards
 - **Customers** of the analytics — could be internal or external. This entity needed to tracking the implementation 
@@ -121,7 +121,7 @@ Data in the repository:
 │   ├── LP_0002_windows_audit_process_creation_with_commandline.yml
 │   └── loggingpolicy_template.yml
 ├── response
-│   └── atc-response/
+│   └── atc-react/
 ├── mitigation
 │   └── atc-mitigation/
 ├── triggers/
@@ -288,7 +288,7 @@ For more information, please refer to the [atc-mitigation](https://github.com/at
 #### Response Playbook
 
 is an Incident Response plan that represents a complete list of procedures/tasks that has to be executed to respond to a specific threat.
-For more information, please refer to the [atc-response](https://github.com/atc-project/atc-response) repository.
+For more information, please refer to the [atc-react](https://github.com/atc-project/atc-react) repository.
 
 #### Visualization
 
