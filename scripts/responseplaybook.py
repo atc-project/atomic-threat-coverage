@@ -60,6 +60,11 @@ class ResponsePlaybook:
                 'markdown_responseplaybook_template.md.j2'
             )
 
+            self.rp_parsed_file.update(
+                {'title': ATCutils.normalize_react_title(self.rp_parsed_file
+                    .get('title'))}
+            )
+
             # MITRE ATT&CK Tactics and Techniques
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')

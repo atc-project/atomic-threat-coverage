@@ -1,4 +1,4 @@
-| Title             | RP_0001_phishing_email                                                                                                      |
+| Title             |  Phishing email                                                                                                      |
 |:-----------------:|:-----------------------------------------------------------------------------------------------------------------|
 | **ID**            | RP0001            |
 | **Description**   | Response playbook for Phishing Email case   |
