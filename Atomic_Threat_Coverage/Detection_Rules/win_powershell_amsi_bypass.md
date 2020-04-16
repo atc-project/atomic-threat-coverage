@@ -6,7 +6,7 @@
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | high |
-| **False Positives**      |  There are no documented False Positives for this Detection Rule yet  |
+| **False Positives**      | <ul><li>Potential Admin Activity</li></ul>  |
 | **Development Status**   | experimental |
 | **References**           | <ul><li>[https://twitter.com/mattifestation/status/735261176745988096](https://twitter.com/mattifestation/status/735261176745988096)</li><li>[https://www.hybrid-analysis.com/sample/0ced17419e01663a0cd836c9c2eb925e3031ffb5b18ccf35f4dea5d586d0203e?environmentId=120](https://www.hybrid-analysis.com/sample/0ced17419e01663a0cd836c9c2eb925e3031ffb5b18ccf35f4dea5d586d0203e?environmentId=120)</li></ul>  |
 | **Author**               | Markus Neis |
@@ -41,8 +41,8 @@ detection:
         CommandLine:
             - '*amsiInitFailed*'
     condition: selection1 and selection2
-    falsepositives:
-        - Potential Admin Activity
+falsepositives:
+    - Potential Admin Activity
 level: high
 
 ```

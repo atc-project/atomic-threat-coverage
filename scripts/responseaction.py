@@ -58,6 +58,11 @@ class ResponseAction:
             )
 
             self.ra_parsed_file.update(
+                {'title': ATCutils.normalize_react_title(self.ra_parsed_file
+                                                         .get('title'))}
+            )
+
+            self.ra_parsed_file.update(
                 {'description': self.ra_parsed_file
                     .get('description').strip()}
             )
@@ -65,6 +70,14 @@ class ResponseAction:
         elif template_type == "confluence":
             template = env.get_template(
                 'confluence_responseaction_template.html.j2'
+            )
+
+            new_title = self.ra_parsed_file.get('id')\
+              + ": "\
+              + ATCutils.normalize_react_title(self.ra_parsed_file.get('title'))
+            
+            self.ra_parsed_file.update(
+                {'title': new_title }
             )
 
             self.ra_parsed_file.update(

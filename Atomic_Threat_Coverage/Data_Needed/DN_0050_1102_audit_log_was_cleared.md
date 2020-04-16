@@ -1,8 +1,8 @@
 | Title              | DN_0050_1102_audit_log_was_cleared       |
 |:-------------------|:------------------|
-| **Description**    | This event generates every time Windows Security audit log was cleared |
+| **Description**    | Event 1102 is created whenever the Security log is cleared,  REGARDLESS of the status of the Audit System Events audit policy |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
-| **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-1102.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-1102.md)</li></ul> |
+| **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-1102.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-1102.md)</li><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=1102](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=1102)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |
 | **Channel**        | Security     |

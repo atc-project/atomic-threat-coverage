@@ -445,8 +445,7 @@ class PopulateConfluence:
                         "Response Actions")), "confluencecontent": ra.content,
                 }
 
-                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
-                                            self.auth)
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath, self.auth)
                 if res == 'Page updated':
             	    print("==> updated page: RA '" + ra.ra_parsed_file['title'] + "'")
                 # print("Done: ", ra.ra_parsed_file['title'])
@@ -478,7 +477,7 @@ class PopulateConfluence:
                 base = os.path.basename(rp_file)
 
                 confluence_data = {
-                    "title": base,
+                    "title": rp.rp_parsed_file['title'],
                     "spacekey": self.space,
                     "parentid": str(ATCutils.confluence_get_page_id(
                         self.apipath, self.auth, self.space,

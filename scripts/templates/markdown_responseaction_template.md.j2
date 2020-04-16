@@ -1,14 +1,10 @@
 | Title                       | {{ title }}         |
-|:----------------------------|:--------------------|
+|:---------------------------:|:--------------------|
+| **ID**                      | {{ id }}            |
 | **Description**             | {{ description }}   |
 | **Author**                  | {{ author }}        |
 | **Creation Date**           | {{ creation_date }} |
-| **Stage**                   | {{ stage }}         |
-| **Automation**              | {%- if automation is defined and automation|length %}<ul>{% for auto in automation %}<li>{{ auto }}</li>{% endfor %}</ul>{% else %} None{%endif%} |
-| **References**              | {%- if references is defined and references|length %}<ul>{% for ref in references %}<li>[{{ ref }}]({{ ref }})</li>{% endfor %}</ul>{% else %} None{%endif%} |
-| **Linked Response Actions** | {%- if linked_ra is defined and linked_ra|length %}<ul>{% for action in linked_ra %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul>{% else %} None{%endif%} |
-| **Linked Analytics**        | {%- if linked_analytics is defined and linked_analytics|length %}<ul>{% for analytic in linked_analytics %}<li>{{ analytic }}</li>{% endfor %}</ul>{% else %} None{%endif%} |
-
+| **Stage**                   | {{ stage }}         |{% if automation is not none and automation|length %}{{ '\n' }}| **Automation** |<ul>{% for auto in automation %}<li>{{ auto }}</li>{% endfor %}</ul>|{% endif %}{% if references is not none and references|length %}{{ '\n' }}| **References** |<ul>{% for ref in references %}<li>[{{ ref }}]({{ ref }})</li>{% endfor %}</ul>|{% endif %}{% if linked_ra is not none and linked_ra|length %}{{ '\n' }}| **Linked Response Actions**  |<ul>{% for action in linked_ra %}<li>[{{ action }}](../Response_Actions/{{action}}.md)</li>{% endfor %}</ul>|{% endif %}{% if linked_analytics is not none and linked_analytics|length %}{{ '\n' }}| **Linked Analytics** |<ul>{% for analytic in linked_analytics %}<li>{{ analytic }}</li>{% endfor %}</ul>|{% endif %}
 
 ### Workflow
 

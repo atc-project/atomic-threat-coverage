@@ -1,5 +1,6 @@
 | Title             | RP_0001_phishing_email                                                                                                      |
-|:------------------|:-----------------------------------------------------------------------------------------------------------------|
+|:-----------------:|:-----------------------------------------------------------------------------------------------------------------|
+| **ID**            | RP0001            |
 | **Description**   | Response playbook for Phishing Email case   |
 | **Author**        | @atc_project        |
 | **Creation Date** | 31.01.2019 |
@@ -9,10 +10,10 @@
 | **ATT&amp;CK Tactic**  |<ul><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul>|
 | **ATT&amp;CK Technique**  |<ul><li>[T1193: Spearphishing Attachment](https://attack.mitre.org/tactics/T1193)</li><li>[T1192: Spearphishing Link](https://attack.mitre.org/tactics/T1192)</li></ul>|
 | **Tags**          |<ul><li>phishing</li></ul> |
-| **Identification**  |<ul><li>[RA_0001_identification_get_original_email](../Response_Actions/RA_0001_identification_get_original_email.md)</li><li>[RA_0002_identification_extract_observables_from_email](../Response_Actions/RA_0002_identification_extract_observables_from_email.md)</li><li>[RA_0003_identification_make_sure_email_is_a_phishing](../Response_Actions/RA_0003_identification_make_sure_email_is_a_phishing.md)</li><li>[RA_0004_identification_analyse_obtained_indicators_of_compromise](../Response_Actions/RA_0004_identification_analyse_obtained_indicators_of_compromise.md)</li><li>[RA_0005_identification_find_all_phishing_attack_victims](../Response_Actions/RA_0005_identification_find_all_phishing_attack_victims.md)</li><li>[RA_0040_identification_put_on_monitoring_compromised_accounts](../Response_Actions/RA_0040_identification_put_on_monitoring_compromised_accounts.md)</li></ul>|
-| **Containment**  |<ul><li>[RA_0006_containment_block_domain_on_email](../Response_Actions/RA_0006_containment_block_domain_on_email.md)</li><li>[RA_0028_containment_block_threat_on_network_level](../Response_Actions/RA_0028_containment_block_threat_on_network_level.md)</li></ul>|
-| **Eradication**  |<ul><li>[RA_0010_eradication_delete_malicious_emails](../Response_Actions/RA_0010_eradication_delete_malicious_emails.md)</li><li>[RA_0011_eradication_revoke_compromised_credentials](../Response_Actions/RA_0011_eradication_revoke_compromised_credentials.md)</li><li>[RA_0012_eradication_report_phishing_attack_to_external_companies](../Response_Actions/RA_0012_eradication_report_phishing_attack_to_external_companies.md)</li></ul>|
-| **Lessons Learned**  |<ul><li>[RA_0013_lessons_learned_develop_incident_report](../Response_Actions/RA_0013_lessons_learned_develop_incident_report.md)</li><li>[RA_0014_lessons_learned_conduct_lessons_learned_exercise](../Response_Actions/RA_0014_lessons_learned_conduct_lessons_learned_exercise.md)</li></ul>|
+| **Identification**  |<ul><li>[RA_2302_get_original_email](../Response_Actions/RA_2302_get_original_email.md)</li><li>[RA_2101_extract_observables_from_email](../Response_Actions/RA_2101_extract_observables_from_email.md)</li><li>[RA_2102_make_sure_email_is_a_phishing](../Response_Actions/RA_2102_make_sure_email_is_a_phishing.md)</li><li>[RA_2103_put_compromised_accounts_on_monitoring](../Response_Actions/RA_2103_put_compromised_accounts_on_monitoring.md)</li></ul>|
+| **Containment**  |<ul><li>[RA_3202_block_ip_on_border_firewall](../Response_Actions/RA_3202_block_ip_on_border_firewall.md)</li><li>[RA_3203_block_domain_on_dns](../Response_Actions/RA_3203_block_domain_on_dns.md)</li><li>[RA_3204_block_url_on_proxy](../Response_Actions/RA_3204_block_url_on_proxy.md)</li><li>[RA_3205_block_domain_on_ips](../Response_Actions/RA_3205_block_domain_on_ips.md)</li><li>[RA_3206_block_domain_on_ngfw](../Response_Actions/RA_3206_block_domain_on_ngfw.md)</li><li>[RA_3207_block_ip_on_ips](../Response_Actions/RA_3207_block_ip_on_ips.md)</li><li>[RA_3208_block_ip_on_ngfw](../Response_Actions/RA_3208_block_ip_on_ngfw.md)</li><li>[RA_3209_block_url_on_ngfw](../Response_Actions/RA_3209_block_url_on_ngfw.md)</li><li>[RA_3301_block_domain_on_email](../Response_Actions/RA_3301_block_domain_on_email.md)</li></ul>|
+| **Eradication**  |<ul><li>[RA_4301_delete_malicious_emails](../Response_Actions/RA_4301_delete_malicious_emails.md)</li><li>[RA_4701_revoke_compromised_credentials](../Response_Actions/RA_4701_revoke_compromised_credentials.md)</li><li>[RA_4101_report_phishing_attack_to_external_companies](../Response_Actions/RA_4101_report_phishing_attack_to_external_companies.md)</li></ul>|
+| **Lessons Learned**  |<ul><li>[RA_6101_develop_incident_report](../Response_Actions/RA_6101_develop_incident_report.md)</li><li>[RA_6102_conduct_lessons_learned_exercise](../Response_Actions/RA_6102_conduct_lessons_learned_exercise.md)</li></ul>|
 
 
 ### Workflow
@@ -62,24 +63,6 @@ Check email and its metadata for evidences of phishing attack:
 
 Explore references of the article to make yourself familiar with phishing attacks history and examples.
 
-##### Aggregated Response Action for analysis of indicators of compromise
-
-1. Analyse obtained indicators of compromise. Proof that they are malicious
-2. Find out what exactly attacker was targeting (password harvesting, remote control etc)
-
-This Response Action could be automated with [TheHive Analyzers](https://github.com/TheHive-Project/Cortex-Analyzers).
-
-##### Aggregated Response Action for identification of all potential victims of the phishing attack
-
-
-Identify victims of the attack based on results of indicators of compromise analysis:
-
-1. If phishing led to password harvesting form, you have to identify all users who opened malicious link with harvesting form using linked Response Actions
-- Make sure that during your identification of network connections with malicious server you work with complete informatoin. For example, if corporate DNS/Proxy could be bypassed, it means that you could miss some victims. In this way you have to rely on other types of data (i.e. network flows)
-- Better to check all available sources of information to be 100% sure that you've identified a potential victims
-- Sometimes phishing alerts could be found in AV, IPS, NGFW etc logs. Check it as well
-2. If phishing led to code execution on victim host, immediately start using Generic Post Exploitation Incident Response Playbook
-
 ##### Put (potentially) compromised accounts on monitoring
 
 Start monitoring for authentification attempts and all potentially harmful actions from potentially compromised accounts.
@@ -88,13 +71,58 @@ Keep in touch with real users and in case of need ask them if they executing the
 
 #### Containment
 
-##### Block a phishing attack source on Email-server level
+##### Block an IP address on a border firewall
+
+Block ip address on border firewall using native filtering functionality.
+Warning: 
+- If not all corporate hosts access internet through the border firewall, this Response Action cannot guarantee containment of threat.
+- Be careful blocking IP address. Make sure it's not cloud provider or hoster. In this case you have to use blocking by URL something more specific.
+
+##### Block a domain on a DNS server
+
+Block domain on DNS Server using native sinkholing functionality. 
+Warning: 
+- If corporate DNS usage is not mandatory and hosts can use public DNS servers (access is not blocked by firewall), this Response Action cannot guarantee containment of threat.
+- Be careful blocking IP address. Make sure it's not cloud provider or hoster. In this case you have to use blocking by URL something more specific.
+##### Block an URL on a Proxy server
+
+Block URL on Proxy Server using native filtering functionality. 
+Warning: If corporate Proxy usage is not mandatory and clients can access internet bypassing it (direct access is not restricted by firewall), this Response Action cannot guarantee containment of threat.
+##### Block a domain name on an IPS
+
+Block domain on IPS using native filtering functionality.
+Warning: 
+- If not all corporate hosts access internet through the IPS, this Response Action cannot guarantee containment of threat.
+- Be careful blocking domain names. Make sure it's not cloud provider or hoster. In this case you have to use blocking by URL something more specific.
+
+##### Block a domain name on an NGFW
+
+Block domain on NGFW using native filtering functionality.
+Warning: 
+- If not all corporate hosts access internet through the NGFW, this Response Action cannot guarantee containment of threat.
+- Be careful blocking domain names. Make sure it's not cloud provider or hoster. In this case you have to use blocking by URL something more specific.
+
+##### Block an IP address in an IPS
+
+Block ip on IPS using native filtering functionality.
+Warning: 
+- If not all corporate hosts access internet through the IPS, this Response Action cannot guarantee containment of threat.
+- Be careful blocking IP address. Make sure it's not cloud provider or hoster. In this case you have to use blocking by URL something more specific.
+##### Block an IP address on an NGFW
+
+Block an IP address with NGFW using native filtering functionality.
+Warning: 
+- If not all corporate hosts access internet through the NGFW, this Response Action cannot guarantee containment of threat.
+- Be careful blocking IP address. Make sure it's not cloud provider or hoster. In this case you have to use blocking by URL something more specific.
+
+##### Block an URL on an NGFW
+
+Block URL on NGFW using native filtering functionality.
+Warning: If not all corporate hosts access internet through the NGFW, this Response Action cannot guarantee containment of threat.
+
+##### Block an email domain on the Email-server
 
 Block malicious sender (or entire domain, if possible) on Email Server using native filtering functionality.
-
-##### Block threats on the Network Level
-
-Develop plan of containment depends on connditions and network architecture, execute it and make sure you have fully blocked threat on network level.
 
 #### Eradication
 

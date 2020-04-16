@@ -6,7 +6,7 @@
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
-| **False Positives**      | <ul><li>U</li><li>n</li><li>k</li><li>n</li><li>o</li><li>w</li><li>n</li></ul>  |
+| **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
 | **References**           | <ul><li>[https://www.darkoperator.com/blog/2018/10/5/operating-offensively-against-sysmon](https://www.darkoperator.com/blog/2018/10/5/operating-offensively-against-sysmon)</li></ul>  |
 | **Author**               | Kirill Kiryanov, oscd.community |
@@ -36,7 +36,8 @@ detection:
             - 'unload'
             - 'sys'
     condition: selection
-falsepositives: Unknown
+falsepositives: 
+    - Unknown
 level: high
 fields:
     - CommandLine

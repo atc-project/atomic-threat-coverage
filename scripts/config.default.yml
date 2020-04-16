@@ -28,6 +28,6 @@ confluence_viewpage_url: 'https://atomicthreatcoverage.atlassian.net/wiki/pages/
 sigmac_path: '../detection_rules/sigma/tools/sigmac'
 detection_queries: 'es-qs,xpack-watcher,graylog,splunk,logpoint,grep'
 customers_directory: '../customers'
-response_playbooks_dir: '../response/atc-response/response_playbooks/'
-response_actions_dir: '../response/atc-response/response_actions'
+response_playbooks_dir: '../response/atc-react/response_playbooks/'
+response_actions_dir: '../response/atc-react/response_actions'
 thehive_templates_dir: '../analytics/generated/thehive_templates'
