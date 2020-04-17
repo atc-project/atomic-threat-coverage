@@ -100,6 +100,7 @@ class ResponsePlaybook:
             self.rp_parsed_file.update({'amitt_techniques': amitt_technique})
             self.rp_parsed_file.update({'other_tags': other_tags})
 
+            preparation = []
             identification = []
             containment = []
             eradication = []
@@ -114,7 +115,7 @@ class ResponsePlaybook:
             deter = []
 
             stages = [
-                ('identification', identification),
+                ('preparation', preparation), ('identification', identification),
                 ('containment', containment), ('eradication', eradication),
                 ('recovery', recovery), ('lessons_learned', lessons_learned),
                 ('detect', detect), ('deny', deny), ('disrupt', disrupt),
@@ -202,6 +203,7 @@ class ResponsePlaybook:
 
             # get links to response action
 
+            preparation = []
             identification = []
             containment = []
             eradication = []
@@ -216,7 +218,7 @@ class ResponsePlaybook:
             deter = []
 
             stages = [
-                ('identification', identification),
+                ('preparation', preparation), ('identification', identification),
                 ('containment', containment), ('eradication', eradication),
                 ('recovery', recovery), ('lessons_learned', lessons_learned),
                 ('detect', detect), ('deny', deny), ('disrupt', disrupt),
@@ -259,6 +261,7 @@ class ResponsePlaybook:
 
             # get descriptions for response actions
 
+            preparation = []
             identification = []
             containment = []
             eradication = []
@@ -273,7 +276,7 @@ class ResponsePlaybook:
             deter = []
 
             stages = [
-                ('identification', identification),
+                ('preparation', preparation), ('identification', identification),
                 ('containment', containment), ('eradication', eradication),
                 ('recovery', recovery), ('lessons_learned', lessons_learned),
                 ('detect', detect), ('deny', deny), ('disrupt', disrupt),

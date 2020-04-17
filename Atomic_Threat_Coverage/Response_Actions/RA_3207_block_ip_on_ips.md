@@ -9,7 +9,8 @@
 
 ### Workflow
 
-Block ip on IPS using native filtering functionality.
-Warning: 
-- If not all corporate hosts access internet through the IPS, this Response Action cannot guarantee containment of threat.
-- Be careful blocking IP address. Make sure it's not cloud provider or hoster. In this case you have to use blocking by URL something more specific.
+Block an IP address on an IPS using its native filtering functionality.  
+Warning:  
+
+- If not all corporate hosts access the internet through the IPS, you will **not** be able to contain the threat using this Response Action.  
+- Be careful blocking IP addresses. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster IP address, you should block a specific URL using alternative Response Action.  
