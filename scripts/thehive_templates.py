@@ -120,8 +120,8 @@ class RPTheHive:
         self.task_order = 0
 
         stages = [
-            'identification', 'containment', 'eradication', 'recovery',
-            'lessons_learned'
+            'preparation', 'identification', 'containment', 'eradication', 
+            'recovery', 'lessons_learned'
         ]
 
         for stage in stages:
