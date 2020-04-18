@@ -9,13 +9,13 @@
 
 ### Workflow
 
-Obtain the original email from one of the available/fastest options:
+Obtain the original email from one of the available/fastest options:  
 
-- Email Team/Email server: if there is such option
-- Person who reported the attack (if it wasn't detected automatically or reported by victims)
-- Victims: if they reported the attack
+- Email Team/Email server: if there is such option  
+- Person who reported the attack (if it wasn't detected automatically or reported by victims)  
+- Victims: if they reported the attack  
 
-Ask for the email in `.EML` format. Instructions: 
+Ask for the email in `.EML` format. Instructions:  
 
-  1. Drug and drop email from Email client to Desktop
-  2. Archive with password "infected" and send to IR specialists by email
+  1. Drug and drop email from Email client to Desktop  
+  2. Archive with password "infected" and send to IR specialists by email  

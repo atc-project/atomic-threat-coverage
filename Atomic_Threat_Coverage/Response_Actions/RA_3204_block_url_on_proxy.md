@@ -9,5 +9,4 @@
 
 ### Workflow
 
-Block URL on Proxy Server using native filtering functionality. 
-Warning: If corporate Proxy usage is not mandatory and clients can access internet bypassing it (direct access is not restricted by firewall), this Response Action cannot guarantee containment of threat.
+Block an URL on a Proxy Server using its native filtering functionality.  

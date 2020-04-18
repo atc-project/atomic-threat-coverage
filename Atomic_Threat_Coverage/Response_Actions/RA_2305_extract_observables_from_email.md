@@ -10,12 +10,12 @@
 
 ### Workflow
 
-Extract the data for further response steps:
+Extract the data for further response steps:  
 
-- attachments (using munpack tool: `munpack email.eml`)
-- from, to, cc
-- subject of the email
-- received servers path
-- list of URLs from the text content of the mail body and attachments
+- attachments (using munpack tool: `munpack email.eml`)  
+- from, to, cc  
+- subject of the email  
+- received servers path  
+- list of URLs from the text content of the mail body and attachments  
 
-This Response Action could be automated with [TheHive EmlParser](https://blog.thehive-project.org/2018/07/31/emlparser-a-new-cortex-analyzer-for-eml-files/).
+This Response Action could be automated with [TheHive EmlParser](https://blog.thehive-project.org/2018/07/31/emlparser-a-new-cortex-analyzer-for-eml-files/).  

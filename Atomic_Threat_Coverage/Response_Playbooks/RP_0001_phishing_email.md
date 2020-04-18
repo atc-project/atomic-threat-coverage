@@ -19,7 +19,7 @@
 
 ### Workflow
 
-1. Execute Response Actions step by step. Some of them directly connected, which means you will not be able to move forward not finishing the previous step. Some of them are redundant, as those that are related to the blocking a threat using network filtering systems (containment stage). You need to use only one of them
+1. Execute Response Actions step by step. Some of them directly connected, which means you will not be able to move forward not finishing the previous step. Some of them are redundant, as those that are related to the blocking a threat using network filtering systems (containment stage)
 2. Start executing containment and eradication stages concurrently with next identification steps, as soon as you will receive information about malicious hosts
 3. If phishing led to code execution or remote access to victim host, immediately start executing Generic Post Exploitation Incident Response Playbook
 4. Save all timestamps of implemented actions in Incident Report draft on the fly, it will save a lot of time
@@ -30,22 +30,22 @@
 
 ##### Practice in the real environment. Sharpen Response Actions within your organization
 
-Make sure that most of the Response Action has been performed on an internal exercise by your Incident Response team.
-You need to make sure that when an Incident will happen, the team will not just try to follow the playbooks they see first time in their lives, but will be able to quickly execute the actual steps in **your environment**, i.e. blocking an IP address or a domain name. 
+Make sure that most of the Response Action has been performed on an internal exercise by your Incident Response Team.  
+You need to make sure that when an Incident will happen, the team will not just try to follow the playbooks they see first time in their lives, but will be able to quickly execute the actual steps in **your environment**, i.e. blocking an IP address or a domain name.  
 
 ##### Take training courses to gain relevant knowledge
 
-> We do not rise to the level of our expectations. We fall to the level of our training.
+> We do not rise to the level of our expectations. We fall to the level of our training.  
 
-Here are some relevant training courses that will help you in the Incident Response activities:
+Here are some relevant training courses that will help you in the Incident Response activities:  
 
-1. [Investigation Theory](https://chrissanders.org/training/investigationtheory/) by Chris Sanders. We recommend you to have it as a mandatory training for every member of your Incident Response team.
-2. [Offensive Security](https://www.offensive-security.com/courses-and-certifications/) trainings. We recommend [PWK](https://www.offensive-security.com/pwk-oscp/) to begin with.
-3. [SANS Digital Forensics & Incident Response](https://digital-forensics.sans.org/training/courses) trainings.
+1. [Investigation Theory](https://chrissanders.org/training/investigationtheory/) by Chris Sanders. We recommend you to have it as a mandatory training for every member of your Incident Response team  
+2. [Offensive Security](https://www.offensive-security.com/courses-and-certifications/) trainings. We recommend [PWK](https://www.offensive-security.com/pwk-oscp/) to begin with  
+3. [SANS Digital Forensics & Incident Response](https://digital-forensics.sans.org/training/courses) trainings  
 
-Offensive Security trainings are in the list because to fight a threat, you need to understand their motivation, tactics, and techniques.
+Offensive Security trainings are in the list because to fight a threat, you need to understand their motivation, tactics, and techniques.  
 
-At the same time, we assume that you already have a strong technical background in fundamental disciplines — Networking, Operating Systems, and Programming.
+At the same time, we assume that you already have a strong technical background in fundamental disciplines — Networking, Operating Systems, and Programming.  
 
 ##### Develop a simplified, company wide-known way to contact IR team in case of suspicious activity on the user system. Make sure that the personnel is aware of it, can and will use it
 
@@ -129,16 +129,16 @@ Here newlines will be saved.
 
 ##### Obtain the original phishing email
 
-Obtain the original email from one of the available/fastest options:
+Obtain the original email from one of the available/fastest options:  
 
-- Email Team/Email server: if there is such option
-- Person who reported the attack (if it wasn't detected automatically or reported by victims)
-- Victims: if they reported the attack
+- Email Team/Email server: if there is such option  
+- Person who reported the attack (if it wasn't detected automatically or reported by victims)  
+- Victims: if they reported the attack  
 
-Ask for the email in `.EML` format. Instructions: 
+Ask for the email in `.EML` format. Instructions:  
 
-  1. Drug and drop email from Email client to Desktop
-  2. Archive with password "infected" and send to IR specialists by email
+  1. Drug and drop email from Email client to Desktop  
+  2. Archive with password "infected" and send to IR specialists by email  
 
 ##### Response Action for 
 
@@ -152,92 +152,96 @@ Here newlines will be saved.
 Description of the workflow for single Response Action in markdown format.
 Here newlines will be saved.
 
-##### Make sure the email is a phishing attack
+##### Make sure an email is a phishing attack
 
-Check email and its metadata for evidences of phishing attack:
+Check an email and its metadata for evidences of phishing attack:  
 
-- **Impersonalisation attempts**: sender is trying to identify himself as somebody he is not
-- **Suspicious askings or offers**: download "invoice", click on link with something important etc
-- **Psychological manipulations**: invoking a sense of urgency or fear is a common phishing tactic
-- **Spelling mistakes**: legitimate messages usually don't have spelling mistakes or poor grammar
+- **Impersonalisation attempts**: sender is trying to identify himself as somebody he is not  
+- **Suspicious askings or offers**: download "invoice", click on link with something important etc  
+- **Psychological manipulations**: invoking a sense of urgency or fear is a common phishing tactic  
+- **Spelling mistakes**: legitimate messages usually don't have spelling mistakes or poor grammar  
 
-Explore references of the article to make yourself familiar with phishing attacks history and examples.
+Explore references of the article to make yourself familiar with phishing attacks history and examples.  
 
 ##### Extract all observables from the original phishing email
 
-Extract the data for further response steps:
+Extract the data for further response steps:  
 
-- attachments (using munpack tool: `munpack email.eml`)
-- from, to, cc
-- subject of the email
-- received servers path
-- list of URLs from the text content of the mail body and attachments
+- attachments (using munpack tool: `munpack email.eml`)  
+- from, to, cc  
+- subject of the email  
+- received servers path  
+- list of URLs from the text content of the mail body and attachments  
 
-This Response Action could be automated with [TheHive EmlParser](https://blog.thehive-project.org/2018/07/31/emlparser-a-new-cortex-analyzer-for-eml-files/).
+This Response Action could be automated with [TheHive EmlParser](https://blog.thehive-project.org/2018/07/31/emlparser-a-new-cortex-analyzer-for-eml-files/).  
 
 ##### Put (potentially) compromised accounts on monitoring
 
-Start monitoring for authentification attempts and all potentially harmful actions from potentially compromised accounts.
-Look for anomalies, strange network connections, unusual geolocation/time of work, actions which were never executed before.
-Keep in touch with real users and in case of need ask them if they executing these actions by themselves or not.
+Start monitoring for authentification attempts and all potentially harmful actions from (potentially) compromised accounts.  
+Look for anomalies, unusual network connections, unusual geolocation/time of work, actions that were never executed before.  
+Keep in touch with the real users and, in case of need, ask them if they executing some suspicious actions by themselves or not.  
 
 #### Containment
 
 ##### Block an IP address on a border firewall
 
-Block ip address on border firewall using native filtering functionality.
-Warning: 
-- If not all corporate hosts access internet through the border firewall, this Response Action cannot guarantee containment of threat.
-- Be careful blocking IP address. Make sure it's not cloud provider or hoster. In this case you have to use blocking by URL something more specific.
+Block an IP address on a border firewall using its native filtering functionality.  
+
+Warning:  
+
+- Be careful blocking IP addresses. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster IP address, you should block (if applicable) a specific URL using alternative Response Action   
 
 ##### Block a domain on a DNS server
 
-Block domain on DNS Server using native sinkholing functionality. 
-Warning: 
-- If corporate DNS usage is not mandatory and hosts can use public DNS servers (access is not blocked by firewall), this Response Action cannot guarantee containment of threat.
-- Be careful blocking IP address. Make sure it's not cloud provider or hoster. In this case you have to use blocking by URL something more specific.
-##### Block an URL on a Proxy server
+Block a domain name on a DNS Server using its native sinkholing functionality.  
 
-Block URL on Proxy Server using native filtering functionality. 
-Warning: If corporate Proxy usage is not mandatory and clients can access internet bypassing it (direct access is not restricted by firewall), this Response Action cannot guarantee containment of threat.
-##### Block a domain name on an IPS
-
-Block a domain on an IPS using its native filtering functionality.  
 Warning:  
 
-- If not all corporate hosts access the internet through the IPS, you will **not** be able to contain the threat using this Response Action.  
-- Be careful blocking domain names. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster domain, you should block a specific URL using alternative Response Action.  
+- Be careful blocking doman names. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster doman, you should block (if applicable) a specific URL using alternative Response Action   
 
-##### Block a domain name on an NGFW
+##### Block an URL on a Proxy server
 
-Block domain on NGFW using native filtering functionality.
-Warning: 
-- If not all corporate hosts access internet through the NGFW, this Response Action cannot guarantee containment of threat.
-- Be careful blocking domain names. Make sure it's not cloud provider or hoster. In this case you have to use blocking by URL something more specific.
+Block an URL on a Proxy Server using its native filtering functionality.  
+
+##### Block a domain name on an IPS
+
+Block a domain name on an IPS using its native filtering functionality.  
+
+Warning:  
+
+- Be careful blocking domain names. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster domain, you should (if applicable) block a specific URL using alternative Response Action  
+
+##### Block a domain name on a NGFW
+
+Block a domain name on a NGFW using its native filtering functionality.  
+
+Warning:  
+
+- Be careful blocking domain names. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster domain, you should (if applicable) block a specific URL using alternative Response Action   
 
 ##### Block an IP address in an IPS
 
 Block an IP address on an IPS using its native filtering functionality.  
+
 Warning:  
 
-- If not all corporate hosts access the internet through the IPS, you will **not** be able to contain the threat using this Response Action.  
-- Be careful blocking IP addresses. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster IP address, you should block a specific URL using alternative Response Action.  
+- Be careful blocking IP addresses. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster IP address, you should (if applicable) block a specific URL using alternative Response Action   
 
-##### Block an IP address on an NGFW
+##### Block an IP address on a NGFW
 
-Block an IP address with NGFW using native filtering functionality.
-Warning: 
-- If not all corporate hosts access internet through the NGFW, this Response Action cannot guarantee containment of threat.
-- Be careful blocking IP address. Make sure it's not cloud provider or hoster. In this case you have to use blocking by URL something more specific.
+Block an IP address on a NGFW using its native filtering functionality.  
+
+Warning:  
+
+- Be careful blocking IP address. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster IP address, you should (if applicable) block a specific URL using alternative Response Action  
 
 ##### Block an URL on an NGFW
 
-Block URL on NGFW using native filtering functionality.
-Warning: If not all corporate hosts access internet through the NGFW, this Response Action cannot guarantee containment of threat.
+Block an URL on a NGFW using its native filtering functionality.  
 
-##### Block an email domain on the Email-server
+##### Block a domain name on an Email server
 
-Block malicious sender (or entire domain, if possible) on Email Server using native filtering functionality.
+Block a domain name on an Email Server using its native filtering functionality.  
 
 ##### Block an email sender on the Email-server
 
@@ -249,56 +253,59 @@ Here newlines will be saved.
 
 ##### Delete malicious emails from a Email Server and users' email boxes
 
-Delete malicious emails from Email Server and users' email boxes using native Email Server functionality.
+Delete email from an Email Server and users' email boxes using its native functionality.
 
-##### Response Action for revokation of compromised credentials
+##### Response Action for compromised credentials revocation
 
-On this step you supposed to know what kind of credentials have beed compromised.
-You need to revoke them in your Identity and Access Management system where they were created (like, Windows AD) using native functionality.
-Warning:
-- If adversary has generated Golden Ticket in Windows Domain/forest, you have to revoke KRBTGT Account password **twice** for each domain in a forest and proceed monitor malicious activity for next 20 minutes (Domain Controller KDC service doesn’t perform validate the user account until the TGT is older than 20 minutes old)
+On this step, you supposed to know what kind of credentials have been compromised.  
+You need to revoke them in your Identity and Access Management system where they were created (i.e. Windows AD) using native functionality.  
+
+Warning:  
+
+- If the adversary has generated Golden Ticket in Windows Domain/forest, you have to revoke KRBTGT Account password **twice** for each domain in a forest and proceed to monitor malicious activity for next 20 minutes (Domain Controller KDC service doesn’t perform validate the user account until the TGT is older than 20 minutes old)
 
 ##### Report phishing attack to external companies
 
-Report phishing attack to external companites:
+Report phishing attack to external companites:  
 
-1. [National Computer Security Incident Response Teams (CSIRTs)](https://www.sei.cmu.edu/education-outreach/computer-security-incident-response-teams/national-csirts/)
-2. [U.S. government-operated website](http://www.us-cert.gov/nav/report_phishing.html)
-3. [Anti-Phishing Working Group (APWG)](http://antiphishing.org/report-phishing/)
-4. [Google Safe Browsing](https://safebrowsing.google.com/safebrowsing/report_phish/?hl=en)
-5. [The FBI's Intenet Crime Complaint Center (IC3)](https://www.ic3.gov/default.aspx)
+1. [National Computer Security Incident Response Teams (CSIRTs)](https://www.sei.cmu.edu/education-outreach/computer-security-incident-response-teams/national-csirts/)  
+2. [U.S. government-operated website](http://www.us-cert.gov/nav/report_phishing.html)  
+3. [Anti-Phishing Working Group (APWG)](http://antiphishing.org/report-phishing/)  
+4. [Google Safe Browsing](https://safebrowsing.google.com/safebrowsing/report_phish/?hl=en)  
+5. [The FBI's Intenet Crime Complaint Center (IC3)](https://www.ic3.gov/default.aspx)  
 
-This Response Action could be automated with [TheHive and MISP integration](https://blog.thehive-project.org/2017/06/19/thehive-cortex-and-misp-how-they-all-fit-together/).
+This Response Action could be automated with [TheHive and MISP integration](https://blog.thehive-project.org/2017/06/19/thehive-cortex-and-misp-how-they-all-fit-together/).  
 
 
 
 #### Lessons learned
 
-##### Develop Incident Resposne Report
+##### Develop the incident report
 
-Develop Incident Report using your corporate template.
+Develop the Incident Report using your corporate template.  
 
-It should include:
+It should include:  
 
-1. Executive Summary with short description of damage, actions taken, root cause, and key metrics (Time To Detect, Time To Respond, Time To Recover)
-2. Detailed timeline of adversary actions, mapped to [ATT&CK tactics](https://attack.mitre.org/tactics/enterprise/) (you can use [Kill Chain](https://en.wikipedia.org/wiki/Kill_chain), but 95% of all actions will be in Actions On Objective stage, which is not really representative, meaningfull and usefull)
-3. Detailed timeline of actions taken by Incident Responders
-4. Root Cause Analysis and Recommendations for improvements based on its conclusion
-5. List of specialists involved into Incident Response with their roles
+1. Executive Summary with a short description of damage, actions taken, root cause, and key metrics (Time To Detect, Time To Respond, Time To Recover etc)  
+2. Detailed timeline of adversary actions mapped to [ATT&CK tactics](https://attack.mitre.org/tactics/enterprise/) (you can use the [Kill Chain](https://en.wikipedia.org/wiki/Kill_chain), but most probably most of the actions will be in Actions On Objective stage, which is not very representative and useful)  
+3. Detailed timeline of actions taken by Incident Response Team  
+4. Root Cause Analysis and Recommendations for improvements based on its conclusion  
+5. List of specialists involved in Incident Response with their roles  
 
 ##### Conduct Lessons Learned exercise
 
-This Lessons Learned phase evaluates the team's performance through each step. 
-Basically, this takes the incident report and answers some basic questions:
+The Lessons Learned phase evaluates the team's performance through each step. 
+The goal of the phase is to discover how to improve the incident response process.  
+Basically, you need to answer some basic questions, using the incident report:  
 
-- What happened?
-- What did we do well?
-- What could we have done better?
-- What will we do differently next time?
+- What happened?  
+- What did we do well?  
+- What could we have done better?  
+- What will we do differently next time?  
 
-The goal of the Lessons Learned phase is to discover how to make the next incident response go faster, smoother, or ideally never happen at all.
-Keep in mind that incident report is a key. If, for example, Time To Respond looks horrible, it was caused by some problem.
-The only way to solve it is to bring it up and start working on it.
+Keep in mind that the incident report is the key.  
+For example, if Time To Respond is too long, it was caused by some problem.  
+The only way to solve it is to bring it up and start working on it.  
 
 
 

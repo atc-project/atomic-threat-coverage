@@ -10,12 +10,12 @@
 
 ### Workflow
 
-Report phishing attack to external companites:
+Report phishing attack to external companites:  
 
-1. [National Computer Security Incident Response Teams (CSIRTs)](https://www.sei.cmu.edu/education-outreach/computer-security-incident-response-teams/national-csirts/)
-2. [U.S. government-operated website](http://www.us-cert.gov/nav/report_phishing.html)
-3. [Anti-Phishing Working Group (APWG)](http://antiphishing.org/report-phishing/)
-4. [Google Safe Browsing](https://safebrowsing.google.com/safebrowsing/report_phish/?hl=en)
-5. [The FBI's Intenet Crime Complaint Center (IC3)](https://www.ic3.gov/default.aspx)
+1. [National Computer Security Incident Response Teams (CSIRTs)](https://www.sei.cmu.edu/education-outreach/computer-security-incident-response-teams/national-csirts/)  
+2. [U.S. government-operated website](http://www.us-cert.gov/nav/report_phishing.html)  
+3. [Anti-Phishing Working Group (APWG)](http://antiphishing.org/report-phishing/)  
+4. [Google Safe Browsing](https://safebrowsing.google.com/safebrowsing/report_phish/?hl=en)  
+5. [The FBI's Intenet Crime Complaint Center (IC3)](https://www.ic3.gov/default.aspx)  
 
-This Response Action could be automated with [TheHive and MISP integration](https://blog.thehive-project.org/2017/06/19/thehive-cortex-and-misp-how-they-all-fit-together/).
+This Response Action could be automated with [TheHive and MISP integration](https://blog.thehive-project.org/2017/06/19/thehive-cortex-and-misp-how-they-all-fit-together/).  

@@ -9,14 +9,15 @@
 
 ### Workflow
 
-This Lessons Learned phase evaluates the team's performance through each step. 
-Basically, this takes the incident report and answers some basic questions:
+The Lessons Learned phase evaluates the team's performance through each step. 
+The goal of the phase is to discover how to improve the incident response process.  
+Basically, you need to answer some basic questions, using the incident report:  
 
-- What happened?
-- What did we do well?
-- What could we have done better?
-- What will we do differently next time?
+- What happened?  
+- What did we do well?  
+- What could we have done better?  
+- What will we do differently next time?  
 
-The goal of the Lessons Learned phase is to discover how to make the next incident response go faster, smoother, or ideally never happen at all.
-Keep in mind that incident report is a key. If, for example, Time To Respond looks horrible, it was caused by some problem.
-The only way to solve it is to bring it up and start working on it.
+Keep in mind that the incident report is the key.  
+For example, if Time To Respond is too long, it was caused by some problem.  
+The only way to solve it is to bring it up and start working on it.  
