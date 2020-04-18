@@ -515,7 +515,7 @@ Absolutely. We also have some Detection Rules which couldn't be automatically co
 
 ## Authors
 
-- Daniil Yugoslavskiy, [@yugoslavskiy](https://github.com/yugoslavskiy)
+- Daniil Yugoslavskiy, [@yugoslavskiy](https://twitter.com/yugoslavskiy)
 - Jakob Weinzettl, [@mrblacyk](https://github.com/mrblacyk)
 - Mateusz Wydra, [@sn0w0tter](https://github.com/sn0w0tter)
 - Mikhail Aksenov, [@AverageS](https://github.com/AverageS)
