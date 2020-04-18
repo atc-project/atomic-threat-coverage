@@ -10,7 +10,8 @@
 
 ### Workflow
 
-Block domain on DNS Server using native sinkholing functionality. 
-Warning: 
-- If corporate DNS usage is not mandatory and hosts can use public DNS servers (access is not blocked by firewall), this Response Action cannot guarantee containment of threat.
-- Be careful blocking IP address. Make sure it's not cloud provider or hoster. In this case you have to use blocking by URL something more specific.
+Block a domain name on a DNS Server using its native sinkholing functionality.  
+
+Warning:  
+
+- Be careful blocking doman names. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster doman, you should block (if applicable) a specific URL using alternative Response Action   

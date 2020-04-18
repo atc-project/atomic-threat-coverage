@@ -10,7 +10,7 @@
 
 ### Workflow
 
-Report incident to external companites, like [National Computer Security Incident Response Teams (CSIRTs)](https://www.sei.cmu.edu/education-outreach/computer-security-incident-response-teams/national-csirts/).
-Provide all Indicators of Compromise and Indicators of Attack you've observed.
+Report incident to external companites, i.e. [National Computer Security Incident Response Teams (CSIRTs)](https://www.sei.cmu.edu/education-outreach/computer-security-incident-response-teams/national-csirts/).
+Provide all Indicators of Compromise and Indicators of Attack you've observed.  
 
-This Response Action could be automated with [TheHive and MISP integration](https://blog.thehive-project.org/2017/06/19/thehive-cortex-and-misp-how-they-all-fit-together/).
+This Response Action could be automated with [TheHive and MISP integration](https://blog.thehive-project.org/2017/06/19/thehive-cortex-and-misp-how-they-all-fit-together/).  

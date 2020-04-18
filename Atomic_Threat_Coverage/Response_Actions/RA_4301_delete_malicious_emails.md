@@ -9,4 +9,4 @@
 
 ### Workflow
 
-Delete malicious emails from Email Server and users' email boxes using native Email Server functionality.
+Delete email from an Email Server and users' email boxes using its native functionality.

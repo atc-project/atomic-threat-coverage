@@ -9,5 +9,4 @@
 
 ### Workflow
 
-Block URL on NGFW using native filtering functionality.
-Warning: If not all corporate hosts access internet through the NGFW, this Response Action cannot guarantee containment of threat.
+Block an URL on a NGFW using its native filtering functionality.  

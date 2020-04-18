@@ -1,7 +1,7 @@
 | Title                       |  Block domain on email         |
 |:---------------------------:|:--------------------|
 | **ID**                      | RA3301            |
-| **Description**             | Block an email domain on the Email-server   |
+| **Description**             | Block a domain name on an Email server   |
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | containment         |
@@ -10,4 +10,4 @@
 
 ### Workflow
 
-Block malicious sender (or entire domain, if possible) on Email Server using native filtering functionality.
+Block a domain name on an Email Server using its native filtering functionality.  
