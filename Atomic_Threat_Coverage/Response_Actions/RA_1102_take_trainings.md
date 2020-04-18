@@ -8,6 +8,8 @@
 
 ### Workflow
 
+> We do not rise to the level of our expectations. We fall to the level of our training.
+
 Here are some relevant training courses that will help you in the Incident Response activities:
 
 1. [Investigation Theory](https://chrissanders.org/training/investigationtheory/) by Chris Sanders. We recommend you to have it as a mandatory training for every member of your Incident Response team.
