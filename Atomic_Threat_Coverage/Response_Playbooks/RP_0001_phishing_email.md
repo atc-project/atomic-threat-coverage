@@ -9,16 +9,15 @@
 | **PAP**           | WHITE           |
 | **ATT&amp;CK Tactic**  |<ul><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul>|
 | **ATT&amp;CK Technique**  |<ul><li>[T1193: Spearphishing Attachment](https://attack.mitre.org/tactics/T1193)</li><li>[T1192: Spearphishing Link](https://attack.mitre.org/tactics/T1192)</li></ul>|
-| **Tags**          |<ul><li>phishing</li></ul> |
-| **Preparation**  |<ul><li>[RA_1101_practice](../Response_Actions/RA_1101_practice.md)</li><li>[RA_1102_take_trainings](../Response_Actions/RA_1102_take_trainings.md)</li><li>[RA_1104_make_personnel_report_suspicious_activity](../Response_Actions/RA_1104_make_personnel_report_suspicious_activity.md)</li><li>[RA_1103_raise_personnel_awareness](../Response_Actions/RA_1103_raise_personnel_awareness.md)</li><li>[RA_1301_get_ability_to_find_all_users_opened_email](../Response_Actions/RA_1301_get_ability_to_find_all_users_opened_email.md)</li><li>[RA_1302_get_ability_to_find_all_users_received_email](../Response_Actions/RA_1302_get_ability_to_find_all_users_received_email.md)</li><li>[RA_1303_get_ability_to_block_email_domain](../Response_Actions/RA_1303_get_ability_to_block_email_domain.md)</li><li>[RA_1304_get_ability_to_block_email_sender](../Response_Actions/RA_1304_get_ability_to_block_email_sender.md)</li><li>[RA_1305_get_ability_to_delete_email](../Response_Actions/RA_1305_get_ability_to_delete_email.md)</li><li>[RA_1211_manage_border_firewall_rules](../Response_Actions/RA_1211_manage_border_firewall_rules.md)</li><li>[RA_1213_manage_host_firewall_rules](../Response_Actions/RA_1213_manage_host_firewall_rules.md)</li><li>[RA_1214_manage_dns_records](../Response_Actions/RA_1214_manage_dns_records.md)</li><li>[RA_1215_manage_proxy_rules](../Response_Actions/RA_1215_manage_proxy_rules.md)</li><li>[RA_1216_manage_ips_rules](../Response_Actions/RA_1216_manage_ips_rules.md)</li><li>[RA_1217_manage_ngfw_rules](../Response_Actions/RA_1217_manage_ngfw_rules.md)</li></ul>|
-| **Identification**  |<ul><li>[RA_2302_get_original_email](../Response_Actions/RA_2302_get_original_email.md)</li><li>[RA_2301_list_users_opened_email](../Response_Actions/RA_2301_list_users_opened_email.md)</li><li>[RA_2303_list_email_receivers](../Response_Actions/RA_2303_list_email_receivers.md)</li><li>[RA_2304_make_sure_email_is_a_phishing](../Response_Actions/RA_2304_make_sure_email_is_a_phishing.md)</li><li>[RA_2305_extract_observables_from_email](../Response_Actions/RA_2305_extract_observables_from_email.md)</li><li>[RA_2103_put_compromised_accounts_on_monitoring](../Response_Actions/RA_2103_put_compromised_accounts_on_monitoring.md)</li></ul>|
-| **Containment**  |<ul><li>[RA_3202_block_ip_on_border_firewall](../Response_Actions/RA_3202_block_ip_on_border_firewall.md)</li><li>[RA_3203_block_domain_on_dns](../Response_Actions/RA_3203_block_domain_on_dns.md)</li><li>[RA_3204_block_url_on_proxy](../Response_Actions/RA_3204_block_url_on_proxy.md)</li><li>[RA_3205_block_domain_on_ips](../Response_Actions/RA_3205_block_domain_on_ips.md)</li><li>[RA_3206_block_domain_on_ngfw](../Response_Actions/RA_3206_block_domain_on_ngfw.md)</li><li>[RA_3207_block_ip_on_ips](../Response_Actions/RA_3207_block_ip_on_ips.md)</li><li>[RA_3208_block_ip_on_ngfw](../Response_Actions/RA_3208_block_ip_on_ngfw.md)</li><li>[RA_3209_block_url_on_ngfw](../Response_Actions/RA_3209_block_url_on_ngfw.md)</li><li>[RA_3301_block_domain_on_email](../Response_Actions/RA_3301_block_domain_on_email.md)</li><li>[RA_3302_block_sender_on_email](../Response_Actions/RA_3302_block_sender_on_email.md)</li></ul>|
-| **Eradication**  |<ul><li>[RA_4301_delete_malicious_emails](../Response_Actions/RA_4301_delete_malicious_emails.md)</li><li>[RA_4701_revoke_compromised_credentials](../Response_Actions/RA_4701_revoke_compromised_credentials.md)</li><li>[RA_4101_report_phishing_attack_to_external_companies](../Response_Actions/RA_4101_report_phishing_attack_to_external_companies.md)</li></ul>|
-| **Lessons Learned**  |<ul><li>[RA_6101_develop_incident_report](../Response_Actions/RA_6101_develop_incident_report.md)</li><li>[RA_6102_conduct_lessons_learned_exercise](../Response_Actions/RA_6102_conduct_lessons_learned_exercise.md)</li></ul>|
-
+| **Tags**          | <ul><li>phishing</li></ul> |
+| **Preparation**  |<ul><li>[RA1101: Practice](../Response_Actions/RA_1101_practice.md)</li><li>[RA1102: Take trainings](../Response_Actions/RA_1102_take_trainings.md)</li><li>[RA1104: Make personnel report suspicious activity](../Response_Actions/RA_1104_make_personnel_report_suspicious_activity.md)</li><li>[RA1103: Raise personnel awareness](../Response_Actions/RA_1103_raise_personnel_awareness.md)</li><li>[RA1301: Get ability to list users opened email](../Response_Actions/RA_1301_get_ability_to_list_users_opened_email.md)</li><li>[RA1302: Get ability to list users received email](../Response_Actions/RA_1302_get_ability_to_list_users_received_email.md)</li><li>[RA1303: Get ability to block email domain](../Response_Actions/RA_1303_get_ability_to_block_email_domain.md)</li><li>[RA1304: Get ability to block email sender](../Response_Actions/RA_1304_get_ability_to_block_email_sender.md)</li><li>[RA1305: Get ability to delete email](../Response_Actions/RA_1305_get_ability_to_delete_email.md)</li><li>[RA1201: Access external network flow logs](../Response_Actions/RA_1201_access_external_network_flow_logs.md)</li><li>[RA1204: Access external HTTP logs](../Response_Actions/RA_1204_access_external_http_logs.md)</li><li>[RA1206: Access external DNS logs](../Response_Actions/RA_1206_access_external_dns_logs.md)</li><li>[RA1211: Get ability to block external IP address](../Response_Actions/RA_1211_get_ability_to_block_external_ip_address.md)</li><li>[RA1213: Get ability to block external domain](../Response_Actions/RA_1213_get_ability_to_block_external_domain.md)</li><li>[RA1215: Get ability to block external URL](../Response_Actions/RA_1215_get_ability_to_block_external_url.md)</li></ul>|
+| **Identification**  |<ul><li>[RA2302: Get original email](../Response_Actions/RA_2302_get_original_email.md)</li><li>[RA2301: List users opened email](../Response_Actions/RA_2301_list_users_opened_email.md)</li><li>[RA2303: List email receivers](../Response_Actions/RA_2303_list_email_receivers.md)</li><li>[RA2104: Make sure email is a phishing](../Response_Actions/RA_2304_make_sure_email_is_a_phishing.md)</li><li>[RA2101: Extract observables from email](../Response_Actions/RA_2305_extract_observables_from_email.md)</li><li>[RA2103: Put compromised accounts on monitoring](../Response_Actions/RA_2103_put_compromised_accounts_on_monitoring.md)</li><li>[RA2213: List hosts communicated with external domain](../Response_Actions/RA_2213_list_hosts_communicated_with_external_domain.md)</li><li>[RA2214: List hosts communicated with external ip.](../Response_Actions/RA_2214_list_hosts_communicated_with_external_ip.md)</li><li>[RA2215: List hosts communicated with external URL](../Response_Actions/RA_2215_list_hosts_communicated_with_external_url.md)</li></ul>|
+| **Containment**  |<ul><li>[RA3201: Block external IP address](../Response_Actions/RA_3201_block_external_ip_address.md)</li><li>[RA3203: Block external domain](../Response_Actions/RA_3203_block_external_domain.md)</li><li>[RA3205: Block external URL](../Response_Actions/RA_3205_block_external_url.md)</li><li>[RA3301: Block domain on email](../Response_Actions/RA_3301_block_domain_on_email.md)</li><li>[RA3302: Block sender on email](../Response_Actions/RA_3302_block_sender_on_email.md)</li></ul>|
+| **Eradication**  |<ul><li>[RA4301: Delete malicious emails](../Response_Actions/RA_4301_delete_malicious_emails.md)</li><li>[RA4701: Revoke compromised credentials](../Response_Actions/RA_4701_revoke_compromised_credentials.md)</li><li>[RA4101: Report phishing attack to external companies](../Response_Actions/RA_4101_report_phishing_attack_to_external_companies.md)</li></ul>|
+| **Lessons learned**  |<ul><li>[RA6101: Develop incident report](../Response_Actions/RA_6101_develop_incident_report.md)</li><li>[RA6102: Conduct lessons learned exercise](../Response_Actions/RA_6102_conduct_lessons_learned_exercise.md)</li></ul>|
 
 ### Workflow
-
+ 
 1. Execute Response Actions step by step. Some of them directly connected, which means you will not be able to move forward not finishing the previous step. Some of them are redundant, as those that are related to the blocking a threat using network filtering systems (containment stage)
 2. Start executing containment and eradication stages concurrently with next identification steps, as soon as you will receive information about malicious hosts
 3. If phishing led to code execution or remote access to victim host, immediately start executing Generic Post Exploitation Incident Response Playbook
@@ -59,13 +58,13 @@ Here newlines will be saved.
 Description of the workflow for single Response Action in markdown format.
 Here newlines will be saved.
 
-##### Make sure you have the ability to find all users opened an email
+##### Make sure you have the ability to list users who opened a particular email
 
 
-Description of the workflow for single Response Action in markdown format.
+Description of the workflow for the Response Action in markdown format.
 Here newlines will be saved.
 
-##### Make sure you have the ability to find all users received an email
+##### Make sure you have the ability to list users who received a particular email
 
 
 Description of the workflow for single Response Action in markdown format.
@@ -89,37 +88,37 @@ Here newlines will be saved.
 Description of the workflow for single Response Action in markdown format.
 Here newlines will be saved.
 
-##### Make sure you can manage border firewall rules
+##### Make sure you have access to external communication Network Flow logs
 
 
 Description of the workflow for single Response Action in markdown format.
 Here newlines will be saved.
 
-##### Make sure you can manage host firewall rules
+##### Make sure you have access to external communication HTTP logs
 
 
 Description of the workflow for single Response Action in markdown format.
 Here newlines will be saved.
 
-##### Make sure you can manage DNS records
+##### Make sure you have access to external communication DNS logs
 
 
 Description of the workflow for single Response Action in markdown format.
 Here newlines will be saved.
 
-##### Make sure you can manage Proxy rules
+##### Make sure you can block an external IP address from being accessed by corporate assets
 
 
 Description of the workflow for single Response Action in markdown format.
 Here newlines will be saved.
 
-##### Make sure you can manage IPS rules
+##### Make sure you can block an external domain name from being accessed by corporate assets
 
 
 Description of the workflow for single Response Action in markdown format.
 Here newlines will be saved.
 
-##### Make sure you can manage NGFW rules
+##### Make sure you can block an external URL from being accessed by corporate assets
 
 
 Description of the workflow for single Response Action in markdown format.
@@ -181,63 +180,48 @@ Start monitoring for authentification attempts and all potentially harmful actio
 Look for anomalies, unusual network connections, unusual geolocation/time of work, actions that were never executed before.  
 Keep in touch with the real users and, in case of need, ask them if they executing some suspicious actions by themselves or not.  
 
+##### Response Action for 
+
+
+Description of the workflow for the Response Action in markdown format.
+Here newlines will be saved.
+
+##### Response Action for 
+
+
+Description of the workflow for the Response Action in markdown format.
+Here newlines will be saved.
+
+##### Response Action for
+
+
+Description of the workflow for the Response Action in markdown format.
+Here newlines will be saved.
+
 #### Containment
 
-##### Block an IP address on a border firewall
+##### Block an external IP address from being accessed by corporate assets
 
-Block an IP address on a border firewall using its native filtering functionality.  
+
+Block an external IP address from being accessed by corporate assets, using the most efficient way.  
 
 Warning:  
 
 - Be careful blocking IP addresses. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster IP address, you should block (if applicable) a specific URL using alternative Response Action   
 
-##### Block a domain on a DNS server
+##### Block an external domain name from being accessed by corporate assets
 
-Block a domain name on a DNS Server using its native sinkholing functionality.  
+
+Block an external domain name from being accessed by corporate assets, using the most efficient way.  
 
 Warning:  
 
 - Be careful blocking doman names. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster doman, you should block (if applicable) a specific URL using alternative Response Action   
 
-##### Block an URL on a Proxy server
+##### Block an external URL from being accessed by corporate assets
 
-Block an URL on a Proxy Server using its native filtering functionality.  
 
-##### Block a domain name on an IPS
-
-Block a domain name on an IPS using its native filtering functionality.  
-
-Warning:  
-
-- Be careful blocking domain names. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster domain, you should (if applicable) block a specific URL using alternative Response Action  
-
-##### Block a domain name on a NGFW
-
-Block a domain name on a NGFW using its native filtering functionality.  
-
-Warning:  
-
-- Be careful blocking domain names. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster domain, you should (if applicable) block a specific URL using alternative Response Action   
-
-##### Block an IP address in an IPS
-
-Block an IP address on an IPS using its native filtering functionality.  
-
-Warning:  
-
-- Be careful blocking IP addresses. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster IP address, you should (if applicable) block a specific URL using alternative Response Action   
-
-##### Block an IP address on a NGFW
-
-Block an IP address on a NGFW using its native filtering functionality.  
-
-Warning:  
-
-- Be careful blocking IP address. Make sure it's not a cloud provider or a hoster. If you would like to block something that is hosted on a well-known cloud provider or on a big hoster IP address, you should (if applicable) block a specific URL using alternative Response Action  
-
-##### Block an URL on an NGFW
-
-Block an URL on a NGFW using its native filtering functionality.  
+Block an external URL from being accessed by corporate assets, using the most efficient way.  
 
 ##### Block a domain name on an Email server
 

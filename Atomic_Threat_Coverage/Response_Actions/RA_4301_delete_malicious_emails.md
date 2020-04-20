@@ -5,7 +5,7 @@
 | **Author**                  | @atc_project        |
 | **Creation Date**           | 31.01.2019 |
 | **Stage**                   | eradication         |
-| **Linked Analytics** |<ul><li>MS_email_server</li></ul>|
+| **Requirements** |<ul><li>MS_email_server</li></ul>|
 
 ### Workflow
 
