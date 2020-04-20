@@ -133,8 +133,12 @@ class ResponsePlaybook:
                             + '/' + task + '.yml'
                         )
 
+                        action_title = action.get('id')\
+                          + ":"\
+                          + ATCutils.normalize_react_title(action.get('title'))
+                    
                         stage_list.append(
-                            (action.get('description'), action.get('workflow'))
+                            (action_title, task, action.get('description'), action.get('workflow'))
                         )
                 except TypeError:
                     pass
