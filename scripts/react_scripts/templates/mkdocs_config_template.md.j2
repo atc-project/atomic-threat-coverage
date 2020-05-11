@@ -1,0 +1,43 @@
+site_name: RE&CT
+site_dir: site/
+docs_dir: docs/
+
+theme:
+    name: null
+    custom_dir: 'docs/readthedocs/'
+    navigation_depth: 4
+    search_index_only: true
+    titles_only: true
+
+repo_url: https://github.com/atc-project/atc-react
+edit_uri: blob/master/docs/
+google_analytics: ['UA-165240552-2', 'https://atc-project.github.io/atc-react/']
+
+plugins:
+    - awesome-pages
+    - exclude:
+        glob:
+            - "*DS_Store"
+            - "*.git"
+            - "*.idea"
+            - "thehive_templates"
+nav:
+    - Introduction:
+        - RE&CT Framework: index.md
+        - Response Stages: responsestages.md
+{%- if stages is not none and stages|length -%}
+{{'\n'}}    - Response Actions:
+{%- for stage_name, stage_actions in stages -%}
+    {%- if stage_actions is not none and stage_actions|length -%}
+        {{'\n'}}        - {{stage_name}}:
+        {%- for action_title, action_filename in stage_actions -%} 
+            {{'\n'}}            - "{{action_title}}": ./Response_Actions/{{action_filename}}.md {%- endfor -%}
+    {%- endif -%}
+{%- endfor %}
+{%- endif -%}
+{%- if playbooks is not none and playbooks|length -%}
+    {{'\n'}}    - Response Playbooks:
+    {%- for playbook_title, playbook_path in playbooks -%}
+        {{'\n'}}        - "{{playbook_title}}": ./Response_Playbooks/{{playbook_path}}.md
+    {%- endfor -%}
+{%- endif -%}

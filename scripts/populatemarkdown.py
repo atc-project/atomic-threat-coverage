@@ -7,10 +7,9 @@ from hardeningpolicy import HardeningPolicy
 from mitigationsystem import MitigationSystem
 from mitigationpolicy import MitigationPolicy
 from loggingpolicy import LoggingPolicy
+
 # from triggers import Triggers
 from enrichment import Enrichment
-from responseaction import ResponseAction
-from responseplaybook import ResponsePlaybook
 from customer import Customer
 
 # Import ATC Utils
@@ -31,10 +30,10 @@ class PopulateMarkdown:
 
     def __init__(self, lp=False, dn=False, dr=False, en=False, tg=False,
                  ra=False, rp=False, cu=False, ms=False, mp=False, auto=False,
-                 hp=False, art_dir=False, atc_dir=False, lp_path=False, 
-                 dn_path=False, dr_path=False, en_path=False, tg_path=False, 
-                 ra_path=False, rp_path=False, cu_path=False, ms_path=False, 
-                 mp_path=False, hp_path=False, init=False):
+                 hp=False, art_dir=False, atc_dir=False, lp_path=False,
+                 dn_path=False, dr_path=False, en_path=False, tg_path=False,
+                 cu_path=False, ms_path=False, mp_path=False, hp_path=False,
+                 init=False):
         """Init"""
 
         # Check if atc_dir provided
@@ -55,7 +54,7 @@ class PopulateMarkdown:
             if self.init_export():
                 print("[+] Created initial markdown directories successfully")
             else:
-                print("[X] Failed to create initial markdown directories")
+                print("[-] Failed to create initial markdown directories")
                 raise Exception("Failed to markdown directories")
 
         # Main logic
@@ -67,8 +66,6 @@ class PopulateMarkdown:
             self.data_needed(dn_path)
             self.enrichment(en_path)
             self.triggers(tg_path)
-            self.response_action(ra_path)
-            self.response_playbook(rp_path)
             self.detection_rule(dr_path)
             self.customer(cu_path)
 
@@ -93,18 +90,11 @@ class PopulateMarkdown:
         if dr:
             self.detection_rule(dr_path)
 
-        if ra:
-            self.response_action(ra_path)
-
-        if rp:
-            self.response_playbook(rp_path)
-
         if tg:
             self.triggers(tg_path)
 
         if cu:
             self.customer(cu_path)
-    
 
     def init_export(self):
         try:
@@ -116,7 +106,7 @@ class PopulateMarkdown:
     def hardening_policy(self, hp_path):
         """Populate Hardening Policies"""
 
-        print("Populating Hardening Policies..")
+        print("[*] Populating Hardening Policies...")
         if hp_path:
             hp_list = glob.glob(hp_path + '*.yml')
         else:
@@ -134,12 +124,12 @@ class PopulateMarkdown:
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
 
-        print("Hardening Policies populated!")    
+        print("[+] Hardening Policies populated!")
 
     def mitigation_system(self, ms_path):
         """Populate Mitigation Systems"""
 
-        print("Populating Mitigation Systems..")
+        print("[*] Populating Mitigation Systems...")
         if ms_path:
             ms_list = glob.glob(ms_path + '*.yml')
         else:
@@ -157,12 +147,12 @@ class PopulateMarkdown:
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
 
-        print("Mitigation Systems populated!")
+        print("[+] Mitigation Systems populated!")
 
     def mitigation_policy(self, mp_path):
         """Populate Mitigation Policies"""
 
-        print("Populating Mitigation Policies..")
+        print("[*] Populating Mitigation Policies...")
         if mp_path:
             mp_list = glob.glob(mp_path + '*.yml')
         else:
@@ -180,12 +170,12 @@ class PopulateMarkdown:
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
 
-        print("Mitigation Policies populated!")
+        print("[+] Mitigation Policies populated!")
 
     def triggers(self, tg_path):
         """Populate Triggers"""
 
-        print("Populating Triggers..")
+        print("[*] Populating Triggers...")
         if self.art_dir and self.atc_dir:
             r = ATCutils.populate_tg_markdown(art_dir=self.art_dir,
                                               atc_dir=self.atc_dir)
@@ -199,13 +189,13 @@ class PopulateMarkdown:
         else:
             r = ATCutils.populate_tg_markdown()
 
-        print("Triggers populated!")
+        print("[+] Triggers populated!")
         return r
 
     def logging_policy(self, lp_path):
         """Populate Logging Policies"""
 
-        print("Populating Logging Policies..")
+        print("[*] Populating Logging Policies...")
         if lp_path:
             lp_list = glob.glob(lp_path + '*.yml')
         else:
@@ -224,12 +214,12 @@ class PopulateMarkdown:
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
 
-        print("Logging Policies populated!")
+        print("[+] Logging Policies populated!")
 
     def data_needed(self, dn_path):
         """Populate Data Needed"""
 
-        print("Populating Data Needed..")
+        print("[*] Populating Data Needed...")
         if dn_path:
             dn_list = glob.glob(dn_path + '*.yml')
         else:
@@ -247,12 +237,12 @@ class PopulateMarkdown:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
-        print("Data Needed populated!")
+        print("[+] Data Needed populated!")
 
     def detection_rule(self, dr_path):
         """Populate Detection Rules"""
 
-        print("Populating Detection Rules..")
+        print("[*] Populating Detection Rules...")
         if dr_path:
             dr_list = glob.glob(dr_path + '*.yml')
         else:
@@ -276,12 +266,12 @@ class PopulateMarkdown:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
-        print("Detection Rules populated!")
+        print("[+] Detection Rules populated!")
 
     def enrichment(self, en_path):
         """Populate Enrichments"""
 
-        print("Populating Enrichments..")
+        print("[*] Populating Enrichments...")
         if en_path:
             en_list = glob.glob(en_path + '*.yml')
         else:
@@ -299,58 +289,12 @@ class PopulateMarkdown:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
-        print("Enrichments populated!")
-
-    def response_action(self, ra_path):
-        """Populate Response Actions"""
-
-        print("Populating Response Actions..")
-        if ra_path:
-            ra_list = glob.glob(ra_path + '*.yml')
-        else:
-            ra_dir = ATCconfig.get('response_actions_dir')
-            ra_list = glob.glob(ra_dir + '/*.yml')
-
-        for ra_file in ra_list:
-            try:
-                ra = ResponseAction(ra_file)
-                ra.render_template("markdown")
-                ra.save_markdown_file(atc_dir=self.atc_dir)
-            except Exception as e:
-                print(ra_file + " failed\n\n%s\n\n" % e)
-                print("Err message: %s" % e)
-                print('-' * 60)
-                traceback.print_exc(file=sys.stdout)
-                print('-' * 60)
-        print("Response Actions populated!")
-
-    def response_playbook(self, rp_path):
-        """Populate Response Playbooks"""
-
-        print("Populating Response Playbooks..")
-        if rp_path:
-            rp_list = glob.glob(rp_path + '*.yml')
-        else:
-            rp_dir = ATCconfig.get('response_playbooks_dir')
-            rp_list = glob.glob(rp_dir + '/*.yml')
-
-        for rp_file in rp_list:
-            try:
-                rp = ResponsePlaybook(rp_file)
-                rp.render_template("markdown")
-                rp.save_markdown_file(atc_dir=self.atc_dir)
-            except Exception as e:
-                print(rp_file + " failed\n\n%s\n\n" % e)
-                print("Err message: %s" % e)
-                print('-' * 60)
-                traceback.print_exc(file=sys.stdout)
-                print('-' * 60)
-        print("Response Playbooks populated!")
+        print("[+] Enrichments populated!")
 
     def customer(self, cu_path):
         """Populate Customers"""
 
-        print("Populating Customers..")
+        print("[*] Populating Customers...")
         if cu_path:
             cu_list = glob.glob(cu_path + '*.yml')
         else:
@@ -368,4 +312,4 @@ class PopulateMarkdown:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
-        print("Customers populated!")
+        print("[+] Customers populated!")

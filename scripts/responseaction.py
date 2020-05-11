@@ -3,6 +3,7 @@
 from atcutils import ATCutils
 
 from jinja2 import Environment, FileSystemLoader
+from react_scripts.react_mapping import rs_mapping
 
 import os
 

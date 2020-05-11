@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
 from populatemarkdown import PopulateMarkdown
+from react_scripts.populatemarkdown import ReactPopulateMarkdown
 from populateconfluence import PopulateConfluence
 from thehive_templates import RPTheHive
-
+from react_scripts.react2stix import GenerateSTIX
+from react_scripts.react_navigator import GenerateNavigator
 
 # For confluence
 from requests.auth import HTTPBasicAuth
@@ -39,6 +41,10 @@ if __name__ == '__main__':
                        help='Use visualisations module')
     group.add_argument('-T', '--thehive', action='store_true',
                        help='Generate TheHive Case templates')
+    group.add_argument('-RE-STIX', '--react-stix', action='store_true',
+                       help='Generate STIX objects')
+    group.add_argument('-RE-NAV', '--react-navigator', action='store_true',
+                       help='Generate RE&CT Navigator profile')
 
     # Mutually exclusive group for chosing type of data
     group2 = parser.add_mutually_exclusive_group(required=False)
@@ -65,6 +71,8 @@ if __name__ == '__main__':
                         help='Build response action part')
     group2.add_argument('-RP', '--responseplaybook', action='store_true',
                         help='Build response playbook part')
+    group2.add_argument('-RS', '--responsestage', action='store_true',
+                        help='Build response stage part')
     group2.add_argument('-CU', '--customers', action='store_true',
                         help='Build response customers part')
 
@@ -103,9 +111,11 @@ if __name__ == '__main__':
                          ms=args.mitigationsystem, mp=args.mitigationpolicy,
                          dn=args.dataneeded, dr=args.detectionrule,
                          tg=args.triggers, en=args.enrichment,
-                         ra=args.responseactions, rp=args.responseplaybook,
-                         cu=args.customers, hp=args.hardeningpolicy, 
+                         cu=args.customers, hp=args.hardeningpolicy,
                          init=args.init)
+        ReactPopulateMarkdown(auto=args.auto, ra=args.responseactions,
+                              rp=args.responseplaybook, rs=args.responsestage,
+                              init=args.init)
 
     elif args.confluence:
         print("Provide confluence credentials\n")
@@ -123,6 +133,10 @@ if __name__ == '__main__':
                            cu=args.customers, hp=args.hardeningpolicy, 
                            init=args.init)
 
+    elif args.react_stix:
+        GenerateSTIX()
+    elif args.react_navigator:
+        GenerateNavigator()
     elif args.visualisations:
         ATCconfig = ATCutils.load_config("config.yml")
         ATCconfig_default = ATCutils.load_config("config.default.yml")

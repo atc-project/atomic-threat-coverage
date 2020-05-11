@@ -995,7 +995,7 @@ class ATCutils:
 
     @staticmethod
     def normalize_react_title(title):
-        """Normalize title if it is a RE&CT title in the following format:
+        """Normalize title if it is a RA/RP title in the following format:
         RP_0003_identification_make_sure_email_is_a_phishing
         """
         
@@ -1007,15 +1007,57 @@ class ATCutils:
                 if word.lower() in [
                         "ip", "dns", "ms", "ngfw", "ips", "url", "pe", "pdf", 
                         "elf", "dhcp", "vpn", "smb", "ftp", "http" ]:
-                    new_title += " "
                     new_title += word.upper()
-                    continue
-                elif word.lower() in [ "unix", "windows", "proxy", "firewall" ]:
                     new_title += " "
-                    new_title += word.capitalize()
                     continue
-                new_title += " "
+                elif word.lower() in [ "unix", "windows", "proxy", "firewall", "mach-o" ]:
+                    new_title += word.capitalize()
+                    new_title += " "
+                    continue
                 new_title += word
-            return new_title        
+                new_title += " "
+            return new_title.strip()
         return title
 
+    @staticmethod
+    def get_ra_category(ra_id):
+        """Get a Response Action category, i.e. file, network, email, etc
+        Using the the RA ID
+        """
+        categories = {
+          "General": 0,
+          "Network": 1,
+          "Email": 2,
+          "File": 3,
+          "Process": 4,
+          "Configuration": 5,
+          "Identity": 6,
+        }
+
+        for name, number in categories.items():
+            category_re = re.compile(r'RA\d{1}' + str(number) + '.*$')
+            if category_re.match(ra_id):
+                return name
+
+        return "N/A"
+
+    @staticmethod
+    def normalize_rs_name(rs_name):
+        """Revieve a Response Stage name, i.e. reparation, lessons_learned, etc
+        Return normalized RS name
+        """
+
+        stages = {
+          "preparation": "Preparation",
+          "identification": "Identification",
+          "containment": "Containment",
+          "eradication": "Eradication",
+          "recovery": "Recovery",
+          "lessons_learned": "Lessons Learned"
+        }
+
+        for stage_name, normal_stage_name in stages.items():
+            if rs_name == stage_name:
+                return normal_stage_name
+
+        return "N/A"
