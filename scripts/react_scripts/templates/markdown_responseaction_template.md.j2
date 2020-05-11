@@ -1,0 +1,12 @@
+| Title                       | {{ title }}         |
+|:---------------------------:|:--------------------|
+| **ID**                      | {{ id }}            |
+| **Description**             | {{ description }}   |
+| **Author**                  | {{ author }}        |
+| **Creation Date**           | {{ creation_date }} |
+| **Category**                | {{ category }}      |
+| **Stage**                   | {%- for rs_id, rs_name in stage %}[{{ rs_id }}: {{rs_name}}](../Response_Stages/{{ rs_id }}.md){% endfor -%} | {% if automation is not none and automation|length %}{{ '\n' }}| **Automation** |<ul>{% for auto in automation %}<li>{{ auto }}</li>{% endfor %}</ul>|{% endif %}{% if references is not none and references|length %}{{ '\n' }}| **References** |<ul>{% for ref in references %}<li>[{{ ref }}]({{ ref }})</li>{% endfor %}</ul>|{% endif %}{% if requirements is not none and requirements|length %}{{ '\n' }}| **Requirements** |<ul>{% for requirement in requirements %}<li>{{ requirement }}</li>{% endfor %}</ul>|{% endif %}
+
+### Workflow
+
+{{ workflow }}

@@ -1,0 +1,13 @@
+# Project supplied default configuration.  Add a new configuration file 'config.yml' where you can overwrite any settings depicted below.
+# config.yml is not tracked by the version management system, while config.default.yml is.
+md_name_of_root_directory: 'docs'
+exported_analytics_directory: 'docs'
+response_playbooks_dir: 'response_playbooks'
+response_actions_dir: 'response_actions'
+response_stages_dir: 'response_stages'
+thehive_templates_dir: 'docs/thehive_templates'
+remote_react_json_url: 'https://raw.githubusercontent.com//atc-project/atc-react/master/docs/react.json'
+local_react_json_url: 'docs/react.json'
+react_mapping_url: 'scripts/react_mapping.py'
+react_web_kb_base_url: 'https://atc-project.github.io/atc-react/'
+rs_summary_dir: 'docs'

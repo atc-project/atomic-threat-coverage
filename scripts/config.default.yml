@@ -28,6 +28,15 @@ confluence_viewpage_url: 'https://atomicthreatcoverage.atlassian.net/wiki/pages/
 sigmac_path: '../detection_rules/sigma/tools/sigmac'
 detection_queries: 'es-qs,xpack-watcher,graylog,splunk,logpoint,grep'
 customers_directory: '../customers'
+##
+## RE&CT PART
+##
 response_playbooks_dir: '../response/atc-react/response_playbooks/'
 response_actions_dir: '../response/atc-react/response_actions'
+response_stages_dir: '../response/atc-react/response_stages'
 thehive_templates_dir: '../analytics/generated/thehive_templates'
+remote_react_json_url: 'https://raw.githubusercontent.com//atc-project/atc-react/master/docs/react.json'
+local_react_json_url: '../response/atc-react/docs/react.json'
+react_mapping_url: 'react_scripts/react_mapping.py'
+react_web_kb_base_url: 'https://atc-project.github.io/atc-react/'
+rs_summary_dir: '../Atomic_Threat_Coverage/Response_Stages'

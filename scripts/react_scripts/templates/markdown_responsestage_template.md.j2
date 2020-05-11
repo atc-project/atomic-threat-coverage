@@ -1,0 +1,15 @@
+# {{ title }} 
+
+**ID**: {{ id }}
+
+{{ description }}
+
+{%- if stage_list is not none and stage_list|length -%}
+{{ '\n' }}## Response Actions
+
+| ID    | Name     | Description |
+|:-----:|:--------:|-------------|
+{%- for ra_id, ra_filename, ra_title, ra_description in stage_list -%}
+{{ '\n' }}| [{{ ra_id }}](../Response_Actions/{{ra_filename}}.md) | [{{ ra_title }}](../Response_Actions/{{ra_filename}}.md) | {{ra_description}} |
+{%- endfor -%}
+{%- endif -%}

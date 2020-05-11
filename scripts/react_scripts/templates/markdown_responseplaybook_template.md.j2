@@ -1,0 +1,43 @@
+| Title             | {{ title }}                                                                                                      |
+|:-----------------:|:-----------------------------------------------------------------------------------------------------------------|
+| **ID**            | {{ id }}            |
+| **Description**   | {{ description }}   |
+| **Author**        | {{ author }}        |
+| **Creation Date** | {{ creation_date }} |
+| **Severity**      | {{ severity }}      |
+| **TLP**           | {{ tlp }}           |
+| **PAP**           | {{ pap }}           |
+{%- if tactics is not none and tactics|length -%}
+{{ '\n' }}| **ATT&amp;CK Tactic**  |<ul>{%- for tactic_name, tactic_id in tactics %}<li>[{{ tactic_id }}: {{tactic_name}}](https://attack.mitre.org/tactics/{{tactic_id}})</li>{% endfor -%}</ul>|
+{%- endif -%}
+{%- if techniques is not none and tactics|length -%}
+{{ '\n' }}| **ATT&amp;CK Technique**  |<ul>{% for technique_name, technique_id in techniques %}<li>[{{ technique_id }}: {{technique_name}}](https://attack.mitre.org/tactics/{{technique_id}})</li>{% endfor -%}</ul>|
+{%- endif -%}
+{%- if amitt_tactics is not none and amitt_tactics|length -%}
+{{ '\n' }}| **AM&excl;TT Tactic**  |<ul>{%- for tactic_name, tactic_id in amitt_tactics %}<li>[{{ tactic_id }}: {{tactic_name}}](https://vvx7.xyz/tactics/{{tactic_id}})</li>{% endfor %}</ul>|
+{%- endif -%}
+{%- if amitt_techniques is not none and amitt_techniques|length -%}
+{{ '\n' }}| **AM&excl;TT Technique**  |<ul>{% for technique_name, technique_id in amitt_techniques %}<li>[{{ technique_id }}: {{technique_name}}](https://vvx7.xyz/tactics/{{technique_id}})</li>{% endfor %}</ul>|
+{%- endif -%}
+{%- if other_tags is not none and other_tags|length -%}
+{{ '\n' }}| **Tags**          | <ul>{% for tag in other_tags %}<li>{{ tag }}</li>{% endfor %}</ul> |
+{%- endif -%}
+{%- for stage_name, stage_actions in stages -%}
+    {%- if stage_actions is not none and stage_actions|length -%}
+    {{'\n'}}| **{{stage_name}}**  |<ul>{% for action_title, action_filename, action_description, action_workflow in stage_actions %}<li>[{{ action_title }}](../Response_Actions/{{action_filename}}.md)</li>{% endfor %}</ul>|
+    {%- endif -%}
+{%- endfor %}
+
+### Workflow
+ 
+{{ workflow }}
+
+{% for stage_name, stage_actions in stages %}
+{% if stage_actions is not none and stage_actions|length %}#### {{ stage_name }}{% endif %}
+{% for action_title, action_filename, action_description, action_workflow in stage_actions%}
+##### {{ action_description }}
+
+{{ action_workflow }}
+
+{%- endfor %}
+{%- endfor %}

@@ -47,10 +47,10 @@ def main(c_auth=None):
                         "Is the parent name correct?")
 
     spaces = ["Detection Rules", "Logging Policies",
-              "Data Needed", "Triggers", "Response Actions",
-              "Response Playbooks", "Enrichments", "Customers",
-              "Mitigation Systems", "Mitigation Policies", 
-              "Hardening Policies"]
+              "Data Needed", "Triggers", "Enrichments", "Customers",
+              "Mitigation Systems", "Mitigation Policies",
+              "Hardening Policies", "Response Actions",
+              "Response Playbooks", "Response Stages"]
 
     for space in spaces:
         print("Creating %s.." % space)
