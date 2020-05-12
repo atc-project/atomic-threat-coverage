@@ -1,0 +1,29 @@
+<b>ID:</b>{{  id|e }}
+<pre><br/></pre>
+{{ description }}
+{%- if stage_list is not none and stage_list|length -%}
+<h2>Response Actions</h2>
+<table data-layout="default"><colgroup><col /><col /><col /></colgroup>
+<tbody>
+<tr>
+<th>
+<p style="text-align: center;"><strong>ID</strong></p></th>
+<th>
+<p style="text-align: center;"><strong>Name</strong></p></th>
+<th>
+<p><strong>Description</strong></p>
+</th>
+</tr>
+{%- for ra_id, ra_filename, ra_title, ra_description, ra_confluence_page_id in stage_list -%}
+<tr>
+<td>
+<p><a href="{{confluence_viewpage_url}}{{ra_confluence_page_id}}">{{ ra_id }}</a></p></td>
+<td>
+<p><a href="{{confluence_viewpage_url}}{{ra_confluence_page_id}}">{{ ra_title }}</a></p></td>
+<td>
+<p>{{ ra_description }}</p></td>
+</tr>
+{%- endfor -%}
+</tbody></table>
+<p />
+{%- endif -%}

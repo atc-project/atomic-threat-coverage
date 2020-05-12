@@ -130,8 +130,8 @@ if __name__ == '__main__':
                            dn=args.dataneeded, dr=args.detectionrule,
                            tg=args.triggers, en=args.enrichment,
                            ra=args.responseactions, rp=args.responseplaybook,
-                           cu=args.customers, hp=args.hardeningpolicy, 
-                           init=args.init)
+                           rs=args.responsestage, cu=args.customers, 
+                           hp=args.hardeningpolicy, init=args.init)
 
     elif args.react_stix:
         GenerateSTIX()
