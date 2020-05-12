@@ -27,8 +27,14 @@
             </tr>
 {% endif %}
             <tr>
+               <th class="confluenceTh">Category</th>
+               <td class="confluenceTd">{{ category|e }}<br /></td>
+            </tr>
+            <tr>
                <th class="confluenceTh">Stage</th>
-               <td class="confluenceTd">{{ stage|e }}<br /></td>
+               {%- for rs_id, rs_name, rs_confluence_page_id in stage %}
+               <td class="confluenceTd"><a href="{{confluence_viewpage_url}}{{rs_confluence_page_id}}">{{ rs_id }}: {{ rs_name }}</a><br /></td>
+               {% endfor -%}
             </tr>
 {% if automation is defined and automation|length %}
             <tr>

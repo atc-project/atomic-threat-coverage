@@ -11,6 +11,7 @@ from triggers import Triggers
 from enrichment import Enrichment
 from responseaction import ResponseAction
 from responseplaybook import ResponsePlaybook
+from responsestage import ResponseStage
 from customer import Customer
 from attack_mapping import te_mapping  # , ta_mapping
 
@@ -30,11 +31,11 @@ class PopulateConfluence:
     """Desc"""
 
     def __init__(self, auth, lp=False, dn=False, dr=False, en=False, tg=False,
-                 ra=False, rp=False, cu=False, ms=False, mp=False, hp=False,
+                 ra=False, rp=False, rs=False, cu=False, ms=False, mp=False, hp=False,
                  auto=False, art_dir=False, atc_dir=False, lp_path=False,
                  dn_path=False, dr_path=False, en_path=False, tg_path=False,
-                 ra_path=False, rp_path=False, cu_path=False, hp_path=False,
-                 ms_path=False, mp_path=False, init=False):
+                 ra_path=False, rp_path=False, rs_path=False, cu_path=False, 
+                 hp_path=False, ms_path=False, mp_path=False, init=False):
         """Desc"""
 
         self.auth = auth
@@ -79,8 +80,10 @@ class PopulateConfluence:
             self.data_needed(dn_path)
             self.enrichment(en_path)
             self.triggers(tg_path)
+            self.response_stage(rs_path)
             self.response_action(ra_path)
             self.response_playbook(rp_path)
+            self.response_stage(rs_path)
             self.detection_rule(dr_path)
             self.customer(cu_path)
 
@@ -106,10 +109,17 @@ class PopulateConfluence:
             self.detection_rule(dr_path)
 
         if ra:
+            print("[*] We need to create Response Stages first...")
+            self.response_stage(rs_path)
             self.response_action(ra_path)
+            print("[*] Updating Response Stages...")
+            self.response_stage(rs_path)
 
         if rp:
             self.response_playbook(rp_path)
+
+        if rs:
+            self.response_stage(rs_path)
 
         if tg:
             self.triggers(tg_path)
@@ -127,7 +137,7 @@ class PopulateConfluence:
     def triggers(self, tg_path):
         """Populate Triggers"""
 
-        print("Populating Triggers..")
+        print("[*] Populating Triggers...")
         if tg_path:
             tg_list = glob.glob(tg_path + '*.yml')
         else:
@@ -160,12 +170,12 @@ class PopulateConfluence:
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
 
-        print("Triggers populated!")
+        print("[+] Triggers populated!")
 
     def hardening_policy(self, hp_path):
         """Populate Hardening Policies"""
 
-        print("Populating Hardening Policies..")
+        print("[*] Populating Hardening Policies...")
         if hp_path:
             hp_list = glob.glob(hp_path + '*.yml')
         else:
@@ -195,12 +205,12 @@ class PopulateConfluence:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
-        print("Hardening Policies populated!")
+        print("[+] Hardening Policies populated!")
 
     def mitigation_system(self, ms_path):
         """Populate Mitigation Systems"""
 
-        print("Populating Mitigation Systems..")
+        print("[*] Populating Mitigation Systems...")
         if ms_path:
             ms_list = glob.glob(ms_path + '*.yml')
         else:
@@ -230,12 +240,12 @@ class PopulateConfluence:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
-        print("Mitigation Systems populated!")
+        print("[+] Mitigation Systems populated!")
 
     def mitigation_policy(self, mp_path):
         """Populate Mitigation Policies"""
 
-        print("Populating Mitigation Policies..")
+        print("[*] Populating Mitigation Policies...")
         if mp_path:
             mp_list = glob.glob(mp_path + '*.yml')
         else:
@@ -266,12 +276,12 @@ class PopulateConfluence:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
-        print("Mitigation Policies populated!")
+        print("[+] Mitigation Policies populated!")
 
     def logging_policy(self, lp_path):
         """Desc"""
 
-        print("Populating Logging Policies..")
+        print("[*] Populating Logging Policies...")
         if lp_path:
             lp_list = glob.glob(lp_path + '*.yml')
         else:
@@ -302,12 +312,12 @@ class PopulateConfluence:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
-        print("Logging Policies populated!")
+        print("[+] Logging Policies populated!")
 
     def data_needed(self, dn_path):
         """Desc"""
 
-        print("Populating Data Needed..")
+        print("[*] Populating Data Needed...")
         if dn_path:
             dn_list = glob.glob(dn_path + '*.yml')
         else:
@@ -338,12 +348,12 @@ class PopulateConfluence:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
-        print("Data Needed populated!")
+        print("[+] Data Needed populated!")
 
     def detection_rule(self, dr_path):
         """Desc"""
 
-        print("Populating Detection Rules..")
+        print("[*] Populating Detection Rules...")
         if dr_path:
             dr_list = glob.glob(dr_path + '*.yml')
         else:
@@ -382,12 +392,12 @@ class PopulateConfluence:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
-        print("Detection Rules populated!")
+        print("[+] Detection Rules populated!")
 
     def enrichment(self, en_path):
         """Nothing here yet"""
 
-        print("Populating Enrichments..")
+        print("[*] Populating Enrichments...")
         if en_path:
             en_list = glob.glob(en_path + '*.yml')
         else:
@@ -419,12 +429,12 @@ class PopulateConfluence:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
-        print("Enrichments populated!")
+        print("[+] Enrichments populated!")
 
     def response_action(self, ra_path):
         """Nothing here yet"""
 
-        print("Populating Response Actions..")
+        print("[*] Populating Response Actions...")
         if ra_path:
             ra_list = glob.glob(ra_path + '*.yml')
         else:
@@ -456,12 +466,12 @@ class PopulateConfluence:
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
 
-        print("Response Actions populated!")
+        print("[+] Response Actions populated!")
 
     def response_playbook(self, rp_path):
         """Nothing here yet"""
 
-        print("Populating Response Playbooks..")
+        print("[*] Populating Response Playbooks...")
         if rp_path:
             rp_list = glob.glob(rp_path + '*.yml')
         else:
@@ -496,12 +506,52 @@ class PopulateConfluence:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
-        print("Response Playbooks populated!")
+        print("[+] Response Playbooks populated!")
+
+    def response_stage(self, rs_path):
+        """Nothing here yet"""
+
+        print("[*] Populating Response Stages...")
+        if rs_path:
+            rs_list = glob.glob(rs_path + '*.yml')
+        else:
+            rs_dir = ATCconfig.get('response_stages_dir')
+            rs_list = glob.glob(rs_dir + '/*.yml')
+
+        for rs_file in rs_list:
+            try:
+                rs = ResponseStage(rs_file, apipath=self.apipath,
+                                      auth=self.auth, space=self.space)
+                rs.render_template("confluence")
+
+                base = os.path.basename(rs_file)
+
+                confluence_data = {
+                    "title": rs.rs_parsed_file['title'],
+                    "spacekey": self.space,
+                    "parentid": str(ATCutils.confluence_get_page_id(
+                        self.apipath, self.auth, self.space,
+                        "Response Stages")),
+                    "confluencecontent": rs.content,
+                }
+
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
+                                            self.auth)
+                if res == 'Page updated':
+                    print("==> updated page: RS '" + base + "'")
+                # print("Done: ", rp.rp_parsed_file['title'])
+            except Exception as err:
+                print(rs_file + " failed")
+                print("Err message: %s" % err)
+                print('-' * 60)
+                traceback.print_exc(file=sys.stdout)
+                print('-' * 60)
+        print("[+] Response Stages populated!")
 
     def customer(self, cu_path):
         """Nothing here yet"""
 
-        print("Populating Customers..")
+        print("[+] Populating Customers...")
         if cu_path:
             cu_list = glob.glob(cu_path + '*.yml')
         else:
@@ -534,4 +584,4 @@ class PopulateConfluence:
                 print('-' * 60)
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
-        print("Customers populated!")
+        print("[+] Customers populated!")
