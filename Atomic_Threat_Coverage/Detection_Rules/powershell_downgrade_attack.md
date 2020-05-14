@@ -9,7 +9,7 @@
 | **False Positives**      | <ul><li>Penetration Test</li><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
 | **References**           | <ul><li>[http://www.leeholmes.com/blog/2017/03/17/detecting-and-preventing-powershell-downgrade-attacks/](http://www.leeholmes.com/blog/2017/03/17/detecting-and-preventing-powershell-downgrade-attacks/)</li></ul>  |
-| **Author**               | Florian Roth (rule), Lee Holmes (idea) |
+| **Author**               | Florian Roth (rule), Lee Holmes (idea), Harish Segar (improvements) |
 
 
 ## Detection Rules
@@ -27,23 +27,23 @@ tags:
     - attack.defense_evasion
     - attack.execution
     - attack.t1086
-author: Florian Roth (rule), Lee Holmes (idea)
+author: Florian Roth (rule), Lee Holmes (idea), Harish Segar (improvements)
 date: 2017/03/22
+modified: 2020/03/20
 logsource:
     product: windows
     service: powershell-classic
 detection:
     selection:
         EventID: 400
-        EngineVersion: '2.*'
+        EngineVersion|startswith: '2.'
     filter:
-        HostVersion: '2.*'
+        HostVersion|startswith: '2.'
     condition: selection and not filter
 falsepositives:
     - Penetration Test
     - Unknown
 level: medium
-
 ```
 
 

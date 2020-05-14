@@ -174,13 +174,13 @@ class DetectionRule:
             for trigger in technique:
                 if trigger is "None":
                     continue
-
-                try:
-
+                trigger_name, trigger_id = trigger
+                # Check if a directory for a technique exists in atomic red team repo
+                if os.path.isdir(ATCconfig.get('triggers_directory') + '/' + trigger_id):
                     triggers.append(trigger)
 
-                except FileNotFoundError:
-                    print(trigger + ": No atomics trigger for this technique")
+                else:
+                    print(trigger_id + ": No atomics trigger for this technique")
                     """
                     triggers.append(
                         trigger + ": No atomics trigger for this technique"

@@ -4,7 +4,7 @@
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1041: Exfiltration Over Command and Control Channel](https://attack.mitre.org/techniques/T1041)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1041: Exfiltration Over Command and Control Channel](../Triggers/T1041.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Other legimate tools, which do ADSI (LDAP) operations, e.g. any remoting activity by MMC, Powershell, Windows etc.</li></ul>  |
 | **Development Status**   | experimental |

@@ -4,7 +4,7 @@
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1041: Exfiltration Over Command and Control Channel](https://attack.mitre.org/techniques/T1041)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0026_5136_windows_directory_service_object_was_modified](../Data_Needed/DN_0026_5136_windows_directory_service_object_was_modified.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1041: Exfiltration Over Command and Control Channel](../Triggers/T1041.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Companies, who may use these default LDAP-Attributes for personal information</li></ul>  |
 | **Development Status**   | experimental |

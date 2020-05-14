@@ -9,7 +9,7 @@
 | **False Positives**      |  There are no documented False Positives for this Detection Rule yet  |
 | **Development Status**   | stable |
 | **References**           | <ul><li>[https://twitter.com/DrunkBinary/status/1063075530180886529](https://twitter.com/DrunkBinary/status/1063075530180886529)</li></ul>  |
-| **Author**               | @41thexplorer, Windows Defender ATP |
+| **Author**               | @41thexplorer, Microsoft Defender ATP |
 
 
 ## Detection Rules
@@ -25,7 +25,7 @@ description: A sigma rule detecting an unidetefied attacker who used phishing em
     YYTRIUM/APT29 campaign in 2016.
 references:
     - https://twitter.com/DrunkBinary/status/1063075530180886529
-author: '@41thexplorer, Windows Defender ATP'
+author: '@41thexplorer, Microsoft Defender ATP'
 date: 2018/11/20
 modified: 2018/12/11
 tags:

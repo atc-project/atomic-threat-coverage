@@ -9,7 +9,7 @@
 | **False Positives**      |  There are no documented False Positives for this Detection Rule yet  |
 | **Development Status**   | stable |
 | **References**           | <ul><li>[https://cloudblogs.microsoft.com/microsoftsecure/2018/11/28/windows-defender-atp-device-risk-score-exposes-new-cyberattack-drives-conditional-access-to-protect-networks/](https://cloudblogs.microsoft.com/microsoftsecure/2018/11/28/windows-defender-atp-device-risk-score-exposes-new-cyberattack-drives-conditional-access-to-protect-networks/)</li></ul>  |
-| **Author**               | @41thexplorer, Windows Defender ATP |
+| **Author**               | @41thexplorer, Microsoft Defender ATP |
 
 
 ## Detection Rules
@@ -19,7 +19,7 @@
 ```
 title: TropicTrooper Campaign November 2018
 id: 8c7090c3-e0a0-4944-bd08-08c3a0cecf79
-author: '@41thexplorer, Windows Defender ATP'
+author: '@41thexplorer, Microsoft Defender ATP'
 status: stable
 date: 2019/11/12
 description: Detects TropicTrooper activity, an actor who targeted high-profile organizations in the energy and food and beverage sectors in Asia

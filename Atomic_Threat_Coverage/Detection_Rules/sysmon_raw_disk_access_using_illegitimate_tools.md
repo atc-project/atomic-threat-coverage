@@ -4,7 +4,7 @@
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1006: File System Logical Offsets](https://attack.mitre.org/techniques/T1006)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0013_9_windows_sysmon_RawAccessRead](../Data_Needed/DN_0013_9_windows_sysmon_RawAccessRead.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1006: File System Logical Offsets](../Triggers/T1006.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Legitimate Administrator using tool for raw access or ongoing forensic investigation</li></ul>  |
 | **Development Status**   | experimental |

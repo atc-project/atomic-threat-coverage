@@ -4,7 +4,7 @@
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1011: Exfiltration Over Other Network Medium](https://attack.mitre.org/techniques/T1011)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1011: Exfiltration Over Other Network Medium](../Triggers/T1011.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unlikely</li></ul>  |
 | **Development Status**   | experimental |
