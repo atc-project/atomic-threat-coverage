@@ -58,17 +58,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Security | where {((($_.ID -eq "4662" -and ($_.message -match "Properties.*.*Replicating Directory Changes All.*" -or $_.message -match "Properties.*.*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2.*")) -and  -not ($_.message -match "SubjectDomainName.*Window Manager")) -and  -not (($_.message -match "SubjectUserName.*NT AUTHORITY.*" -or $_.message -match "SubjectUserName.*.*$"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(((EventID:"4662" AND Properties.keyword:(*Replicating\\ Directory\\ Changes\\ All* OR *1131f6ad\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2*)) AND (NOT (SubjectDomainName:"Window\\ Manager"))) AND (NOT (SubjectUserName.keyword:(NT\\ AUTHORITY* OR *$))))
+(winlog.channel:"Security" AND ((winlog.event_id:"4662" AND winlog.event_data.Properties.keyword:(*Replicating\\ Directory\\ Changes\\ All* OR *1131f6ad\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2*)) AND (NOT (SubjectDomainName:"Window\\ Manager"))) AND (NOT (winlog.event_data.SubjectUserName.keyword:(NT\\ AUTHORITY* OR *$))))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/611eab06-a145-4dfa-a295-3ccc5c20f59a <<EOF\n{\n  "metadata": {\n    "title": "Mimikatz DC Sync",\n    "description": "Detects Mimikatz DC sync security events",\n    "tags": [\n      "attack.credential_access",\n      "attack.s0002",\n      "attack.t1003"\n    ],\n    "query": "(((EventID:\\"4662\\" AND Properties.keyword:(*Replicating\\\\ Directory\\\\ Changes\\\\ All* OR *1131f6ad\\\\-9c07\\\\-11d1\\\\-f79f\\\\-00c04fc2dcd2*)) AND (NOT (SubjectDomainName:\\"Window\\\\ Manager\\"))) AND (NOT (SubjectUserName.keyword:(NT\\\\ AUTHORITY* OR *$))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(((EventID:\\"4662\\" AND Properties.keyword:(*Replicating\\\\ Directory\\\\ Changes\\\\ All* OR *1131f6ad\\\\-9c07\\\\-11d1\\\\-f79f\\\\-00c04fc2dcd2*)) AND (NOT (SubjectDomainName:\\"Window\\\\ Manager\\"))) AND (NOT (SubjectUserName.keyword:(NT\\\\ AUTHORITY* OR *$))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Mimikatz DC Sync\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/611eab06-a145-4dfa-a295-3ccc5c20f59a <<EOF\n{\n  "metadata": {\n    "title": "Mimikatz DC Sync",\n    "description": "Detects Mimikatz DC sync security events",\n    "tags": [\n      "attack.credential_access",\n      "attack.s0002",\n      "attack.t1003"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND ((winlog.event_id:\\"4662\\" AND winlog.event_data.Properties.keyword:(*Replicating\\\\ Directory\\\\ Changes\\\\ All* OR *1131f6ad\\\\-9c07\\\\-11d1\\\\-f79f\\\\-00c04fc2dcd2*)) AND (NOT (SubjectDomainName:\\"Window\\\\ Manager\\"))) AND (NOT (winlog.event_data.SubjectUserName.keyword:(NT\\\\ AUTHORITY* OR *$))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND ((winlog.event_id:\\"4662\\" AND winlog.event_data.Properties.keyword:(*Replicating\\\\ Directory\\\\ Changes\\\\ All* OR *1131f6ad\\\\-9c07\\\\-11d1\\\\-f79f\\\\-00c04fc2dcd2*)) AND (NOT (SubjectDomainName:\\"Window\\\\ Manager\\"))) AND (NOT (winlog.event_data.SubjectUserName.keyword:(NT\\\\ AUTHORITY* OR *$))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Mimikatz DC Sync\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -82,7 +89,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(((EventID="4662" (Properties="*Replicating Directory Changes All*" OR Properties="*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2*")) NOT (SubjectDomainName="Window Manager")) NOT ((SubjectUserName="NT AUTHORITY*" OR SubjectUserName="*$")))
+(source="WinEventLog:Security" ((EventCode="4662" (Properties="*Replicating Directory Changes All*" OR Properties="*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2*")) NOT (SubjectDomainName="Window Manager")) NOT ((SubjectUserName="NT AUTHORITY*" OR SubjectUserName="*$")))
 ```
 
 

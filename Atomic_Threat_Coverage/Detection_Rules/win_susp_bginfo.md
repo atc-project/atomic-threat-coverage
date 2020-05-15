@@ -51,17 +51,24 @@ falsepositives:
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {($_.message -match "Image.*.*\\\\bginfo.exe" -and $_.message -match "CommandLine.*.*/popup.*" -and $_.message -match "CommandLine.*.*/nolicprompt.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(Image.keyword:*\\\\bginfo.exe AND CommandLine.keyword:*\\/popup* AND CommandLine.keyword:*\\/nolicprompt*)
+(winlog.event_data.Image.keyword:*\\\\bginfo.exe AND winlog.event_data.CommandLine.keyword:*\\/popup* AND winlog.event_data.CommandLine.keyword:*\\/nolicprompt*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/aaf46cdc-934e-4284-b329-34aa701e3771 <<EOF\n{\n  "metadata": {\n    "title": "Application Whitelisting Bypass via Bginfo",\n    "description": "Execute VBscript code that is referenced within the *.bgi file.",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.execution",\n      "attack.t1218"\n    ],\n    "query": "(Image.keyword:*\\\\\\\\bginfo.exe AND CommandLine.keyword:*\\\\/popup* AND CommandLine.keyword:*\\\\/nolicprompt*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(Image.keyword:*\\\\\\\\bginfo.exe AND CommandLine.keyword:*\\\\/popup* AND CommandLine.keyword:*\\\\/nolicprompt*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Application Whitelisting Bypass via Bginfo\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/aaf46cdc-934e-4284-b329-34aa701e3771 <<EOF\n{\n  "metadata": {\n    "title": "Application Whitelisting Bypass via Bginfo",\n    "description": "Execute VBscript code that is referenced within the *.bgi file.",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.execution",\n      "attack.t1218"\n    ],\n    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\bginfo.exe AND winlog.event_data.CommandLine.keyword:*\\\\/popup* AND winlog.event_data.CommandLine.keyword:*\\\\/nolicprompt*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\bginfo.exe AND winlog.event_data.CommandLine.keyword:*\\\\/popup* AND winlog.event_data.CommandLine.keyword:*\\\\/nolicprompt*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Application Whitelisting Bypass via Bginfo\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -82,7 +89,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(event_id="1" Image="*\\\\bginfo.exe" CommandLine="*/popup*" CommandLine="*/nolicprompt*")
+(Image="*\\\\bginfo.exe" CommandLine="*/popup*" CommandLine="*/nolicprompt*")
 ```
 
 

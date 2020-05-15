@@ -54,17 +54,24 @@ level: medium
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Security | where {((($_.ID -eq "4765" -or $_.ID -eq "4766") -or ($_.ID -eq "4738" -and  -not (($_.message -match "-" -or $_.message -match "%%1793"))))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:("4765" OR "4766") OR (EventID:"4738" AND (NOT (SidHistory:("\\-" OR "%%1793")))))
+(winlog.channel:"Security" AND (winlog.event_id:("4765" OR "4766") OR (winlog.channel:"Security" AND winlog.event_id:"4738" AND (NOT (SidHistory:("\\-" OR "%%1793"))))))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/2632954e-db1c-49cb-9936-67d1ef1d17d2 <<EOF\n{\n  "metadata": {\n    "title": "Addition of SID History to Active Directory Object",\n    "description": "An attacker can use the SID history attribute to gain additional privileges.",\n    "tags": [\n      "attack.persistence",\n      "attack.privilege_escalation",\n      "attack.t1178"\n    ],\n    "query": "(EventID:(\\"4765\\" OR \\"4766\\") OR (EventID:\\"4738\\" AND (NOT (SidHistory:(\\"\\\\-\\" OR \\"%%1793\\")))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:(\\"4765\\" OR \\"4766\\") OR (EventID:\\"4738\\" AND (NOT (SidHistory:(\\"\\\\-\\" OR \\"%%1793\\")))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Addition of SID History to Active Directory Object\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/2632954e-db1c-49cb-9936-67d1ef1d17d2 <<EOF\n{\n  "metadata": {\n    "title": "Addition of SID History to Active Directory Object",\n    "description": "An attacker can use the SID history attribute to gain additional privileges.",\n    "tags": [\n      "attack.persistence",\n      "attack.privilege_escalation",\n      "attack.t1178"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND (winlog.event_id:(\\"4765\\" OR \\"4766\\") OR (winlog.channel:\\"Security\\" AND winlog.event_id:\\"4738\\" AND (NOT (SidHistory:(\\"\\\\-\\" OR \\"%%1793\\"))))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND (winlog.event_id:(\\"4765\\" OR \\"4766\\") OR (winlog.channel:\\"Security\\" AND winlog.event_id:\\"4738\\" AND (NOT (SidHistory:(\\"\\\\-\\" OR \\"%%1793\\"))))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Addition of SID History to Active Directory Object\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -78,7 +85,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-((EventID="4765" OR EventID="4766") OR (EventID="4738" NOT ((SidHistory="-" OR SidHistory="%%1793"))))
+(source="WinEventLog:Security" ((EventCode="4765" OR EventCode="4766") OR (source="WinEventLog:Security" EventCode="4738" NOT ((SidHistory="-" OR SidHistory="%%1793")))))
 ```
 
 

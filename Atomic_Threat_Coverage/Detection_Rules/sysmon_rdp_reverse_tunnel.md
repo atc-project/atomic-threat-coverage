@@ -53,17 +53,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "3" -and $_.message -match "Image.*.*\\\\svchost.exe" -and $_.message -match "Initiated.*true" -and $_.message -match "SourcePort.*3389" -and ($_.message -match "DestinationIp.*127..*" -or $_.message -match "::1")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:"3" AND Image.keyword:*\\\\svchost.exe AND Initiated:"true" AND SourcePort:"3389" AND DestinationIp.keyword:(127.* OR \\:\\:1))
+(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"3" AND winlog.event_data.Image.keyword:*\\\\svchost.exe AND Initiated:"true" AND SourcePort:"3389" AND winlog.event_data.DestinationIp.keyword:(127.* OR \\:\\:1))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/5f699bc5-5446-4a4a-a0b7-5ef2885a3eb4 <<EOF\n{\n  "metadata": {\n    "title": "RDP Over Reverse SSH Tunnel",\n    "description": "Detects svchost hosting RDP termsvcs communicating with the loopback address and on TCP port 3389",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.command_and_control",\n      "attack.t1076",\n      "car.2013-07-002"\n    ],\n    "query": "(EventID:\\"3\\" AND Image.keyword:*\\\\\\\\svchost.exe AND Initiated:\\"true\\" AND SourcePort:\\"3389\\" AND DestinationIp.keyword:(127.* OR \\\\:\\\\:1))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"3\\" AND Image.keyword:*\\\\\\\\svchost.exe AND Initiated:\\"true\\" AND SourcePort:\\"3389\\" AND DestinationIp.keyword:(127.* OR \\\\:\\\\:1))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'RDP Over Reverse SSH Tunnel\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/5f699bc5-5446-4a4a-a0b7-5ef2885a3eb4 <<EOF\n{\n  "metadata": {\n    "title": "RDP Over Reverse SSH Tunnel",\n    "description": "Detects svchost hosting RDP termsvcs communicating with the loopback address and on TCP port 3389",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.command_and_control",\n      "attack.t1076",\n      "car.2013-07-002"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"3\\" AND winlog.event_data.Image.keyword:*\\\\\\\\svchost.exe AND Initiated:\\"true\\" AND SourcePort:\\"3389\\" AND winlog.event_data.DestinationIp.keyword:(127.* OR \\\\:\\\\:1))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"3\\" AND winlog.event_data.Image.keyword:*\\\\\\\\svchost.exe AND Initiated:\\"true\\" AND SourcePort:\\"3389\\" AND winlog.event_data.DestinationIp.keyword:(127.* OR \\\\:\\\\:1))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'RDP Over Reverse SSH Tunnel\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -77,7 +84,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(EventID="3" Image="*\\\\svchost.exe" Initiated="true" SourcePort="3389" (DestinationIp="127.*" OR DestinationIp="::1"))
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="3" Image="*\\\\svchost.exe" Initiated="true" SourcePort="3389" (DestinationIp="127.*" OR DestinationIp="::1"))
 ```
 
 

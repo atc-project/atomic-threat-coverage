@@ -26,7 +26,13 @@ confluence_rest_api_url: 'https://atomicthreatcoverage.atlassian.net/wiki/rest/a
 # you should get sth like https://atomicthreatcoverage.atlassian.net/wiki/pages/viewpage.action?pageId=
 confluence_viewpage_url: 'https://atomicthreatcoverage.atlassian.net/wiki/pages/viewpage.action?pageId='
 sigmac_path: '../detection_rules/sigma/tools/sigmac'
-detection_queries: 'es-qs,xpack-watcher,graylog,splunk,logpoint,grep'
+# Sigma part, this should be configured according to needs, used mapping
+detection_queries: 'powershell,es-qs,xpack-watcher,graylog,splunk,logpoint,grep'
+powershell_sigma_config: '../detection_rules/sigma/tools/config/powershell.yml'
+es-qs_sigma_config: '../detection_rules/sigma/tools/config/winlogbeat.yml'
+xpack-watcher_sigma_config: '../detection_rules/sigma/tools/config/winlogbeat.yml'
+splunk_sigma_config: '../detection_rules/sigma/tools/config/splunk-windows.yml'
+logpoint_sigma_config: '../detection_rules/sigma/tools/config/logpoint-windows.yml'
 customers_directory: '../customers'
 ##
 ## RE&CT PART

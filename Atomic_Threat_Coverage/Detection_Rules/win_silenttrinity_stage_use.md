@@ -54,17 +54,24 @@ detection:
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {$_.message -match "Description.*.*st2stager.*" } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message\nGet-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "7" -and $_.message -match "Description.*.*st2stager.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-Description.keyword:*st2stager*\n(EventID:"7" AND Description.keyword:*st2stager*)
+winlog.event_data.Description.keyword:*st2stager*\n(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"7" AND winlog.event_data.Description.keyword:*st2stager*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/03552375-cc2c-4883-bbe4-7958d5a980be <<EOF\n{\n  "metadata": {\n    "title": "SILENTTRINITY Stager Execution",\n    "description": "Detects SILENTTRINITY stager use",\n    "tags": [\n      "attack.execution"\n    ],\n    "query": "Description.keyword:*st2stager*"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "Description.keyword:*st2stager*",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'SILENTTRINITY Stager Execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/03552375-cc2c-4883-bbe4-7958d5a980be-2 <<EOF\n{\n  "metadata": {\n    "title": "SILENTTRINITY Stager Execution",\n    "description": "Detects SILENTTRINITY stager use",\n    "tags": [\n      "attack.execution"\n    ],\n    "query": "(EventID:\\"7\\" AND Description.keyword:*st2stager*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"7\\" AND Description.keyword:*st2stager*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'SILENTTRINITY Stager Execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/03552375-cc2c-4883-bbe4-7958d5a980be <<EOF\n{\n  "metadata": {\n    "title": "SILENTTRINITY Stager Execution",\n    "description": "Detects SILENTTRINITY stager use",\n    "tags": [\n      "attack.execution"\n    ],\n    "query": "winlog.event_data.Description.keyword:*st2stager*"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.Description.keyword:*st2stager*",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'SILENTTRINITY Stager Execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/03552375-cc2c-4883-bbe4-7958d5a980be-2 <<EOF\n{\n  "metadata": {\n    "title": "SILENTTRINITY Stager Execution",\n    "description": "Detects SILENTTRINITY stager use",\n    "tags": [\n      "attack.execution"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"7\\" AND winlog.event_data.Description.keyword:*st2stager*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"7\\" AND winlog.event_data.Description.keyword:*st2stager*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'SILENTTRINITY Stager Execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -78,14 +85,14 @@ Description.keyword:*st2stager*\n(EventID:"7" AND Description.keyword:*st2stager
 ### splunk
     
 ```
-Description="*st2stager*"\n(EventID="7" Description="*st2stager*")
+Description="*st2stager*"\n(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="7" Description="*st2stager*")
 ```
 
 
 ### logpoint
     
 ```
-(event_id="1" Description="*st2stager*")\n(event_id="7" Description="*st2stager*")
+Description="*st2stager*"\n(event_id="7" Description="*st2stager*")
 ```
 
 

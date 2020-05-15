@@ -47,17 +47,24 @@ level: critical
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Security | where {($_.ID -eq "4662" -and $_.message -match "ObjectType.*SecretObject" -and $_.message -match "AccessMask.*0x2" -and $_.message -match "ObjectName.*BCKUPKEY") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:"4662" AND ObjectType:"SecretObject" AND AccessMask:"0x2" AND ObjectName:"BCKUPKEY")
+(winlog.channel:"Security" AND winlog.event_id:"4662" AND winlog.event_data.ObjectType:"SecretObject" AND winlog.event_data.AccessMask:"0x2" AND winlog.event_data.ObjectName:"BCKUPKEY")
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/4ac1f50b-3bd0-4968-902d-868b4647937e <<EOF\n{\n  "metadata": {\n    "title": "DPAPI Domain Backup Key Extraction",\n    "description": "Detects tools extracting LSA secret DPAPI domain backup key from Domain Controllers",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003"\n    ],\n    "query": "(EventID:\\"4662\\" AND ObjectType:\\"SecretObject\\" AND AccessMask:\\"0x2\\" AND ObjectName:\\"BCKUPKEY\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4662\\" AND ObjectType:\\"SecretObject\\" AND AccessMask:\\"0x2\\" AND ObjectName:\\"BCKUPKEY\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'DPAPI Domain Backup Key Extraction\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/4ac1f50b-3bd0-4968-902d-868b4647937e <<EOF\n{\n  "metadata": {\n    "title": "DPAPI Domain Backup Key Extraction",\n    "description": "Detects tools extracting LSA secret DPAPI domain backup key from Domain Controllers",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4662\\" AND winlog.event_data.ObjectType:\\"SecretObject\\" AND winlog.event_data.AccessMask:\\"0x2\\" AND winlog.event_data.ObjectName:\\"BCKUPKEY\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4662\\" AND winlog.event_data.ObjectType:\\"SecretObject\\" AND winlog.event_data.AccessMask:\\"0x2\\" AND winlog.event_data.ObjectName:\\"BCKUPKEY\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'DPAPI Domain Backup Key Extraction\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -71,7 +78,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(EventID="4662" ObjectType="SecretObject" AccessMask="0x2" ObjectName="BCKUPKEY")
+(source="WinEventLog:Security" EventCode="4662" ObjectType="SecretObject" AccessMask="0x2" ObjectName="BCKUPKEY")
 ```
 
 

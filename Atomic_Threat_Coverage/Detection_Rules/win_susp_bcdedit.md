@@ -49,17 +49,24 @@ level: medium
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {($_.message -match "NewProcessName.*.*\\\\bcdedit.exe" -and ($_.message -match "ProcessCommandLine.*.*delete.*" -or $_.message -match "ProcessCommandLine.*.*deletevalue.*" -or $_.message -match "ProcessCommandLine.*.*import.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(NewProcessName.keyword:*\\\\bcdedit.exe AND ProcessCommandLine.keyword:(*delete* OR *deletevalue* OR *import*))
+(winlog.event_data.NewProcessName.keyword:*\\\\bcdedit.exe AND winlog.event_data.ProcessCommandLine.keyword:(*delete* OR *deletevalue* OR *import*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/c9fbe8e9-119d-40a6-9b59-dd58a5d84429 <<EOF\n{\n  "metadata": {\n    "title": "Possible Ransomware or Unauthorized MBR Modifications",\n    "description": "Detects, possibly, malicious unauthorized usage of bcdedit.exe",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1070",\n      "attack.persistence",\n      "attack.t1067"\n    ],\n    "query": "(NewProcessName.keyword:*\\\\\\\\bcdedit.exe AND ProcessCommandLine.keyword:(*delete* OR *deletevalue* OR *import*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(NewProcessName.keyword:*\\\\\\\\bcdedit.exe AND ProcessCommandLine.keyword:(*delete* OR *deletevalue* OR *import*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Possible Ransomware or Unauthorized MBR Modifications\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/c9fbe8e9-119d-40a6-9b59-dd58a5d84429 <<EOF\n{\n  "metadata": {\n    "title": "Possible Ransomware or Unauthorized MBR Modifications",\n    "description": "Detects, possibly, malicious unauthorized usage of bcdedit.exe",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1070",\n      "attack.persistence",\n      "attack.t1067"\n    ],\n    "query": "(winlog.event_data.NewProcessName.keyword:*\\\\\\\\bcdedit.exe AND winlog.event_data.ProcessCommandLine.keyword:(*delete* OR *deletevalue* OR *import*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.NewProcessName.keyword:*\\\\\\\\bcdedit.exe AND winlog.event_data.ProcessCommandLine.keyword:(*delete* OR *deletevalue* OR *import*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Possible Ransomware or Unauthorized MBR Modifications\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -80,7 +87,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(event_id="1" NewProcessName="*\\\\bcdedit.exe" ProcessCommandLine IN ["*delete*", "*deletevalue*", "*import*"])
+(NewProcessName="*\\\\bcdedit.exe" ProcessCommandLine IN ["*delete*", "*deletevalue*", "*import*"])
 ```
 
 

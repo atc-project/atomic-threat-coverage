@@ -49,17 +49,24 @@ level: medium
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {(($_.message -match "Image.*.*\\\\setspn.exe" -or $_.message -match "Description.*.*Query or reset the computer.* SPN attribute.*") -and $_.message -match "CommandLine.*.*-q.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-((Image.keyword:*\\\\setspn.exe OR Description.keyword:*Query\\ or\\ reset\\ the\\ computer*\\ SPN\\ attribute*) AND CommandLine.keyword:*\\-q*)
+((winlog.event_data.Image.keyword:*\\\\setspn.exe OR winlog.event_data.Description.keyword:*Query\\ or\\ reset\\ the\\ computer*\\ SPN\\ attribute*) AND winlog.event_data.CommandLine.keyword:*\\-q*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1eeed653-dbc8-4187-ad0c-eeebb20e6599 <<EOF\n{\n  "metadata": {\n    "title": "Possible SPN Enumeration",\n    "description": "Detects Service Principal Name Enumeration used for Kerberoasting",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1208"\n    ],\n    "query": "((Image.keyword:*\\\\\\\\setspn.exe OR Description.keyword:*Query\\\\ or\\\\ reset\\\\ the\\\\ computer*\\\\ SPN\\\\ attribute*) AND CommandLine.keyword:*\\\\-q*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Image.keyword:*\\\\\\\\setspn.exe OR Description.keyword:*Query\\\\ or\\\\ reset\\\\ the\\\\ computer*\\\\ SPN\\\\ attribute*) AND CommandLine.keyword:*\\\\-q*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Possible SPN Enumeration\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1eeed653-dbc8-4187-ad0c-eeebb20e6599 <<EOF\n{\n  "metadata": {\n    "title": "Possible SPN Enumeration",\n    "description": "Detects Service Principal Name Enumeration used for Kerberoasting",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1208"\n    ],\n    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\setspn.exe OR winlog.event_data.Description.keyword:*Query\\\\ or\\\\ reset\\\\ the\\\\ computer*\\\\ SPN\\\\ attribute*) AND winlog.event_data.CommandLine.keyword:*\\\\-q*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\setspn.exe OR winlog.event_data.Description.keyword:*Query\\\\ or\\\\ reset\\\\ the\\\\ computer*\\\\ SPN\\\\ attribute*) AND winlog.event_data.CommandLine.keyword:*\\\\-q*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Possible SPN Enumeration\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -80,7 +87,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(event_id="1" (Image="*\\\\setspn.exe" OR Description="*Query or reset the computer* SPN attribute*") CommandLine="*-q*")
+((Image="*\\\\setspn.exe" OR Description="*Query or reset the computer* SPN attribute*") CommandLine="*-q*")
 ```
 
 

@@ -45,17 +45,24 @@ level: critical
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {$_.message -match "CommandLine.*.*-noni -ep bypass $.*" } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-CommandLine.keyword:*\\-noni\\ \\-ep\\ bypass\\ $*
+winlog.event_data.CommandLine.keyword:*\\-noni\\ \\-ep\\ bypass\\ $*
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/033fe7d6-66d1-4240-ac6b-28908009c71f <<EOF\n{\n  "metadata": {\n    "title": "APT29",\n    "description": "This method detects a suspicious powershell command line combination as used by APT29 in a campaign against US think tanks",\n    "tags": [\n      "attack.execution",\n      "attack.g0016",\n      "attack.t1086"\n    ],\n    "query": "CommandLine.keyword:*\\\\-noni\\\\ \\\\-ep\\\\ bypass\\\\ $*"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:*\\\\-noni\\\\ \\\\-ep\\\\ bypass\\\\ $*",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'APT29\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/033fe7d6-66d1-4240-ac6b-28908009c71f <<EOF\n{\n  "metadata": {\n    "title": "APT29",\n    "description": "This method detects a suspicious powershell command line combination as used by APT29 in a campaign against US think tanks",\n    "tags": [\n      "attack.execution",\n      "attack.g0016",\n      "attack.t1086"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:*\\\\-noni\\\\ \\\\-ep\\\\ bypass\\\\ $*"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:*\\\\-noni\\\\ \\\\-ep\\\\ bypass\\\\ $*",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'APT29\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -76,7 +83,7 @@ CommandLine="*-noni -ep bypass $*"
 ### logpoint
     
 ```
-(event_id="1" CommandLine="*-noni -ep bypass $*")
+CommandLine="*-noni -ep bypass $*"
 ```
 
 

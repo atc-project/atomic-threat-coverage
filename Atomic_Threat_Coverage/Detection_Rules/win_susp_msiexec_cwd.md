@@ -50,17 +50,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {($_.message -match "Image.*.*\\\\msiexec.exe" -and  -not (($_.message -match "Image.*C:\\\\Windows\\\\System32\\\\.*" -or $_.message -match "Image.*C:\\\\Windows\\\\SysWOW64\\\\.*" -or $_.message -match "Image.*C:\\\\Windows\\\\WinSxS\\\\.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(Image.keyword:*\\\\msiexec.exe AND (NOT (Image.keyword:(C\\:\\\\Windows\\\\System32\\\\* OR C\\:\\\\Windows\\\\SysWOW64\\\\* OR C\\:\\\\Windows\\\\WinSxS\\\\*))))
+(winlog.event_data.Image.keyword:*\\\\msiexec.exe AND (NOT (winlog.event_data.Image.keyword:(C\\:\\\\Windows\\\\System32\\\\* OR C\\:\\\\Windows\\\\SysWOW64\\\\* OR C\\:\\\\Windows\\\\WinSxS\\\\*))))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/e22a6eb2-f8a5-44b5-8b44-a2dbd47b1144 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious MsiExec Directory",\n    "description": "Detects suspicious msiexec process starts in an uncommon directory",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036"\n    ],\n    "query": "(Image.keyword:*\\\\\\\\msiexec.exe AND (NOT (Image.keyword:(C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\* OR C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\* OR C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\*))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(Image.keyword:*\\\\\\\\msiexec.exe AND (NOT (Image.keyword:(C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\* OR C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\* OR C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\*))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious MsiExec Directory\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/e22a6eb2-f8a5-44b5-8b44-a2dbd47b1144 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious MsiExec Directory",\n    "description": "Detects suspicious msiexec process starts in an uncommon directory",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036"\n    ],\n    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\msiexec.exe AND (NOT (winlog.event_data.Image.keyword:(C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\* OR C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\* OR C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\*))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\msiexec.exe AND (NOT (winlog.event_data.Image.keyword:(C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\* OR C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\* OR C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\*))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious MsiExec Directory\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -81,7 +88,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(event_id="1" Image="*\\\\msiexec.exe"  -(Image IN ["C:\\\\Windows\\\\System32\\\\*", "C:\\\\Windows\\\\SysWOW64\\\\*", "C:\\\\Windows\\\\WinSxS\\\\*"]))
+(Image="*\\\\msiexec.exe"  -(Image IN ["C:\\\\Windows\\\\System32\\\\*", "C:\\\\Windows\\\\SysWOW64\\\\*", "C:\\\\Windows\\\\WinSxS\\\\*"]))
 ```
 
 

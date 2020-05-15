@@ -56,17 +56,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Security | where {(($_.ID -eq "4625" -or $_.ID -eq "4776") -and ($_.message -match "0xC0000072" -or $_.message -match "0xC000006F" -or $_.message -match "0xC0000070" -or $_.message -match "0xC0000413" -or $_.message -match "0xC000018C" -or $_.message -match "0xC000015B")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:("4625" OR "4776") AND Status:("0xC0000072" OR "0xC000006F" OR "0xC0000070" OR "0xC0000413" OR "0xC000018C" OR "0xC000015B"))
+(winlog.channel:"Security" AND winlog.event_id:("4625" OR "4776") AND winlog.event_data.Status:("0xC0000072" OR "0xC000006F" OR "0xC0000070" OR "0xC0000413" OR "0xC000018C" OR "0xC000015B"))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9eb99343-d336-4020-a3cd-67f3819e68ee <<EOF\n{\n  "metadata": {\n    "title": "Account Tampering - Suspicious Failed Logon Reasons",\n    "description": "This method uses uncommon error codes on failed logons to determine suspicious activity and tampering with accounts that have been disabled or somehow restricted.",\n    "tags": [\n      "attack.persistence",\n      "attack.privilege_escalation",\n      "attack.t1078"\n    ],\n    "query": "(EventID:(\\"4625\\" OR \\"4776\\") AND Status:(\\"0xC0000072\\" OR \\"0xC000006F\\" OR \\"0xC0000070\\" OR \\"0xC0000413\\" OR \\"0xC000018C\\" OR \\"0xC000015B\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:(\\"4625\\" OR \\"4776\\") AND Status:(\\"0xC0000072\\" OR \\"0xC000006F\\" OR \\"0xC0000070\\" OR \\"0xC0000413\\" OR \\"0xC000018C\\" OR \\"0xC000015B\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Account Tampering - Suspicious Failed Logon Reasons\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9eb99343-d336-4020-a3cd-67f3819e68ee <<EOF\n{\n  "metadata": {\n    "title": "Account Tampering - Suspicious Failed Logon Reasons",\n    "description": "This method uses uncommon error codes on failed logons to determine suspicious activity and tampering with accounts that have been disabled or somehow restricted.",\n    "tags": [\n      "attack.persistence",\n      "attack.privilege_escalation",\n      "attack.t1078"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:(\\"4625\\" OR \\"4776\\") AND winlog.event_data.Status:(\\"0xC0000072\\" OR \\"0xC000006F\\" OR \\"0xC0000070\\" OR \\"0xC0000413\\" OR \\"0xC000018C\\" OR \\"0xC000015B\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:(\\"4625\\" OR \\"4776\\") AND winlog.event_data.Status:(\\"0xC0000072\\" OR \\"0xC000006F\\" OR \\"0xC0000070\\" OR \\"0xC0000413\\" OR \\"0xC000018C\\" OR \\"0xC000015B\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Account Tampering - Suspicious Failed Logon Reasons\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -80,7 +87,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-((EventID="4625" OR EventID="4776") (Status="0xC0000072" OR Status="0xC000006F" OR Status="0xC0000070" OR Status="0xC0000413" OR Status="0xC000018C" OR Status="0xC000015B"))
+(source="WinEventLog:Security" (EventCode="4625" OR EventCode="4776") (Status="0xC0000072" OR Status="0xC000006F" OR Status="0xC0000070" OR Status="0xC0000413" OR Status="0xC000018C" OR Status="0xC000015B"))
 ```
 
 

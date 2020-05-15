@@ -58,17 +58,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {((($_.message -match "OriginalFileName.*7z.*.exe" -or $_.message -match "OriginalFileName.*.*rar.exe" -or $_.message -match "OriginalFileName.*.*Command.*Line.*RAR.*") -and ($_.message -match "CommandLine.*.* -p.*" -or $_.message -match "CommandLine.*.* -ta.*" -or $_.message -match "CommandLine.*.* -tb.*" -or $_.message -match "CommandLine.*.* -sdel.*" -or $_.message -match "CommandLine.*.* -dw.*" -or $_.message -match "CommandLine.*.* -hp.*")) -and  -not ($_.message -match "ParentImage.*C:\\\\Program.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-((OriginalFileName.keyword:(7z*.exe OR *rar.exe OR *Command*Line*RAR*) AND CommandLine.keyword:(*\\ \\-p* OR *\\ \\-ta* OR *\\ \\-tb* OR *\\ \\-sdel* OR *\\ \\-dw* OR *\\ \\-hp*)) AND (NOT (ParentImage.keyword:C\\:\\\\Program*)))
+((OriginalFileName.keyword:(7z*.exe OR *rar.exe OR *Command*Line*RAR*) AND winlog.event_data.CommandLine.keyword:(*\\ \\-p* OR *\\ \\-ta* OR *\\ \\-tb* OR *\\ \\-sdel* OR *\\ \\-dw* OR *\\ \\-hp*)) AND (NOT (winlog.event_data.ParentImage.keyword:C\\:\\\\Program*)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/27a72a60-7e5e-47b1-9d17-909c9abafdcd <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Compression Tool Parameters",\n    "description": "Detects suspicious command line arguments of common data compression tools",\n    "tags": [\n      "attack.exfiltration",\n      "attack.t1020",\n      "attack.t1002"\n    ],\n    "query": "((OriginalFileName.keyword:(7z*.exe OR *rar.exe OR *Command*Line*RAR*) AND CommandLine.keyword:(*\\\\ \\\\-p* OR *\\\\ \\\\-ta* OR *\\\\ \\\\-tb* OR *\\\\ \\\\-sdel* OR *\\\\ \\\\-dw* OR *\\\\ \\\\-hp*)) AND (NOT (ParentImage.keyword:C\\\\:\\\\\\\\Program*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((OriginalFileName.keyword:(7z*.exe OR *rar.exe OR *Command*Line*RAR*) AND CommandLine.keyword:(*\\\\ \\\\-p* OR *\\\\ \\\\-ta* OR *\\\\ \\\\-tb* OR *\\\\ \\\\-sdel* OR *\\\\ \\\\-dw* OR *\\\\ \\\\-hp*)) AND (NOT (ParentImage.keyword:C\\\\:\\\\\\\\Program*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Compression Tool Parameters\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/27a72a60-7e5e-47b1-9d17-909c9abafdcd <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Compression Tool Parameters",\n    "description": "Detects suspicious command line arguments of common data compression tools",\n    "tags": [\n      "attack.exfiltration",\n      "attack.t1020",\n      "attack.t1002"\n    ],\n    "query": "((OriginalFileName.keyword:(7z*.exe OR *rar.exe OR *Command*Line*RAR*) AND winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-p* OR *\\\\ \\\\-ta* OR *\\\\ \\\\-tb* OR *\\\\ \\\\-sdel* OR *\\\\ \\\\-dw* OR *\\\\ \\\\-hp*)) AND (NOT (winlog.event_data.ParentImage.keyword:C\\\\:\\\\\\\\Program*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((OriginalFileName.keyword:(7z*.exe OR *rar.exe OR *Command*Line*RAR*) AND winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-p* OR *\\\\ \\\\-ta* OR *\\\\ \\\\-tb* OR *\\\\ \\\\-sdel* OR *\\\\ \\\\-dw* OR *\\\\ \\\\-hp*)) AND (NOT (winlog.event_data.ParentImage.keyword:C\\\\:\\\\\\\\Program*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Compression Tool Parameters\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -89,7 +96,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(event_id="1" (OriginalFileName IN ["7z*.exe", "*rar.exe", "*Command*Line*RAR*"] CommandLine IN ["* -p*", "* -ta*", "* -tb*", "* -sdel*", "* -dw*", "* -hp*"])  -(ParentImage="C:\\\\Program*"))
+((OriginalFileName IN ["7z*.exe", "*rar.exe", "*Command*Line*RAR*"] CommandLine IN ["* -p*", "* -ta*", "* -tb*", "* -sdel*", "* -dw*", "* -hp*"])  -(ParentImage="C:\\\\Program*"))
 ```
 
 

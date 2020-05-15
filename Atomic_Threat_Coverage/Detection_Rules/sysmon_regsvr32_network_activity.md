@@ -58,17 +58,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {(($_.ID -eq "3" -or $_.ID -eq "22") -and $_.message -match "Image.*.*\\\\regsvr32.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:("3" OR "22") AND Image.keyword:*\\\\regsvr32.exe)
+(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:("3" OR "22") AND winlog.event_data.Image.keyword:*\\\\regsvr32.exe)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/c7e91a02-d771-4a6d-a700-42587e0b1095 <<EOF\n{\n  "metadata": {\n    "title": "Regsvr32 Network Activity",\n    "description": "Detects network connections and DNS queries initiated by Regsvr32.exe",\n    "tags": [\n      "attack.execution",\n      "attack.defense_evasion",\n      "attack.t1117"\n    ],\n    "query": "(EventID:(\\"3\\" OR \\"22\\") AND Image.keyword:*\\\\\\\\regsvr32.exe)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:(\\"3\\" OR \\"22\\") AND Image.keyword:*\\\\\\\\regsvr32.exe)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Regsvr32 Network Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n   ComputerName = {{_source.ComputerName}}\\n           User = {{_source.User}}\\n          Image = {{_source.Image}}\\n  DestinationIp = {{_source.DestinationIp}}\\nDestinationPort = {{_source.DestinationPort}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/c7e91a02-d771-4a6d-a700-42587e0b1095 <<EOF\n{\n  "metadata": {\n    "title": "Regsvr32 Network Activity",\n    "description": "Detects network connections and DNS queries initiated by Regsvr32.exe",\n    "tags": [\n      "attack.execution",\n      "attack.defense_evasion",\n      "attack.t1117"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:(\\"3\\" OR \\"22\\") AND winlog.event_data.Image.keyword:*\\\\\\\\regsvr32.exe)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:(\\"3\\" OR \\"22\\") AND winlog.event_data.Image.keyword:*\\\\\\\\regsvr32.exe)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Regsvr32 Network Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n   ComputerName = {{_source.ComputerName}}\\n           User = {{_source.User}}\\n          Image = {{_source.Image}}\\n  DestinationIp = {{_source.DestinationIp}}\\nDestinationPort = {{_source.DestinationPort}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -82,7 +89,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-((EventID="3" OR EventID="22") Image="*\\\\regsvr32.exe") | table ComputerName,User,Image,DestinationIp,DestinationPort
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" (EventCode="3" OR EventCode="22") Image="*\\\\regsvr32.exe") | table ComputerName,User,Image,DestinationIp,DestinationPort
 ```
 
 

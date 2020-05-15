@@ -59,17 +59,24 @@ enrichment:
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {(($_.ID -eq "7" -and ($_.message -match "ImageLoaded.*.*\\\\System.Management.Automation.Dll" -or $_.message -match "ImageLoaded.*.*\\\\System.Management.Automation.ni.Dll")) -and  -not (($_.message -match "Image.*.*\\\\powershell.exe" -or $_.message -match "Image.*.*\\\\WINDOWS\\\\System32\\\\sdiagnhost.exe") -and $_.message -match "User.*NT AUTHORITY\\\\SYSTEM")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-((EventID:"7" AND ImageLoaded.keyword:(*\\\\System.Management.Automation.Dll OR *\\\\System.Management.Automation.ni.Dll)) AND (NOT (Image.keyword:(*\\\\powershell.exe OR *\\\\WINDOWS\\\\System32\\\\sdiagnhost.exe) AND User:"NT\\ AUTHORITY\\\\SYSTEM")))
+(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND (winlog.event_id:"7" AND winlog.event_data.ImageLoaded.keyword:(*\\\\System.Management.Automation.Dll OR *\\\\System.Management.Automation.ni.Dll)) AND (NOT (winlog.event_data.Image.keyword:(*\\\\powershell.exe OR *\\\\WINDOWS\\\\System32\\\\sdiagnhost.exe) AND winlog.event_data.User:"NT\\ AUTHORITY\\\\SYSTEM")))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/092bc4b9-3d1d-43b4-a6b4-8c8acd83522f <<EOF\n{\n  "metadata": {\n    "title": "In-memory PowerShell",\n    "description": "Detects loading of essential DLL used by PowerShell, but not by the process powershell.exe. Detects meterpreter\'s \\"load powershell\\" extension.",\n    "tags": [\n      "attack.t1086",\n      "attack.execution"\n    ],\n    "query": "((EventID:\\"7\\" AND ImageLoaded.keyword:(*\\\\\\\\System.Management.Automation.Dll OR *\\\\\\\\System.Management.Automation.ni.Dll)) AND (NOT (Image.keyword:(*\\\\\\\\powershell.exe OR *\\\\\\\\WINDOWS\\\\\\\\System32\\\\\\\\sdiagnhost.exe) AND User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\")))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((EventID:\\"7\\" AND ImageLoaded.keyword:(*\\\\\\\\System.Management.Automation.Dll OR *\\\\\\\\System.Management.Automation.ni.Dll)) AND (NOT (Image.keyword:(*\\\\\\\\powershell.exe OR *\\\\\\\\WINDOWS\\\\\\\\System32\\\\\\\\sdiagnhost.exe) AND User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\")))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'In-memory PowerShell\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/092bc4b9-3d1d-43b4-a6b4-8c8acd83522f <<EOF\n{\n  "metadata": {\n    "title": "In-memory PowerShell",\n    "description": "Detects loading of essential DLL used by PowerShell, but not by the process powershell.exe. Detects meterpreter\'s \\"load powershell\\" extension.",\n    "tags": [\n      "attack.t1086",\n      "attack.execution"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND (winlog.event_id:\\"7\\" AND winlog.event_data.ImageLoaded.keyword:(*\\\\\\\\System.Management.Automation.Dll OR *\\\\\\\\System.Management.Automation.ni.Dll)) AND (NOT (winlog.event_data.Image.keyword:(*\\\\\\\\powershell.exe OR *\\\\\\\\WINDOWS\\\\\\\\System32\\\\\\\\sdiagnhost.exe) AND winlog.event_data.User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\")))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND (winlog.event_id:\\"7\\" AND winlog.event_data.ImageLoaded.keyword:(*\\\\\\\\System.Management.Automation.Dll OR *\\\\\\\\System.Management.Automation.ni.Dll)) AND (NOT (winlog.event_data.Image.keyword:(*\\\\\\\\powershell.exe OR *\\\\\\\\WINDOWS\\\\\\\\System32\\\\\\\\sdiagnhost.exe) AND winlog.event_data.User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\")))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'In-memory PowerShell\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -83,7 +90,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-((EventID="7" (ImageLoaded="*\\\\System.Management.Automation.Dll" OR ImageLoaded="*\\\\System.Management.Automation.ni.Dll")) NOT ((Image="*\\\\powershell.exe" OR Image="*\\\\WINDOWS\\\\System32\\\\sdiagnhost.exe") User="NT AUTHORITY\\\\SYSTEM"))
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" (EventCode="7" (ImageLoaded="*\\\\System.Management.Automation.Dll" OR ImageLoaded="*\\\\System.Management.Automation.ni.Dll")) NOT ((Image="*\\\\powershell.exe" OR Image="*\\\\WINDOWS\\\\System32\\\\sdiagnhost.exe") User="NT AUTHORITY\\\\SYSTEM"))
 ```
 
 

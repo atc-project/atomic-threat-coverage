@@ -55,17 +55,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "8" -and ($_.message -match "SourceImage.*.*\\\\System32\\\\cscript.exe" -or $_.message -match "SourceImage.*.*\\\\System32\\\\wscript.exe" -or $_.message -match "SourceImage.*.*\\\\System32\\\\mshta.exe" -or $_.message -match "SourceImage.*.*\\\\winword.exe" -or $_.message -match "SourceImage.*.*\\\\excel.exe") -and $_.message -match "TargetImage.*.*\\\\SysWOW64\\\\.*" -and -not StartModule="*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:"8" AND SourceImage.keyword:(*\\\\System32\\\\cscript.exe OR *\\\\System32\\\\wscript.exe OR *\\\\System32\\\\mshta.exe OR *\\\\winword.exe OR *\\\\excel.exe) AND TargetImage.keyword:*\\\\SysWOW64\\\\* AND NOT _exists_:StartModule)
+(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"8" AND winlog.event_data.SourceImage.keyword:(*\\\\System32\\\\cscript.exe OR *\\\\System32\\\\wscript.exe OR *\\\\System32\\\\mshta.exe OR *\\\\winword.exe OR *\\\\excel.exe) AND winlog.event_data.TargetImage.keyword:*\\\\SysWOW64\\\\* AND NOT _exists_:winlog.event_data.StartModule)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/2e4e488a-6164-4811-9ea1-f960c7359c40 <<EOF\n{\n  "metadata": {\n    "title": "CACTUSTORCH Remote Thread Creation",\n    "description": "Detects remote thread creation from CACTUSTORCH as described in references.",\n    "tags": [\n      "attack.execution",\n      "attack.t1055",\n      "attack.t1064"\n    ],\n    "query": "(EventID:\\"8\\" AND SourceImage.keyword:(*\\\\\\\\System32\\\\\\\\cscript.exe OR *\\\\\\\\System32\\\\\\\\wscript.exe OR *\\\\\\\\System32\\\\\\\\mshta.exe OR *\\\\\\\\winword.exe OR *\\\\\\\\excel.exe) AND TargetImage.keyword:*\\\\\\\\SysWOW64\\\\\\\\* AND NOT _exists_:StartModule)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"8\\" AND SourceImage.keyword:(*\\\\\\\\System32\\\\\\\\cscript.exe OR *\\\\\\\\System32\\\\\\\\wscript.exe OR *\\\\\\\\System32\\\\\\\\mshta.exe OR *\\\\\\\\winword.exe OR *\\\\\\\\excel.exe) AND TargetImage.keyword:*\\\\\\\\SysWOW64\\\\\\\\* AND NOT _exists_:StartModule)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'CACTUSTORCH Remote Thread Creation\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/2e4e488a-6164-4811-9ea1-f960c7359c40 <<EOF\n{\n  "metadata": {\n    "title": "CACTUSTORCH Remote Thread Creation",\n    "description": "Detects remote thread creation from CACTUSTORCH as described in references.",\n    "tags": [\n      "attack.execution",\n      "attack.t1055",\n      "attack.t1064"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"8\\" AND winlog.event_data.SourceImage.keyword:(*\\\\\\\\System32\\\\\\\\cscript.exe OR *\\\\\\\\System32\\\\\\\\wscript.exe OR *\\\\\\\\System32\\\\\\\\mshta.exe OR *\\\\\\\\winword.exe OR *\\\\\\\\excel.exe) AND winlog.event_data.TargetImage.keyword:*\\\\\\\\SysWOW64\\\\\\\\* AND NOT _exists_:winlog.event_data.StartModule)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"8\\" AND winlog.event_data.SourceImage.keyword:(*\\\\\\\\System32\\\\\\\\cscript.exe OR *\\\\\\\\System32\\\\\\\\wscript.exe OR *\\\\\\\\System32\\\\\\\\mshta.exe OR *\\\\\\\\winword.exe OR *\\\\\\\\excel.exe) AND winlog.event_data.TargetImage.keyword:*\\\\\\\\SysWOW64\\\\\\\\* AND NOT _exists_:winlog.event_data.StartModule)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'CACTUSTORCH Remote Thread Creation\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -79,7 +86,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(EventID="8" (SourceImage="*\\\\System32\\\\cscript.exe" OR SourceImage="*\\\\System32\\\\wscript.exe" OR SourceImage="*\\\\System32\\\\mshta.exe" OR SourceImage="*\\\\winword.exe" OR SourceImage="*\\\\excel.exe") TargetImage="*\\\\SysWOW64\\\\*" NOT StartModule="*")
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="8" (SourceImage="*\\\\System32\\\\cscript.exe" OR SourceImage="*\\\\System32\\\\wscript.exe" OR SourceImage="*\\\\System32\\\\mshta.exe" OR SourceImage="*\\\\winword.exe" OR SourceImage="*\\\\excel.exe") TargetImage="*\\\\SysWOW64\\\\*" NOT StartModule="*")
 ```
 
 

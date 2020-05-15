@@ -46,17 +46,24 @@ level: medium
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {($_.message -match "CommandLine.*netsh wlan s.* p.* k.*=clear") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-CommandLine.keyword:(netsh\\ wlan\\ s*\\ p*\\ k*\\=clear)
+winlog.event_data.CommandLine.keyword:(netsh\\ wlan\\ s*\\ p*\\ k*\\=clear)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/42b1a5b8-353f-4f10-b256-39de4467faff <<EOF\n{\n  "metadata": {\n    "title": "Harvesting of Wifi Credentials Using netsh.exe",\n    "description": "Detect the harvesting of wifi credentials using netsh.exe",\n    "tags": [\n      "attack.discovery",\n      "attack.t1040"\n    ],\n    "query": "CommandLine.keyword:(netsh\\\\ wlan\\\\ s*\\\\ p*\\\\ k*\\\\=clear)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:(netsh\\\\ wlan\\\\ s*\\\\ p*\\\\ k*\\\\=clear)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Harvesting of Wifi Credentials Using netsh.exe\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/42b1a5b8-353f-4f10-b256-39de4467faff <<EOF\n{\n  "metadata": {\n    "title": "Harvesting of Wifi Credentials Using netsh.exe",\n    "description": "Detect the harvesting of wifi credentials using netsh.exe",\n    "tags": [\n      "attack.discovery",\n      "attack.t1040"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(netsh\\\\ wlan\\\\ s*\\\\ p*\\\\ k*\\\\=clear)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(netsh\\\\ wlan\\\\ s*\\\\ p*\\\\ k*\\\\=clear)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Harvesting of Wifi Credentials Using netsh.exe\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -77,7 +84,7 @@ CommandLine.keyword:(netsh wlan s* p* k*=clear)
 ### logpoint
     
 ```
-(event_id="1" CommandLine IN ["netsh wlan s* p* k*=clear"])
+CommandLine IN ["netsh wlan s* p* k*=clear"]
 ```
 
 

@@ -49,17 +49,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "13" -and $_.message -match "TargetObject.*HKU\\\\.*_Classes\\\\exefile\\\\shell\\\\runas\\\\command\\\\isolatedCommand") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:"13" AND TargetObject.keyword:HKU\\\\*_Classes\\\\exefile\\\\shell\\\\runas\\\\command\\\\isolatedCommand)
+(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"13" AND winlog.event_data.TargetObject.keyword:HKU\\\\*_Classes\\\\exefile\\\\shell\\\\runas\\\\command\\\\isolatedCommand)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/5b872a46-3b90-45c1-8419-f675db8053aa <<EOF\n{\n  "metadata": {\n    "title": "UAC Bypass via Sdclt",\n    "description": "Detects changes to HKCU:\\\\Software\\\\Classes\\\\exefile\\\\shell\\\\runas\\\\command\\\\isolatedCommand",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.privilege_escalation",\n      "attack.t1088",\n      "car.2019-04-001"\n    ],\n    "query": "(EventID:\\"13\\" AND TargetObject.keyword:HKU\\\\\\\\*_Classes\\\\\\\\exefile\\\\\\\\shell\\\\\\\\runas\\\\\\\\command\\\\\\\\isolatedCommand)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"13\\" AND TargetObject.keyword:HKU\\\\\\\\*_Classes\\\\\\\\exefile\\\\\\\\shell\\\\\\\\runas\\\\\\\\command\\\\\\\\isolatedCommand)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'UAC Bypass via Sdclt\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/5b872a46-3b90-45c1-8419-f675db8053aa <<EOF\n{\n  "metadata": {\n    "title": "UAC Bypass via Sdclt",\n    "description": "Detects changes to HKCU:\\\\Software\\\\Classes\\\\exefile\\\\shell\\\\runas\\\\command\\\\isolatedCommand",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.privilege_escalation",\n      "attack.t1088",\n      "car.2019-04-001"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"13\\" AND winlog.event_data.TargetObject.keyword:HKU\\\\\\\\*_Classes\\\\\\\\exefile\\\\\\\\shell\\\\\\\\runas\\\\\\\\command\\\\\\\\isolatedCommand)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"13\\" AND winlog.event_data.TargetObject.keyword:HKU\\\\\\\\*_Classes\\\\\\\\exefile\\\\\\\\shell\\\\\\\\runas\\\\\\\\command\\\\\\\\isolatedCommand)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'UAC Bypass via Sdclt\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -73,7 +80,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(EventID="13" TargetObject="HKU\\\\*_Classes\\\\exefile\\\\shell\\\\runas\\\\command\\\\isolatedCommand")
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="13" TargetObject="HKU\\\\*_Classes\\\\exefile\\\\shell\\\\runas\\\\command\\\\isolatedCommand")
 ```
 
 

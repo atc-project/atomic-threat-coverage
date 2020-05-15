@@ -54,17 +54,24 @@ level: low
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {(($_.message -match "Image.*.*\\\\schtasks.exe" -and $_.message -match "CommandLine.*.* /create .*") -and  -not ($_.message -match "User.*NT AUTHORITY\\\\SYSTEM")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-((Image.keyword:*\\\\schtasks.exe AND CommandLine.keyword:*\\ \\/create\\ *) AND (NOT (User:"NT\\ AUTHORITY\\\\SYSTEM")))
+((winlog.event_data.Image.keyword:*\\\\schtasks.exe AND winlog.event_data.CommandLine.keyword:*\\ \\/create\\ *) AND (NOT (winlog.event_data.User:"NT\\ AUTHORITY\\\\SYSTEM")))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/92626ddd-662c-49e3-ac59-f6535f12d189 <<EOF\n{\n  "metadata": {\n    "title": "Scheduled Task Creation",\n    "description": "Detects the creation of scheduled tasks in user session",\n    "tags": [\n      "attack.execution",\n      "attack.persistence",\n      "attack.privilege_escalation",\n      "attack.t1053",\n      "attack.s0111",\n      "car.2013-08-001"\n    ],\n    "query": "((Image.keyword:*\\\\\\\\schtasks.exe AND CommandLine.keyword:*\\\\ \\\\/create\\\\ *) AND (NOT (User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\")))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Image.keyword:*\\\\\\\\schtasks.exe AND CommandLine.keyword:*\\\\ \\\\/create\\\\ *) AND (NOT (User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\")))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Scheduled Task Creation\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/92626ddd-662c-49e3-ac59-f6535f12d189 <<EOF\n{\n  "metadata": {\n    "title": "Scheduled Task Creation",\n    "description": "Detects the creation of scheduled tasks in user session",\n    "tags": [\n      "attack.execution",\n      "attack.persistence",\n      "attack.privilege_escalation",\n      "attack.t1053",\n      "attack.s0111",\n      "car.2013-08-001"\n    ],\n    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\schtasks.exe AND winlog.event_data.CommandLine.keyword:*\\\\ \\\\/create\\\\ *) AND (NOT (winlog.event_data.User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\")))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\schtasks.exe AND winlog.event_data.CommandLine.keyword:*\\\\ \\\\/create\\\\ *) AND (NOT (winlog.event_data.User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\")))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Scheduled Task Creation\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -85,7 +92,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(event_id="1" (Image="*\\\\schtasks.exe" CommandLine="* /create *")  -(User="NT AUTHORITY\\\\SYSTEM"))
+((Image="*\\\\schtasks.exe" CommandLine="* /create *")  -(User="NT AUTHORITY\\\\SYSTEM"))
 ```
 
 

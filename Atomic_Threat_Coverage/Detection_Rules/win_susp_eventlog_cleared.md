@@ -47,17 +47,24 @@ level: medium
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName System | where {($_.ID -eq "104" -and $_.message -match "Source.*Microsoft-Windows-Eventlog") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:"104" AND Source:"Microsoft\\-Windows\\-Eventlog")
+(winlog.event_id:"104" AND winlog.event_data.Source:"Microsoft\\-Windows\\-Eventlog")
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/d99b79d2-0a6f-4f46-ad8b-260b6e17f982 <<EOF\n{\n  "metadata": {\n    "title": "Eventlog Cleared",\n    "description": "One of the Windows Eventlogs has been cleared. e.g. caused by \\"wevtutil cl\\" command execution",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1070",\n      "car.2016-04-002"\n    ],\n    "query": "(EventID:\\"104\\" AND Source:\\"Microsoft\\\\-Windows\\\\-Eventlog\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"104\\" AND Source:\\"Microsoft\\\\-Windows\\\\-Eventlog\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Eventlog Cleared\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/d99b79d2-0a6f-4f46-ad8b-260b6e17f982 <<EOF\n{\n  "metadata": {\n    "title": "Eventlog Cleared",\n    "description": "One of the Windows Eventlogs has been cleared. e.g. caused by \\"wevtutil cl\\" command execution",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1070",\n      "car.2016-04-002"\n    ],\n    "query": "(winlog.event_id:\\"104\\" AND winlog.event_data.Source:\\"Microsoft\\\\-Windows\\\\-Eventlog\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_id:\\"104\\" AND winlog.event_data.Source:\\"Microsoft\\\\-Windows\\\\-Eventlog\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Eventlog Cleared\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -71,7 +78,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(EventID="104" Source="Microsoft-Windows-Eventlog")
+(source="WinEventLog:System" EventCode="104" Source="Microsoft-Windows-Eventlog")
 ```
 
 

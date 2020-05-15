@@ -49,17 +49,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName System | where {($_.ID -eq "7045" -and ($_.message -match "srservice" -or $_.message -match "ipvpn" -or $_.message -match "hkmsvc")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:"7045" AND ServiceName:("srservice" OR "ipvpn" OR "hkmsvc"))
+(winlog.event_id:"7045" AND winlog.event_data.ServiceName:("srservice" OR "ipvpn" OR "hkmsvc"))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1df8b3da-b0ac-4d8a-b7c7-6cb7c24160e4 <<EOF\n{\n  "metadata": {\n    "title": "Turla Service Install",\n    "description": "This method detects a service install of malicious services mentioned in Carbon Paper - Turla report by ESET",\n    "tags": [\n      "attack.persistence",\n      "attack.g0010",\n      "attack.t1050"\n    ],\n    "query": "(EventID:\\"7045\\" AND ServiceName:(\\"srservice\\" OR \\"ipvpn\\" OR \\"hkmsvc\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"7045\\" AND ServiceName:(\\"srservice\\" OR \\"ipvpn\\" OR \\"hkmsvc\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Turla Service Install\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1df8b3da-b0ac-4d8a-b7c7-6cb7c24160e4 <<EOF\n{\n  "metadata": {\n    "title": "Turla Service Install",\n    "description": "This method detects a service install of malicious services mentioned in Carbon Paper - Turla report by ESET",\n    "tags": [\n      "attack.persistence",\n      "attack.g0010",\n      "attack.t1050"\n    ],\n    "query": "(winlog.event_id:\\"7045\\" AND winlog.event_data.ServiceName:(\\"srservice\\" OR \\"ipvpn\\" OR \\"hkmsvc\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_id:\\"7045\\" AND winlog.event_data.ServiceName:(\\"srservice\\" OR \\"ipvpn\\" OR \\"hkmsvc\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Turla Service Install\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -73,7 +80,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(EventID="7045" (ServiceName="srservice" OR ServiceName="ipvpn" OR ServiceName="hkmsvc"))
+(source="WinEventLog:System" EventCode="7045" (ServiceName="srservice" OR ServiceName="ipvpn" OR ServiceName="hkmsvc"))
 ```
 
 

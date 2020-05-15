@@ -50,17 +50,24 @@ level: medium
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {(($_.message -match "Image.*.*\\\\nltest.exe" -and $_.message -match "CommandLine.*.*domain_trusts.*") -or ($_.message -match "Image.*.*\\\\dsquery.exe" -and $_.message -match "CommandLine.*.*trustedDomain.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-((Image.keyword:*\\\\nltest.exe AND CommandLine.keyword:*domain_trusts*) OR (Image.keyword:*\\\\dsquery.exe AND CommandLine.keyword:*trustedDomain*))
+((winlog.event_data.Image.keyword:*\\\\nltest.exe AND winlog.event_data.CommandLine.keyword:*domain_trusts*) OR (winlog.event_data.Image.keyword:*\\\\dsquery.exe AND winlog.event_data.CommandLine.keyword:*trustedDomain*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/3bad990e-4848-4a78-9530-b427d854aac0 <<EOF\n{\n  "metadata": {\n    "title": "Domain Trust Discovery",\n    "description": "Identifies execution of nltest.exe and dsquery.exe for domain trust discovery. This technique is used by attackers to enumerate Active Directory trusts.",\n    "tags": [\n      "attack.discovery",\n      "attack.t1482"\n    ],\n    "query": "((Image.keyword:*\\\\\\\\nltest.exe AND CommandLine.keyword:*domain_trusts*) OR (Image.keyword:*\\\\\\\\dsquery.exe AND CommandLine.keyword:*trustedDomain*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Image.keyword:*\\\\\\\\nltest.exe AND CommandLine.keyword:*domain_trusts*) OR (Image.keyword:*\\\\\\\\dsquery.exe AND CommandLine.keyword:*trustedDomain*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Domain Trust Discovery\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/3bad990e-4848-4a78-9530-b427d854aac0 <<EOF\n{\n  "metadata": {\n    "title": "Domain Trust Discovery",\n    "description": "Identifies execution of nltest.exe and dsquery.exe for domain trust discovery. This technique is used by attackers to enumerate Active Directory trusts.",\n    "tags": [\n      "attack.discovery",\n      "attack.t1482"\n    ],\n    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\nltest.exe AND winlog.event_data.CommandLine.keyword:*domain_trusts*) OR (winlog.event_data.Image.keyword:*\\\\\\\\dsquery.exe AND winlog.event_data.CommandLine.keyword:*trustedDomain*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\nltest.exe AND winlog.event_data.CommandLine.keyword:*domain_trusts*) OR (winlog.event_data.Image.keyword:*\\\\\\\\dsquery.exe AND winlog.event_data.CommandLine.keyword:*trustedDomain*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Domain Trust Discovery\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -81,7 +88,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(event_id="1" ((Image="*\\\\nltest.exe" CommandLine="*domain_trusts*") OR (Image="*\\\\dsquery.exe" CommandLine="*trustedDomain*")))
+((Image="*\\\\nltest.exe" CommandLine="*domain_trusts*") OR (Image="*\\\\dsquery.exe" CommandLine="*trustedDomain*"))
 ```
 
 

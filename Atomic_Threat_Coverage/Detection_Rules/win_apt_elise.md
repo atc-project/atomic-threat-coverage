@@ -49,17 +49,24 @@ level: critical
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {(($_.message -match "Image.*C:\\\\Windows\\\\SysWOW64\\\\cmd.exe" -and $_.message -match "CommandLine.*.*\\\\Windows\\\\Caches\\\\NavShExt.dll .*") -or $_.message -match "CommandLine.*.*\\\\AppData\\\\Roaming\\\\MICROS~1\\\\Windows\\\\Caches\\\\NavShExt.dll,Setting") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-((Image:"C\\:\\\\Windows\\\\SysWOW64\\\\cmd.exe" AND CommandLine.keyword:*\\\\Windows\\\\Caches\\\\NavShExt.dll\\ *) OR CommandLine.keyword:*\\\\AppData\\\\Roaming\\\\MICROS\\~1\\\\Windows\\\\Caches\\\\NavShExt.dll,Setting)
+((winlog.event_data.Image:"C\\:\\\\Windows\\\\SysWOW64\\\\cmd.exe" AND winlog.event_data.CommandLine.keyword:*\\\\Windows\\\\Caches\\\\NavShExt.dll\\ *) OR winlog.event_data.CommandLine.keyword:*\\\\AppData\\\\Roaming\\\\MICROS\\~1\\\\Windows\\\\Caches\\\\NavShExt.dll,Setting)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/e507feb7-5f73-4ef6-a970-91bb6f6d744f <<EOF\n{\n  "metadata": {\n    "title": "Elise Backdoor",\n    "description": "Detects Elise backdoor acitivty as used by APT32",\n    "tags": [\n      "attack.g0030",\n      "attack.g0050",\n      "attack.s0081"\n    ],\n    "query": "((Image:\\"C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\cmd.exe\\" AND CommandLine.keyword:*\\\\\\\\Windows\\\\\\\\Caches\\\\\\\\NavShExt.dll\\\\ *) OR CommandLine.keyword:*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\MICROS\\\\~1\\\\\\\\Windows\\\\\\\\Caches\\\\\\\\NavShExt.dll,Setting)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Image:\\"C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\cmd.exe\\" AND CommandLine.keyword:*\\\\\\\\Windows\\\\\\\\Caches\\\\\\\\NavShExt.dll\\\\ *) OR CommandLine.keyword:*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\MICROS\\\\~1\\\\\\\\Windows\\\\\\\\Caches\\\\\\\\NavShExt.dll,Setting)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Elise Backdoor\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/e507feb7-5f73-4ef6-a970-91bb6f6d744f <<EOF\n{\n  "metadata": {\n    "title": "Elise Backdoor",\n    "description": "Detects Elise backdoor acitivty as used by APT32",\n    "tags": [\n      "attack.g0030",\n      "attack.g0050",\n      "attack.s0081"\n    ],\n    "query": "((winlog.event_data.Image:\\"C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\cmd.exe\\" AND winlog.event_data.CommandLine.keyword:*\\\\\\\\Windows\\\\\\\\Caches\\\\\\\\NavShExt.dll\\\\ *) OR winlog.event_data.CommandLine.keyword:*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\MICROS\\\\~1\\\\\\\\Windows\\\\\\\\Caches\\\\\\\\NavShExt.dll,Setting)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.Image:\\"C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\cmd.exe\\" AND winlog.event_data.CommandLine.keyword:*\\\\\\\\Windows\\\\\\\\Caches\\\\\\\\NavShExt.dll\\\\ *) OR winlog.event_data.CommandLine.keyword:*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\MICROS\\\\~1\\\\\\\\Windows\\\\\\\\Caches\\\\\\\\NavShExt.dll,Setting)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Elise Backdoor\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -80,7 +87,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(event_id="1" ((Image="C:\\\\Windows\\\\SysWOW64\\\\cmd.exe" CommandLine="*\\\\Windows\\\\Caches\\\\NavShExt.dll *") OR CommandLine="*\\\\AppData\\\\Roaming\\\\MICROS~1\\\\Windows\\\\Caches\\\\NavShExt.dll,Setting"))
+((Image="C:\\\\Windows\\\\SysWOW64\\\\cmd.exe" CommandLine="*\\\\Windows\\\\Caches\\\\NavShExt.dll *") OR CommandLine="*\\\\AppData\\\\Roaming\\\\MICROS~1\\\\Windows\\\\Caches\\\\NavShExt.dll,Setting")
 ```
 
 

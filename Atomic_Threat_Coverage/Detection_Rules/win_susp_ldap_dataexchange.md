@@ -52,17 +52,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Security | where {($_.ID -eq "5136" -and $_.message -match "AttributeValue.*.*" -and ($_.message -match "primaryInternationalISDNNumber" -or $_.message -match "otherFacsimileTelephoneNumber" -or $_.message -match "primaryTelexNumber")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:"5136" AND AttributeValue.keyword:* AND AttributeLDAPDisplayName:("primaryInternationalISDNNumber" OR "otherFacsimileTelephoneNumber" OR "primaryTelexNumber"))
+(winlog.channel:"Security" AND winlog.event_id:"5136" AND AttributeValue.keyword:* AND winlog.event_data.AttributeLDAPDisplayName:("primaryInternationalISDNNumber" OR "otherFacsimileTelephoneNumber" OR "primaryTelexNumber"))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/d00a9a72-2c09-4459-ad03-5e0a23351e36 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious LDAP-Attributes Used",\n    "description": "detects the usage of particular AttributeLDAPDisplayNames, which are known for data exchange via LDAP by the tool LDAPFragger and are additionally not commonly used in companies.",\n    "tags": [\n      "attack.t1041",\n      "attack.persistence"\n    ],\n    "query": "(EventID:\\"5136\\" AND AttributeValue.keyword:* AND AttributeLDAPDisplayName:(\\"primaryInternationalISDNNumber\\" OR \\"otherFacsimileTelephoneNumber\\" OR \\"primaryTelexNumber\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"5136\\" AND AttributeValue.keyword:* AND AttributeLDAPDisplayName:(\\"primaryInternationalISDNNumber\\" OR \\"otherFacsimileTelephoneNumber\\" OR \\"primaryTelexNumber\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious LDAP-Attributes Used\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/d00a9a72-2c09-4459-ad03-5e0a23351e36 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious LDAP-Attributes Used",\n    "description": "detects the usage of particular AttributeLDAPDisplayNames, which are known for data exchange via LDAP by the tool LDAPFragger and are additionally not commonly used in companies.",\n    "tags": [\n      "attack.t1041",\n      "attack.persistence"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"5136\\" AND AttributeValue.keyword:* AND winlog.event_data.AttributeLDAPDisplayName:(\\"primaryInternationalISDNNumber\\" OR \\"otherFacsimileTelephoneNumber\\" OR \\"primaryTelexNumber\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"5136\\" AND AttributeValue.keyword:* AND winlog.event_data.AttributeLDAPDisplayName:(\\"primaryInternationalISDNNumber\\" OR \\"otherFacsimileTelephoneNumber\\" OR \\"primaryTelexNumber\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious LDAP-Attributes Used\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -76,7 +83,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(EventID="5136" AttributeValue="*" (AttributeLDAPDisplayName="primaryInternationalISDNNumber" OR AttributeLDAPDisplayName="otherFacsimileTelephoneNumber" OR AttributeLDAPDisplayName="primaryTelexNumber"))
+(source="WinEventLog:Security" EventCode="5136" AttributeValue="*" (AttributeLDAPDisplayName="primaryInternationalISDNNumber" OR AttributeLDAPDisplayName="otherFacsimileTelephoneNumber" OR AttributeLDAPDisplayName="primaryTelexNumber"))
 ```
 
 

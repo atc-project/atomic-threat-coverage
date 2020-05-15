@@ -63,6 +63,13 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Security | where {((((($_.ID -eq "4738" -and  -not ((($_.message -match "None" -or $_.message -match "-")))) -or ($_.ID -eq "5136" -and $_.message -match "AttributeLDAPDisplayName.*msDS-AllowedToDelegateTo")) -or ($_.ID -eq "5136" -and $_.message -match "ObjectClass.*user" -and $_.message -match "AttributeLDAPDisplayName.*servicePrincipalName")) -or ($_.ID -eq "5136" -and $_.message -match "AttributeLDAPDisplayName.*msDS-AllowedToActOnBehalfOfOtherIdentity"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```

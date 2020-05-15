@@ -55,17 +55,24 @@ level: medium
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Security | where {(($_.ID -eq "4656" -or $_.ID -eq "4663" -or $_.ID -eq "4658") -and ($_.message -match "ObjectName.*.*.AAA" -or $_.message -match "ObjectName.*.*.ZZZ")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:("4656" OR "4663" OR "4658") AND ObjectName.keyword:(*.AAA OR *.ZZZ))
+(winlog.channel:"Security" AND winlog.event_id:("4656" OR "4663" OR "4658") AND winlog.event_data.ObjectName.keyword:(*.AAA OR *.ZZZ))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/39a80702-d7ca-4a83-b776-525b1f86a36d <<EOF\n{\n  "metadata": {\n    "title": "Secure Deletion with SDelete",\n    "description": "Detects renaming of file while deletion with SDelete tool",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1107",\n      "attack.t1066",\n      "attack.s0195"\n    ],\n    "query": "(EventID:(\\"4656\\" OR \\"4663\\" OR \\"4658\\") AND ObjectName.keyword:(*.AAA OR *.ZZZ))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:(\\"4656\\" OR \\"4663\\" OR \\"4658\\") AND ObjectName.keyword:(*.AAA OR *.ZZZ))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Secure Deletion with SDelete\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/39a80702-d7ca-4a83-b776-525b1f86a36d <<EOF\n{\n  "metadata": {\n    "title": "Secure Deletion with SDelete",\n    "description": "Detects renaming of file while deletion with SDelete tool",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1107",\n      "attack.t1066",\n      "attack.s0195"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:(\\"4656\\" OR \\"4663\\" OR \\"4658\\") AND winlog.event_data.ObjectName.keyword:(*.AAA OR *.ZZZ))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:(\\"4656\\" OR \\"4663\\" OR \\"4658\\") AND winlog.event_data.ObjectName.keyword:(*.AAA OR *.ZZZ))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Secure Deletion with SDelete\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -79,7 +86,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-((EventID="4656" OR EventID="4663" OR EventID="4658") (ObjectName="*.AAA" OR ObjectName="*.ZZZ"))
+(source="WinEventLog:Security" (EventCode="4656" OR EventCode="4663" OR EventCode="4658") (ObjectName="*.AAA" OR ObjectName="*.ZZZ"))
 ```
 
 

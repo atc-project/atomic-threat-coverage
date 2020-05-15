@@ -52,17 +52,24 @@ level: medium
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {(($_.ID -eq "11" -and $_.message -match "TargetFilename.*.*\\\\AppData\\\\Local\\\\Temp\\\\.*\\\\PROCEXP152.sys") -and  -not (($_.message -match "Image.*.*\\\\procexp64.exe.*" -or $_.message -match "Image.*.*\\\\procexp.exe.*" -or $_.message -match "Image.*.*\\\\procmon64.exe.*" -or $_.message -match "Image.*.*\\\\procmon.exe.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-((EventID:"11" AND TargetFilename.keyword:*\\\\AppData\\\\Local\\\\Temp\\*\\\\PROCEXP152.sys) AND (NOT (Image.keyword:(*\\\\procexp64.exe* OR *\\\\procexp.exe* OR *\\\\procmon64.exe* OR *\\\\procmon.exe*))))
+(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND (winlog.event_id:"11" AND winlog.event_data.TargetFilename.keyword:*\\\\AppData\\\\Local\\\\Temp\\*\\\\PROCEXP152.sys) AND (NOT (winlog.event_data.Image.keyword:(*\\\\procexp64.exe* OR *\\\\procexp.exe* OR *\\\\procmon64.exe* OR *\\\\procmon.exe*))))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/3da70954-0f2c-4103-adff-b7440368f50e <<EOF\n{\n  "metadata": {\n    "title": "Suspicious PROCEXP152.sys File Created In TMP",\n    "description": "Detects the creation of the PROCEXP152.sys file in the application-data local temporary folder. This driver is used by Sysinternals Process Explorer but also by KDU (https://github.com/hfiref0x/KDU) or Ghost-In-The-Logs (https://github.com/bats3c/Ghost-In-The-Logs), which uses KDU.",\n    "tags": [\n      "attack.t1089",\n      "attack.defense_evasion"\n    ],\n    "query": "((EventID:\\"11\\" AND TargetFilename.keyword:*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\*\\\\\\\\PROCEXP152.sys) AND (NOT (Image.keyword:(*\\\\\\\\procexp64.exe* OR *\\\\\\\\procexp.exe* OR *\\\\\\\\procmon64.exe* OR *\\\\\\\\procmon.exe*))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((EventID:\\"11\\" AND TargetFilename.keyword:*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\*\\\\\\\\PROCEXP152.sys) AND (NOT (Image.keyword:(*\\\\\\\\procexp64.exe* OR *\\\\\\\\procexp.exe* OR *\\\\\\\\procmon64.exe* OR *\\\\\\\\procmon.exe*))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious PROCEXP152.sys File Created In TMP\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/3da70954-0f2c-4103-adff-b7440368f50e <<EOF\n{\n  "metadata": {\n    "title": "Suspicious PROCEXP152.sys File Created In TMP",\n    "description": "Detects the creation of the PROCEXP152.sys file in the application-data local temporary folder. This driver is used by Sysinternals Process Explorer but also by KDU (https://github.com/hfiref0x/KDU) or Ghost-In-The-Logs (https://github.com/bats3c/Ghost-In-The-Logs), which uses KDU.",\n    "tags": [\n      "attack.t1089",\n      "attack.defense_evasion"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND (winlog.event_id:\\"11\\" AND winlog.event_data.TargetFilename.keyword:*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\*\\\\\\\\PROCEXP152.sys) AND (NOT (winlog.event_data.Image.keyword:(*\\\\\\\\procexp64.exe* OR *\\\\\\\\procexp.exe* OR *\\\\\\\\procmon64.exe* OR *\\\\\\\\procmon.exe*))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND (winlog.event_id:\\"11\\" AND winlog.event_data.TargetFilename.keyword:*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\*\\\\\\\\PROCEXP152.sys) AND (NOT (winlog.event_data.Image.keyword:(*\\\\\\\\procexp64.exe* OR *\\\\\\\\procexp.exe* OR *\\\\\\\\procmon64.exe* OR *\\\\\\\\procmon.exe*))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious PROCEXP152.sys File Created In TMP\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -76,7 +83,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-((EventID="11" TargetFilename="*\\\\AppData\\\\Local\\\\Temp\\*\\\\PROCEXP152.sys") NOT ((Image="*\\\\procexp64.exe*" OR Image="*\\\\procexp.exe*" OR Image="*\\\\procmon64.exe*" OR Image="*\\\\procmon.exe*")))
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" (EventCode="11" TargetFilename="*\\\\AppData\\\\Local\\\\Temp\\*\\\\PROCEXP152.sys") NOT ((Image="*\\\\procexp64.exe*" OR Image="*\\\\procexp.exe*" OR Image="*\\\\procmon64.exe*" OR Image="*\\\\procmon.exe*")))
 ```
 
 

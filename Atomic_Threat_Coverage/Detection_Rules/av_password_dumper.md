@@ -55,17 +55,24 @@ level: critical
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {($_.message -match "Signature.*.*DumpCreds.*" -or $_.message -match "Signature.*.*Mimikatz.*" -or $_.message -match "Signature.*.*PWCrack.*" -or $_.message -match "HTool/WCE" -or $_.message -match "Signature.*.*PSWtool.*" -or $_.message -match "Signature.*.*PWDump.*" -or $_.message -match "Signature.*.*SecurityTool.*" -or $_.message -match "Signature.*.*PShlSpy.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-Signature.keyword:(*DumpCreds* OR *Mimikatz* OR *PWCrack* OR HTool\\/WCE OR *PSWtool* OR *PWDump* OR *SecurityTool* OR *PShlSpy*)
+winlog.event_data.Signature.keyword:(*DumpCreds* OR *Mimikatz* OR *PWCrack* OR HTool\\/WCE OR *PSWtool* OR *PWDump* OR *SecurityTool* OR *PShlSpy*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/78cc2dd2-7d20-4d32-93ff-057084c38b93 <<EOF\n{\n  "metadata": {\n    "title": "Antivirus Password Dumper Detection",\n    "description": "Detects a highly relevant Antivirus alert that reports a password dumper",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003"\n    ],\n    "query": "Signature.keyword:(*DumpCreds* OR *Mimikatz* OR *PWCrack* OR HTool\\\\/WCE OR *PSWtool* OR *PWDump* OR *SecurityTool* OR *PShlSpy*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "Signature.keyword:(*DumpCreds* OR *Mimikatz* OR *PWCrack* OR HTool\\\\/WCE OR *PSWtool* OR *PWDump* OR *SecurityTool* OR *PShlSpy*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Antivirus Password Dumper Detection\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nFileName = {{_source.FileName}}\\n    User = {{_source.User}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/78cc2dd2-7d20-4d32-93ff-057084c38b93 <<EOF\n{\n  "metadata": {\n    "title": "Antivirus Password Dumper Detection",\n    "description": "Detects a highly relevant Antivirus alert that reports a password dumper",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003"\n    ],\n    "query": "winlog.event_data.Signature.keyword:(*DumpCreds* OR *Mimikatz* OR *PWCrack* OR HTool\\\\/WCE OR *PSWtool* OR *PWDump* OR *SecurityTool* OR *PShlSpy*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.Signature.keyword:(*DumpCreds* OR *Mimikatz* OR *PWCrack* OR HTool\\\\/WCE OR *PSWtool* OR *PWDump* OR *SecurityTool* OR *PShlSpy*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Antivirus Password Dumper Detection\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nFileName = {{_source.FileName}}\\n    User = {{_source.User}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 

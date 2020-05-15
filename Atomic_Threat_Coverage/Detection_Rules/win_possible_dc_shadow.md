@@ -53,17 +53,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Security | where {((($_.ID -eq "4742" -and $_.message -match "ServicePrincipalNames.*.*GC/.*") -or ($_.ID -eq "5136" -and $_.message -match "LDAPDisplayName.*servicePrincipalName" -and $_.message -match "Value.*GC/.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-((EventID:"4742" AND ServicePrincipalNames.keyword:*GC\\/*) OR (EventID:"5136" AND LDAPDisplayName:"servicePrincipalName" AND Value.keyword:GC\\/*))
+(winlog.channel:"Security" AND ((winlog.event_id:"4742" AND ServicePrincipalNames.keyword:*GC\\/*) OR (winlog.event_id:"5136" AND LDAPDisplayName:"servicePrincipalName" AND Value.keyword:GC\\/*)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/32e19d25-4aed-4860-a55a-be99cb0bf7ed <<EOF\n{\n  "metadata": {\n    "title": "Possible DC Shadow",\n    "description": "Detects DC sync via create new SPN",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1207"\n    ],\n    "query": "((EventID:\\"4742\\" AND ServicePrincipalNames.keyword:*GC\\\\/*) OR (EventID:\\"5136\\" AND LDAPDisplayName:\\"servicePrincipalName\\" AND Value.keyword:GC\\\\/*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((EventID:\\"4742\\" AND ServicePrincipalNames.keyword:*GC\\\\/*) OR (EventID:\\"5136\\" AND LDAPDisplayName:\\"servicePrincipalName\\" AND Value.keyword:GC\\\\/*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Possible DC Shadow\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/32e19d25-4aed-4860-a55a-be99cb0bf7ed <<EOF\n{\n  "metadata": {\n    "title": "Possible DC Shadow",\n    "description": "Detects DC sync via create new SPN",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1207"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND ((winlog.event_id:\\"4742\\" AND ServicePrincipalNames.keyword:*GC\\\\/*) OR (winlog.event_id:\\"5136\\" AND LDAPDisplayName:\\"servicePrincipalName\\" AND Value.keyword:GC\\\\/*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND ((winlog.event_id:\\"4742\\" AND ServicePrincipalNames.keyword:*GC\\\\/*) OR (winlog.event_id:\\"5136\\" AND LDAPDisplayName:\\"servicePrincipalName\\" AND Value.keyword:GC\\\\/*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Possible DC Shadow\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -77,7 +84,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-((EventID="4742" ServicePrincipalNames="*GC/*") OR (EventID="5136" LDAPDisplayName="servicePrincipalName" Value="GC/*"))
+(source="WinEventLog:Security" ((EventCode="4742" ServicePrincipalNames="*GC/*") OR (EventCode="5136" LDAPDisplayName="servicePrincipalName" Value="GC/*")))
 ```
 
 

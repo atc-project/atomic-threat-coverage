@@ -58,17 +58,24 @@ tags:
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {(($_.message -match "Image.*.*\\\\tshark.exe" -and $_.message -match "CommandLine.*.*-i.*") -or $_.message -match "Image.*.*\\\\windump.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-((Image.keyword:*\\\\tshark.exe AND CommandLine.keyword:*\\-i*) OR Image.keyword:*\\\\windump.exe)
+((winlog.event_data.Image.keyword:*\\\\tshark.exe AND winlog.event_data.CommandLine.keyword:*\\-i*) OR winlog.event_data.Image.keyword:*\\\\windump.exe)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/ba1f7802-adc7-48b4-9ecb-81e227fddfd5 <<EOF\n{\n  "metadata": {\n    "title": "Network Sniffing",\n    "description": "Network sniffing refers to using the network interface on a system to monitor or capture information sent over a wired or wireless connection. An adversary may place a network interface into promiscuous mode to passively access data in transit over the network, or use span ports to capture a larger amount of data.",\n    "tags": [\n      "attack.credential_access",\n      "attack.discovery",\n      "attack.t1040"\n    ],\n    "query": "((Image.keyword:*\\\\\\\\tshark.exe AND CommandLine.keyword:*\\\\-i*) OR Image.keyword:*\\\\\\\\windump.exe)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Image.keyword:*\\\\\\\\tshark.exe AND CommandLine.keyword:*\\\\-i*) OR Image.keyword:*\\\\\\\\windump.exe)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Network Sniffing\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n            Image = {{_source.Image}}\\n      CommandLine = {{_source.CommandLine}}\\n             User = {{_source.User}}\\n        LogonGuid = {{_source.LogonGuid}}\\n           Hashes = {{_source.Hashes}}\\nParentProcessGuid = {{_source.ParentProcessGuid}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/ba1f7802-adc7-48b4-9ecb-81e227fddfd5 <<EOF\n{\n  "metadata": {\n    "title": "Network Sniffing",\n    "description": "Network sniffing refers to using the network interface on a system to monitor or capture information sent over a wired or wireless connection. An adversary may place a network interface into promiscuous mode to passively access data in transit over the network, or use span ports to capture a larger amount of data.",\n    "tags": [\n      "attack.credential_access",\n      "attack.discovery",\n      "attack.t1040"\n    ],\n    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\tshark.exe AND winlog.event_data.CommandLine.keyword:*\\\\-i*) OR winlog.event_data.Image.keyword:*\\\\\\\\windump.exe)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\tshark.exe AND winlog.event_data.CommandLine.keyword:*\\\\-i*) OR winlog.event_data.Image.keyword:*\\\\\\\\windump.exe)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Network Sniffing\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n            Image = {{_source.Image}}\\n      CommandLine = {{_source.CommandLine}}\\n             User = {{_source.User}}\\n        LogonGuid = {{_source.LogonGuid}}\\n           Hashes = {{_source.Hashes}}\\nParentProcessGuid = {{_source.ParentProcessGuid}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -89,7 +96,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(event_id="1" ((Image="*\\\\tshark.exe" CommandLine="*-i*") OR Image="*\\\\windump.exe"))
+((Image="*\\\\tshark.exe" CommandLine="*-i*") OR Image="*\\\\windump.exe")
 ```
 
 

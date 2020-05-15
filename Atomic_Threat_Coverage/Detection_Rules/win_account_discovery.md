@@ -60,17 +60,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Security | where {($_.ID -eq "4661" -and ($_.message -match "SAM_USER" -or $_.message -match "SAM_GROUP") -and ($_.message -match "ObjectName.*.*-512" -or $_.message -match "ObjectName.*.*-502" -or $_.message -match "ObjectName.*.*-500" -or $_.message -match "ObjectName.*.*-505" -or $_.message -match "ObjectName.*.*-519" -or $_.message -match "ObjectName.*.*-520" -or $_.message -match "ObjectName.*.*-544" -or $_.message -match "ObjectName.*.*-551" -or $_.message -match "ObjectName.*.*-555" -or $_.message -match "ObjectName.*.*admin.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:"4661" AND ObjectType:("SAM_USER" OR "SAM_GROUP") AND ObjectName.keyword:(*\\-512 OR *\\-502 OR *\\-500 OR *\\-505 OR *\\-519 OR *\\-520 OR *\\-544 OR *\\-551 OR *\\-555 OR *admin*))
+(winlog.channel:"Security" AND winlog.event_id:"4661" AND winlog.event_data.ObjectType:("SAM_USER" OR "SAM_GROUP") AND winlog.event_data.ObjectName.keyword:(*\\-512 OR *\\-502 OR *\\-500 OR *\\-505 OR *\\-519 OR *\\-520 OR *\\-544 OR *\\-551 OR *\\-555 OR *admin*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/35ba1d85-724d-42a3-889f-2e2362bcaf23 <<EOF\n{\n  "metadata": {\n    "title": "AD Privileged Users or Groups Reconnaissance",\n    "description": "Detect priv users or groups recon based on 4661 eventid and known privileged users or groups SIDs",\n    "tags": [\n      "attack.discovery",\n      "attack.t1087"\n    ],\n    "query": "(EventID:\\"4661\\" AND ObjectType:(\\"SAM_USER\\" OR \\"SAM_GROUP\\") AND ObjectName.keyword:(*\\\\-512 OR *\\\\-502 OR *\\\\-500 OR *\\\\-505 OR *\\\\-519 OR *\\\\-520 OR *\\\\-544 OR *\\\\-551 OR *\\\\-555 OR *admin*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4661\\" AND ObjectType:(\\"SAM_USER\\" OR \\"SAM_GROUP\\") AND ObjectName.keyword:(*\\\\-512 OR *\\\\-502 OR *\\\\-500 OR *\\\\-505 OR *\\\\-519 OR *\\\\-520 OR *\\\\-544 OR *\\\\-551 OR *\\\\-555 OR *admin*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'AD Privileged Users or Groups Reconnaissance\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/35ba1d85-724d-42a3-889f-2e2362bcaf23 <<EOF\n{\n  "metadata": {\n    "title": "AD Privileged Users or Groups Reconnaissance",\n    "description": "Detect priv users or groups recon based on 4661 eventid and known privileged users or groups SIDs",\n    "tags": [\n      "attack.discovery",\n      "attack.t1087"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4661\\" AND winlog.event_data.ObjectType:(\\"SAM_USER\\" OR \\"SAM_GROUP\\") AND winlog.event_data.ObjectName.keyword:(*\\\\-512 OR *\\\\-502 OR *\\\\-500 OR *\\\\-505 OR *\\\\-519 OR *\\\\-520 OR *\\\\-544 OR *\\\\-551 OR *\\\\-555 OR *admin*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4661\\" AND winlog.event_data.ObjectType:(\\"SAM_USER\\" OR \\"SAM_GROUP\\") AND winlog.event_data.ObjectName.keyword:(*\\\\-512 OR *\\\\-502 OR *\\\\-500 OR *\\\\-505 OR *\\\\-519 OR *\\\\-520 OR *\\\\-544 OR *\\\\-551 OR *\\\\-555 OR *admin*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'AD Privileged Users or Groups Reconnaissance\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -84,7 +91,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(EventID="4661" (ObjectType="SAM_USER" OR ObjectType="SAM_GROUP") (ObjectName="*-512" OR ObjectName="*-502" OR ObjectName="*-500" OR ObjectName="*-505" OR ObjectName="*-519" OR ObjectName="*-520" OR ObjectName="*-544" OR ObjectName="*-551" OR ObjectName="*-555" OR ObjectName="*admin*"))
+(source="WinEventLog:Security" EventCode="4661" (ObjectType="SAM_USER" OR ObjectType="SAM_GROUP") (ObjectName="*-512" OR ObjectName="*-502" OR ObjectName="*-500" OR ObjectName="*-505" OR ObjectName="*-519" OR ObjectName="*-520" OR ObjectName="*-544" OR ObjectName="*-551" OR ObjectName="*-555" OR ObjectName="*admin*"))
 ```
 
 
