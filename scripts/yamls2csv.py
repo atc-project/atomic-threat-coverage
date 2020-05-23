@@ -1,12 +1,14 @@
+#!/usr/bin/env python3
+
+from scripts.atcutils import ATCutils
+from scripts.attack_mapping import te_mapping, ta_mapping
+
 import csv
 import sys
 import getopt
 from os import listdir
 from os.path import isfile, join
-
-from atcutils import ATCutils
 from yaml.scanner import ScannerError
-from attack_mapping import te_mapping, ta_mapping
 
 ATCconfig = ATCutils.read_yaml_file("config.yml")
 

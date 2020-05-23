@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 
-from atcutils import ATCutils
+from scripts.atcutils import ATCutils
+from response.atc_react.scripts.reactutils import REACTutils
+from scripts.attack_mapping import te_mapping, ta_mapping
+from scripts.amitt_mapping import amitt_tactic_mapping, amitt_technique_mapping, amitt_mitigation_mapping
 
 from jinja2 import Environment, FileSystemLoader
-from attack_mapping import te_mapping, ta_mapping
-from amitt_mapping import amitt_tactic_mapping, amitt_technique_mapping, amitt_mitigation_mapping
-
 import os
 import re
 
+
 # ########################################################################### #
-# ########################### Response Playboo ############################## #
+# ########################### Response Playbook ############################# #
 # ########################################################################### #
 
 ATCconfig = ATCutils.load_config("config.yml")
+env = Environment(loader=FileSystemLoader('scripts/templates'))
 
 
 class ResponsePlaybook:
@@ -49,9 +51,6 @@ class ResponsePlaybook:
                 "Bad template_type. Available values:" +
                 " \"confluence\"]")
 
-        # Point to the templates directory
-        env = Environment(loader=FileSystemLoader('templates'))
-
 
         template = env.get_template(
             'confluence_responseplaybook_template.html.j2'
@@ -59,7 +58,7 @@ class ResponsePlaybook:
 
         new_title = self.rp_parsed_file.get('id')\
           + ": "\
-          + ATCutils.normalize_react_title(self.rp_parsed_file.get('title'))
+          + REACTutils.normalize_react_title(self.rp_parsed_file.get('title'))
         
         self.rp_parsed_file.update(
             {'title': new_title }
@@ -138,7 +137,7 @@ class ResponsePlaybook:
 
                     action_title = action.get('id')\
                         + ": "\
-                        + ATCutils.normalize_react_title(action.get('title'))
+                        + REACTutils.normalize_react_title(action.get('title'))
         
                     if self.apipath and self.auth and self.space:
                         stage_list.append(

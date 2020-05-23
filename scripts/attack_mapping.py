@@ -1,11 +1,43 @@
 ta_mapping = {
-    "attack.initial_access": [
-        "Initial Access",
-        "TA0001"
+    "attack.collection": [
+        "Collection",
+        "TA0009"
+    ],
+    "attack.command_and_control": [
+        "Command and Control",
+        "TA0011"
+    ],
+    "attack.credential_access": [
+        "Credential Access",
+        "TA0006"
+    ],
+    "attack.defense_evasion": [
+        "Defense Evasion",
+        "TA0005"
+    ],
+    "attack.discovery": [
+        "Discovery",
+        "TA0007"
     ],
     "attack.execution": [
         "Execution",
         "TA0002"
+    ],
+    "attack.exfiltration": [
+        "Exfiltration",
+        "TA0010"
+    ],
+    "attack.impact": [
+        "Impact",
+        "TA0040"
+    ],
+    "attack.initial_access": [
+        "Initial Access",
+        "TA0001"
+    ],
+    "attack.lateral_movement": [
+        "Lateral Movement",
+        "TA0008"
     ],
     "attack.persistence": [
         "Persistence",
@@ -14,38 +46,6 @@ ta_mapping = {
     "attack.privilege_escalation": [
         "Privilege Escalation",
         "TA0004"
-    ],
-    "attack.defense_evasion": [
-        "Defense Evasion",
-        "TA0005"
-    ],
-    "attack.credential_access": [
-        "Credential Access",
-        "TA0006"
-    ],
-    "attack.discovery": [
-        "Discovery",
-        "TA0007"
-    ],
-    "attack.lateral_movement": [
-        "Lateral Movement",
-        "TA0008"
-    ],
-    "attack.collection": [
-        "Collection",
-        "TA0009"
-    ],
-    "attack.exfiltration": [
-        "Exfiltration",
-        "TA0010"
-    ],
-    "attack.command_and_control": [
-        "Command and Control",
-        "TA0011"
-    ],
-    "attack.impact": [
-        "Impact",
-        "TA0040"
     ]
 }
 te_mapping = {

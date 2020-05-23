@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import atc_visualizations.aggs as aggs
-import atc_visualizations.params as params
+import scripts.atc_visualizations.aggs as aggs
+import scripts.atc_visualizations.params as params
 
 # ########################################################################### #
 # ############################ Metrics ###################################### #

@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+from scripts.sigma_mapping import sigma_mapping
+from scripts.attack_mapping import te_mapping
+
 import yaml
 import sys
 import re
@@ -10,23 +13,19 @@ import requests
 import warnings
 import html
 
-from sigma_mapping import sigma_mapping
 from os import listdir
 from os.path import isfile, join
 from requests.auth import HTTPBasicAuth
 from jinja2 import Environment, FileSystemLoader
 from pprint import pprint
 from yaml.scanner import ScannerError
-from attack_mapping import te_mapping
-
-
 
 # ########################################################################### #
 # ############################ ATCutils ##################################### #
 # ########################################################################### #
 
 # Default configuration file path 
-DEFAULT_PROJECT_CONFIG_PATH = 'config.default.yml'
+DEFAULT_PROJECT_CONFIG_PATH = 'scripts/config.default.yml'
 DEFAULT_CONFIG_PATH = 'config.yml'
 
 #Show warnings only once:

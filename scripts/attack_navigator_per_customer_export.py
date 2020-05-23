@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
+
+from scripts.atcutils import ATCutils
+
 from os import listdir
 from os.path import isfile, join
 import json
-from atcutils import ATCutils
 from yaml.scanner import ScannerError
 
 

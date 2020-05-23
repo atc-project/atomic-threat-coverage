@@ -1,4 +1,7 @@
-from atcutils import ATCutils
+#!/usr/bin/env python3
+
+from scripts.atcutils import ATCutils
+
 from pathlib import Path
 
 

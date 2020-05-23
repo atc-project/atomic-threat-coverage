@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
 
-from atcutils import ATCutils
+from scripts.atcutils import ATCutils
+from response.atc_react.scripts.reactutils import REACTutils
+from response.atc_react.scripts.react_mapping import rs_mapping
+
 from jinja2 import Environment, FileSystemLoader
-from react_scripts.react_mapping import rs_mapping
 import os
 
+# ########################################################################### #
+# ############################## Response Stage ############################# #
+# ########################################################################### #
 
 ATCconfig = ATCutils.load_config("config.yml")
-env = Environment(loader=FileSystemLoader('templates'))
+env = Environment(loader=FileSystemLoader('scripts/templates'))
 
 
 class ResponseStage:
@@ -34,7 +39,7 @@ class ResponseStage:
     def render_template(self, template_type):
         """Description
         template_type:
-            - "markdown"
+            - "confluence"
         """
 
         if template_type not in ["confluence"]:
@@ -64,13 +69,12 @@ class ResponseStage:
         stage_list = []
 
         for i in range(len(ras)):
-            if rs_mapping[rs_id] == ATCutils.normalize_rs_name(ras[i].get('stage')):
+            if rs_mapping[rs_id] == REACTutils.normalize_rs_name(ras[i].get('stage')):
                 ra_id = ras[i].get('id')
                 ra_filename = ra_filenames[i]
-                ra_title = ATCutils.normalize_react_title(ras[i].get('title'))
+                ra_title = REACTutils.normalize_react_title(ras[i].get('title'))
                 ra_description = ras[i].get('description').strip()
                 ra_confluence_page_name = ra_id + ": " + ra_title
-                print(ra_confluence_page_name)
                 
                 if self.apipath and self.auth and self.space:
                     ra_confluence_page_id = str(ATCutils.confluence_get_page_id(
@@ -79,13 +83,12 @@ class ResponseStage:
                 else:
                     ra_confluence_page_id = ""
 
-                print(ra_confluence_page_id)
                 stage_list.append(
                     (ra_id, ra_filename, ra_title, ra_description, ra_confluence_page_id))
 
         new_title = self.rs_parsed_file.get('id')\
             + ": "\
-            + ATCutils.normalize_react_title(self.rs_parsed_file.get('title'))
+            + REACTutils.normalize_react_title(self.rs_parsed_file.get('title'))
 
         self.rs_parsed_file.update(
             {'title': new_title}
