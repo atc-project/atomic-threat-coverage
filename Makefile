@@ -16,55 +16,55 @@ setup_repo:
 	
 setup_confluence:
 	@echo "[*] Setting up confluence"
-	@cd scripts && python3 main.py -C --init
+	python3 main.py -C --init
 
 setup_markdown:
 	@echo "[*] Setting up markdown"
-	@cd scripts && python3 main.py -M --init
+	python3 main.py -M --init
 
 push_to_confluence:
 	@echo "[*] Pushing data to confluence"
-	@cd scripts && python3 main.py -C -A
+	python3 main.py -C -A
 
 push_to_markdown:
 	@echo "[*] Pushing data to markdown"
-	@cd scripts && python3 main.py -M -A
+	python3 main.py -M -A
 
 create_analytics_and_pivoting_csv:
 	@echo "[*] Creating analytics.csv and pivoting.csv"
-	@cd scripts && python3 yamls2csv.py
+	python3 main.py -CSV
 
 create_attack_navigator_profile:
-	@echo "[*] Creating ATT&CK Navigator profile"
-	@cd scripts && python3 attack_navigator_export.py
+	@echo "[*] Creating common Threat Detection ATT&CK Navigator layer"
+	python3 main.py -TD-NAV
 
 create_attack_navigator_profile_per_customer:
-	@echo "[*] Creating ATT&CK Navigator profile"
-	@cd scripts && python3 attack_navigator_per_customer_export.py
+	@echo "[*] Creating Threat Detection ATT&CK Navigator layers per customer"
+	python3 main.py -TD-NAV-CU
 
 markdown:
 	@echo "[*] Creating markdown repository and pushing data"
-	@cd scripts && python3 main.py --markdown --auto --init
+	python3 main.py --markdown --auto --init
 
 confluence:
 	@echo "[*] Creating confluence repository and pushing data"
-	@cd scripts && python3 main.py --confluence --auto --init
+	python3 main.py --confluence --auto --init
 
 create_es_export:
-	@echo "[*] Creating elastic index"
-	@cd scripts && python3 es_index_export.py
+	@echo "[*] Creating elasticsearch index"
+	python3 main.py -ES
 
 make_visualizations:
 	@echo "[*] Creating visualizations.."
 ifeq ($(GUI), 1)
-	@cd scripts && python3 main.py -V --vis-export-type
+	python3 main.py -V --vis-export-type
 else
-	@cd scripts && python3 main.py -V
+	python3 main.py -V
 endif
 
 thehive_templates:
 	@echo "[*] Generating TheHive Case templates based on Response Playbooks"
-	@cd scripts && python3 main.py --thehive
+	python3 main.py --thehive
 
 # TODO: make clean works with non default paths from config
 clean:

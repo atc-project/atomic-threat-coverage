@@ -6,6 +6,10 @@ from scripts.populatemarkdown import PopulateMarkdown
 from scripts.populateconfluence import PopulateConfluence
 from scripts.atc_visualizations.yaml_handler import YamlHandler
 from scripts.update_attack_mapping import UpdateAttackMapping
+from scripts.attack_navigator_export import GenerateDetectionNavigator
+from scripts.attack_navigator_per_customer_export import GenerateDetectionNavigatorCustomers
+from scripts.yamls2csv import GenerateCSV
+from scripts.es_index_export import GenerateESIndex
 
 from response.atc_react.scripts.thehive_templates import RPTheHive
 from response.atc_react.scripts.populatemarkdown import ReactPopulateMarkdown
@@ -42,10 +46,18 @@ if __name__ == '__main__':
                        help='Use visualisations module')
     group.add_argument('-T', '--thehive', action='store_true',
                        help='Generate TheHive Case templates')
+    group.add_argument('-TD-NAV', '--td-navigator', action='store_true',
+                       help='Generate common Threat Detection Navigator layer')
+    group.add_argument('-TD-NAV-CU', '--td-navigator-customers', action='store_true',
+                       help='Generate Threat Detection Navigator layers per customer')
     group.add_argument('-RE-STIX', '--react-stix', action='store_true',
                        help='Generate STIX objects')
     group.add_argument('-RE-NAV', '--react-navigator', action='store_true',
-                       help='Generate RE&CT Navigator profile')
+                       help='Generate RE&CT Navigator layer')
+    group.add_argument('-ES', '--es', action='store_true',
+                       help='Generate Elasticsearch index')
+    group.add_argument('-CSV', '--csv', action='store_true',
+                       help='Generate analytics.csv and pivoting.csv')
 
     # Mutually exclusive group for chosing type of data
     group2 = parser.add_mutually_exclusive_group(required=False)
@@ -139,6 +151,14 @@ if __name__ == '__main__':
         GenerateSTIX()
     elif args.react_navigator:
         GenerateNavigator()
+    elif args.csv:
+        GenerateCSV()
+    elif args.td_navigator:
+        GenerateDetectionNavigator()
+    elif args.td_navigator_customers:
+        GenerateDetectionNavigatorCustomers()
+    elif args.es:
+        GenerateESIndex()
     elif args.visualisations:
         ATCconfig = ATCutils.load_config("config.yml")
         ATCconfig_default = ATCutils.load_config("scripts/config.default.yml")

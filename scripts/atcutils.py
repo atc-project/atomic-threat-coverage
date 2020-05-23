@@ -423,37 +423,38 @@ class ATCutils:
     def sigma_lgsrc_fields_to_names(logsource_dict):
         """Get sigma logsource dict and rename key/values into our model,
         so we could use it for Data Needed calculation"""
-
-        sigma_keys = [*sigma_mapping]
-
-        proper_logsource_dict = {}
-
-        for key, val in logsource_dict.items():
-            if key in sigma_keys:
-                if val in sigma_keys:
-                    # Transalte both key and value
-                    proper_logsource_dict.update([
-                        (sigma_mapping[key],
-                         sigma_mapping[val])
-                    ])
+        if logsource_dict:
+            
+            sigma_keys = [*sigma_mapping]
+            proper_logsource_dict = {}
+            for key, val in logsource_dict.items():
+                if key in sigma_keys:
+                    if val in sigma_keys:
+                        # Transalte both key and value
+                        proper_logsource_dict.update([
+                            (sigma_mapping[key],
+                             sigma_mapping[val])
+                        ])
+                    else:
+                        # Translate only key
+                        proper_logsource_dict.update([
+                            (sigma_mapping[key], val)
+                        ])
                 else:
-                    # Translate only key
-                    proper_logsource_dict.update([
-                        (sigma_mapping[key], val)
-                    ])
-            else:
-                if val in sigma_keys:
-                    # Translate only value
-                    proper_logsource_dict.update([
-                        (key, sigma_mapping[val])
-                    ])
-                else:
-                    # Don't translate anything
-                    proper_logsource_dict.update([
-                        (key, val)
-                    ])
-
-        return proper_logsource_dict
+                    if val in sigma_keys:
+                        # Translate only value
+                        proper_logsource_dict.update([
+                            (key, sigma_mapping[val])
+                        ])
+                    else:
+                        # Don't translate anything
+                        proper_logsource_dict.update([
+                            (key, val)
+                        ])
+    
+            return proper_logsource_dict
+        else:
+            return {}
 
     @staticmethod
     def search_for_fields(detection_dict):
@@ -675,7 +676,7 @@ class ATCutils:
                         final_list += enrichment['data_needed']
 
         # if there are no multiple logsources defined (multiple documents)
-        if not detectionrule.get('action'):
+        if not detectionrule.get('additions'):
 
             logsource = ATCutils.get_logsource_of_the_document(detectionrule)
             
@@ -683,51 +684,52 @@ class ATCutils:
 
             # if this is event id based detection rule we calculate PER SELECTION
             if event_id_based_dr:
-                for _field in detectionrule['detection']:
+                if detectionrule.get('detection'):
+                    for _field in detectionrule.get('detection'):
 
-                    if str(_field) in ["condition", "timeframe"]:
-                        continue
+                        if str(_field) in ["condition", "timeframe"]:
+                            continue
 
-                    event_ids = ATCutils.search_for_event_ids_in_selection(
-                        detectionrule['detection'][_field]
-                    )
-                    has_command_line = \
-                        ATCutils.check_for_command_line_in_selection(
+                        event_ids = ATCutils.search_for_event_ids_in_selection(
                             detectionrule['detection'][_field]
-                    )
-                    final_list += ATCutils.calculate_dn_for_eventid_based_dr(
-                        dn_list, logsource, event_ids, has_command_line
-                    )
+                        )
+                        has_command_line = \
+                            ATCutils.check_for_command_line_in_selection(
+                                detectionrule['detection'][_field]
+                        )
+                        final_list += ATCutils.calculate_dn_for_eventid_based_dr(
+                            dn_list, logsource, event_ids, has_command_line
+                        )
             # if this is NOT event id based detection rule we calculate
             # data needed for ENTIRE DOCUMENT (addition), using all fields
             # and logsource
             else:
 
                 full_list_of_fields = []
+                if detectionrule.get('detection'):
+                    for _field in detectionrule.get('detection'):
 
-                for _field in detectionrule['detection']:
+                        if str(_field) in ["condition", "timeframe"]:
+                            continue
 
-                    if str(_field) in ["condition", "timeframe"]:
-                        continue
+                        try:
+                            detection_fields = ATCutils\
+                            .search_for_fields2(detectionrule['detection'][_field])
+                        except Exception as e:
+                            detection_fields = ATCutils\
+                            .search_for_fields(detectionrule['detection'])
 
-                    try:
-                        detection_fields = ATCutils\
-                        .search_for_fields2(detectionrule['detection'][_field])
-                    except Exception as e:
-                        detection_fields = ATCutils\
-                        .search_for_fields(detectionrule['detection'])
-
-                    if detection_fields:
-                        for field in detection_fields:
-                            if field not in full_list_of_fields:
-                                full_list_of_fields.append(field)
+                        if detection_fields:
+                            for field in detection_fields:
+                                if field not in full_list_of_fields:
+                                    full_list_of_fields.append(field)
 
                 final_list += ATCutils.calculate_dn_for_non_eventid_based_dr(
                     dn_list, full_list_of_fields, logsource)
 
             return list(set(final_list))
 
-        elif detectionrule.get('action') == "global":
+        elif detectionrule.get('additions'):
             """
             if there are multiple logsources (document), we handle with them
             separately.
@@ -755,42 +757,44 @@ class ATCutils:
                 event_id_based_dr = ATCutils.check_for_event_ids_presence(detectionrule)
 
                 if event_id_based_dr:
+                    if detectionrule.get('detection'):
                     # just in case there are multiple selections in first document
-                    for _field in detectionrule['detection']:
+                        for _field in detectionrule.get('detection'):
 
-                        if str(_field) in ["condition", "timeframe"]:
-                            continue
+                            if str(_field) in ["condition", "timeframe"]:
+                                continue
 
-                        event_ids = ATCutils.search_for_event_ids_in_selection(
-                            detectionrule['detection'][_field]
-                        )
-                        has_command_line = \
-                            ATCutils.check_for_command_line_in_selection(
+                            event_ids = ATCutils.search_for_event_ids_in_selection(
                                 detectionrule['detection'][_field]
-                        )
-                        final_list += ATCutils.calculate_dn_for_eventid_based_dr(
-                                dn_list, logsource, event_ids, has_command_line
-                        )
+                            )
+                            has_command_line = \
+                                ATCutils.check_for_command_line_in_selection(
+                                    detectionrule['detection'][_field]
+                            )
+                            final_list += ATCutils.calculate_dn_for_eventid_based_dr(
+                                    dn_list, logsource, event_ids, has_command_line
+                            )
                 else:
                     full_list_of_fields = []
 
                     # just in case there are multiple selections in first document
-                    for _field in detectionrule['detection']:
+                    if detectionrule.get('detection'):
+                        for _field in detectionrule.get('detection'):
 
-                        if str(_field) in ["condition", "timeframe"]:
-                            continue
+                            if str(_field) in ["condition", "timeframe"]:
+                                continue
 
-                        try:
-                            detection_fields = ATCutils\
-                            .search_for_fields2(detectionrule['detection'][_field])
-                        except Exception as e:
-                            detection_fields = ATCutils\
-                            .search_for_fields(detectionrule['detection'])
+                            try:
+                                detection_fields = ATCutils\
+                                .search_for_fields2(detectionrule['detection'][_field])
+                            except Exception as e:
+                                detection_fields = ATCutils\
+                                .search_for_fields(detectionrule['detection'])
 
-                        if detection_fields:
-                            for field in detection_fields:
-                                if field not in full_list_of_fields:
-                                    full_list_of_fields.append(field)
+                            if detection_fields:
+                                for field in detection_fields:
+                                    if field not in full_list_of_fields:
+                                        full_list_of_fields.append(field)
 
                     final_list += ATCutils.calculate_dn_for_non_eventid_based_dr(
                         dn_list, full_list_of_fields, logsource)
@@ -991,72 +995,3 @@ class ATCutils:
             return True
         else:
             return False
-
-    @staticmethod
-    def normalize_react_title(title):
-        """Normalize title if it is a RA/RP title in the following format:
-        RP_0003_identification_make_sure_email_is_a_phishing
-        """
-        
-        react_id_re = re.compile(r'R[AP]_\d{4}.*$')
-        if react_id_re.match(title):
-            title = title[8:].split('_', 0)[-1].replace('_', ' ').capitalize()
-            new_title = ""
-            for word in title.split():
-                if word.lower() in [
-                        "ip", "dns", "ms", "ngfw", "ips", "url", "pe", "pdf", 
-                        "elf", "dhcp", "vpn", "smb", "ftp", "http" ]:
-                    new_title += word.upper()
-                    new_title += " "
-                    continue
-                elif word.lower() in [ "unix", "windows", "proxy", "firewall", "mach-o" ]:
-                    new_title += word.capitalize()
-                    new_title += " "
-                    continue
-                new_title += word
-                new_title += " "
-            return new_title.strip()
-        return title
-
-    @staticmethod
-    def get_ra_category(ra_id):
-        """Get a Response Action category, i.e. file, network, email, etc
-        Using the the RA ID
-        """
-        categories = {
-          "General": 0,
-          "Network": 1,
-          "Email": 2,
-          "File": 3,
-          "Process": 4,
-          "Configuration": 5,
-          "Identity": 6,
-        }
-
-        for name, number in categories.items():
-            category_re = re.compile(r'RA\d{1}' + str(number) + '.*$')
-            if category_re.match(ra_id):
-                return name
-
-        return "N/A"
-
-    @staticmethod
-    def normalize_rs_name(rs_name):
-        """Revieve a Response Stage name, i.e. reparation, lessons_learned, etc
-        Return normalized RS name
-        """
-
-        stages = {
-          "preparation": "Preparation",
-          "identification": "Identification",
-          "containment": "Containment",
-          "eradication": "Eradication",
-          "recovery": "Recovery",
-          "lessons_learned": "Lessons Learned"
-        }
-
-        for stage_name, normal_stage_name in stages.items():
-            if rs_name == stage_name:
-                return normal_stage_name
-
-        return "N/A"
