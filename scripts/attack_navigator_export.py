@@ -42,51 +42,50 @@ NAVIGATOR_TEMPLATE = {
     "selectTechniquesAcrossTactics": True
 }
 
+class GenerateDetectionNavigator:
 
-def get_techniques(threats):
-    techniques = []
-    for threat in threats:
-        if not isinstance(threat.get('tags'), list):
-            continue
-        tags = threat['tags']
+    def __init__(self):
 
-        # iterate over all tags finding the one which starts from attack and has all digits after attack.t
-        technique_ids = [f'T{tag[8:]}' for tag in tags if tag.startswith('attack') and tag[8:].isdigit()]
-
-        # iterate again finding all techniques and removing attack. part from them
-        tactics = [tag.replace('attack.', '').replace('_', '-')
-                   for tag in tags if tag.startswith('attack') and not tag[8:].isdigit()]
-        for technique_id in technique_ids:
-            for tactic in tactics:
-                techniques.append({
-                    "techniqueID": technique_id,
-                    "tactic": tactic,
-                    "color": "#fcf26b",
-                    "comment": "",
-                    "enabled": True
-
-                })
-    return techniques
-
-
-def main():
-    dr_dirs = ATCconfig.get('detection_rules_directories')
-    dr_list = []
-    for path in dr_dirs:
-        dr_list.append(ATCutils.load_yamls(path))
-    # flat dr_list
-    dr_list = [dr for drs_from_path in dr_list for dr in drs_from_path]
-    techniques = get_techniques(dr_list)
-    NAVIGATOR_TEMPLATE['techniques'] = techniques
-
-    filename = 'atc_attack_navigator_profile.json'
-    exported_analytics_directory = \
-        ATCconfig.get('exported_analytics_directory') + "/attack_navigator_profiles"
-
-    with open(exported_analytics_directory + '/' + filename, 'w') as fp:
-        json.dump(NAVIGATOR_TEMPLATE, fp)
-    print(f'[+] Created {filename}')
+        def get_techniques(threats):
+            techniques = []
+            for threat in threats:
+                if not isinstance(threat.get('tags'), list):
+                    continue
+                tags = threat['tags']
+        
+                # iterate over all tags finding the one which starts from attack and has all digits after attack.t
+                technique_ids = [f'T{tag[8:]}' for tag in tags if tag.startswith('attack') and tag[8:].isdigit()]
+        
+                # iterate again finding all techniques and removing attack. part from them
+                tactics = [tag.replace('attack.', '').replace('_', '-')
+                           for tag in tags if tag.startswith('attack') and not tag[8:].isdigit()]
+                for technique_id in technique_ids:
+                    for tactic in tactics:
+                        techniques.append({
+                            "techniqueID": technique_id,
+                            "tactic": tactic,
+                            "color": "#fcf26b",
+                            "comment": "",
+                            "enabled": True
+        
+                        })
+            return techniques
 
 
-if __name__ == '__main__':
-    main()
+        dr_dirs = ATCconfig.get('detection_rules_directories')
+        dr_list = []
+        for path in dr_dirs:
+            dr_list.append(ATCutils.load_yamls(path))
+        # flat dr_list
+        dr_list = [dr for drs_from_path in dr_list for dr in drs_from_path]
+        techniques = get_techniques(dr_list)
+        NAVIGATOR_TEMPLATE['techniques'] = techniques
+    
+        filename = 'atc_attack_navigator_profile.json'
+        exported_analytics_directory = \
+            ATCconfig.get('exported_analytics_directory') + "/attack_navigator_profiles"
+    
+        with open(exported_analytics_directory + '/' + filename, 'w') as fp:
+            json.dump(NAVIGATOR_TEMPLATE, fp)
+        print(f'[+] Created {filename}')
+        
