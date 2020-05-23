@@ -73,7 +73,7 @@ Everything starts from Sigma rule and ends up with human-readable wiki-style pag
 7. Maps Logging Policies to Data Needed using references inside Data Needed
 8. Maps Detection Rules, Data Needed and Logging Policies into Customers using references inside Customers entity
 9. Converts everything into Confluence and Markdown wiki-style pages using jinja templates (`scripts/templates`)
-10. Pushes all pages to local repo and Confluence server (according to configuration provided in `scripts/config.yml`)
+10. Pushes all pages to local repo and Confluence server (according to configuration provided in `config.yml`)
 11. Creates [Elasticsearch](https://www.elastic.co/products/elasticsearch) index for visualisation and analysis of existing data in [Kibana](https://www.elastic.co/products/kibana)
 12. Creates [ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/enterprise/) profile for visualisation of current detection abilities per Customer
 13. Creates [TheHive](https://thehive-project.org) Case Templates, build on top of Response Playbooks
@@ -407,8 +407,8 @@ git submodule init
 git submodule update
 git submodule foreach git pull origin master
 ```
-4. Copy `scripts/config.default.yml` to `scripts/config.yml`
-5. Update `scripts/config.yml` with links to your own Confluence node (following instructions inside the default config)
+4. Copy `scripts/config.default.yml` to `config.yml`
+5. Update `config.yml` with links to your own Confluence node (following instructions inside the default config)
 3. Build the container using `docker build . -t atc`
 4. Run the container using `docker run -it atc`
 5. Provide login and password to Confluence node when script will ask for it
@@ -429,11 +429,11 @@ If you just want to make yourself familiar with final result with default datase
 6. Add Customers into `customers` directory (you can create new one using [template](customers/customer.yml.template))
 7. Add Response Actions into `response_actions` directory (you can create new one using [template](response_actions/respose_action.yml.template))
 8. Add Response Playbooks into `response_playbooks` directory (you can create new one using [template](response_playbooks/respose_playbook.yml.template))
-9. Configure your export settings and paths to analytics using `scripts/config.yml` (create it from `scripts/config.default.yml` and adjust settings)
+9. Configure your export settings and paths using `config.yml` (create it from `scripts/config.default.yml` and adjust settings)
 10. Execute `make` in root directory of the repository
 11. Provide login and password to Confluence node when script will ask for it
 
-If you want to partially regenerate/update analytics you can investigate `Makefile` options or `scripts/main.py` help.
+If you want to partially regenerate/update analytics you can investigate `Makefile` options or `main.py` help.
 
 ### Uploading ATC Analytics Dashboard
 
@@ -479,7 +479,7 @@ This way each time you will add new analytics, Dashboard will be automatically u
 
 ## Current Status: Alpha
 
-The project is currently in an alpha stage. It doesn't support all existing Sigma rules (current coverage is ~80%), also have some entities to develop (like Mitigation Systems). We warmly welcome any feedback and suggestions to improve the project.
+The project is currently in an alpha stage. It doesn't support all existing Sigma rules (current coverage is ~95%), also have some entities to develop (like Mitigation Systems). We warmly welcome any feedback and suggestions to improve the project.
 
 ## Requirements
 
@@ -492,7 +492,7 @@ The project is currently in an alpha stage. It doesn't support all existing Sigm
 
 #### Will my private analytics (Detection Rules, Logging Policies, etc) be transferred somewhere?
 
-No. Only to your confluence node, according to configuration provided in `scripts/config.yml`. Atomic Threat Coverage doesn't connect to any other remote hosts, you can easily check it.
+No. Only to your confluence node, according to configuration provided in `config.yml`.
 
 #### What do you mean saying "evangelize threat information sharing" then?
 
@@ -502,7 +502,7 @@ We mean that you will use community compatible formats for (at least) Detection 
 
 Simplest way is to follow [workflow](#workflow) chapter, just adding your rules into pre-configured folders for specific type of analytics.
 
-More "production" way is to configure your private forks of [Sigma](https://github.com/Neo23x0/sigma) and [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) projects as [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) of your Atomic Threat Coverage private fork. After that you only will need to configure path to them in `scripts/config.yml`, this way Atomic Threat Coverage will start using it for knowledge base generation.
+More "production" way is to configure your private forks of [Sigma](https://github.com/Neo23x0/sigma) and [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) projects as [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) of your Atomic Threat Coverage private fork. After that you only will need to configure path to them in `config.yml`, this way Atomic Threat Coverage will start using it for knowledge base generation.
 
 #### Sigma doesn't support some of my Detection Rules. Does it still make sense to use Atomic Threat Coverage?
 
