@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 
-from populatemarkdown import PopulateMarkdown
-from react_scripts.populatemarkdown import ReactPopulateMarkdown
-from populateconfluence import PopulateConfluence
-from thehive_templates import RPTheHive
-from react_scripts.react2stix import GenerateSTIX
-from react_scripts.react_navigator import GenerateNavigator
+from scripts.atcutils import ATCutils
+
+from scripts.populatemarkdown import PopulateMarkdown
+from scripts.populateconfluence import PopulateConfluence
+from scripts.atc_visualizations.yaml_handler import YamlHandler
+from scripts.update_attack_mapping import UpdateAttackMapping
+
+from response.atc_react.scripts.thehive_templates import RPTheHive
+from response.atc_react.scripts.populatemarkdown import ReactPopulateMarkdown
+from response.atc_react.scripts.react2stix import GenerateSTIX
+from response.atc_react.scripts.react_navigator import GenerateNavigator
 
 # For confluence
 from requests.auth import HTTPBasicAuth
-
-from atcutils import ATCutils
-
-from atc_visualizations.yaml_handler import YamlHandler
 
 # Others
 import argparse
@@ -107,6 +108,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.markdown:
+        UpdateAttackMapping()
         PopulateMarkdown(auto=args.auto, lp=args.loggingpolicy,
                          ms=args.mitigationsystem, mp=args.mitigationpolicy,
                          dn=args.dataneeded, dr=args.detectionrule,
@@ -124,7 +126,7 @@ if __name__ == '__main__':
         password = getpass.getpass(prompt='Password: ', stream=None)
 
         auth = HTTPBasicAuth(mail, password)
-
+        UpdateAttackMapping()
         PopulateConfluence(auth=auth, auto=args.auto, lp=args.loggingpolicy,
                            ms=args.mitigationsystem, mp=args.mitigationpolicy,
                            dn=args.dataneeded, dr=args.detectionrule,
@@ -139,7 +141,7 @@ if __name__ == '__main__':
         GenerateNavigator()
     elif args.visualisations:
         ATCconfig = ATCutils.load_config("config.yml")
-        ATCconfig_default = ATCutils.load_config("config.default.yml")
+        ATCconfig_default = ATCutils.load_config("scripts/config.default.yml")
         if not args.vis_output_dir:
             analytics_generated = ATCconfig.get(
                 "exported_analytics_directory",
@@ -182,8 +184,9 @@ if __name__ == '__main__':
             print("File path: %s" % (output_path2 + ".json"))
 
     elif args.thehive:
+        UpdateAttackMapping()
         ATCconfig = ATCutils.read_yaml_file("config.yml")
-        ATCconfig2 = ATCutils.read_yaml_file("config.default.yml")
+        ATCconfig2 = ATCutils.read_yaml_file("scripts/config.default.yml")
         print("HINT: Make sure proper directories are " +
               "configured in the config.yml")
         if ATCconfig.get(

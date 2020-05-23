@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-import atc_visualizations.base as base
+import scripts.atc_visualizations.base as base
+from scripts.atc_visualizations.metrics import BaseMetric
+
 import json
 import uuid
-
-from atc_visualizations.metrics import BaseMetric
 from ast import literal_eval
 
 # ########################################################################### #

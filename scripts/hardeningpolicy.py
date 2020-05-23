@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
-from atcutils import ATCutils
-from attack_mapping import te_mapping, ta_mapping, mi_mapping
-from amitt_mapping import amitt_tactic_mapping, amitt_technique_mapping, amitt_mitigation_mapping
+from scripts.atcutils import ATCutils
+from scripts.attack_mapping import te_mapping, ta_mapping, mi_mapping
+from scripts.amitt_mapping import amitt_tactic_mapping, amitt_technique_mapping, amitt_mitigation_mapping
 
 from jinja2 import Environment, FileSystemLoader
-
 import re
 import os
 

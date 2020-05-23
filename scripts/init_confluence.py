@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-from atcutils import ATCutils
+
+from scripts.atcutils import ATCutils
+
 from requests.auth import HTTPBasicAuth
 import getpass
 

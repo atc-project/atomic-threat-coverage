@@ -7,6 +7,6 @@
 [submodule "mitigation/atc-mitigation"]
 	path = mitigation/atc-mitigation
 	url = https://github.com/atc-project/atc-mitigation
-[submodule "response/atc-react"]
-	path = response/atc-react
+[submodule "response/atc_react"]
+	path = response/atc_react
 	url = https://github.com/atc-project/atc-react

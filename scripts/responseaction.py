@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
-from atcutils import ATCutils
+from scripts.atcutils import ATCutils
+
+from response.atc_react.scripts.reactutils import REACTutils
+from response.atc_react.scripts.react_mapping import rs_mapping
 
 from jinja2 import Environment, FileSystemLoader
-from react_scripts.react_mapping import rs_mapping
-
 import os
 
 
@@ -13,7 +14,7 @@ import os
 # ########################################################################### #
 
 ATCconfig = ATCutils.load_config("config.yml")
-env = Environment(loader=FileSystemLoader('templates'))
+env = Environment(loader=FileSystemLoader('scripts/templates'))
 
 
 class ResponseAction:
@@ -54,7 +55,7 @@ class ResponseAction:
 
         new_title = self.ra_parsed_file.get('id')\
             + ": "\
-            + ATCutils.normalize_react_title(self.ra_parsed_file.get('title'))
+            + REACTutils.normalize_react_title(self.ra_parsed_file.get('title'))
 
         self.ra_parsed_file.update(
             {'title': new_title}
@@ -70,10 +71,11 @@ class ResponseAction:
         stage = self.ra_parsed_file.get('stage')
         rs_list = []
         for rs_id, rs_name in rs_mapping.items():
-            if ATCutils.normalize_rs_name(stage) == rs_name:
+            if REACTutils.normalize_rs_name(stage) == rs_name:
                 if self.apipath and self.auth and self.space:
+                    rs_confluence_page_name = rs_id + ": " + rs_name
                     rs_confluence_page_id = str(ATCutils.confluence_get_page_id(
-                        self.apipath, self.auth, self.space, rs_name)
+                        self.apipath, self.auth, self.space, rs_confluence_page_name)
                     )
                     rs_list.append((rs_id, rs_name, rs_confluence_page_id))
                 else:
@@ -89,7 +91,7 @@ class ResponseAction:
 
         # Category
         self.ra_parsed_file.update(
-            {'category': ATCutils.get_ra_category(self.ra_parsed_file
+            {'category': REACTutils.get_ra_category(self.ra_parsed_file
                 .get('id'))}
         )
 

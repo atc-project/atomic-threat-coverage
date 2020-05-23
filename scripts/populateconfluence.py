@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
 
 # Import ATC classes
-from dataneeded import DataNeeded
-from detectionrule import DetectionRule
-from mitigationsystem import MitigationSystem
-from mitigationpolicy import MitigationPolicy
-from hardeningpolicy import HardeningPolicy
-from loggingpolicy import LoggingPolicy
-from triggers import Triggers
-from enrichment import Enrichment
-from responseaction import ResponseAction
-from responseplaybook import ResponsePlaybook
-from responsestage import ResponseStage
-from customer import Customer
-from attack_mapping import te_mapping  # , ta_mapping
+from scripts.dataneeded import DataNeeded
+from scripts.detectionrule import DetectionRule
+from scripts.mitigationsystem import MitigationSystem
+from scripts.mitigationpolicy import MitigationPolicy
+from scripts.hardeningpolicy import HardeningPolicy
+from scripts.loggingpolicy import LoggingPolicy
+from scripts.triggers import Triggers
+from scripts.enrichment import Enrichment
+from scripts.responseaction import ResponseAction
+from scripts.responseplaybook import ResponsePlaybook
+from scripts.responsestage import ResponseStage
+from scripts.customer import Customer
+from scripts.attack_mapping import te_mapping
 
 # Import ATC Utils
-from atcutils import ATCutils
+from scripts.atcutils import ATCutils
 
 # Others
 import glob

@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
-import yaml
-import atc_visualizations.visualisation as visualisation
-import atc_visualizations.metrics as metrics
+import scripts.atc_visualizations.visualisation as visualisation
+import scripts.atc_visualizations.metrics as metrics
+import scripts.atc_visualizations.dashboard as dashboard
+import scripts.atc_visualizations.base as base
+
 import argparse
 import json
-import atc_visualizations.dashboard as dashboard
-import atc_visualizations.base as base
 import uuid
-
+import yaml
 from yaml.scanner import ScannerError
 from os import listdir
 from os.path import isfile, join

@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 
 # Import ATC classes
-from dataneeded import DataNeeded
-from detectionrule import DetectionRule
-from hardeningpolicy import HardeningPolicy
-from mitigationsystem import MitigationSystem
-from mitigationpolicy import MitigationPolicy
-from loggingpolicy import LoggingPolicy
+from scripts.dataneeded import DataNeeded
+from scripts.detectionrule import DetectionRule
+from scripts.hardeningpolicy import HardeningPolicy
+from scripts.mitigationsystem import MitigationSystem
+from scripts.mitigationpolicy import MitigationPolicy
+from scripts.loggingpolicy import LoggingPolicy
 
 # from triggers import Triggers
-from enrichment import Enrichment
-from customer import Customer
+from scripts.enrichment import Enrichment
+from scripts.customer import Customer
 
 # Import ATC Utils
-from atcutils import ATCutils
-from init_markdown import create_markdown_dirs
+from scripts.atcutils import ATCutils
+from scripts.init_markdown import create_markdown_dirs
 
 # Others
 import glob
