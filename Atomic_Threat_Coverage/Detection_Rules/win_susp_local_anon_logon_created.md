@@ -46,17 +46,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Security | where {($_.ID -eq "4720" -and $_.message -match "SAMAccountName.*.*ANONYMOUS.*LOGON.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:"4720" AND SAMAccountName.keyword:*ANONYMOUS*LOGON*)
+(winlog.channel:"Security" AND winlog.event_id:"4720" AND SAMAccountName.keyword:*ANONYMOUS*LOGON*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1bbf25b9-8038-4154-a50b-118f2a32be27 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Windows ANONYMOUS LOGON Local Account Created",\n    "description": "Detects the creation of suspicious accounts simliar to ANONYMOUS LOGON, such as using additional spaces. Created as an covering detection for exclusion of Logon Type 3 from ANONYMOUS LOGON accounts.",\n    "tags": [\n      "attack.persistence",\n      "attack.t1136"\n    ],\n    "query": "(EventID:\\"4720\\" AND SAMAccountName.keyword:*ANONYMOUS*LOGON*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"4720\\" AND SAMAccountName.keyword:*ANONYMOUS*LOGON*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Windows ANONYMOUS LOGON Local Account Created\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1bbf25b9-8038-4154-a50b-118f2a32be27 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Windows ANONYMOUS LOGON Local Account Created",\n    "description": "Detects the creation of suspicious accounts simliar to ANONYMOUS LOGON, such as using additional spaces. Created as an covering detection for exclusion of Logon Type 3 from ANONYMOUS LOGON accounts.",\n    "tags": [\n      "attack.persistence",\n      "attack.t1136"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4720\\" AND SAMAccountName.keyword:*ANONYMOUS*LOGON*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4720\\" AND SAMAccountName.keyword:*ANONYMOUS*LOGON*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Windows ANONYMOUS LOGON Local Account Created\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -70,7 +77,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(EventID="4720" SAMAccountName="*ANONYMOUS*LOGON*")
+(source="WinEventLog:Security" EventCode="4720" SAMAccountName="*ANONYMOUS*LOGON*")
 ```
 
 

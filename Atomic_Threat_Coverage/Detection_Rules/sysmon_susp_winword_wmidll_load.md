@@ -58,17 +58,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "7" -and ($_.message -match "Image.*.*\\\\winword.exe" -or $_.message -match "Image.*.*\\\\powerpnt.exe" -or $_.message -match "Image.*.*\\\\excel.exe" -or $_.message -match "Image.*.*\\\\outlook.exe") -and ($_.message -match "ImageLoaded.*.*\\\\wmiutils.dll" -or $_.message -match "ImageLoaded.*.*\\\\wbemcomn.dll" -or $_.message -match "ImageLoaded.*.*\\\\wbemprox.dll" -or $_.message -match "ImageLoaded.*.*\\\\wbemdisp.dll" -or $_.message -match "ImageLoaded.*.*\\\\wbemsvc.dll")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:"7" AND Image.keyword:(*\\\\winword.exe OR *\\\\powerpnt.exe OR *\\\\excel.exe OR *\\\\outlook.exe) AND ImageLoaded.keyword:(*\\\\wmiutils.dll OR *\\\\wbemcomn.dll OR *\\\\wbemprox.dll OR *\\\\wbemdisp.dll OR *\\\\wbemsvc.dll))
+(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"7" AND winlog.event_data.Image.keyword:(*\\\\winword.exe OR *\\\\powerpnt.exe OR *\\\\excel.exe OR *\\\\outlook.exe) AND winlog.event_data.ImageLoaded.keyword:(*\\\\wmiutils.dll OR *\\\\wbemcomn.dll OR *\\\\wbemprox.dll OR *\\\\wbemdisp.dll OR *\\\\wbemsvc.dll))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/a457f232-7df9-491d-898f-b5aabd2cbe2f <<EOF\n{\n  "metadata": {\n    "title": "Windows Mangement Instrumentation DLL Loaded Via Microsoft Word",\n    "description": "Detects DLL\'s Loaded Via Word Containing VBA Macros Executing WMI Commands",\n    "tags": [\n      "attack.execution",\n      "attack.t1047"\n    ],\n    "query": "(EventID:\\"7\\" AND Image.keyword:(*\\\\\\\\winword.exe OR *\\\\\\\\powerpnt.exe OR *\\\\\\\\excel.exe OR *\\\\\\\\outlook.exe) AND ImageLoaded.keyword:(*\\\\\\\\wmiutils.dll OR *\\\\\\\\wbemcomn.dll OR *\\\\\\\\wbemprox.dll OR *\\\\\\\\wbemdisp.dll OR *\\\\\\\\wbemsvc.dll))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"7\\" AND Image.keyword:(*\\\\\\\\winword.exe OR *\\\\\\\\powerpnt.exe OR *\\\\\\\\excel.exe OR *\\\\\\\\outlook.exe) AND ImageLoaded.keyword:(*\\\\\\\\wmiutils.dll OR *\\\\\\\\wbemcomn.dll OR *\\\\\\\\wbemprox.dll OR *\\\\\\\\wbemdisp.dll OR *\\\\\\\\wbemsvc.dll))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Windows Mangement Instrumentation DLL Loaded Via Microsoft Word\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/a457f232-7df9-491d-898f-b5aabd2cbe2f <<EOF\n{\n  "metadata": {\n    "title": "Windows Mangement Instrumentation DLL Loaded Via Microsoft Word",\n    "description": "Detects DLL\'s Loaded Via Word Containing VBA Macros Executing WMI Commands",\n    "tags": [\n      "attack.execution",\n      "attack.t1047"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"7\\" AND winlog.event_data.Image.keyword:(*\\\\\\\\winword.exe OR *\\\\\\\\powerpnt.exe OR *\\\\\\\\excel.exe OR *\\\\\\\\outlook.exe) AND winlog.event_data.ImageLoaded.keyword:(*\\\\\\\\wmiutils.dll OR *\\\\\\\\wbemcomn.dll OR *\\\\\\\\wbemprox.dll OR *\\\\\\\\wbemdisp.dll OR *\\\\\\\\wbemsvc.dll))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"7\\" AND winlog.event_data.Image.keyword:(*\\\\\\\\winword.exe OR *\\\\\\\\powerpnt.exe OR *\\\\\\\\excel.exe OR *\\\\\\\\outlook.exe) AND winlog.event_data.ImageLoaded.keyword:(*\\\\\\\\wmiutils.dll OR *\\\\\\\\wbemcomn.dll OR *\\\\\\\\wbemprox.dll OR *\\\\\\\\wbemdisp.dll OR *\\\\\\\\wbemsvc.dll))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Windows Mangement Instrumentation DLL Loaded Via Microsoft Word\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -82,7 +89,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(EventID="7" (Image="*\\\\winword.exe" OR Image="*\\\\powerpnt.exe" OR Image="*\\\\excel.exe" OR Image="*\\\\outlook.exe") (ImageLoaded="*\\\\wmiutils.dll" OR ImageLoaded="*\\\\wbemcomn.dll" OR ImageLoaded="*\\\\wbemprox.dll" OR ImageLoaded="*\\\\wbemdisp.dll" OR ImageLoaded="*\\\\wbemsvc.dll"))
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="7" (Image="*\\\\winword.exe" OR Image="*\\\\powerpnt.exe" OR Image="*\\\\excel.exe" OR Image="*\\\\outlook.exe") (ImageLoaded="*\\\\wmiutils.dll" OR ImageLoaded="*\\\\wbemcomn.dll" OR ImageLoaded="*\\\\wbemprox.dll" OR ImageLoaded="*\\\\wbemdisp.dll" OR ImageLoaded="*\\\\wbemsvc.dll"))
 ```
 
 

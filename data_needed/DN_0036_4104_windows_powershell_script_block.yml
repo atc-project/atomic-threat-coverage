@@ -2,7 +2,7 @@ title: DN_0036_4104_windows_powershell_script_block
 description: >
   This event records script
 loggingpolicy: 
-  - TODO
+  - LP_0109_windows_powershell_script_block_logging
 references:
   - https://blogs.msdn.microsoft.com/powershell/2015/06/09/powershell-the-blue-team/
   - https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/powershell/events/event-4104.md

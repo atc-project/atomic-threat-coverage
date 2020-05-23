@@ -52,17 +52,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {($_.message -match "Image.*.*\\\\$Recycle.bin" -or $_.message -match "Image.*.*\\\\Users\\\\Public\\\\.*" -or $_.message -match "Image.*C:\\\\Perflogs\\\\.*" -or $_.message -match "Image.*.*\\\\Windows\\\\Fonts\\\\.*" -or $_.message -match "Image.*.*\\\\Windows\\\\IME\\\\.*" -or $_.message -match "Image.*.*\\\\Windows\\\\addins\\\\.*" -or $_.message -match "Image.*.*\\\\Windows\\\\debug\\\\.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-Image.keyword:(*\\\\$Recycle.bin OR *\\\\Users\\\\Public\\\\* OR C\\:\\\\Perflogs\\\\* OR *\\\\Windows\\\\Fonts\\\\* OR *\\\\Windows\\\\IME\\\\* OR *\\\\Windows\\\\addins\\\\* OR *\\\\Windows\\\\debug\\\\*)
+winlog.event_data.Image.keyword:(*\\\\$Recycle.bin OR *\\\\Users\\\\Public\\\\* OR C\\:\\\\Perflogs\\\\* OR *\\\\Windows\\\\Fonts\\\\* OR *\\\\Windows\\\\IME\\\\* OR *\\\\Windows\\\\addins\\\\* OR *\\\\Windows\\\\debug\\\\*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/f50bfd8b-e2a3-4c15-9373-7900b5a4c6d5 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Program Location Process Starts",\n    "description": "Detects programs running in suspicious files system locations",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036"\n    ],\n    "query": "Image.keyword:(*\\\\\\\\$Recycle.bin OR *\\\\\\\\Users\\\\\\\\Public\\\\\\\\* OR C\\\\:\\\\\\\\Perflogs\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\Fonts\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\IME\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\addins\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\debug\\\\\\\\*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "Image.keyword:(*\\\\\\\\$Recycle.bin OR *\\\\\\\\Users\\\\\\\\Public\\\\\\\\* OR C\\\\:\\\\\\\\Perflogs\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\Fonts\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\IME\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\addins\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\debug\\\\\\\\*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Program Location Process Starts\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/f50bfd8b-e2a3-4c15-9373-7900b5a4c6d5 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Program Location Process Starts",\n    "description": "Detects programs running in suspicious files system locations",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036"\n    ],\n    "query": "winlog.event_data.Image.keyword:(*\\\\\\\\$Recycle.bin OR *\\\\\\\\Users\\\\\\\\Public\\\\\\\\* OR C\\\\:\\\\\\\\Perflogs\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\Fonts\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\IME\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\addins\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\debug\\\\\\\\*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.Image.keyword:(*\\\\\\\\$Recycle.bin OR *\\\\\\\\Users\\\\\\\\Public\\\\\\\\* OR C\\\\:\\\\\\\\Perflogs\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\Fonts\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\IME\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\addins\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\debug\\\\\\\\*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Program Location Process Starts\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -83,7 +90,7 @@ Image.keyword:(*\\\\$Recycle.bin *\\\\Users\\\\Public\\\\* C\\:\\\\Perflogs\\\\*
 ### logpoint
     
 ```
-(event_id="1" Image IN ["*\\\\$Recycle.bin", "*\\\\Users\\\\Public\\\\*", "C:\\\\Perflogs\\\\*", "*\\\\Windows\\\\Fonts\\\\*", "*\\\\Windows\\\\IME\\\\*", "*\\\\Windows\\\\addins\\\\*", "*\\\\Windows\\\\debug\\\\*"])
+Image IN ["*\\\\$Recycle.bin", "*\\\\Users\\\\Public\\\\*", "C:\\\\Perflogs\\\\*", "*\\\\Windows\\\\Fonts\\\\*", "*\\\\Windows\\\\IME\\\\*", "*\\\\Windows\\\\addins\\\\*", "*\\\\Windows\\\\debug\\\\*"]
 ```
 
 

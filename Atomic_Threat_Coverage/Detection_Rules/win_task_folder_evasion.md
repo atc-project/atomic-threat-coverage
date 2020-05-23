@@ -4,7 +4,7 @@
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li><li>[T1211: Exploitation for Defense Evasion](https://attack.mitre.org/techniques/T1211)</li><li>[T1059: Command-Line Interface](https://attack.mitre.org/techniques/T1059)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1064: Scripting](../Triggers/T1064.md)</li><li>[T1211: Exploitation for Defense Evasion](../Triggers/T1211.md)</li><li>[T1059: Command-Line Interface](../Triggers/T1059.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1064: Scripting](../Triggers/T1064.md)</li><li>[T1059: Command-Line Interface](../Triggers/T1059.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -60,45 +60,52 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {(($_.message -match "CommandLine.*.*echo .*" -or $_.message -match "CommandLine.*.*copy .*" -or $_.message -match "CommandLine.*.*type .*" -or $_.message -match "CommandLine.*.*file createnew.*") -and ($_.message -match "CommandLine.*.* C:\\\\Windows\\\\System32\\\\Tasks\\\\.*" -or $_.message -match "CommandLine.*.* C:\\\\Windows\\\\SysWow64\\\\Tasks\\\\.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(CommandLine.keyword:(*echo\\ * OR *copy\\ * OR *type\\ * OR *file\\ createnew*) AND CommandLine.keyword:(*\\ C\\:\\\\Windows\\\\System32\\\\Tasks\\* OR *\\ C\\:\\\\Windows\\\\SysWow64\\\\Tasks\\*))
+(winlog.event_data.CommandLine.keyword:(*echo\\ * OR *copy\\ * OR *type\\ * OR *file\\ createnew*) AND winlog.event_data.CommandLine.keyword:(*\\ C\\:\\\\Windows\\\\System32\\\\Tasks\\\\* OR *\\ C\\:\\\\Windows\\\\SysWow64\\\\Tasks\\\\*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/cc4e02ba-9c06-48e2-b09e-2500cace9ae0 <<EOF\n{\n  "metadata": {\n    "title": "Tasks Folder Evasion",\n    "description": "The Tasks folder in system32 and syswow64 are globally writable paths. Adversaries can take advantage of this and load or influence any script hosts or ANY .NET Application in Tasks to load and execute a custom assembly into cscript, wscript, regsvr32, mshta, eventvwr",\n    "tags": [\n      "attack.t1064",\n      "attack.t1211",\n      "attack.t1059",\n      "attack.defense_evasion",\n      "attack.persistence"\n    ],\n    "query": "(CommandLine.keyword:(*echo\\\\ * OR *copy\\\\ * OR *type\\\\ * OR *file\\\\ createnew*) AND CommandLine.keyword:(*\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\* OR *\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\SysWow64\\\\\\\\Tasks\\\\*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(CommandLine.keyword:(*echo\\\\ * OR *copy\\\\ * OR *type\\\\ * OR *file\\\\ createnew*) AND CommandLine.keyword:(*\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\* OR *\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\SysWow64\\\\\\\\Tasks\\\\*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Tasks Folder Evasion\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n  CommandLine = {{_source.CommandLine}}\\nParentProcess = {{_source.ParentProcess}}\\n  CommandLine = {{_source.CommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/cc4e02ba-9c06-48e2-b09e-2500cace9ae0 <<EOF\n{\n  "metadata": {\n    "title": "Tasks Folder Evasion",\n    "description": "The Tasks folder in system32 and syswow64 are globally writable paths. Adversaries can take advantage of this and load or influence any script hosts or ANY .NET Application in Tasks to load and execute a custom assembly into cscript, wscript, regsvr32, mshta, eventvwr",\n    "tags": [\n      "attack.t1064",\n      "attack.t1211",\n      "attack.t1059",\n      "attack.defense_evasion",\n      "attack.persistence"\n    ],\n    "query": "(winlog.event_data.CommandLine.keyword:(*echo\\\\ * OR *copy\\\\ * OR *type\\\\ * OR *file\\\\ createnew*) AND winlog.event_data.CommandLine.keyword:(*\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\\\\\* OR *\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\SysWow64\\\\\\\\Tasks\\\\\\\\*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.CommandLine.keyword:(*echo\\\\ * OR *copy\\\\ * OR *type\\\\ * OR *file\\\\ createnew*) AND winlog.event_data.CommandLine.keyword:(*\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\\\\\* OR *\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\SysWow64\\\\\\\\Tasks\\\\\\\\*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Tasks Folder Evasion\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n  CommandLine = {{_source.CommandLine}}\\nParentProcess = {{_source.ParentProcess}}\\n  CommandLine = {{_source.CommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
 ### graylog
     
 ```
-(CommandLine.keyword:(*echo * *copy * *type * *file createnew*) AND CommandLine.keyword:(* C\\:\\\\Windows\\\\System32\\\\Tasks\\* * C\\:\\\\Windows\\\\SysWow64\\\\Tasks\\*))
+(CommandLine.keyword:(*echo * *copy * *type * *file createnew*) AND CommandLine.keyword:(* C\\:\\\\Windows\\\\System32\\\\Tasks\\\\* * C\\:\\\\Windows\\\\SysWow64\\\\Tasks\\\\*))
 ```
 
 
 ### splunk
     
 ```
-((CommandLine="*echo *" OR CommandLine="*copy *" OR CommandLine="*type *" OR CommandLine="*file createnew*") (CommandLine="* C:\\\\Windows\\\\System32\\\\Tasks\\*" OR CommandLine="* C:\\\\Windows\\\\SysWow64\\\\Tasks\\*")) | table CommandLine,ParentProcess,CommandLine
+((CommandLine="*echo *" OR CommandLine="*copy *" OR CommandLine="*type *" OR CommandLine="*file createnew*") (CommandLine="* C:\\\\Windows\\\\System32\\\\Tasks\\\\*" OR CommandLine="* C:\\\\Windows\\\\SysWow64\\\\Tasks\\\\*")) | table CommandLine,ParentProcess,CommandLine
 ```
 
 
 ### logpoint
     
 ```
-(CommandLine IN ["*echo *", "*copy *", "*type *", "*file createnew*"] CommandLine IN ["* C:\\\\Windows\\\\System32\\\\Tasks\\*", "* C:\\\\Windows\\\\SysWow64\\\\Tasks\\*"])
+(CommandLine IN ["*echo *", "*copy *", "*type *", "*file createnew*"] CommandLine IN ["* C:\\\\Windows\\\\System32\\\\Tasks\\\\*", "* C:\\\\Windows\\\\SysWow64\\\\Tasks\\\\*"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*.*echo .*|.*.*copy .*|.*.*type .*|.*.*file createnew.*))(?=.*(?:.*.* C:\\Windows\\System32\\Tasks\\.*|.*.* C:\\Windows\\SysWow64\\Tasks\\.*)))'
+grep -P '^(?:.*(?=.*(?:.*.*echo .*|.*.*copy .*|.*.*type .*|.*.*file createnew.*))(?=.*(?:.*.* C:\\Windows\\System32\\Tasks\\\\.*|.*.* C:\\Windows\\SysWow64\\Tasks\\\\.*)))'
 ```
 
 

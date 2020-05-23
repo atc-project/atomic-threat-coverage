@@ -49,17 +49,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Security | where {($_.ID -eq "5156" -and ($_.message -match "5985" -or $_.message -match "5986") -and $_.message -match "LayerRTID.*44") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:"5156" AND DestPort:("5985" OR "5986") AND LayerRTID:"44")
+(winlog.channel:"Security" AND winlog.event_id:"5156" AND DestPort:("5985" OR "5986") AND LayerRTID:"44")
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/13acf386-b8c6-4fe0-9a6e-c4756b974698 <<EOF\n{\n  "metadata": {\n    "title": "Remote PowerShell Sessions",\n    "description": "Detects basic PowerShell Remoting by monitoring for network inbound connections to ports 5985 OR 5986",\n    "tags": [\n      "attack.execution",\n      "attack.t1086"\n    ],\n    "query": "(EventID:\\"5156\\" AND DestPort:(\\"5985\\" OR \\"5986\\") AND LayerRTID:\\"44\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"5156\\" AND DestPort:(\\"5985\\" OR \\"5986\\") AND LayerRTID:\\"44\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Remote PowerShell Sessions\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/13acf386-b8c6-4fe0-9a6e-c4756b974698 <<EOF\n{\n  "metadata": {\n    "title": "Remote PowerShell Sessions",\n    "description": "Detects basic PowerShell Remoting by monitoring for network inbound connections to ports 5985 OR 5986",\n    "tags": [\n      "attack.execution",\n      "attack.t1086"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"5156\\" AND DestPort:(\\"5985\\" OR \\"5986\\") AND LayerRTID:\\"44\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"5156\\" AND DestPort:(\\"5985\\" OR \\"5986\\") AND LayerRTID:\\"44\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Remote PowerShell Sessions\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -73,7 +80,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(EventID="5156" (DestPort="5985" OR DestPort="5986") LayerRTID="44")
+(source="WinEventLog:Security" EventCode="5156" (DestPort="5985" OR DestPort="5986") LayerRTID="44")
 ```
 
 

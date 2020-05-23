@@ -50,17 +50,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "10" -and $_.message -match "TargetImage.*.*\\\\windows\\\\system32\\\\svchost.exe" -and $_.message -match "GrantedAccess.*0x1f3fff" -and ($_.message -match "CallTrace.*.*unknown.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:"10" AND TargetImage.keyword:*\\\\windows\\\\system32\\\\svchost.exe AND GrantedAccess:"0x1f3fff" AND CallTrace.keyword:(*unknown*))
+(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"10" AND winlog.event_data.TargetImage.keyword:*\\\\windows\\\\system32\\\\svchost.exe AND winlog.event_data.GrantedAccess:"0x1f3fff" AND winlog.event_data.CallTrace.keyword:(*unknown*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/166e9c50-8cd9-44af-815d-d1f0c0e90dde <<EOF\n{\n  "metadata": {\n    "title": "Suspect Svchost Memory Asccess",\n    "description": "Detects suspect access to svchost process memory such as that used by Invoke-Phantom to kill the winRM windows event logging service.",\n    "tags": [\n      "attack.t1089",\n      "attack.defense_evasion"\n    ],\n    "query": "(EventID:\\"10\\" AND TargetImage.keyword:*\\\\\\\\windows\\\\\\\\system32\\\\\\\\svchost.exe AND GrantedAccess:\\"0x1f3fff\\" AND CallTrace.keyword:(*unknown*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"10\\" AND TargetImage.keyword:*\\\\\\\\windows\\\\\\\\system32\\\\\\\\svchost.exe AND GrantedAccess:\\"0x1f3fff\\" AND CallTrace.keyword:(*unknown*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspect Svchost Memory Asccess\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/166e9c50-8cd9-44af-815d-d1f0c0e90dde <<EOF\n{\n  "metadata": {\n    "title": "Suspect Svchost Memory Asccess",\n    "description": "Detects suspect access to svchost process memory such as that used by Invoke-Phantom to kill the winRM windows event logging service.",\n    "tags": [\n      "attack.t1089",\n      "attack.defense_evasion"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"10\\" AND winlog.event_data.TargetImage.keyword:*\\\\\\\\windows\\\\\\\\system32\\\\\\\\svchost.exe AND winlog.event_data.GrantedAccess:\\"0x1f3fff\\" AND winlog.event_data.CallTrace.keyword:(*unknown*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"10\\" AND winlog.event_data.TargetImage.keyword:*\\\\\\\\windows\\\\\\\\system32\\\\\\\\svchost.exe AND winlog.event_data.GrantedAccess:\\"0x1f3fff\\" AND winlog.event_data.CallTrace.keyword:(*unknown*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspect Svchost Memory Asccess\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -74,7 +81,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(EventID="10" TargetImage="*\\\\windows\\\\system32\\\\svchost.exe" GrantedAccess="0x1f3fff" (CallTrace="*unknown*"))
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="10" TargetImage="*\\\\windows\\\\system32\\\\svchost.exe" GrantedAccess="0x1f3fff" (CallTrace="*unknown*"))
 ```
 
 

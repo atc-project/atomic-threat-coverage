@@ -47,17 +47,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {($_.message -match "User.*NT AUTHORITY\\\\SYSTEM" -and $_.message -match "Image.*.*\\\\tscon.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(User:"NT\\ AUTHORITY\\\\SYSTEM" AND Image.keyword:*\\\\tscon.exe)
+(winlog.event_data.User:"NT\\ AUTHORITY\\\\SYSTEM" AND winlog.event_data.Image.keyword:*\\\\tscon.exe)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9847f263-4a81-424f-970c-875dab15b79b <<EOF\n{\n  "metadata": {\n    "title": "Suspicious TSCON Start",\n    "description": "Detects a tscon.exe start as LOCAL SYSTEM",\n    "tags": [\n      "attack.command_and_control",\n      "attack.t1219"\n    ],\n    "query": "(User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\" AND Image.keyword:*\\\\\\\\tscon.exe)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\" AND Image.keyword:*\\\\\\\\tscon.exe)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious TSCON Start\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9847f263-4a81-424f-970c-875dab15b79b <<EOF\n{\n  "metadata": {\n    "title": "Suspicious TSCON Start",\n    "description": "Detects a tscon.exe start as LOCAL SYSTEM",\n    "tags": [\n      "attack.command_and_control",\n      "attack.t1219"\n    ],\n    "query": "(winlog.event_data.User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\" AND winlog.event_data.Image.keyword:*\\\\\\\\tscon.exe)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\" AND winlog.event_data.Image.keyword:*\\\\\\\\tscon.exe)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious TSCON Start\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -78,7 +85,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(event_id="1" User="NT AUTHORITY\\\\SYSTEM" Image="*\\\\tscon.exe")
+(User="NT AUTHORITY\\\\SYSTEM" Image="*\\\\tscon.exe")
 ```
 
 

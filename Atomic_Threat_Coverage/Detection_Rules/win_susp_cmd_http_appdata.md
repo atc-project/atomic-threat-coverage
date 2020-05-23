@@ -52,17 +52,24 @@ level: medium
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {($_.message -match "CommandLine.*cmd.exe /c .*http://.*%AppData%" -or $_.message -match "CommandLine.*cmd.exe /c .*https://.*%AppData%") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-CommandLine.keyword:(cmd.exe\\ \\/c\\ *http\\:\\/\\/*%AppData% OR cmd.exe\\ \\/c\\ *https\\:\\/\\/*%AppData%)
+winlog.event_data.CommandLine.keyword:(cmd.exe\\ \\/c\\ *http\\:\\/\\/*%AppData% OR cmd.exe\\ \\/c\\ *https\\:\\/\\/*%AppData%)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1ac8666b-046f-4201-8aba-1951aaec03a3 <<EOF\n{\n  "metadata": {\n    "title": "Command Line Execution with Suspicious URL and AppData Strings",\n    "description": "Detects a suspicious command line execution that includes an URL and AppData string in the command line parameters as used by several droppers (js/vbs > powershell)",\n    "tags": [\n      "attack.execution",\n      "attack.t1059"\n    ],\n    "query": "CommandLine.keyword:(cmd.exe\\\\ \\\\/c\\\\ *http\\\\:\\\\/\\\\/*%AppData% OR cmd.exe\\\\ \\\\/c\\\\ *https\\\\:\\\\/\\\\/*%AppData%)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "CommandLine.keyword:(cmd.exe\\\\ \\\\/c\\\\ *http\\\\:\\\\/\\\\/*%AppData% OR cmd.exe\\\\ \\\\/c\\\\ *https\\\\:\\\\/\\\\/*%AppData%)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Command Line Execution with Suspicious URL and AppData Strings\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1ac8666b-046f-4201-8aba-1951aaec03a3 <<EOF\n{\n  "metadata": {\n    "title": "Command Line Execution with Suspicious URL and AppData Strings",\n    "description": "Detects a suspicious command line execution that includes an URL and AppData string in the command line parameters as used by several droppers (js/vbs > powershell)",\n    "tags": [\n      "attack.execution",\n      "attack.t1059"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(cmd.exe\\\\ \\\\/c\\\\ *http\\\\:\\\\/\\\\/*%AppData% OR cmd.exe\\\\ \\\\/c\\\\ *https\\\\:\\\\/\\\\/*%AppData%)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(cmd.exe\\\\ \\\\/c\\\\ *http\\\\:\\\\/\\\\/*%AppData% OR cmd.exe\\\\ \\\\/c\\\\ *https\\\\:\\\\/\\\\/*%AppData%)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Command Line Execution with Suspicious URL and AppData Strings\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -83,7 +90,7 @@ CommandLine.keyword:(cmd.exe \\/c *http\\:\\/\\/*%AppData% cmd.exe \\/c *https\\
 ### logpoint
     
 ```
-(event_id="1" CommandLine IN ["cmd.exe /c *http://*%AppData%", "cmd.exe /c *https://*%AppData%"])
+CommandLine IN ["cmd.exe /c *http://*%AppData%", "cmd.exe /c *https://*%AppData%"]
 ```
 
 

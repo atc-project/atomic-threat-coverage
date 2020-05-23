@@ -54,45 +54,52 @@ status: experimental
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Security | where {($_.ID -eq "5145" -and ($_.message -match "RelativeTargetName.*.*\\\\mimidrv.*" -or $_.message -match "RelativeTargetName.*.*\\\\lsass.*" -or $_.message -match "RelativeTargetName.*.*\\\\windows\\\\minidump\\\\.*" -or $_.message -match "RelativeTargetName.*.*\\\\hiberfil.*" -or $_.message -match "RelativeTargetName.*.*\\\\sqldmpr.*" -or $_.message -match "RelativeTargetName.*.*\\\\sam.*" -or $_.message -match "RelativeTargetName.*.*\\\\ntds.dit.*" -or $_.message -match "RelativeTargetName.*.*\\\\security.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:"5145" AND RelativeTargetName.keyword:(*\\\\mimidrv* OR *\\\\lsass* OR *\\\\windows\\\\minidump\\* OR *\\\\hiberfil* OR *\\\\sqldmpr* OR *\\\\sam* OR *\\\\ntds.dit* OR *\\\\security*))
+(winlog.channel:"Security" AND winlog.event_id:"5145" AND RelativeTargetName.keyword:(*\\\\mimidrv* OR *\\\\lsass* OR *\\\\windows\\\\minidump\\\\* OR *\\\\hiberfil* OR *\\\\sqldmpr* OR *\\\\sam* OR *\\\\ntds.dit* OR *\\\\security*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/910ab938-668b-401b-b08c-b596e80fdca5 <<EOF\n{\n  "metadata": {\n    "title": "Transfering Files with Credential Data via Network Shares",\n    "description": "Transfering files with well-known filenames (sensitive files with credential data) using network shares",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003"\n    ],\n    "query": "(EventID:\\"5145\\" AND RelativeTargetName.keyword:(*\\\\\\\\mimidrv* OR *\\\\\\\\lsass* OR *\\\\\\\\windows\\\\\\\\minidump\\\\* OR *\\\\\\\\hiberfil* OR *\\\\\\\\sqldmpr* OR *\\\\\\\\sam* OR *\\\\\\\\ntds.dit* OR *\\\\\\\\security*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"5145\\" AND RelativeTargetName.keyword:(*\\\\\\\\mimidrv* OR *\\\\\\\\lsass* OR *\\\\\\\\windows\\\\\\\\minidump\\\\* OR *\\\\\\\\hiberfil* OR *\\\\\\\\sqldmpr* OR *\\\\\\\\sam* OR *\\\\\\\\ntds.dit* OR *\\\\\\\\security*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Transfering Files with Credential Data via Network Shares\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/910ab938-668b-401b-b08c-b596e80fdca5 <<EOF\n{\n  "metadata": {\n    "title": "Transfering Files with Credential Data via Network Shares",\n    "description": "Transfering files with well-known filenames (sensitive files with credential data) using network shares",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"5145\\" AND RelativeTargetName.keyword:(*\\\\\\\\mimidrv* OR *\\\\\\\\lsass* OR *\\\\\\\\windows\\\\\\\\minidump\\\\\\\\* OR *\\\\\\\\hiberfil* OR *\\\\\\\\sqldmpr* OR *\\\\\\\\sam* OR *\\\\\\\\ntds.dit* OR *\\\\\\\\security*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"5145\\" AND RelativeTargetName.keyword:(*\\\\\\\\mimidrv* OR *\\\\\\\\lsass* OR *\\\\\\\\windows\\\\\\\\minidump\\\\\\\\* OR *\\\\\\\\hiberfil* OR *\\\\\\\\sqldmpr* OR *\\\\\\\\sam* OR *\\\\\\\\ntds.dit* OR *\\\\\\\\security*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Transfering Files with Credential Data via Network Shares\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
 ### graylog
     
 ```
-(EventID:"5145" AND RelativeTargetName.keyword:(*\\\\mimidrv* *\\\\lsass* *\\\\windows\\\\minidump\\* *\\\\hiberfil* *\\\\sqldmpr* *\\\\sam* *\\\\ntds.dit* *\\\\security*))
+(EventID:"5145" AND RelativeTargetName.keyword:(*\\\\mimidrv* *\\\\lsass* *\\\\windows\\\\minidump\\\\* *\\\\hiberfil* *\\\\sqldmpr* *\\\\sam* *\\\\ntds.dit* *\\\\security*))
 ```
 
 
 ### splunk
     
 ```
-(EventID="5145" (RelativeTargetName="*\\\\mimidrv*" OR RelativeTargetName="*\\\\lsass*" OR RelativeTargetName="*\\\\windows\\\\minidump\\*" OR RelativeTargetName="*\\\\hiberfil*" OR RelativeTargetName="*\\\\sqldmpr*" OR RelativeTargetName="*\\\\sam*" OR RelativeTargetName="*\\\\ntds.dit*" OR RelativeTargetName="*\\\\security*"))
+(source="WinEventLog:Security" EventCode="5145" (RelativeTargetName="*\\\\mimidrv*" OR RelativeTargetName="*\\\\lsass*" OR RelativeTargetName="*\\\\windows\\\\minidump\\\\*" OR RelativeTargetName="*\\\\hiberfil*" OR RelativeTargetName="*\\\\sqldmpr*" OR RelativeTargetName="*\\\\sam*" OR RelativeTargetName="*\\\\ntds.dit*" OR RelativeTargetName="*\\\\security*"))
 ```
 
 
 ### logpoint
     
 ```
-(event_source="Microsoft-Windows-Security-Auditing" event_id="5145" RelativeTargetName IN ["*\\\\mimidrv*", "*\\\\lsass*", "*\\\\windows\\\\minidump\\*", "*\\\\hiberfil*", "*\\\\sqldmpr*", "*\\\\sam*", "*\\\\ntds.dit*", "*\\\\security*"])
+(event_source="Microsoft-Windows-Security-Auditing" event_id="5145" RelativeTargetName IN ["*\\\\mimidrv*", "*\\\\lsass*", "*\\\\windows\\\\minidump\\\\*", "*\\\\hiberfil*", "*\\\\sqldmpr*", "*\\\\sam*", "*\\\\ntds.dit*", "*\\\\security*"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*5145)(?=.*(?:.*.*\\mimidrv.*|.*.*\\lsass.*|.*.*\\windows\\minidump\\.*|.*.*\\hiberfil.*|.*.*\\sqldmpr.*|.*.*\\sam.*|.*.*\\ntds\\.dit.*|.*.*\\security.*)))'
+grep -P '^(?:.*(?=.*5145)(?=.*(?:.*.*\\mimidrv.*|.*.*\\lsass.*|.*.*\\windows\\minidump\\\\.*|.*.*\\hiberfil.*|.*.*\\sqldmpr.*|.*.*\\sam.*|.*.*\\ntds\\.dit.*|.*.*\\security.*)))'
 ```
 
 

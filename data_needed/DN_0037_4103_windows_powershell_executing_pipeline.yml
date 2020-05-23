@@ -1,8 +1,8 @@
 title: DN_0037_4103_windows_powershell_executing_pipeline
 description: >
-  TODO
+  This event records pipeline execution, including variable initialization and command command invocations.
 loggingpolicy: 
-  - TODO
+  - LP_0108_windows_powershell_module_logging
 references:
   - https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/powershell/events/event-4103.md
 category: OS Logs

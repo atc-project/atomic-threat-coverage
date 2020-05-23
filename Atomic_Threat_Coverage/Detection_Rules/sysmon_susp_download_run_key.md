@@ -49,17 +49,24 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "13" -and ($_.message -match "Image.*.*\\\\Downloads\\\\.*" -or $_.message -match "Image.*.*\\\\Temporary Internet Files\\\\Content.Outlook\\\\.*" -or $_.message -match "Image.*.*\\\\Local Settings\\\\Temporary Internet Files\\\\.*") -and $_.message -match "TargetObject.*.*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\\.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:"13" AND Image.keyword:(*\\\\Downloads\\\\* OR *\\\\Temporary\\ Internet\\ Files\\\\Content.Outlook\\\\* OR *\\\\Local\\ Settings\\\\Temporary\\ Internet\\ Files\\\\*) AND TargetObject.keyword:*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\\*)
+(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"13" AND winlog.event_data.Image.keyword:(*\\\\Downloads\\\\* OR *\\\\Temporary\\ Internet\\ Files\\\\Content.Outlook\\\\* OR *\\\\Local\\ Settings\\\\Temporary\\ Internet\\ Files\\\\*) AND winlog.event_data.TargetObject.keyword:*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\\*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9c5037d1-c568-49b3-88c7-9846a5bdc2be <<EOF\n{\n  "metadata": {\n    "title": "Suspicious RUN Key from Download",\n    "description": "Detects the suspicious RUN keys created by software located in Download or temporary Outlook/Internet Explorer directories",\n    "tags": [\n      "attack.persistence",\n      "attack.t1060"\n    ],\n    "query": "(EventID:\\"13\\" AND Image.keyword:(*\\\\\\\\Downloads\\\\\\\\* OR *\\\\\\\\Temporary\\\\ Internet\\\\ Files\\\\\\\\Content.Outlook\\\\\\\\* OR *\\\\\\\\Local\\\\ Settings\\\\\\\\Temporary\\\\ Internet\\\\ Files\\\\\\\\*) AND TargetObject.keyword:*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run\\\\\\\\*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:\\"13\\" AND Image.keyword:(*\\\\\\\\Downloads\\\\\\\\* OR *\\\\\\\\Temporary\\\\ Internet\\\\ Files\\\\\\\\Content.Outlook\\\\\\\\* OR *\\\\\\\\Local\\\\ Settings\\\\\\\\Temporary\\\\ Internet\\\\ Files\\\\\\\\*) AND TargetObject.keyword:*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run\\\\\\\\*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious RUN Key from Download\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9c5037d1-c568-49b3-88c7-9846a5bdc2be <<EOF\n{\n  "metadata": {\n    "title": "Suspicious RUN Key from Download",\n    "description": "Detects the suspicious RUN keys created by software located in Download or temporary Outlook/Internet Explorer directories",\n    "tags": [\n      "attack.persistence",\n      "attack.t1060"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"13\\" AND winlog.event_data.Image.keyword:(*\\\\\\\\Downloads\\\\\\\\* OR *\\\\\\\\Temporary\\\\ Internet\\\\ Files\\\\\\\\Content.Outlook\\\\\\\\* OR *\\\\\\\\Local\\\\ Settings\\\\\\\\Temporary\\\\ Internet\\\\ Files\\\\\\\\*) AND winlog.event_data.TargetObject.keyword:*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run\\\\\\\\*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"13\\" AND winlog.event_data.Image.keyword:(*\\\\\\\\Downloads\\\\\\\\* OR *\\\\\\\\Temporary\\\\ Internet\\\\ Files\\\\\\\\Content.Outlook\\\\\\\\* OR *\\\\\\\\Local\\\\ Settings\\\\\\\\Temporary\\\\ Internet\\\\ Files\\\\\\\\*) AND winlog.event_data.TargetObject.keyword:*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run\\\\\\\\*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious RUN Key from Download\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -73,7 +80,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-(EventID="13" (Image="*\\\\Downloads\\\\*" OR Image="*\\\\Temporary Internet Files\\\\Content.Outlook\\\\*" OR Image="*\\\\Local Settings\\\\Temporary Internet Files\\\\*") TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\\*")
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="13" (Image="*\\\\Downloads\\\\*" OR Image="*\\\\Temporary Internet Files\\\\Content.Outlook\\\\*" OR Image="*\\\\Local Settings\\\\Temporary Internet Files\\\\*") TargetObject="*\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\\*")
 ```
 
 

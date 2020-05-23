@@ -55,6 +55,13 @@ level: critical
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "15" -and  -not (($_.message -match "00000000000000000000000000000000" -or $_.message -match "None"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```

@@ -57,17 +57,24 @@ level: critical
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {($_.message -match "Image.*.*.doc.exe" -or $_.message -match "Image.*.*.docx.exe" -or $_.message -match "Image.*.*.xls.exe" -or $_.message -match "Image.*.*.xlsx.exe" -or $_.message -match "Image.*.*.ppt.exe" -or $_.message -match "Image.*.*.pptx.exe" -or $_.message -match "Image.*.*.rtf.exe" -or $_.message -match "Image.*.*.pdf.exe" -or $_.message -match "Image.*.*.txt.exe" -or $_.message -match "Image.*.*      .exe" -or $_.message -match "Image.*.*______.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-Image.keyword:(*.doc.exe OR *.docx.exe OR *.xls.exe OR *.xlsx.exe OR *.ppt.exe OR *.pptx.exe OR *.rtf.exe OR *.pdf.exe OR *.txt.exe OR *\\ \\ \\ \\ \\ \\ .exe OR *______.exe)
+winlog.event_data.Image.keyword:(*.doc.exe OR *.docx.exe OR *.xls.exe OR *.xlsx.exe OR *.ppt.exe OR *.pptx.exe OR *.rtf.exe OR *.pdf.exe OR *.txt.exe OR *\\ \\ \\ \\ \\ \\ .exe OR *______.exe)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1cdd9a09-06c9-4769-99ff-626e2b3991b8 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Double Extension",\n    "description": "Detects suspicious use of an .exe extension after a non-executable file extension like .pdf.exe, a set of spaces or underlines to cloak the executable file in spear phishing campaigns",\n    "tags": [\n      "attack.initial_access",\n      "attack.t1193"\n    ],\n    "query": "Image.keyword:(*.doc.exe OR *.docx.exe OR *.xls.exe OR *.xlsx.exe OR *.ppt.exe OR *.pptx.exe OR *.rtf.exe OR *.pdf.exe OR *.txt.exe OR *\\\\ \\\\ \\\\ \\\\ \\\\ \\\\ .exe OR *______.exe)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "Image.keyword:(*.doc.exe OR *.docx.exe OR *.xls.exe OR *.xlsx.exe OR *.ppt.exe OR *.pptx.exe OR *.rtf.exe OR *.pdf.exe OR *.txt.exe OR *\\\\ \\\\ \\\\ \\\\ \\\\ \\\\ .exe OR *______.exe)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Double Extension\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1cdd9a09-06c9-4769-99ff-626e2b3991b8 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Double Extension",\n    "description": "Detects suspicious use of an .exe extension after a non-executable file extension like .pdf.exe, a set of spaces or underlines to cloak the executable file in spear phishing campaigns",\n    "tags": [\n      "attack.initial_access",\n      "attack.t1193"\n    ],\n    "query": "winlog.event_data.Image.keyword:(*.doc.exe OR *.docx.exe OR *.xls.exe OR *.xlsx.exe OR *.ppt.exe OR *.pptx.exe OR *.rtf.exe OR *.pdf.exe OR *.txt.exe OR *\\\\ \\\\ \\\\ \\\\ \\\\ \\\\ .exe OR *______.exe)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.Image.keyword:(*.doc.exe OR *.docx.exe OR *.xls.exe OR *.xlsx.exe OR *.ppt.exe OR *.pptx.exe OR *.rtf.exe OR *.pdf.exe OR *.txt.exe OR *\\\\ \\\\ \\\\ \\\\ \\\\ \\\\ .exe OR *______.exe)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Double Extension\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -88,7 +95,7 @@ Image.keyword:(*.doc.exe *.docx.exe *.xls.exe *.xlsx.exe *.ppt.exe *.pptx.exe *.
 ### logpoint
     
 ```
-(event_id="1" Image IN ["*.doc.exe", "*.docx.exe", "*.xls.exe", "*.xlsx.exe", "*.ppt.exe", "*.pptx.exe", "*.rtf.exe", "*.pdf.exe", "*.txt.exe", "*      .exe", "*______.exe"])
+Image IN ["*.doc.exe", "*.docx.exe", "*.xls.exe", "*.xlsx.exe", "*.ppt.exe", "*.pptx.exe", "*.rtf.exe", "*.pdf.exe", "*.txt.exe", "*      .exe", "*______.exe"]
 ```
 
 

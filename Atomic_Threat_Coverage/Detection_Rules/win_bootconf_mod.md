@@ -37,7 +37,7 @@ logsource:
 detection:
     selection1:
         Image|endswith: \bcdedit.exe
-        CommandLine: set
+        CommandLine|contains: set
     selection2:
         - CommandLine|contains|all:
             - bootstatuspolicy
@@ -60,45 +60,52 @@ level: high
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {(($_.message -match "Image.*.*\\\\bcdedit.exe" -and $_.message -match "CommandLine.*.*set.*") -and (($_.message -match "CommandLine.*.*bootstatuspolicy.*" -and $_.message -match "CommandLine.*.*ignoreallfailures.*") -or ($_.message -match "CommandLine.*.*recoveryenabled.*" -and $_.message -match "CommandLine.*.*no.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-((Image.keyword:*\\\\bcdedit.exe AND CommandLine:"set") AND ((CommandLine.keyword:*bootstatuspolicy* AND CommandLine.keyword:*ignoreallfailures*) OR (CommandLine.keyword:*recoveryenabled* AND CommandLine.keyword:*no*)))
+((winlog.event_data.Image.keyword:*\\\\bcdedit.exe AND winlog.event_data.CommandLine.keyword:*set*) AND ((winlog.event_data.CommandLine.keyword:*bootstatuspolicy* AND winlog.event_data.CommandLine.keyword:*ignoreallfailures*) OR (winlog.event_data.CommandLine.keyword:*recoveryenabled* AND winlog.event_data.CommandLine.keyword:*no*)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1444443e-6757-43e4-9ea4-c8fc705f79a2 <<EOF\n{\n  "metadata": {\n    "title": "Modification of Boot Configuration",\n    "description": "Identifies use of the bcdedit command to delete boot configuration data. This tactic is sometimes used as by malware or an attacker as a destructive technique.",\n    "tags": [\n      "attack.impact",\n      "attack.t1490"\n    ],\n    "query": "((Image.keyword:*\\\\\\\\bcdedit.exe AND CommandLine:\\"set\\") AND ((CommandLine.keyword:*bootstatuspolicy* AND CommandLine.keyword:*ignoreallfailures*) OR (CommandLine.keyword:*recoveryenabled* AND CommandLine.keyword:*no*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Image.keyword:*\\\\\\\\bcdedit.exe AND CommandLine:\\"set\\") AND ((CommandLine.keyword:*bootstatuspolicy* AND CommandLine.keyword:*ignoreallfailures*) OR (CommandLine.keyword:*recoveryenabled* AND CommandLine.keyword:*no*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Modification of Boot Configuration\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nComputerName = {{_source.ComputerName}}\\n        User = {{_source.User}}\\n CommandLine = {{_source.CommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1444443e-6757-43e4-9ea4-c8fc705f79a2 <<EOF\n{\n  "metadata": {\n    "title": "Modification of Boot Configuration",\n    "description": "Identifies use of the bcdedit command to delete boot configuration data. This tactic is sometimes used as by malware or an attacker as a destructive technique.",\n    "tags": [\n      "attack.impact",\n      "attack.t1490"\n    ],\n    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\bcdedit.exe AND winlog.event_data.CommandLine.keyword:*set*) AND ((winlog.event_data.CommandLine.keyword:*bootstatuspolicy* AND winlog.event_data.CommandLine.keyword:*ignoreallfailures*) OR (winlog.event_data.CommandLine.keyword:*recoveryenabled* AND winlog.event_data.CommandLine.keyword:*no*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\bcdedit.exe AND winlog.event_data.CommandLine.keyword:*set*) AND ((winlog.event_data.CommandLine.keyword:*bootstatuspolicy* AND winlog.event_data.CommandLine.keyword:*ignoreallfailures*) OR (winlog.event_data.CommandLine.keyword:*recoveryenabled* AND winlog.event_data.CommandLine.keyword:*no*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Modification of Boot Configuration\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nComputerName = {{_source.ComputerName}}\\n        User = {{_source.User}}\\n CommandLine = {{_source.CommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
 ### graylog
     
 ```
-((Image.keyword:*\\\\bcdedit.exe AND CommandLine:"set") AND ((CommandLine.keyword:*bootstatuspolicy* AND CommandLine.keyword:*ignoreallfailures*) OR (CommandLine.keyword:*recoveryenabled* AND CommandLine.keyword:*no*)))
+((Image.keyword:*\\\\bcdedit.exe AND CommandLine.keyword:*set*) AND ((CommandLine.keyword:*bootstatuspolicy* AND CommandLine.keyword:*ignoreallfailures*) OR (CommandLine.keyword:*recoveryenabled* AND CommandLine.keyword:*no*)))
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\\\bcdedit.exe" CommandLine="set") ((CommandLine="*bootstatuspolicy*" CommandLine="*ignoreallfailures*") OR (CommandLine="*recoveryenabled*" CommandLine="*no*"))) | table ComputerName,User,CommandLine
+((Image="*\\\\bcdedit.exe" CommandLine="*set*") ((CommandLine="*bootstatuspolicy*" CommandLine="*ignoreallfailures*") OR (CommandLine="*recoveryenabled*" CommandLine="*no*"))) | table ComputerName,User,CommandLine
 ```
 
 
 ### logpoint
     
 ```
-(event_id="1" (Image="*\\\\bcdedit.exe" CommandLine="set") ((CommandLine="*bootstatuspolicy*" CommandLine="*ignoreallfailures*") OR (CommandLine="*recoveryenabled*" CommandLine="*no*")))
+((Image="*\\\\bcdedit.exe" CommandLine="*set*") ((CommandLine="*bootstatuspolicy*" CommandLine="*ignoreallfailures*") OR (CommandLine="*recoveryenabled*" CommandLine="*no*")))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?=.*.*\\bcdedit\\.exe)(?=.*set)))(?=.*(?:.*(?:.*(?:.*(?=.*.*bootstatuspolicy.*)(?=.*.*ignoreallfailures.*))|.*(?:.*(?=.*.*recoveryenabled.*)(?=.*.*no.*))))))'
+grep -P '^(?:.*(?=.*(?:.*(?=.*.*\\bcdedit\\.exe)(?=.*.*set.*)))(?=.*(?:.*(?:.*(?:.*(?=.*.*bootstatuspolicy.*)(?=.*.*ignoreallfailures.*))|.*(?:.*(?=.*.*recoveryenabled.*)(?=.*.*no.*))))))'
 ```
 
 

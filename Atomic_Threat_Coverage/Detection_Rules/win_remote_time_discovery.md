@@ -54,17 +54,24 @@ level: low
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {((($_.message -match "Image.*.*\\\\net.exe" -or $_.message -match "Image.*.*\\\\net1.exe") -and $_.message -match "CommandLine.*.*time.*") -or ($_.message -match "Image.*.*\\\\w32tm.exe" -and $_.message -match "CommandLine.*.*tz.*") -or ($_.message -match "Image.*.*\\\\powershell.exe" -and $_.message -match "CommandLine.*.*Get-Date.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-((Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND CommandLine.keyword:*time*) OR (Image.keyword:*\\\\w32tm.exe AND CommandLine.keyword:*tz*) OR (Image.keyword:*\\\\powershell.exe AND CommandLine.keyword:*Get\\-Date*))
+((winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*time*) OR (winlog.event_data.Image.keyword:*\\\\w32tm.exe AND winlog.event_data.CommandLine.keyword:*tz*) OR (winlog.event_data.Image.keyword:*\\\\powershell.exe AND winlog.event_data.CommandLine.keyword:*Get\\-Date*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/b243b280-65fe-48df-ba07-6ddea7646427 <<EOF\n{\n  "metadata": {\n    "title": "Discovery of a System Time",\n    "description": "Identifies use of various commands to query a systems time. This technique may be used before executing a scheduled task or to discover the time zone of a target system.",\n    "tags": [\n      "attack.discovery",\n      "attack.t1124"\n    ],\n    "query": "((Image.keyword:(*\\\\\\\\net.exe OR *\\\\\\\\net1.exe) AND CommandLine.keyword:*time*) OR (Image.keyword:*\\\\\\\\w32tm.exe AND CommandLine.keyword:*tz*) OR (Image.keyword:*\\\\\\\\powershell.exe AND CommandLine.keyword:*Get\\\\-Date*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Image.keyword:(*\\\\\\\\net.exe OR *\\\\\\\\net1.exe) AND CommandLine.keyword:*time*) OR (Image.keyword:*\\\\\\\\w32tm.exe AND CommandLine.keyword:*tz*) OR (Image.keyword:*\\\\\\\\powershell.exe AND CommandLine.keyword:*Get\\\\-Date*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Discovery of a System Time\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/b243b280-65fe-48df-ba07-6ddea7646427 <<EOF\n{\n  "metadata": {\n    "title": "Discovery of a System Time",\n    "description": "Identifies use of various commands to query a systems time. This technique may be used before executing a scheduled task or to discover the time zone of a target system.",\n    "tags": [\n      "attack.discovery",\n      "attack.t1124"\n    ],\n    "query": "((winlog.event_data.Image.keyword:(*\\\\\\\\net.exe OR *\\\\\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*time*) OR (winlog.event_data.Image.keyword:*\\\\\\\\w32tm.exe AND winlog.event_data.CommandLine.keyword:*tz*) OR (winlog.event_data.Image.keyword:*\\\\\\\\powershell.exe AND winlog.event_data.CommandLine.keyword:*Get\\\\-Date*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.Image.keyword:(*\\\\\\\\net.exe OR *\\\\\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*time*) OR (winlog.event_data.Image.keyword:*\\\\\\\\w32tm.exe AND winlog.event_data.CommandLine.keyword:*tz*) OR (winlog.event_data.Image.keyword:*\\\\\\\\powershell.exe AND winlog.event_data.CommandLine.keyword:*Get\\\\-Date*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Discovery of a System Time\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -85,7 +92,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(event_id="1" ((Image IN ["*\\\\net.exe", "*\\\\net1.exe"] CommandLine="*time*") OR (Image="*\\\\w32tm.exe" CommandLine="*tz*") OR (Image="*\\\\powershell.exe" CommandLine="*Get-Date*")))
+((Image IN ["*\\\\net.exe", "*\\\\net1.exe"] CommandLine="*time*") OR (Image="*\\\\w32tm.exe" CommandLine="*tz*") OR (Image="*\\\\powershell.exe" CommandLine="*Get-Date*"))
 ```
 
 

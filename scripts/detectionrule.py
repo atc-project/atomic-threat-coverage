@@ -79,11 +79,32 @@ class DetectionRule:
             for query in queries:
                 # prepare command to execute from shell
                 # (yes, we know)
-                cmd = ATCconfig.get('sigmac_path') + ' --shoot-yourself-in-the-foot -t "' + \
-                    query + '" --ignore-backend-errors "' + self.yaml_file + '"'
-                    #query + " --ignore-backend-errors " + self.yaml_file + \
-                    #" 2> /dev/null"
-
+                if query == "powershell":
+                    cmd = ATCconfig.get('sigmac_path') + " -t " + query + \
+                        " --config  " + ATCconfig.get('powershell_sigma_config') + \
+                        " --ignore-backend-errors " + self.yaml_file
+                elif query == "es-qs":
+                    cmd = ATCconfig.get('sigmac_path') + " -t " + query + \
+                        " --config  " + ATCconfig.get('es-qs_sigma_config') + \
+                        " --ignore-backend-errors " + self.yaml_file
+                elif query == "xpack-watcher":
+                    cmd = ATCconfig.get('sigmac_path') + " -t " + query + \
+                        " --config  " + ATCconfig.get('xpack-watcher_sigma_config') + \
+                        " --ignore-backend-errors " + self.yaml_file
+                elif query == "splunk":
+                    cmd = ATCconfig.get('sigmac_path') + " -t " + query + \
+                        " --config  " + ATCconfig.get('splunk_sigma_config') + \
+                        " --ignore-backend-errors " + self.yaml_file
+                elif query == "logpoint":
+                    cmd = ATCconfig.get('sigmac_path') + " -t " + query + \
+                        " --config  " + ATCconfig.get('logpoint_sigma_config') + \
+                        " --ignore-backend-errors " + self.yaml_file
+                else:
+                    cmd = ATCconfig.get('sigmac_path') + ' --shoot-yourself-in-the-foot -t "' + \
+                        query + '" --ignore-backend-errors "' + self.yaml_file + '"'
+                        #query + " --ignore-backend-errors " + self.yaml_file + \
+                        #" 2> /dev/null"
+                
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
 
                 (query2, err) = p.communicate()
@@ -173,13 +194,13 @@ class DetectionRule:
             for trigger in technique:
                 if trigger is "None":
                     continue
-
-                try:
-
+                trigger_name, trigger_id = trigger
+                # Check if a directory for a technique exists in atomic red team repo
+                if os.path.isdir(ATCconfig.get('triggers_directory') + '/' + trigger_id):
                     triggers.append(trigger)
 
-                except FileNotFoundError:
-                    print(trigger + ": No atomics trigger for this technique")
+                else:
+                    print(trigger_id + ": No atomics trigger for this technique")
                     """
                     triggers.append(
                         trigger + ": No atomics trigger for this technique"

@@ -62,17 +62,24 @@ status: experimental
 
 
 
+### powershell
+    
+```
+Get-WinEvent | where {(($_.message -match "CommandLine.*.*DumpCreds.*" -or $_.message -match "CommandLine.*.*invoke-mimikatz.*") -or (($_.message -match "CommandLine.*.*rpc.*" -or $_.message -match "CommandLine.*.*token.*" -or $_.message -match "CommandLine.*.*crypto.*" -or $_.message -match "CommandLine.*.*dpapi.*" -or $_.message -match "CommandLine.*.*sekurlsa.*" -or $_.message -match "CommandLine.*.*kerberos.*" -or $_.message -match "CommandLine.*.*lsadump.*" -or $_.message -match "CommandLine.*.*privilege.*" -or $_.message -match "CommandLine.*.*process.*") -and ($_.message -match "CommandLine.*.*::.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(CommandLine.keyword:(*DumpCreds* OR *invoke\\-mimikatz*) OR (CommandLine.keyword:(*rpc* OR *token* OR *crypto* OR *dpapi* OR *sekurlsa* OR *kerberos* OR *lsadump* OR *privilege* OR *process*) AND CommandLine.keyword:(*\\:\\:*)))
+(winlog.event_data.CommandLine.keyword:(*DumpCreds* OR *invoke\\-mimikatz*) OR (winlog.event_data.CommandLine.keyword:(*rpc* OR *token* OR *crypto* OR *dpapi* OR *sekurlsa* OR *kerberos* OR *lsadump* OR *privilege* OR *process*) AND winlog.event_data.CommandLine.keyword:(*\\:\\:*)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/a642964e-bead-4bed-8910-1bb4d63e3b4d <<EOF\n{\n  "metadata": {\n    "title": "Mimikatz Command Line",\n    "description": "Detection well-known mimikatz command line arguments",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003"\n    ],\n    "query": "(CommandLine.keyword:(*DumpCreds* OR *invoke\\\\-mimikatz*) OR (CommandLine.keyword:(*rpc* OR *token* OR *crypto* OR *dpapi* OR *sekurlsa* OR *kerberos* OR *lsadump* OR *privilege* OR *process*) AND CommandLine.keyword:(*\\\\:\\\\:*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(CommandLine.keyword:(*DumpCreds* OR *invoke\\\\-mimikatz*) OR (CommandLine.keyword:(*rpc* OR *token* OR *crypto* OR *dpapi* OR *sekurlsa* OR *kerberos* OR *lsadump* OR *privilege* OR *process*) AND CommandLine.keyword:(*\\\\:\\\\:*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Mimikatz Command Line\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/a642964e-bead-4bed-8910-1bb4d63e3b4d <<EOF\n{\n  "metadata": {\n    "title": "Mimikatz Command Line",\n    "description": "Detection well-known mimikatz command line arguments",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003"\n    ],\n    "query": "(winlog.event_data.CommandLine.keyword:(*DumpCreds* OR *invoke\\\\-mimikatz*) OR (winlog.event_data.CommandLine.keyword:(*rpc* OR *token* OR *crypto* OR *dpapi* OR *sekurlsa* OR *kerberos* OR *lsadump* OR *privilege* OR *process*) AND winlog.event_data.CommandLine.keyword:(*\\\\:\\\\:*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.CommandLine.keyword:(*DumpCreds* OR *invoke\\\\-mimikatz*) OR (winlog.event_data.CommandLine.keyword:(*rpc* OR *token* OR *crypto* OR *dpapi* OR *sekurlsa* OR *kerberos* OR *lsadump* OR *privilege* OR *process*) AND winlog.event_data.CommandLine.keyword:(*\\\\:\\\\:*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Mimikatz Command Line\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -93,7 +100,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### logpoint
     
 ```
-(event_id="1" (CommandLine IN ["*DumpCreds*", "*invoke-mimikatz*"] OR (CommandLine IN ["*rpc*", "*token*", "*crypto*", "*dpapi*", "*sekurlsa*", "*kerberos*", "*lsadump*", "*privilege*", "*process*"] CommandLine IN ["*::*"])))
+(CommandLine IN ["*DumpCreds*", "*invoke-mimikatz*"] OR (CommandLine IN ["*rpc*", "*token*", "*crypto*", "*dpapi*", "*sekurlsa*", "*kerberos*", "*lsadump*", "*privilege*", "*process*"] CommandLine IN ["*::*"]))
 ```
 
 

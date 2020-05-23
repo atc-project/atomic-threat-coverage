@@ -53,17 +53,24 @@ level: critical
 
 
 
+### powershell
+    
+```
+Get-WinEvent -LogName Security | where {(($_.ID -eq "4656" -or $_.ID -eq "4663") -and $_.message -match "ObjectType.*key" -and ($_.message -match "ObjectName.*.*lsa\\\\JD" -or $_.message -match "ObjectName.*.*lsa\\\\GBG" -or $_.message -match "ObjectName.*.*lsa\\\\Skew1" -or $_.message -match "ObjectName.*.*lsa\\\\Data")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+```
+
+
 ### es-qs
     
 ```
-(EventID:("4656" OR "4663") AND ObjectType:"key" AND ObjectName.keyword:(*lsa\\\\JD OR *lsa\\\\GBG OR *lsa\\\\Skew1 OR *lsa\\\\Data))
+(winlog.channel:"Security" AND winlog.event_id:("4656" OR "4663") AND winlog.event_data.ObjectType:"key" AND winlog.event_data.ObjectName.keyword:(*lsa\\\\JD OR *lsa\\\\GBG OR *lsa\\\\Skew1 OR *lsa\\\\Data))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9a4ff3b8-6187-4fd2-8e8b-e0eae1129495 <<EOF\n{\n  "metadata": {\n    "title": "SysKey Registry Keys Access",\n    "description": "Detects handle requests and access operations to specific registry keys to calculate the SysKey",\n    "tags": [\n      "attack.discovery",\n      "attack.t1012"\n    ],\n    "query": "(EventID:(\\"4656\\" OR \\"4663\\") AND ObjectType:\\"key\\" AND ObjectName.keyword:(*lsa\\\\\\\\JD OR *lsa\\\\\\\\GBG OR *lsa\\\\\\\\Skew1 OR *lsa\\\\\\\\Data))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(EventID:(\\"4656\\" OR \\"4663\\") AND ObjectType:\\"key\\" AND ObjectName.keyword:(*lsa\\\\\\\\JD OR *lsa\\\\\\\\GBG OR *lsa\\\\\\\\Skew1 OR *lsa\\\\\\\\Data))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": []\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'SysKey Registry Keys Access\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9a4ff3b8-6187-4fd2-8e8b-e0eae1129495 <<EOF\n{\n  "metadata": {\n    "title": "SysKey Registry Keys Access",\n    "description": "Detects handle requests and access operations to specific registry keys to calculate the SysKey",\n    "tags": [\n      "attack.discovery",\n      "attack.t1012"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:(\\"4656\\" OR \\"4663\\") AND winlog.event_data.ObjectType:\\"key\\" AND winlog.event_data.ObjectName.keyword:(*lsa\\\\\\\\JD OR *lsa\\\\\\\\GBG OR *lsa\\\\\\\\Skew1 OR *lsa\\\\\\\\Data))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:(\\"4656\\" OR \\"4663\\") AND winlog.event_data.ObjectType:\\"key\\" AND winlog.event_data.ObjectName.keyword:(*lsa\\\\\\\\JD OR *lsa\\\\\\\\GBG OR *lsa\\\\\\\\Skew1 OR *lsa\\\\\\\\Data))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'SysKey Registry Keys Access\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
@@ -77,7 +84,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### splunk
     
 ```
-((EventID="4656" OR EventID="4663") ObjectType="key" (ObjectName="*lsa\\\\JD" OR ObjectName="*lsa\\\\GBG" OR ObjectName="*lsa\\\\Skew1" OR ObjectName="*lsa\\\\Data"))
+(source="WinEventLog:Security" (EventCode="4656" OR EventCode="4663") ObjectType="key" (ObjectName="*lsa\\\\JD" OR ObjectName="*lsa\\\\GBG" OR ObjectName="*lsa\\\\Skew1" OR ObjectName="*lsa\\\\Data"))
 ```
 
 
