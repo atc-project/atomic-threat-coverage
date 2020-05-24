@@ -57,8 +57,8 @@ class LoggingPolicy:
             template = env.get_template(
                 'confluence_loggingpolicy_template.html.j2')
 
-        self.fields.update(
-            {'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
+            self.fields.update(
+                {'confluence_viewpage_url': ATCconfig.get('confluence_viewpage_url')})
 
         # get rid of newline to not mess with table in md
         self.fields.update(

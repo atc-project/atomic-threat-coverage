@@ -9,11 +9,9 @@ from scripts.hardeningpolicy import HardeningPolicy
 from scripts.loggingpolicy import LoggingPolicy
 from scripts.triggers import Triggers
 from scripts.enrichment import Enrichment
-from scripts.responseaction import ResponseAction
-from scripts.responseplaybook import ResponsePlaybook
-from scripts.responsestage import ResponseStage
 from scripts.customer import Customer
 from scripts.attack_mapping import te_mapping
+from scripts.init_confluence import main as init_main
 
 # Import ATC Utils
 from scripts.atcutils import ATCutils
@@ -31,21 +29,15 @@ class PopulateConfluence:
     """Desc"""
 
     def __init__(self, auth, lp=False, dn=False, dr=False, en=False, tg=False,
-                 ra=False, rp=False, rs=False, cu=False, ms=False, mp=False, hp=False,
-                 auto=False, art_dir=False, atc_dir=False, lp_path=False,
-                 dn_path=False, dr_path=False, en_path=False, tg_path=False,
-                 ra_path=False, rp_path=False, rs_path=False, cu_path=False, 
+                 cu=False, ms=False, mp=False, hp=False, auto=False, 
+                 art_dir=False, atc_dir=False, lp_path=False, dn_path=False, 
+                 dr_path=False, en_path=False, tg_path=False, cu_path=False, 
                  hp_path=False, ms_path=False, mp_path=False, init=False):
         """Desc"""
 
         self.auth = auth
 
         self.space = ATCconfig.get('confluence_space_name')
-
-        # Assign default if there is no space specified
-        if not self.space:
-            self.space = "SOC"
-
         self.apipath = ATCconfig.get('confluence_rest_api_url')
         self.root_name = ATCconfig.get('confluence_name_of_root_directory')
 
@@ -65,10 +57,10 @@ class PopulateConfluence:
 
         # Check if init switch is used
         if init:
-            if self.init_export():
+            if init_main(self.auth):
                 print("[+] Created initial confluence pages successfully")
             else:
-                print("[X] Failed to create initial confluence pages")
+                print("[-] Failed to create initial confluence pages")
                 raise Exception("Failed to init pages")
 
         # Main logic
@@ -80,10 +72,6 @@ class PopulateConfluence:
             self.data_needed(dn_path)
             self.enrichment(en_path)
             self.triggers(tg_path)
-            self.response_stage(rs_path)
-            self.response_action(ra_path)
-            self.response_playbook(rp_path)
-            self.response_stage(rs_path)
             self.detection_rule(dr_path)
             self.customer(cu_path)
 
@@ -108,31 +96,12 @@ class PopulateConfluence:
         if dr:
             self.detection_rule(dr_path)
 
-        if ra:
-            print("[*] We need to create Response Stages first...")
-            self.response_stage(rs_path)
-            self.response_action(ra_path)
-            print("[*] Updating Response Stages...")
-            self.response_stage(rs_path)
-
-        if rp:
-            self.response_playbook(rp_path)
-
-        if rs:
-            self.response_stage(rs_path)
-
         if tg:
             self.triggers(tg_path)
 
         if cu:
             self.customer(cu_path)
 
-    def init_export(self):
-        """Desc"""
-
-        from init_confluence import main as init_main
-
-        return init_main(self.auth)
 
     def triggers(self, tg_path):
         """Populate Triggers"""
@@ -430,123 +399,6 @@ class PopulateConfluence:
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
         print("[+] Enrichments populated!")
-
-    def response_action(self, ra_path):
-        """Nothing here yet"""
-
-        print("[*] Populating Response Actions...")
-        if ra_path:
-            ra_list = glob.glob(ra_path + '*.yml')
-        else:
-            ra_dir = ATCconfig.get('response_actions_dir')
-            ra_list = glob.glob(ra_dir + '/*.yml')
-
-        for ra_file in ra_list:
-            try:
-                ra = ResponseAction(ra_file, apipath=self.apipath,
-                                    auth=self.auth, space=self.space)
-                ra.render_template("confluence")
-
-                confluence_data = {
-                    "title": ra.ra_parsed_file['title'],
-                    "spacekey": self.space,
-                    "parentid": str(ATCutils.confluence_get_page_id(
-                        self.apipath, self.auth, self.space,
-                        "Response Actions")), "confluencecontent": ra.content,
-                }
-
-                res = ATCutils.push_to_confluence(confluence_data, self.apipath, self.auth)
-                if res == 'Page updated':
-            	    print("==> updated page: RA '" + ra.ra_parsed_file['title'] + "'")
-                # print("Done: ", ra.ra_parsed_file['title'])
-            except Exception as err:
-                print(ra_file + " failed")
-                print("Err message: %s" % err)
-                print('-' * 60)
-                traceback.print_exc(file=sys.stdout)
-                print('-' * 60)
-
-        print("[+] Response Actions populated!")
-
-    def response_playbook(self, rp_path):
-        """Nothing here yet"""
-
-        print("[*] Populating Response Playbooks...")
-        if rp_path:
-            rp_list = glob.glob(rp_path + '*.yml')
-        else:
-            rp_dir = ATCconfig.get('response_playbooks_dir')
-            rp_list = glob.glob(rp_dir + '/*.yml')
-
-        for rp_file in rp_list:
-            try:
-                rp = ResponsePlaybook(rp_file, apipath=self.apipath,
-                                      auth=self.auth, space=self.space)
-                rp.render_template("confluence")
-
-                base = os.path.basename(rp_file)
-
-                confluence_data = {
-                    "title": rp.rp_parsed_file['title'],
-                    "spacekey": self.space,
-                    "parentid": str(ATCutils.confluence_get_page_id(
-                        self.apipath, self.auth, self.space,
-                        "Response Playbooks")),
-                    "confluencecontent": rp.content,
-                }
-
-                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
-                                            self.auth)
-                if res == 'Page updated':
-            	    print("==> updated page: RP '" + base + "'")
-                # print("Done: ", rp.rp_parsed_file['title'])
-            except Exception as err:
-                print(rp_file + " failed")
-                print("Err message: %s" % err)
-                print('-' * 60)
-                traceback.print_exc(file=sys.stdout)
-                print('-' * 60)
-        print("[+] Response Playbooks populated!")
-
-    def response_stage(self, rs_path):
-        """Nothing here yet"""
-
-        print("[*] Populating Response Stages...")
-        if rs_path:
-            rs_list = glob.glob(rs_path + '*.yml')
-        else:
-            rs_dir = ATCconfig.get('response_stages_dir')
-            rs_list = glob.glob(rs_dir + '/*.yml')
-
-        for rs_file in rs_list:
-            try:
-                rs = ResponseStage(rs_file, apipath=self.apipath,
-                                      auth=self.auth, space=self.space)
-                rs.render_template("confluence")
-
-                base = os.path.basename(rs_file)
-
-                confluence_data = {
-                    "title": rs.rs_parsed_file['title'],
-                    "spacekey": self.space,
-                    "parentid": str(ATCutils.confluence_get_page_id(
-                        self.apipath, self.auth, self.space,
-                        "Response Stages")),
-                    "confluencecontent": rs.content,
-                }
-
-                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
-                                            self.auth)
-                if res == 'Page updated':
-                    print("==> updated page: RS '" + base + "'")
-                # print("Done: ", rp.rp_parsed_file['title'])
-            except Exception as err:
-                print(rs_file + " failed")
-                print("Err message: %s" % err)
-                print('-' * 60)
-                traceback.print_exc(file=sys.stdout)
-                print('-' * 60)
-        print("[+] Response Stages populated!")
 
     def customer(self, cu_path):
         """Nothing here yet"""

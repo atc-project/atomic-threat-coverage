@@ -31,9 +31,8 @@ def main(c_auth=None):
     url = confluence_rest_api_url
     content = ""
 
-    print("Creating ATC page..")
-    # print(str(ATCutils.confluence_get_page_id(url,
-    # auth, confluence_space_name, confluence_space_home_page_name)))
+    print("[*] Creating ATC root page...")
+
     data = {
         "title": confluence_name_of_root_directory,
         "spacekey": confluence_space_name,
@@ -43,32 +42,30 @@ def main(c_auth=None):
         "confluencecontent": content,
     }
 
-    # print(push_to_confluence(data, url, auth))
     if not ATCutils.push_to_confluence(data, url, auth):
-        raise Exception("Could not create or update the page. " +
+        raise Exception("[-] Could not create or update the page. " +
                         "Is the parent name correct?")
 
-    spaces = ["Detection Rules", "Logging Policies",
+    pages = ["Detection Rules", "Logging Policies",
               "Data Needed", "Triggers", "Enrichments", "Customers",
               "Mitigation Systems", "Mitigation Policies",
-              "Hardening Policies", "Response Actions",
-              "Response Playbooks", "Response Stages"]
+              "Hardening Policies"]
 
-    for space in spaces:
-        print("Creating %s.." % space)
+    for page in pages:
+        print("Creating %s..." % page)
         data = {
-            "title": space,
+            "title": page,
             "spacekey": confluence_space_name,
             "parentid": str(ATCutils.confluence_get_page_id(
                 url, auth, confluence_space_name,
                 confluence_name_of_root_directory)),
             "confluencecontent": content,
         }
-        # print(push_to_confluence(data, url, auth))
+
         if not ATCutils.push_to_confluence(data, url, auth):
-            raise Exception("Could not create or update the page. " +
+            raise Exception("[-] Could not create or update the page. " +
                             "Is the parent name correct?")
-    print("Done!")
+    print("[+] Initial Confluence page structure created!")
     return True
 
 
