@@ -11,8 +11,10 @@ from scripts.attack_navigator_per_customer_export import GenerateDetectionNaviga
 from scripts.yamls2csv import GenerateCSV
 from scripts.es_index_export import GenerateESIndex
 
+# For RE&CT
 from response.atc_react.scripts.thehive_templates import RPTheHive
 from response.atc_react.scripts.populatemarkdown import ReactPopulateMarkdown
+from response.atc_react.scripts.populateconfluence import ReactPopulateConfluence
 from response.atc_react.scripts.react2stix import GenerateSTIX
 from response.atc_react.scripts.react_navigator import GenerateNavigator
 
@@ -132,7 +134,7 @@ if __name__ == '__main__':
                               init=args.init)
 
     elif args.confluence:
-        print("Provide confluence credentials\n")
+        print("Provide Confluence credentials\n")
 
         mail = input("Login: ")
         password = getpass.getpass(prompt='Password: ', stream=None)
@@ -143,10 +145,11 @@ if __name__ == '__main__':
                            ms=args.mitigationsystem, mp=args.mitigationpolicy,
                            dn=args.dataneeded, dr=args.detectionrule,
                            tg=args.triggers, en=args.enrichment,
-                           ra=args.responseactions, rp=args.responseplaybook,
-                           rs=args.responsestage, cu=args.customers, 
-                           hp=args.hardeningpolicy, init=args.init)
-
+                           cu=args.customers, hp=args.hardeningpolicy, 
+                           init=args.init)
+        ReactPopulateConfluence(auth=auth, auto=args.auto, 
+                                ra=args.responseactions, rp=args.responseplaybook,
+                                rs=args.responsestage, init=args.init)
     elif args.react_stix:
         GenerateSTIX()
     elif args.react_navigator:
