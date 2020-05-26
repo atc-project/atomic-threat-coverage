@@ -8,12 +8,14 @@ from jinja2 import Environment, FileSystemLoader
 import re
 import os
 
+
 # ########################################################################### #
 # ######################## Hardening Policies ############################### #
 # ########################################################################### #
 
 ATCconfig = ATCutils.load_config("config.yml")
 
+env = Environment(loader=FileSystemLoader('scripts/templates'))
 
 class HardeningPolicy:
     """Class for the Mitigation System entity"""
@@ -47,9 +49,6 @@ class HardeningPolicy:
             raise Exception(
                 "Bad template_type. Available values:" +
                 " [\"markdown\", \"confluence\"]")
-
-        # Point to the templates directory
-        env = Environment(loader=FileSystemLoader('templates'))
 
         # Get proper template
         if template_type == "markdown":
