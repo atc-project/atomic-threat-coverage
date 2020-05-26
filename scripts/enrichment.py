@@ -11,6 +11,7 @@ import os
 
 ATCconfig = ATCutils.load_config("config.yml")
 
+env = Environment(loader=FileSystemLoader('scripts/templates'))
 
 class Enrichment:
     """Class for the Enrichments entity"""
@@ -46,9 +47,6 @@ class Enrichment:
             raise Exception(
                 "Bad template_type. Available values:" +
                 " [\"markdown\", \"confluence\"]")
-
-        # Point to the templates directory
-        env = Environment(loader=FileSystemLoader('templates'))
 
         # Get proper template
         if template_type == "markdown":

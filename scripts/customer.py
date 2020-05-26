@@ -5,9 +5,12 @@ from scripts.atcutils import ATCutils
 from jinja2 import Environment, FileSystemLoader
 import os
 
+
 # ########################################################################### #
 # ############################## Customer ################################### #
 # ########################################################################### #
+
+env = Environment(loader=FileSystemLoader('scripts/templates'))
 
 ATCconfig = ATCutils.load_config("config.yml")
 
@@ -86,9 +89,6 @@ class Customer:
             raise Exception(
                 "Bad template_type. Available values: " +
                 "[\"markdown\", \"confluence\"]")
-
-        # Point to the templates directory
-        env = Environment(loader=FileSystemLoader('templates'))
 
         self.cu_fields.update(
             {'description': self.description.strip()}
