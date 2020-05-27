@@ -227,10 +227,30 @@ class DetectionRule:
             det_queries = {}
 
             for output in queries:
-                cmd = ATCconfig.get('sigmac_path') + \
-                    ' --shoot-yourself-in-the-foot -t "' + \
-                    output + '" --ignore-backend-errors "' + self.yaml_file + \
-                    '" 2> /dev/null'
+                if output == "powershell":
+                    cmd = ATCconfig.get('sigmac_path') + " -t " + output + \
+                        " --config  " + ATCconfig.get('powershell_sigma_config') + \
+                        " --ignore-backend-errors " + self.yaml_file
+                elif output == "es-qs":
+                    cmd = ATCconfig.get('sigmac_path') + " -t " + output + \
+                        " --config  " + ATCconfig.get('es-qs_sigma_config') + \
+                        " --ignore-backend-errors " + self.yaml_file
+                elif output == "xpack-watcher":
+                    cmd = ATCconfig.get('sigmac_path') + " -t " + output + \
+                        " --config  " + ATCconfig.get('xpack-watcher_sigma_config') + \
+                        " --ignore-backend-errors " + self.yaml_file
+                elif output == "splunk":
+                    cmd = ATCconfig.get('sigmac_path') + " -t " + output + \
+                        " --config  " + ATCconfig.get('splunk_sigma_config') + \
+                        " --ignore-backend-errors " + self.yaml_file
+                elif output == "logpoint":
+                    cmd = ATCconfig.get('sigmac_path') + " -t " + output + \
+                        " --config  " + ATCconfig.get('logpoint_sigma_config') + \
+                        " --ignore-backend-errors " + self.yaml_file
+                else:
+                    cmd = ATCconfig.get('sigmac_path') + ' --shoot-yourself-in-the-foot -t "' + \
+                        output + '" --ignore-backend-errors "' + self.yaml_file + '"'
+
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
                 (query, err) = p.communicate()
                 # Wait for date to terminate. Get return returncode ##
