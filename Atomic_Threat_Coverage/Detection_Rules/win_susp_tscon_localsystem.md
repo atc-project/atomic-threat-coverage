@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a tscon.exe start as LOCAL SYSTEM |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1219: Remote Access Tools](https://attack.mitre.org/techniques/T1219)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1219: Remote Access Tools](../Triggers/T1219.md)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1219: Remote Access Software](https://attack.mitre.org/techniques/T1219)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN0003_1_windows_sysmon_process_creation](../Data_Needed/DN0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1219: Remote Access Software](../Triggers/T1219.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -50,49 +50,124 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "User.*NT AUTHORITY\\\\SYSTEM" -and $_.message -match "Image.*.*\\\\tscon.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "1" -and $_.message -match "User.*NT AUTHORITY\\SYSTEM" -and $_.message -match "Image.*.*\\tscon.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.User:"NT\\ AUTHORITY\\\\SYSTEM" AND winlog.event_data.Image.keyword:*\\\\tscon.exe)
+(winlog.event_data.User:"NT\ AUTHORITY\\SYSTEM" AND winlog.event_data.Image.keyword:*\\tscon.exe)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9847f263-4a81-424f-970c-875dab15b79b <<EOF\n{\n  "metadata": {\n    "title": "Suspicious TSCON Start",\n    "description": "Detects a tscon.exe start as LOCAL SYSTEM",\n    "tags": [\n      "attack.command_and_control",\n      "attack.t1219"\n    ],\n    "query": "(winlog.event_data.User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\" AND winlog.event_data.Image.keyword:*\\\\\\\\tscon.exe)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.User:\\"NT\\\\ AUTHORITY\\\\\\\\SYSTEM\\" AND winlog.event_data.Image.keyword:*\\\\\\\\tscon.exe)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious TSCON Start\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/9847f263-4a81-424f-970c-875dab15b79b <<EOF
+{
+  "metadata": {
+    "title": "Suspicious TSCON Start",
+    "description": "Detects a tscon.exe start as LOCAL SYSTEM",
+    "tags": [
+      "attack.command_and_control",
+      "attack.t1219"
+    ],
+    "query": "(winlog.event_data.User:\"NT\\ AUTHORITY\\\\SYSTEM\" AND winlog.event_data.Image.keyword:*\\\\tscon.exe)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.User:\"NT\\ AUTHORITY\\\\SYSTEM\" AND winlog.event_data.Image.keyword:*\\\\tscon.exe)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious TSCON Start'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(User:"NT AUTHORITY\\\\SYSTEM" AND Image.keyword:*\\\\tscon.exe)
+(User:"NT AUTHORITY\\SYSTEM" AND Image.keyword:*\\tscon.exe)
 ```
 
 
 ### splunk
     
 ```
-(User="NT AUTHORITY\\\\SYSTEM" Image="*\\\\tscon.exe")
+(User="NT AUTHORITY\\SYSTEM" Image="*\\tscon.exe")
 ```
 
 
 ### logpoint
     
 ```
-(User="NT AUTHORITY\\\\SYSTEM" Image="*\\\\tscon.exe")
+(event_id="1" User="NT AUTHORITY\\SYSTEM" Image="*\\tscon.exe")
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*NT AUTHORITY\\SYSTEM)(?=.*.*\\tscon\\.exe))'
+grep -P '^(?:.*(?=.*NT AUTHORITY\SYSTEM)(?=.*.*\tscon\.exe))'
 ```
 
 

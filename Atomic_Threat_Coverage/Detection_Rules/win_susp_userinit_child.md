@@ -3,7 +3,7 @@
 | **Description**          | Detects a suspicious child process of userinit |
 | **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
 | **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
-| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN0003_1_windows_sysmon_process_creation](../Data_Needed/DN0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Administrative scripts</li></ul>  |
@@ -52,49 +52,121 @@ level: medium
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "ParentImage.*.*\\\\userinit.exe" -and  -not ($_.message -match "CommandLine.*.*\\\\netlogon\\\\.*")) -and  -not ($_.message -match "Image.*.*\\\\explorer.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "1" -and ($_.message -match "ParentImage.*.*\\userinit.exe" -and  -not ($_.message -match "CommandLine.*.*\\netlogon\\.*")) -and  -not ($_.message -match "Image.*.*\\explorer.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.ParentImage.keyword:*\\\\userinit.exe AND (NOT (winlog.event_data.CommandLine.keyword:*\\\\netlogon\\\\*))) AND (NOT (winlog.event_data.Image.keyword:*\\\\explorer.exe)))
+((winlog.event_data.ParentImage.keyword:*\\userinit.exe AND (NOT (winlog.event_data.CommandLine.keyword:*\\netlogon\\*))) AND (NOT (winlog.event_data.Image.keyword:*\\explorer.exe)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/b655a06a-31c0-477a-95c2-3726b83d649d <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Userinit Child Process",\n    "description": "Detects a suspicious child process of userinit",\n    "tags": "",\n    "query": "((winlog.event_data.ParentImage.keyword:*\\\\\\\\userinit.exe AND (NOT (winlog.event_data.CommandLine.keyword:*\\\\\\\\netlogon\\\\\\\\*))) AND (NOT (winlog.event_data.Image.keyword:*\\\\\\\\explorer.exe)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.ParentImage.keyword:*\\\\\\\\userinit.exe AND (NOT (winlog.event_data.CommandLine.keyword:*\\\\\\\\netlogon\\\\\\\\*))) AND (NOT (winlog.event_data.Image.keyword:*\\\\\\\\explorer.exe)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Userinit Child Process\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/b655a06a-31c0-477a-95c2-3726b83d649d <<EOF
+{
+  "metadata": {
+    "title": "Suspicious Userinit Child Process",
+    "description": "Detects a suspicious child process of userinit",
+    "tags": "",
+    "query": "((winlog.event_data.ParentImage.keyword:*\\\\userinit.exe AND (NOT (winlog.event_data.CommandLine.keyword:*\\\\netlogon\\\\*))) AND (NOT (winlog.event_data.Image.keyword:*\\\\explorer.exe)))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.ParentImage.keyword:*\\\\userinit.exe AND (NOT (winlog.event_data.CommandLine.keyword:*\\\\netlogon\\\\*))) AND (NOT (winlog.event_data.Image.keyword:*\\\\explorer.exe)))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious Userinit Child Process'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((ParentImage.keyword:*\\\\userinit.exe AND (NOT (CommandLine.keyword:*\\\\netlogon\\\\*))) AND (NOT (Image.keyword:*\\\\explorer.exe)))
+((ParentImage.keyword:*\\userinit.exe AND (NOT (CommandLine.keyword:*\\netlogon\\*))) AND (NOT (Image.keyword:*\\explorer.exe)))
 ```
 
 
 ### splunk
     
 ```
-((ParentImage="*\\\\userinit.exe" NOT (CommandLine="*\\\\netlogon\\\\*")) NOT (Image="*\\\\explorer.exe")) | table CommandLine,ParentCommandLine
+((ParentImage="*\\userinit.exe" NOT (CommandLine="*\\netlogon\\*")) NOT (Image="*\\explorer.exe")) | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-((ParentImage="*\\\\userinit.exe"  -(CommandLine="*\\\\netlogon\\\\*"))  -(Image="*\\\\explorer.exe"))
+(event_id="1" (ParentImage="*\\userinit.exe"  -(CommandLine="*\\netlogon\\*"))  -(Image="*\\explorer.exe"))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?=.*.*\\userinit\\.exe)(?=.*(?!.*(?:.*(?=.*.*\\\\netlogon\\\\.*))))))(?=.*(?!.*(?:.*(?=.*.*\\explorer\\.exe)))))'
+grep -P '^(?:.*(?=.*(?:.*(?=.*.*\userinit\.exe)(?=.*(?!.*(?:.*(?=.*.*\\netlogon\\.*))))))(?=.*(?!.*(?:.*(?=.*.*\explorer\.exe)))))'
 ```
 
 

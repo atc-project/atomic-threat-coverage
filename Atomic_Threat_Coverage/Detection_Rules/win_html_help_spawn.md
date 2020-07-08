@@ -3,14 +3,14 @@
 | **Description**          | Detects a suspicious child process of a Microsoft HTML Help system when executing compiled HTML files (.chm) |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1223: Compiled HTML File](https://attack.mitre.org/techniques/T1223)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1223: Compiled HTML File](../Triggers/T1223.md)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN0003_1_windows_sysmon_process_creation](../Data_Needed/DN0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   | experimental |
 | **References**           | <ul><li>[https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/chm-badness-delivers-a-banking-trojan/](https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/chm-badness-delivers-a-banking-trojan/)</li></ul>  |
 | **Author**               | Maxim Pavlunin |
-
+| Other Tags           | <ul><li>attack.t1218.001</li></ul> | 
 
 ## Detection Rules
 
@@ -30,6 +30,7 @@ tags:
     - attack.execution
     - attack.defense_evasion
     - attack.t1223
+    - attack.t1218.001
 logsource:
     category: process_creation
     product: windows
@@ -61,49 +62,126 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "ParentImage.*C:\\\\Windows\\\\hh.exe" -and ($_.message -match "Image.*.*\\\\cmd.exe" -or $_.message -match "Image.*.*\\\\powershell.exe" -or $_.message -match "Image.*.*\\\\wscript.exe" -or $_.message -match "Image.*.*\\\\cscript.exe" -or $_.message -match "Image.*.*\\\\regsvr32.exe" -or $_.message -match "Image.*.*\\\\wmic.exe" -or $_.message -match "Image.*.*\\\\rundll32.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "1" -and $_.message -match "ParentImage.*C:\\Windows\\hh.exe" -and ($_.message -match "Image.*.*\\cmd.exe" -or $_.message -match "Image.*.*\\powershell.exe" -or $_.message -match "Image.*.*\\wscript.exe" -or $_.message -match "Image.*.*\\cscript.exe" -or $_.message -match "Image.*.*\\regsvr32.exe" -or $_.message -match "Image.*.*\\wmic.exe" -or $_.message -match "Image.*.*\\rundll32.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.ParentImage:"C\\:\\\\Windows\\\\hh.exe" AND winlog.event_data.Image.keyword:(*\\\\cmd.exe OR *\\\\powershell.exe OR *\\\\wscript.exe OR *\\\\cscript.exe OR *\\\\regsvr32.exe OR *\\\\wmic.exe OR *\\\\rundll32.exe))
+(winlog.event_data.ParentImage:"C\:\\Windows\\hh.exe" AND winlog.event_data.Image.keyword:(*\\cmd.exe OR *\\powershell.exe OR *\\wscript.exe OR *\\cscript.exe OR *\\regsvr32.exe OR *\\wmic.exe OR *\\rundll32.exe))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/52cad028-0ff0-4854-8f67-d25dfcbc78b4 <<EOF\n{\n  "metadata": {\n    "title": "HTML Help Shell Spawn",\n    "description": "Detects a suspicious child process of a Microsoft HTML Help system when executing compiled HTML files (.chm)",\n    "tags": [\n      "attack.execution",\n      "attack.defense_evasion",\n      "attack.t1223"\n    ],\n    "query": "(winlog.event_data.ParentImage:\\"C\\\\:\\\\\\\\Windows\\\\\\\\hh.exe\\" AND winlog.event_data.Image.keyword:(*\\\\\\\\cmd.exe OR *\\\\\\\\powershell.exe OR *\\\\\\\\wscript.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\regsvr32.exe OR *\\\\\\\\wmic.exe OR *\\\\\\\\rundll32.exe))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.ParentImage:\\"C\\\\:\\\\\\\\Windows\\\\\\\\hh.exe\\" AND winlog.event_data.Image.keyword:(*\\\\\\\\cmd.exe OR *\\\\\\\\powershell.exe OR *\\\\\\\\wscript.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\regsvr32.exe OR *\\\\\\\\wmic.exe OR *\\\\\\\\rundll32.exe))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'HTML Help Shell Spawn\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/52cad028-0ff0-4854-8f67-d25dfcbc78b4 <<EOF
+{
+  "metadata": {
+    "title": "HTML Help Shell Spawn",
+    "description": "Detects a suspicious child process of a Microsoft HTML Help system when executing compiled HTML files (.chm)",
+    "tags": [
+      "attack.execution",
+      "attack.defense_evasion",
+      "attack.t1223",
+      "attack.t1218.001"
+    ],
+    "query": "(winlog.event_data.ParentImage:\"C\\:\\\\Windows\\\\hh.exe\" AND winlog.event_data.Image.keyword:(*\\\\cmd.exe OR *\\\\powershell.exe OR *\\\\wscript.exe OR *\\\\cscript.exe OR *\\\\regsvr32.exe OR *\\\\wmic.exe OR *\\\\rundll32.exe))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.ParentImage:\"C\\:\\\\Windows\\\\hh.exe\" AND winlog.event_data.Image.keyword:(*\\\\cmd.exe OR *\\\\powershell.exe OR *\\\\wscript.exe OR *\\\\cscript.exe OR *\\\\regsvr32.exe OR *\\\\wmic.exe OR *\\\\rundll32.exe))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'HTML Help Shell Spawn'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(ParentImage:"C\\:\\\\Windows\\\\hh.exe" AND Image.keyword:(*\\\\cmd.exe *\\\\powershell.exe *\\\\wscript.exe *\\\\cscript.exe *\\\\regsvr32.exe *\\\\wmic.exe *\\\\rundll32.exe))
+(ParentImage:"C\:\\Windows\\hh.exe" AND Image.keyword:(*\\cmd.exe *\\powershell.exe *\\wscript.exe *\\cscript.exe *\\regsvr32.exe *\\wmic.exe *\\rundll32.exe))
 ```
 
 
 ### splunk
     
 ```
-(ParentImage="C:\\\\Windows\\\\hh.exe" (Image="*\\\\cmd.exe" OR Image="*\\\\powershell.exe" OR Image="*\\\\wscript.exe" OR Image="*\\\\cscript.exe" OR Image="*\\\\regsvr32.exe" OR Image="*\\\\wmic.exe" OR Image="*\\\\rundll32.exe")) | table CommandLine,ParentCommandLine
+(ParentImage="C:\\Windows\\hh.exe" (Image="*\\cmd.exe" OR Image="*\\powershell.exe" OR Image="*\\wscript.exe" OR Image="*\\cscript.exe" OR Image="*\\regsvr32.exe" OR Image="*\\wmic.exe" OR Image="*\\rundll32.exe")) | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-(ParentImage="C:\\\\Windows\\\\hh.exe" Image IN ["*\\\\cmd.exe", "*\\\\powershell.exe", "*\\\\wscript.exe", "*\\\\cscript.exe", "*\\\\regsvr32.exe", "*\\\\wmic.exe", "*\\\\rundll32.exe"])
+(event_id="1" ParentImage="C:\\Windows\\hh.exe" Image IN ["*\\cmd.exe", "*\\powershell.exe", "*\\wscript.exe", "*\\cscript.exe", "*\\regsvr32.exe", "*\\wmic.exe", "*\\rundll32.exe"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*C:\\Windows\\hh\\.exe)(?=.*(?:.*.*\\cmd\\.exe|.*.*\\powershell\\.exe|.*.*\\wscript\\.exe|.*.*\\cscript\\.exe|.*.*\\regsvr32\\.exe|.*.*\\wmic\\.exe|.*.*\\rundll32\\.exe)))'
+grep -P '^(?:.*(?=.*C:\Windows\hh\.exe)(?=.*(?:.*.*\cmd\.exe|.*.*\powershell\.exe|.*.*\wscript\.exe|.*.*\cscript\.exe|.*.*\regsvr32\.exe|.*.*\wmic\.exe|.*.*\rundll32\.exe)))'
 ```
 
 

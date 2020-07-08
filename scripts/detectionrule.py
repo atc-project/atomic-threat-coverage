@@ -103,19 +103,21 @@ class DetectionRule:
                         #query + " --ignore-backend-errors " + self.yaml_file + \
                         #" 2> /dev/null"
                 
-                p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+                #p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
 
-                (query2, err) = p.communicate()
+                #(query2, err) = p.communicate()
+                
+                query2 = subprocess.getoutput(cmd)
 
                 # Wait for date to terminate. Get return returncode
                 # p_status = p.wait()
-                p.wait()
+                #p.wait()
 
                 """ Had to remove '-' due to problems with
                 Jinja2 variable naming,
                 e.g es-qs throws error 'no es variable'
                 """
-                det_queries[query] = str(query2)[2:-3]
+                det_queries[query] = str(query2)#[2:-3]
 
             # Update detection rules
             self.fields.update({"det_queries": det_queries})

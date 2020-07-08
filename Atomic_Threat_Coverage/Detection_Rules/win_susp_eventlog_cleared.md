@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | One of the Windows Eventlogs has been cleared. e.g. caused by "wevtutil cl" command execution |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1070: Indicator Removal on Host](https://attack.mitre.org/techniques/T1070)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0034_104_log_file_was_cleared](../Data_Needed/DN_0034_104_log_file_was_cleared.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1070: Indicator Removal on Host](../Triggers/T1070.md)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1070: Indicator Removal on Host](https://attack.mitre.org/techniques/T1070)</li><li>[T1551: None](https://attack.mitre.org/techniques/T1551)</li></ul>  |
+| **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
+| **Trigger**              | <ul><li>[T1551: None](../Triggers/T1551.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -29,6 +29,7 @@ tags:
     - attack.defense_evasion
     - attack.t1070
     - car.2016-04-002
+    - attack.t1551
 logsource:
     product: windows
     service: system
@@ -57,21 +58,98 @@ Get-WinEvent -LogName System | where {($_.ID -eq "104" -and $_.message -match "S
 ### es-qs
     
 ```
-(winlog.event_id:"104" AND winlog.event_data.Source:"Microsoft\\-Windows\\-Eventlog")
+(winlog.event_id:"104" AND winlog.event_data.Source:"Microsoft\-Windows\-Eventlog")
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/d99b79d2-0a6f-4f46-ad8b-260b6e17f982 <<EOF\n{\n  "metadata": {\n    "title": "Eventlog Cleared",\n    "description": "One of the Windows Eventlogs has been cleared. e.g. caused by \\"wevtutil cl\\" command execution",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1070",\n      "car.2016-04-002"\n    ],\n    "query": "(winlog.event_id:\\"104\\" AND winlog.event_data.Source:\\"Microsoft\\\\-Windows\\\\-Eventlog\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_id:\\"104\\" AND winlog.event_data.Source:\\"Microsoft\\\\-Windows\\\\-Eventlog\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Eventlog Cleared\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/d99b79d2-0a6f-4f46-ad8b-260b6e17f982 <<EOF
+{
+  "metadata": {
+    "title": "Eventlog Cleared",
+    "description": "One of the Windows Eventlogs has been cleared. e.g. caused by \"wevtutil cl\" command execution",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.t1070",
+      "car.2016-04-002",
+      "attack.t1551"
+    ],
+    "query": "(winlog.event_id:\"104\" AND winlog.event_data.Source:\"Microsoft\\-Windows\\-Eventlog\")"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_id:\"104\" AND winlog.event_data.Source:\"Microsoft\\-Windows\\-Eventlog\")",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Eventlog Cleared'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(EventID:"104" AND Source:"Microsoft\\-Windows\\-Eventlog")
+(EventID:"104" AND Source:"Microsoft\-Windows\-Eventlog")
 ```
 
 

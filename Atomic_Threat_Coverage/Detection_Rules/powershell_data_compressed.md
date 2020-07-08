@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | An adversary may compress data (e.g., sensitive documents) that is collected prior to exfiltration in order to make it portable and minimize the amount of data sent over the network |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0010: Exfiltration](https://attack.mitre.org/tactics/TA0010)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1002: Data Compressed](https://attack.mitre.org/techniques/T1002)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1002: Data Compressed](../Triggers/T1002.md)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1002: Data Compressed](https://attack.mitre.org/techniques/T1002)</li><li>[T1560: Archive Collected Data](https://attack.mitre.org/techniques/T1560)</li></ul>  |
+| **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
+| **Trigger**              | <ul><li>[T1560: Archive Collected Data](../Triggers/T1560.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>highly likely if archive ops are done via PS</li></ul>  |
 | **Development Status**   | experimental |
@@ -20,8 +20,7 @@
 title: Data Compressed - Powershell
 id: 6dc5d284-69ea-42cf-9311-fb1c3932a69a
 status: experimental
-description: An adversary may compress data (e.g., sensitive documents) that is collected prior to exfiltration in order to make it portable and minimize the amount
-    of data sent over the network
+description: An adversary may compress data (e.g., sensitive documents) that is collected prior to exfiltration in order to make it portable and minimize the amount of data sent over the network
 author: Timur Zinniatullin, oscd.community
 date: 2019/10/21
 modified: 2019/11/04
@@ -34,7 +33,7 @@ logsource:
 detection:
     selection:
         EventID: 4104
-        keywords|contains|all: 
+        keywords|contains|all:
             - '-Recurse'
             - '|'
             - 'Compress-Archive'
@@ -45,6 +44,7 @@ level: low
 tags:
     - attack.exfiltration
     - attack.t1002
+    - attack.t1560
 
 ```
 
@@ -62,21 +62,97 @@ Get-WinEvent -LogName Microsoft-Windows-PowerShell/Operational | where {($_.ID -
 ### es-qs
     
 ```
-(winlog.event_id:"4104" AND keywords.keyword:*\\-Recurse* AND keywords.keyword:*|* AND keywords.keyword:*Compress\\-Archive*)
+(winlog.event_id:"4104" AND keywords.keyword:*\-Recurse* AND keywords.keyword:*|* AND keywords.keyword:*Compress\-Archive*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/6dc5d284-69ea-42cf-9311-fb1c3932a69a <<EOF\n{\n  "metadata": {\n    "title": "Data Compressed - Powershell",\n    "description": "An adversary may compress data (e.g., sensitive documents) that is collected prior to exfiltration in order to make it portable and minimize the amount of data sent over the network",\n    "tags": [\n      "attack.exfiltration",\n      "attack.t1002"\n    ],\n    "query": "(winlog.event_id:\\"4104\\" AND keywords.keyword:*\\\\-Recurse* AND keywords.keyword:*|* AND keywords.keyword:*Compress\\\\-Archive*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_id:\\"4104\\" AND keywords.keyword:*\\\\-Recurse* AND keywords.keyword:*|* AND keywords.keyword:*Compress\\\\-Archive*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Data Compressed - Powershell\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/6dc5d284-69ea-42cf-9311-fb1c3932a69a <<EOF
+{
+  "metadata": {
+    "title": "Data Compressed - Powershell",
+    "description": "An adversary may compress data (e.g., sensitive documents) that is collected prior to exfiltration in order to make it portable and minimize the amount of data sent over the network",
+    "tags": [
+      "attack.exfiltration",
+      "attack.t1002",
+      "attack.t1560"
+    ],
+    "query": "(winlog.event_id:\"4104\" AND keywords.keyword:*\\-Recurse* AND keywords.keyword:*|* AND keywords.keyword:*Compress\\-Archive*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_id:\"4104\" AND keywords.keyword:*\\-Recurse* AND keywords.keyword:*|* AND keywords.keyword:*Compress\\-Archive*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Data Compressed - Powershell'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(EventID:"4104" AND keywords.keyword:*\\-Recurse* AND keywords.keyword:*|* AND keywords.keyword:*Compress\\-Archive*)
+(EventID:"4104" AND keywords.keyword:*\-Recurse* AND keywords.keyword:*|* AND keywords.keyword:*Compress\-Archive*)
 ```
 
 
@@ -97,7 +173,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*4104)(?=.*.*-Recurse.*)(?=.*.*\\|.*)(?=.*.*Compress-Archive.*))'
+grep -P '^(?:.*(?=.*4104)(?=.*.*-Recurse.*)(?=.*.*\|.*)(?=.*.*Compress-Archive.*))'
 ```
 
 

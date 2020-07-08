@@ -1,16 +1,16 @@
 | Title                    | Suspicious XOR Encoded PowerShell Command Line       |
 |:-------------------------|:------------------|
-| **Description**          | Detects suspicious powershell process which includes bxor command, alternatvide obfuscation method to b64 encoded commands. |
+| **Description**          | Detects suspicious powershell process which includes bxor command, alternative obfuscation method to b64 encoded commands. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN0003_1_windows_sysmon_process_creation](../Data_Needed/DN0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   | experimental |
 | **References**           |  There are no documented References for this Detection Rule yet  |
-| **Author**               | Sami Ruohonen |
-
+| **Author**               | Sami Ruohonen, Harish Segar (improvement) |
+| Other Tags           | <ul><li>attack.t1059.001</li></ul> | 
 
 ## Detection Rules
 
@@ -19,24 +19,31 @@
 ```
 title: Suspicious XOR Encoded PowerShell Command Line
 id: bb780e0c-16cf-4383-8383-1e5471db6cf9
-description: Detects suspicious powershell process which includes bxor command, alternatvide obfuscation method to b64 encoded commands.
+description: Detects suspicious powershell process which includes bxor command, alternative obfuscation method to b64 encoded commands.
 status: experimental
-author: Sami Ruohonen
+author: Sami Ruohonen, Harish Segar (improvement)
 date: 2018/09/05
+modified: 2020/06/29
 tags:
     - attack.execution
     - attack.t1086
-detection:
-    selection:
-        CommandLine:
-            - '* -bxor*'
-    condition: selection
-falsepositives:
-    - unknown
-level: medium
+    - attack.t1059.001
 logsource:
     category: process_creation
     product: windows
+detection:
+    selection:
+        - Description: "Windows PowerShell"
+        - Product: "PowerShell Core 6"
+    filter:
+        CommandLine|contains:
+            - "bxor"
+            - "join"
+            - "char"
+    condition: selection and filter
+falsepositives:
+    - unknown
+level: medium
 
 ```
 
@@ -47,49 +54,125 @@ logsource:
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "CommandLine.*.* -bxor.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "1" -and ($_.message -match "Description.*Windows PowerShell" -or $_.message -match "Product.*PowerShell Core 6") -and ($_.message -match "CommandLine.*.*bxor.*" -or $_.message -match "CommandLine.*.*join.*" -or $_.message -match "CommandLine.*.*char.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.CommandLine.keyword:(*\\ \\-bxor*)
+((winlog.event_data.Description:"Windows\ PowerShell" OR Product:"PowerShell\ Core\ 6") AND winlog.event_data.CommandLine.keyword:(*bxor* OR *join* OR *char*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/bb780e0c-16cf-4383-8383-1e5471db6cf9 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious XOR Encoded PowerShell Command Line",\n    "description": "Detects suspicious powershell process which includes bxor command, alternatvide obfuscation method to b64 encoded commands.",\n    "tags": [\n      "attack.execution",\n      "attack.t1086"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-bxor*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-bxor*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious XOR Encoded PowerShell Command Line\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/bb780e0c-16cf-4383-8383-1e5471db6cf9 <<EOF
+{
+  "metadata": {
+    "title": "Suspicious XOR Encoded PowerShell Command Line",
+    "description": "Detects suspicious powershell process which includes bxor command, alternative obfuscation method to b64 encoded commands.",
+    "tags": [
+      "attack.execution",
+      "attack.t1086",
+      "attack.t1059.001"
+    ],
+    "query": "((winlog.event_data.Description:\"Windows\\ PowerShell\" OR Product:\"PowerShell\\ Core\\ 6\") AND winlog.event_data.CommandLine.keyword:(*bxor* OR *join* OR *char*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.Description:\"Windows\\ PowerShell\" OR Product:\"PowerShell\\ Core\\ 6\") AND winlog.event_data.CommandLine.keyword:(*bxor* OR *join* OR *char*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious XOR Encoded PowerShell Command Line'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-CommandLine.keyword:(* \\-bxor*)
+((Description:"Windows PowerShell" OR Product:"PowerShell Core 6") AND CommandLine.keyword:(*bxor* *join* *char*))
 ```
 
 
 ### splunk
     
 ```
-(CommandLine="* -bxor*")
+((Description="Windows PowerShell" OR Product="PowerShell Core 6") (CommandLine="*bxor*" OR CommandLine="*join*" OR CommandLine="*char*"))
 ```
 
 
 ### logpoint
     
 ```
-CommandLine IN ["* -bxor*"]
+(event_id="1" (Description="Windows PowerShell" OR Product="PowerShell Core 6") CommandLine IN ["*bxor*", "*join*", "*char*"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*.* -bxor.*)'
+grep -P '^(?:.*(?=.*(?:.*(?:.*Windows PowerShell|.*PowerShell Core 6)))(?=.*(?:.*.*bxor.*|.*.*join.*|.*.*char.*)))'
 ```
 
 

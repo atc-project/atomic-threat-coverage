@@ -3,14 +3,14 @@
 | **Description**          | Detects suspicious use of an .exe extension after a non-executable file extension like .pdf.exe, a set of spaces or underlines to cloak the executable file in spear phishing campaigns |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1193: Spearphishing Attachment](https://attack.mitre.org/techniques/T1193)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1193: Spearphishing Attachment](../Triggers/T1193.md)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN0001_4688_windows_process_creation](../Data_Needed/DN0001_4688_windows_process_creation.md)</li><li>[DN0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN0003_1_windows_sysmon_process_creation](../Data_Needed/DN0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
 | **References**           | <ul><li>[https://blu3-team.blogspot.com/2019/06/misleading-extensions-xlsexe-docexe.html](https://blu3-team.blogspot.com/2019/06/misleading-extensions-xlsexe-docexe.html)</li><li>[https://twitter.com/blackorbird/status/1140519090961825792](https://twitter.com/blackorbird/status/1140519090961825792)</li></ul>  |
 | **Author**               | Florian Roth (rule), @blu3_team (idea) |
-
+| Other Tags           | <ul><li>attack.t1566.001</li></ul> | 
 
 ## Detection Rules
 
@@ -19,8 +19,7 @@
 ```
 title: Suspicious Double Extension
 id: 1cdd9a09-06c9-4769-99ff-626e2b3991b8
-description: Detects suspicious use of an .exe extension after a non-executable file extension like .pdf.exe, a set of spaces or underlines to cloak the executable
-    file in spear phishing campaigns
+description: Detects suspicious use of an .exe extension after a non-executable file extension like .pdf.exe, a set of spaces or underlines to cloak the executable file in spear phishing campaigns
 references:
     - https://blu3-team.blogspot.com/2019/06/misleading-extensions-xlsexe-docexe.html
     - https://twitter.com/blackorbird/status/1140519090961825792
@@ -29,12 +28,13 @@ date: 2019/06/26
 tags:
     - attack.initial_access
     - attack.t1193
+    - attack.t1566.001
 logsource:
     category: process_creation
     product: windows
 detection:
     selection:
-        Image: 
+        Image:
             - '*.doc.exe'
             - '*.docx.exe'
             - '*.xls.exe'
@@ -47,7 +47,7 @@ detection:
             - '*      .exe'
             - '*______.exe'
     condition: selection
-falsepositives: 
+falsepositives:
     - Unknown
 level: critical
 
@@ -60,21 +60,97 @@ level: critical
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "Image.*.*.doc.exe" -or $_.message -match "Image.*.*.docx.exe" -or $_.message -match "Image.*.*.xls.exe" -or $_.message -match "Image.*.*.xlsx.exe" -or $_.message -match "Image.*.*.ppt.exe" -or $_.message -match "Image.*.*.pptx.exe" -or $_.message -match "Image.*.*.rtf.exe" -or $_.message -match "Image.*.*.pdf.exe" -or $_.message -match "Image.*.*.txt.exe" -or $_.message -match "Image.*.*      .exe" -or $_.message -match "Image.*.*______.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "1" -and ($_.message -match "Image.*.*.doc.exe" -or $_.message -match "Image.*.*.docx.exe" -or $_.message -match "Image.*.*.xls.exe" -or $_.message -match "Image.*.*.xlsx.exe" -or $_.message -match "Image.*.*.ppt.exe" -or $_.message -match "Image.*.*.pptx.exe" -or $_.message -match "Image.*.*.rtf.exe" -or $_.message -match "Image.*.*.pdf.exe" -or $_.message -match "Image.*.*.txt.exe" -or $_.message -match "Image.*.*      .exe" -or $_.message -match "Image.*.*______.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.Image.keyword:(*.doc.exe OR *.docx.exe OR *.xls.exe OR *.xlsx.exe OR *.ppt.exe OR *.pptx.exe OR *.rtf.exe OR *.pdf.exe OR *.txt.exe OR *\\ \\ \\ \\ \\ \\ .exe OR *______.exe)
+winlog.event_data.Image.keyword:(*.doc.exe OR *.docx.exe OR *.xls.exe OR *.xlsx.exe OR *.ppt.exe OR *.pptx.exe OR *.rtf.exe OR *.pdf.exe OR *.txt.exe OR *\ \ \ \ \ \ .exe OR *______.exe)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1cdd9a09-06c9-4769-99ff-626e2b3991b8 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Double Extension",\n    "description": "Detects suspicious use of an .exe extension after a non-executable file extension like .pdf.exe, a set of spaces or underlines to cloak the executable file in spear phishing campaigns",\n    "tags": [\n      "attack.initial_access",\n      "attack.t1193"\n    ],\n    "query": "winlog.event_data.Image.keyword:(*.doc.exe OR *.docx.exe OR *.xls.exe OR *.xlsx.exe OR *.ppt.exe OR *.pptx.exe OR *.rtf.exe OR *.pdf.exe OR *.txt.exe OR *\\\\ \\\\ \\\\ \\\\ \\\\ \\\\ .exe OR *______.exe)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.Image.keyword:(*.doc.exe OR *.docx.exe OR *.xls.exe OR *.xlsx.exe OR *.ppt.exe OR *.pptx.exe OR *.rtf.exe OR *.pdf.exe OR *.txt.exe OR *\\\\ \\\\ \\\\ \\\\ \\\\ \\\\ .exe OR *______.exe)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Double Extension\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/1cdd9a09-06c9-4769-99ff-626e2b3991b8 <<EOF
+{
+  "metadata": {
+    "title": "Suspicious Double Extension",
+    "description": "Detects suspicious use of an .exe extension after a non-executable file extension like .pdf.exe, a set of spaces or underlines to cloak the executable file in spear phishing campaigns",
+    "tags": [
+      "attack.initial_access",
+      "attack.t1193",
+      "attack.t1566.001"
+    ],
+    "query": "winlog.event_data.Image.keyword:(*.doc.exe OR *.docx.exe OR *.xls.exe OR *.xlsx.exe OR *.ppt.exe OR *.pptx.exe OR *.rtf.exe OR *.pdf.exe OR *.txt.exe OR *\\ \\ \\ \\ \\ \\ .exe OR *______.exe)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.Image.keyword:(*.doc.exe OR *.docx.exe OR *.xls.exe OR *.xlsx.exe OR *.ppt.exe OR *.pptx.exe OR *.rtf.exe OR *.pdf.exe OR *.txt.exe OR *\\ \\ \\ \\ \\ \\ .exe OR *______.exe)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious Double Extension'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
@@ -95,14 +171,14 @@ Image.keyword:(*.doc.exe *.docx.exe *.xls.exe *.xlsx.exe *.ppt.exe *.pptx.exe *.
 ### logpoint
     
 ```
-Image IN ["*.doc.exe", "*.docx.exe", "*.xls.exe", "*.xlsx.exe", "*.ppt.exe", "*.pptx.exe", "*.rtf.exe", "*.pdf.exe", "*.txt.exe", "*      .exe", "*______.exe"]
+(event_id="1" Image IN ["*.doc.exe", "*.docx.exe", "*.xls.exe", "*.xlsx.exe", "*.ppt.exe", "*.pptx.exe", "*.rtf.exe", "*.pdf.exe", "*.txt.exe", "*      .exe", "*______.exe"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*.*\\.doc\\.exe|.*.*\\.docx\\.exe|.*.*\\.xls\\.exe|.*.*\\.xlsx\\.exe|.*.*\\.ppt\\.exe|.*.*\\.pptx\\.exe|.*.*\\.rtf\\.exe|.*.*\\.pdf\\.exe|.*.*\\.txt\\.exe|.*.*      \\.exe|.*.*______\\.exe)'
+grep -P '^(?:.*.*\.doc\.exe|.*.*\.docx\.exe|.*.*\.xls\.exe|.*.*\.xlsx\.exe|.*.*\.ppt\.exe|.*.*\.pptx\.exe|.*.*\.rtf\.exe|.*.*\.pdf\.exe|.*.*\.txt\.exe|.*.*      \.exe|.*.*______\.exe)'
 ```
 
 

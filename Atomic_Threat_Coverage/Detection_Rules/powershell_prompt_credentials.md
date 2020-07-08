@@ -3,14 +3,14 @@
 | **Description**          | Detects PowerShell calling a credential prompt |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
+| **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
 | **References**           | <ul><li>[https://twitter.com/JohnLaTwC/status/850381440629981184](https://twitter.com/JohnLaTwC/status/850381440629981184)</li><li>[https://t.co/ezOTGy1a1G](https://t.co/ezOTGy1a1G)</li></ul>  |
 | **Author**               | John Lambert (idea), Florian Roth (rule) |
-
+| Other Tags           | <ul><li>attack.t1059.001</li></ul> | 
 
 ## Detection Rules
 
@@ -28,6 +28,7 @@ tags:
     - attack.execution
     - attack.credential_access
     - attack.t1086
+    - attack.t1059.001
 author: John Lambert (idea), Florian Roth (rule)
 date: 2017/04/09
 logsource:
@@ -61,14 +62,91 @@ Get-WinEvent -LogName Microsoft-Windows-PowerShell/Operational | where {($_.ID -
 ### es-qs
     
 ```
-(winlog.event_id:"4104" AND winlog.event_data.Message.keyword:(*PromptForCredential*))
+(winlog.event_id:"4104" AND Message.keyword:(*PromptForCredential*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/ca8b77a9-d499-4095-b793-5d5f330d450e <<EOF\n{\n  "metadata": {\n    "title": "PowerShell Credential Prompt",\n    "description": "Detects PowerShell calling a credential prompt",\n    "tags": [\n      "attack.execution",\n      "attack.credential_access",\n      "attack.t1086"\n    ],\n    "query": "(winlog.event_id:\\"4104\\" AND winlog.event_data.Message.keyword:(*PromptForCredential*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_id:\\"4104\\" AND winlog.event_data.Message.keyword:(*PromptForCredential*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'PowerShell Credential Prompt\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/ca8b77a9-d499-4095-b793-5d5f330d450e <<EOF
+{
+  "metadata": {
+    "title": "PowerShell Credential Prompt",
+    "description": "Detects PowerShell calling a credential prompt",
+    "tags": [
+      "attack.execution",
+      "attack.credential_access",
+      "attack.t1086",
+      "attack.t1059.001"
+    ],
+    "query": "(winlog.event_id:\"4104\" AND Message.keyword:(*PromptForCredential*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_id:\"4104\" AND Message.keyword:(*PromptForCredential*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'PowerShell Credential Prompt'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 

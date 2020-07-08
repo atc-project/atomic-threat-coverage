@@ -3,7 +3,7 @@
 | **Description**          | The Devtoolslauncher.exe executes other binary |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN0003_1_windows_sysmon_process_creation](../Data_Needed/DN0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Legitimate use of devtoolslauncher.exe by legitimate user</li></ul>  |
@@ -52,49 +52,125 @@ falsepositives:
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "Image.*.*\\\\devtoolslauncher.exe" -and $_.message -match "CommandLine.*.*LaunchForDeploy.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "1" -and $_.message -match "Image.*.*\\devtoolslauncher.exe" -and $_.message -match "CommandLine.*.*LaunchForDeploy.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:*\\\\devtoolslauncher.exe AND winlog.event_data.CommandLine.keyword:*LaunchForDeploy*)
+(winlog.event_data.Image.keyword:*\\devtoolslauncher.exe AND winlog.event_data.CommandLine.keyword:*LaunchForDeploy*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/cc268ac1-42d9-40fd-9ed3-8c4e1a5b87e6 <<EOF\n{\n  "metadata": {\n    "title": "Devtoolslauncher.exe Executes Specified Binary",\n    "description": "The Devtoolslauncher.exe executes other binary",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.execution",\n      "attack.t1218"\n    ],\n    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\devtoolslauncher.exe AND winlog.event_data.CommandLine.keyword:*LaunchForDeploy*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\devtoolslauncher.exe AND winlog.event_data.CommandLine.keyword:*LaunchForDeploy*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Devtoolslauncher.exe Executes Specified Binary\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/cc268ac1-42d9-40fd-9ed3-8c4e1a5b87e6 <<EOF
+{
+  "metadata": {
+    "title": "Devtoolslauncher.exe Executes Specified Binary",
+    "description": "The Devtoolslauncher.exe executes other binary",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.execution",
+      "attack.t1218"
+    ],
+    "query": "(winlog.event_data.Image.keyword:*\\\\devtoolslauncher.exe AND winlog.event_data.CommandLine.keyword:*LaunchForDeploy*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.Image.keyword:*\\\\devtoolslauncher.exe AND winlog.event_data.CommandLine.keyword:*LaunchForDeploy*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Devtoolslauncher.exe Executes Specified Binary'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(Image.keyword:*\\\\devtoolslauncher.exe AND CommandLine.keyword:*LaunchForDeploy*)
+(Image.keyword:*\\devtoolslauncher.exe AND CommandLine.keyword:*LaunchForDeploy*)
 ```
 
 
 ### splunk
     
 ```
-(Image="*\\\\devtoolslauncher.exe" CommandLine="*LaunchForDeploy*")
+(Image="*\\devtoolslauncher.exe" CommandLine="*LaunchForDeploy*")
 ```
 
 
 ### logpoint
     
 ```
-(Image="*\\\\devtoolslauncher.exe" CommandLine="*LaunchForDeploy*")
+(event_id="1" Image="*\\devtoolslauncher.exe" CommandLine="*LaunchForDeploy*")
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*.*\\devtoolslauncher\\.exe)(?=.*.*LaunchForDeploy.*))'
+grep -P '^(?:.*(?=.*.*\devtoolslauncher\.exe)(?=.*.*LaunchForDeploy.*))'
 ```
 
 

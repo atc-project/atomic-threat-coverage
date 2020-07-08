@@ -4,13 +4,13 @@
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
-| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>PowerShell scripts that download content from the Internet</li></ul>  |
 | **Development Status**   | experimental |
 | **References**           |  There are no documented References for this Detection Rule yet  |
 | **Author**               | Florian Roth |
-
+| Other Tags           | <ul><li>attack.t1059.001</li></ul> | 
 
 ## Detection Rules
 
@@ -24,6 +24,7 @@ description: Detects suspicious PowerShell download command
 tags:
     - attack.execution
     - attack.t1086
+    - attack.t1059.001
 author: Florian Roth
 date: 2017/03/05
 modified: 2020/03/25
@@ -60,21 +61,97 @@ Get-WinEvent -LogName Microsoft-Windows-PowerShell/Operational | where {($_.mess
 ### es-qs
     
 ```
-(winlog.event_data.Message.keyword:*System.Net.WebClient* AND (winlog.event_data.Message.keyword:*.DownloadFile\\(* OR winlog.event_data.Message.keyword:*.DownloadString\\(*))
+(Message.keyword:*System.Net.WebClient* AND (Message.keyword:*.DownloadFile\(* OR Message.keyword:*.DownloadString\(*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/65531a81-a694-4e31-ae04-f8ba5bc33759 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious PowerShell Download",\n    "description": "Detects suspicious PowerShell download command",\n    "tags": [\n      "attack.execution",\n      "attack.t1086"\n    ],\n    "query": "(winlog.event_data.Message.keyword:*System.Net.WebClient* AND (winlog.event_data.Message.keyword:*.DownloadFile\\\\(* OR winlog.event_data.Message.keyword:*.DownloadString\\\\(*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.Message.keyword:*System.Net.WebClient* AND (winlog.event_data.Message.keyword:*.DownloadFile\\\\(* OR winlog.event_data.Message.keyword:*.DownloadString\\\\(*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious PowerShell Download\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/65531a81-a694-4e31-ae04-f8ba5bc33759 <<EOF
+{
+  "metadata": {
+    "title": "Suspicious PowerShell Download",
+    "description": "Detects suspicious PowerShell download command",
+    "tags": [
+      "attack.execution",
+      "attack.t1086",
+      "attack.t1059.001"
+    ],
+    "query": "(Message.keyword:*System.Net.WebClient* AND (Message.keyword:*.DownloadFile\\(* OR Message.keyword:*.DownloadString\\(*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(Message.keyword:*System.Net.WebClient* AND (Message.keyword:*.DownloadFile\\(* OR Message.keyword:*.DownloadString\\(*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious PowerShell Download'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(Message.keyword:*System.Net.WebClient* AND (Message.keyword:*.DownloadFile\\(* OR Message.keyword:*.DownloadString\\(*))
+(Message.keyword:*System.Net.WebClient* AND (Message.keyword:*.DownloadFile\(* OR Message.keyword:*.DownloadString\(*))
 ```
 
 
@@ -95,7 +172,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*.*System\\.Net\\.WebClient.*)(?=.*(?:.*(?:.*.*\\.DownloadFile\\(.*|.*.*\\.DownloadString\\(.*))))'
+grep -P '^(?:.*(?=.*.*System\.Net\.WebClient.*)(?=.*(?:.*(?:.*.*\.DownloadFile\(.*|.*.*\.DownloadString\(.*))))'
 ```
 
 

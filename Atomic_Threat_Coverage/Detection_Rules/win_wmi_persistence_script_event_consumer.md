@@ -3,7 +3,7 @@
 | **Description**          | Detects WMI script event consumers |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN0003_1_windows_sysmon_process_creation](../Data_Needed/DN0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Legitimate event consumers</li></ul>  |
@@ -50,49 +50,125 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "Image.*C:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe" -and $_.message -match "ParentImage.*C:\\\\Windows\\\\System32\\\\svchost.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "1" -and $_.message -match "Image.*C:\\WINDOWS\\system32\\wbem\\scrcons.exe" -and $_.message -match "ParentImage.*C:\\Windows\\System32\\svchost.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image:"C\\:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe" AND winlog.event_data.ParentImage:"C\\:\\\\Windows\\\\System32\\\\svchost.exe")
+(winlog.event_data.Image:"C\:\\WINDOWS\\system32\\wbem\\scrcons.exe" AND winlog.event_data.ParentImage:"C\:\\Windows\\System32\\svchost.exe")
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/ec1d5e28-8f3b-4188-a6f8-6e8df81dc28e <<EOF\n{\n  "metadata": {\n    "title": "WMI Persistence - Script Event Consumer",\n    "description": "Detects WMI script event consumers",\n    "tags": [\n      "attack.execution",\n      "attack.persistence",\n      "attack.t1047"\n    ],\n    "query": "(winlog.event_data.Image:\\"C\\\\:\\\\\\\\WINDOWS\\\\\\\\system32\\\\\\\\wbem\\\\\\\\scrcons.exe\\" AND winlog.event_data.ParentImage:\\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\svchost.exe\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.Image:\\"C\\\\:\\\\\\\\WINDOWS\\\\\\\\system32\\\\\\\\wbem\\\\\\\\scrcons.exe\\" AND winlog.event_data.ParentImage:\\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\svchost.exe\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'WMI Persistence - Script Event Consumer\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/ec1d5e28-8f3b-4188-a6f8-6e8df81dc28e <<EOF
+{
+  "metadata": {
+    "title": "WMI Persistence - Script Event Consumer",
+    "description": "Detects WMI script event consumers",
+    "tags": [
+      "attack.execution",
+      "attack.persistence",
+      "attack.t1047"
+    ],
+    "query": "(winlog.event_data.Image:\"C\\:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe\" AND winlog.event_data.ParentImage:\"C\\:\\\\Windows\\\\System32\\\\svchost.exe\")"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.Image:\"C\\:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe\" AND winlog.event_data.ParentImage:\"C\\:\\\\Windows\\\\System32\\\\svchost.exe\")",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'WMI Persistence - Script Event Consumer'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(Image:"C\\:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe" AND ParentImage:"C\\:\\\\Windows\\\\System32\\\\svchost.exe")
+(Image:"C\:\\WINDOWS\\system32\\wbem\\scrcons.exe" AND ParentImage:"C\:\\Windows\\System32\\svchost.exe")
 ```
 
 
 ### splunk
     
 ```
-(Image="C:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe" ParentImage="C:\\\\Windows\\\\System32\\\\svchost.exe")
+(Image="C:\\WINDOWS\\system32\\wbem\\scrcons.exe" ParentImage="C:\\Windows\\System32\\svchost.exe")
 ```
 
 
 ### logpoint
     
 ```
-(Image="C:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe" ParentImage="C:\\\\Windows\\\\System32\\\\svchost.exe")
+(event_id="1" Image="C:\\WINDOWS\\system32\\wbem\\scrcons.exe" ParentImage="C:\\Windows\\System32\\svchost.exe")
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*C:\\WINDOWS\\system32\\wbem\\scrcons\\.exe)(?=.*C:\\Windows\\System32\\svchost\\.exe))'
+grep -P '^(?:.*(?=.*C:\WINDOWS\system32\wbem\scrcons\.exe)(?=.*C:\Windows\System32\svchost\.exe))'
 ```
 
 
