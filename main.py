@@ -18,6 +18,10 @@ from response.atc_react.scripts.populateconfluence import ReactPopulateConfluenc
 from response.atc_react.scripts.react2stix import GenerateSTIX
 from response.atc_react.scripts.react_navigator import GenerateNavigator
 
+# For DATA
+from data.atc_data.scripts.populatemarkdown import DataPopulateMarkdown
+from data.atc_data.scripts.populateconfluence import DataPopulateConfluence
+
 # For confluence
 from requests.auth import HTTPBasicAuth
 
@@ -123,15 +127,16 @@ if __name__ == '__main__':
 
     if args.markdown:
         UpdateAttackMapping()
-        PopulateMarkdown(auto=args.auto, lp=args.loggingpolicy,
-                         ms=args.mitigationsystem, mp=args.mitigationpolicy,
-                         dn=args.dataneeded, dr=args.detectionrule,
-                         tg=args.triggers, en=args.enrichment,
-                         cu=args.customers, hp=args.hardeningpolicy,
-                         init=args.init)
+        PopulateMarkdown(auto=args.auto, ms=args.mitigationsystem,
+                         mp=args.mitigationpolicy, dr=args.detectionrule,
+                         tg=args.triggers, cu=args.customers, 
+                         hp=args.hardeningpolicy,init=args.init)
         ReactPopulateMarkdown(auto=args.auto, ra=args.responseactions,
                               rp=args.responseplaybook, rs=args.responsestage,
                               init=args.init)
+        DataPopulateMarkdown(auto=args.auto, lp=args.loggingpolicy,
+                             dn=args.dataneeded,en=args.enrichment,
+                             init=args.init)
 
     elif args.confluence:
         print("Provide Confluence credentials\n")
@@ -141,12 +146,13 @@ if __name__ == '__main__':
 
         auth = HTTPBasicAuth(mail, password)
         UpdateAttackMapping()
-        PopulateConfluence(auth=auth, auto=args.auto, lp=args.loggingpolicy,
-                           ms=args.mitigationsystem, mp=args.mitigationpolicy,
-                           dn=args.dataneeded, dr=args.detectionrule,
-                           tg=args.triggers, en=args.enrichment,
-                           cu=args.customers, hp=args.hardeningpolicy, 
-                           init=args.init)
+        DataPopulateConfluence(auth=auth, auto=args.auto, lp=args.loggingpolicy,
+                                dn=args.dataneeded,en=args.enrichment,
+                                init=args.init)
+        PopulateConfluence(auth=auth, auto=args.auto, ms=args.mitigationsystem, 
+                            mp=args.mitigationpolicy, dr=args.detectionrule,
+                            tg=args.triggers, cu=args.customers, 
+                            hp=args.hardeningpolicy, init=args.init)
         ReactPopulateConfluence(auth=auth, auto=args.auto, 
                                 ra=args.responseactions, rp=args.responseplaybook,
                                 rs=args.responsestage, init=args.init)

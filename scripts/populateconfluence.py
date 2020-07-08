@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 
 # Import ATC classes
-from scripts.dataneeded import DataNeeded
 from scripts.detectionrule import DetectionRule
 from scripts.mitigationsystem import MitigationSystem
 from scripts.mitigationpolicy import MitigationPolicy
 from scripts.hardeningpolicy import HardeningPolicy
-from scripts.loggingpolicy import LoggingPolicy
 from scripts.triggers import Triggers
-from scripts.enrichment import Enrichment
 from scripts.customer import Customer
 from scripts.attack_mapping import te_mapping
 from scripts.init_confluence import main as init_main
@@ -28,10 +25,9 @@ ATCconfig = ATCutils.load_config("config.yml")
 class PopulateConfluence:
     """Desc"""
 
-    def __init__(self, auth, lp=False, dn=False, dr=False, en=False, tg=False,
-                 cu=False, ms=False, mp=False, hp=False, auto=False, 
-                 art_dir=False, atc_dir=False, lp_path=False, dn_path=False, 
-                 dr_path=False, en_path=False, tg_path=False, cu_path=False, 
+    def __init__(self, auth, dr=False, tg=False,cu=False, ms=False, 
+                 mp=False, hp=False, auto=False, art_dir=False, 
+                 atc_dir=False, dr_path=False, tg_path=False, cu_path=False, 
                  hp_path=False, ms_path=False, mp_path=False, init=False):
         """Desc"""
 
@@ -68,9 +64,6 @@ class PopulateConfluence:
             self.hardening_policy(hp_path)
             self.mitigation_system(ms_path)
             self.mitigation_policy(mp_path)
-            self.logging_policy(lp_path)
-            self.data_needed(dn_path)
-            self.enrichment(en_path)
             self.triggers(tg_path)
             self.detection_rule(dr_path)
             self.customer(cu_path)
@@ -83,15 +76,6 @@ class PopulateConfluence:
 
         if mp:
             self.mitigation_policy(mp_path)
-        
-        if lp:
-            self.logging_policy(lp_path)
-
-        if dn:
-            self.data_needed(dn_path)
-
-        if en:
-            self.enrichment(en_path)
 
         if dr:
             self.detection_rule(dr_path)
@@ -247,78 +231,6 @@ class PopulateConfluence:
                 print('-' * 60)
         print("[+] Mitigation Policies populated!")
 
-    def logging_policy(self, lp_path):
-        """Desc"""
-
-        print("[*] Populating Logging Policies...")
-        if lp_path:
-            lp_list = glob.glob(lp_path + '*.yml')
-        else:
-            lp_dir = ATCconfig.get('logging_policies_dir')
-            lp_list = glob.glob(lp_dir + '/*.yml')
-
-        for lp_file in lp_list:
-            try:
-                lp = LoggingPolicy(lp_file)
-                lp.render_template("confluence")
-                confluence_data = {
-                    "title": lp.fields["title"],
-                    "spacekey": self.space,
-                    "parentid": str(ATCutils.confluence_get_page_id(
-                        self.apipath, self.auth, self.space,
-                        "Logging Policies")),
-                    "confluencecontent": lp.content,
-                }
-
-                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
-                                            self.auth)
-                if res == 'Page updated':
-            	    print("==> updated page: LP '" + lp.fields['title'] + "'")
-                # print("Done: ", lp.fields['title'])
-            except Exception as err:
-                print(lp_file + " failed")
-                print("Err message: %s" % err)
-                print('-' * 60)
-                traceback.print_exc(file=sys.stdout)
-                print('-' * 60)
-        print("[+] Logging Policies populated!")
-
-    def data_needed(self, dn_path):
-        """Desc"""
-
-        print("[*] Populating Data Needed...")
-        if dn_path:
-            dn_list = glob.glob(dn_path + '*.yml')
-        else:
-            dn_dir = ATCconfig.get('data_needed_dir')
-            dn_list = glob.glob(dn_dir + '/*.yml')
-
-        for dn_file in dn_list:
-            try:
-                dn = DataNeeded(dn_file, apipath=self.apipath, auth=self.auth,
-                                space=self.space)
-                dn.render_template("confluence")
-                confluence_data = {
-                    "title": dn.dn_fields["title"],
-                    "spacekey": self.space,
-                    "parentid": str(ATCutils.confluence_get_page_id(
-                        self.apipath, self.auth, self.space, "Data Needed")),
-                    "confluencecontent": dn.content,
-                }
-
-                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
-                                            self.auth)
-                if res == 'Page updated':
-            	    print("==> updated page: DN '" + dn.dn_fields['title'] + "'")
-                # print("Done: ", dn.dn_fields['title'])
-            except Exception as err:
-                print(dn_file + " failed")
-                print("Err message: %s" % err)
-                print('-' * 60)
-                traceback.print_exc(file=sys.stdout)
-                print('-' * 60)
-        print("[+] Data Needed populated!")
-
     def detection_rule(self, dr_path):
         """Desc"""
 
@@ -362,43 +274,6 @@ class PopulateConfluence:
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
         print("[+] Detection Rules populated!")
-
-    def enrichment(self, en_path):
-        """Nothing here yet"""
-
-        print("[*] Populating Enrichments...")
-        if en_path:
-            en_list = glob.glob(en_path + '*.yml')
-        else:
-            en_dir = ATCconfig.get('enrichments_directory')
-            en_list = glob.glob(en_dir + '/*.yml')
-
-        for en_file in en_list:
-            try:
-                en = Enrichment(en_file, apipath=self.apipath,
-                                auth=self.auth, space=self.space)
-                en.render_template("confluence")
-
-                confluence_data = {
-                    "title": en.en_parsed_file['title'],
-                    "spacekey": self.space,
-                    "parentid": str(ATCutils.confluence_get_page_id(
-                        self.apipath, self.auth, self.space,
-                        "Enrichments")), "confluencecontent": en.content,
-                }
-
-                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
-                                            self.auth)
-                if res == 'Page updated':
-            	    print("==> updated page: EN '" + en.en_parsed_file['title'] + "'")
-                # print("Done: ", en.en_parsed_file['title'])
-            except Exception as err:
-                print(en_file + " failed")
-                print("Err message: %s" % err)
-                print('-' * 60)
-                traceback.print_exc(file=sys.stdout)
-                print('-' * 60)
-        print("[+] Enrichments populated!")
 
     def customer(self, cu_path):
         """Nothing here yet"""

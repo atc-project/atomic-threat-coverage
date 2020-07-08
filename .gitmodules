@@ -10,3 +10,6 @@
 [submodule "response/atc_react"]
 	path = response/atc_react
 	url = https://github.com/atc-project/atc-react
+[submodule "data/atc_data"]
+	path = data/atc_data
+	url = https://github.com/atc-project/atc-data
