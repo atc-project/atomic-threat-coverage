@@ -1,16 +1,16 @@
 | Title                    | Suspicious Certutil Command       |
 |:-------------------------|:------------------|
 | **Description**          | Detects a suspicious Microsoft certutil execution with sub commands like 'decode' sub command, which is sometimes used to decode malicious code with the built-in certutil utility |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1140: Deobfuscate/Decode Files or Information](https://attack.mitre.org/techniques/T1140)</li><li>[T1105: Remote File Copy](https://attack.mitre.org/techniques/T1105)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1140: Deobfuscate/Decode Files or Information](https://attack.mitre.org/techniques/T1140)</li><li>[T1105: Ingress Tool Transfer](https://attack.mitre.org/techniques/T1105)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1140: Deobfuscate/Decode Files or Information](../Triggers/T1140.md)</li><li>[T1105: Remote File Copy](../Triggers/T1105.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1140: Deobfuscate/Decode Files or Information](../Triggers/T1140.md)</li><li>[T1105: Ingress Tool Transfer](../Triggers/T1105.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul>  |
 | **Development Status**   | experimental |
 | **References**           | <ul><li>[https://twitter.com/JohnLaTwC/status/835149808817991680](https://twitter.com/JohnLaTwC/status/835149808817991680)</li><li>[https://twitter.com/subTee/status/888102593838362624](https://twitter.com/subTee/status/888102593838362624)</li><li>[https://twitter.com/subTee/status/888071631528235010](https://twitter.com/subTee/status/888071631528235010)</li><li>[https://blogs.technet.microsoft.com/pki/2006/11/30/basic-crl-checking-with-certutil/](https://blogs.technet.microsoft.com/pki/2006/11/30/basic-crl-checking-with-certutil/)</li><li>[https://www.trustedsec.com/2017/07/new-tool-release-nps_payload/](https://www.trustedsec.com/2017/07/new-tool-release-nps_payload/)</li><li>[https://twitter.com/egre55/status/1087685529016193025](https://twitter.com/egre55/status/1087685529016193025)</li><li>[https://lolbas-project.github.io/lolbas/Binaries/Certutil/](https://lolbas-project.github.io/lolbas/Binaries/Certutil/)</li></ul>  |
 | **Author**               | Florian Roth, juju4, keepwatch |
-| Other Tags           | <ul><li>attack.s0189</li><li>attack.g0007</li></ul> | 
+| Other Tags           | <ul><li>attack.s0160</li><li>attack.g0007</li><li>attack.g0010</li><li>attack.g0045</li><li>attack.g0049</li><li>attack.g0075</li><li>attack.g0096</li></ul> | 
 
 ## Detection Rules
 
@@ -23,8 +23,8 @@ status: experimental
 description: Detects a suspicious Microsoft certutil execution with sub commands like 'decode' sub command, which is sometimes used to decode malicious code with
     the built-in certutil utility
 author: Florian Roth, juju4, keepwatch
-modified: 2019/01/22
 date: 2019/01/16
+modified: 2020/09/05
 references:
     - https://twitter.com/JohnLaTwC/status/835149808817991680
     - https://twitter.com/subTee/status/888102593838362624
@@ -60,9 +60,15 @@ fields:
 tags:
     - attack.defense_evasion
     - attack.t1140
+    - attack.command_and_control
     - attack.t1105
-    - attack.s0189
+    - attack.s0160
     - attack.g0007
+    - attack.g0010
+    - attack.g0045
+    - attack.g0049
+    - attack.g0075
+    - attack.g0096        
 falsepositives:
     - False positives depend on scripts and administrative tools used in the monitored environment
 level: high
@@ -90,7 +96,7 @@ winlog.event_data.CommandLine.keyword:(*\\ \\-decode\\ * OR *\\ \\/decode\\ * OR
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/e011a729-98a6-4139-b5c4-bf6f6dd8239a <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Certutil Command",\n    "description": "Detects a suspicious Microsoft certutil execution with sub commands like \'decode\' sub command, which is sometimes used to decode malicious code with the built-in certutil utility",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1140",\n      "attack.t1105",\n      "attack.s0189",\n      "attack.g0007"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-decode\\\\ * OR *\\\\ \\\\/decode\\\\ * OR *\\\\ \\\\-decodehex\\\\ * OR *\\\\ \\\\/decodehex\\\\ * OR *\\\\ \\\\-urlcache\\\\ * OR *\\\\ \\\\/urlcache\\\\ * OR *\\\\ \\\\-verifyctl\\\\ * OR *\\\\ \\\\/verifyctl\\\\ * OR *\\\\ \\\\-encode\\\\ * OR *\\\\ \\\\/encode\\\\ * OR *certutil*\\\\ \\\\-URL* OR *certutil*\\\\ \\\\/URL* OR *certutil*\\\\ \\\\-ping* OR *certutil*\\\\ \\\\/ping*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-decode\\\\ * OR *\\\\ \\\\/decode\\\\ * OR *\\\\ \\\\-decodehex\\\\ * OR *\\\\ \\\\/decodehex\\\\ * OR *\\\\ \\\\-urlcache\\\\ * OR *\\\\ \\\\/urlcache\\\\ * OR *\\\\ \\\\-verifyctl\\\\ * OR *\\\\ \\\\/verifyctl\\\\ * OR *\\\\ \\\\-encode\\\\ * OR *\\\\ \\\\/encode\\\\ * OR *certutil*\\\\ \\\\-URL* OR *certutil*\\\\ \\\\/URL* OR *certutil*\\\\ \\\\-ping* OR *certutil*\\\\ \\\\/ping*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Certutil Command\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/e011a729-98a6-4139-b5c4-bf6f6dd8239a <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Certutil Command",\n    "description": "Detects a suspicious Microsoft certutil execution with sub commands like \'decode\' sub command, which is sometimes used to decode malicious code with the built-in certutil utility",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1140",\n      "attack.command_and_control",\n      "attack.t1105",\n      "attack.s0160",\n      "attack.g0007",\n      "attack.g0010",\n      "attack.g0045",\n      "attack.g0049",\n      "attack.g0075",\n      "attack.g0096"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-decode\\\\ * OR *\\\\ \\\\/decode\\\\ * OR *\\\\ \\\\-decodehex\\\\ * OR *\\\\ \\\\/decodehex\\\\ * OR *\\\\ \\\\-urlcache\\\\ * OR *\\\\ \\\\/urlcache\\\\ * OR *\\\\ \\\\-verifyctl\\\\ * OR *\\\\ \\\\/verifyctl\\\\ * OR *\\\\ \\\\-encode\\\\ * OR *\\\\ \\\\/encode\\\\ * OR *certutil*\\\\ \\\\-URL* OR *certutil*\\\\ \\\\/URL* OR *certutil*\\\\ \\\\-ping* OR *certutil*\\\\ \\\\/ping*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-decode\\\\ * OR *\\\\ \\\\/decode\\\\ * OR *\\\\ \\\\-decodehex\\\\ * OR *\\\\ \\\\/decodehex\\\\ * OR *\\\\ \\\\-urlcache\\\\ * OR *\\\\ \\\\/urlcache\\\\ * OR *\\\\ \\\\-verifyctl\\\\ * OR *\\\\ \\\\/verifyctl\\\\ * OR *\\\\ \\\\-encode\\\\ * OR *\\\\ \\\\/encode\\\\ * OR *certutil*\\\\ \\\\-URL* OR *certutil*\\\\ \\\\/URL* OR *certutil*\\\\ \\\\-ping* OR *certutil*\\\\ \\\\/ping*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Certutil Command\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 

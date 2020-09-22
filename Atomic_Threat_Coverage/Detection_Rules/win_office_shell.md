@@ -1,16 +1,16 @@
 | Title                    | Microsoft Office Product Spawning Windows Shell       |
 |:-------------------------|:------------------|
-| **Description**          | Detects a Windows command line executable started from Microsoft Word, Excel, Powerpoint, Publisher and Visio. |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059: Command-Line Interface](https://attack.mitre.org/techniques/T1059)</li><li>[T1202: Indirect Command Execution](https://attack.mitre.org/techniques/T1202)</li></ul>  |
+| **Description**          | Detects a Windows command and scripting interpreter executable started from Microsoft Word, Excel, Powerpoint, Publisher and Visio |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1204: User Execution](https://attack.mitre.org/techniques/T1204)</li><li>[T1204.002: Malicious File](https://attack.mitre.org/techniques/T1204.002)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059: Command-Line Interface](../Triggers/T1059.md)</li><li>[T1202: Indirect Command Execution](../Triggers/T1202.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1204.002: Malicious File](../Triggers/T1204.002.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   | experimental |
 | **References**           | <ul><li>[https://www.hybrid-analysis.com/sample/465aabe132ccb949e75b8ab9c5bda36d80cf2fd503d52b8bad54e295f28bbc21?environmentId=100](https://www.hybrid-analysis.com/sample/465aabe132ccb949e75b8ab9c5bda36d80cf2fd503d52b8bad54e295f28bbc21?environmentId=100)</li><li>[https://mgreen27.github.io/posts/2018/04/02/DownloadCradle.html](https://mgreen27.github.io/posts/2018/04/02/DownloadCradle.html)</li></ul>  |
 | **Author**               | Michael Haag, Florian Roth, Markus Neis |
-| Other Tags           | <ul><li>car.2013-02-003</li><li>car.2014-04-003</li></ul> | 
+
 
 ## Detection Rules
 
@@ -20,19 +20,17 @@
 title: Microsoft Office Product Spawning Windows Shell
 id: 438025f9-5856-4663-83f7-52f878a70a50
 status: experimental
-description: Detects a Windows command line executable started from Microsoft Word, Excel, Powerpoint, Publisher and Visio.
+description: Detects a Windows command and scripting interpreter executable started from Microsoft Word, Excel, Powerpoint, Publisher and Visio
 references:
     - https://www.hybrid-analysis.com/sample/465aabe132ccb949e75b8ab9c5bda36d80cf2fd503d52b8bad54e295f28bbc21?environmentId=100
     - https://mgreen27.github.io/posts/2018/04/02/DownloadCradle.html
 tags:
     - attack.execution
-    - attack.defense_evasion
-    - attack.t1059
-    - attack.t1202
-    - car.2013-02-003
-    - car.2014-04-003
+    - attack.t1204          # an old one
+    - attack.t1204.002
 author: Michael Haag, Florian Roth, Markus Neis
 date: 2018/04/06
+modified: 2020/09/01
 logsource:
     category: process_creation
     product: windows
@@ -96,7 +94,7 @@ Get-WinEvent | where {(($_.message -match "ParentImage.*.*\\\\WINWORD.EXE" -or $
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/438025f9-5856-4663-83f7-52f878a70a50 <<EOF\n{\n  "metadata": {\n    "title": "Microsoft Office Product Spawning Windows Shell",\n    "description": "Detects a Windows command line executable started from Microsoft Word, Excel, Powerpoint, Publisher and Visio.",\n    "tags": [\n      "attack.execution",\n      "attack.defense_evasion",\n      "attack.t1059",\n      "attack.t1202",\n      "car.2013-02-003",\n      "car.2014-04-003"\n    ],\n    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\\\\\WINWORD.EXE OR *\\\\\\\\EXCEL.EXE OR *\\\\\\\\POWERPNT.exe OR *\\\\\\\\MSPUB.exe OR *\\\\\\\\VISIO.exe OR *\\\\\\\\OUTLOOK.EXE) AND winlog.event_data.Image.keyword:(*\\\\\\\\cmd.exe OR *\\\\\\\\powershell.exe OR *\\\\\\\\wscript.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\sh.exe OR *\\\\\\\\bash.exe OR *\\\\\\\\scrcons.exe OR *\\\\\\\\schtasks.exe OR *\\\\\\\\regsvr32.exe OR *\\\\\\\\hh.exe OR *\\\\\\\\wmic.exe OR *\\\\\\\\mshta.exe OR *\\\\\\\\rundll32.exe OR *\\\\\\\\msiexec.exe OR *\\\\\\\\forfiles.exe OR *\\\\\\\\scriptrunner.exe OR *\\\\\\\\mftrace.exe OR *\\\\\\\\AppVLP.exe OR *\\\\\\\\svchost.exe))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\\\\\WINWORD.EXE OR *\\\\\\\\EXCEL.EXE OR *\\\\\\\\POWERPNT.exe OR *\\\\\\\\MSPUB.exe OR *\\\\\\\\VISIO.exe OR *\\\\\\\\OUTLOOK.EXE) AND winlog.event_data.Image.keyword:(*\\\\\\\\cmd.exe OR *\\\\\\\\powershell.exe OR *\\\\\\\\wscript.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\sh.exe OR *\\\\\\\\bash.exe OR *\\\\\\\\scrcons.exe OR *\\\\\\\\schtasks.exe OR *\\\\\\\\regsvr32.exe OR *\\\\\\\\hh.exe OR *\\\\\\\\wmic.exe OR *\\\\\\\\mshta.exe OR *\\\\\\\\rundll32.exe OR *\\\\\\\\msiexec.exe OR *\\\\\\\\forfiles.exe OR *\\\\\\\\scriptrunner.exe OR *\\\\\\\\mftrace.exe OR *\\\\\\\\AppVLP.exe OR *\\\\\\\\svchost.exe))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "email": {\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Microsoft Office Product Spawning Windows Shell\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/438025f9-5856-4663-83f7-52f878a70a50 <<EOF\n{\n  "metadata": {\n    "title": "Microsoft Office Product Spawning Windows Shell",\n    "description": "Detects a Windows command and scripting interpreter executable started from Microsoft Word, Excel, Powerpoint, Publisher and Visio",\n    "tags": [\n      "attack.execution",\n      "attack.t1204",\n      "attack.t1204.002"\n    ],\n    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\\\\\WINWORD.EXE OR *\\\\\\\\EXCEL.EXE OR *\\\\\\\\POWERPNT.exe OR *\\\\\\\\MSPUB.exe OR *\\\\\\\\VISIO.exe OR *\\\\\\\\OUTLOOK.EXE) AND winlog.event_data.Image.keyword:(*\\\\\\\\cmd.exe OR *\\\\\\\\powershell.exe OR *\\\\\\\\wscript.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\sh.exe OR *\\\\\\\\bash.exe OR *\\\\\\\\scrcons.exe OR *\\\\\\\\schtasks.exe OR *\\\\\\\\regsvr32.exe OR *\\\\\\\\hh.exe OR *\\\\\\\\wmic.exe OR *\\\\\\\\mshta.exe OR *\\\\\\\\rundll32.exe OR *\\\\\\\\msiexec.exe OR *\\\\\\\\forfiles.exe OR *\\\\\\\\scriptrunner.exe OR *\\\\\\\\mftrace.exe OR *\\\\\\\\AppVLP.exe OR *\\\\\\\\svchost.exe))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\\\\\WINWORD.EXE OR *\\\\\\\\EXCEL.EXE OR *\\\\\\\\POWERPNT.exe OR *\\\\\\\\MSPUB.exe OR *\\\\\\\\VISIO.exe OR *\\\\\\\\OUTLOOK.EXE) AND winlog.event_data.Image.keyword:(*\\\\\\\\cmd.exe OR *\\\\\\\\powershell.exe OR *\\\\\\\\wscript.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\sh.exe OR *\\\\\\\\bash.exe OR *\\\\\\\\scrcons.exe OR *\\\\\\\\schtasks.exe OR *\\\\\\\\regsvr32.exe OR *\\\\\\\\hh.exe OR *\\\\\\\\wmic.exe OR *\\\\\\\\mshta.exe OR *\\\\\\\\rundll32.exe OR *\\\\\\\\msiexec.exe OR *\\\\\\\\forfiles.exe OR *\\\\\\\\scriptrunner.exe OR *\\\\\\\\mftrace.exe OR *\\\\\\\\AppVLP.exe OR *\\\\\\\\svchost.exe))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Microsoft Office Product Spawning Windows Shell\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
 ```
 
 
