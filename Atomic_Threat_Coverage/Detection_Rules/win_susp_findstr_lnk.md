@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects usage of findstr to identify and execute a lnk file as seen within the HHS redirect attack |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li><li>[T1202: Indirect Command Execution](https://attack.mitre.org/techniques/T1202)</li><li>[T1027.003: Steganography](https://attack.mitre.org/techniques/T1027.003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li><li>[T1202: Indirect Command Execution](https://attack.mitre.org/techniques/T1202)</li><li>[T1027.003: Steganography](https://attack.mitre.org/techniques/T1027/003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1202: Indirect Command Execution](../Triggers/T1202.md)</li></ul>  |
 | **Severity Level**       | medium |

@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a change in profile.ps1 of the Powershell profile |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1546.013: PowerShell Profile](https://attack.mitre.org/techniques/T1546.013)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1546.013: PowerShell Profile](https://attack.mitre.org/techniques/T1546/013)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1546.013: PowerShell Profile](../Triggers/T1546.013.md)</li></ul>  |
 | **Severity Level**       | high |

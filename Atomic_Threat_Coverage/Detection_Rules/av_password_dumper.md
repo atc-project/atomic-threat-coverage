@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a highly relevant Antivirus alert that reports a password dumper |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1558: Steal or Forge Kerberos Tickets](https://attack.mitre.org/techniques/T1558)</li><li>[T1003.001: LSASS Memory](https://attack.mitre.org/techniques/T1003.001)</li><li>[T1003.002: Security Account Manager](https://attack.mitre.org/techniques/T1003.002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1558: Steal or Forge Kerberos Tickets](https://attack.mitre.org/techniques/T1558)</li><li>[T1003.001: LSASS Memory](https://attack.mitre.org/techniques/T1003/001)</li><li>[T1003.002: Security Account Manager](https://attack.mitre.org/techniques/T1003/002)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0084_av_alert](../Data_Needed/DN_0084_av_alert.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.001: LSASS Memory](../Triggers/T1003.001.md)</li><li>[T1003.002: Security Account Manager](../Triggers/T1003.002.md)</li></ul>  |
 | **Severity Level**       | critical |

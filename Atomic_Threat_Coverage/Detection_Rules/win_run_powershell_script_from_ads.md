@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects PowerShell script execution from Alternate Data Stream (ADS) |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1096: NTFS File Attributes](https://attack.mitre.org/techniques/T1096)</li><li>[T1564.004: NTFS File Attributes](https://attack.mitre.org/techniques/T1564.004)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1096: NTFS File Attributes](https://attack.mitre.org/techniques/T1096)</li><li>[T1564.004: NTFS File Attributes](https://attack.mitre.org/techniques/T1564/004)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1564.004: NTFS File Attributes](../Triggers/T1564.004.md)</li></ul>  |
 | **Severity Level**       | high |

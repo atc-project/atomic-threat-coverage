@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Winlogon.exe is a Windows component responsible for actions at logon/logoff as well as the secure attention sequence (SAS) triggered by Ctrl-Alt-Delete. Registry entries in HKLM\Software[Wow6432Node]Microsoft\Windows NT\CurrentVersion\Winlogon\ and HKCU\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\ are used to manage additional helper programs and functionalities that support Winlogon. Malicious modifications to these Registry keys may cause Winlogon to load and execute malicious DLLs and/or executables. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1547.004: Winlogon Helper DLL](https://attack.mitre.org/techniques/T1547.004)</li><li>[T1004: Winlogon Helper DLL](https://attack.mitre.org/techniques/T1004)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1547.004: Winlogon Helper DLL](https://attack.mitre.org/techniques/T1547/004)</li><li>[T1004: Winlogon Helper DLL](https://attack.mitre.org/techniques/T1004)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1547.004: Winlogon Helper DLL](../Triggers/T1547.004.md)</li></ul>  |
 | **Severity Level**       | medium |

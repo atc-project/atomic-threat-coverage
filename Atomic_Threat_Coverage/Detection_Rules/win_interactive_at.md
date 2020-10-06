@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detect an interactive AT job, which may be used as a form of privilege escalation |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1053.002: At (Windows)](https://attack.mitre.org/techniques/T1053.002)</li><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1053.002: At (Windows)](https://attack.mitre.org/techniques/T1053/002)</li><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1053.002: At (Windows)](../Triggers/T1053.002.md)</li></ul>  |
 | **Severity Level**       | high |

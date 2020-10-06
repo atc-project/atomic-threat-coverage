@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects creation or execution of UserInitMprLogonScript persistence method |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1037: Boot or Logon Initialization Scripts](https://attack.mitre.org/techniques/T1037)</li><li>[T1037.001: Logon Script (Windows)](https://attack.mitre.org/techniques/T1037.001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1037: Boot or Logon Initialization Scripts](https://attack.mitre.org/techniques/T1037)</li><li>[T1037.001: Logon Script (Windows)](https://attack.mitre.org/techniques/T1037/001)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1037.001: Logon Script (Windows)](../Triggers/T1037.001.md)</li></ul>  |
 | **Severity Level**       | high |

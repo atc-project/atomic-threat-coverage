@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service starting |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1134: Access Token Manipulation](https://attack.mitre.org/techniques/T1134)</li><li>[T1134.001: Token Impersonation/Theft](https://attack.mitre.org/techniques/T1134.001)</li><li>[T1134.002: Create Process with Token](https://attack.mitre.org/techniques/T1134.002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1134: Access Token Manipulation](https://attack.mitre.org/techniques/T1134)</li><li>[T1134.001: Token Impersonation/Theft](https://attack.mitre.org/techniques/T1134/001)</li><li>[T1134.002: Create Process with Token](https://attack.mitre.org/techniques/T1134/002)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |

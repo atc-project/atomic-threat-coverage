@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Execution of well known tools for data exfiltration and tunneling |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0010: Exfiltration](https://attack.mitre.org/tactics/TA0010)</li><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1043: Commonly Used Port](https://attack.mitre.org/techniques/T1043)</li><li>[T1041: Exfiltration Over C2 Channel](https://attack.mitre.org/techniques/T1041)</li><li>[T1572: Protocol Tunneling](https://attack.mitre.org/techniques/T1572)</li><li>[T1071.001: Web Protocols](https://attack.mitre.org/techniques/T1071.001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1043: Commonly Used Port](https://attack.mitre.org/techniques/T1043)</li><li>[T1041: Exfiltration Over C2 Channel](https://attack.mitre.org/techniques/T1041)</li><li>[T1572: Protocol Tunneling](https://attack.mitre.org/techniques/T1572)</li><li>[T1071.001: Web Protocols](https://attack.mitre.org/techniques/T1071/001)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1071.001: Web Protocols](../Triggers/T1071.001.md)</li></ul>  |
 | **Severity Level**       | medium |

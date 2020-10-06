@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the creation of suspicious accounts simliar to ANONYMOUS LOGON, such as using additional spaces. Created as an covering detection for exclusion of Logon Type 3 from ANONYMOUS LOGON accounts. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1136: Create Account](https://attack.mitre.org/techniques/T1136)</li><li>[T1136.001: Local Account](https://attack.mitre.org/techniques/T1136.001)</li><li>[T1136.002: Domain Account](https://attack.mitre.org/techniques/T1136.002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1136: Create Account](https://attack.mitre.org/techniques/T1136)</li><li>[T1136.001: Local Account](https://attack.mitre.org/techniques/T1136/001)</li><li>[T1136.002: Domain Account](https://attack.mitre.org/techniques/T1136/002)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0086_4720_user_account_was_created](../Data_Needed/DN_0086_4720_user_account_was_created.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1136.001: Local Account](../Triggers/T1136.001.md)</li></ul>  |
 | **Severity Level**       | high |

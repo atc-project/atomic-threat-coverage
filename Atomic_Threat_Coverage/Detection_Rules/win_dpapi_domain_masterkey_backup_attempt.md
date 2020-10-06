@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects anyone attempting a backup for the DPAPI Master Key. This events gets generated at the source and not the Domain Controller. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1003.004: LSA Secrets](https://attack.mitre.org/techniques/T1003.004)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1003.004: LSA Secrets](https://attack.mitre.org/techniques/T1003/004)</li></ul>  |
 | **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
 | **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.004: LSA Secrets](../Triggers/T1003.004.md)</li></ul>  |
 | **Severity Level**       | critical |

@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects Service Principal Name Enumeration used for Kerberoasting |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1558.003: Kerberoasting](https://attack.mitre.org/techniques/T1558.003)</li><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1558.003: Kerberoasting](https://attack.mitre.org/techniques/T1558/003)</li><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1558.003: Kerberoasting](../Triggers/T1558.003.md)</li></ul>  |
 | **Severity Level**       | medium |

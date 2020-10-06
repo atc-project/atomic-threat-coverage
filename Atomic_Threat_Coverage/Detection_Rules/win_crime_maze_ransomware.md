@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects specific process characteristics of Maze ransomware word document droppers |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0040: Impact](https://attack.mitre.org/tactics/TA0040)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1204.002: Malicious File](https://attack.mitre.org/techniques/T1204.002)</li><li>[T1204: User Execution](https://attack.mitre.org/techniques/T1204)</li><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li><li>[T1490: Inhibit System Recovery](https://attack.mitre.org/techniques/T1490)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1204.002: Malicious File](https://attack.mitre.org/techniques/T1204/002)</li><li>[T1204: User Execution](https://attack.mitre.org/techniques/T1204)</li><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li><li>[T1490: Inhibit System Recovery](https://attack.mitre.org/techniques/T1490)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1204.002: Malicious File](../Triggers/T1204.002.md)</li><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li><li>[T1490: Inhibit System Recovery](../Triggers/T1490.md)</li></ul>  |
 | **Severity Level**       | critical |

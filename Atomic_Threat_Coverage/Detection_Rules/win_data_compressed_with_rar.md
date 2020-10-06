@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | An adversary may compress data (e.g., sensitive documents) that is collected prior to exfiltration in order to make it portable and minimize the amount of data sent over the network |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0010: Exfiltration](https://attack.mitre.org/tactics/TA0010)</li><li>[TA0009: Collection](https://attack.mitre.org/tactics/TA0009)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1002: Data Compressed](https://attack.mitre.org/techniques/T1002)</li><li>[T1560.001: Archive via Utility](https://attack.mitre.org/techniques/T1560.001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1002: Data Compressed](https://attack.mitre.org/techniques/T1002)</li><li>[T1560.001: Archive via Utility](https://attack.mitre.org/techniques/T1560/001)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1560.001: Archive via Utility](../Triggers/T1560.001.md)</li></ul>  |
 | **Severity Level**       | low |

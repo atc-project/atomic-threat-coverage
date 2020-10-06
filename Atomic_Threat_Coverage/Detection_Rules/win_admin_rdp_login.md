@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detect remote login by Administrator user depending on internal pattern |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1078: Valid Accounts](https://attack.mitre.org/techniques/T1078)</li><li>[T1078.001: Default Accounts](https://attack.mitre.org/techniques/T1078.001)</li><li>[T1078.002: Domain Accounts](https://attack.mitre.org/techniques/T1078.002)</li><li>[T1078.003: Local Accounts](https://attack.mitre.org/techniques/T1078.003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1078: Valid Accounts](https://attack.mitre.org/techniques/T1078)</li><li>[T1078.001: Default Accounts](https://attack.mitre.org/techniques/T1078/001)</li><li>[T1078.002: Domain Accounts](https://attack.mitre.org/techniques/T1078/002)</li><li>[T1078.003: Local Accounts](https://attack.mitre.org/techniques/T1078/003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1078.001: Default Accounts](../Triggers/T1078.001.md)</li></ul>  |
 | **Severity Level**       | low |

@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service installation |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1134: Access Token Manipulation](https://attack.mitre.org/techniques/T1134)</li><li>[T1134.001: Token Impersonation/Theft](https://attack.mitre.org/techniques/T1134.001)</li><li>[T1134.002: Create Process with Token](https://attack.mitre.org/techniques/T1134.002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1134: Access Token Manipulation](https://attack.mitre.org/techniques/T1134)</li><li>[T1134.001: Token Impersonation/Theft](https://attack.mitre.org/techniques/T1134/001)</li><li>[T1134.002: Create Process with Token](https://attack.mitre.org/techniques/T1134/002)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li><li>[DN_0010_6_windows_sysmon_driver_loaded](../Data_Needed/DN_0010_6_windows_sysmon_driver_loaded.md)</li><li>[DN_0063_4697_service_was_installed_in_the_system](../Data_Needed/DN_0063_4697_service_was_installed_in_the_system.md)</li></ul>  |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | critical |

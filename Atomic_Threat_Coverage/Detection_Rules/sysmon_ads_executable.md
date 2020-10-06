@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the creation of an ADS data stream that contains an executable (non-empty imphash) |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1027: Obfuscated Files or Information](https://attack.mitre.org/techniques/T1027)</li><li>[T1564.004: NTFS File Attributes](https://attack.mitre.org/techniques/T1564.004)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1027: Obfuscated Files or Information](https://attack.mitre.org/techniques/T1027)</li><li>[T1564.004: NTFS File Attributes](https://attack.mitre.org/techniques/T1564/004)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0019_15_windows_sysmon_FileCreateStreamHash](../Data_Needed/DN_0019_15_windows_sysmon_FileCreateStreamHash.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1027: Obfuscated Files or Information](../Triggers/T1027.md)</li><li>[T1564.004: NTFS File Attributes](../Triggers/T1564.004.md)</li></ul>  |
 | **Severity Level**       | critical |

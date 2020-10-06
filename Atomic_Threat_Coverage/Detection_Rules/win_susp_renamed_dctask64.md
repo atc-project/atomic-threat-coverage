@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a renamed dctask64.exe used for process injection, command execution, process creation with a signed binary by ZOHO Corporation |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li><li>[T1055.001: Dynamic-link Library Injection](https://attack.mitre.org/techniques/T1055.001)</li><li>[T1202: Indirect Command Execution](https://attack.mitre.org/techniques/T1202)</li><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li><li>[T1055.001: Dynamic-link Library Injection](https://attack.mitre.org/techniques/T1055/001)</li><li>[T1202: Indirect Command Execution](https://attack.mitre.org/techniques/T1202)</li><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1202: Indirect Command Execution](../Triggers/T1202.md)</li><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li></ul>  |
 | **Severity Level**       | high |

@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detection of sc.exe utility spawning by user with Medium integrity level to change service ImagePath or FailureCommand |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1574.011: Services Registry Permissions Weakness](https://attack.mitre.org/techniques/T1574.011)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1574.011: Services Registry Permissions Weakness](https://attack.mitre.org/techniques/T1574/011)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1574.011: Services Registry Permissions Weakness](../Triggers/T1574.011.md)</li></ul>  |
 | **Severity Level**       | high |

@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a suspicious parent of csc.exe, which could by a sign of payload delivery |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.005: Visual Basic](https://attack.mitre.org/techniques/T1059.005)</li><li>[T1059.007: JavaScript/JScript](https://attack.mitre.org/techniques/T1059.007)</li><li>[T1500: Compile After Delivery](https://attack.mitre.org/techniques/T1500)</li><li>[T1218.005: Mshta](https://attack.mitre.org/techniques/T1218.005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1059.005: Visual Basic](https://attack.mitre.org/techniques/T1059/005)</li><li>[T1059.007: JavaScript/JScript](https://attack.mitre.org/techniques/T1059/007)</li><li>[T1500: Compile After Delivery](https://attack.mitre.org/techniques/T1500)</li><li>[T1218.005: Mshta](https://attack.mitre.org/techniques/T1218/005)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1059.005: Visual Basic](../Triggers/T1059.005.md)</li><li>[T1218.005: Mshta](../Triggers/T1218.005.md)</li></ul>  |
 | **Severity Level**       | high |

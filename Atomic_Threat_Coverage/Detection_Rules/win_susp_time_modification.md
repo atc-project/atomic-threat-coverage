@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detect scenarios where a potentially unauthorized application or user is modifying the system time. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1099: Timestomp](https://attack.mitre.org/techniques/T1099)</li><li>[T1070.006: Timestomp](https://attack.mitre.org/techniques/T1070.006)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1099: Timestomp](https://attack.mitre.org/techniques/T1099)</li><li>[T1070.006: Timestomp](https://attack.mitre.org/techniques/T1070/006)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0088_4616_system_time_was_changed](../Data_Needed/DN_0088_4616_system_time_was_changed.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1070.006: Timestomp](../Triggers/T1070.006.md)</li></ul>  |
 | **Severity Level**       | medium |

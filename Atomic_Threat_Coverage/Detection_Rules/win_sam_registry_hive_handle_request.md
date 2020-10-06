@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects handles requested to SAM registry hive |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1012: Query Registry](https://attack.mitre.org/techniques/T1012)</li><li>[T1552.002: Credentials in Registry](https://attack.mitre.org/techniques/T1552.002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1012: Query Registry](https://attack.mitre.org/techniques/T1012)</li><li>[T1552.002: Credentials in Registry](https://attack.mitre.org/techniques/T1552/002)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0058_4656_handle_to_an_object_was_requested](../Data_Needed/DN_0058_4656_handle_to_an_object_was_requested.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1012: Query Registry](../Triggers/T1012.md)</li><li>[T1552.002: Credentials in Registry](../Triggers/T1552.002.md)</li></ul>  |
 | **Severity Level**       | critical |

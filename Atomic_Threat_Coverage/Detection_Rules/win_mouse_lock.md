@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | In Kaspersky's 2020 Incident Response Analyst Report they listed legitimate tool "Mouse Lock" as being used for both credential access and collection in security incidents. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li><li>[TA0009: Collection](https://attack.mitre.org/tactics/TA0009)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1056.002: GUI Input Capture](https://attack.mitre.org/techniques/T1056.002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1056.002: GUI Input Capture](https://attack.mitre.org/techniques/T1056/002)</li></ul>  |
 | **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
 | **Trigger**              | <ul><li>[T1056.002: GUI Input Capture](../Triggers/T1056.002.md)</li></ul>  |
 | **Severity Level**       | medium |

@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects persitence via netsh helper |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1546.007: Netsh Helper DLL](https://attack.mitre.org/techniques/T1546.007)</li><li>[T1128: Netsh Helper DLL](https://attack.mitre.org/techniques/T1128)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1546.007: Netsh Helper DLL](https://attack.mitre.org/techniques/T1546/007)</li><li>[T1128: Netsh Helper DLL](https://attack.mitre.org/techniques/T1128)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1546.007: Netsh Helper DLL](../Triggers/T1546.007.md)</li></ul>  |
 | **Severity Level**       | high |

@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Code integrity failures may indicate tampered executables. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1009: Binary Padding](https://attack.mitre.org/techniques/T1009)</li><li>[T1027.001: Binary Padding](https://attack.mitre.org/techniques/T1027.001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1009: Binary Padding](https://attack.mitre.org/techniques/T1009)</li><li>[T1027.001: Binary Padding](https://attack.mitre.org/techniques/T1027/001)</li></ul>  |
 | **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
 | **Trigger**              | <ul><li>[T1027.001: Binary Padding](../Triggers/T1027.001.md)</li></ul>  |
 | **Severity Level**       | low |

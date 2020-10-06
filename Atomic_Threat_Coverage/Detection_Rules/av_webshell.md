@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a highly relevant Antivirus alert that reports a web shell |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1100: Web Shell](https://attack.mitre.org/techniques/T1100)</li><li>[T1505.003: Web Shell](https://attack.mitre.org/techniques/T1505.003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1100: Web Shell](https://attack.mitre.org/techniques/T1100)</li><li>[T1505.003: Web Shell](https://attack.mitre.org/techniques/T1505/003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0084_av_alert](../Data_Needed/DN_0084_av_alert.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1505.003: Web Shell](../Triggers/T1505.003.md)</li></ul>  |
 | **Severity Level**       | critical |

@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | RDP login with localhost source address may be a tunnelled login |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1076: Remote Desktop Protocol](https://attack.mitre.org/techniques/T1076)</li><li>[T1021.001: Remote Desktop Protocol](https://attack.mitre.org/techniques/T1021.001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1076: Remote Desktop Protocol](https://attack.mitre.org/techniques/T1076)</li><li>[T1021.001: Remote Desktop Protocol](https://attack.mitre.org/techniques/T1021/001)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1021.001: Remote Desktop Protocol](../Triggers/T1021.001.md)</li></ul>  |
 | **Severity Level**       | high |

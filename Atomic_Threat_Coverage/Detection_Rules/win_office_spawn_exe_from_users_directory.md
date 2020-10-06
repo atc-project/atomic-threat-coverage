@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects an executable in the users directory started from Microsoft Word, Excel, Powerpoint, Publisher or Visio |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1204: User Execution](https://attack.mitre.org/techniques/T1204)</li><li>[T1204.002: Malicious File](https://attack.mitre.org/techniques/T1204.002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1204: User Execution](https://attack.mitre.org/techniques/T1204)</li><li>[T1204.002: Malicious File](https://attack.mitre.org/techniques/T1204/002)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1204.002: Malicious File](../Triggers/T1204.002.md)</li></ul>  |
 | **Severity Level**       | high |

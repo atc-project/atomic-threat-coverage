@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects Octopus Scanner Malware. |
 | **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
-| **ATT&amp;CK Technique** | <ul><li>[T1195: Supply Chain Compromise](https://attack.mitre.org/techniques/T1195)</li><li>[T1195.001: Compromise Software Dependencies and Development Tools](https://attack.mitre.org/techniques/T1195.001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1195: Supply Chain Compromise](https://attack.mitre.org/techniques/T1195)</li><li>[T1195.001: Compromise Software Dependencies and Development Tools](https://attack.mitre.org/techniques/T1195/001)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li></ul>  |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
