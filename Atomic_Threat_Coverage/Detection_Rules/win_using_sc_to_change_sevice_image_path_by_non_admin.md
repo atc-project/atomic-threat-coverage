@@ -61,49 +61,126 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "Image.*.*\\\\sc.exe" -and $_.message -match "IntegrityLevel.*Medium") -and (($_.message -match "CommandLine.*.*config.*" -and $_.message -match "CommandLine.*.*binPath.*") -or ($_.message -match "CommandLine.*.*failure.*" -and $_.message -match "CommandLine.*.*command.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "Image.*.*\\sc.exe" -and $_.message -match "IntegrityLevel.*Medium") -and (($_.message -match "CommandLine.*.*config.*" -and $_.message -match "CommandLine.*.*binPath.*") -or ($_.message -match "CommandLine.*.*failure.*" -and $_.message -match "CommandLine.*.*command.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.Image.keyword:*\\\\sc.exe AND IntegrityLevel:"Medium") AND ((winlog.event_data.CommandLine.keyword:*config* AND winlog.event_data.CommandLine.keyword:*binPath*) OR (winlog.event_data.CommandLine.keyword:*failure* AND winlog.event_data.CommandLine.keyword:*command*)))
+((winlog.event_data.Image.keyword:*\\sc.exe AND IntegrityLevel:"Medium") AND ((winlog.event_data.CommandLine.keyword:*config* AND winlog.event_data.CommandLine.keyword:*binPath*) OR (winlog.event_data.CommandLine.keyword:*failure* AND winlog.event_data.CommandLine.keyword:*command*)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/d937b75f-a665-4480-88a5-2f20e9f9b22a <<EOF\n{\n  "metadata": {\n    "title": "Possible Privilege Escalation via Weak Service Permissions",\n    "description": "Detection of sc.exe utility spawning by user with Medium integrity level to change service ImagePath or FailureCommand",\n    "tags": [\n      "attack.persistence",\n      "attack.defense_evasion",\n      "attack.privilege_escalation",\n      "attack.t1574.011"\n    ],\n    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\sc.exe AND IntegrityLevel:\\"Medium\\") AND ((winlog.event_data.CommandLine.keyword:*config* AND winlog.event_data.CommandLine.keyword:*binPath*) OR (winlog.event_data.CommandLine.keyword:*failure* AND winlog.event_data.CommandLine.keyword:*command*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\sc.exe AND IntegrityLevel:\\"Medium\\") AND ((winlog.event_data.CommandLine.keyword:*config* AND winlog.event_data.CommandLine.keyword:*binPath*) OR (winlog.event_data.CommandLine.keyword:*failure* AND winlog.event_data.CommandLine.keyword:*command*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Possible Privilege Escalation via Weak Service Permissions\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/d937b75f-a665-4480-88a5-2f20e9f9b22a <<EOF
+{
+  "metadata": {
+    "title": "Possible Privilege Escalation via Weak Service Permissions",
+    "description": "Detection of sc.exe utility spawning by user with Medium integrity level to change service ImagePath or FailureCommand",
+    "tags": [
+      "attack.persistence",
+      "attack.defense_evasion",
+      "attack.privilege_escalation",
+      "attack.t1574.011"
+    ],
+    "query": "((winlog.event_data.Image.keyword:*\\\\sc.exe AND IntegrityLevel:\"Medium\") AND ((winlog.event_data.CommandLine.keyword:*config* AND winlog.event_data.CommandLine.keyword:*binPath*) OR (winlog.event_data.CommandLine.keyword:*failure* AND winlog.event_data.CommandLine.keyword:*command*)))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.Image.keyword:*\\\\sc.exe AND IntegrityLevel:\"Medium\") AND ((winlog.event_data.CommandLine.keyword:*config* AND winlog.event_data.CommandLine.keyword:*binPath*) OR (winlog.event_data.CommandLine.keyword:*failure* AND winlog.event_data.CommandLine.keyword:*command*)))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Possible Privilege Escalation via Weak Service Permissions'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((Image.keyword:*\\\\sc.exe AND IntegrityLevel:"Medium") AND ((CommandLine.keyword:*config* AND CommandLine.keyword:*binPath*) OR (CommandLine.keyword:*failure* AND CommandLine.keyword:*command*)))
+((Image.keyword:*\\sc.exe AND IntegrityLevel:"Medium") AND ((CommandLine.keyword:*config* AND CommandLine.keyword:*binPath*) OR (CommandLine.keyword:*failure* AND CommandLine.keyword:*command*)))
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\\\sc.exe" IntegrityLevel="Medium") ((CommandLine="*config*" CommandLine="*binPath*") OR (CommandLine="*failure*" CommandLine="*command*")))
+((Image="*\\sc.exe" IntegrityLevel="Medium") ((CommandLine="*config*" CommandLine="*binPath*") OR (CommandLine="*failure*" CommandLine="*command*")))
 ```
 
 
 ### logpoint
     
 ```
-((Image="*\\\\sc.exe" IntegrityLevel="Medium") ((CommandLine="*config*" CommandLine="*binPath*") OR (CommandLine="*failure*" CommandLine="*command*")))
+((Image="*\\sc.exe" IntegrityLevel="Medium") ((CommandLine="*config*" CommandLine="*binPath*") OR (CommandLine="*failure*" CommandLine="*command*")))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?=.*.*\\sc\\.exe)(?=.*Medium)))(?=.*(?:.*(?:.*(?:.*(?=.*.*config.*)(?=.*.*binPath.*))|.*(?:.*(?=.*.*failure.*)(?=.*.*command.*))))))'
+grep -P '^(?:.*(?=.*(?:.*(?=.*.*\sc\.exe)(?=.*Medium)))(?=.*(?:.*(?:.*(?:.*(?=.*.*config.*)(?=.*.*binPath.*))|.*(?:.*(?=.*.*failure.*)(?=.*.*command.*))))))'
 ```
 
 

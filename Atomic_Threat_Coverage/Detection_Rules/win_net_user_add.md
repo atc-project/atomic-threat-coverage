@@ -61,49 +61,125 @@ level: medium
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "Image.*.*\\\\net.exe" -or $_.message -match "Image.*.*\\\\net1.exe") -and $_.message -match "CommandLine.*.*user.*" -and $_.message -match "CommandLine.*.*add.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "Image.*.*\\net.exe" -or $_.message -match "Image.*.*\\net1.exe") -and $_.message -match "CommandLine.*.*user.*" -and $_.message -match "CommandLine.*.*add.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*user* AND winlog.event_data.CommandLine.keyword:*add*)
+(winlog.event_data.Image.keyword:(*\\net.exe OR *\\net1.exe) AND winlog.event_data.CommandLine.keyword:*user* AND winlog.event_data.CommandLine.keyword:*add*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/cd219ff3-fa99-45d4-8380-a7d15116c6dc <<EOF\n{\n  "metadata": {\n    "title": "Net.exe User Account Creation",\n    "description": "Identifies creation of local users via the net.exe command",\n    "tags": [\n      "attack.persistence",\n      "attack.t1136",\n      "attack.t1136.001"\n    ],\n    "query": "(winlog.event_data.Image.keyword:(*\\\\\\\\net.exe OR *\\\\\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*user* AND winlog.event_data.CommandLine.keyword:*add*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.Image.keyword:(*\\\\\\\\net.exe OR *\\\\\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*user* AND winlog.event_data.CommandLine.keyword:*add*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Net.exe User Account Creation\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nComputerName = {{_source.ComputerName}}\\n        User = {{_source.User}}\\n CommandLine = {{_source.CommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/cd219ff3-fa99-45d4-8380-a7d15116c6dc <<EOF
+{
+  "metadata": {
+    "title": "Net.exe User Account Creation",
+    "description": "Identifies creation of local users via the net.exe command",
+    "tags": [
+      "attack.persistence",
+      "attack.t1136",
+      "attack.t1136.001"
+    ],
+    "query": "(winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*user* AND winlog.event_data.CommandLine.keyword:*add*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*user* AND winlog.event_data.CommandLine.keyword:*add*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Net.exe User Account Creation'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(Image.keyword:(*\\\\net.exe *\\\\net1.exe) AND CommandLine.keyword:*user* AND CommandLine.keyword:*add*)
+(Image.keyword:(*\\net.exe *\\net1.exe) AND CommandLine.keyword:*user* AND CommandLine.keyword:*add*)
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\\\net.exe" OR Image="*\\\\net1.exe") CommandLine="*user*" CommandLine="*add*") | table ComputerName,User,CommandLine
+((Image="*\\net.exe" OR Image="*\\net1.exe") CommandLine="*user*" CommandLine="*add*") | table ComputerName,User,CommandLine
 ```
 
 
 ### logpoint
     
 ```
-(Image IN ["*\\\\net.exe", "*\\\\net1.exe"] CommandLine="*user*" CommandLine="*add*")
+(Image IN ["*\\net.exe", "*\\net1.exe"] CommandLine="*user*" CommandLine="*add*")
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*.*\\net\\.exe|.*.*\\net1\\.exe))(?=.*.*user.*)(?=.*.*add.*))'
+grep -P '^(?:.*(?=.*(?:.*.*\net\.exe|.*.*\net1\.exe))(?=.*.*user.*)(?=.*.*add.*))'
 ```
 
 

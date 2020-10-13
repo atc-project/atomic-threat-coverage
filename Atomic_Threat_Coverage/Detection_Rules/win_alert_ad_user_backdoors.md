@@ -73,21 +73,96 @@ Get-WinEvent -LogName Security | where {(((((($_.ID -eq "4738" -and  -not ($_.me
 ### es-qs
     
 ```
-(winlog.channel:"Security" AND ((((winlog.channel:"Security" AND (winlog.event_id:"4738" AND (NOT (winlog.event_data.AllowedToDelegateTo:"\\-"))) AND (NOT (NOT _exists_:winlog.event_data.AllowedToDelegateTo))) OR (winlog.event_id:"5136" AND winlog.event_data.AttributeLDAPDisplayName:"msDS\\-AllowedToDelegateTo")) OR (winlog.event_id:"5136" AND winlog.event_data.ObjectClass:"user" AND winlog.event_data.AttributeLDAPDisplayName:"servicePrincipalName")) OR (winlog.event_id:"5136" AND winlog.event_data.AttributeLDAPDisplayName:"msDS\\-AllowedToActOnBehalfOfOtherIdentity")))
+(winlog.channel:"Security" AND ((((winlog.channel:"Security" AND (winlog.event_id:"4738" AND (NOT (winlog.event_data.AllowedToDelegateTo:"\-"))) AND (NOT (NOT _exists_:winlog.event_data.AllowedToDelegateTo))) OR (winlog.event_id:"5136" AND winlog.event_data.AttributeLDAPDisplayName:"msDS\-AllowedToDelegateTo")) OR (winlog.event_id:"5136" AND winlog.event_data.ObjectClass:"user" AND winlog.event_data.AttributeLDAPDisplayName:"servicePrincipalName")) OR (winlog.event_id:"5136" AND winlog.event_data.AttributeLDAPDisplayName:"msDS\-AllowedToActOnBehalfOfOtherIdentity")))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/300bac00-e041-4ee2-9c36-e262656a6ecc <<EOF\n{\n  "metadata": {\n    "title": "Active Directory User Backdoors",\n    "description": "Detects scenarios where one can control another users or computers account without having to use their credentials.",\n    "tags": [\n      "attack.t1098",\n      "attack.persistence"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND ((((winlog.channel:\\"Security\\" AND (winlog.event_id:\\"4738\\" AND (NOT (winlog.event_data.AllowedToDelegateTo:\\"\\\\-\\"))) AND (NOT (NOT _exists_:winlog.event_data.AllowedToDelegateTo))) OR (winlog.event_id:\\"5136\\" AND winlog.event_data.AttributeLDAPDisplayName:\\"msDS\\\\-AllowedToDelegateTo\\")) OR (winlog.event_id:\\"5136\\" AND winlog.event_data.ObjectClass:\\"user\\" AND winlog.event_data.AttributeLDAPDisplayName:\\"servicePrincipalName\\")) OR (winlog.event_id:\\"5136\\" AND winlog.event_data.AttributeLDAPDisplayName:\\"msDS\\\\-AllowedToActOnBehalfOfOtherIdentity\\")))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND ((((winlog.channel:\\"Security\\" AND (winlog.event_id:\\"4738\\" AND (NOT (winlog.event_data.AllowedToDelegateTo:\\"\\\\-\\"))) AND (NOT (NOT _exists_:winlog.event_data.AllowedToDelegateTo))) OR (winlog.event_id:\\"5136\\" AND winlog.event_data.AttributeLDAPDisplayName:\\"msDS\\\\-AllowedToDelegateTo\\")) OR (winlog.event_id:\\"5136\\" AND winlog.event_data.ObjectClass:\\"user\\" AND winlog.event_data.AttributeLDAPDisplayName:\\"servicePrincipalName\\")) OR (winlog.event_id:\\"5136\\" AND winlog.event_data.AttributeLDAPDisplayName:\\"msDS\\\\-AllowedToActOnBehalfOfOtherIdentity\\")))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Active Directory User Backdoors\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/300bac00-e041-4ee2-9c36-e262656a6ecc <<EOF
+{
+  "metadata": {
+    "title": "Active Directory User Backdoors",
+    "description": "Detects scenarios where one can control another users or computers account without having to use their credentials.",
+    "tags": [
+      "attack.t1098",
+      "attack.persistence"
+    ],
+    "query": "(winlog.channel:\"Security\" AND ((((winlog.channel:\"Security\" AND (winlog.event_id:\"4738\" AND (NOT (winlog.event_data.AllowedToDelegateTo:\"\\-\"))) AND (NOT (NOT _exists_:winlog.event_data.AllowedToDelegateTo))) OR (winlog.event_id:\"5136\" AND winlog.event_data.AttributeLDAPDisplayName:\"msDS\\-AllowedToDelegateTo\")) OR (winlog.event_id:\"5136\" AND winlog.event_data.ObjectClass:\"user\" AND winlog.event_data.AttributeLDAPDisplayName:\"servicePrincipalName\")) OR (winlog.event_id:\"5136\" AND winlog.event_data.AttributeLDAPDisplayName:\"msDS\\-AllowedToActOnBehalfOfOtherIdentity\")))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Security\" AND ((((winlog.channel:\"Security\" AND (winlog.event_id:\"4738\" AND (NOT (winlog.event_data.AllowedToDelegateTo:\"\\-\"))) AND (NOT (NOT _exists_:winlog.event_data.AllowedToDelegateTo))) OR (winlog.event_id:\"5136\" AND winlog.event_data.AttributeLDAPDisplayName:\"msDS\\-AllowedToDelegateTo\")) OR (winlog.event_id:\"5136\" AND winlog.event_data.ObjectClass:\"user\" AND winlog.event_data.AttributeLDAPDisplayName:\"servicePrincipalName\")) OR (winlog.event_id:\"5136\" AND winlog.event_data.AttributeLDAPDisplayName:\"msDS\\-AllowedToActOnBehalfOfOtherIdentity\")))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Active Directory User Backdoors'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(((((EventID:"4738" AND (NOT (AllowedToDelegateTo:"\\-"))) AND (NOT (NOT _exists_:AllowedToDelegateTo))) OR (EventID:"5136" AND AttributeLDAPDisplayName:"msDS\\-AllowedToDelegateTo")) OR (EventID:"5136" AND ObjectClass:"user" AND AttributeLDAPDisplayName:"servicePrincipalName")) OR (EventID:"5136" AND AttributeLDAPDisplayName:"msDS\\-AllowedToActOnBehalfOfOtherIdentity"))
+(((((EventID:"4738" AND (NOT (AllowedToDelegateTo:"\-"))) AND (NOT (NOT _exists_:AllowedToDelegateTo))) OR (EventID:"5136" AND AttributeLDAPDisplayName:"msDS\-AllowedToDelegateTo")) OR (EventID:"5136" AND ObjectClass:"user" AND AttributeLDAPDisplayName:"servicePrincipalName")) OR (EventID:"5136" AND AttributeLDAPDisplayName:"msDS\-AllowedToActOnBehalfOfOtherIdentity"))
 ```
 
 

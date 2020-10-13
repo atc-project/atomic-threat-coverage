@@ -64,7 +64,83 @@ Get-WinEvent -LogName Security | where {($_.ID -eq "4625" -and $_.message -match
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/8400629e-79a9-4737-b387-5db940ab2367 <<EOF\n{\n  "metadata": {\n    "title": "Scanner PoC for CVE-2019-0708 RDP RCE Vuln",\n    "description": "Detects the use of a scanner by zerosum0x0 that discovers targets vulnerable to  CVE-2019-0708 RDP RCE aka BlueKeep",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1210",\n      "car.2013-07-002"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4625\\" AND winlog.event_data.AccountName:\\"AAAAAAA\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4625\\" AND winlog.event_data.AccountName:\\"AAAAAAA\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Scanner PoC for CVE-2019-0708 RDP RCE Vuln\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/8400629e-79a9-4737-b387-5db940ab2367 <<EOF
+{
+  "metadata": {
+    "title": "Scanner PoC for CVE-2019-0708 RDP RCE Vuln",
+    "description": "Detects the use of a scanner by zerosum0x0 that discovers targets vulnerable to  CVE-2019-0708 RDP RCE aka BlueKeep",
+    "tags": [
+      "attack.lateral_movement",
+      "attack.t1210",
+      "car.2013-07-002"
+    ],
+    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4625\" AND winlog.event_data.AccountName:\"AAAAAAA\")"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4625\" AND winlog.event_data.AccountName:\"AAAAAAA\")",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Scanner PoC for CVE-2019-0708 RDP RCE Vuln'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 

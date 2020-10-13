@@ -61,49 +61,133 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "reg query \\"HKEY_CURRENT_USER\\\\Software\\\\Microsoft\\\\Terminal Server Client\\\\Default\\"" -or $_.message -match "CommandLine.*powershell.exe mshta.exe http.*" -or $_.message -match "cmd.exe /c taskkill /im cmd.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "reg query \"HKEY_CURRENT_USER\\Software\\Microsoft\\Terminal Server Client\\Default\"" -or $_.message -match "CommandLine.*powershell.exe mshta.exe http.*" -or $_.message -match "cmd.exe /c taskkill /im cmd.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.CommandLine.keyword:(reg\\ query\\ \\"HKEY_CURRENT_USER\\\\Software\\\\Microsoft\\\\Terminal\\ Server\\ Client\\\\Default\\" OR powershell.exe\\ mshta.exe\\ http* OR cmd.exe\\ \\/c\\ taskkill\\ \\/im\\ cmd.exe)
+winlog.event_data.CommandLine.keyword:(reg\ query\ \"HKEY_CURRENT_USER\\Software\\Microsoft\\Terminal\ Server\ Client\\Default\" OR powershell.exe\ mshta.exe\ http* OR cmd.exe\ \/c\ taskkill\ \/im\ cmd.exe)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/2b30fa36-3a18-402f-a22d-bf4ce2189f35 <<EOF\n{\n  "metadata": {\n    "title": "Baby Shark Activity",\n    "description": "Detects activity that could be related to Baby Shark malware",\n    "tags": [\n      "attack.execution",\n      "attack.t1059",\n      "attack.t1086",\n      "attack.t1059.003",\n      "attack.t1059.001",\n      "attack.discovery",\n      "attack.t1012",\n      "attack.defense_evasion",\n      "attack.t1170",\n      "attack.t1218",\n      "attack.t1218.005"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(reg\\\\ query\\\\ \\\\\\"HKEY_CURRENT_USER\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Terminal\\\\ Server\\\\ Client\\\\\\\\Default\\\\\\" OR powershell.exe\\\\ mshta.exe\\\\ http* OR cmd.exe\\\\ \\\\/c\\\\ taskkill\\\\ \\\\/im\\\\ cmd.exe)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(reg\\\\ query\\\\ \\\\\\"HKEY_CURRENT_USER\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Terminal\\\\ Server\\\\ Client\\\\\\\\Default\\\\\\" OR powershell.exe\\\\ mshta.exe\\\\ http* OR cmd.exe\\\\ \\\\/c\\\\ taskkill\\\\ \\\\/im\\\\ cmd.exe)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Baby Shark Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/2b30fa36-3a18-402f-a22d-bf4ce2189f35 <<EOF
+{
+  "metadata": {
+    "title": "Baby Shark Activity",
+    "description": "Detects activity that could be related to Baby Shark malware",
+    "tags": [
+      "attack.execution",
+      "attack.t1059",
+      "attack.t1086",
+      "attack.t1059.003",
+      "attack.t1059.001",
+      "attack.discovery",
+      "attack.t1012",
+      "attack.defense_evasion",
+      "attack.t1170",
+      "attack.t1218",
+      "attack.t1218.005"
+    ],
+    "query": "winlog.event_data.CommandLine.keyword:(reg\\ query\\ \\\"HKEY_CURRENT_USER\\\\Software\\\\Microsoft\\\\Terminal\\ Server\\ Client\\\\Default\\\" OR powershell.exe\\ mshta.exe\\ http* OR cmd.exe\\ \\/c\\ taskkill\\ \\/im\\ cmd.exe)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.CommandLine.keyword:(reg\\ query\\ \\\"HKEY_CURRENT_USER\\\\Software\\\\Microsoft\\\\Terminal\\ Server\\ Client\\\\Default\\\" OR powershell.exe\\ mshta.exe\\ http* OR cmd.exe\\ \\/c\\ taskkill\\ \\/im\\ cmd.exe)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Baby Shark Activity'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-CommandLine.keyword:(reg query \\"HKEY_CURRENT_USER\\\\Software\\\\Microsoft\\\\Terminal Server Client\\\\Default\\" powershell.exe mshta.exe http* cmd.exe \\/c taskkill \\/im cmd.exe)
+CommandLine.keyword:(reg query \"HKEY_CURRENT_USER\\Software\\Microsoft\\Terminal Server Client\\Default\" powershell.exe mshta.exe http* cmd.exe \/c taskkill \/im cmd.exe)
 ```
 
 
 ### splunk
     
 ```
-(CommandLine="reg query \\"HKEY_CURRENT_USER\\\\Software\\\\Microsoft\\\\Terminal Server Client\\\\Default\\"" OR CommandLine="powershell.exe mshta.exe http*" OR CommandLine="cmd.exe /c taskkill /im cmd.exe")
+(CommandLine="reg query \"HKEY_CURRENT_USER\\Software\\Microsoft\\Terminal Server Client\\Default\"" OR CommandLine="powershell.exe mshta.exe http*" OR CommandLine="cmd.exe /c taskkill /im cmd.exe")
 ```
 
 
 ### logpoint
     
 ```
-CommandLine IN ["reg query \\"HKEY_CURRENT_USER\\\\Software\\\\Microsoft\\\\Terminal Server Client\\\\Default\\"", "powershell.exe mshta.exe http*", "cmd.exe /c taskkill /im cmd.exe"]
+CommandLine IN ["reg query \"HKEY_CURRENT_USER\\Software\\Microsoft\\Terminal Server Client\\Default\"", "powershell.exe mshta.exe http*", "cmd.exe /c taskkill /im cmd.exe"]
 ```
 
 
 ### grep
     
 ```
-grep -P \'^(?:.*reg query "HKEY_CURRENT_USER\\Software\\Microsoft\\Terminal Server Client\\Default"|.*powershell\\.exe mshta\\.exe http.*|.*cmd\\.exe /c taskkill /im cmd\\.exe)\'
+grep -P '^(?:.*reg query "HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client\Default"|.*powershell\.exe mshta\.exe http.*|.*cmd\.exe /c taskkill /im cmd\.exe)'
 ```
 
 

@@ -67,42 +67,124 @@ fields:
 ### powershell
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/builtin/win_apt_apt29_tor.yml): Only COUNT aggregation function is implemented for this backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 
 ### es-qs
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/builtin/win_apt_apt29_tor.yml): Aggregations not implemented for this backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/c069f460-2b87-4010-8dcf-e45bab362624 <<EOF\n{\n  "metadata": {\n    "title": "APT29 Google Update Service Install",\n    "description": "This method detects malicious services mentioned in APT29 report by FireEye. The legitimate path for the Google update service is C:\\\\Program Files (x86)\\\\Google\\\\Update\\\\GoogleUpdate.exe so the service names and executable locations used by APT29 are specific enough to be detected in log files.",\n    "tags": [\n      "attack.persistence",\n      "attack.g0016",\n      "attack.t1050",\n      "attack.t1543.003"\n    ],\n    "query": "(winlog.event_id:\\"7045\\" AND winlog.event_data.ServiceName:\\"Google\\\\ Update\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "5m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_id:\\"7045\\" AND winlog.event_data.ServiceName:\\"Google\\\\ Update\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'APT29 Google Update Service Install\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nComputerName = {{_source.ComputerName}}\\n        User = {{_source.User}}\\n CommandLine = {{_source.CommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/c069f460-2b87-4010-8dcf-e45bab362624 <<EOF
+{
+  "metadata": {
+    "title": "APT29 Google Update Service Install",
+    "description": "This method detects malicious services mentioned in APT29 report by FireEye. The legitimate path for the Google update service is C:\\Program Files (x86)\\Google\\Update\\GoogleUpdate.exe so the service names and executable locations used by APT29 are specific enough to be detected in log files.",
+    "tags": [
+      "attack.persistence",
+      "attack.g0016",
+      "attack.t1050",
+      "attack.t1543.003"
+    ],
+    "query": "(winlog.event_id:\"7045\" AND winlog.event_data.ServiceName:\"Google\\ Update\")"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "5m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_id:\"7045\" AND winlog.event_data.ServiceName:\"Google\\ Update\")",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'APT29 Google Update Service Install'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/builtin/win_apt_apt29_tor.yml): Aggregations not implemented for this backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 
 ### splunk
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/builtin/win_apt_apt29_tor.yml): The 'near' aggregation operator is not yet implemented for this backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 
 ### logpoint
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/builtin/win_apt_apt29_tor.yml): The 'near' aggregation operator is not yet implemented for this backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 

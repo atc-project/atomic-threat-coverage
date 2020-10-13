@@ -89,21 +89,105 @@ Get-WinEvent | where {($_.message -match "CommandLine.*.* -decode .*" -or $_.mes
 ### es-qs
     
 ```
-winlog.event_data.CommandLine.keyword:(*\\ \\-decode\\ * OR *\\ \\/decode\\ * OR *\\ \\-decodehex\\ * OR *\\ \\/decodehex\\ * OR *\\ \\-urlcache\\ * OR *\\ \\/urlcache\\ * OR *\\ \\-verifyctl\\ * OR *\\ \\/verifyctl\\ * OR *\\ \\-encode\\ * OR *\\ \\/encode\\ * OR *certutil*\\ \\-URL* OR *certutil*\\ \\/URL* OR *certutil*\\ \\-ping* OR *certutil*\\ \\/ping*)
+winlog.event_data.CommandLine.keyword:(*\ \-decode\ * OR *\ \/decode\ * OR *\ \-decodehex\ * OR *\ \/decodehex\ * OR *\ \-urlcache\ * OR *\ \/urlcache\ * OR *\ \-verifyctl\ * OR *\ \/verifyctl\ * OR *\ \-encode\ * OR *\ \/encode\ * OR *certutil*\ \-URL* OR *certutil*\ \/URL* OR *certutil*\ \-ping* OR *certutil*\ \/ping*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/e011a729-98a6-4139-b5c4-bf6f6dd8239a <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Certutil Command",\n    "description": "Detects a suspicious Microsoft certutil execution with sub commands like \'decode\' sub command, which is sometimes used to decode malicious code with the built-in certutil utility",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1140",\n      "attack.command_and_control",\n      "attack.t1105",\n      "attack.s0160",\n      "attack.g0007",\n      "attack.g0010",\n      "attack.g0045",\n      "attack.g0049",\n      "attack.g0075",\n      "attack.g0096"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-decode\\\\ * OR *\\\\ \\\\/decode\\\\ * OR *\\\\ \\\\-decodehex\\\\ * OR *\\\\ \\\\/decodehex\\\\ * OR *\\\\ \\\\-urlcache\\\\ * OR *\\\\ \\\\/urlcache\\\\ * OR *\\\\ \\\\-verifyctl\\\\ * OR *\\\\ \\\\/verifyctl\\\\ * OR *\\\\ \\\\-encode\\\\ * OR *\\\\ \\\\/encode\\\\ * OR *certutil*\\\\ \\\\-URL* OR *certutil*\\\\ \\\\/URL* OR *certutil*\\\\ \\\\-ping* OR *certutil*\\\\ \\\\/ping*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-decode\\\\ * OR *\\\\ \\\\/decode\\\\ * OR *\\\\ \\\\-decodehex\\\\ * OR *\\\\ \\\\/decodehex\\\\ * OR *\\\\ \\\\-urlcache\\\\ * OR *\\\\ \\\\/urlcache\\\\ * OR *\\\\ \\\\-verifyctl\\\\ * OR *\\\\ \\\\/verifyctl\\\\ * OR *\\\\ \\\\-encode\\\\ * OR *\\\\ \\\\/encode\\\\ * OR *certutil*\\\\ \\\\-URL* OR *certutil*\\\\ \\\\/URL* OR *certutil*\\\\ \\\\-ping* OR *certutil*\\\\ \\\\/ping*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Certutil Command\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/e011a729-98a6-4139-b5c4-bf6f6dd8239a <<EOF
+{
+  "metadata": {
+    "title": "Suspicious Certutil Command",
+    "description": "Detects a suspicious Microsoft certutil execution with sub commands like 'decode' sub command, which is sometimes used to decode malicious code with the built-in certutil utility",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.t1140",
+      "attack.command_and_control",
+      "attack.t1105",
+      "attack.s0160",
+      "attack.g0007",
+      "attack.g0010",
+      "attack.g0045",
+      "attack.g0049",
+      "attack.g0075",
+      "attack.g0096"
+    ],
+    "query": "winlog.event_data.CommandLine.keyword:(*\\ \\-decode\\ * OR *\\ \\/decode\\ * OR *\\ \\-decodehex\\ * OR *\\ \\/decodehex\\ * OR *\\ \\-urlcache\\ * OR *\\ \\/urlcache\\ * OR *\\ \\-verifyctl\\ * OR *\\ \\/verifyctl\\ * OR *\\ \\-encode\\ * OR *\\ \\/encode\\ * OR *certutil*\\ \\-URL* OR *certutil*\\ \\/URL* OR *certutil*\\ \\-ping* OR *certutil*\\ \\/ping*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.CommandLine.keyword:(*\\ \\-decode\\ * OR *\\ \\/decode\\ * OR *\\ \\-decodehex\\ * OR *\\ \\/decodehex\\ * OR *\\ \\-urlcache\\ * OR *\\ \\/urlcache\\ * OR *\\ \\-verifyctl\\ * OR *\\ \\/verifyctl\\ * OR *\\ \\-encode\\ * OR *\\ \\/encode\\ * OR *certutil*\\ \\-URL* OR *certutil*\\ \\/URL* OR *certutil*\\ \\-ping* OR *certutil*\\ \\/ping*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious Certutil Command'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-CommandLine.keyword:(* \\-decode * * \\/decode * * \\-decodehex * * \\/decodehex * * \\-urlcache * * \\/urlcache * * \\-verifyctl * * \\/verifyctl * * \\-encode * * \\/encode * *certutil* \\-URL* *certutil* \\/URL* *certutil* \\-ping* *certutil* \\/ping*)
+CommandLine.keyword:(* \-decode * * \/decode * * \-decodehex * * \/decodehex * * \-urlcache * * \/urlcache * * \-verifyctl * * \/verifyctl * * \-encode * * \/encode * *certutil* \-URL* *certutil* \/URL* *certutil* \-ping* *certutil* \/ping*)
 ```
 
 

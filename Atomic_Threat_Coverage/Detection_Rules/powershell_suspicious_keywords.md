@@ -66,21 +66,97 @@ Get-WinEvent -LogName Microsoft-Windows-PowerShell/Operational | where {(($_.mes
 ### es-qs
     
 ```
-Message:("System.Reflection.Assembly.Load" OR "\\[System.Reflection.Assembly\\]\\:\\:Load" OR "\\[Reflection.Assembly\\]\\:\\:Load" OR "System.Reflection.AssemblyName" OR "Reflection.Emit.AssemblyBuilderAccess" OR "Runtime.InteropServices.DllImportAttribute" OR "SuspendThread")
+Message:("System.Reflection.Assembly.Load" OR "\[System.Reflection.Assembly\]\:\:Load" OR "\[Reflection.Assembly\]\:\:Load" OR "System.Reflection.AssemblyName" OR "Reflection.Emit.AssemblyBuilderAccess" OR "Runtime.InteropServices.DllImportAttribute" OR "SuspendThread")
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1f49f2ab-26bc-48b3-96cc-dcffbc93eadf <<EOF\n{\n  "metadata": {\n    "title": "Suspicious PowerShell Keywords",\n    "description": "Detects keywords that could indicate the use of some PowerShell exploitation framework",\n    "tags": [\n      "attack.execution",\n      "attack.t1059.001",\n      "attack.t1086"\n    ],\n    "query": "Message:(\\"System.Reflection.Assembly.Load\\" OR \\"\\\\[System.Reflection.Assembly\\\\]\\\\:\\\\:Load\\" OR \\"\\\\[Reflection.Assembly\\\\]\\\\:\\\\:Load\\" OR \\"System.Reflection.AssemblyName\\" OR \\"Reflection.Emit.AssemblyBuilderAccess\\" OR \\"Runtime.InteropServices.DllImportAttribute\\" OR \\"SuspendThread\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "Message:(\\"System.Reflection.Assembly.Load\\" OR \\"\\\\[System.Reflection.Assembly\\\\]\\\\:\\\\:Load\\" OR \\"\\\\[Reflection.Assembly\\\\]\\\\:\\\\:Load\\" OR \\"System.Reflection.AssemblyName\\" OR \\"Reflection.Emit.AssemblyBuilderAccess\\" OR \\"Runtime.InteropServices.DllImportAttribute\\" OR \\"SuspendThread\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious PowerShell Keywords\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/1f49f2ab-26bc-48b3-96cc-dcffbc93eadf <<EOF
+{
+  "metadata": {
+    "title": "Suspicious PowerShell Keywords",
+    "description": "Detects keywords that could indicate the use of some PowerShell exploitation framework",
+    "tags": [
+      "attack.execution",
+      "attack.t1059.001",
+      "attack.t1086"
+    ],
+    "query": "Message:(\"System.Reflection.Assembly.Load\" OR \"\\[System.Reflection.Assembly\\]\\:\\:Load\" OR \"\\[Reflection.Assembly\\]\\:\\:Load\" OR \"System.Reflection.AssemblyName\" OR \"Reflection.Emit.AssemblyBuilderAccess\" OR \"Runtime.InteropServices.DllImportAttribute\" OR \"SuspendThread\")"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "Message:(\"System.Reflection.Assembly.Load\" OR \"\\[System.Reflection.Assembly\\]\\:\\:Load\" OR \"\\[Reflection.Assembly\\]\\:\\:Load\" OR \"System.Reflection.AssemblyName\" OR \"Reflection.Emit.AssemblyBuilderAccess\" OR \"Runtime.InteropServices.DllImportAttribute\" OR \"SuspendThread\")",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious PowerShell Keywords'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-Message:("System.Reflection.Assembly.Load" "\\[System.Reflection.Assembly\\]\\:\\:Load" "\\[Reflection.Assembly\\]\\:\\:Load" "System.Reflection.AssemblyName" "Reflection.Emit.AssemblyBuilderAccess" "Runtime.InteropServices.DllImportAttribute" "SuspendThread")
+Message:("System.Reflection.Assembly.Load" "\[System.Reflection.Assembly\]\:\:Load" "\[Reflection.Assembly\]\:\:Load" "System.Reflection.AssemblyName" "Reflection.Emit.AssemblyBuilderAccess" "Runtime.InteropServices.DllImportAttribute" "SuspendThread")
 ```
 
 
@@ -101,7 +177,7 @@ Message IN ["System.Reflection.Assembly.Load", "[System.Reflection.Assembly]::Lo
 ### grep
     
 ```
-grep -P '^(?:.*System\\.Reflection\\.Assembly\\.Load|.*\\[System\\.Reflection\\.Assembly\\]::Load|.*\\[Reflection\\.Assembly\\]::Load|.*System\\.Reflection\\.AssemblyName|.*Reflection\\.Emit\\.AssemblyBuilderAccess|.*Runtime\\.InteropServices\\.DllImportAttribute|.*SuspendThread)'
+grep -P '^(?:.*System\.Reflection\.Assembly\.Load|.*\[System\.Reflection\.Assembly\]::Load|.*\[Reflection\.Assembly\]::Load|.*System\.Reflection\.AssemblyName|.*Reflection\.Emit\.AssemblyBuilderAccess|.*Runtime\.InteropServices\.DllImportAttribute|.*SuspendThread)'
 ```
 
 

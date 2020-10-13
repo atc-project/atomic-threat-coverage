@@ -55,49 +55,124 @@ falsepositives:
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "Image.*.*\\\\powerpnt.exe" -or $_.message -match "Image.*.*\\\\winword.exe" -or $_.message -match "Image.*.*\\\\excel.exe") -and $_.message -match "CommandLine.*.*http.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "Image.*.*\\powerpnt.exe" -or $_.message -match "Image.*.*\\winword.exe" -or $_.message -match "Image.*.*\\excel.exe") -and $_.message -match "CommandLine.*.*http.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:(*\\\\powerpnt.exe OR *\\\\winword.exe OR *\\\\excel.exe) AND winlog.event_data.CommandLine.keyword:*http*)
+(winlog.event_data.Image.keyword:(*\\powerpnt.exe OR *\\winword.exe OR *\\excel.exe) AND winlog.event_data.CommandLine.keyword:*http*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/0c79148b-118e-472b-bdb7-9b57b444cc19 <<EOF\n{\n  "metadata": {\n    "title": "Malicious Payload Download via Office Binaries",\n    "description": "Downloads payload from remote server",\n    "tags": [\n      "attack.command_and_control",\n      "attack.t1105"\n    ],\n    "query": "(winlog.event_data.Image.keyword:(*\\\\\\\\powerpnt.exe OR *\\\\\\\\winword.exe OR *\\\\\\\\excel.exe) AND winlog.event_data.CommandLine.keyword:*http*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.Image.keyword:(*\\\\\\\\powerpnt.exe OR *\\\\\\\\winword.exe OR *\\\\\\\\excel.exe) AND winlog.event_data.CommandLine.keyword:*http*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Malicious Payload Download via Office Binaries\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/0c79148b-118e-472b-bdb7-9b57b444cc19 <<EOF
+{
+  "metadata": {
+    "title": "Malicious Payload Download via Office Binaries",
+    "description": "Downloads payload from remote server",
+    "tags": [
+      "attack.command_and_control",
+      "attack.t1105"
+    ],
+    "query": "(winlog.event_data.Image.keyword:(*\\\\powerpnt.exe OR *\\\\winword.exe OR *\\\\excel.exe) AND winlog.event_data.CommandLine.keyword:*http*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.Image.keyword:(*\\\\powerpnt.exe OR *\\\\winword.exe OR *\\\\excel.exe) AND winlog.event_data.CommandLine.keyword:*http*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Malicious Payload Download via Office Binaries'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(Image.keyword:(*\\\\powerpnt.exe *\\\\winword.exe *\\\\excel.exe) AND CommandLine.keyword:*http*)
+(Image.keyword:(*\\powerpnt.exe *\\winword.exe *\\excel.exe) AND CommandLine.keyword:*http*)
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\\\powerpnt.exe" OR Image="*\\\\winword.exe" OR Image="*\\\\excel.exe") CommandLine="*http*")
+((Image="*\\powerpnt.exe" OR Image="*\\winword.exe" OR Image="*\\excel.exe") CommandLine="*http*")
 ```
 
 
 ### logpoint
     
 ```
-(Image IN ["*\\\\powerpnt.exe", "*\\\\winword.exe", "*\\\\excel.exe"] CommandLine="*http*")
+(Image IN ["*\\powerpnt.exe", "*\\winword.exe", "*\\excel.exe"] CommandLine="*http*")
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*.*\\powerpnt\\.exe|.*.*\\winword\\.exe|.*.*\\excel\\.exe))(?=.*.*http.*))'
+grep -P '^(?:.*(?=.*(?:.*.*\powerpnt\.exe|.*.*\winword\.exe|.*.*\excel\.exe))(?=.*.*http.*))'
 ```
 
 

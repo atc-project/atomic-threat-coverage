@@ -52,49 +52,125 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "ParentImage.*.*\\\\wsreset.exe" -and  -not ($_.message -match "Image.*.*\\\\conhost.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "ParentImage.*.*\\wsreset.exe" -and  -not ($_.message -match "Image.*.*\\conhost.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.ParentImage.keyword:*\\\\wsreset.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\conhost.exe)))
+(winlog.event_data.ParentImage.keyword:*\\wsreset.exe AND (NOT (winlog.event_data.Image.keyword:*\\conhost.exe)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/d797268e-28a9-49a7-b9a8-2f5039011c5c <<EOF\n{\n  "metadata": {\n    "title": "Bypass UAC via WSReset.exe",\n    "description": "Identifies use of WSReset.exe to bypass User Account Control. Adversaries use this technique to execute privileged processes.",\n    "tags": [\n      "attack.privilege_escalation",\n      "attack.t1548.002",\n      "attack.t1088"\n    ],\n    "query": "(winlog.event_data.ParentImage.keyword:*\\\\\\\\wsreset.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\\\\\conhost.exe)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.ParentImage.keyword:*\\\\\\\\wsreset.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\\\\\conhost.exe)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Bypass UAC via WSReset.exe\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/d797268e-28a9-49a7-b9a8-2f5039011c5c <<EOF
+{
+  "metadata": {
+    "title": "Bypass UAC via WSReset.exe",
+    "description": "Identifies use of WSReset.exe to bypass User Account Control. Adversaries use this technique to execute privileged processes.",
+    "tags": [
+      "attack.privilege_escalation",
+      "attack.t1548.002",
+      "attack.t1088"
+    ],
+    "query": "(winlog.event_data.ParentImage.keyword:*\\\\wsreset.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\conhost.exe)))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.ParentImage.keyword:*\\\\wsreset.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\conhost.exe)))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Bypass UAC via WSReset.exe'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(ParentImage.keyword:*\\\\wsreset.exe AND (NOT (Image.keyword:*\\\\conhost.exe)))
+(ParentImage.keyword:*\\wsreset.exe AND (NOT (Image.keyword:*\\conhost.exe)))
 ```
 
 
 ### splunk
     
 ```
-(ParentImage="*\\\\wsreset.exe" NOT (Image="*\\\\conhost.exe"))
+(ParentImage="*\\wsreset.exe" NOT (Image="*\\conhost.exe"))
 ```
 
 
 ### logpoint
     
 ```
-(ParentImage="*\\\\wsreset.exe"  -(Image="*\\\\conhost.exe"))
+(ParentImage="*\\wsreset.exe"  -(Image="*\\conhost.exe"))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*.*\\wsreset\\.exe)(?=.*(?!.*(?:.*(?=.*.*\\conhost\\.exe)))))'
+grep -P '^(?:.*(?=.*.*\wsreset\.exe)(?=.*(?!.*(?:.*(?=.*.*\conhost\.exe)))))'
 ```
 
 

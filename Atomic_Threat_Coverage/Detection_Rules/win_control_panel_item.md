@@ -64,49 +64,128 @@ falsepositives:
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "CommandLine.*.*.cpl" -and  -not (($_.message -match "CommandLine.*.*\\\\System32\\\\.*" -or $_.message -match "CommandLine.*.*%System%.*"))) -or (($_.message -match "CommandLine.*.*reg add.*") -and ($_.message -match "CommandLine.*.*CurrentVersion\\\\Control Panel\\\\CPLs.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "CommandLine.*.*.cpl" -and  -not (($_.message -match "CommandLine.*.*\\System32\\.*" -or $_.message -match "CommandLine.*.*%System%.*"))) -or (($_.message -match "CommandLine.*.*reg add.*") -and ($_.message -match "CommandLine.*.*CurrentVersion\\Control Panel\\CPLs.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.CommandLine.keyword:*.cpl AND (NOT (winlog.event_data.CommandLine.keyword:(*\\\\System32\\\\* OR *%System%*)))) OR (winlog.event_data.CommandLine.keyword:(*reg\\ add*) AND winlog.event_data.CommandLine.keyword:(*CurrentVersion\\\\Control\\ Panel\\\\CPLs*)))
+((winlog.event_data.CommandLine.keyword:*.cpl AND (NOT (winlog.event_data.CommandLine.keyword:(*\\System32\\* OR *%System%*)))) OR (winlog.event_data.CommandLine.keyword:(*reg\ add*) AND winlog.event_data.CommandLine.keyword:(*CurrentVersion\\Control\ Panel\\CPLs*)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/0ba863e6-def5-4e50-9cea-4dd8c7dc46a4 <<EOF\n{\n  "metadata": {\n    "title": "Control Panel Items",\n    "description": "Detects the malicious use of a control panel item",\n    "tags": [\n      "attack.execution",\n      "attack.defense_evasion",\n      "attack.t1218.002",\n      "attack.t1196",\n      "attack.persistence",\n      "attack.t1546"\n    ],\n    "query": "((winlog.event_data.CommandLine.keyword:*.cpl AND (NOT (winlog.event_data.CommandLine.keyword:(*\\\\\\\\System32\\\\\\\\* OR *%System%*)))) OR (winlog.event_data.CommandLine.keyword:(*reg\\\\ add*) AND winlog.event_data.CommandLine.keyword:(*CurrentVersion\\\\\\\\Control\\\\ Panel\\\\\\\\CPLs*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.CommandLine.keyword:*.cpl AND (NOT (winlog.event_data.CommandLine.keyword:(*\\\\\\\\System32\\\\\\\\* OR *%System%*)))) OR (winlog.event_data.CommandLine.keyword:(*reg\\\\ add*) AND winlog.event_data.CommandLine.keyword:(*CurrentVersion\\\\\\\\Control\\\\ Panel\\\\\\\\CPLs*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Control Panel Items\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/0ba863e6-def5-4e50-9cea-4dd8c7dc46a4 <<EOF
+{
+  "metadata": {
+    "title": "Control Panel Items",
+    "description": "Detects the malicious use of a control panel item",
+    "tags": [
+      "attack.execution",
+      "attack.defense_evasion",
+      "attack.t1218.002",
+      "attack.t1196",
+      "attack.persistence",
+      "attack.t1546"
+    ],
+    "query": "((winlog.event_data.CommandLine.keyword:*.cpl AND (NOT (winlog.event_data.CommandLine.keyword:(*\\\\System32\\\\* OR *%System%*)))) OR (winlog.event_data.CommandLine.keyword:(*reg\\ add*) AND winlog.event_data.CommandLine.keyword:(*CurrentVersion\\\\Control\\ Panel\\\\CPLs*)))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.CommandLine.keyword:*.cpl AND (NOT (winlog.event_data.CommandLine.keyword:(*\\\\System32\\\\* OR *%System%*)))) OR (winlog.event_data.CommandLine.keyword:(*reg\\ add*) AND winlog.event_data.CommandLine.keyword:(*CurrentVersion\\\\Control\\ Panel\\\\CPLs*)))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Control Panel Items'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((CommandLine.keyword:*.cpl AND (NOT (CommandLine.keyword:(*\\\\System32\\\\* *%System%*)))) OR (CommandLine.keyword:(*reg add*) AND CommandLine.keyword:(*CurrentVersion\\\\Control Panel\\\\CPLs*)))
+((CommandLine.keyword:*.cpl AND (NOT (CommandLine.keyword:(*\\System32\\* *%System%*)))) OR (CommandLine.keyword:(*reg add*) AND CommandLine.keyword:(*CurrentVersion\\Control Panel\\CPLs*)))
 ```
 
 
 ### splunk
     
 ```
-((CommandLine="*.cpl" NOT ((CommandLine="*\\\\System32\\\\*" OR CommandLine="*%System%*"))) OR ((CommandLine="*reg add*") (CommandLine="*CurrentVersion\\\\Control Panel\\\\CPLs*")))
+((CommandLine="*.cpl" NOT ((CommandLine="*\\System32\\*" OR CommandLine="*%System%*"))) OR ((CommandLine="*reg add*") (CommandLine="*CurrentVersion\\Control Panel\\CPLs*")))
 ```
 
 
 ### logpoint
     
 ```
-((CommandLine="*.cpl"  -(CommandLine IN ["*\\\\System32\\\\*", "*%System%*"])) OR (CommandLine IN ["*reg add*"] CommandLine IN ["*CurrentVersion\\\\Control Panel\\\\CPLs*"]))
+((CommandLine="*.cpl"  -(CommandLine IN ["*\\System32\\*", "*%System%*"])) OR (CommandLine IN ["*reg add*"] CommandLine IN ["*CurrentVersion\\Control Panel\\CPLs*"]))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?:.*(?:.*(?=.*.*\\.cpl)(?=.*(?!.*(?:.*(?=.*(?:.*.*\\System32\\\\.*|.*.*%System%.*))))))|.*(?:.*(?=.*(?:.*.*reg add.*))(?=.*(?:.*.*CurrentVersion\\\\Control Panel\\\\CPLs.*)))))'
+grep -P '^(?:.*(?:.*(?:.*(?=.*.*\.cpl)(?=.*(?!.*(?:.*(?=.*(?:.*.*\System32\\.*|.*.*%System%.*))))))|.*(?:.*(?=.*(?:.*.*reg add.*))(?=.*(?:.*.*CurrentVersion\\Control Panel\\CPLs.*)))))'
 ```
 
 

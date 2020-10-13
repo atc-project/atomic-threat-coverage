@@ -66,49 +66,128 @@ status: experimental
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "Image.*.*\\\\reg.exe" -and ($_.message -match "CommandLine.*.*save.*" -or $_.message -match "CommandLine.*.*export.*") -and ($_.message -match "CommandLine.*.*hklm.*" -or $_.message -match "CommandLine.*.*hkey_local_machine.*") -and ($_.message -match "CommandLine.*.*\\\\system" -or $_.message -match "CommandLine.*.*\\\\sam" -or $_.message -match "CommandLine.*.*\\\\security")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "Image.*.*\\reg.exe" -and ($_.message -match "CommandLine.*.*save.*" -or $_.message -match "CommandLine.*.*export.*") -and ($_.message -match "CommandLine.*.*hklm.*" -or $_.message -match "CommandLine.*.*hkey_local_machine.*") -and ($_.message -match "CommandLine.*.*\\system" -or $_.message -match "CommandLine.*.*\\sam" -or $_.message -match "CommandLine.*.*\\security")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:*\\\\reg.exe AND winlog.event_data.CommandLine.keyword:(*save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*hklm* OR *hkey_local_machine*) AND winlog.event_data.CommandLine.keyword:(*\\\\system OR *\\\\sam OR *\\\\security))
+(winlog.event_data.Image.keyword:*\\reg.exe AND winlog.event_data.CommandLine.keyword:(*save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*hklm* OR *hkey_local_machine*) AND winlog.event_data.CommandLine.keyword:(*\\system OR *\\sam OR *\\security))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/fd877b94-9bb5-4191-bb25-d79cbd93c167 <<EOF\n{\n  "metadata": {\n    "title": "Grabbing Sensitive Hives via Reg Utility",\n    "description": "Dump sam, system or security hives using REG.exe utility",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003.002",\n      "attack.t1003.004",\n      "attack.t1003.005",\n      "attack.t1003",\n      "car.2013-07-001"\n    ],\n    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\reg.exe AND winlog.event_data.CommandLine.keyword:(*save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*hklm* OR *hkey_local_machine*) AND winlog.event_data.CommandLine.keyword:(*\\\\\\\\system OR *\\\\\\\\sam OR *\\\\\\\\security))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\reg.exe AND winlog.event_data.CommandLine.keyword:(*save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*hklm* OR *hkey_local_machine*) AND winlog.event_data.CommandLine.keyword:(*\\\\\\\\system OR *\\\\\\\\sam OR *\\\\\\\\security))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Grabbing Sensitive Hives via Reg Utility\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/fd877b94-9bb5-4191-bb25-d79cbd93c167 <<EOF
+{
+  "metadata": {
+    "title": "Grabbing Sensitive Hives via Reg Utility",
+    "description": "Dump sam, system or security hives using REG.exe utility",
+    "tags": [
+      "attack.credential_access",
+      "attack.t1003.002",
+      "attack.t1003.004",
+      "attack.t1003.005",
+      "attack.t1003",
+      "car.2013-07-001"
+    ],
+    "query": "(winlog.event_data.Image.keyword:*\\\\reg.exe AND winlog.event_data.CommandLine.keyword:(*save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*hklm* OR *hkey_local_machine*) AND winlog.event_data.CommandLine.keyword:(*\\\\system OR *\\\\sam OR *\\\\security))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.Image.keyword:*\\\\reg.exe AND winlog.event_data.CommandLine.keyword:(*save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*hklm* OR *hkey_local_machine*) AND winlog.event_data.CommandLine.keyword:(*\\\\system OR *\\\\sam OR *\\\\security))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Grabbing Sensitive Hives via Reg Utility'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(Image.keyword:*\\\\reg.exe AND CommandLine.keyword:(*save* *export*) AND CommandLine.keyword:(*hklm* *hkey_local_machine*) AND CommandLine.keyword:(*\\\\system *\\\\sam *\\\\security))
+(Image.keyword:*\\reg.exe AND CommandLine.keyword:(*save* *export*) AND CommandLine.keyword:(*hklm* *hkey_local_machine*) AND CommandLine.keyword:(*\\system *\\sam *\\security))
 ```
 
 
 ### splunk
     
 ```
-(Image="*\\\\reg.exe" (CommandLine="*save*" OR CommandLine="*export*") (CommandLine="*hklm*" OR CommandLine="*hkey_local_machine*") (CommandLine="*\\\\system" OR CommandLine="*\\\\sam" OR CommandLine="*\\\\security"))
+(Image="*\\reg.exe" (CommandLine="*save*" OR CommandLine="*export*") (CommandLine="*hklm*" OR CommandLine="*hkey_local_machine*") (CommandLine="*\\system" OR CommandLine="*\\sam" OR CommandLine="*\\security"))
 ```
 
 
 ### logpoint
     
 ```
-(Image="*\\\\reg.exe" CommandLine IN ["*save*", "*export*"] CommandLine IN ["*hklm*", "*hkey_local_machine*"] CommandLine IN ["*\\\\system", "*\\\\sam", "*\\\\security"])
+(Image="*\\reg.exe" CommandLine IN ["*save*", "*export*"] CommandLine IN ["*hklm*", "*hkey_local_machine*"] CommandLine IN ["*\\system", "*\\sam", "*\\security"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*.*\\reg\\.exe)(?=.*(?:.*.*save.*|.*.*export.*))(?=.*(?:.*.*hklm.*|.*.*hkey_local_machine.*))(?=.*(?:.*.*\\system|.*.*\\sam|.*.*\\security)))'
+grep -P '^(?:.*(?=.*.*\reg\.exe)(?=.*(?:.*.*save.*|.*.*export.*))(?=.*(?:.*.*hklm.*|.*.*hkey_local_machine.*))(?=.*(?:.*.*\system|.*.*\sam|.*.*\security)))'
 ```
 
 

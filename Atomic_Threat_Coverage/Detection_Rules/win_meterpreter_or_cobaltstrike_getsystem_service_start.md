@@ -76,49 +76,126 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "ParentImage.*.*\\\\services.exe" -and (($_.message -match "CommandLine.*.*cmd.*" -and $_.message -match "CommandLine.*.*/c.*" -and $_.message -match "CommandLine.*.*echo.*" -and $_.message -match "CommandLine.*.*\\\\pipe\\\\.*") -or ($_.message -match "CommandLine.*.*%COMSPEC%.*" -and $_.message -match "CommandLine.*.*/c.*" -and $_.message -match "CommandLine.*.*echo.*" -and $_.message -match "CommandLine.*.*\\\\pipe\\\\.*") -or ($_.message -match "CommandLine.*.*rundll32.*" -and $_.message -match "CommandLine.*.*.dll,a.*" -and $_.message -match "CommandLine.*.*/p:.*"))) -and  -not ($_.message -match "CommandLine.*.*MpCmdRun.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "ParentImage.*.*\\services.exe" -and (($_.message -match "CommandLine.*.*cmd.*" -and $_.message -match "CommandLine.*.*/c.*" -and $_.message -match "CommandLine.*.*echo.*" -and $_.message -match "CommandLine.*.*\\pipe\\.*") -or ($_.message -match "CommandLine.*.*%COMSPEC%.*" -and $_.message -match "CommandLine.*.*/c.*" -and $_.message -match "CommandLine.*.*echo.*" -and $_.message -match "CommandLine.*.*\\pipe\\.*") -or ($_.message -match "CommandLine.*.*rundll32.*" -and $_.message -match "CommandLine.*.*.dll,a.*" -and $_.message -match "CommandLine.*.*/p:.*"))) -and  -not ($_.message -match "CommandLine.*.*MpCmdRun.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.ParentImage.keyword:*\\\\services.exe AND ((winlog.event_data.CommandLine.keyword:*cmd* AND winlog.event_data.CommandLine.keyword:*\\/c* AND winlog.event_data.CommandLine.keyword:*echo* AND winlog.event_data.CommandLine.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.CommandLine.keyword:*%COMSPEC%* AND winlog.event_data.CommandLine.keyword:*\\/c* AND winlog.event_data.CommandLine.keyword:*echo* AND winlog.event_data.CommandLine.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.CommandLine.keyword:*rundll32* AND winlog.event_data.CommandLine.keyword:*.dll,a* AND winlog.event_data.CommandLine.keyword:*\\/p\\:*))) AND (NOT (winlog.event_data.CommandLine.keyword:*MpCmdRun*)))
+((winlog.event_data.ParentImage.keyword:*\\services.exe AND ((winlog.event_data.CommandLine.keyword:*cmd* AND winlog.event_data.CommandLine.keyword:*\/c* AND winlog.event_data.CommandLine.keyword:*echo* AND winlog.event_data.CommandLine.keyword:*\\pipe\\*) OR (winlog.event_data.CommandLine.keyword:*%COMSPEC%* AND winlog.event_data.CommandLine.keyword:*\/c* AND winlog.event_data.CommandLine.keyword:*echo* AND winlog.event_data.CommandLine.keyword:*\\pipe\\*) OR (winlog.event_data.CommandLine.keyword:*rundll32* AND winlog.event_data.CommandLine.keyword:*.dll,a* AND winlog.event_data.CommandLine.keyword:*\/p\:*))) AND (NOT (winlog.event_data.CommandLine.keyword:*MpCmdRun*)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/15619216-e993-4721-b590-4c520615a67d <<EOF\n{\n  "metadata": {\n    "title": "Meterpreter or Cobalt Strike Getsystem Service Start",\n    "description": "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service starting",\n    "tags": [\n      "attack.privilege_escalation",\n      "attack.t1134",\n      "attack.t1134.001",\n      "attack.t1134.002"\n    ],\n    "query": "((winlog.event_data.ParentImage.keyword:*\\\\\\\\services.exe AND ((winlog.event_data.CommandLine.keyword:*cmd* AND winlog.event_data.CommandLine.keyword:*\\\\/c* AND winlog.event_data.CommandLine.keyword:*echo* AND winlog.event_data.CommandLine.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.CommandLine.keyword:*%COMSPEC%* AND winlog.event_data.CommandLine.keyword:*\\\\/c* AND winlog.event_data.CommandLine.keyword:*echo* AND winlog.event_data.CommandLine.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.CommandLine.keyword:*rundll32* AND winlog.event_data.CommandLine.keyword:*.dll,a* AND winlog.event_data.CommandLine.keyword:*\\\\/p\\\\:*))) AND (NOT (winlog.event_data.CommandLine.keyword:*MpCmdRun*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.ParentImage.keyword:*\\\\\\\\services.exe AND ((winlog.event_data.CommandLine.keyword:*cmd* AND winlog.event_data.CommandLine.keyword:*\\\\/c* AND winlog.event_data.CommandLine.keyword:*echo* AND winlog.event_data.CommandLine.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.CommandLine.keyword:*%COMSPEC%* AND winlog.event_data.CommandLine.keyword:*\\\\/c* AND winlog.event_data.CommandLine.keyword:*echo* AND winlog.event_data.CommandLine.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.CommandLine.keyword:*rundll32* AND winlog.event_data.CommandLine.keyword:*.dll,a* AND winlog.event_data.CommandLine.keyword:*\\\\/p\\\\:*))) AND (NOT (winlog.event_data.CommandLine.keyword:*MpCmdRun*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Meterpreter or Cobalt Strike Getsystem Service Start\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nComputerName = {{_source.ComputerName}}\\n        User = {{_source.User}}\\n CommandLine = {{_source.CommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/15619216-e993-4721-b590-4c520615a67d <<EOF
+{
+  "metadata": {
+    "title": "Meterpreter or Cobalt Strike Getsystem Service Start",
+    "description": "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service starting",
+    "tags": [
+      "attack.privilege_escalation",
+      "attack.t1134",
+      "attack.t1134.001",
+      "attack.t1134.002"
+    ],
+    "query": "((winlog.event_data.ParentImage.keyword:*\\\\services.exe AND ((winlog.event_data.CommandLine.keyword:*cmd* AND winlog.event_data.CommandLine.keyword:*\\/c* AND winlog.event_data.CommandLine.keyword:*echo* AND winlog.event_data.CommandLine.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.CommandLine.keyword:*%COMSPEC%* AND winlog.event_data.CommandLine.keyword:*\\/c* AND winlog.event_data.CommandLine.keyword:*echo* AND winlog.event_data.CommandLine.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.CommandLine.keyword:*rundll32* AND winlog.event_data.CommandLine.keyword:*.dll,a* AND winlog.event_data.CommandLine.keyword:*\\/p\\:*))) AND (NOT (winlog.event_data.CommandLine.keyword:*MpCmdRun*)))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.ParentImage.keyword:*\\\\services.exe AND ((winlog.event_data.CommandLine.keyword:*cmd* AND winlog.event_data.CommandLine.keyword:*\\/c* AND winlog.event_data.CommandLine.keyword:*echo* AND winlog.event_data.CommandLine.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.CommandLine.keyword:*%COMSPEC%* AND winlog.event_data.CommandLine.keyword:*\\/c* AND winlog.event_data.CommandLine.keyword:*echo* AND winlog.event_data.CommandLine.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.CommandLine.keyword:*rundll32* AND winlog.event_data.CommandLine.keyword:*.dll,a* AND winlog.event_data.CommandLine.keyword:*\\/p\\:*))) AND (NOT (winlog.event_data.CommandLine.keyword:*MpCmdRun*)))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Meterpreter or Cobalt Strike Getsystem Service Start'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((ParentImage.keyword:*\\\\services.exe AND ((CommandLine.keyword:*cmd* AND CommandLine.keyword:*\\/c* AND CommandLine.keyword:*echo* AND CommandLine.keyword:*\\\\pipe\\\\*) OR (CommandLine.keyword:*%COMSPEC%* AND CommandLine.keyword:*\\/c* AND CommandLine.keyword:*echo* AND CommandLine.keyword:*\\\\pipe\\\\*) OR (CommandLine.keyword:*rundll32* AND CommandLine.keyword:*.dll,a* AND CommandLine.keyword:*\\/p\\:*))) AND (NOT (CommandLine.keyword:*MpCmdRun*)))
+((ParentImage.keyword:*\\services.exe AND ((CommandLine.keyword:*cmd* AND CommandLine.keyword:*\/c* AND CommandLine.keyword:*echo* AND CommandLine.keyword:*\\pipe\\*) OR (CommandLine.keyword:*%COMSPEC%* AND CommandLine.keyword:*\/c* AND CommandLine.keyword:*echo* AND CommandLine.keyword:*\\pipe\\*) OR (CommandLine.keyword:*rundll32* AND CommandLine.keyword:*.dll,a* AND CommandLine.keyword:*\/p\:*))) AND (NOT (CommandLine.keyword:*MpCmdRun*)))
 ```
 
 
 ### splunk
     
 ```
-((ParentImage="*\\\\services.exe" ((CommandLine="*cmd*" CommandLine="*/c*" CommandLine="*echo*" CommandLine="*\\\\pipe\\\\*") OR (CommandLine="*%COMSPEC%*" CommandLine="*/c*" CommandLine="*echo*" CommandLine="*\\\\pipe\\\\*") OR (CommandLine="*rundll32*" CommandLine="*.dll,a*" CommandLine="*/p:*"))) NOT (CommandLine="*MpCmdRun*")) | table ComputerName,User,CommandLine
+((ParentImage="*\\services.exe" ((CommandLine="*cmd*" CommandLine="*/c*" CommandLine="*echo*" CommandLine="*\\pipe\\*") OR (CommandLine="*%COMSPEC%*" CommandLine="*/c*" CommandLine="*echo*" CommandLine="*\\pipe\\*") OR (CommandLine="*rundll32*" CommandLine="*.dll,a*" CommandLine="*/p:*"))) NOT (CommandLine="*MpCmdRun*")) | table ComputerName,User,CommandLine
 ```
 
 
 ### logpoint
     
 ```
-((ParentImage="*\\\\services.exe" ((CommandLine="*cmd*" CommandLine="*/c*" CommandLine="*echo*" CommandLine="*\\\\pipe\\\\*") OR (CommandLine="*%COMSPEC%*" CommandLine="*/c*" CommandLine="*echo*" CommandLine="*\\\\pipe\\\\*") OR (CommandLine="*rundll32*" CommandLine="*.dll,a*" CommandLine="*/p:*")))  -(CommandLine="*MpCmdRun*"))
+((ParentImage="*\\services.exe" ((CommandLine="*cmd*" CommandLine="*/c*" CommandLine="*echo*" CommandLine="*\\pipe\\*") OR (CommandLine="*%COMSPEC%*" CommandLine="*/c*" CommandLine="*echo*" CommandLine="*\\pipe\\*") OR (CommandLine="*rundll32*" CommandLine="*.dll,a*" CommandLine="*/p:*")))  -(CommandLine="*MpCmdRun*"))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?=.*.*\\services\\.exe)(?=.*(?:.*(?:.*(?:.*(?=.*.*cmd.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\\pipe\\\\.*))|.*(?:.*(?=.*.*%COMSPEC%.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\\pipe\\\\.*))|.*(?:.*(?=.*.*rundll32.*)(?=.*.*\\.dll,a.*)(?=.*.*/p:.*)))))))(?=.*(?!.*(?:.*(?=.*.*MpCmdRun.*)))))'
+grep -P '^(?:.*(?=.*(?:.*(?=.*.*\services\.exe)(?=.*(?:.*(?:.*(?:.*(?=.*.*cmd.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\pipe\\.*))|.*(?:.*(?=.*.*%COMSPEC%.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\pipe\\.*))|.*(?:.*(?=.*.*rundll32.*)(?=.*.*\.dll,a.*)(?=.*.*/p:.*)))))))(?=.*(?!.*(?:.*(?=.*.*MpCmdRun.*)))))'
 ```
 
 

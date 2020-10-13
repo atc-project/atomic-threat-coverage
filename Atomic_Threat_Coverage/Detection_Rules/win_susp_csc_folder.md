@@ -61,49 +61,124 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "Image.*.*\\\\csc.exe" -and ($_.message -match "CommandLine.*.*\\\\AppData\\\\.*" -or $_.message -match "CommandLine.*.*\\\\Windows\\\\Temp\\\\.*")) -and  -not (($_.message -match "ParentImage.*C:\\\\Program Files.*" -or $_.message -match "ParentImage.*.*\\\\sdiagnhost.exe" -or $_.message -match "ParentImage.*.*\\\\w3wp.exe"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "Image.*.*\\csc.exe" -and ($_.message -match "CommandLine.*.*\\AppData\\.*" -or $_.message -match "CommandLine.*.*\\Windows\\Temp\\.*")) -and  -not (($_.message -match "ParentImage.*C:\\Program Files.*" -or $_.message -match "ParentImage.*.*\\sdiagnhost.exe" -or $_.message -match "ParentImage.*.*\\w3wp.exe"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.Image.keyword:*\\\\csc.exe AND winlog.event_data.CommandLine.keyword:(*\\\\AppData\\\\* OR *\\\\Windows\\\\Temp\\\\*)) AND (NOT (winlog.event_data.ParentImage.keyword:(C\\:\\\\Program\\ Files* OR *\\\\sdiagnhost.exe OR *\\\\w3wp.exe))))
+((winlog.event_data.Image.keyword:*\\csc.exe AND winlog.event_data.CommandLine.keyword:(*\\AppData\\* OR *\\Windows\\Temp\\*)) AND (NOT (winlog.event_data.ParentImage.keyword:(C\:\\Program\ Files* OR *\\sdiagnhost.exe OR *\\w3wp.exe))))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/dcaa3f04-70c3-427a-80b4-b870d73c94c4 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Csc.exe Source File Folder",\n    "description": "Detects a suspicious execution of csc.exe, which uses a source in a suspicious folder (e.g. AppData)",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1500"\n    ],\n    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\csc.exe AND winlog.event_data.CommandLine.keyword:(*\\\\\\\\AppData\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\*)) AND (NOT (winlog.event_data.ParentImage.keyword:(C\\\\:\\\\\\\\Program\\\\ Files* OR *\\\\\\\\sdiagnhost.exe OR *\\\\\\\\w3wp.exe))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\csc.exe AND winlog.event_data.CommandLine.keyword:(*\\\\\\\\AppData\\\\\\\\* OR *\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\*)) AND (NOT (winlog.event_data.ParentImage.keyword:(C\\\\:\\\\\\\\Program\\\\ Files* OR *\\\\\\\\sdiagnhost.exe OR *\\\\\\\\w3wp.exe))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Csc.exe Source File Folder\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/dcaa3f04-70c3-427a-80b4-b870d73c94c4 <<EOF
+{
+  "metadata": {
+    "title": "Suspicious Csc.exe Source File Folder",
+    "description": "Detects a suspicious execution of csc.exe, which uses a source in a suspicious folder (e.g. AppData)",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.t1500"
+    ],
+    "query": "((winlog.event_data.Image.keyword:*\\\\csc.exe AND winlog.event_data.CommandLine.keyword:(*\\\\AppData\\\\* OR *\\\\Windows\\\\Temp\\\\*)) AND (NOT (winlog.event_data.ParentImage.keyword:(C\\:\\\\Program\\ Files* OR *\\\\sdiagnhost.exe OR *\\\\w3wp.exe))))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.Image.keyword:*\\\\csc.exe AND winlog.event_data.CommandLine.keyword:(*\\\\AppData\\\\* OR *\\\\Windows\\\\Temp\\\\*)) AND (NOT (winlog.event_data.ParentImage.keyword:(C\\:\\\\Program\\ Files* OR *\\\\sdiagnhost.exe OR *\\\\w3wp.exe))))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious Csc.exe Source File Folder'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((Image.keyword:*\\\\csc.exe AND CommandLine.keyword:(*\\\\AppData\\\\* *\\\\Windows\\\\Temp\\\\*)) AND (NOT (ParentImage.keyword:(C\\:\\\\Program Files* *\\\\sdiagnhost.exe *\\\\w3wp.exe))))
+((Image.keyword:*\\csc.exe AND CommandLine.keyword:(*\\AppData\\* *\\Windows\\Temp\\*)) AND (NOT (ParentImage.keyword:(C\:\\Program Files* *\\sdiagnhost.exe *\\w3wp.exe))))
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\\\csc.exe" (CommandLine="*\\\\AppData\\\\*" OR CommandLine="*\\\\Windows\\\\Temp\\\\*")) NOT ((ParentImage="C:\\\\Program Files*" OR ParentImage="*\\\\sdiagnhost.exe" OR ParentImage="*\\\\w3wp.exe")))
+((Image="*\\csc.exe" (CommandLine="*\\AppData\\*" OR CommandLine="*\\Windows\\Temp\\*")) NOT ((ParentImage="C:\\Program Files*" OR ParentImage="*\\sdiagnhost.exe" OR ParentImage="*\\w3wp.exe")))
 ```
 
 
 ### logpoint
     
 ```
-((Image="*\\\\csc.exe" CommandLine IN ["*\\\\AppData\\\\*", "*\\\\Windows\\\\Temp\\\\*"])  -(ParentImage IN ["C:\\\\Program Files*", "*\\\\sdiagnhost.exe", "*\\\\w3wp.exe"]))
+((Image="*\\csc.exe" CommandLine IN ["*\\AppData\\*", "*\\Windows\\Temp\\*"])  -(ParentImage IN ["C:\\Program Files*", "*\\sdiagnhost.exe", "*\\w3wp.exe"]))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?=.*.*\\csc\\.exe)(?=.*(?:.*.*\\AppData\\\\.*|.*.*\\Windows\\Temp\\\\.*))))(?=.*(?!.*(?:.*(?=.*(?:.*C:\\Program Files.*|.*.*\\sdiagnhost\\.exe|.*.*\\w3wp\\.exe))))))'
+grep -P '^(?:.*(?=.*(?:.*(?=.*.*\csc\.exe)(?=.*(?:.*.*\AppData\\.*|.*.*\Windows\Temp\\.*))))(?=.*(?!.*(?:.*(?=.*(?:.*C:\Program Files.*|.*.*\sdiagnhost\.exe|.*.*\w3wp\.exe))))))'
 ```
 
 

@@ -76,21 +76,97 @@ Get-WinEvent | where {(($_.message -match "CommandLine.*.* -e JAB.*" -or $_.mess
 ### es-qs
     
 ```
-(winlog.event_data.CommandLine.keyword:(*\\ \\-e\\ JAB* OR *\\ \\-e\\ \\ JAB* OR *\\ \\-e\\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ \\ \\ JAB* OR *\\ \\-en\\ JAB* OR *\\ \\-enc\\ JAB* OR *\\ \\-enc*\\ JAB* OR *\\ \\-w\\ hidden\\ \\-e*\\ JAB* OR *\\ BA\\^J\\ e\\- OR *\\ \\-e\\ SUVYI* OR *\\ \\-e\\ aWV4I* OR *\\ \\-e\\ SQBFAFgA* OR *\\ \\-e\\ aQBlAHgA* OR *\\ \\-enc\\ SUVYI* OR *\\ \\-enc\\ aWV4I* OR *\\ \\-enc\\ SQBFAFgA* OR *\\ \\-enc\\ aQBlAHgA*) AND (NOT (winlog.event_data.CommandLine.keyword:*\\ \\-ExecutionPolicy\\ remotesigned\\ *)))
+(winlog.event_data.CommandLine.keyword:(*\ \-e\ JAB* OR *\ \-e\ \ JAB* OR *\ \-e\ \ \ JAB* OR *\ \-e\ \ \ \ JAB* OR *\ \-e\ \ \ \ \ JAB* OR *\ \-e\ \ \ \ \ \ JAB* OR *\ \-en\ JAB* OR *\ \-enc\ JAB* OR *\ \-enc*\ JAB* OR *\ \-w\ hidden\ \-e*\ JAB* OR *\ BA\^J\ e\- OR *\ \-e\ SUVYI* OR *\ \-e\ aWV4I* OR *\ \-e\ SQBFAFgA* OR *\ \-e\ aQBlAHgA* OR *\ \-enc\ SUVYI* OR *\ \-enc\ aWV4I* OR *\ \-enc\ SQBFAFgA* OR *\ \-enc\ aQBlAHgA*) AND (NOT (winlog.event_data.CommandLine.keyword:*\ \-ExecutionPolicy\ remotesigned\ *)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/ca2092a1-c273-4878-9b4b-0d60115bf5ea <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Encoded PowerShell Command Line",\n    "description": "Detects suspicious powershell process starts with base64 encoded commands (e.g. Emotet)",\n    "tags": [\n      "attack.execution",\n      "attack.t1059.001",\n      "attack.t1086"\n    ],\n    "query": "(winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-e\\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ \\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-en\\\\ JAB* OR *\\\\ \\\\-enc\\\\ JAB* OR *\\\\ \\\\-enc*\\\\ JAB* OR *\\\\ \\\\-w\\\\ hidden\\\\ \\\\-e*\\\\ JAB* OR *\\\\ BA\\\\^J\\\\ e\\\\- OR *\\\\ \\\\-e\\\\ SUVYI* OR *\\\\ \\\\-e\\\\ aWV4I* OR *\\\\ \\\\-e\\\\ SQBFAFgA* OR *\\\\ \\\\-e\\\\ aQBlAHgA* OR *\\\\ \\\\-enc\\\\ SUVYI* OR *\\\\ \\\\-enc\\\\ aWV4I* OR *\\\\ \\\\-enc\\\\ SQBFAFgA* OR *\\\\ \\\\-enc\\\\ aQBlAHgA*) AND (NOT (winlog.event_data.CommandLine.keyword:*\\\\ \\\\-ExecutionPolicy\\\\ remotesigned\\\\ *)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-e\\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-e\\\\ \\\\ \\\\ \\\\ \\\\ \\\\ JAB* OR *\\\\ \\\\-en\\\\ JAB* OR *\\\\ \\\\-enc\\\\ JAB* OR *\\\\ \\\\-enc*\\\\ JAB* OR *\\\\ \\\\-w\\\\ hidden\\\\ \\\\-e*\\\\ JAB* OR *\\\\ BA\\\\^J\\\\ e\\\\- OR *\\\\ \\\\-e\\\\ SUVYI* OR *\\\\ \\\\-e\\\\ aWV4I* OR *\\\\ \\\\-e\\\\ SQBFAFgA* OR *\\\\ \\\\-e\\\\ aQBlAHgA* OR *\\\\ \\\\-enc\\\\ SUVYI* OR *\\\\ \\\\-enc\\\\ aWV4I* OR *\\\\ \\\\-enc\\\\ SQBFAFgA* OR *\\\\ \\\\-enc\\\\ aQBlAHgA*) AND (NOT (winlog.event_data.CommandLine.keyword:*\\\\ \\\\-ExecutionPolicy\\\\ remotesigned\\\\ *)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Encoded PowerShell Command Line\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/ca2092a1-c273-4878-9b4b-0d60115bf5ea <<EOF
+{
+  "metadata": {
+    "title": "Suspicious Encoded PowerShell Command Line",
+    "description": "Detects suspicious powershell process starts with base64 encoded commands (e.g. Emotet)",
+    "tags": [
+      "attack.execution",
+      "attack.t1059.001",
+      "attack.t1086"
+    ],
+    "query": "(winlog.event_data.CommandLine.keyword:(*\\ \\-e\\ JAB* OR *\\ \\-e\\ \\ JAB* OR *\\ \\-e\\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ \\ \\ JAB* OR *\\ \\-en\\ JAB* OR *\\ \\-enc\\ JAB* OR *\\ \\-enc*\\ JAB* OR *\\ \\-w\\ hidden\\ \\-e*\\ JAB* OR *\\ BA\\^J\\ e\\- OR *\\ \\-e\\ SUVYI* OR *\\ \\-e\\ aWV4I* OR *\\ \\-e\\ SQBFAFgA* OR *\\ \\-e\\ aQBlAHgA* OR *\\ \\-enc\\ SUVYI* OR *\\ \\-enc\\ aWV4I* OR *\\ \\-enc\\ SQBFAFgA* OR *\\ \\-enc\\ aQBlAHgA*) AND (NOT (winlog.event_data.CommandLine.keyword:*\\ \\-ExecutionPolicy\\ remotesigned\\ *)))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.CommandLine.keyword:(*\\ \\-e\\ JAB* OR *\\ \\-e\\ \\ JAB* OR *\\ \\-e\\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ \\ \\ JAB* OR *\\ \\-en\\ JAB* OR *\\ \\-enc\\ JAB* OR *\\ \\-enc*\\ JAB* OR *\\ \\-w\\ hidden\\ \\-e*\\ JAB* OR *\\ BA\\^J\\ e\\- OR *\\ \\-e\\ SUVYI* OR *\\ \\-e\\ aWV4I* OR *\\ \\-e\\ SQBFAFgA* OR *\\ \\-e\\ aQBlAHgA* OR *\\ \\-enc\\ SUVYI* OR *\\ \\-enc\\ aWV4I* OR *\\ \\-enc\\ SQBFAFgA* OR *\\ \\-enc\\ aQBlAHgA*) AND (NOT (winlog.event_data.CommandLine.keyword:*\\ \\-ExecutionPolicy\\ remotesigned\\ *)))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious Encoded PowerShell Command Line'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(CommandLine.keyword:(* \\-e JAB* * \\-e  JAB* * \\-e   JAB* * \\-e    JAB* * \\-e     JAB* * \\-e      JAB* * \\-en JAB* * \\-enc JAB* * \\-enc* JAB* * \\-w hidden \\-e* JAB* * BA\\^J e\\- * \\-e SUVYI* * \\-e aWV4I* * \\-e SQBFAFgA* * \\-e aQBlAHgA* * \\-enc SUVYI* * \\-enc aWV4I* * \\-enc SQBFAFgA* * \\-enc aQBlAHgA*) AND (NOT (CommandLine.keyword:* \\-ExecutionPolicy remotesigned *)))
+(CommandLine.keyword:(* \-e JAB* * \-e  JAB* * \-e   JAB* * \-e    JAB* * \-e     JAB* * \-e      JAB* * \-en JAB* * \-enc JAB* * \-enc* JAB* * \-w hidden \-e* JAB* * BA\^J e\- * \-e SUVYI* * \-e aWV4I* * \-e SQBFAFgA* * \-e aQBlAHgA* * \-enc SUVYI* * \-enc aWV4I* * \-enc SQBFAFgA* * \-enc aQBlAHgA*) AND (NOT (CommandLine.keyword:* \-ExecutionPolicy remotesigned *)))
 ```
 
 
@@ -111,7 +187,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*.* -e JAB.*|.*.* -e  JAB.*|.*.* -e   JAB.*|.*.* -e    JAB.*|.*.* -e     JAB.*|.*.* -e      JAB.*|.*.* -en JAB.*|.*.* -enc JAB.*|.*.* -enc.* JAB.*|.*.* -w hidden -e.* JAB.*|.*.* BA\\^J e-|.*.* -e SUVYI.*|.*.* -e aWV4I.*|.*.* -e SQBFAFgA.*|.*.* -e aQBlAHgA.*|.*.* -enc SUVYI.*|.*.* -enc aWV4I.*|.*.* -enc SQBFAFgA.*|.*.* -enc aQBlAHgA.*))(?=.*(?!.*(?:.*(?=.*.* -ExecutionPolicy remotesigned .*)))))'
+grep -P '^(?:.*(?=.*(?:.*.* -e JAB.*|.*.* -e  JAB.*|.*.* -e   JAB.*|.*.* -e    JAB.*|.*.* -e     JAB.*|.*.* -e      JAB.*|.*.* -en JAB.*|.*.* -enc JAB.*|.*.* -enc.* JAB.*|.*.* -w hidden -e.* JAB.*|.*.* BA\^J e-|.*.* -e SUVYI.*|.*.* -e aWV4I.*|.*.* -e SQBFAFgA.*|.*.* -e aQBlAHgA.*|.*.* -enc SUVYI.*|.*.* -enc aWV4I.*|.*.* -enc SQBFAFgA.*|.*.* -enc aQBlAHgA.*))(?=.*(?!.*(?:.*(?=.*.* -ExecutionPolicy remotesigned .*)))))'
 ```
 
 

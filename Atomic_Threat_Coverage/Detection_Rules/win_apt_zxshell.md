@@ -66,14 +66,95 @@ Get-WinEvent | where {($_.message -match "CommandLine.*.*rundll32.exe .*,zxFunct
 ### es-qs
     
 ```
-winlog.event_data.CommandLine.keyword:(*rundll32.exe\\ *,zxFunction* OR *rundll32.exe\\ *,RemoteDiskXXXXX*)
+winlog.event_data.CommandLine.keyword:(*rundll32.exe\ *,zxFunction* OR *rundll32.exe\ *,RemoteDiskXXXXX*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/f0b70adb-0075-43b0-9745-e82a1c608fcc <<EOF\n{\n  "metadata": {\n    "title": "ZxShell Malware",\n    "description": "Detects a ZxShell start by the called and well-known function name",\n    "tags": [\n      "attack.execution",\n      "attack.t1059.003",\n      "attack.t1059",\n      "attack.defense_evasion",\n      "attack.t1218.011",\n      "attack.t1085",\n      "attack.s0412",\n      "attack.g0001"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(*rundll32.exe\\\\ *,zxFunction* OR *rundll32.exe\\\\ *,RemoteDiskXXXXX*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(*rundll32.exe\\\\ *,zxFunction* OR *rundll32.exe\\\\ *,RemoteDiskXXXXX*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'ZxShell Malware\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/f0b70adb-0075-43b0-9745-e82a1c608fcc <<EOF
+{
+  "metadata": {
+    "title": "ZxShell Malware",
+    "description": "Detects a ZxShell start by the called and well-known function name",
+    "tags": [
+      "attack.execution",
+      "attack.t1059.003",
+      "attack.t1059",
+      "attack.defense_evasion",
+      "attack.t1218.011",
+      "attack.t1085",
+      "attack.s0412",
+      "attack.g0001"
+    ],
+    "query": "winlog.event_data.CommandLine.keyword:(*rundll32.exe\\ *,zxFunction* OR *rundll32.exe\\ *,RemoteDiskXXXXX*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.CommandLine.keyword:(*rundll32.exe\\ *,zxFunction* OR *rundll32.exe\\ *,RemoteDiskXXXXX*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'ZxShell Malware'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
@@ -101,7 +182,7 @@ CommandLine IN ["*rundll32.exe *,zxFunction*", "*rundll32.exe *,RemoteDiskXXXXX*
 ### grep
     
 ```
-grep -P '^(?:.*.*rundll32\\.exe .*,zxFunction.*|.*.*rundll32\\.exe .*,RemoteDiskXXXXX.*)'
+grep -P '^(?:.*.*rundll32\.exe .*,zxFunction.*|.*.*rundll32\.exe .*,RemoteDiskXXXXX.*)'
 ```
 
 

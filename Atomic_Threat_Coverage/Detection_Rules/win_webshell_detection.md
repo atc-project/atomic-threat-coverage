@@ -66,49 +66,126 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "ParentImage.*.*\\\\apache.*" -or $_.message -match "ParentImage.*.*\\\\tomcat.*" -or $_.message -match "ParentImage.*.*\\\\w3wp.exe" -or $_.message -match "ParentImage.*.*\\\\php-cgi.exe" -or $_.message -match "ParentImage.*.*\\\\nginx.exe" -or $_.message -match "ParentImage.*.*\\\\httpd.exe") -and ($_.message -match "CommandLine.*.*whoami.*" -or $_.message -match "CommandLine.*.*net user .*" -or $_.message -match "CommandLine.*.*ping -n .*" -or $_.message -match "CommandLine.*.*systeminfo" -or $_.message -match "CommandLine.*.*&cd&echo.*" -or $_.message -match "CommandLine.*.*cd /d.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "ParentImage.*.*\\apache.*" -or $_.message -match "ParentImage.*.*\\tomcat.*" -or $_.message -match "ParentImage.*.*\\w3wp.exe" -or $_.message -match "ParentImage.*.*\\php-cgi.exe" -or $_.message -match "ParentImage.*.*\\nginx.exe" -or $_.message -match "ParentImage.*.*\\httpd.exe") -and ($_.message -match "CommandLine.*.*whoami.*" -or $_.message -match "CommandLine.*.*net user .*" -or $_.message -match "CommandLine.*.*ping -n .*" -or $_.message -match "CommandLine.*.*systeminfo" -or $_.message -match "CommandLine.*.*&cd&echo.*" -or $_.message -match "CommandLine.*.*cd /d.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.ParentImage.keyword:(*\\\\apache* OR *\\\\tomcat* OR *\\\\w3wp.exe OR *\\\\php\\-cgi.exe OR *\\\\nginx.exe OR *\\\\httpd.exe) AND winlog.event_data.CommandLine.keyword:(*whoami* OR *net\\ user\\ * OR *ping\\ \\-n\\ * OR *systeminfo OR *&cd&echo* OR *cd\\ \\/d*))
+(winlog.event_data.ParentImage.keyword:(*\\apache* OR *\\tomcat* OR *\\w3wp.exe OR *\\php\-cgi.exe OR *\\nginx.exe OR *\\httpd.exe) AND winlog.event_data.CommandLine.keyword:(*whoami* OR *net\ user\ * OR *ping\ \-n\ * OR *systeminfo OR *&cd&echo* OR *cd\ \/d*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/bed2a484-9348-4143-8a8a-b801c979301c <<EOF\n{\n  "metadata": {\n    "title": "Webshell Detection With Command Line Keywords",\n    "description": "Detects certain command line parameters often used during reconnaissance activity via web shells",\n    "tags": [\n      "attack.persistence",\n      "attack.t1505.003",\n      "attack.privilege_escalation",\n      "attack.t1100"\n    ],\n    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\\\\\apache* OR *\\\\\\\\tomcat* OR *\\\\\\\\w3wp.exe OR *\\\\\\\\php\\\\-cgi.exe OR *\\\\\\\\nginx.exe OR *\\\\\\\\httpd.exe) AND winlog.event_data.CommandLine.keyword:(*whoami* OR *net\\\\ user\\\\ * OR *ping\\\\ \\\\-n\\\\ * OR *systeminfo OR *&cd&echo* OR *cd\\\\ \\\\/d*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\\\\\apache* OR *\\\\\\\\tomcat* OR *\\\\\\\\w3wp.exe OR *\\\\\\\\php\\\\-cgi.exe OR *\\\\\\\\nginx.exe OR *\\\\\\\\httpd.exe) AND winlog.event_data.CommandLine.keyword:(*whoami* OR *net\\\\ user\\\\ * OR *ping\\\\ \\\\-n\\\\ * OR *systeminfo OR *&cd&echo* OR *cd\\\\ \\\\/d*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Webshell Detection With Command Line Keywords\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/bed2a484-9348-4143-8a8a-b801c979301c <<EOF
+{
+  "metadata": {
+    "title": "Webshell Detection With Command Line Keywords",
+    "description": "Detects certain command line parameters often used during reconnaissance activity via web shells",
+    "tags": [
+      "attack.persistence",
+      "attack.t1505.003",
+      "attack.privilege_escalation",
+      "attack.t1100"
+    ],
+    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\apache* OR *\\\\tomcat* OR *\\\\w3wp.exe OR *\\\\php\\-cgi.exe OR *\\\\nginx.exe OR *\\\\httpd.exe) AND winlog.event_data.CommandLine.keyword:(*whoami* OR *net\\ user\\ * OR *ping\\ \\-n\\ * OR *systeminfo OR *&cd&echo* OR *cd\\ \\/d*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\apache* OR *\\\\tomcat* OR *\\\\w3wp.exe OR *\\\\php\\-cgi.exe OR *\\\\nginx.exe OR *\\\\httpd.exe) AND winlog.event_data.CommandLine.keyword:(*whoami* OR *net\\ user\\ * OR *ping\\ \\-n\\ * OR *systeminfo OR *&cd&echo* OR *cd\\ \\/d*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Webshell Detection With Command Line Keywords'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(ParentImage.keyword:(*\\\\apache* *\\\\tomcat* *\\\\w3wp.exe *\\\\php\\-cgi.exe *\\\\nginx.exe *\\\\httpd.exe) AND CommandLine.keyword:(*whoami* *net user * *ping \\-n * *systeminfo *&cd&echo* *cd \\/d*))
+(ParentImage.keyword:(*\\apache* *\\tomcat* *\\w3wp.exe *\\php\-cgi.exe *\\nginx.exe *\\httpd.exe) AND CommandLine.keyword:(*whoami* *net user * *ping \-n * *systeminfo *&cd&echo* *cd \/d*))
 ```
 
 
 ### splunk
     
 ```
-((ParentImage="*\\\\apache*" OR ParentImage="*\\\\tomcat*" OR ParentImage="*\\\\w3wp.exe" OR ParentImage="*\\\\php-cgi.exe" OR ParentImage="*\\\\nginx.exe" OR ParentImage="*\\\\httpd.exe") (CommandLine="*whoami*" OR CommandLine="*net user *" OR CommandLine="*ping -n *" OR CommandLine="*systeminfo" OR CommandLine="*&cd&echo*" OR CommandLine="*cd /d*")) | table CommandLine,ParentCommandLine
+((ParentImage="*\\apache*" OR ParentImage="*\\tomcat*" OR ParentImage="*\\w3wp.exe" OR ParentImage="*\\php-cgi.exe" OR ParentImage="*\\nginx.exe" OR ParentImage="*\\httpd.exe") (CommandLine="*whoami*" OR CommandLine="*net user *" OR CommandLine="*ping -n *" OR CommandLine="*systeminfo" OR CommandLine="*&cd&echo*" OR CommandLine="*cd /d*")) | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-(ParentImage IN ["*\\\\apache*", "*\\\\tomcat*", "*\\\\w3wp.exe", "*\\\\php-cgi.exe", "*\\\\nginx.exe", "*\\\\httpd.exe"] CommandLine IN ["*whoami*", "*net user *", "*ping -n *", "*systeminfo", "*&cd&echo*", "*cd /d*"])
+(ParentImage IN ["*\\apache*", "*\\tomcat*", "*\\w3wp.exe", "*\\php-cgi.exe", "*\\nginx.exe", "*\\httpd.exe"] CommandLine IN ["*whoami*", "*net user *", "*ping -n *", "*systeminfo", "*&cd&echo*", "*cd /d*"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*.*\\apache.*|.*.*\\tomcat.*|.*.*\\w3wp\\.exe|.*.*\\php-cgi\\.exe|.*.*\\nginx\\.exe|.*.*\\httpd\\.exe))(?=.*(?:.*.*whoami.*|.*.*net user .*|.*.*ping -n .*|.*.*systeminfo|.*.*&cd&echo.*|.*.*cd /d.*)))'
+grep -P '^(?:.*(?=.*(?:.*.*\apache.*|.*.*\tomcat.*|.*.*\w3wp\.exe|.*.*\php-cgi\.exe|.*.*\nginx\.exe|.*.*\httpd\.exe))(?=.*(?:.*.*whoami.*|.*.*net user .*|.*.*ping -n .*|.*.*systeminfo|.*.*&cd&echo.*|.*.*cd /d.*)))'
 ```
 
 

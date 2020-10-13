@@ -71,49 +71,140 @@ level: medium
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "tasklist" -or $_.message -match "net time" -or $_.message -match "systeminfo" -or $_.message -match "whoami" -or $_.message -match "nbtstat" -or $_.message -match "net start" -or $_.message -match "CommandLine.*.*\\\\net1 start" -or $_.message -match "qprocess" -or $_.message -match "nslookup" -or $_.message -match "hostname.exe" -or $_.message -match "CommandLine.*.*\\\\net1 user /domain" -or $_.message -match "CommandLine.*.*\\\\net1 group /domain" -or $_.message -match "CommandLine.*.*\\\\net1 group \\"domain admins\\" /domain" -or $_.message -match "CommandLine.*.*\\\\net1 group \\"Exchange Trusted Subsystem\\" /domain" -or $_.message -match "CommandLine.*.*\\\\net1 accounts /domain" -or $_.message -match "CommandLine.*.*\\\\net1 user net localgroup administrators" -or $_.message -match "netstat -an") }  | group-object CommandLine | where { $_.count -gt 4 } | select name,count | sort -desc
+Get-WinEvent | where {($_.message -match "tasklist" -or $_.message -match "net time" -or $_.message -match "systeminfo" -or $_.message -match "whoami" -or $_.message -match "nbtstat" -or $_.message -match "net start" -or $_.message -match "CommandLine.*.*\\net1 start" -or $_.message -match "qprocess" -or $_.message -match "nslookup" -or $_.message -match "hostname.exe" -or $_.message -match "CommandLine.*.*\\net1 user /domain" -or $_.message -match "CommandLine.*.*\\net1 group /domain" -or $_.message -match "CommandLine.*.*\\net1 group \"domain admins\" /domain" -or $_.message -match "CommandLine.*.*\\net1 group \"Exchange Trusted Subsystem\" /domain" -or $_.message -match "CommandLine.*.*\\net1 accounts /domain" -or $_.message -match "CommandLine.*.*\\net1 user net localgroup administrators" -or $_.message -match "netstat -an") }  | group-object CommandLine | where { $_.count -gt 4 } | select name,count | sort -desc
 ```
 
 
 ### es-qs
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/process_creation/win_susp_commands_recon_activity.yml): Aggregations not implemented for this backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/2887e914-ce96-435f-8105-593937e90757 <<EOF\n{\n  "metadata": {\n    "title": "Reconnaissance Activity with Net Command",\n    "description": "Detects a set of commands often used in recon stages by different attack groups",\n    "tags": [\n      "attack.discovery",\n      "attack.t1087",\n      "attack.t1082",\n      "car.2016-03-001"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(tasklist OR net\\\\ time OR systeminfo OR whoami OR nbtstat OR net\\\\ start OR *\\\\\\\\net1\\\\ start OR qprocess OR nslookup OR hostname.exe OR *\\\\\\\\net1\\\\ user\\\\ \\\\/domain OR *\\\\\\\\net1\\\\ group\\\\ \\\\/domain OR *\\\\\\\\net1\\\\ group\\\\ \\\\\\"domain\\\\ admins\\\\\\"\\\\ \\\\/domain OR *\\\\\\\\net1\\\\ group\\\\ \\\\\\"Exchange\\\\ Trusted\\\\ Subsystem\\\\\\"\\\\ \\\\/domain OR *\\\\\\\\net1\\\\ accounts\\\\ \\\\/domain OR *\\\\\\\\net1\\\\ user\\\\ net\\\\ localgroup\\\\ administrators OR netstat\\\\ \\\\-an)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "15s"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(tasklist OR net\\\\ time OR systeminfo OR whoami OR nbtstat OR net\\\\ start OR *\\\\\\\\net1\\\\ start OR qprocess OR nslookup OR hostname.exe OR *\\\\\\\\net1\\\\ user\\\\ \\\\/domain OR *\\\\\\\\net1\\\\ group\\\\ \\\\/domain OR *\\\\\\\\net1\\\\ group\\\\ \\\\\\"domain\\\\ admins\\\\\\"\\\\ \\\\/domain OR *\\\\\\\\net1\\\\ group\\\\ \\\\\\"Exchange\\\\ Trusted\\\\ Subsystem\\\\\\"\\\\ \\\\/domain OR *\\\\\\\\net1\\\\ accounts\\\\ \\\\/domain OR *\\\\\\\\net1\\\\ user\\\\ net\\\\ localgroup\\\\ administrators OR netstat\\\\ \\\\-an)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          },\n          "aggs": {\n            "by": {\n              "terms": {\n                "field": "winlog.event_data.CommandLine",\n                "size": 10,\n                "order": {\n                  "_count": "desc"\n                },\n                "min_doc_count": 5\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.aggregations.by.buckets.0.doc_count": {\n        "gt": 4\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Reconnaissance Activity with Net Command\'",\n        "body": "Hits:\\n{{#aggregations.by.buckets}}\\n {{key}} {{doc_count}}\\n{{/aggregations.by.buckets}}\\n",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/2887e914-ce96-435f-8105-593937e90757 <<EOF
+{
+  "metadata": {
+    "title": "Reconnaissance Activity with Net Command",
+    "description": "Detects a set of commands often used in recon stages by different attack groups",
+    "tags": [
+      "attack.discovery",
+      "attack.t1087",
+      "attack.t1082",
+      "car.2016-03-001"
+    ],
+    "query": "winlog.event_data.CommandLine.keyword:(tasklist OR net\\ time OR systeminfo OR whoami OR nbtstat OR net\\ start OR *\\\\net1\\ start OR qprocess OR nslookup OR hostname.exe OR *\\\\net1\\ user\\ \\/domain OR *\\\\net1\\ group\\ \\/domain OR *\\\\net1\\ group\\ \\\"domain\\ admins\\\"\\ \\/domain OR *\\\\net1\\ group\\ \\\"Exchange\\ Trusted\\ Subsystem\\\"\\ \\/domain OR *\\\\net1\\ accounts\\ \\/domain OR *\\\\net1\\ user\\ net\\ localgroup\\ administrators OR netstat\\ \\-an)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "15s"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.CommandLine.keyword:(tasklist OR net\\ time OR systeminfo OR whoami OR nbtstat OR net\\ start OR *\\\\net1\\ start OR qprocess OR nslookup OR hostname.exe OR *\\\\net1\\ user\\ \\/domain OR *\\\\net1\\ group\\ \\/domain OR *\\\\net1\\ group\\ \\\"domain\\ admins\\\"\\ \\/domain OR *\\\\net1\\ group\\ \\\"Exchange\\ Trusted\\ Subsystem\\\"\\ \\/domain OR *\\\\net1\\ accounts\\ \\/domain OR *\\\\net1\\ user\\ net\\ localgroup\\ administrators OR netstat\\ \\-an)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          },
+          "aggs": {
+            "by": {
+              "terms": {
+                "field": "winlog.event_data.CommandLine",
+                "size": 10,
+                "order": {
+                  "_count": "desc"
+                },
+                "min_doc_count": 5
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.aggregations.by.buckets.0.doc_count": {
+        "gt": 4
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Reconnaissance Activity with Net Command'",
+        "body": "Hits:\n{{#aggregations.by.buckets}}\n {{key}} {{doc_count}}\n{{/aggregations.by.buckets}}\n",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/process_creation/win_susp_commands_recon_activity.yml): Aggregations not implemented for this backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 
 ### splunk
     
 ```
-(CommandLine="tasklist" OR CommandLine="net time" OR CommandLine="systeminfo" OR CommandLine="whoami" OR CommandLine="nbtstat" OR CommandLine="net start" OR CommandLine="*\\\\net1 start" OR CommandLine="qprocess" OR CommandLine="nslookup" OR CommandLine="hostname.exe" OR CommandLine="*\\\\net1 user /domain" OR CommandLine="*\\\\net1 group /domain" OR CommandLine="*\\\\net1 group \\"domain admins\\" /domain" OR CommandLine="*\\\\net1 group \\"Exchange Trusted Subsystem\\" /domain" OR CommandLine="*\\\\net1 accounts /domain" OR CommandLine="*\\\\net1 user net localgroup administrators" OR CommandLine="netstat -an") | eventstats count as val by CommandLine| search val > 4
+(CommandLine="tasklist" OR CommandLine="net time" OR CommandLine="systeminfo" OR CommandLine="whoami" OR CommandLine="nbtstat" OR CommandLine="net start" OR CommandLine="*\\net1 start" OR CommandLine="qprocess" OR CommandLine="nslookup" OR CommandLine="hostname.exe" OR CommandLine="*\\net1 user /domain" OR CommandLine="*\\net1 group /domain" OR CommandLine="*\\net1 group \"domain admins\" /domain" OR CommandLine="*\\net1 group \"Exchange Trusted Subsystem\" /domain" OR CommandLine="*\\net1 accounts /domain" OR CommandLine="*\\net1 user net localgroup administrators" OR CommandLine="netstat -an") | eventstats count as val by CommandLine| search val > 4
 ```
 
 
 ### logpoint
     
 ```
-CommandLine IN ["tasklist", "net time", "systeminfo", "whoami", "nbtstat", "net start", "*\\\\net1 start", "qprocess", "nslookup", "hostname.exe", "*\\\\net1 user /domain", "*\\\\net1 group /domain", "*\\\\net1 group \\"domain admins\\" /domain", "*\\\\net1 group \\"Exchange Trusted Subsystem\\" /domain", "*\\\\net1 accounts /domain", "*\\\\net1 user net localgroup administrators", "netstat -an"] | chart count() as val by CommandLine | search val > 4
+CommandLine IN ["tasklist", "net time", "systeminfo", "whoami", "nbtstat", "net start", "*\\net1 start", "qprocess", "nslookup", "hostname.exe", "*\\net1 user /domain", "*\\net1 group /domain", "*\\net1 group \"domain admins\" /domain", "*\\net1 group \"Exchange Trusted Subsystem\" /domain", "*\\net1 accounts /domain", "*\\net1 user net localgroup administrators", "netstat -an"] | chart count() as val by CommandLine | search val > 4
 ```
 
 
 ### grep
     
 ```
-grep -P \'^(?:.*tasklist|.*net time|.*systeminfo|.*whoami|.*nbtstat|.*net start|.*.*\\net1 start|.*qprocess|.*nslookup|.*hostname\\.exe|.*.*\\net1 user /domain|.*.*\\net1 group /domain|.*.*\\net1 group "domain admins" /domain|.*.*\\net1 group "Exchange Trusted Subsystem" /domain|.*.*\\net1 accounts /domain|.*.*\\net1 user net localgroup administrators|.*netstat -an)\'
+grep -P '^(?:.*tasklist|.*net time|.*systeminfo|.*whoami|.*nbtstat|.*net start|.*.*\net1 start|.*qprocess|.*nslookup|.*hostname\.exe|.*.*\net1 user /domain|.*.*\net1 group /domain|.*.*\net1 group "domain admins" /domain|.*.*\net1 group "Exchange Trusted Subsystem" /domain|.*.*\net1 accounts /domain|.*.*\net1 user net localgroup administrators|.*netstat -an)'
 ```
 
 

@@ -57,49 +57,129 @@ status: experimental
 ### powershell
     
 ```
-Get-WinEvent -LogName Security | where {(($_.ID -eq "5145" -and $_.message -match "RelativeTargetName.*.*\\\\winreg.*") -and  -not ($_.message -match "IpAddress.*%Admins_Workstations%")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Security | where {(($_.ID -eq "5145" -and $_.message -match "RelativeTargetName.*.*\\winreg.*") -and  -not ($_.message -match "IpAddress.*%Admins_Workstations%")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.channel:"Security" AND (winlog.event_id:"5145" AND RelativeTargetName.keyword:*\\\\winreg*) AND (NOT (winlog.event_data.IpAddress:"%Admins_Workstations%")))
+(winlog.channel:"Security" AND (winlog.event_id:"5145" AND RelativeTargetName.keyword:*\\winreg*) AND (NOT (winlog.event_data.IpAddress:"%Admins_Workstations%")))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/68fcba0d-73a5-475e-a915-e8b4c576827e <<EOF\n{\n  "metadata": {\n    "title": "Remote Registry Management Using Reg Utility",\n    "description": "Remote registry management using REG utility from non-admin workstation",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1112",\n      "attack.discovery",\n      "attack.t1012",\n      "attack.credential_access",\n      "attack.t1552.002",\n      "attack.s0075"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND (winlog.event_id:\\"5145\\" AND RelativeTargetName.keyword:*\\\\\\\\winreg*) AND (NOT (winlog.event_data.IpAddress:\\"%Admins_Workstations%\\")))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND (winlog.event_id:\\"5145\\" AND RelativeTargetName.keyword:*\\\\\\\\winreg*) AND (NOT (winlog.event_data.IpAddress:\\"%Admins_Workstations%\\")))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Remote Registry Management Using Reg Utility\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/68fcba0d-73a5-475e-a915-e8b4c576827e <<EOF
+{
+  "metadata": {
+    "title": "Remote Registry Management Using Reg Utility",
+    "description": "Remote registry management using REG utility from non-admin workstation",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.t1112",
+      "attack.discovery",
+      "attack.t1012",
+      "attack.credential_access",
+      "attack.t1552.002",
+      "attack.s0075"
+    ],
+    "query": "(winlog.channel:\"Security\" AND (winlog.event_id:\"5145\" AND RelativeTargetName.keyword:*\\\\winreg*) AND (NOT (winlog.event_data.IpAddress:\"%Admins_Workstations%\")))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Security\" AND (winlog.event_id:\"5145\" AND RelativeTargetName.keyword:*\\\\winreg*) AND (NOT (winlog.event_data.IpAddress:\"%Admins_Workstations%\")))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Remote Registry Management Using Reg Utility'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((EventID:"5145" AND RelativeTargetName.keyword:*\\\\winreg*) AND (NOT (IpAddress:"%Admins_Workstations%")))
+((EventID:"5145" AND RelativeTargetName.keyword:*\\winreg*) AND (NOT (IpAddress:"%Admins_Workstations%")))
 ```
 
 
 ### splunk
     
 ```
-(source="WinEventLog:Security" (EventCode="5145" RelativeTargetName="*\\\\winreg*") NOT (IpAddress="%Admins_Workstations%"))
+(source="WinEventLog:Security" (EventCode="5145" RelativeTargetName="*\\winreg*") NOT (IpAddress="%Admins_Workstations%"))
 ```
 
 
 ### logpoint
     
 ```
-(event_source="Microsoft-Windows-Security-Auditing" (event_id="5145" RelativeTargetName="*\\\\winreg*")  -(IpAddress="%Admins_Workstations%"))
+(event_source="Microsoft-Windows-Security-Auditing" (event_id="5145" RelativeTargetName="*\\winreg*")  -(IpAddress="%Admins_Workstations%"))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?=.*5145)(?=.*.*\\winreg.*)))(?=.*(?!.*(?:.*(?=.*%Admins_Workstations%)))))'
+grep -P '^(?:.*(?=.*(?:.*(?=.*5145)(?=.*.*\winreg.*)))(?=.*(?!.*(?:.*(?=.*%Admins_Workstations%)))))'
 ```
 
 

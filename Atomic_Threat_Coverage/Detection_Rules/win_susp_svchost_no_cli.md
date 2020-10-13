@@ -59,49 +59,125 @@ level: critical
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "CommandLine.*.*svchost.exe" -and $_.message -match "Image.*.*\\\\svchost.exe") -and  -not (($_.message -match "ParentImage.*.*\\\\rpcnet.exe" -or $_.message -match "ParentImage.*.*\\\\rpcnetp.exe"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "CommandLine.*.*svchost.exe" -and $_.message -match "Image.*.*\\svchost.exe") -and  -not (($_.message -match "ParentImage.*.*\\rpcnet.exe" -or $_.message -match "ParentImage.*.*\\rpcnetp.exe"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.CommandLine.keyword:*svchost.exe AND winlog.event_data.Image.keyword:*\\\\svchost.exe) AND (NOT (winlog.event_data.ParentImage.keyword:(*\\\\rpcnet.exe OR *\\\\rpcnetp.exe))))
+((winlog.event_data.CommandLine.keyword:*svchost.exe AND winlog.event_data.Image.keyword:*\\svchost.exe) AND (NOT (winlog.event_data.ParentImage.keyword:(*\\rpcnet.exe OR *\\rpcnetp.exe))))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/16c37b52-b141-42a5-a3ea-bbe098444397 <<EOF\n{\n  "metadata": {\n    "title": "Suspect Svchost Activity",\n    "description": "It is extremely abnormal for svchost.exe to spawn without any CLI arguments and is normally observed when a malicious process spawns the process and injects code into the process memory space.",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.privilege_escalation",\n      "attack.t1055"\n    ],\n    "query": "((winlog.event_data.CommandLine.keyword:*svchost.exe AND winlog.event_data.Image.keyword:*\\\\\\\\svchost.exe) AND (NOT (winlog.event_data.ParentImage.keyword:(*\\\\\\\\rpcnet.exe OR *\\\\\\\\rpcnetp.exe))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.CommandLine.keyword:*svchost.exe AND winlog.event_data.Image.keyword:*\\\\\\\\svchost.exe) AND (NOT (winlog.event_data.ParentImage.keyword:(*\\\\\\\\rpcnet.exe OR *\\\\\\\\rpcnetp.exe))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspect Svchost Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/16c37b52-b141-42a5-a3ea-bbe098444397 <<EOF
+{
+  "metadata": {
+    "title": "Suspect Svchost Activity",
+    "description": "It is extremely abnormal for svchost.exe to spawn without any CLI arguments and is normally observed when a malicious process spawns the process and injects code into the process memory space.",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.privilege_escalation",
+      "attack.t1055"
+    ],
+    "query": "((winlog.event_data.CommandLine.keyword:*svchost.exe AND winlog.event_data.Image.keyword:*\\\\svchost.exe) AND (NOT (winlog.event_data.ParentImage.keyword:(*\\\\rpcnet.exe OR *\\\\rpcnetp.exe))))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.CommandLine.keyword:*svchost.exe AND winlog.event_data.Image.keyword:*\\\\svchost.exe) AND (NOT (winlog.event_data.ParentImage.keyword:(*\\\\rpcnet.exe OR *\\\\rpcnetp.exe))))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspect Svchost Activity'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((CommandLine.keyword:*svchost.exe AND Image.keyword:*\\\\svchost.exe) AND (NOT (ParentImage.keyword:(*\\\\rpcnet.exe *\\\\rpcnetp.exe))))
+((CommandLine.keyword:*svchost.exe AND Image.keyword:*\\svchost.exe) AND (NOT (ParentImage.keyword:(*\\rpcnet.exe *\\rpcnetp.exe))))
 ```
 
 
 ### splunk
     
 ```
-((CommandLine="*svchost.exe" Image="*\\\\svchost.exe") NOT ((ParentImage="*\\\\rpcnet.exe" OR ParentImage="*\\\\rpcnetp.exe"))) | table CommandLine,ParentCommandLine
+((CommandLine="*svchost.exe" Image="*\\svchost.exe") NOT ((ParentImage="*\\rpcnet.exe" OR ParentImage="*\\rpcnetp.exe"))) | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-((CommandLine="*svchost.exe" Image="*\\\\svchost.exe")  -(ParentImage IN ["*\\\\rpcnet.exe", "*\\\\rpcnetp.exe"]))
+((CommandLine="*svchost.exe" Image="*\\svchost.exe")  -(ParentImage IN ["*\\rpcnet.exe", "*\\rpcnetp.exe"]))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?=.*.*svchost\\.exe)(?=.*.*\\svchost\\.exe)))(?=.*(?!.*(?:.*(?=.*(?:.*.*\\rpcnet\\.exe|.*.*\\rpcnetp\\.exe))))))'
+grep -P '^(?:.*(?=.*(?:.*(?=.*.*svchost\.exe)(?=.*.*\svchost\.exe)))(?=.*(?!.*(?:.*(?=.*(?:.*.*\rpcnet\.exe|.*.*\rpcnetp\.exe))))))'
 ```
 
 

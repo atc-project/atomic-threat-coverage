@@ -76,7 +76,85 @@ Get-WinEvent | where {((($_.message -match "Product.*.*PAExec.*") -and ($_.messa
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/7b0666ad-3e38-4e3d-9bab-78b06de85f7b <<EOF\n{\n  "metadata": {\n    "title": "Execution of Renamed PaExec",\n    "description": "Detects execution of renamed paexec via imphash and executable product string",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036",\n      "attack.t1036.003",\n      "FIN7",\n      "car.2013-05-009"\n    ],\n    "query": "((Product.keyword:(*PAExec*) AND winlog.event_data.Imphash:(\\"11d40a7b7876288f919ab819cc2d9802\\" OR \\"11D40A7B7876288F919AB819CC2D9802\\" OR \\"6444f8a34e99b8f7d9647de66aabe516\\" OR \\"6444F8A34E99B8F7D9647DE66AABE516\\" OR \\"dfd6aa3f7b2b1035b76b718f1ddc689f\\" OR \\"DFD6AA3F7B2B1035B76B718F1DDC689F\\" OR \\"1a6cca4d5460b1710a12dea39e4a592c\\" OR \\"1A6CCA4D5460B1710A12DEA39E4A592C\\")) AND (NOT (winlog.event_data.Image.keyword:*paexec*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((Product.keyword:(*PAExec*) AND winlog.event_data.Imphash:(\\"11d40a7b7876288f919ab819cc2d9802\\" OR \\"11D40A7B7876288F919AB819CC2D9802\\" OR \\"6444f8a34e99b8f7d9647de66aabe516\\" OR \\"6444F8A34E99B8F7D9647DE66AABE516\\" OR \\"dfd6aa3f7b2b1035b76b718f1ddc689f\\" OR \\"DFD6AA3F7B2B1035B76B718F1DDC689F\\" OR \\"1a6cca4d5460b1710a12dea39e4a592c\\" OR \\"1A6CCA4D5460B1710A12DEA39E4A592C\\")) AND (NOT (winlog.event_data.Image.keyword:*paexec*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Execution of Renamed PaExec\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/7b0666ad-3e38-4e3d-9bab-78b06de85f7b <<EOF
+{
+  "metadata": {
+    "title": "Execution of Renamed PaExec",
+    "description": "Detects execution of renamed paexec via imphash and executable product string",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.t1036",
+      "attack.t1036.003",
+      "FIN7",
+      "car.2013-05-009"
+    ],
+    "query": "((Product.keyword:(*PAExec*) AND winlog.event_data.Imphash:(\"11d40a7b7876288f919ab819cc2d9802\" OR \"11D40A7B7876288F919AB819CC2D9802\" OR \"6444f8a34e99b8f7d9647de66aabe516\" OR \"6444F8A34E99B8F7D9647DE66AABE516\" OR \"dfd6aa3f7b2b1035b76b718f1ddc689f\" OR \"DFD6AA3F7B2B1035B76B718F1DDC689F\" OR \"1a6cca4d5460b1710a12dea39e4a592c\" OR \"1A6CCA4D5460B1710A12DEA39E4A592C\")) AND (NOT (winlog.event_data.Image.keyword:*paexec*)))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((Product.keyword:(*PAExec*) AND winlog.event_data.Imphash:(\"11d40a7b7876288f919ab819cc2d9802\" OR \"11D40A7B7876288F919AB819CC2D9802\" OR \"6444f8a34e99b8f7d9647de66aabe516\" OR \"6444F8A34E99B8F7D9647DE66AABE516\" OR \"dfd6aa3f7b2b1035b76b718f1ddc689f\" OR \"DFD6AA3F7B2B1035B76B718F1DDC689F\" OR \"1a6cca4d5460b1710a12dea39e4a592c\" OR \"1A6CCA4D5460B1710A12DEA39E4A592C\")) AND (NOT (winlog.event_data.Image.keyword:*paexec*)))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Execution of Renamed PaExec'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 

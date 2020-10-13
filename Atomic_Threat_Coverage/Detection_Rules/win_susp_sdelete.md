@@ -78,7 +78,89 @@ Get-WinEvent -LogName Security | where {(($_.ID -eq "4656" -or $_.ID -eq "4663" 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/39a80702-d7ca-4a83-b776-525b1f86a36d <<EOF\n{\n  "metadata": {\n    "title": "Secure Deletion with SDelete",\n    "description": "Detects renaming of file while deletion with SDelete tool",\n    "tags": [\n      "attack.impact",\n      "attack.defense_evasion",\n      "attack.t1107",\n      "attack.t1070.004",\n      "attack.t1066",\n      "attack.t1027.005",\n      "attack.t1485",\n      "attack.t1553.002",\n      "attack.s0195"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:(\\"4656\\" OR \\"4663\\" OR \\"4658\\") AND winlog.event_data.ObjectName.keyword:(*.AAA OR *.ZZZ))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:(\\"4656\\" OR \\"4663\\" OR \\"4658\\") AND winlog.event_data.ObjectName.keyword:(*.AAA OR *.ZZZ))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Secure Deletion with SDelete\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/39a80702-d7ca-4a83-b776-525b1f86a36d <<EOF
+{
+  "metadata": {
+    "title": "Secure Deletion with SDelete",
+    "description": "Detects renaming of file while deletion with SDelete tool",
+    "tags": [
+      "attack.impact",
+      "attack.defense_evasion",
+      "attack.t1107",
+      "attack.t1070.004",
+      "attack.t1066",
+      "attack.t1027.005",
+      "attack.t1485",
+      "attack.t1553.002",
+      "attack.s0195"
+    ],
+    "query": "(winlog.channel:\"Security\" AND winlog.event_id:(\"4656\" OR \"4663\" OR \"4658\") AND winlog.event_data.ObjectName.keyword:(*.AAA OR *.ZZZ))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:(\"4656\" OR \"4663\" OR \"4658\") AND winlog.event_data.ObjectName.keyword:(*.AAA OR *.ZZZ))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Secure Deletion with SDelete'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
@@ -106,7 +188,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*4656|.*4663|.*4658))(?=.*(?:.*.*\\.AAA|.*.*\\.ZZZ)))'
+grep -P '^(?:.*(?=.*(?:.*4656|.*4663|.*4658))(?=.*(?:.*.*\.AAA|.*.*\.ZZZ)))'
 ```
 
 

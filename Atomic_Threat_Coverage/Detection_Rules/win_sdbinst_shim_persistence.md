@@ -54,49 +54,126 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "Image.*.*\\\\sdbinst.exe") -and ($_.message -match "CommandLine.*.*.sdb.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "Image.*.*\\sdbinst.exe") -and ($_.message -match "CommandLine.*.*.sdb.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:(*\\\\sdbinst.exe) AND winlog.event_data.CommandLine.keyword:(*.sdb*))
+(winlog.event_data.Image.keyword:(*\\sdbinst.exe) AND winlog.event_data.CommandLine.keyword:(*.sdb*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/517490a7-115a-48c6-8862-1a481504d5a8 <<EOF\n{\n  "metadata": {\n    "title": "Possible Shim Database Persistence via sdbinst.exe",\n    "description": "Detects installation of a new shim using sdbinst.exe. A shim can be used to load malicious DLLs into applications.",\n    "tags": [\n      "attack.persistence",\n      "attack.privilege_escalation",\n      "attack.t1546.011",\n      "attack.t1138"\n    ],\n    "query": "(winlog.event_data.Image.keyword:(*\\\\\\\\sdbinst.exe) AND winlog.event_data.CommandLine.keyword:(*.sdb*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.Image.keyword:(*\\\\\\\\sdbinst.exe) AND winlog.event_data.CommandLine.keyword:(*.sdb*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Possible Shim Database Persistence via sdbinst.exe\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/517490a7-115a-48c6-8862-1a481504d5a8 <<EOF
+{
+  "metadata": {
+    "title": "Possible Shim Database Persistence via sdbinst.exe",
+    "description": "Detects installation of a new shim using sdbinst.exe. A shim can be used to load malicious DLLs into applications.",
+    "tags": [
+      "attack.persistence",
+      "attack.privilege_escalation",
+      "attack.t1546.011",
+      "attack.t1138"
+    ],
+    "query": "(winlog.event_data.Image.keyword:(*\\\\sdbinst.exe) AND winlog.event_data.CommandLine.keyword:(*.sdb*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.Image.keyword:(*\\\\sdbinst.exe) AND winlog.event_data.CommandLine.keyword:(*.sdb*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Possible Shim Database Persistence via sdbinst.exe'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(Image.keyword:(*\\\\sdbinst.exe) AND CommandLine.keyword:(*.sdb*))
+(Image.keyword:(*\\sdbinst.exe) AND CommandLine.keyword:(*.sdb*))
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\\\sdbinst.exe") (CommandLine="*.sdb*"))
+((Image="*\\sdbinst.exe") (CommandLine="*.sdb*"))
 ```
 
 
 ### logpoint
     
 ```
-(Image IN ["*\\\\sdbinst.exe"] CommandLine IN ["*.sdb*"])
+(Image IN ["*\\sdbinst.exe"] CommandLine IN ["*.sdb*"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*.*\\sdbinst\\.exe))(?=.*(?:.*.*\\.sdb.*)))'
+grep -P '^(?:.*(?=.*(?:.*.*\sdbinst\.exe))(?=.*(?:.*.*\.sdb.*)))'
 ```
 
 

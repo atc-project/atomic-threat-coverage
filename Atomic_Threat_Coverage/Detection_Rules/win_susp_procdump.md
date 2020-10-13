@@ -68,21 +68,100 @@ Get-WinEvent | where {((($_.message -match "CommandLine.*.* -ma .*") -and ($_.me
 ### es-qs
     
 ```
-((winlog.event_data.CommandLine.keyword:(*\\ \\-ma\\ *) AND winlog.event_data.CommandLine.keyword:(*\\ lsass*)) OR winlog.event_data.CommandLine.keyword:(*\\ \\-ma\\ ls*))
+((winlog.event_data.CommandLine.keyword:(*\ \-ma\ *) AND winlog.event_data.CommandLine.keyword:(*\ lsass*)) OR winlog.event_data.CommandLine.keyword:(*\ \-ma\ ls*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/5afee48e-67dd-4e03-a783-f74259dcf998 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Use of Procdump",\n    "description": "Detects suspicious uses of the SysInternals Procdump utility by using a special command line parameter in combination with the lsass.exe process. This way we\'re also able to catch cases in which the attacker has renamed the procdump executable.",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036",\n      "attack.credential_access",\n      "attack.t1003.001",\n      "attack.t1003",\n      "car.2013-05-009"\n    ],\n    "query": "((winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-ma\\\\ *) AND winlog.event_data.CommandLine.keyword:(*\\\\ lsass*)) OR winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-ma\\\\ ls*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-ma\\\\ *) AND winlog.event_data.CommandLine.keyword:(*\\\\ lsass*)) OR winlog.event_data.CommandLine.keyword:(*\\\\ \\\\-ma\\\\ ls*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Use of Procdump\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/5afee48e-67dd-4e03-a783-f74259dcf998 <<EOF
+{
+  "metadata": {
+    "title": "Suspicious Use of Procdump",
+    "description": "Detects suspicious uses of the SysInternals Procdump utility by using a special command line parameter in combination with the lsass.exe process. This way we're also able to catch cases in which the attacker has renamed the procdump executable.",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.t1036",
+      "attack.credential_access",
+      "attack.t1003.001",
+      "attack.t1003",
+      "car.2013-05-009"
+    ],
+    "query": "((winlog.event_data.CommandLine.keyword:(*\\ \\-ma\\ *) AND winlog.event_data.CommandLine.keyword:(*\\ lsass*)) OR winlog.event_data.CommandLine.keyword:(*\\ \\-ma\\ ls*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.CommandLine.keyword:(*\\ \\-ma\\ *) AND winlog.event_data.CommandLine.keyword:(*\\ lsass*)) OR winlog.event_data.CommandLine.keyword:(*\\ \\-ma\\ ls*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious Use of Procdump'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((CommandLine.keyword:(* \\-ma *) AND CommandLine.keyword:(* lsass*)) OR CommandLine.keyword:(* \\-ma ls*))
+((CommandLine.keyword:(* \-ma *) AND CommandLine.keyword:(* lsass*)) OR CommandLine.keyword:(* \-ma ls*))
 ```
 
 

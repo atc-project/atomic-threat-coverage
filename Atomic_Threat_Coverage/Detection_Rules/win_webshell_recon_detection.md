@@ -67,49 +67,126 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "ParentImage.*.*\\\\apache.*" -or $_.message -match "ParentImage.*.*\\\\tomcat.*" -or $_.message -match "ParentImage.*.*\\\\w3wp.exe.*" -or $_.message -match "ParentImage.*.*\\\\php-cgi.exe.*" -or $_.message -match "ParentImage.*.*\\\\nginx.exe.*" -or $_.message -match "ParentImage.*.*\\\\httpd.exe.*") -and ($_.message -match "Image.*.*\\\\cmd.exe") -and ($_.message -match "CommandLine.*.*perl --help.*" -or $_.message -match "CommandLine.*.*python --help.*" -or $_.message -match "CommandLine.*.*wget --help.*" -or $_.message -match "CommandLine.*.*perl -h.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "ParentImage.*.*\\apache.*" -or $_.message -match "ParentImage.*.*\\tomcat.*" -or $_.message -match "ParentImage.*.*\\w3wp.exe.*" -or $_.message -match "ParentImage.*.*\\php-cgi.exe.*" -or $_.message -match "ParentImage.*.*\\nginx.exe.*" -or $_.message -match "ParentImage.*.*\\httpd.exe.*") -and ($_.message -match "Image.*.*\\cmd.exe") -and ($_.message -match "CommandLine.*.*perl --help.*" -or $_.message -match "CommandLine.*.*python --help.*" -or $_.message -match "CommandLine.*.*wget --help.*" -or $_.message -match "CommandLine.*.*perl -h.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.ParentImage.keyword:(*\\\\apache* OR *\\\\tomcat* OR *\\\\w3wp.exe* OR *\\\\php\\-cgi.exe* OR *\\\\nginx.exe* OR *\\\\httpd.exe*) AND winlog.event_data.Image.keyword:(*\\\\cmd.exe) AND winlog.event_data.CommandLine.keyword:(*perl\\ \\-\\-help* OR *python\\ \\-\\-help* OR *wget\\ \\-\\-help* OR *perl\\ \\-h*))
+(winlog.event_data.ParentImage.keyword:(*\\apache* OR *\\tomcat* OR *\\w3wp.exe* OR *\\php\-cgi.exe* OR *\\nginx.exe* OR *\\httpd.exe*) AND winlog.event_data.Image.keyword:(*\\cmd.exe) AND winlog.event_data.CommandLine.keyword:(*perl\ \-\-help* OR *python\ \-\-help* OR *wget\ \-\-help* OR *perl\ \-h*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/f64e5c19-879c-4bae-b471-6d84c8339677 <<EOF\n{\n  "metadata": {\n    "title": "Webshell Recon Detection Via CommandLine & Processes",\n    "description": "Looking for processes spawned by web server components that indicate reconnaissance by popular public domain webshells for whether perl, python or wget are installed.",\n    "tags": [\n      "attack.persistence",\n      "attack.t1505.003",\n      "attack.privilege_escalation",\n      "attack.t1100"\n    ],\n    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\\\\\apache* OR *\\\\\\\\tomcat* OR *\\\\\\\\w3wp.exe* OR *\\\\\\\\php\\\\-cgi.exe* OR *\\\\\\\\nginx.exe* OR *\\\\\\\\httpd.exe*) AND winlog.event_data.Image.keyword:(*\\\\\\\\cmd.exe) AND winlog.event_data.CommandLine.keyword:(*perl\\\\ \\\\-\\\\-help* OR *python\\\\ \\\\-\\\\-help* OR *wget\\\\ \\\\-\\\\-help* OR *perl\\\\ \\\\-h*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\\\\\apache* OR *\\\\\\\\tomcat* OR *\\\\\\\\w3wp.exe* OR *\\\\\\\\php\\\\-cgi.exe* OR *\\\\\\\\nginx.exe* OR *\\\\\\\\httpd.exe*) AND winlog.event_data.Image.keyword:(*\\\\\\\\cmd.exe) AND winlog.event_data.CommandLine.keyword:(*perl\\\\ \\\\-\\\\-help* OR *python\\\\ \\\\-\\\\-help* OR *wget\\\\ \\\\-\\\\-help* OR *perl\\\\ \\\\-h*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Webshell Recon Detection Via CommandLine & Processes\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n            Image = {{_source.Image}}\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/f64e5c19-879c-4bae-b471-6d84c8339677 <<EOF
+{
+  "metadata": {
+    "title": "Webshell Recon Detection Via CommandLine & Processes",
+    "description": "Looking for processes spawned by web server components that indicate reconnaissance by popular public domain webshells for whether perl, python or wget are installed.",
+    "tags": [
+      "attack.persistence",
+      "attack.t1505.003",
+      "attack.privilege_escalation",
+      "attack.t1100"
+    ],
+    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\apache* OR *\\\\tomcat* OR *\\\\w3wp.exe* OR *\\\\php\\-cgi.exe* OR *\\\\nginx.exe* OR *\\\\httpd.exe*) AND winlog.event_data.Image.keyword:(*\\\\cmd.exe) AND winlog.event_data.CommandLine.keyword:(*perl\\ \\-\\-help* OR *python\\ \\-\\-help* OR *wget\\ \\-\\-help* OR *perl\\ \\-h*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\apache* OR *\\\\tomcat* OR *\\\\w3wp.exe* OR *\\\\php\\-cgi.exe* OR *\\\\nginx.exe* OR *\\\\httpd.exe*) AND winlog.event_data.Image.keyword:(*\\\\cmd.exe) AND winlog.event_data.CommandLine.keyword:(*perl\\ \\-\\-help* OR *python\\ \\-\\-help* OR *wget\\ \\-\\-help* OR *perl\\ \\-h*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Webshell Recon Detection Via CommandLine & Processes'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n            Image = {{_source.Image}}\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(ParentImage.keyword:(*\\\\apache* *\\\\tomcat* *\\\\w3wp.exe* *\\\\php\\-cgi.exe* *\\\\nginx.exe* *\\\\httpd.exe*) AND Image.keyword:(*\\\\cmd.exe) AND CommandLine.keyword:(*perl \\-\\-help* *python \\-\\-help* *wget \\-\\-help* *perl \\-h*))
+(ParentImage.keyword:(*\\apache* *\\tomcat* *\\w3wp.exe* *\\php\-cgi.exe* *\\nginx.exe* *\\httpd.exe*) AND Image.keyword:(*\\cmd.exe) AND CommandLine.keyword:(*perl \-\-help* *python \-\-help* *wget \-\-help* *perl \-h*))
 ```
 
 
 ### splunk
     
 ```
-((ParentImage="*\\\\apache*" OR ParentImage="*\\\\tomcat*" OR ParentImage="*\\\\w3wp.exe*" OR ParentImage="*\\\\php-cgi.exe*" OR ParentImage="*\\\\nginx.exe*" OR ParentImage="*\\\\httpd.exe*") (Image="*\\\\cmd.exe") (CommandLine="*perl --help*" OR CommandLine="*python --help*" OR CommandLine="*wget --help*" OR CommandLine="*perl -h*")) | table Image,CommandLine,ParentCommandLine
+((ParentImage="*\\apache*" OR ParentImage="*\\tomcat*" OR ParentImage="*\\w3wp.exe*" OR ParentImage="*\\php-cgi.exe*" OR ParentImage="*\\nginx.exe*" OR ParentImage="*\\httpd.exe*") (Image="*\\cmd.exe") (CommandLine="*perl --help*" OR CommandLine="*python --help*" OR CommandLine="*wget --help*" OR CommandLine="*perl -h*")) | table Image,CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-(ParentImage IN ["*\\\\apache*", "*\\\\tomcat*", "*\\\\w3wp.exe*", "*\\\\php-cgi.exe*", "*\\\\nginx.exe*", "*\\\\httpd.exe*"] Image IN ["*\\\\cmd.exe"] CommandLine IN ["*perl --help*", "*python --help*", "*wget --help*", "*perl -h*"])
+(ParentImage IN ["*\\apache*", "*\\tomcat*", "*\\w3wp.exe*", "*\\php-cgi.exe*", "*\\nginx.exe*", "*\\httpd.exe*"] Image IN ["*\\cmd.exe"] CommandLine IN ["*perl --help*", "*python --help*", "*wget --help*", "*perl -h*"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*.*\\apache.*|.*.*\\tomcat.*|.*.*\\w3wp\\.exe.*|.*.*\\php-cgi\\.exe.*|.*.*\\nginx\\.exe.*|.*.*\\httpd\\.exe.*))(?=.*(?:.*.*\\cmd\\.exe))(?=.*(?:.*.*perl --help.*|.*.*python --help.*|.*.*wget --help.*|.*.*perl -h.*)))'
+grep -P '^(?:.*(?=.*(?:.*.*\apache.*|.*.*\tomcat.*|.*.*\w3wp\.exe.*|.*.*\php-cgi\.exe.*|.*.*\nginx\.exe.*|.*.*\httpd\.exe.*))(?=.*(?:.*.*\cmd\.exe))(?=.*(?:.*.*perl --help.*|.*.*python --help.*|.*.*wget --help.*|.*.*perl -h.*)))'
 ```
 
 

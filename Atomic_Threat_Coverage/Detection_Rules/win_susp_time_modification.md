@@ -59,49 +59,125 @@ level: medium
 ### powershell
     
 ```
-Get-WinEvent -LogName Security | where {($_.ID -eq "4616" -and  -not (((($_.message -match "ProcessName.*C:\\\\Program Files\\\\VMware\\\\VMware Tools\\\\vmtoolsd.exe" -or $_.message -match "ProcessName.*C:\\\\Windows\\\\System32\\\\VBoxService.exe") -or ($_.message -match "ProcessName.*C:\\\\Windows\\\\System32\\\\svchost.exe" -and $_.message -match "SubjectUserSid.*S-1-5-19"))))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Security | where {($_.ID -eq "4616" -and  -not (((($_.message -match "ProcessName.*C:\\Program Files\\VMware\\VMware Tools\\vmtoolsd.exe" -or $_.message -match "ProcessName.*C:\\Windows\\System32\\VBoxService.exe") -or ($_.message -match "ProcessName.*C:\\Windows\\System32\\svchost.exe" -and $_.message -match "SubjectUserSid.*S-1-5-19"))))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.channel:"Security" AND winlog.event_id:"4616" AND (NOT ((winlog.channel:"Security" AND ((winlog.event_data.ProcessName:"C\\:\\\\Program\\ Files\\\\VMware\\\\VMware\\ Tools\\\\vmtoolsd.exe" OR winlog.event_data.ProcessName:"C\\:\\\\Windows\\\\System32\\\\VBoxService.exe") OR (winlog.event_data.ProcessName:"C\\:\\\\Windows\\\\System32\\\\svchost.exe" AND winlog.event_data.SubjectUserSid:"S\\-1\\-5\\-19"))))))
+(winlog.channel:"Security" AND winlog.event_id:"4616" AND (NOT ((winlog.channel:"Security" AND ((winlog.event_data.ProcessName:"C\:\\Program\ Files\\VMware\\VMware\ Tools\\vmtoolsd.exe" OR winlog.event_data.ProcessName:"C\:\\Windows\\System32\\VBoxService.exe") OR (winlog.event_data.ProcessName:"C\:\\Windows\\System32\\svchost.exe" AND winlog.event_data.SubjectUserSid:"S\-1\-5\-19"))))))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/faa031b5-21ed-4e02-8881-2591f98d82ed <<EOF\n{\n  "metadata": {\n    "title": "Unauthorized System Time Modification",\n    "description": "Detect scenarios where a potentially unauthorized application or user is modifying the system time.",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1099",\n      "attack.t1070.006"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4616\\" AND (NOT ((winlog.channel:\\"Security\\" AND ((winlog.event_data.ProcessName:\\"C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\VMware\\\\\\\\VMware\\\\ Tools\\\\\\\\vmtoolsd.exe\\" OR winlog.event_data.ProcessName:\\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\VBoxService.exe\\") OR (winlog.event_data.ProcessName:\\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\svchost.exe\\" AND winlog.event_data.SubjectUserSid:\\"S\\\\-1\\\\-5\\\\-19\\"))))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4616\\" AND (NOT ((winlog.channel:\\"Security\\" AND ((winlog.event_data.ProcessName:\\"C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\VMware\\\\\\\\VMware\\\\ Tools\\\\\\\\vmtoolsd.exe\\" OR winlog.event_data.ProcessName:\\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\VBoxService.exe\\") OR (winlog.event_data.ProcessName:\\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\svchost.exe\\" AND winlog.event_data.SubjectUserSid:\\"S\\\\-1\\\\-5\\\\-19\\"))))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Unauthorized System Time Modification\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/faa031b5-21ed-4e02-8881-2591f98d82ed <<EOF
+{
+  "metadata": {
+    "title": "Unauthorized System Time Modification",
+    "description": "Detect scenarios where a potentially unauthorized application or user is modifying the system time.",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.t1099",
+      "attack.t1070.006"
+    ],
+    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4616\" AND (NOT ((winlog.channel:\"Security\" AND ((winlog.event_data.ProcessName:\"C\\:\\\\Program\\ Files\\\\VMware\\\\VMware\\ Tools\\\\vmtoolsd.exe\" OR winlog.event_data.ProcessName:\"C\\:\\\\Windows\\\\System32\\\\VBoxService.exe\") OR (winlog.event_data.ProcessName:\"C\\:\\\\Windows\\\\System32\\\\svchost.exe\" AND winlog.event_data.SubjectUserSid:\"S\\-1\\-5\\-19\"))))))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4616\" AND (NOT ((winlog.channel:\"Security\" AND ((winlog.event_data.ProcessName:\"C\\:\\\\Program\\ Files\\\\VMware\\\\VMware\\ Tools\\\\vmtoolsd.exe\" OR winlog.event_data.ProcessName:\"C\\:\\\\Windows\\\\System32\\\\VBoxService.exe\") OR (winlog.event_data.ProcessName:\"C\\:\\\\Windows\\\\System32\\\\svchost.exe\" AND winlog.event_data.SubjectUserSid:\"S\\-1\\-5\\-19\"))))))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Unauthorized System Time Modification'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(EventID:"4616" AND (NOT (((ProcessName:"C\\:\\\\Program Files\\\\VMware\\\\VMware Tools\\\\vmtoolsd.exe" OR ProcessName:"C\\:\\\\Windows\\\\System32\\\\VBoxService.exe") OR (ProcessName:"C\\:\\\\Windows\\\\System32\\\\svchost.exe" AND SubjectUserSid:"S\\-1\\-5\\-19")))))
+(EventID:"4616" AND (NOT (((ProcessName:"C\:\\Program Files\\VMware\\VMware Tools\\vmtoolsd.exe" OR ProcessName:"C\:\\Windows\\System32\\VBoxService.exe") OR (ProcessName:"C\:\\Windows\\System32\\svchost.exe" AND SubjectUserSid:"S\-1\-5\-19")))))
 ```
 
 
 ### splunk
     
 ```
-(source="WinEventLog:Security" EventCode="4616" NOT ((source="WinEventLog:Security" ((ProcessName="C:\\\\Program Files\\\\VMware\\\\VMware Tools\\\\vmtoolsd.exe" OR ProcessName="C:\\\\Windows\\\\System32\\\\VBoxService.exe") OR (ProcessName="C:\\\\Windows\\\\System32\\\\svchost.exe" SubjectUserSid="S-1-5-19")))))
+(source="WinEventLog:Security" EventCode="4616" NOT ((source="WinEventLog:Security" ((ProcessName="C:\\Program Files\\VMware\\VMware Tools\\vmtoolsd.exe" OR ProcessName="C:\\Windows\\System32\\VBoxService.exe") OR (ProcessName="C:\\Windows\\System32\\svchost.exe" SubjectUserSid="S-1-5-19")))))
 ```
 
 
 ### logpoint
     
 ```
-(event_source="Microsoft-Windows-Security-Auditing" event_id="4616"  -((event_source="Microsoft-Windows-Security-Auditing" ((ProcessName="C:\\\\Program Files\\\\VMware\\\\VMware Tools\\\\vmtoolsd.exe" OR ProcessName="C:\\\\Windows\\\\System32\\\\VBoxService.exe") OR (ProcessName="C:\\\\Windows\\\\System32\\\\svchost.exe" SubjectUserSid="S-1-5-19")))))
+(event_source="Microsoft-Windows-Security-Auditing" event_id="4616"  -((event_source="Microsoft-Windows-Security-Auditing" ((ProcessName="C:\\Program Files\\VMware\\VMware Tools\\vmtoolsd.exe" OR ProcessName="C:\\Windows\\System32\\VBoxService.exe") OR (ProcessName="C:\\Windows\\System32\\svchost.exe" SubjectUserSid="S-1-5-19")))))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*4616)(?=.*(?!.*(?:.*(?:.*(?:.*(?:.*(?:.*C:\\Program Files\\VMware\\VMware Tools\\vmtoolsd\\.exe|.*C:\\Windows\\System32\\VBoxService\\.exe))|.*(?:.*(?=.*C:\\Windows\\System32\\svchost\\.exe)(?=.*S-1-5-19))))))))'
+grep -P '^(?:.*(?=.*4616)(?=.*(?!.*(?:.*(?:.*(?:.*(?:.*(?:.*C:\Program Files\VMware\VMware Tools\vmtoolsd\.exe|.*C:\Windows\System32\VBoxService\.exe))|.*(?:.*(?=.*C:\Windows\System32\svchost\.exe)(?=.*S-1-5-19))))))))'
 ```
 
 

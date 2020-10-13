@@ -64,49 +64,126 @@ level: critical
 ### powershell
     
 ```
-Get-WinEvent | where {((($_.message -match "ParentImage.*.*C:\\\\Windows\\\\Temp.*" -or $_.message -match "ParentImage.*.*\\\\hpqhvind.exe.*") -and $_.message -match "Image.*C:\\\\ProgramData\\\\DRM.*") -or ($_.message -match "ParentImage.*C:\\\\ProgramData\\\\DRM.*" -and $_.message -match "Image.*.*\\\\wmplayer.exe") -or ($_.message -match "ParentImage.*.*\\\\Test.exe" -and $_.message -match "Image.*.*\\\\wmplayer.exe") -or $_.message -match "Image.*C:\\\\ProgramData\\\\DRM\\\\CLR\\\\CLR.exe" -or ($_.message -match "ParentImage.*C:\\\\ProgramData\\\\DRM\\\\Windows.*" -and $_.message -match "Image.*.*\\\\SearchFilterHost.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {((($_.message -match "ParentImage.*.*C:\\Windows\\Temp.*" -or $_.message -match "ParentImage.*.*\\hpqhvind.exe.*") -and $_.message -match "Image.*C:\\ProgramData\\DRM.*") -or ($_.message -match "ParentImage.*C:\\ProgramData\\DRM.*" -and $_.message -match "Image.*.*\\wmplayer.exe") -or ($_.message -match "ParentImage.*.*\\Test.exe" -and $_.message -match "Image.*.*\\wmplayer.exe") -or $_.message -match "Image.*C:\\ProgramData\\DRM\\CLR\\CLR.exe" -or ($_.message -match "ParentImage.*C:\\ProgramData\\DRM\\Windows.*" -and $_.message -match "Image.*.*\\SearchFilterHost.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.ParentImage.keyword:(*C\\:\\\\Windows\\\\Temp* OR *\\\\hpqhvind.exe*) AND winlog.event_data.Image.keyword:C\\:\\\\ProgramData\\\\DRM*) OR (winlog.event_data.ParentImage.keyword:C\\:\\\\ProgramData\\\\DRM* AND winlog.event_data.Image.keyword:*\\\\wmplayer.exe) OR (winlog.event_data.ParentImage.keyword:*\\\\Test.exe AND winlog.event_data.Image.keyword:*\\\\wmplayer.exe) OR winlog.event_data.Image:"C\\:\\\\ProgramData\\\\DRM\\\\CLR\\\\CLR.exe" OR (winlog.event_data.ParentImage.keyword:C\\:\\\\ProgramData\\\\DRM\\\\Windows* AND winlog.event_data.Image.keyword:*\\\\SearchFilterHost.exe))
+((winlog.event_data.ParentImage.keyword:(*C\:\\Windows\\Temp* OR *\\hpqhvind.exe*) AND winlog.event_data.Image.keyword:C\:\\ProgramData\\DRM*) OR (winlog.event_data.ParentImage.keyword:C\:\\ProgramData\\DRM* AND winlog.event_data.Image.keyword:*\\wmplayer.exe) OR (winlog.event_data.ParentImage.keyword:*\\Test.exe AND winlog.event_data.Image.keyword:*\\wmplayer.exe) OR winlog.event_data.Image:"C\:\\ProgramData\\DRM\\CLR\\CLR.exe" OR (winlog.event_data.ParentImage.keyword:C\:\\ProgramData\\DRM\\Windows* AND winlog.event_data.Image.keyword:*\\SearchFilterHost.exe))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/3121461b-5aa0-4a41-b910-66d25524edbb <<EOF\n{\n  "metadata": {\n    "title": "Winnti Malware HK University Campaign",\n    "description": "Detects specific process characteristics of Winnti malware noticed in Dec/Jan 2020 in a campaign against Honk Kong universities",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1574.002",\n      "attack.t1073",\n      "attack.g0044"\n    ],\n    "query": "((winlog.event_data.ParentImage.keyword:(*C\\\\:\\\\\\\\Windows\\\\\\\\Temp* OR *\\\\\\\\hpqhvind.exe*) AND winlog.event_data.Image.keyword:C\\\\:\\\\\\\\ProgramData\\\\\\\\DRM*) OR (winlog.event_data.ParentImage.keyword:C\\\\:\\\\\\\\ProgramData\\\\\\\\DRM* AND winlog.event_data.Image.keyword:*\\\\\\\\wmplayer.exe) OR (winlog.event_data.ParentImage.keyword:*\\\\\\\\Test.exe AND winlog.event_data.Image.keyword:*\\\\\\\\wmplayer.exe) OR winlog.event_data.Image:\\"C\\\\:\\\\\\\\ProgramData\\\\\\\\DRM\\\\\\\\CLR\\\\\\\\CLR.exe\\" OR (winlog.event_data.ParentImage.keyword:C\\\\:\\\\\\\\ProgramData\\\\\\\\DRM\\\\\\\\Windows* AND winlog.event_data.Image.keyword:*\\\\\\\\SearchFilterHost.exe))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.ParentImage.keyword:(*C\\\\:\\\\\\\\Windows\\\\\\\\Temp* OR *\\\\\\\\hpqhvind.exe*) AND winlog.event_data.Image.keyword:C\\\\:\\\\\\\\ProgramData\\\\\\\\DRM*) OR (winlog.event_data.ParentImage.keyword:C\\\\:\\\\\\\\ProgramData\\\\\\\\DRM* AND winlog.event_data.Image.keyword:*\\\\\\\\wmplayer.exe) OR (winlog.event_data.ParentImage.keyword:*\\\\\\\\Test.exe AND winlog.event_data.Image.keyword:*\\\\\\\\wmplayer.exe) OR winlog.event_data.Image:\\"C\\\\:\\\\\\\\ProgramData\\\\\\\\DRM\\\\\\\\CLR\\\\\\\\CLR.exe\\" OR (winlog.event_data.ParentImage.keyword:C\\\\:\\\\\\\\ProgramData\\\\\\\\DRM\\\\\\\\Windows* AND winlog.event_data.Image.keyword:*\\\\\\\\SearchFilterHost.exe))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Winnti Malware HK University Campaign\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/3121461b-5aa0-4a41-b910-66d25524edbb <<EOF
+{
+  "metadata": {
+    "title": "Winnti Malware HK University Campaign",
+    "description": "Detects specific process characteristics of Winnti malware noticed in Dec/Jan 2020 in a campaign against Honk Kong universities",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.t1574.002",
+      "attack.t1073",
+      "attack.g0044"
+    ],
+    "query": "((winlog.event_data.ParentImage.keyword:(*C\\:\\\\Windows\\\\Temp* OR *\\\\hpqhvind.exe*) AND winlog.event_data.Image.keyword:C\\:\\\\ProgramData\\\\DRM*) OR (winlog.event_data.ParentImage.keyword:C\\:\\\\ProgramData\\\\DRM* AND winlog.event_data.Image.keyword:*\\\\wmplayer.exe) OR (winlog.event_data.ParentImage.keyword:*\\\\Test.exe AND winlog.event_data.Image.keyword:*\\\\wmplayer.exe) OR winlog.event_data.Image:\"C\\:\\\\ProgramData\\\\DRM\\\\CLR\\\\CLR.exe\" OR (winlog.event_data.ParentImage.keyword:C\\:\\\\ProgramData\\\\DRM\\\\Windows* AND winlog.event_data.Image.keyword:*\\\\SearchFilterHost.exe))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.ParentImage.keyword:(*C\\:\\\\Windows\\\\Temp* OR *\\\\hpqhvind.exe*) AND winlog.event_data.Image.keyword:C\\:\\\\ProgramData\\\\DRM*) OR (winlog.event_data.ParentImage.keyword:C\\:\\\\ProgramData\\\\DRM* AND winlog.event_data.Image.keyword:*\\\\wmplayer.exe) OR (winlog.event_data.ParentImage.keyword:*\\\\Test.exe AND winlog.event_data.Image.keyword:*\\\\wmplayer.exe) OR winlog.event_data.Image:\"C\\:\\\\ProgramData\\\\DRM\\\\CLR\\\\CLR.exe\" OR (winlog.event_data.ParentImage.keyword:C\\:\\\\ProgramData\\\\DRM\\\\Windows* AND winlog.event_data.Image.keyword:*\\\\SearchFilterHost.exe))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Winnti Malware HK University Campaign'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((ParentImage.keyword:(*C\\:\\\\Windows\\\\Temp* *\\\\hpqhvind.exe*) AND Image.keyword:C\\:\\\\ProgramData\\\\DRM*) OR (ParentImage.keyword:C\\:\\\\ProgramData\\\\DRM* AND Image.keyword:*\\\\wmplayer.exe) OR (ParentImage.keyword:*\\\\Test.exe AND Image.keyword:*\\\\wmplayer.exe) OR Image:"C\\:\\\\ProgramData\\\\DRM\\\\CLR\\\\CLR.exe" OR (ParentImage.keyword:C\\:\\\\ProgramData\\\\DRM\\\\Windows* AND Image.keyword:*\\\\SearchFilterHost.exe))
+((ParentImage.keyword:(*C\:\\Windows\\Temp* *\\hpqhvind.exe*) AND Image.keyword:C\:\\ProgramData\\DRM*) OR (ParentImage.keyword:C\:\\ProgramData\\DRM* AND Image.keyword:*\\wmplayer.exe) OR (ParentImage.keyword:*\\Test.exe AND Image.keyword:*\\wmplayer.exe) OR Image:"C\:\\ProgramData\\DRM\\CLR\\CLR.exe" OR (ParentImage.keyword:C\:\\ProgramData\\DRM\\Windows* AND Image.keyword:*\\SearchFilterHost.exe))
 ```
 
 
 ### splunk
     
 ```
-(((ParentImage="*C:\\\\Windows\\\\Temp*" OR ParentImage="*\\\\hpqhvind.exe*") Image="C:\\\\ProgramData\\\\DRM*") OR (ParentImage="C:\\\\ProgramData\\\\DRM*" Image="*\\\\wmplayer.exe") OR (ParentImage="*\\\\Test.exe" Image="*\\\\wmplayer.exe") OR Image="C:\\\\ProgramData\\\\DRM\\\\CLR\\\\CLR.exe" OR (ParentImage="C:\\\\ProgramData\\\\DRM\\\\Windows*" Image="*\\\\SearchFilterHost.exe"))
+(((ParentImage="*C:\\Windows\\Temp*" OR ParentImage="*\\hpqhvind.exe*") Image="C:\\ProgramData\\DRM*") OR (ParentImage="C:\\ProgramData\\DRM*" Image="*\\wmplayer.exe") OR (ParentImage="*\\Test.exe" Image="*\\wmplayer.exe") OR Image="C:\\ProgramData\\DRM\\CLR\\CLR.exe" OR (ParentImage="C:\\ProgramData\\DRM\\Windows*" Image="*\\SearchFilterHost.exe"))
 ```
 
 
 ### logpoint
     
 ```
-((ParentImage IN ["*C:\\\\Windows\\\\Temp*", "*\\\\hpqhvind.exe*"] Image="C:\\\\ProgramData\\\\DRM*") OR (ParentImage="C:\\\\ProgramData\\\\DRM*" Image="*\\\\wmplayer.exe") OR (ParentImage="*\\\\Test.exe" Image="*\\\\wmplayer.exe") OR Image="C:\\\\ProgramData\\\\DRM\\\\CLR\\\\CLR.exe" OR (ParentImage="C:\\\\ProgramData\\\\DRM\\\\Windows*" Image="*\\\\SearchFilterHost.exe"))
+((ParentImage IN ["*C:\\Windows\\Temp*", "*\\hpqhvind.exe*"] Image="C:\\ProgramData\\DRM*") OR (ParentImage="C:\\ProgramData\\DRM*" Image="*\\wmplayer.exe") OR (ParentImage="*\\Test.exe" Image="*\\wmplayer.exe") OR Image="C:\\ProgramData\\DRM\\CLR\\CLR.exe" OR (ParentImage="C:\\ProgramData\\DRM\\Windows*" Image="*\\SearchFilterHost.exe"))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?:.*(?:.*(?=.*(?:.*.*C:\\Windows\\Temp.*|.*.*\\hpqhvind\\.exe.*))(?=.*C:\\ProgramData\\DRM.*))|.*(?:.*(?=.*C:\\ProgramData\\DRM.*)(?=.*.*\\wmplayer\\.exe))|.*(?:.*(?=.*.*\\Test\\.exe)(?=.*.*\\wmplayer\\.exe))|.*C:\\ProgramData\\DRM\\CLR\\CLR\\.exe|.*(?:.*(?=.*C:\\ProgramData\\DRM\\Windows.*)(?=.*.*\\SearchFilterHost\\.exe))))'
+grep -P '^(?:.*(?:.*(?:.*(?=.*(?:.*.*C:\Windows\Temp.*|.*.*\hpqhvind\.exe.*))(?=.*C:\ProgramData\DRM.*))|.*(?:.*(?=.*C:\ProgramData\DRM.*)(?=.*.*\wmplayer\.exe))|.*(?:.*(?=.*.*\Test\.exe)(?=.*.*\wmplayer\.exe))|.*C:\ProgramData\DRM\CLR\CLR\.exe|.*(?:.*(?=.*C:\ProgramData\DRM\Windows.*)(?=.*.*\SearchFilterHost\.exe))))'
 ```
 
 

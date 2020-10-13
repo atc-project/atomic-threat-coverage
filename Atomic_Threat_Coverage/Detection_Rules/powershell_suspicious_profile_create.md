@@ -58,49 +58,125 @@ tags:
 ### powershell
     
 ```
-Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "11" -and $_.message -match "TargetFilename.*.*\\\\profile.ps1.*" -and ($_.message -match "TargetFilename.*.*\\\\My Documents\\\\PowerShell\\\\.*" -or $_.message -match "TargetFilename.*.*C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "11" -and $_.message -match "TargetFilename.*.*\\profile.ps1.*" -and ($_.message -match "TargetFilename.*.*\\My Documents\\PowerShell\\.*" -or $_.message -match "TargetFilename.*.*C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"11" AND winlog.event_data.TargetFilename.keyword:*\\\\profile.ps1* AND (winlog.event_data.TargetFilename.keyword:*\\\\My\\ Documents\\\\PowerShell\\\\* OR winlog.event_data.TargetFilename.keyword:*C\\:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\*))
+(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND winlog.event_id:"11" AND winlog.event_data.TargetFilename.keyword:*\\profile.ps1* AND (winlog.event_data.TargetFilename.keyword:*\\My\ Documents\\PowerShell\\* OR winlog.event_data.TargetFilename.keyword:*C\:\\Windows\\System32\\WindowsPowerShell\\v1.0\\*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/b5b78988-486d-4a80-b991-930eff3ff8bf <<EOF\n{\n  "metadata": {\n    "title": "Powershell Profile.ps1 Modification",\n    "description": "Detects a change in profile.ps1 of the Powershell profile",\n    "tags": [\n      "attack.persistence",\n      "attack.privilege_escalation",\n      "attack.t1546.013"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"11\\" AND winlog.event_data.TargetFilename.keyword:*\\\\\\\\profile.ps1* AND (winlog.event_data.TargetFilename.keyword:*\\\\\\\\My\\\\ Documents\\\\\\\\PowerShell\\\\\\\\* OR winlog.event_data.TargetFilename.keyword:*C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\WindowsPowerShell\\\\\\\\v1.0\\\\\\\\*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"11\\" AND winlog.event_data.TargetFilename.keyword:*\\\\\\\\profile.ps1* AND (winlog.event_data.TargetFilename.keyword:*\\\\\\\\My\\\\ Documents\\\\\\\\PowerShell\\\\\\\\* OR winlog.event_data.TargetFilename.keyword:*C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\WindowsPowerShell\\\\\\\\v1.0\\\\\\\\*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Powershell Profile.ps1 Modification\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/b5b78988-486d-4a80-b991-930eff3ff8bf <<EOF
+{
+  "metadata": {
+    "title": "Powershell Profile.ps1 Modification",
+    "description": "Detects a change in profile.ps1 of the Powershell profile",
+    "tags": [
+      "attack.persistence",
+      "attack.privilege_escalation",
+      "attack.t1546.013"
+    ],
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"11\" AND winlog.event_data.TargetFilename.keyword:*\\\\profile.ps1* AND (winlog.event_data.TargetFilename.keyword:*\\\\My\\ Documents\\\\PowerShell\\\\* OR winlog.event_data.TargetFilename.keyword:*C\\:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"11\" AND winlog.event_data.TargetFilename.keyword:*\\\\profile.ps1* AND (winlog.event_data.TargetFilename.keyword:*\\\\My\\ Documents\\\\PowerShell\\\\* OR winlog.event_data.TargetFilename.keyword:*C\\:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Powershell Profile.ps1 Modification'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(EventID:"11" AND TargetFilename.keyword:*\\\\profile.ps1* AND (TargetFilename.keyword:*\\\\My Documents\\\\PowerShell\\\\* OR TargetFilename.keyword:*C\\:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\*))
+(EventID:"11" AND TargetFilename.keyword:*\\profile.ps1* AND (TargetFilename.keyword:*\\My Documents\\PowerShell\\* OR TargetFilename.keyword:*C\:\\Windows\\System32\\WindowsPowerShell\\v1.0\\*))
 ```
 
 
 ### splunk
     
 ```
-(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="11" TargetFilename="*\\\\profile.ps1*" (TargetFilename="*\\\\My Documents\\\\PowerShell\\\\*" OR TargetFilename="*C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\*"))
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="11" TargetFilename="*\\profile.ps1*" (TargetFilename="*\\My Documents\\PowerShell\\*" OR TargetFilename="*C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\*"))
 ```
 
 
 ### logpoint
     
 ```
-(event_id="11" TargetFilename="*\\\\profile.ps1*" (TargetFilename="*\\\\My Documents\\\\PowerShell\\\\*" OR TargetFilename="*C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\*"))
+(event_id="11" TargetFilename="*\\profile.ps1*" (TargetFilename="*\\My Documents\\PowerShell\\*" OR TargetFilename="*C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\*"))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*11)(?=.*.*\\profile\\.ps1.*)(?=.*(?:.*(?:.*.*\\My Documents\\PowerShell\\\\.*|.*.*C:\\Windows\\System32\\WindowsPowerShell\\v1\\.0\\\\.*))))'
+grep -P '^(?:.*(?=.*11)(?=.*.*\profile\.ps1.*)(?=.*(?:.*(?:.*.*\My Documents\PowerShell\\.*|.*.*C:\Windows\System32\WindowsPowerShell\v1\.0\\.*))))'
 ```
 
 

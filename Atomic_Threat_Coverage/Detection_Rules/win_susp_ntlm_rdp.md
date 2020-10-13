@@ -64,14 +64,89 @@ Get-WinEvent -LogName Microsoft-Windows-NTLM/Operational | where {($_.ID -eq "80
 ### es-qs
     
 ```
-(winlog.channel:"Microsoft\\-Windows\\-NTLM\\/Operational" AND winlog.event_id:"8001" AND TargetName.keyword:TERMSRV*)
+(winlog.channel:"Microsoft\-Windows\-NTLM\/Operational" AND winlog.event_id:"8001" AND TargetName.keyword:TERMSRV*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/ce5678bb-b9aa-4fb5-be4b-e57f686256ad <<EOF\n{\n  "metadata": {\n    "title": "Potential Remote Desktop Connection to Non-Domain Host",\n    "description": "Detects logons using NTLM to hosts that are potentially not part of the domain.",\n    "tags": [\n      "attack.command_and_control",\n      "attack.t1219"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-NTLM\\\\/Operational\\" AND winlog.event_id:\\"8001\\" AND TargetName.keyword:TERMSRV*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-NTLM\\\\/Operational\\" AND winlog.event_id:\\"8001\\" AND TargetName.keyword:TERMSRV*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Potential Remote Desktop Connection to Non-Domain Host\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n  Computer = {{_source.Computer}}\\n  UserName = {{_source.UserName}}\\nDomainName = {{_source.DomainName}}\\nTargetName = {{_source.TargetName}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/ce5678bb-b9aa-4fb5-be4b-e57f686256ad <<EOF
+{
+  "metadata": {
+    "title": "Potential Remote Desktop Connection to Non-Domain Host",
+    "description": "Detects logons using NTLM to hosts that are potentially not part of the domain.",
+    "tags": [
+      "attack.command_and_control",
+      "attack.t1219"
+    ],
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-NTLM\\/Operational\" AND winlog.event_id:\"8001\" AND TargetName.keyword:TERMSRV*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-NTLM\\/Operational\" AND winlog.event_id:\"8001\" AND TargetName.keyword:TERMSRV*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Potential Remote Desktop Connection to Non-Domain Host'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n  Computer = {{_source.Computer}}\n  UserName = {{_source.UserName}}\nDomainName = {{_source.DomainName}}\nTargetName = {{_source.TargetName}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 

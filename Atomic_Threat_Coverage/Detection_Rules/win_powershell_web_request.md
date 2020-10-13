@@ -74,49 +74,207 @@ detection:
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "CommandLine.*.*Invoke-WebRequest.*" -or $_.message -match "CommandLine.*.*iwr .*" -or $_.message -match "CommandLine.*.*wget .*" -or $_.message -match "CommandLine.*.*curl .*" -or $_.message -match "CommandLine.*.*Net.WebClient.*" -or $_.message -match "CommandLine.*.*Start-BitsTransfer.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message\nGet-WinEvent -LogName Microsoft-Windows-PowerShell/Operational | where {($_.ID -eq "4104" -and ($_.message -match "ScriptBlockText.*.*Invoke-WebRequest.*" -or $_.message -match "ScriptBlockText.*.*iwr .*" -or $_.message -match "ScriptBlockText.*.*wget .*" -or $_.message -match "ScriptBlockText.*.*curl .*" -or $_.message -match "ScriptBlockText.*.*Net.WebClient.*" -or $_.message -match "ScriptBlockText.*.*Start-BitsTransfer.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "CommandLine.*.*Invoke-WebRequest.*" -or $_.message -match "CommandLine.*.*iwr .*" -or $_.message -match "CommandLine.*.*wget .*" -or $_.message -match "CommandLine.*.*curl .*" -or $_.message -match "CommandLine.*.*Net.WebClient.*" -or $_.message -match "CommandLine.*.*Start-BitsTransfer.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-PowerShell/Operational | where {($_.ID -eq "4104" -and ($_.message -match "ScriptBlockText.*.*Invoke-WebRequest.*" -or $_.message -match "ScriptBlockText.*.*iwr .*" -or $_.message -match "ScriptBlockText.*.*wget .*" -or $_.message -match "ScriptBlockText.*.*curl .*" -or $_.message -match "ScriptBlockText.*.*Net.WebClient.*" -or $_.message -match "ScriptBlockText.*.*Start-BitsTransfer.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.CommandLine.keyword:(*Invoke\\-WebRequest* OR *iwr\\ * OR *wget\\ * OR *curl\\ * OR *Net.WebClient* OR *Start\\-BitsTransfer*)\n(winlog.event_id:"4104" AND ScriptBlockText.keyword:(*Invoke\\-WebRequest* OR *iwr\\ * OR *wget\\ * OR *curl\\ * OR *Net.WebClient* OR *Start\\-BitsTransfer*))
+winlog.event_data.CommandLine.keyword:(*Invoke\-WebRequest* OR *iwr\ * OR *wget\ * OR *curl\ * OR *Net.WebClient* OR *Start\-BitsTransfer*)
+(winlog.event_id:"4104" AND ScriptBlockText.keyword:(*Invoke\-WebRequest* OR *iwr\ * OR *wget\ * OR *curl\ * OR *Net.WebClient* OR *Start\-BitsTransfer*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9fc51a3c-81b3-4fa7-b35f-7c02cf10fd2d <<EOF\n{\n  "metadata": {\n    "title": "Windows PowerShell Web Request",\n    "description": "Detects the use of various web request methods (including aliases) via Windows PowerShell",\n    "tags": [\n      "attack.execution",\n      "attack.t1059.001",\n      "attack.t1086"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(*Invoke\\\\-WebRequest* OR *iwr\\\\ * OR *wget\\\\ * OR *curl\\\\ * OR *Net.WebClient* OR *Start\\\\-BitsTransfer*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(*Invoke\\\\-WebRequest* OR *iwr\\\\ * OR *wget\\\\ * OR *curl\\\\ * OR *Net.WebClient* OR *Start\\\\-BitsTransfer*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Windows PowerShell Web Request\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9fc51a3c-81b3-4fa7-b35f-7c02cf10fd2d-2 <<EOF\n{\n  "metadata": {\n    "title": "Windows PowerShell Web Request",\n    "description": "Detects the use of various web request methods (including aliases) via Windows PowerShell",\n    "tags": [\n      "attack.execution",\n      "attack.t1059.001",\n      "attack.t1086"\n    ],\n    "query": "(winlog.event_id:\\"4104\\" AND ScriptBlockText.keyword:(*Invoke\\\\-WebRequest* OR *iwr\\\\ * OR *wget\\\\ * OR *curl\\\\ * OR *Net.WebClient* OR *Start\\\\-BitsTransfer*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_id:\\"4104\\" AND ScriptBlockText.keyword:(*Invoke\\\\-WebRequest* OR *iwr\\\\ * OR *wget\\\\ * OR *curl\\\\ * OR *Net.WebClient* OR *Start\\\\-BitsTransfer*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Windows PowerShell Web Request\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/9fc51a3c-81b3-4fa7-b35f-7c02cf10fd2d <<EOF
+{
+  "metadata": {
+    "title": "Windows PowerShell Web Request",
+    "description": "Detects the use of various web request methods (including aliases) via Windows PowerShell",
+    "tags": [
+      "attack.execution",
+      "attack.t1059.001",
+      "attack.t1086"
+    ],
+    "query": "winlog.event_data.CommandLine.keyword:(*Invoke\\-WebRequest* OR *iwr\\ * OR *wget\\ * OR *curl\\ * OR *Net.WebClient* OR *Start\\-BitsTransfer*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.CommandLine.keyword:(*Invoke\\-WebRequest* OR *iwr\\ * OR *wget\\ * OR *curl\\ * OR *Net.WebClient* OR *Start\\-BitsTransfer*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Windows PowerShell Web Request'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/9fc51a3c-81b3-4fa7-b35f-7c02cf10fd2d-2 <<EOF
+{
+  "metadata": {
+    "title": "Windows PowerShell Web Request",
+    "description": "Detects the use of various web request methods (including aliases) via Windows PowerShell",
+    "tags": [
+      "attack.execution",
+      "attack.t1059.001",
+      "attack.t1086"
+    ],
+    "query": "(winlog.event_id:\"4104\" AND ScriptBlockText.keyword:(*Invoke\\-WebRequest* OR *iwr\\ * OR *wget\\ * OR *curl\\ * OR *Net.WebClient* OR *Start\\-BitsTransfer*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_id:\"4104\" AND ScriptBlockText.keyword:(*Invoke\\-WebRequest* OR *iwr\\ * OR *wget\\ * OR *curl\\ * OR *Net.WebClient* OR *Start\\-BitsTransfer*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Windows PowerShell Web Request'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-CommandLine.keyword:(*Invoke\\-WebRequest* *iwr * *wget * *curl * *Net.WebClient* *Start\\-BitsTransfer*)\n(EventID:"4104" AND ScriptBlockText.keyword:(*Invoke\\-WebRequest* *iwr * *wget * *curl * *Net.WebClient* *Start\\-BitsTransfer*))
+CommandLine.keyword:(*Invoke\-WebRequest* *iwr * *wget * *curl * *Net.WebClient* *Start\-BitsTransfer*)
+(EventID:"4104" AND ScriptBlockText.keyword:(*Invoke\-WebRequest* *iwr * *wget * *curl * *Net.WebClient* *Start\-BitsTransfer*))
 ```
 
 
 ### splunk
     
 ```
-(CommandLine="*Invoke-WebRequest*" OR CommandLine="*iwr *" OR CommandLine="*wget *" OR CommandLine="*curl *" OR CommandLine="*Net.WebClient*" OR CommandLine="*Start-BitsTransfer*")\n(source="WinEventLog:Microsoft-Windows-PowerShell/Operational" EventCode="4104" (ScriptBlockText="*Invoke-WebRequest*" OR ScriptBlockText="*iwr *" OR ScriptBlockText="*wget *" OR ScriptBlockText="*curl *" OR ScriptBlockText="*Net.WebClient*" OR ScriptBlockText="*Start-BitsTransfer*"))
+(CommandLine="*Invoke-WebRequest*" OR CommandLine="*iwr *" OR CommandLine="*wget *" OR CommandLine="*curl *" OR CommandLine="*Net.WebClient*" OR CommandLine="*Start-BitsTransfer*")
+(source="WinEventLog:Microsoft-Windows-PowerShell/Operational" EventCode="4104" (ScriptBlockText="*Invoke-WebRequest*" OR ScriptBlockText="*iwr *" OR ScriptBlockText="*wget *" OR ScriptBlockText="*curl *" OR ScriptBlockText="*Net.WebClient*" OR ScriptBlockText="*Start-BitsTransfer*"))
 ```
 
 
 ### logpoint
     
 ```
-CommandLine IN ["*Invoke-WebRequest*", "*iwr *", "*wget *", "*curl *", "*Net.WebClient*", "*Start-BitsTransfer*"]\n(event_id="4104" ScriptBlockText IN ["*Invoke-WebRequest*", "*iwr *", "*wget *", "*curl *", "*Net.WebClient*", "*Start-BitsTransfer*"])
+CommandLine IN ["*Invoke-WebRequest*", "*iwr *", "*wget *", "*curl *", "*Net.WebClient*", "*Start-BitsTransfer*"]
+(event_id="4104" ScriptBlockText IN ["*Invoke-WebRequest*", "*iwr *", "*wget *", "*curl *", "*Net.WebClient*", "*Start-BitsTransfer*"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*.*Invoke-WebRequest.*|.*.*iwr .*|.*.*wget .*|.*.*curl .*|.*.*Net\\.WebClient.*|.*.*Start-BitsTransfer.*)'\ngrep -P '^(?:.*(?=.*4104)(?=.*(?:.*.*Invoke-WebRequest.*|.*.*iwr .*|.*.*wget .*|.*.*curl .*|.*.*Net\\.WebClient.*|.*.*Start-BitsTransfer.*)))'
+grep -P '^(?:.*.*Invoke-WebRequest.*|.*.*iwr .*|.*.*wget .*|.*.*curl .*|.*.*Net\.WebClient.*|.*.*Start-BitsTransfer.*)'
+grep -P '^(?:.*(?=.*4104)(?=.*(?:.*.*Invoke-WebRequest.*|.*.*iwr .*|.*.*wget .*|.*.*curl .*|.*.*Net\.WebClient.*|.*.*Start-BitsTransfer.*)))'
 ```
 
 

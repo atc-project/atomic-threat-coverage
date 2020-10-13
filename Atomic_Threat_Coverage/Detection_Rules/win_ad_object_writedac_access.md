@@ -61,21 +61,97 @@ Get-WinEvent -LogName Security | where {($_.ID -eq "4662" -and $_.message -match
 ### es-qs
     
 ```
-(winlog.channel:"Security" AND winlog.event_id:"4662" AND ObjectServer:"DS" AND winlog.event_data.AccessMask:"0x40000" AND winlog.event_data.ObjectType:("19195a5b\\-6da0\\-11d0\\-afd3\\-00c04fd930c9" OR "domainDNS"))
+(winlog.channel:"Security" AND winlog.event_id:"4662" AND ObjectServer:"DS" AND winlog.event_data.AccessMask:"0x40000" AND winlog.event_data.ObjectType:("19195a5b\-6da0\-11d0\-afd3\-00c04fd930c9" OR "domainDNS"))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/028c7842-4243-41cd-be6f-12f3cf1a26c7 <<EOF\n{\n  "metadata": {\n    "title": "AD Object WriteDAC Access",\n    "description": "Detects WRITE_DAC access to a domain object",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1222",\n      "attack.t1222.001"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4662\\" AND ObjectServer:\\"DS\\" AND winlog.event_data.AccessMask:\\"0x40000\\" AND winlog.event_data.ObjectType:(\\"19195a5b\\\\-6da0\\\\-11d0\\\\-afd3\\\\-00c04fd930c9\\" OR \\"domainDNS\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4662\\" AND ObjectServer:\\"DS\\" AND winlog.event_data.AccessMask:\\"0x40000\\" AND winlog.event_data.ObjectType:(\\"19195a5b\\\\-6da0\\\\-11d0\\\\-afd3\\\\-00c04fd930c9\\" OR \\"domainDNS\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'AD Object WriteDAC Access\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/028c7842-4243-41cd-be6f-12f3cf1a26c7 <<EOF
+{
+  "metadata": {
+    "title": "AD Object WriteDAC Access",
+    "description": "Detects WRITE_DAC access to a domain object",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.t1222",
+      "attack.t1222.001"
+    ],
+    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4662\" AND ObjectServer:\"DS\" AND winlog.event_data.AccessMask:\"0x40000\" AND winlog.event_data.ObjectType:(\"19195a5b\\-6da0\\-11d0\\-afd3\\-00c04fd930c9\" OR \"domainDNS\"))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4662\" AND ObjectServer:\"DS\" AND winlog.event_data.AccessMask:\"0x40000\" AND winlog.event_data.ObjectType:(\"19195a5b\\-6da0\\-11d0\\-afd3\\-00c04fd930c9\" OR \"domainDNS\"))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'AD Object WriteDAC Access'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(EventID:"4662" AND ObjectServer:"DS" AND AccessMask:"0x40000" AND ObjectType:("19195a5b\\-6da0\\-11d0\\-afd3\\-00c04fd930c9" "domainDNS"))
+(EventID:"4662" AND ObjectServer:"DS" AND AccessMask:"0x40000" AND ObjectType:("19195a5b\-6da0\-11d0\-afd3\-00c04fd930c9" "domainDNS"))
 ```
 
 

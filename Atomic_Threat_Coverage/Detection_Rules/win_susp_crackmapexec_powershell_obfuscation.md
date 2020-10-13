@@ -66,49 +66,128 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "CommandLine.*.*powershell.exe.*" -and ($_.message -match "CommandLine.*.*join.*split.*" -or $_.message -match "CommandLine.*.*( $ShellId[1]\\+$ShellId[13]\\+\'x\').*" -or $_.message -match "CommandLine.*.*( $PSHome[.*]\\+$PSHOME[.*]\\+.*" -or $_.message -match "CommandLine.*.*( $env:Public[13]\\+$env:Public[5]\\+\'x\').*" -or $_.message -match "CommandLine.*.*( $env:ComSpec[4,.*,25]-Join\'\').*" -or $_.message -match "CommandLine.*.*[1,3]\\+\'x\'-Join\'\').*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "CommandLine.*.*powershell.exe.*" -and ($_.message -match "CommandLine.*.*join.*split.*" -or $_.message -match "CommandLine.*.*( $ShellId[1]\+$ShellId[13]\+'x').*" -or $_.message -match "CommandLine.*.*( $PSHome[.*]\+$PSHOME[.*]\+.*" -or $_.message -match "CommandLine.*.*( $env:Public[13]\+$env:Public[5]\+'x').*" -or $_.message -match "CommandLine.*.*( $env:ComSpec[4,.*,25]-Join'').*" -or $_.message -match "CommandLine.*.*[1,3]\+'x'-Join'').*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.CommandLine.keyword:*powershell.exe* AND winlog.event_data.CommandLine.keyword:(*join*split* OR *\\(\\ $ShellId\\[1\\]\\+$ShellId\\[13\\]\\+'x'\\)* OR *\\(\\ $PSHome\\[*\\]\\+$PSHOME\\[*\\]\\+* OR *\\(\\ $env\\:Public\\[13\\]\\+$env\\:Public\\[5\\]\\+'x'\\)* OR *\\(\\ $env\\:ComSpec\\[4,*,25\\]\\-Join''\\)* OR *\\[1,3\\]\\+'x'\\-Join''\\)*))
+(winlog.event_data.CommandLine.keyword:*powershell.exe* AND winlog.event_data.CommandLine.keyword:(*join*split* OR *\(\ $ShellId\[1\]\+$ShellId\[13\]\+'x'\)* OR *\(\ $PSHome\[*\]\+$PSHOME\[*\]\+* OR *\(\ $env\:Public\[13\]\+$env\:Public\[5\]\+'x'\)* OR *\(\ $env\:ComSpec\[4,*,25\]\-Join''\)* OR *\[1,3\]\+'x'\-Join''\)*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/6f8b3439-a203-45dc-a88b-abf57ea15ccf <<EOF\n{\n  "metadata": {\n    "title": "CrackMapExec PowerShell Obfuscation",\n    "description": "The CrachMapExec pentesting framework implements a PowerShell obfuscation with some static strings detected by this rule.",\n    "tags": [\n      "attack.execution",\n      "attack.t1059.001",\n      "attack.defense_evasion",\n      "attack.t1027.005",\n      "attack.t1027",\n      "attack.t1086"\n    ],\n    "query": "(winlog.event_data.CommandLine.keyword:*powershell.exe* AND winlog.event_data.CommandLine.keyword:(*join*split* OR *\\\\(\\\\ $ShellId\\\\[1\\\\]\\\\+$ShellId\\\\[13\\\\]\\\\+\'x\'\\\\)* OR *\\\\(\\\\ $PSHome\\\\[*\\\\]\\\\+$PSHOME\\\\[*\\\\]\\\\+* OR *\\\\(\\\\ $env\\\\:Public\\\\[13\\\\]\\\\+$env\\\\:Public\\\\[5\\\\]\\\\+\'x\'\\\\)* OR *\\\\(\\\\ $env\\\\:ComSpec\\\\[4,*,25\\\\]\\\\-Join\'\'\\\\)* OR *\\\\[1,3\\\\]\\\\+\'x\'\\\\-Join\'\'\\\\)*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.CommandLine.keyword:*powershell.exe* AND winlog.event_data.CommandLine.keyword:(*join*split* OR *\\\\(\\\\ $ShellId\\\\[1\\\\]\\\\+$ShellId\\\\[13\\\\]\\\\+\'x\'\\\\)* OR *\\\\(\\\\ $PSHome\\\\[*\\\\]\\\\+$PSHOME\\\\[*\\\\]\\\\+* OR *\\\\(\\\\ $env\\\\:Public\\\\[13\\\\]\\\\+$env\\\\:Public\\\\[5\\\\]\\\\+\'x\'\\\\)* OR *\\\\(\\\\ $env\\\\:ComSpec\\\\[4,*,25\\\\]\\\\-Join\'\'\\\\)* OR *\\\\[1,3\\\\]\\\\+\'x\'\\\\-Join\'\'\\\\)*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'CrackMapExec PowerShell Obfuscation\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nComputerName = {{_source.ComputerName}}\\n        User = {{_source.User}}\\n CommandLine = {{_source.CommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/6f8b3439-a203-45dc-a88b-abf57ea15ccf <<EOF
+{
+  "metadata": {
+    "title": "CrackMapExec PowerShell Obfuscation",
+    "description": "The CrachMapExec pentesting framework implements a PowerShell obfuscation with some static strings detected by this rule.",
+    "tags": [
+      "attack.execution",
+      "attack.t1059.001",
+      "attack.defense_evasion",
+      "attack.t1027.005",
+      "attack.t1027",
+      "attack.t1086"
+    ],
+    "query": "(winlog.event_data.CommandLine.keyword:*powershell.exe* AND winlog.event_data.CommandLine.keyword:(*join*split* OR *\\(\\ $ShellId\\[1\\]\\+$ShellId\\[13\\]\\+'x'\\)* OR *\\(\\ $PSHome\\[*\\]\\+$PSHOME\\[*\\]\\+* OR *\\(\\ $env\\:Public\\[13\\]\\+$env\\:Public\\[5\\]\\+'x'\\)* OR *\\(\\ $env\\:ComSpec\\[4,*,25\\]\\-Join''\\)* OR *\\[1,3\\]\\+'x'\\-Join''\\)*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.CommandLine.keyword:*powershell.exe* AND winlog.event_data.CommandLine.keyword:(*join*split* OR *\\(\\ $ShellId\\[1\\]\\+$ShellId\\[13\\]\\+'x'\\)* OR *\\(\\ $PSHome\\[*\\]\\+$PSHOME\\[*\\]\\+* OR *\\(\\ $env\\:Public\\[13\\]\\+$env\\:Public\\[5\\]\\+'x'\\)* OR *\\(\\ $env\\:ComSpec\\[4,*,25\\]\\-Join''\\)* OR *\\[1,3\\]\\+'x'\\-Join''\\)*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'CrackMapExec PowerShell Obfuscation'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(CommandLine.keyword:*powershell.exe* AND CommandLine.keyword:(*join*split* *\\( $ShellId\\[1\\]\\+$ShellId\\[13\\]\\+'x'\\)* *\\( $PSHome\\[*\\]\\+$PSHOME\\[*\\]\\+* *\\( $env\\:Public\\[13\\]\\+$env\\:Public\\[5\\]\\+'x'\\)* *\\( $env\\:ComSpec\\[4,*,25\\]\\-Join''\\)* *\\[1,3\\]\\+'x'\\-Join''\\)*))
+(CommandLine.keyword:*powershell.exe* AND CommandLine.keyword:(*join*split* *\( $ShellId\[1\]\+$ShellId\[13\]\+'x'\)* *\( $PSHome\[*\]\+$PSHOME\[*\]\+* *\( $env\:Public\[13\]\+$env\:Public\[5\]\+'x'\)* *\( $env\:ComSpec\[4,*,25\]\-Join''\)* *\[1,3\]\+'x'\-Join''\)*))
 ```
 
 
 ### splunk
     
 ```
-(CommandLine="*powershell.exe*" (CommandLine="*join*split*" OR CommandLine="*( $ShellId[1]+$ShellId[13]+\'x\')*" OR CommandLine="*( $PSHome[*]+$PSHOME[*]+*" OR CommandLine="*( $env:Public[13]+$env:Public[5]+\'x\')*" OR CommandLine="*( $env:ComSpec[4,*,25]-Join\'\')*" OR CommandLine="*[1,3]+\'x\'-Join\'\')*")) | table ComputerName,User,CommandLine
+(CommandLine="*powershell.exe*" (CommandLine="*join*split*" OR CommandLine="*( $ShellId[1]+$ShellId[13]+'x')*" OR CommandLine="*( $PSHome[*]+$PSHOME[*]+*" OR CommandLine="*( $env:Public[13]+$env:Public[5]+'x')*" OR CommandLine="*( $env:ComSpec[4,*,25]-Join'')*" OR CommandLine="*[1,3]+'x'-Join'')*")) | table ComputerName,User,CommandLine
 ```
 
 
 ### logpoint
     
 ```
-(CommandLine="*powershell.exe*" CommandLine IN ["*join*split*", "*( $ShellId[1]+$ShellId[13]+\'x\')*", "*( $PSHome[*]+$PSHOME[*]+*", "*( $env:Public[13]+$env:Public[5]+\'x\')*", "*( $env:ComSpec[4,*,25]-Join\'\')*", "*[1,3]+\'x\'-Join\'\')*"])
+(CommandLine="*powershell.exe*" CommandLine IN ["*join*split*", "*( $ShellId[1]+$ShellId[13]+'x')*", "*( $PSHome[*]+$PSHOME[*]+*", "*( $env:Public[13]+$env:Public[5]+'x')*", "*( $env:ComSpec[4,*,25]-Join'')*", "*[1,3]+'x'-Join'')*"])
 ```
 
 
 ### grep
     
 ```
-grep -P \'^(?:.*(?=.*.*powershell\\.exe.*)(?=.*(?:.*.*join.*split.*|.*.*\\( \\$ShellId\\[1\\]\\+\\$ShellId\\[13\\]\\+\'"\'"\'x\'"\'"\'\\).*|.*.*\\( \\$PSHome\\[.*\\]\\+\\$PSHOME\\[.*\\]\\+.*|.*.*\\( \\$env:Public\\[13\\]\\+\\$env:Public\\[5\\]\\+\'"\'"\'x\'"\'"\'\\).*|.*.*\\( \\$env:ComSpec\\[4,.*,25\\]-Join\'"\'"\'\'"\'"\'\\).*|.*.*\\[1,3\\]\\+\'"\'"\'x\'"\'"\'-Join\'"\'"\'\'"\'"\'\\).*)))\'
+grep -P '^(?:.*(?=.*.*powershell\.exe.*)(?=.*(?:.*.*join.*split.*|.*.*\( \$ShellId\[1\]\+\$ShellId\[13\]\+'"'"'x'"'"'\).*|.*.*\( \$PSHome\[.*\]\+\$PSHOME\[.*\]\+.*|.*.*\( \$env:Public\[13\]\+\$env:Public\[5\]\+'"'"'x'"'"'\).*|.*.*\( \$env:ComSpec\[4,.*,25\]-Join'"'"''"'"'\).*|.*.*\[1,3\]\+'"'"'x'"'"'-Join'"'"''"'"'\).*)))'
 ```
 
 

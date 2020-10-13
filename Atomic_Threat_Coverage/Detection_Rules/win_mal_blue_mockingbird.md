@@ -72,49 +72,289 @@ detection:
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "Image.*.*\\\\cmd.exe" -and $_.message -match "CommandLine.*.*sc config.*" -and $_.message -match "CommandLine.*.*wercplsupporte.dll.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message\nGet-WinEvent | where {($_.message -match "Image.*.*\\\\wmic.exe" -and $_.message -match "CommandLine.*.*COR_PROFILER") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message\nGet-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "13" -and ($_.message -match "TargetObject.*.*\\\\CurrentControlSet\\\\Services\\\\wercplsupport\\\\Parameters\\\\ServiceDll")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "Image.*.*\\cmd.exe" -and $_.message -match "CommandLine.*.*sc config.*" -and $_.message -match "CommandLine.*.*wercplsupporte.dll.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "Image.*.*\\wmic.exe" -and $_.message -match "CommandLine.*.*COR_PROFILER") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "13" -and ($_.message -match "TargetObject.*.*\\CurrentControlSet\\Services\\wercplsupport\\Parameters\\ServiceDll")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:*\\\\cmd.exe AND winlog.event_data.CommandLine.keyword:*sc\\ config* AND winlog.event_data.CommandLine.keyword:*wercplsupporte.dll*)\n(winlog.event_data.Image.keyword:*\\\\wmic.exe AND winlog.event_data.CommandLine.keyword:*COR_PROFILER)\n(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"13" AND winlog.event_data.TargetObject.keyword:(*\\\\CurrentControlSet\\\\Services\\\\wercplsupport\\\\Parameters\\\\ServiceDll))
+(winlog.event_data.Image.keyword:*\\cmd.exe AND winlog.event_data.CommandLine.keyword:*sc\ config* AND winlog.event_data.CommandLine.keyword:*wercplsupporte.dll*)
+(winlog.event_data.Image.keyword:*\\wmic.exe AND winlog.event_data.CommandLine.keyword:*COR_PROFILER)
+(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND winlog.event_id:"13" AND winlog.event_data.TargetObject.keyword:(*\\CurrentControlSet\\Services\\wercplsupport\\Parameters\\ServiceDll))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/c3198a27-23a0-4c2c-af19-e5328d49680e <<EOF\n{\n  "metadata": {\n    "title": "Blue Mockingbird",\n    "description": "Attempts to detect system changes made by Blue Mockingbird",\n    "tags": [\n      "attack.execution",\n      "attack.t1112",\n      "attack.t1047"\n    ],\n    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\cmd.exe AND winlog.event_data.CommandLine.keyword:*sc\\\\ config* AND winlog.event_data.CommandLine.keyword:*wercplsupporte.dll*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\cmd.exe AND winlog.event_data.CommandLine.keyword:*sc\\\\ config* AND winlog.event_data.CommandLine.keyword:*wercplsupporte.dll*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Blue Mockingbird\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/c3198a27-23a0-4c2c-af19-e5328d49680e-2 <<EOF\n{\n  "metadata": {\n    "title": "Blue Mockingbird",\n    "description": "Attempts to detect system changes made by Blue Mockingbird",\n    "tags": [\n      "attack.execution",\n      "attack.t1112",\n      "attack.t1047"\n    ],\n    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\wmic.exe AND winlog.event_data.CommandLine.keyword:*COR_PROFILER)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\wmic.exe AND winlog.event_data.CommandLine.keyword:*COR_PROFILER)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Blue Mockingbird\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/c3198a27-23a0-4c2c-af19-e5328d49680e-3 <<EOF\n{\n  "metadata": {\n    "title": "Blue Mockingbird",\n    "description": "Attempts to detect system changes made by Blue Mockingbird",\n    "tags": [\n      "attack.execution",\n      "attack.t1112",\n      "attack.t1047"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"13\\" AND winlog.event_data.TargetObject.keyword:(*\\\\\\\\CurrentControlSet\\\\\\\\Services\\\\\\\\wercplsupport\\\\\\\\Parameters\\\\\\\\ServiceDll))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"13\\" AND winlog.event_data.TargetObject.keyword:(*\\\\\\\\CurrentControlSet\\\\\\\\Services\\\\\\\\wercplsupport\\\\\\\\Parameters\\\\\\\\ServiceDll))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Blue Mockingbird\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/c3198a27-23a0-4c2c-af19-e5328d49680e <<EOF
+{
+  "metadata": {
+    "title": "Blue Mockingbird",
+    "description": "Attempts to detect system changes made by Blue Mockingbird",
+    "tags": [
+      "attack.execution",
+      "attack.t1112",
+      "attack.t1047"
+    ],
+    "query": "(winlog.event_data.Image.keyword:*\\\\cmd.exe AND winlog.event_data.CommandLine.keyword:*sc\\ config* AND winlog.event_data.CommandLine.keyword:*wercplsupporte.dll*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.Image.keyword:*\\\\cmd.exe AND winlog.event_data.CommandLine.keyword:*sc\\ config* AND winlog.event_data.CommandLine.keyword:*wercplsupporte.dll*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Blue Mockingbird'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/c3198a27-23a0-4c2c-af19-e5328d49680e-2 <<EOF
+{
+  "metadata": {
+    "title": "Blue Mockingbird",
+    "description": "Attempts to detect system changes made by Blue Mockingbird",
+    "tags": [
+      "attack.execution",
+      "attack.t1112",
+      "attack.t1047"
+    ],
+    "query": "(winlog.event_data.Image.keyword:*\\\\wmic.exe AND winlog.event_data.CommandLine.keyword:*COR_PROFILER)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.Image.keyword:*\\\\wmic.exe AND winlog.event_data.CommandLine.keyword:*COR_PROFILER)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Blue Mockingbird'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/c3198a27-23a0-4c2c-af19-e5328d49680e-3 <<EOF
+{
+  "metadata": {
+    "title": "Blue Mockingbird",
+    "description": "Attempts to detect system changes made by Blue Mockingbird",
+    "tags": [
+      "attack.execution",
+      "attack.t1112",
+      "attack.t1047"
+    ],
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"13\" AND winlog.event_data.TargetObject.keyword:(*\\\\CurrentControlSet\\\\Services\\\\wercplsupport\\\\Parameters\\\\ServiceDll))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"13\" AND winlog.event_data.TargetObject.keyword:(*\\\\CurrentControlSet\\\\Services\\\\wercplsupport\\\\Parameters\\\\ServiceDll))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Blue Mockingbird'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(Image.keyword:*\\\\cmd.exe AND CommandLine.keyword:*sc config* AND CommandLine.keyword:*wercplsupporte.dll*)\n(Image.keyword:*\\\\wmic.exe AND CommandLine.keyword:*COR_PROFILER)\n(EventID:"13" AND TargetObject.keyword:(*\\\\CurrentControlSet\\\\Services\\\\wercplsupport\\\\Parameters\\\\ServiceDll))
+(Image.keyword:*\\cmd.exe AND CommandLine.keyword:*sc config* AND CommandLine.keyword:*wercplsupporte.dll*)
+(Image.keyword:*\\wmic.exe AND CommandLine.keyword:*COR_PROFILER)
+(EventID:"13" AND TargetObject.keyword:(*\\CurrentControlSet\\Services\\wercplsupport\\Parameters\\ServiceDll))
 ```
 
 
 ### splunk
     
 ```
-(Image="*\\\\cmd.exe" CommandLine="*sc config*" CommandLine="*wercplsupporte.dll*")\n(Image="*\\\\wmic.exe" CommandLine="*COR_PROFILER")\n(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="13" (TargetObject="*\\\\CurrentControlSet\\\\Services\\\\wercplsupport\\\\Parameters\\\\ServiceDll"))
+(Image="*\\cmd.exe" CommandLine="*sc config*" CommandLine="*wercplsupporte.dll*")
+(Image="*\\wmic.exe" CommandLine="*COR_PROFILER")
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="13" (TargetObject="*\\CurrentControlSet\\Services\\wercplsupport\\Parameters\\ServiceDll"))
 ```
 
 
 ### logpoint
     
 ```
-(Image="*\\\\cmd.exe" CommandLine="*sc config*" CommandLine="*wercplsupporte.dll*")\n(Image="*\\\\wmic.exe" CommandLine="*COR_PROFILER")\n(event_id="13" TargetObject IN ["*\\\\CurrentControlSet\\\\Services\\\\wercplsupport\\\\Parameters\\\\ServiceDll"])
+(Image="*\\cmd.exe" CommandLine="*sc config*" CommandLine="*wercplsupporte.dll*")
+(Image="*\\wmic.exe" CommandLine="*COR_PROFILER")
+(event_id="13" TargetObject IN ["*\\CurrentControlSet\\Services\\wercplsupport\\Parameters\\ServiceDll"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*.*\\cmd\\.exe)(?=.*.*sc config.*)(?=.*.*wercplsupporte\\.dll.*))'\ngrep -P '^(?:.*(?=.*.*\\wmic\\.exe)(?=.*.*COR_PROFILER))'\ngrep -P '^(?:.*(?=.*13)(?=.*(?:.*.*\\CurrentControlSet\\Services\\wercplsupport\\Parameters\\ServiceDll)))'
+grep -P '^(?:.*(?=.*.*\cmd\.exe)(?=.*.*sc config.*)(?=.*.*wercplsupporte\.dll.*))'
+grep -P '^(?:.*(?=.*.*\wmic\.exe)(?=.*.*COR_PROFILER))'
+grep -P '^(?:.*(?=.*13)(?=.*(?:.*.*\CurrentControlSet\Services\wercplsupport\Parameters\ServiceDll)))'
 ```
 
 

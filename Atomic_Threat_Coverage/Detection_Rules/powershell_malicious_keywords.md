@@ -84,7 +84,83 @@ Message.keyword:(*AdjustTokenPrivileges* OR *IMAGE_NT_OPTIONAL_HDR64_MAGIC* OR *
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/f62176f3-8128-4faa-bf6c-83261322e5eb <<EOF\n{\n  "metadata": {\n    "title": "Malicious PowerShell Keywords",\n    "description": "Detects keywords from well-known PowerShell exploitation frameworks",\n    "tags": [\n      "attack.execution",\n      "attack.t1059.001",\n      "attack.t1086"\n    ],\n    "query": "Message.keyword:(*AdjustTokenPrivileges* OR *IMAGE_NT_OPTIONAL_HDR64_MAGIC* OR *Microsoft.Win32.UnsafeNativeMethods* OR *ReadProcessMemory.Invoke* OR *SE_PRIVILEGE_ENABLED* OR *LSA_UNICODE_STRING* OR *MiniDumpWriteDump* OR *PAGE_EXECUTE_READ* OR *SECURITY_DELEGATION* OR *TOKEN_ADJUST_PRIVILEGES* OR *TOKEN_ALL_ACCESS* OR *TOKEN_ASSIGN_PRIMARY* OR *TOKEN_DUPLICATE* OR *TOKEN_ELEVATION* OR *TOKEN_IMPERSONATE* OR *TOKEN_INFORMATION_CLASS* OR *TOKEN_PRIVILEGES* OR *TOKEN_QUERY* OR *Metasploit* OR *Mimikatz*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "Message.keyword:(*AdjustTokenPrivileges* OR *IMAGE_NT_OPTIONAL_HDR64_MAGIC* OR *Microsoft.Win32.UnsafeNativeMethods* OR *ReadProcessMemory.Invoke* OR *SE_PRIVILEGE_ENABLED* OR *LSA_UNICODE_STRING* OR *MiniDumpWriteDump* OR *PAGE_EXECUTE_READ* OR *SECURITY_DELEGATION* OR *TOKEN_ADJUST_PRIVILEGES* OR *TOKEN_ALL_ACCESS* OR *TOKEN_ASSIGN_PRIMARY* OR *TOKEN_DUPLICATE* OR *TOKEN_ELEVATION* OR *TOKEN_IMPERSONATE* OR *TOKEN_INFORMATION_CLASS* OR *TOKEN_PRIVILEGES* OR *TOKEN_QUERY* OR *Metasploit* OR *Mimikatz*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Malicious PowerShell Keywords\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/f62176f3-8128-4faa-bf6c-83261322e5eb <<EOF
+{
+  "metadata": {
+    "title": "Malicious PowerShell Keywords",
+    "description": "Detects keywords from well-known PowerShell exploitation frameworks",
+    "tags": [
+      "attack.execution",
+      "attack.t1059.001",
+      "attack.t1086"
+    ],
+    "query": "Message.keyword:(*AdjustTokenPrivileges* OR *IMAGE_NT_OPTIONAL_HDR64_MAGIC* OR *Microsoft.Win32.UnsafeNativeMethods* OR *ReadProcessMemory.Invoke* OR *SE_PRIVILEGE_ENABLED* OR *LSA_UNICODE_STRING* OR *MiniDumpWriteDump* OR *PAGE_EXECUTE_READ* OR *SECURITY_DELEGATION* OR *TOKEN_ADJUST_PRIVILEGES* OR *TOKEN_ALL_ACCESS* OR *TOKEN_ASSIGN_PRIMARY* OR *TOKEN_DUPLICATE* OR *TOKEN_ELEVATION* OR *TOKEN_IMPERSONATE* OR *TOKEN_INFORMATION_CLASS* OR *TOKEN_PRIVILEGES* OR *TOKEN_QUERY* OR *Metasploit* OR *Mimikatz*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "Message.keyword:(*AdjustTokenPrivileges* OR *IMAGE_NT_OPTIONAL_HDR64_MAGIC* OR *Microsoft.Win32.UnsafeNativeMethods* OR *ReadProcessMemory.Invoke* OR *SE_PRIVILEGE_ENABLED* OR *LSA_UNICODE_STRING* OR *MiniDumpWriteDump* OR *PAGE_EXECUTE_READ* OR *SECURITY_DELEGATION* OR *TOKEN_ADJUST_PRIVILEGES* OR *TOKEN_ALL_ACCESS* OR *TOKEN_ASSIGN_PRIMARY* OR *TOKEN_DUPLICATE* OR *TOKEN_ELEVATION* OR *TOKEN_IMPERSONATE* OR *TOKEN_INFORMATION_CLASS* OR *TOKEN_PRIVILEGES* OR *TOKEN_QUERY* OR *Metasploit* OR *Mimikatz*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Malicious PowerShell Keywords'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
@@ -112,7 +188,7 @@ Message IN ["*AdjustTokenPrivileges*", "*IMAGE_NT_OPTIONAL_HDR64_MAGIC*", "*Micr
 ### grep
     
 ```
-grep -P '^(?:.*.*AdjustTokenPrivileges.*|.*.*IMAGE_NT_OPTIONAL_HDR64_MAGIC.*|.*.*Microsoft\\.Win32\\.UnsafeNativeMethods.*|.*.*ReadProcessMemory\\.Invoke.*|.*.*SE_PRIVILEGE_ENABLED.*|.*.*LSA_UNICODE_STRING.*|.*.*MiniDumpWriteDump.*|.*.*PAGE_EXECUTE_READ.*|.*.*SECURITY_DELEGATION.*|.*.*TOKEN_ADJUST_PRIVILEGES.*|.*.*TOKEN_ALL_ACCESS.*|.*.*TOKEN_ASSIGN_PRIMARY.*|.*.*TOKEN_DUPLICATE.*|.*.*TOKEN_ELEVATION.*|.*.*TOKEN_IMPERSONATE.*|.*.*TOKEN_INFORMATION_CLASS.*|.*.*TOKEN_PRIVILEGES.*|.*.*TOKEN_QUERY.*|.*.*Metasploit.*|.*.*Mimikatz.*)'
+grep -P '^(?:.*.*AdjustTokenPrivileges.*|.*.*IMAGE_NT_OPTIONAL_HDR64_MAGIC.*|.*.*Microsoft\.Win32\.UnsafeNativeMethods.*|.*.*ReadProcessMemory\.Invoke.*|.*.*SE_PRIVILEGE_ENABLED.*|.*.*LSA_UNICODE_STRING.*|.*.*MiniDumpWriteDump.*|.*.*PAGE_EXECUTE_READ.*|.*.*SECURITY_DELEGATION.*|.*.*TOKEN_ADJUST_PRIVILEGES.*|.*.*TOKEN_ALL_ACCESS.*|.*.*TOKEN_ASSIGN_PRIMARY.*|.*.*TOKEN_DUPLICATE.*|.*.*TOKEN_ELEVATION.*|.*.*TOKEN_IMPERSONATE.*|.*.*TOKEN_INFORMATION_CLASS.*|.*.*TOKEN_PRIVILEGES.*|.*.*TOKEN_QUERY.*|.*.*Metasploit.*|.*.*Mimikatz.*)'
 ```
 
 

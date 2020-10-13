@@ -91,49 +91,292 @@ detection:
 ### powershell
     
 ```
-Get-WinEvent -LogName System | where {($_.ID -eq "7045" -and (($_.message -match "ServiceFileName.*.*cmd.*" -and $_.message -match "ServiceFileName.*.*/c.*" -and $_.message -match "ServiceFileName.*.*echo.*" -and $_.message -match "ServiceFileName.*.*\\\\pipe\\\\.*") -or ($_.message -match "ServiceFileName.*.*%COMSPEC%.*" -and $_.message -match "ServiceFileName.*.*/c.*" -and $_.message -match "ServiceFileName.*.*echo.*" -and $_.message -match "ServiceFileName.*.*\\\\pipe\\\\.*") -or ($_.message -match "ServiceFileName.*.*rundll32.*" -and $_.message -match "ServiceFileName.*.*.dll,a.*" -and $_.message -match "ServiceFileName.*.*/p:.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message\nGet-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "6" -and (($_.message -match "ServiceFileName.*.*cmd.*" -and $_.message -match "ServiceFileName.*.*/c.*" -and $_.message -match "ServiceFileName.*.*echo.*" -and $_.message -match "ServiceFileName.*.*\\\\pipe\\\\.*") -or ($_.message -match "ServiceFileName.*.*%COMSPEC%.*" -and $_.message -match "ServiceFileName.*.*/c.*" -and $_.message -match "ServiceFileName.*.*echo.*" -and $_.message -match "ServiceFileName.*.*\\\\pipe\\\\.*") -or ($_.message -match "ServiceFileName.*.*rundll32.*" -and $_.message -match "ServiceFileName.*.*.dll,a.*" -and $_.message -match "ServiceFileName.*.*/p:.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message\nGet-WinEvent -LogName Security | where {($_.ID -eq "4697" -and (($_.message -match "ServiceFileName.*.*cmd.*" -and $_.message -match "ServiceFileName.*.*/c.*" -and $_.message -match "ServiceFileName.*.*echo.*" -and $_.message -match "ServiceFileName.*.*\\\\pipe\\\\.*") -or ($_.message -match "ServiceFileName.*.*%COMSPEC%.*" -and $_.message -match "ServiceFileName.*.*/c.*" -and $_.message -match "ServiceFileName.*.*echo.*" -and $_.message -match "ServiceFileName.*.*\\\\pipe\\\\.*") -or ($_.message -match "ServiceFileName.*.*rundll32.*" -and $_.message -match "ServiceFileName.*.*.dll,a.*" -and $_.message -match "ServiceFileName.*.*/p:.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName System | where {($_.ID -eq "7045" -and (($_.message -match "ServiceFileName.*.*cmd.*" -and $_.message -match "ServiceFileName.*.*/c.*" -and $_.message -match "ServiceFileName.*.*echo.*" -and $_.message -match "ServiceFileName.*.*\\pipe\\.*") -or ($_.message -match "ServiceFileName.*.*%COMSPEC%.*" -and $_.message -match "ServiceFileName.*.*/c.*" -and $_.message -match "ServiceFileName.*.*echo.*" -and $_.message -match "ServiceFileName.*.*\\pipe\\.*") -or ($_.message -match "ServiceFileName.*.*rundll32.*" -and $_.message -match "ServiceFileName.*.*.dll,a.*" -and $_.message -match "ServiceFileName.*.*/p:.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "6" -and (($_.message -match "ServiceFileName.*.*cmd.*" -and $_.message -match "ServiceFileName.*.*/c.*" -and $_.message -match "ServiceFileName.*.*echo.*" -and $_.message -match "ServiceFileName.*.*\\pipe\\.*") -or ($_.message -match "ServiceFileName.*.*%COMSPEC%.*" -and $_.message -match "ServiceFileName.*.*/c.*" -and $_.message -match "ServiceFileName.*.*echo.*" -and $_.message -match "ServiceFileName.*.*\\pipe\\.*") -or ($_.message -match "ServiceFileName.*.*rundll32.*" -and $_.message -match "ServiceFileName.*.*.dll,a.*" -and $_.message -match "ServiceFileName.*.*/p:.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Security | where {($_.ID -eq "4697" -and (($_.message -match "ServiceFileName.*.*cmd.*" -and $_.message -match "ServiceFileName.*.*/c.*" -and $_.message -match "ServiceFileName.*.*echo.*" -and $_.message -match "ServiceFileName.*.*\\pipe\\.*") -or ($_.message -match "ServiceFileName.*.*%COMSPEC%.*" -and $_.message -match "ServiceFileName.*.*/c.*" -and $_.message -match "ServiceFileName.*.*echo.*" -and $_.message -match "ServiceFileName.*.*\\pipe\\.*") -or ($_.message -match "ServiceFileName.*.*rundll32.*" -and $_.message -match "ServiceFileName.*.*.dll,a.*" -and $_.message -match "ServiceFileName.*.*/p:.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_id:"7045" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\/p\\:*)))\n(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"6" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\/p\\:*)))\n(winlog.channel:"Security" AND winlog.event_id:"4697" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\/p\\:*)))
+(winlog.event_id:"7045" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\pipe\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\pipe\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\/p\:*)))
+(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND winlog.event_id:"6" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\pipe\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\pipe\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\/p\:*)))
+(winlog.channel:"Security" AND winlog.event_id:"4697" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\pipe\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\pipe\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\/p\:*)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/843544a7-56e0-4dcc-a44f-5cc266dd97d6 <<EOF\n{\n  "metadata": {\n    "title": "Meterpreter or Cobalt Strike Getsystem Service Installation",\n    "description": "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service installation",\n    "tags": [\n      "attack.privilege_escalation",\n      "attack.t1134",\n      "attack.t1134.001",\n      "attack.t1134.002"\n    ],\n    "query": "(winlog.event_id:\\"7045\\" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\\\/p\\\\:*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_id:\\"7045\\" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\\\/p\\\\:*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Meterpreter or Cobalt Strike Getsystem Service Installation\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n     ComputerName = {{_source.ComputerName}}\\nSubjectDomainName = {{_source.SubjectDomainName}}\\n  SubjectUserName = {{_source.SubjectUserName}}\\n  ServiceFileName = {{_source.ServiceFileName}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/843544a7-56e0-4dcc-a44f-5cc266dd97d6-2 <<EOF\n{\n  "metadata": {\n    "title": "Meterpreter or Cobalt Strike Getsystem Service Installation",\n    "description": "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service installation",\n    "tags": [\n      "attack.privilege_escalation",\n      "attack.t1134",\n      "attack.t1134.001",\n      "attack.t1134.002"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"6\\" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\\\/p\\\\:*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"6\\" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\\\/p\\\\:*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Meterpreter or Cobalt Strike Getsystem Service Installation\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n     ComputerName = {{_source.ComputerName}}\\nSubjectDomainName = {{_source.SubjectDomainName}}\\n  SubjectUserName = {{_source.SubjectUserName}}\\n  ServiceFileName = {{_source.ServiceFileName}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/843544a7-56e0-4dcc-a44f-5cc266dd97d6-3 <<EOF\n{\n  "metadata": {\n    "title": "Meterpreter or Cobalt Strike Getsystem Service Installation",\n    "description": "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service installation",\n    "tags": [\n      "attack.privilege_escalation",\n      "attack.t1134",\n      "attack.t1134.001",\n      "attack.t1134.002"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4697\\" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\\\/p\\\\:*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4697\\" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\\\\\pipe\\\\\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\\\/p\\\\:*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Meterpreter or Cobalt Strike Getsystem Service Installation\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n     ComputerName = {{_source.ComputerName}}\\nSubjectDomainName = {{_source.SubjectDomainName}}\\n  SubjectUserName = {{_source.SubjectUserName}}\\n  ServiceFileName = {{_source.ServiceFileName}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/843544a7-56e0-4dcc-a44f-5cc266dd97d6 <<EOF
+{
+  "metadata": {
+    "title": "Meterpreter or Cobalt Strike Getsystem Service Installation",
+    "description": "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service installation",
+    "tags": [
+      "attack.privilege_escalation",
+      "attack.t1134",
+      "attack.t1134.001",
+      "attack.t1134.002"
+    ],
+    "query": "(winlog.event_id:\"7045\" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\/p\\:*)))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_id:\"7045\" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\/p\\:*)))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Meterpreter or Cobalt Strike Getsystem Service Installation'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n     ComputerName = {{_source.ComputerName}}\nSubjectDomainName = {{_source.SubjectDomainName}}\n  SubjectUserName = {{_source.SubjectUserName}}\n  ServiceFileName = {{_source.ServiceFileName}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/843544a7-56e0-4dcc-a44f-5cc266dd97d6-2 <<EOF
+{
+  "metadata": {
+    "title": "Meterpreter or Cobalt Strike Getsystem Service Installation",
+    "description": "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service installation",
+    "tags": [
+      "attack.privilege_escalation",
+      "attack.t1134",
+      "attack.t1134.001",
+      "attack.t1134.002"
+    ],
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"6\" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\/p\\:*)))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"6\" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\/p\\:*)))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Meterpreter or Cobalt Strike Getsystem Service Installation'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n     ComputerName = {{_source.ComputerName}}\nSubjectDomainName = {{_source.SubjectDomainName}}\n  SubjectUserName = {{_source.SubjectUserName}}\n  ServiceFileName = {{_source.ServiceFileName}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/843544a7-56e0-4dcc-a44f-5cc266dd97d6-3 <<EOF
+{
+  "metadata": {
+    "title": "Meterpreter or Cobalt Strike Getsystem Service Installation",
+    "description": "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service installation",
+    "tags": [
+      "attack.privilege_escalation",
+      "attack.t1134",
+      "attack.t1134.001",
+      "attack.t1134.002"
+    ],
+    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4697\" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\/p\\:*)))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4697\" AND ((winlog.event_data.ServiceFileName.keyword:*cmd* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*%COMSPEC%* AND winlog.event_data.ServiceFileName.keyword:*\\/c* AND winlog.event_data.ServiceFileName.keyword:*echo* AND winlog.event_data.ServiceFileName.keyword:*\\\\pipe\\\\*) OR (winlog.event_data.ServiceFileName.keyword:*rundll32* AND winlog.event_data.ServiceFileName.keyword:*.dll,a* AND winlog.event_data.ServiceFileName.keyword:*\\/p\\:*)))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Meterpreter or Cobalt Strike Getsystem Service Installation'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n     ComputerName = {{_source.ComputerName}}\nSubjectDomainName = {{_source.SubjectDomainName}}\n  SubjectUserName = {{_source.SubjectUserName}}\n  ServiceFileName = {{_source.ServiceFileName}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(EventID:"7045" AND ((ServiceFileName.keyword:*cmd* AND ServiceFileName.keyword:*\\/c* AND ServiceFileName.keyword:*echo* AND ServiceFileName.keyword:*\\\\pipe\\\\*) OR (ServiceFileName.keyword:*%COMSPEC%* AND ServiceFileName.keyword:*\\/c* AND ServiceFileName.keyword:*echo* AND ServiceFileName.keyword:*\\\\pipe\\\\*) OR (ServiceFileName.keyword:*rundll32* AND ServiceFileName.keyword:*.dll,a* AND ServiceFileName.keyword:*\\/p\\:*)))\n(EventID:"6" AND ((ServiceFileName.keyword:*cmd* AND ServiceFileName.keyword:*\\/c* AND ServiceFileName.keyword:*echo* AND ServiceFileName.keyword:*\\\\pipe\\\\*) OR (ServiceFileName.keyword:*%COMSPEC%* AND ServiceFileName.keyword:*\\/c* AND ServiceFileName.keyword:*echo* AND ServiceFileName.keyword:*\\\\pipe\\\\*) OR (ServiceFileName.keyword:*rundll32* AND ServiceFileName.keyword:*.dll,a* AND ServiceFileName.keyword:*\\/p\\:*)))\n(EventID:"4697" AND ((ServiceFileName.keyword:*cmd* AND ServiceFileName.keyword:*\\/c* AND ServiceFileName.keyword:*echo* AND ServiceFileName.keyword:*\\\\pipe\\\\*) OR (ServiceFileName.keyword:*%COMSPEC%* AND ServiceFileName.keyword:*\\/c* AND ServiceFileName.keyword:*echo* AND ServiceFileName.keyword:*\\\\pipe\\\\*) OR (ServiceFileName.keyword:*rundll32* AND ServiceFileName.keyword:*.dll,a* AND ServiceFileName.keyword:*\\/p\\:*)))
+(EventID:"7045" AND ((ServiceFileName.keyword:*cmd* AND ServiceFileName.keyword:*\/c* AND ServiceFileName.keyword:*echo* AND ServiceFileName.keyword:*\\pipe\\*) OR (ServiceFileName.keyword:*%COMSPEC%* AND ServiceFileName.keyword:*\/c* AND ServiceFileName.keyword:*echo* AND ServiceFileName.keyword:*\\pipe\\*) OR (ServiceFileName.keyword:*rundll32* AND ServiceFileName.keyword:*.dll,a* AND ServiceFileName.keyword:*\/p\:*)))
+(EventID:"6" AND ((ServiceFileName.keyword:*cmd* AND ServiceFileName.keyword:*\/c* AND ServiceFileName.keyword:*echo* AND ServiceFileName.keyword:*\\pipe\\*) OR (ServiceFileName.keyword:*%COMSPEC%* AND ServiceFileName.keyword:*\/c* AND ServiceFileName.keyword:*echo* AND ServiceFileName.keyword:*\\pipe\\*) OR (ServiceFileName.keyword:*rundll32* AND ServiceFileName.keyword:*.dll,a* AND ServiceFileName.keyword:*\/p\:*)))
+(EventID:"4697" AND ((ServiceFileName.keyword:*cmd* AND ServiceFileName.keyword:*\/c* AND ServiceFileName.keyword:*echo* AND ServiceFileName.keyword:*\\pipe\\*) OR (ServiceFileName.keyword:*%COMSPEC%* AND ServiceFileName.keyword:*\/c* AND ServiceFileName.keyword:*echo* AND ServiceFileName.keyword:*\\pipe\\*) OR (ServiceFileName.keyword:*rundll32* AND ServiceFileName.keyword:*.dll,a* AND ServiceFileName.keyword:*\/p\:*)))
 ```
 
 
 ### splunk
     
 ```
-(source="WinEventLog:System" EventCode="7045" ((ServiceFileName="*cmd*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\\\pipe\\\\*") OR (ServiceFileName="*%COMSPEC%*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\\\pipe\\\\*") OR (ServiceFileName="*rundll32*" ServiceFileName="*.dll,a*" ServiceFileName="*/p:*"))) | table ComputerName,SubjectDomainName,SubjectUserName,ServiceFileName\n(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="6" ((ServiceFileName="*cmd*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\\\pipe\\\\*") OR (ServiceFileName="*%COMSPEC%*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\\\pipe\\\\*") OR (ServiceFileName="*rundll32*" ServiceFileName="*.dll,a*" ServiceFileName="*/p:*"))) | table ComputerName,SubjectDomainName,SubjectUserName,ServiceFileName\n(source="WinEventLog:Security" EventCode="4697" ((ServiceFileName="*cmd*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\\\pipe\\\\*") OR (ServiceFileName="*%COMSPEC%*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\\\pipe\\\\*") OR (ServiceFileName="*rundll32*" ServiceFileName="*.dll,a*" ServiceFileName="*/p:*"))) | table ComputerName,SubjectDomainName,SubjectUserName,ServiceFileName
+(source="WinEventLog:System" EventCode="7045" ((ServiceFileName="*cmd*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\pipe\\*") OR (ServiceFileName="*%COMSPEC%*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\pipe\\*") OR (ServiceFileName="*rundll32*" ServiceFileName="*.dll,a*" ServiceFileName="*/p:*"))) | table ComputerName,SubjectDomainName,SubjectUserName,ServiceFileName
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="6" ((ServiceFileName="*cmd*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\pipe\\*") OR (ServiceFileName="*%COMSPEC%*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\pipe\\*") OR (ServiceFileName="*rundll32*" ServiceFileName="*.dll,a*" ServiceFileName="*/p:*"))) | table ComputerName,SubjectDomainName,SubjectUserName,ServiceFileName
+(source="WinEventLog:Security" EventCode="4697" ((ServiceFileName="*cmd*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\pipe\\*") OR (ServiceFileName="*%COMSPEC%*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\pipe\\*") OR (ServiceFileName="*rundll32*" ServiceFileName="*.dll,a*" ServiceFileName="*/p:*"))) | table ComputerName,SubjectDomainName,SubjectUserName,ServiceFileName
 ```
 
 
 ### logpoint
     
 ```
-(event_source="Microsoft-Windows-Security-Auditing" event_id="7045" ((ServiceFileName="*cmd*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\\\pipe\\\\*") OR (ServiceFileName="*%COMSPEC%*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\\\pipe\\\\*") OR (ServiceFileName="*rundll32*" ServiceFileName="*.dll,a*" ServiceFileName="*/p:*")))\n(event_id="6" ((ServiceFileName="*cmd*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\\\pipe\\\\*") OR (ServiceFileName="*%COMSPEC%*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\\\pipe\\\\*") OR (ServiceFileName="*rundll32*" ServiceFileName="*.dll,a*" ServiceFileName="*/p:*")))\n(event_source="Microsoft-Windows-Security-Auditing" event_id="4697" ((ServiceFileName="*cmd*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\\\pipe\\\\*") OR (ServiceFileName="*%COMSPEC%*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\\\pipe\\\\*") OR (ServiceFileName="*rundll32*" ServiceFileName="*.dll,a*" ServiceFileName="*/p:*")))
+(event_source="Microsoft-Windows-Security-Auditing" event_id="7045" ((ServiceFileName="*cmd*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\pipe\\*") OR (ServiceFileName="*%COMSPEC%*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\pipe\\*") OR (ServiceFileName="*rundll32*" ServiceFileName="*.dll,a*" ServiceFileName="*/p:*")))
+(event_id="6" ((ServiceFileName="*cmd*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\pipe\\*") OR (ServiceFileName="*%COMSPEC%*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\pipe\\*") OR (ServiceFileName="*rundll32*" ServiceFileName="*.dll,a*" ServiceFileName="*/p:*")))
+(event_source="Microsoft-Windows-Security-Auditing" event_id="4697" ((ServiceFileName="*cmd*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\pipe\\*") OR (ServiceFileName="*%COMSPEC%*" ServiceFileName="*/c*" ServiceFileName="*echo*" ServiceFileName="*\\pipe\\*") OR (ServiceFileName="*rundll32*" ServiceFileName="*.dll,a*" ServiceFileName="*/p:*")))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*7045)(?=.*(?:.*(?:.*(?:.*(?=.*.*cmd.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\\pipe\\\\.*))|.*(?:.*(?=.*.*%COMSPEC%.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\\pipe\\\\.*))|.*(?:.*(?=.*.*rundll32.*)(?=.*.*\\.dll,a.*)(?=.*.*/p:.*))))))'\ngrep -P '^(?:.*(?=.*6)(?=.*(?:.*(?:.*(?:.*(?=.*.*cmd.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\\pipe\\\\.*))|.*(?:.*(?=.*.*%COMSPEC%.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\\pipe\\\\.*))|.*(?:.*(?=.*.*rundll32.*)(?=.*.*\\.dll,a.*)(?=.*.*/p:.*))))))'\ngrep -P '^(?:.*(?=.*4697)(?=.*(?:.*(?:.*(?:.*(?=.*.*cmd.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\\pipe\\\\.*))|.*(?:.*(?=.*.*%COMSPEC%.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\\pipe\\\\.*))|.*(?:.*(?=.*.*rundll32.*)(?=.*.*\\.dll,a.*)(?=.*.*/p:.*))))))'
+grep -P '^(?:.*(?=.*7045)(?=.*(?:.*(?:.*(?:.*(?=.*.*cmd.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\pipe\\.*))|.*(?:.*(?=.*.*%COMSPEC%.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\pipe\\.*))|.*(?:.*(?=.*.*rundll32.*)(?=.*.*\.dll,a.*)(?=.*.*/p:.*))))))'
+grep -P '^(?:.*(?=.*6)(?=.*(?:.*(?:.*(?:.*(?=.*.*cmd.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\pipe\\.*))|.*(?:.*(?=.*.*%COMSPEC%.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\pipe\\.*))|.*(?:.*(?=.*.*rundll32.*)(?=.*.*\.dll,a.*)(?=.*.*/p:.*))))))'
+grep -P '^(?:.*(?=.*4697)(?=.*(?:.*(?:.*(?:.*(?=.*.*cmd.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\pipe\\.*))|.*(?:.*(?=.*.*%COMSPEC%.*)(?=.*.*/c.*)(?=.*.*echo.*)(?=.*.*\pipe\\.*))|.*(?:.*(?=.*.*rundll32.*)(?=.*.*\.dll,a.*)(?=.*.*/p:.*))))))'
 ```
 
 

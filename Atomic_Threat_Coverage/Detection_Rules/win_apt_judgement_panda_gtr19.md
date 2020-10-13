@@ -64,49 +64,130 @@ level: critical
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "CommandLine.*.*\\\\ldifde.exe -f -n .*" -or $_.message -match "CommandLine.*.*\\\\7za.exe a 1.7z .*" -or $_.message -match "CommandLine.*.* eprod.ldf" -or $_.message -match "CommandLine.*.*\\\\aaaa\\\\procdump64.exe.*" -or $_.message -match "CommandLine.*.*\\\\aaaa\\\\netsess.exe.*" -or $_.message -match "CommandLine.*.*\\\\aaaa\\\\7za.exe.*" -or $_.message -match "CommandLine.*.*copy .\\\\1.7z \\\\.*" -or $_.message -match "CommandLine.*.*copy \\\\client\\\\c$\\\\aaaa\\\\.*") -or $_.message -match "Image.*C:\\\\Users\\\\Public\\\\7za.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "CommandLine.*.*\\ldifde.exe -f -n .*" -or $_.message -match "CommandLine.*.*\\7za.exe a 1.7z .*" -or $_.message -match "CommandLine.*.* eprod.ldf" -or $_.message -match "CommandLine.*.*\\aaaa\\procdump64.exe.*" -or $_.message -match "CommandLine.*.*\\aaaa\\netsess.exe.*" -or $_.message -match "CommandLine.*.*\\aaaa\\7za.exe.*" -or $_.message -match "CommandLine.*.*copy .\\1.7z \\.*" -or $_.message -match "CommandLine.*.*copy \\client\\c$\\aaaa\\.*") -or $_.message -match "Image.*C:\\Users\\Public\\7za.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.CommandLine.keyword:(*\\\\ldifde.exe\\ \\-f\\ \\-n\\ * OR *\\\\7za.exe\\ a\\ 1.7z\\ * OR *\\ eprod.ldf OR *\\\\aaaa\\\\procdump64.exe* OR *\\\\aaaa\\\\netsess.exe* OR *\\\\aaaa\\\\7za.exe* OR *copy\\ .\\\\1.7z\\ \\\\* OR *copy\\ \\\\client\\\\c$\\\\aaaa\\\\*) OR winlog.event_data.Image:"C\\:\\\\Users\\\\Public\\\\7za.exe")
+(winlog.event_data.CommandLine.keyword:(*\\ldifde.exe\ \-f\ \-n\ * OR *\\7za.exe\ a\ 1.7z\ * OR *\ eprod.ldf OR *\\aaaa\\procdump64.exe* OR *\\aaaa\\netsess.exe* OR *\\aaaa\\7za.exe* OR *copy\ .\\1.7z\ \\* OR *copy\ \\client\\c$\\aaaa\\*) OR winlog.event_data.Image:"C\:\\Users\\Public\\7za.exe")
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/03e2746e-2b31-42f1-ab7a-eb39365b2422 <<EOF\n{\n  "metadata": {\n    "title": "Judgement Panda Exfil Activity",\n    "description": "Detects Judgement Panda activity as described in Global Threat Report 2019 by Crowdstrike",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.g0010",\n      "attack.credential_access",\n      "attack.t1003",\n      "attack.t1003.001",\n      "attack.exfiltration",\n      "attack.t1002",\n      "attack.t1560.001"\n    ],\n    "query": "(winlog.event_data.CommandLine.keyword:(*\\\\\\\\ldifde.exe\\\\ \\\\-f\\\\ \\\\-n\\\\ * OR *\\\\\\\\7za.exe\\\\ a\\\\ 1.7z\\\\ * OR *\\\\ eprod.ldf OR *\\\\\\\\aaaa\\\\\\\\procdump64.exe* OR *\\\\\\\\aaaa\\\\\\\\netsess.exe* OR *\\\\\\\\aaaa\\\\\\\\7za.exe* OR *copy\\\\ .\\\\\\\\1.7z\\\\ \\\\\\\\* OR *copy\\\\ \\\\\\\\client\\\\\\\\c$\\\\\\\\aaaa\\\\\\\\*) OR winlog.event_data.Image:\\"C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\7za.exe\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.CommandLine.keyword:(*\\\\\\\\ldifde.exe\\\\ \\\\-f\\\\ \\\\-n\\\\ * OR *\\\\\\\\7za.exe\\\\ a\\\\ 1.7z\\\\ * OR *\\\\ eprod.ldf OR *\\\\\\\\aaaa\\\\\\\\procdump64.exe* OR *\\\\\\\\aaaa\\\\\\\\netsess.exe* OR *\\\\\\\\aaaa\\\\\\\\7za.exe* OR *copy\\\\ .\\\\\\\\1.7z\\\\ \\\\\\\\* OR *copy\\\\ \\\\\\\\client\\\\\\\\c$\\\\\\\\aaaa\\\\\\\\*) OR winlog.event_data.Image:\\"C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\7za.exe\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Judgement Panda Exfil Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/03e2746e-2b31-42f1-ab7a-eb39365b2422 <<EOF
+{
+  "metadata": {
+    "title": "Judgement Panda Exfil Activity",
+    "description": "Detects Judgement Panda activity as described in Global Threat Report 2019 by Crowdstrike",
+    "tags": [
+      "attack.lateral_movement",
+      "attack.g0010",
+      "attack.credential_access",
+      "attack.t1003",
+      "attack.t1003.001",
+      "attack.exfiltration",
+      "attack.t1002",
+      "attack.t1560.001"
+    ],
+    "query": "(winlog.event_data.CommandLine.keyword:(*\\\\ldifde.exe\\ \\-f\\ \\-n\\ * OR *\\\\7za.exe\\ a\\ 1.7z\\ * OR *\\ eprod.ldf OR *\\\\aaaa\\\\procdump64.exe* OR *\\\\aaaa\\\\netsess.exe* OR *\\\\aaaa\\\\7za.exe* OR *copy\\ .\\\\1.7z\\ \\\\* OR *copy\\ \\\\client\\\\c$\\\\aaaa\\\\*) OR winlog.event_data.Image:\"C\\:\\\\Users\\\\Public\\\\7za.exe\")"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.CommandLine.keyword:(*\\\\ldifde.exe\\ \\-f\\ \\-n\\ * OR *\\\\7za.exe\\ a\\ 1.7z\\ * OR *\\ eprod.ldf OR *\\\\aaaa\\\\procdump64.exe* OR *\\\\aaaa\\\\netsess.exe* OR *\\\\aaaa\\\\7za.exe* OR *copy\\ .\\\\1.7z\\ \\\\* OR *copy\\ \\\\client\\\\c$\\\\aaaa\\\\*) OR winlog.event_data.Image:\"C\\:\\\\Users\\\\Public\\\\7za.exe\")",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Judgement Panda Exfil Activity'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(CommandLine.keyword:(*\\\\ldifde.exe \\-f \\-n * *\\\\7za.exe a 1.7z * * eprod.ldf *\\\\aaaa\\\\procdump64.exe* *\\\\aaaa\\\\netsess.exe* *\\\\aaaa\\\\7za.exe* *copy .\\\\1.7z \\\\* *copy \\\\client\\\\c$\\\\aaaa\\\\*) OR Image:"C\\:\\\\Users\\\\Public\\\\7za.exe")
+(CommandLine.keyword:(*\\ldifde.exe \-f \-n * *\\7za.exe a 1.7z * * eprod.ldf *\\aaaa\\procdump64.exe* *\\aaaa\\netsess.exe* *\\aaaa\\7za.exe* *copy .\\1.7z \\* *copy \\client\\c$\\aaaa\\*) OR Image:"C\:\\Users\\Public\\7za.exe")
 ```
 
 
 ### splunk
     
 ```
-((CommandLine="*\\\\ldifde.exe -f -n *" OR CommandLine="*\\\\7za.exe a 1.7z *" OR CommandLine="* eprod.ldf" OR CommandLine="*\\\\aaaa\\\\procdump64.exe*" OR CommandLine="*\\\\aaaa\\\\netsess.exe*" OR CommandLine="*\\\\aaaa\\\\7za.exe*" OR CommandLine="*copy .\\\\1.7z \\\\*" OR CommandLine="*copy \\\\client\\\\c$\\\\aaaa\\\\*") OR Image="C:\\\\Users\\\\Public\\\\7za.exe")
+((CommandLine="*\\ldifde.exe -f -n *" OR CommandLine="*\\7za.exe a 1.7z *" OR CommandLine="* eprod.ldf" OR CommandLine="*\\aaaa\\procdump64.exe*" OR CommandLine="*\\aaaa\\netsess.exe*" OR CommandLine="*\\aaaa\\7za.exe*" OR CommandLine="*copy .\\1.7z \\*" OR CommandLine="*copy \\client\\c$\\aaaa\\*") OR Image="C:\\Users\\Public\\7za.exe")
 ```
 
 
 ### logpoint
     
 ```
-(CommandLine IN ["*\\\\ldifde.exe -f -n *", "*\\\\7za.exe a 1.7z *", "* eprod.ldf", "*\\\\aaaa\\\\procdump64.exe*", "*\\\\aaaa\\\\netsess.exe*", "*\\\\aaaa\\\\7za.exe*", "*copy .\\\\1.7z \\\\*", "*copy \\\\client\\\\c$\\\\aaaa\\\\*"] OR Image="C:\\\\Users\\\\Public\\\\7za.exe")
+(CommandLine IN ["*\\ldifde.exe -f -n *", "*\\7za.exe a 1.7z *", "* eprod.ldf", "*\\aaaa\\procdump64.exe*", "*\\aaaa\\netsess.exe*", "*\\aaaa\\7za.exe*", "*copy .\\1.7z \\*", "*copy \\client\\c$\\aaaa\\*"] OR Image="C:\\Users\\Public\\7za.exe")
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?:.*(?:.*.*\\ldifde\\.exe -f -n .*|.*.*\\7za\\.exe a 1\\.7z .*|.*.* eprod\\.ldf|.*.*\\aaaa\\procdump64\\.exe.*|.*.*\\aaaa\\netsess\\.exe.*|.*.*\\aaaa\\7za\\.exe.*|.*.*copy \\.\\1\\.7z \\\\.*|.*.*copy \\\\client\\c\\$\\aaaa\\\\.*)|.*C:\\Users\\Public\\7za\\.exe))'
+grep -P '^(?:.*(?:.*(?:.*.*\ldifde\.exe -f -n .*|.*.*\7za\.exe a 1\.7z .*|.*.* eprod\.ldf|.*.*\aaaa\procdump64\.exe.*|.*.*\aaaa\netsess\.exe.*|.*.*\aaaa\7za\.exe.*|.*.*copy \.\1\.7z \\.*|.*.*copy \\client\c\$\aaaa\\.*)|.*C:\Users\Public\7za\.exe))'
 ```
 
 

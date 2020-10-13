@@ -106,49 +106,407 @@ detection:
 ### powershell
     
 ```
-Get-WinEvent -LogName System | where {($_.ID -eq "7045" -and ($_.message -match "SC Scheduled Scan" -or $_.message -match "UpdatMachine")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message\nGet-WinEvent -LogName Security | where {($_.ID -eq "4698" -and ($_.message -match "SC Scheduled Scan" -or $_.message -match "UpdatMachine")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message\nGet-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "13" -and $_.message -match "EventType.*SetValue" -and (($_.message -match "TargetObject.*.*SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UMe" -or $_.message -match "TargetObject.*.*SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UT") -or ($_.message -match "TargetObject.*.*\\\\Control\\\\SecurityProviders\\\\WDigest\\\\UseLogonCredential" -and $_.message -match "Details.*DWORD (0x00000001)"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message\nGet-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {(($_.message -match "CommandLine.*.*\\\\Service.exe i" -or $_.message -match "CommandLine.*.*\\\\Service.exe u" -or $_.message -match "CommandLine.*.*\\\\microsoft\\\\Taskbar\\\\autoit3.exe" -or $_.message -match "CommandLine.*C:\\\\wsc.exe.*") -or $_.message -match "Image.*.*\\\\Windows\\\\Temp\\\\DB\\\\.*.exe" -or ($_.message -match "CommandLine.*.*\\\\nslookup.exe -q=TXT.*" -and $_.message -match "ParentImage.*.*\\\\Autoit.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName System | where {($_.ID -eq "7045" -and ($_.message -match "SC Scheduled Scan" -or $_.message -match "UpdatMachine")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Security | where {($_.ID -eq "4698" -and ($_.message -match "SC Scheduled Scan" -or $_.message -match "UpdatMachine")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "13" -and $_.message -match "EventType.*SetValue" -and (($_.message -match "TargetObject.*.*SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UMe" -or $_.message -match "TargetObject.*.*SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UT") -or ($_.message -match "TargetObject.*.*\\Control\\SecurityProviders\\WDigest\\UseLogonCredential" -and $_.message -match "Details.*DWORD (0x00000001)"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {(($_.message -match "CommandLine.*.*\\Service.exe i" -or $_.message -match "CommandLine.*.*\\Service.exe u" -or $_.message -match "CommandLine.*.*\\microsoft\\Taskbar\\autoit3.exe" -or $_.message -match "CommandLine.*C:\\wsc.exe.*") -or $_.message -match "Image.*.*\\Windows\\Temp\\DB\\.*.exe" -or ($_.message -match "CommandLine.*.*\\nslookup.exe -q=TXT.*" -and $_.message -match "ParentImage.*.*\\Autoit.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_id:"7045" AND winlog.event_data.ServiceName:("SC\\ Scheduled\\ Scan" OR "UpdatMachine"))\n(winlog.channel:"Security" AND winlog.event_id:"4698" AND TaskName:("SC\\ Scheduled\\ Scan" OR "UpdatMachine"))\n(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"13" AND winlog.event_data.EventType:"SetValue" AND (winlog.event_data.TargetObject.keyword:(*SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UMe OR *SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UT) OR (winlog.event_data.TargetObject.keyword:*\\\\Control\\\\SecurityProviders\\\\WDigest\\\\UseLogonCredential AND winlog.event_data.Details:"DWORD\\ \\(0x00000001\\)")))\n(winlog.event_data.CommandLine.keyword:(*\\\\Service.exe\\ i OR *\\\\Service.exe\\ u OR *\\\\microsoft\\\\Taskbar\\\\autoit3.exe OR C\\:\\\\wsc.exe*) OR winlog.event_data.Image.keyword:*\\\\Windows\\\\Temp\\\\DB\\\\*.exe OR (winlog.event_data.CommandLine.keyword:*\\\\nslookup.exe\\ \\-q\\=TXT* AND winlog.event_data.ParentImage.keyword:*\\\\Autoit*))
+(winlog.event_id:"7045" AND winlog.event_data.ServiceName:("SC\ Scheduled\ Scan" OR "UpdatMachine"))
+(winlog.channel:"Security" AND winlog.event_id:"4698" AND TaskName:("SC\ Scheduled\ Scan" OR "UpdatMachine"))
+(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND winlog.event_id:"13" AND winlog.event_data.EventType:"SetValue" AND (winlog.event_data.TargetObject.keyword:(*SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UMe OR *SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UT) OR (winlog.event_data.TargetObject.keyword:*\\Control\\SecurityProviders\\WDigest\\UseLogonCredential AND winlog.event_data.Details:"DWORD\ \(0x00000001\)")))
+(winlog.event_data.CommandLine.keyword:(*\\Service.exe\ i OR *\\Service.exe\ u OR *\\microsoft\\Taskbar\\autoit3.exe OR C\:\\wsc.exe*) OR winlog.event_data.Image.keyword:*\\Windows\\Temp\\DB\\*.exe OR (winlog.event_data.CommandLine.keyword:*\\nslookup.exe\ \-q\=TXT* AND winlog.event_data.ParentImage.keyword:*\\Autoit*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/53ba33fd-3a50-4468-a5ef-c583635cfa92 <<EOF\n{\n  "metadata": {\n    "title": "Chafer Activity",\n    "description": "Detects Chafer activity attributed to OilRig as reported in Nyotron report in March 2018",\n    "tags": [\n      "attack.persistence",\n      "attack.g0049",\n      "attack.t1053",\n      "attack.t1053.005",\n      "attack.s0111",\n      "attack.t1050",\n      "attack.t1543.003",\n      "attack.defense_evasion",\n      "attack.t1112",\n      "attack.command_and_control",\n      "attack.t1071",\n      "attack.t1071.004"\n    ],\n    "query": "(winlog.event_id:\\"7045\\" AND winlog.event_data.ServiceName:(\\"SC\\\\ Scheduled\\\\ Scan\\" OR \\"UpdatMachine\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_id:\\"7045\\" AND winlog.event_data.ServiceName:(\\"SC\\\\ Scheduled\\\\ Scan\\" OR \\"UpdatMachine\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Chafer Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/53ba33fd-3a50-4468-a5ef-c583635cfa92-2 <<EOF\n{\n  "metadata": {\n    "title": "Chafer Activity",\n    "description": "Detects Chafer activity attributed to OilRig as reported in Nyotron report in March 2018",\n    "tags": [\n      "attack.persistence",\n      "attack.g0049",\n      "attack.t1053",\n      "attack.t1053.005",\n      "attack.s0111",\n      "attack.t1050",\n      "attack.t1543.003",\n      "attack.defense_evasion",\n      "attack.t1112",\n      "attack.command_and_control",\n      "attack.t1071",\n      "attack.t1071.004"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4698\\" AND TaskName:(\\"SC\\\\ Scheduled\\\\ Scan\\" OR \\"UpdatMachine\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4698\\" AND TaskName:(\\"SC\\\\ Scheduled\\\\ Scan\\" OR \\"UpdatMachine\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Chafer Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/53ba33fd-3a50-4468-a5ef-c583635cfa92-3 <<EOF\n{\n  "metadata": {\n    "title": "Chafer Activity",\n    "description": "Detects Chafer activity attributed to OilRig as reported in Nyotron report in March 2018",\n    "tags": [\n      "attack.persistence",\n      "attack.g0049",\n      "attack.t1053",\n      "attack.t1053.005",\n      "attack.s0111",\n      "attack.t1050",\n      "attack.t1543.003",\n      "attack.defense_evasion",\n      "attack.t1112",\n      "attack.command_and_control",\n      "attack.t1071",\n      "attack.t1071.004"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"13\\" AND winlog.event_data.EventType:\\"SetValue\\" AND (winlog.event_data.TargetObject.keyword:(*SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\UMe OR *SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\UT) OR (winlog.event_data.TargetObject.keyword:*\\\\\\\\Control\\\\\\\\SecurityProviders\\\\\\\\WDigest\\\\\\\\UseLogonCredential AND winlog.event_data.Details:\\"DWORD\\\\ \\\\(0x00000001\\\\)\\")))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"13\\" AND winlog.event_data.EventType:\\"SetValue\\" AND (winlog.event_data.TargetObject.keyword:(*SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\UMe OR *SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\UT) OR (winlog.event_data.TargetObject.keyword:*\\\\\\\\Control\\\\\\\\SecurityProviders\\\\\\\\WDigest\\\\\\\\UseLogonCredential AND winlog.event_data.Details:\\"DWORD\\\\ \\\\(0x00000001\\\\)\\")))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Chafer Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/53ba33fd-3a50-4468-a5ef-c583635cfa92-4 <<EOF\n{\n  "metadata": {\n    "title": "Chafer Activity",\n    "description": "Detects Chafer activity attributed to OilRig as reported in Nyotron report in March 2018",\n    "tags": [\n      "attack.persistence",\n      "attack.g0049",\n      "attack.t1053",\n      "attack.t1053.005",\n      "attack.s0111",\n      "attack.t1050",\n      "attack.t1543.003",\n      "attack.defense_evasion",\n      "attack.t1112",\n      "attack.command_and_control",\n      "attack.t1071",\n      "attack.t1071.004"\n    ],\n    "query": "(winlog.event_data.CommandLine.keyword:(*\\\\\\\\Service.exe\\\\ i OR *\\\\\\\\Service.exe\\\\ u OR *\\\\\\\\microsoft\\\\\\\\Taskbar\\\\\\\\autoit3.exe OR C\\\\:\\\\\\\\wsc.exe*) OR winlog.event_data.Image.keyword:*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\DB\\\\\\\\*.exe OR (winlog.event_data.CommandLine.keyword:*\\\\\\\\nslookup.exe\\\\ \\\\-q\\\\=TXT* AND winlog.event_data.ParentImage.keyword:*\\\\\\\\Autoit*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.CommandLine.keyword:(*\\\\\\\\Service.exe\\\\ i OR *\\\\\\\\Service.exe\\\\ u OR *\\\\\\\\microsoft\\\\\\\\Taskbar\\\\\\\\autoit3.exe OR C\\\\:\\\\\\\\wsc.exe*) OR winlog.event_data.Image.keyword:*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\DB\\\\\\\\*.exe OR (winlog.event_data.CommandLine.keyword:*\\\\\\\\nslookup.exe\\\\ \\\\-q\\\\=TXT* AND winlog.event_data.ParentImage.keyword:*\\\\\\\\Autoit*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Chafer Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/53ba33fd-3a50-4468-a5ef-c583635cfa92 <<EOF
+{
+  "metadata": {
+    "title": "Chafer Activity",
+    "description": "Detects Chafer activity attributed to OilRig as reported in Nyotron report in March 2018",
+    "tags": [
+      "attack.persistence",
+      "attack.g0049",
+      "attack.t1053",
+      "attack.t1053.005",
+      "attack.s0111",
+      "attack.t1050",
+      "attack.t1543.003",
+      "attack.defense_evasion",
+      "attack.t1112",
+      "attack.command_and_control",
+      "attack.t1071",
+      "attack.t1071.004"
+    ],
+    "query": "(winlog.event_id:\"7045\" AND winlog.event_data.ServiceName:(\"SC\\ Scheduled\\ Scan\" OR \"UpdatMachine\"))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_id:\"7045\" AND winlog.event_data.ServiceName:(\"SC\\ Scheduled\\ Scan\" OR \"UpdatMachine\"))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Chafer Activity'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/53ba33fd-3a50-4468-a5ef-c583635cfa92-2 <<EOF
+{
+  "metadata": {
+    "title": "Chafer Activity",
+    "description": "Detects Chafer activity attributed to OilRig as reported in Nyotron report in March 2018",
+    "tags": [
+      "attack.persistence",
+      "attack.g0049",
+      "attack.t1053",
+      "attack.t1053.005",
+      "attack.s0111",
+      "attack.t1050",
+      "attack.t1543.003",
+      "attack.defense_evasion",
+      "attack.t1112",
+      "attack.command_and_control",
+      "attack.t1071",
+      "attack.t1071.004"
+    ],
+    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4698\" AND TaskName:(\"SC\\ Scheduled\\ Scan\" OR \"UpdatMachine\"))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4698\" AND TaskName:(\"SC\\ Scheduled\\ Scan\" OR \"UpdatMachine\"))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Chafer Activity'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/53ba33fd-3a50-4468-a5ef-c583635cfa92-3 <<EOF
+{
+  "metadata": {
+    "title": "Chafer Activity",
+    "description": "Detects Chafer activity attributed to OilRig as reported in Nyotron report in March 2018",
+    "tags": [
+      "attack.persistence",
+      "attack.g0049",
+      "attack.t1053",
+      "attack.t1053.005",
+      "attack.s0111",
+      "attack.t1050",
+      "attack.t1543.003",
+      "attack.defense_evasion",
+      "attack.t1112",
+      "attack.command_and_control",
+      "attack.t1071",
+      "attack.t1071.004"
+    ],
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"13\" AND winlog.event_data.EventType:\"SetValue\" AND (winlog.event_data.TargetObject.keyword:(*SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UMe OR *SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UT) OR (winlog.event_data.TargetObject.keyword:*\\\\Control\\\\SecurityProviders\\\\WDigest\\\\UseLogonCredential AND winlog.event_data.Details:\"DWORD\\ \\(0x00000001\\)\")))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"13\" AND winlog.event_data.EventType:\"SetValue\" AND (winlog.event_data.TargetObject.keyword:(*SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UMe OR *SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UT) OR (winlog.event_data.TargetObject.keyword:*\\\\Control\\\\SecurityProviders\\\\WDigest\\\\UseLogonCredential AND winlog.event_data.Details:\"DWORD\\ \\(0x00000001\\)\")))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Chafer Activity'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/53ba33fd-3a50-4468-a5ef-c583635cfa92-4 <<EOF
+{
+  "metadata": {
+    "title": "Chafer Activity",
+    "description": "Detects Chafer activity attributed to OilRig as reported in Nyotron report in March 2018",
+    "tags": [
+      "attack.persistence",
+      "attack.g0049",
+      "attack.t1053",
+      "attack.t1053.005",
+      "attack.s0111",
+      "attack.t1050",
+      "attack.t1543.003",
+      "attack.defense_evasion",
+      "attack.t1112",
+      "attack.command_and_control",
+      "attack.t1071",
+      "attack.t1071.004"
+    ],
+    "query": "(winlog.event_data.CommandLine.keyword:(*\\\\Service.exe\\ i OR *\\\\Service.exe\\ u OR *\\\\microsoft\\\\Taskbar\\\\autoit3.exe OR C\\:\\\\wsc.exe*) OR winlog.event_data.Image.keyword:*\\\\Windows\\\\Temp\\\\DB\\\\*.exe OR (winlog.event_data.CommandLine.keyword:*\\\\nslookup.exe\\ \\-q\\=TXT* AND winlog.event_data.ParentImage.keyword:*\\\\Autoit*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.CommandLine.keyword:(*\\\\Service.exe\\ i OR *\\\\Service.exe\\ u OR *\\\\microsoft\\\\Taskbar\\\\autoit3.exe OR C\\:\\\\wsc.exe*) OR winlog.event_data.Image.keyword:*\\\\Windows\\\\Temp\\\\DB\\\\*.exe OR (winlog.event_data.CommandLine.keyword:*\\\\nslookup.exe\\ \\-q\\=TXT* AND winlog.event_data.ParentImage.keyword:*\\\\Autoit*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Chafer Activity'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(EventID:"7045" AND ServiceName:("SC Scheduled Scan" "UpdatMachine"))\n(EventID:"4698" AND TaskName:("SC Scheduled Scan" "UpdatMachine"))\n(EventID:"13" AND EventType:"SetValue" AND (TargetObject.keyword:(*SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UMe *SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UT) OR (TargetObject.keyword:*\\\\Control\\\\SecurityProviders\\\\WDigest\\\\UseLogonCredential AND Details:"DWORD \\(0x00000001\\)")))\n(CommandLine.keyword:(*\\\\Service.exe i *\\\\Service.exe u *\\\\microsoft\\\\Taskbar\\\\autoit3.exe C\\:\\\\wsc.exe*) OR Image.keyword:*\\\\Windows\\\\Temp\\\\DB\\\\*.exe OR (CommandLine.keyword:*\\\\nslookup.exe \\-q=TXT* AND ParentImage.keyword:*\\\\Autoit*))
+(EventID:"7045" AND ServiceName:("SC Scheduled Scan" "UpdatMachine"))
+(EventID:"4698" AND TaskName:("SC Scheduled Scan" "UpdatMachine"))
+(EventID:"13" AND EventType:"SetValue" AND (TargetObject.keyword:(*SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UMe *SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UT) OR (TargetObject.keyword:*\\Control\\SecurityProviders\\WDigest\\UseLogonCredential AND Details:"DWORD \(0x00000001\)")))
+(CommandLine.keyword:(*\\Service.exe i *\\Service.exe u *\\microsoft\\Taskbar\\autoit3.exe C\:\\wsc.exe*) OR Image.keyword:*\\Windows\\Temp\\DB\\*.exe OR (CommandLine.keyword:*\\nslookup.exe \-q=TXT* AND ParentImage.keyword:*\\Autoit*))
 ```
 
 
 ### splunk
     
 ```
-(source="WinEventLog:System" EventCode="7045" (ServiceName="SC Scheduled Scan" OR ServiceName="UpdatMachine"))\n(source="WinEventLog:Security" EventCode="4698" (TaskName="SC Scheduled Scan" OR TaskName="UpdatMachine"))\n(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="13" EventType="SetValue" ((TargetObject="*SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UMe" OR TargetObject="*SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UT") OR (TargetObject="*\\\\Control\\\\SecurityProviders\\\\WDigest\\\\UseLogonCredential" Details="DWORD (0x00000001)")))\n((CommandLine="*\\\\Service.exe i" OR CommandLine="*\\\\Service.exe u" OR CommandLine="*\\\\microsoft\\\\Taskbar\\\\autoit3.exe" OR CommandLine="C:\\\\wsc.exe*") OR Image="*\\\\Windows\\\\Temp\\\\DB\\\\*.exe" OR (CommandLine="*\\\\nslookup.exe -q=TXT*" ParentImage="*\\\\Autoit*"))
+(source="WinEventLog:System" EventCode="7045" (ServiceName="SC Scheduled Scan" OR ServiceName="UpdatMachine"))
+(source="WinEventLog:Security" EventCode="4698" (TaskName="SC Scheduled Scan" OR TaskName="UpdatMachine"))
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="13" EventType="SetValue" ((TargetObject="*SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UMe" OR TargetObject="*SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UT") OR (TargetObject="*\\Control\\SecurityProviders\\WDigest\\UseLogonCredential" Details="DWORD (0x00000001)")))
+((CommandLine="*\\Service.exe i" OR CommandLine="*\\Service.exe u" OR CommandLine="*\\microsoft\\Taskbar\\autoit3.exe" OR CommandLine="C:\\wsc.exe*") OR Image="*\\Windows\\Temp\\DB\\*.exe" OR (CommandLine="*\\nslookup.exe -q=TXT*" ParentImage="*\\Autoit*"))
 ```
 
 
 ### logpoint
     
 ```
-(event_source="Microsoft-Windows-Security-Auditing" event_id="7045" service IN ["SC Scheduled Scan", "UpdatMachine"])\n(event_source="Microsoft-Windows-Security-Auditing" event_id="4698" TaskName IN ["SC Scheduled Scan", "UpdatMachine"])\n(event_id="13" EventType="SetValue" (TargetObject IN ["*SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UMe", "*SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UT"] OR (TargetObject="*\\\\Control\\\\SecurityProviders\\\\WDigest\\\\UseLogonCredential" Details="DWORD (0x00000001)")))\n(CommandLine IN ["*\\\\Service.exe i", "*\\\\Service.exe u", "*\\\\microsoft\\\\Taskbar\\\\autoit3.exe", "C:\\\\wsc.exe*"] OR Image="*\\\\Windows\\\\Temp\\\\DB\\\\*.exe" OR (CommandLine="*\\\\nslookup.exe -q=TXT*" ParentImage="*\\\\Autoit*"))
+(event_source="Microsoft-Windows-Security-Auditing" event_id="7045" service IN ["SC Scheduled Scan", "UpdatMachine"])
+(event_source="Microsoft-Windows-Security-Auditing" event_id="4698" TaskName IN ["SC Scheduled Scan", "UpdatMachine"])
+(event_id="13" EventType="SetValue" (TargetObject IN ["*SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UMe", "*SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UT"] OR (TargetObject="*\\Control\\SecurityProviders\\WDigest\\UseLogonCredential" Details="DWORD (0x00000001)")))
+(CommandLine IN ["*\\Service.exe i", "*\\Service.exe u", "*\\microsoft\\Taskbar\\autoit3.exe", "C:\\wsc.exe*"] OR Image="*\\Windows\\Temp\\DB\\*.exe" OR (CommandLine="*\\nslookup.exe -q=TXT*" ParentImage="*\\Autoit*"))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*7045)(?=.*(?:.*SC Scheduled Scan|.*UpdatMachine)))'\ngrep -P '^(?:.*(?=.*4698)(?=.*(?:.*SC Scheduled Scan|.*UpdatMachine)))'\ngrep -P '^(?:.*(?=.*13)(?=.*SetValue)(?=.*(?:.*(?:.*(?:.*.*SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UMe|.*.*SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UT)|.*(?:.*(?=.*.*\\Control\\SecurityProviders\\WDigest\\UseLogonCredential)(?=.*DWORD \\(0x00000001\\)))))))'\ngrep -P '^(?:.*(?:.*(?:.*.*\\Service\\.exe i|.*.*\\Service\\.exe u|.*.*\\microsoft\\Taskbar\\autoit3\\.exe|.*C:\\wsc\\.exe.*)|.*.*\\Windows\\Temp\\DB\\\\.*\\.exe|.*(?:.*(?=.*.*\\nslookup\\.exe -q=TXT.*)(?=.*.*\\Autoit.*))))'
+grep -P '^(?:.*(?=.*7045)(?=.*(?:.*SC Scheduled Scan|.*UpdatMachine)))'
+grep -P '^(?:.*(?=.*4698)(?=.*(?:.*SC Scheduled Scan|.*UpdatMachine)))'
+grep -P '^(?:.*(?=.*13)(?=.*SetValue)(?=.*(?:.*(?:.*(?:.*.*SOFTWARE\Microsoft\Windows\CurrentVersion\UMe|.*.*SOFTWARE\Microsoft\Windows\CurrentVersion\UT)|.*(?:.*(?=.*.*\Control\SecurityProviders\WDigest\UseLogonCredential)(?=.*DWORD \(0x00000001\)))))))'
+grep -P '^(?:.*(?:.*(?:.*.*\Service\.exe i|.*.*\Service\.exe u|.*.*\microsoft\Taskbar\autoit3\.exe|.*C:\wsc\.exe.*)|.*.*\Windows\Temp\DB\\.*\.exe|.*(?:.*(?=.*.*\nslookup\.exe -q=TXT.*)(?=.*.*\Autoit.*))))'
 ```
 
 

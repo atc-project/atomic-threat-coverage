@@ -62,14 +62,90 @@ Get-WinEvent | where {(($_.message -match "CommandLine.*.*netsh.*") -and ($_.mes
 ### es-qs
     
 ```
-(winlog.event_data.CommandLine.keyword:(*netsh*) AND winlog.event_data.CommandLine.keyword:(*firewall\\ add*))
+(winlog.event_data.CommandLine.keyword:(*netsh*) AND winlog.event_data.CommandLine.keyword:(*firewall\ add*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/cd5cfd80-aa5f-44c0-9c20-108c4ae12e3c <<EOF\n{\n  "metadata": {\n    "title": "Netsh Port or Application Allowed",\n    "description": "Allow Incoming Connections by Port or Application on Windows Firewall",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1089",\n      "attack.t1562.004"\n    ],\n    "query": "(winlog.event_data.CommandLine.keyword:(*netsh*) AND winlog.event_data.CommandLine.keyword:(*firewall\\\\ add*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.CommandLine.keyword:(*netsh*) AND winlog.event_data.CommandLine.keyword:(*firewall\\\\ add*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Netsh Port or Application Allowed\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/cd5cfd80-aa5f-44c0-9c20-108c4ae12e3c <<EOF
+{
+  "metadata": {
+    "title": "Netsh Port or Application Allowed",
+    "description": "Allow Incoming Connections by Port or Application on Windows Firewall",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.t1089",
+      "attack.t1562.004"
+    ],
+    "query": "(winlog.event_data.CommandLine.keyword:(*netsh*) AND winlog.event_data.CommandLine.keyword:(*firewall\\ add*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.CommandLine.keyword:(*netsh*) AND winlog.event_data.CommandLine.keyword:(*firewall\\ add*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Netsh Port or Application Allowed'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 

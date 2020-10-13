@@ -56,49 +56,124 @@ level: critical
 ### powershell
     
 ```
-Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {(($_.ID -eq "12" -or $_.ID -eq "13") -and ($_.message -match "TargetObject.*.*SYSTEM\\\\.*\\\\services\\\\localNETService")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {(($_.ID -eq "12" -or $_.ID -eq "13") -and ($_.message -match "TargetObject.*.*SYSTEM\\.*\\services\\localNETService")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:("12" OR "13") AND winlog.event_data.TargetObject.keyword:(*SYSTEM\\\\*\\\\services\\\\localNETService))
+(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND winlog.event_id:("12" OR "13") AND winlog.event_data.TargetObject.keyword:(*SYSTEM\\*\\services\\localNETService))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/f7f9ab88-7557-4a69-b30e-0a8f91b3a0e7 <<EOF\n{\n  "metadata": {\n    "title": "Registy Entries For Azorult Malware",\n    "description": "Detects the presence of a registry key created during Azorult execution",\n    "tags": [\n      "attack.execution",\n      "attack.t1112"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:(\\"12\\" OR \\"13\\") AND winlog.event_data.TargetObject.keyword:(*SYSTEM\\\\\\\\*\\\\\\\\services\\\\\\\\localNETService))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:(\\"12\\" OR \\"13\\") AND winlog.event_data.TargetObject.keyword:(*SYSTEM\\\\\\\\*\\\\\\\\services\\\\\\\\localNETService))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Registy Entries For Azorult Malware\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n        Image = {{_source.Image}}\\n TargetObject = {{_source.TargetObject}}\\nTargetDetails = {{_source.TargetDetails}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/f7f9ab88-7557-4a69-b30e-0a8f91b3a0e7 <<EOF
+{
+  "metadata": {
+    "title": "Registy Entries For Azorult Malware",
+    "description": "Detects the presence of a registry key created during Azorult execution",
+    "tags": [
+      "attack.execution",
+      "attack.t1112"
+    ],
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:(\"12\" OR \"13\") AND winlog.event_data.TargetObject.keyword:(*SYSTEM\\\\*\\\\services\\\\localNETService))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:(\"12\" OR \"13\") AND winlog.event_data.TargetObject.keyword:(*SYSTEM\\\\*\\\\services\\\\localNETService))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Registy Entries For Azorult Malware'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n        Image = {{_source.Image}}\n TargetObject = {{_source.TargetObject}}\nTargetDetails = {{_source.TargetDetails}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(EventID:("12" "13") AND TargetObject.keyword:(*SYSTEM\\\\*\\\\services\\\\localNETService))
+(EventID:("12" "13") AND TargetObject.keyword:(*SYSTEM\\*\\services\\localNETService))
 ```
 
 
 ### splunk
     
 ```
-(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" (EventCode="12" OR EventCode="13") (TargetObject="*SYSTEM\\\\*\\\\services\\\\localNETService")) | table Image,TargetObject,TargetDetails
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" (EventCode="12" OR EventCode="13") (TargetObject="*SYSTEM\\*\\services\\localNETService")) | table Image,TargetObject,TargetDetails
 ```
 
 
 ### logpoint
     
 ```
-(event_id IN ["12", "13"] TargetObject IN ["*SYSTEM\\\\*\\\\services\\\\localNETService"])
+(event_id IN ["12", "13"] TargetObject IN ["*SYSTEM\\*\\services\\localNETService"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*12|.*13))(?=.*(?:.*.*SYSTEM\\\\.*\\services\\localNETService)))'
+grep -P '^(?:.*(?=.*(?:.*12|.*13))(?=.*(?:.*.*SYSTEM\\.*\services\localNETService)))'
 ```
 
 

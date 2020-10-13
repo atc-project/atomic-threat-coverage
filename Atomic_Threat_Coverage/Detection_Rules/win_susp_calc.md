@@ -52,49 +52,124 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "CommandLine.*.*\\\\calc.exe .*" -or ($_.message -match "Image.*.*\\\\calc.exe" -and  -not ($_.message -match "Image.*.*\\\\Windows\\\\Sys.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "CommandLine.*.*\\calc.exe .*" -or ($_.message -match "Image.*.*\\calc.exe" -and  -not ($_.message -match "Image.*.*\\Windows\\Sys.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.CommandLine.keyword:*\\\\calc.exe\\ * OR (winlog.event_data.Image.keyword:*\\\\calc.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\Windows\\\\Sys*))))
+(winlog.event_data.CommandLine.keyword:*\\calc.exe\ * OR (winlog.event_data.Image.keyword:*\\calc.exe AND (NOT (winlog.event_data.Image.keyword:*\\Windows\\Sys*))))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/737e618a-a410-49b5-bec3-9e55ff7fbc15 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Calculator Usage",\n    "description": "Detects suspicious use of calc.exe with command line parameters or in a suspicious directory, which is likely caused by some PoC or detection evasion",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036"\n    ],\n    "query": "(winlog.event_data.CommandLine.keyword:*\\\\\\\\calc.exe\\\\ * OR (winlog.event_data.Image.keyword:*\\\\\\\\calc.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\\\\\Windows\\\\\\\\Sys*))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.CommandLine.keyword:*\\\\\\\\calc.exe\\\\ * OR (winlog.event_data.Image.keyword:*\\\\\\\\calc.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\\\\\Windows\\\\\\\\Sys*))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Calculator Usage\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/737e618a-a410-49b5-bec3-9e55ff7fbc15 <<EOF
+{
+  "metadata": {
+    "title": "Suspicious Calculator Usage",
+    "description": "Detects suspicious use of calc.exe with command line parameters or in a suspicious directory, which is likely caused by some PoC or detection evasion",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.t1036"
+    ],
+    "query": "(winlog.event_data.CommandLine.keyword:*\\\\calc.exe\\ * OR (winlog.event_data.Image.keyword:*\\\\calc.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\Windows\\\\Sys*))))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.CommandLine.keyword:*\\\\calc.exe\\ * OR (winlog.event_data.Image.keyword:*\\\\calc.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\Windows\\\\Sys*))))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious Calculator Usage'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(CommandLine.keyword:*\\\\calc.exe * OR (Image.keyword:*\\\\calc.exe AND (NOT (Image.keyword:*\\\\Windows\\\\Sys*))))
+(CommandLine.keyword:*\\calc.exe * OR (Image.keyword:*\\calc.exe AND (NOT (Image.keyword:*\\Windows\\Sys*))))
 ```
 
 
 ### splunk
     
 ```
-(CommandLine="*\\\\calc.exe *" OR (Image="*\\\\calc.exe" NOT (Image="*\\\\Windows\\\\Sys*")))
+(CommandLine="*\\calc.exe *" OR (Image="*\\calc.exe" NOT (Image="*\\Windows\\Sys*")))
 ```
 
 
 ### logpoint
     
 ```
-(CommandLine="*\\\\calc.exe *" OR (Image="*\\\\calc.exe"  -(Image="*\\\\Windows\\\\Sys*")))
+(CommandLine="*\\calc.exe *" OR (Image="*\\calc.exe"  -(Image="*\\Windows\\Sys*")))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?:.*.*\\calc\\.exe .*|.*(?:.*(?=.*.*\\calc\\.exe)(?=.*(?!.*(?:.*(?=.*.*\\Windows\\Sys.*)))))))'
+grep -P '^(?:.*(?:.*.*\calc\.exe .*|.*(?:.*(?=.*.*\calc\.exe)(?=.*(?!.*(?:.*(?=.*.*\Windows\Sys.*)))))))'
 ```
 
 

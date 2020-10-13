@@ -54,49 +54,126 @@ level: critical
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "a53a02b997935fd8eedcb5f7abab9b9f" -or $_.message -match "e96a73c7bf33a464c510ede582318bf2") -or ($_.message -match "CommandLine.*.*.exe -S" -and $_.message -match "ParentImage.*.*\\\\services.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "a53a02b997935fd8eedcb5f7abab9b9f" -or $_.message -match "e96a73c7bf33a464c510ede582318bf2") -or ($_.message -match "CommandLine.*.*.exe -S" -and $_.message -match "ParentImage.*.*\\services.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Imphash:("a53a02b997935fd8eedcb5f7abab9b9f" OR "A53A02B997935FD8EEDCB5F7ABAB9B9F" OR "e96a73c7bf33a464c510ede582318bf2" OR "E96A73C7BF33A464C510EDE582318BF2") OR (winlog.event_data.CommandLine.keyword:*.exe\\ \\-S AND winlog.event_data.ParentImage.keyword:*\\\\services.exe))
+(winlog.event_data.Imphash:("a53a02b997935fd8eedcb5f7abab9b9f" OR "A53A02B997935FD8EEDCB5F7ABAB9B9F" OR "e96a73c7bf33a464c510ede582318bf2" OR "E96A73C7BF33A464C510EDE582318BF2") OR (winlog.event_data.CommandLine.keyword:*.exe\ \-S AND winlog.event_data.ParentImage.keyword:*\\services.exe))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/7aa7009a-28b9-4344-8c1f-159489a390df <<EOF\n{\n  "metadata": {\n    "title": "Windows Credential Editor",\n    "description": "Detects the use of Windows Credential Editor (WCE)",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003",\n      "attack.t1003.001",\n      "attack.s0005"\n    ],\n    "query": "(winlog.event_data.Imphash:(\\"a53a02b997935fd8eedcb5f7abab9b9f\\" OR \\"A53A02B997935FD8EEDCB5F7ABAB9B9F\\" OR \\"e96a73c7bf33a464c510ede582318bf2\\" OR \\"E96A73C7BF33A464C510EDE582318BF2\\") OR (winlog.event_data.CommandLine.keyword:*.exe\\\\ \\\\-S AND winlog.event_data.ParentImage.keyword:*\\\\\\\\services.exe))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.Imphash:(\\"a53a02b997935fd8eedcb5f7abab9b9f\\" OR \\"A53A02B997935FD8EEDCB5F7ABAB9B9F\\" OR \\"e96a73c7bf33a464c510ede582318bf2\\" OR \\"E96A73C7BF33A464C510EDE582318BF2\\") OR (winlog.event_data.CommandLine.keyword:*.exe\\\\ \\\\-S AND winlog.event_data.ParentImage.keyword:*\\\\\\\\services.exe))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Windows Credential Editor\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/7aa7009a-28b9-4344-8c1f-159489a390df <<EOF
+{
+  "metadata": {
+    "title": "Windows Credential Editor",
+    "description": "Detects the use of Windows Credential Editor (WCE)",
+    "tags": [
+      "attack.credential_access",
+      "attack.t1003",
+      "attack.t1003.001",
+      "attack.s0005"
+    ],
+    "query": "(winlog.event_data.Imphash:(\"a53a02b997935fd8eedcb5f7abab9b9f\" OR \"A53A02B997935FD8EEDCB5F7ABAB9B9F\" OR \"e96a73c7bf33a464c510ede582318bf2\" OR \"E96A73C7BF33A464C510EDE582318BF2\") OR (winlog.event_data.CommandLine.keyword:*.exe\\ \\-S AND winlog.event_data.ParentImage.keyword:*\\\\services.exe))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.Imphash:(\"a53a02b997935fd8eedcb5f7abab9b9f\" OR \"A53A02B997935FD8EEDCB5F7ABAB9B9F\" OR \"e96a73c7bf33a464c510ede582318bf2\" OR \"E96A73C7BF33A464C510EDE582318BF2\") OR (winlog.event_data.CommandLine.keyword:*.exe\\ \\-S AND winlog.event_data.ParentImage.keyword:*\\\\services.exe))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Windows Credential Editor'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(Imphash:("a53a02b997935fd8eedcb5f7abab9b9f" "A53A02B997935FD8EEDCB5F7ABAB9B9F" "e96a73c7bf33a464c510ede582318bf2" "E96A73C7BF33A464C510EDE582318BF2") OR (CommandLine.keyword:*.exe \\-S AND ParentImage.keyword:*\\\\services.exe))
+(Imphash:("a53a02b997935fd8eedcb5f7abab9b9f" "A53A02B997935FD8EEDCB5F7ABAB9B9F" "e96a73c7bf33a464c510ede582318bf2" "E96A73C7BF33A464C510EDE582318BF2") OR (CommandLine.keyword:*.exe \-S AND ParentImage.keyword:*\\services.exe))
 ```
 
 
 ### splunk
     
 ```
-((Imphash="a53a02b997935fd8eedcb5f7abab9b9f" OR Imphash="e96a73c7bf33a464c510ede582318bf2") OR (CommandLine="*.exe -S" ParentImage="*\\\\services.exe"))
+((Imphash="a53a02b997935fd8eedcb5f7abab9b9f" OR Imphash="e96a73c7bf33a464c510ede582318bf2") OR (CommandLine="*.exe -S" ParentImage="*\\services.exe"))
 ```
 
 
 ### logpoint
     
 ```
-(Imphash IN ["a53a02b997935fd8eedcb5f7abab9b9f", "e96a73c7bf33a464c510ede582318bf2"] OR (CommandLine="*.exe -S" ParentImage="*\\\\services.exe"))
+(Imphash IN ["a53a02b997935fd8eedcb5f7abab9b9f", "e96a73c7bf33a464c510ede582318bf2"] OR (CommandLine="*.exe -S" ParentImage="*\\services.exe"))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?:.*(?:.*a53a02b997935fd8eedcb5f7abab9b9f|.*e96a73c7bf33a464c510ede582318bf2)|.*(?:.*(?=.*.*\\.exe -S)(?=.*.*\\services\\.exe))))'
+grep -P '^(?:.*(?:.*(?:.*a53a02b997935fd8eedcb5f7abab9b9f|.*e96a73c7bf33a464c510ede582318bf2)|.*(?:.*(?=.*.*\.exe -S)(?=.*.*\services\.exe))))'
 ```
 
 

@@ -50,49 +50,121 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "Sysinternals DebugView" -or $_.message -match "Sysinternals Debugview") -and  -not ($_.message -match "OriginalFilename.*Dbgview.exe" -and $_.message -match "Image.*.*\\\\Dbgview.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "Sysinternals DebugView" -or $_.message -match "Sysinternals Debugview") -and  -not ($_.message -match "OriginalFilename.*Dbgview.exe" -and $_.message -match "Image.*.*\\Dbgview.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(Product:("Sysinternals\\ DebugView" OR "Sysinternals\\ Debugview") AND (NOT (OriginalFilename:"Dbgview.exe" AND winlog.event_data.Image.keyword:*\\\\Dbgview.exe)))
+(Product:("Sysinternals\ DebugView" OR "Sysinternals\ Debugview") AND (NOT (OriginalFilename:"Dbgview.exe" AND winlog.event_data.Image.keyword:*\\Dbgview.exe)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/cd764533-2e07-40d6-a718-cfeec7f2da7f <<EOF\n{\n  "metadata": {\n    "title": "Renamed SysInternals Debug View",\n    "description": "Detects suspicious renamed SysInternals DebugView execution",\n    "tags": "",\n    "query": "(Product:(\\"Sysinternals\\\\ DebugView\\" OR \\"Sysinternals\\\\ Debugview\\") AND (NOT (OriginalFilename:\\"Dbgview.exe\\" AND winlog.event_data.Image.keyword:*\\\\\\\\Dbgview.exe)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(Product:(\\"Sysinternals\\\\ DebugView\\" OR \\"Sysinternals\\\\ Debugview\\") AND (NOT (OriginalFilename:\\"Dbgview.exe\\" AND winlog.event_data.Image.keyword:*\\\\\\\\Dbgview.exe)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Renamed SysInternals Debug View\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/cd764533-2e07-40d6-a718-cfeec7f2da7f <<EOF
+{
+  "metadata": {
+    "title": "Renamed SysInternals Debug View",
+    "description": "Detects suspicious renamed SysInternals DebugView execution",
+    "tags": "",
+    "query": "(Product:(\"Sysinternals\\ DebugView\" OR \"Sysinternals\\ Debugview\") AND (NOT (OriginalFilename:\"Dbgview.exe\" AND winlog.event_data.Image.keyword:*\\\\Dbgview.exe)))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(Product:(\"Sysinternals\\ DebugView\" OR \"Sysinternals\\ Debugview\") AND (NOT (OriginalFilename:\"Dbgview.exe\" AND winlog.event_data.Image.keyword:*\\\\Dbgview.exe)))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Renamed SysInternals Debug View'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(Product:("Sysinternals DebugView" "Sysinternals Debugview") AND (NOT (OriginalFilename:"Dbgview.exe" AND Image.keyword:*\\\\Dbgview.exe)))
+(Product:("Sysinternals DebugView" "Sysinternals Debugview") AND (NOT (OriginalFilename:"Dbgview.exe" AND Image.keyword:*\\Dbgview.exe)))
 ```
 
 
 ### splunk
     
 ```
-((Product="Sysinternals DebugView" OR Product="Sysinternals Debugview") NOT (OriginalFilename="Dbgview.exe" Image="*\\\\Dbgview.exe"))
+((Product="Sysinternals DebugView" OR Product="Sysinternals Debugview") NOT (OriginalFilename="Dbgview.exe" Image="*\\Dbgview.exe"))
 ```
 
 
 ### logpoint
     
 ```
-(Product IN ["Sysinternals DebugView", "Sysinternals Debugview"]  -(OriginalFilename="Dbgview.exe" Image="*\\\\Dbgview.exe"))
+(Product IN ["Sysinternals DebugView", "Sysinternals Debugview"]  -(OriginalFilename="Dbgview.exe" Image="*\\Dbgview.exe"))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*Sysinternals DebugView|.*Sysinternals Debugview))(?=.*(?!.*(?:.*(?=.*Dbgview\\.exe)(?=.*.*\\Dbgview\\.exe)))))'
+grep -P '^(?:.*(?=.*(?:.*Sysinternals DebugView|.*Sysinternals Debugview))(?=.*(?!.*(?:.*(?=.*Dbgview\.exe)(?=.*.*\Dbgview\.exe)))))'
 ```
 
 

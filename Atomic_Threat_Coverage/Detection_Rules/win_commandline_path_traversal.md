@@ -57,21 +57,97 @@ Get-WinEvent | where {($_.message -match "ParentCommandLine.*.*cmd.*/c.*" -and $
 ### es-qs
     
 ```
-(winlog.event_data.ParentCommandLine.keyword:*cmd*\\/c* AND winlog.event_data.CommandLine.keyword:*\\/..\\/..\\/*)
+(winlog.event_data.ParentCommandLine.keyword:*cmd*\/c* AND winlog.event_data.CommandLine.keyword:*\/..\/..\/*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/087790e3-3287-436c-bccf-cbd0184a7db1 <<EOF\n{\n  "metadata": {\n    "title": "Cmd.exe CommandLine Path Traversal",\n    "description": "detects the usage of path traversal in cmd.exe indicating possible command/argument confusion/hijacking",\n    "tags": [\n      "attack.execution",\n      "attack.t1059.003",\n      "attack.t1059"\n    ],\n    "query": "(winlog.event_data.ParentCommandLine.keyword:*cmd*\\\\/c* AND winlog.event_data.CommandLine.keyword:*\\\\/..\\\\/..\\\\/*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.ParentCommandLine.keyword:*cmd*\\\\/c* AND winlog.event_data.CommandLine.keyword:*\\\\/..\\\\/..\\\\/*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Cmd.exe CommandLine Path Traversal\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/087790e3-3287-436c-bccf-cbd0184a7db1 <<EOF
+{
+  "metadata": {
+    "title": "Cmd.exe CommandLine Path Traversal",
+    "description": "detects the usage of path traversal in cmd.exe indicating possible command/argument confusion/hijacking",
+    "tags": [
+      "attack.execution",
+      "attack.t1059.003",
+      "attack.t1059"
+    ],
+    "query": "(winlog.event_data.ParentCommandLine.keyword:*cmd*\\/c* AND winlog.event_data.CommandLine.keyword:*\\/..\\/..\\/*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.ParentCommandLine.keyword:*cmd*\\/c* AND winlog.event_data.CommandLine.keyword:*\\/..\\/..\\/*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Cmd.exe CommandLine Path Traversal'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(ParentCommandLine.keyword:*cmd*\\/c* AND CommandLine.keyword:*\\/..\\/..\\/*)
+(ParentCommandLine.keyword:*cmd*\/c* AND CommandLine.keyword:*\/..\/..\/*)
 ```
 
 
@@ -92,7 +168,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*.*cmd.*/c.*)(?=.*.*/\\.\\./\\.\\./.*))'
+grep -P '^(?:.*(?=.*.*cmd.*/c.*)(?=.*.*/\.\./\.\./.*))'
 ```
 
 

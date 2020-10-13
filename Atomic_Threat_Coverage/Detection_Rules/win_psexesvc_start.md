@@ -48,49 +48,126 @@ level: low
 ### powershell
     
 ```
-Get-WinEvent | where {$_.message -match "CommandLine.*C:\\\\Windows\\\\PSEXESVC.exe" } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {$_.message -match "CommandLine.*C:\\Windows\\PSEXESVC.exe" } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.CommandLine:"C\\:\\\\Windows\\\\PSEXESVC.exe"
+winlog.event_data.CommandLine:"C\:\\Windows\\PSEXESVC.exe"
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/3ede524d-21cc-472d-a3ce-d21b568d8db7 <<EOF\n{\n  "metadata": {\n    "title": "PsExec Service Start",\n    "description": "Detects a PsExec service start",\n    "tags": [\n      "attack.execution",\n      "attack.t1035",\n      "attack.s0029",\n      "attack.t1569.002"\n    ],\n    "query": "winlog.event_data.CommandLine:\\"C\\\\:\\\\\\\\Windows\\\\\\\\PSEXESVC.exe\\""\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine:\\"C\\\\:\\\\\\\\Windows\\\\\\\\PSEXESVC.exe\\"",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'PsExec Service Start\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/3ede524d-21cc-472d-a3ce-d21b568d8db7 <<EOF
+{
+  "metadata": {
+    "title": "PsExec Service Start",
+    "description": "Detects a PsExec service start",
+    "tags": [
+      "attack.execution",
+      "attack.t1035",
+      "attack.s0029",
+      "attack.t1569.002"
+    ],
+    "query": "winlog.event_data.CommandLine:\"C\\:\\\\Windows\\\\PSEXESVC.exe\""
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.CommandLine:\"C\\:\\\\Windows\\\\PSEXESVC.exe\"",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'PsExec Service Start'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-CommandLine:"C\\:\\\\Windows\\\\PSEXESVC.exe"
+CommandLine:"C\:\\Windows\\PSEXESVC.exe"
 ```
 
 
 ### splunk
     
 ```
-CommandLine="C:\\\\Windows\\\\PSEXESVC.exe"
+CommandLine="C:\\Windows\\PSEXESVC.exe"
 ```
 
 
 ### logpoint
     
 ```
-CommandLine="C:\\\\Windows\\\\PSEXESVC.exe"
+CommandLine="C:\\Windows\\PSEXESVC.exe"
 ```
 
 
 ### grep
     
 ```
-grep -P '^C:\\Windows\\PSEXESVC\\.exe'
+grep -P '^C:\Windows\PSEXESVC\.exe'
 ```
 
 

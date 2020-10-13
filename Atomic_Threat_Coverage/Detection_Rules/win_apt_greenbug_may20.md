@@ -82,49 +82,131 @@ level: critical
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "CommandLine.*.*bitsadmin /transfer.*" -and $_.message -match "CommandLine.*.*CSIDL_APPDATA.*") -or ($_.message -match "CommandLine.*.*CSIDL_SYSTEM_DRIVE.*") -or ($_.message -match "CommandLine.*.*\\\\msf.ps1.*" -or $_.message -match "CommandLine.*.*8989 -e cmd.exe.*" -or $_.message -match "CommandLine.*.*system.Data.SqlClient.SqlDataAdapter($cmd); [void]$da.fill.*" -or $_.message -match "CommandLine.*.*-nop -w hidden -c $k=new-object.*" -or $_.message -match "CommandLine.*.*[Net.CredentialCache]::DefaultCredentials;IEX .*" -or $_.message -match "CommandLine.*.* -nop -w hidden -c $m=new-object net.webclient;$m.*" -or $_.message -match "CommandLine.*.*-noninteractive -executionpolicy bypass whoami.*" -or $_.message -match "CommandLine.*.*-noninteractive -executionpolicy bypass netstat -a.*" -or $_.message -match "CommandLine.*.*L3NlcnZlc.*") -or ($_.message -match "Image.*.*\\\\adobe\\\\Adobe.exe" -or $_.message -match "Image.*.*\\\\oracle\\\\local.exe" -or $_.message -match "Image.*.*\\\\revshell.exe" -or $_.message -match "Image.*.*infopagesbackup\\\\ncat.exe" -or $_.message -match "Image.*.*CSIDL_SYSTEM\\\\cmd.exe" -or $_.message -match "Image.*.*\\\\programdata\\\\oracle\\\\java.exe" -or $_.message -match "Image.*.*CSIDL_COMMON_APPDATA\\\\comms\\\\comms.exe" -or $_.message -match "Image.*.*\\\\Programdata\\\\VMware\\\\Vmware.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "CommandLine.*.*bitsadmin /transfer.*" -and $_.message -match "CommandLine.*.*CSIDL_APPDATA.*") -or ($_.message -match "CommandLine.*.*CSIDL_SYSTEM_DRIVE.*") -or ($_.message -match "CommandLine.*.*\\msf.ps1.*" -or $_.message -match "CommandLine.*.*8989 -e cmd.exe.*" -or $_.message -match "CommandLine.*.*system.Data.SqlClient.SqlDataAdapter($cmd); [void]$da.fill.*" -or $_.message -match "CommandLine.*.*-nop -w hidden -c $k=new-object.*" -or $_.message -match "CommandLine.*.*[Net.CredentialCache]::DefaultCredentials;IEX .*" -or $_.message -match "CommandLine.*.* -nop -w hidden -c $m=new-object net.webclient;$m.*" -or $_.message -match "CommandLine.*.*-noninteractive -executionpolicy bypass whoami.*" -or $_.message -match "CommandLine.*.*-noninteractive -executionpolicy bypass netstat -a.*" -or $_.message -match "CommandLine.*.*L3NlcnZlc.*") -or ($_.message -match "Image.*.*\\adobe\\Adobe.exe" -or $_.message -match "Image.*.*\\oracle\\local.exe" -or $_.message -match "Image.*.*\\revshell.exe" -or $_.message -match "Image.*.*infopagesbackup\\ncat.exe" -or $_.message -match "Image.*.*CSIDL_SYSTEM\\cmd.exe" -or $_.message -match "Image.*.*\\programdata\\oracle\\java.exe" -or $_.message -match "Image.*.*CSIDL_COMMON_APPDATA\\comms\\comms.exe" -or $_.message -match "Image.*.*\\Programdata\\VMware\\Vmware.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.CommandLine.keyword:*bitsadmin\\ \\/transfer* AND winlog.event_data.CommandLine.keyword:*CSIDL_APPDATA*) OR winlog.event_data.CommandLine.keyword:(*CSIDL_SYSTEM_DRIVE*) OR winlog.event_data.CommandLine.keyword:(*\\\\msf.ps1* OR *8989\\ \\-e\\ cmd.exe* OR *system.Data.SqlClient.SqlDataAdapter\\($cmd\\);\\ \\[void\\]$da.fill* OR *\\-nop\\ \\-w\\ hidden\\ \\-c\\ $k\\=new\\-object* OR *\\[Net.CredentialCache\\]\\:\\:DefaultCredentials;IEX\\ * OR *\\ \\-nop\\ \\-w\\ hidden\\ \\-c\\ $m\\=new\\-object\\ net.webclient;$m* OR *\\-noninteractive\\ \\-executionpolicy\\ bypass\\ whoami* OR *\\-noninteractive\\ \\-executionpolicy\\ bypass\\ netstat\\ \\-a* OR *L3NlcnZlc*) OR winlog.event_data.Image.keyword:(*\\\\adobe\\\\Adobe.exe OR *\\\\oracle\\\\local.exe OR *\\\\revshell.exe OR *infopagesbackup\\\\ncat.exe OR *CSIDL_SYSTEM\\\\cmd.exe OR *\\\\programdata\\\\oracle\\\\java.exe OR *CSIDL_COMMON_APPDATA\\\\comms\\\\comms.exe OR *\\\\Programdata\\\\VMware\\\\Vmware.exe))
+((winlog.event_data.CommandLine.keyword:*bitsadmin\ \/transfer* AND winlog.event_data.CommandLine.keyword:*CSIDL_APPDATA*) OR winlog.event_data.CommandLine.keyword:(*CSIDL_SYSTEM_DRIVE*) OR winlog.event_data.CommandLine.keyword:(*\\msf.ps1* OR *8989\ \-e\ cmd.exe* OR *system.Data.SqlClient.SqlDataAdapter\($cmd\);\ \[void\]$da.fill* OR *\-nop\ \-w\ hidden\ \-c\ $k\=new\-object* OR *\[Net.CredentialCache\]\:\:DefaultCredentials;IEX\ * OR *\ \-nop\ \-w\ hidden\ \-c\ $m\=new\-object\ net.webclient;$m* OR *\-noninteractive\ \-executionpolicy\ bypass\ whoami* OR *\-noninteractive\ \-executionpolicy\ bypass\ netstat\ \-a* OR *L3NlcnZlc*) OR winlog.event_data.Image.keyword:(*\\adobe\\Adobe.exe OR *\\oracle\\local.exe OR *\\revshell.exe OR *infopagesbackup\\ncat.exe OR *CSIDL_SYSTEM\\cmd.exe OR *\\programdata\\oracle\\java.exe OR *CSIDL_COMMON_APPDATA\\comms\\comms.exe OR *\\Programdata\\VMware\\Vmware.exe))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/3711eee4-a808-4849-8a14-faf733da3612 <<EOF\n{\n  "metadata": {\n    "title": "Greenbug Campaign Indicators",\n    "description": "Detects tools and process executions as observed in a Greenbug campaign in May 2020",\n    "tags": [\n      "attack.g0049",\n      "attack.execution",\n      "attack.t1059.001",\n      "attack.t1086",\n      "attack.command_and_control",\n      "attack.t1105",\n      "attack.defense_evasion",\n      "attack.t1036",\n      "attack.t1036.005"\n    ],\n    "query": "((winlog.event_data.CommandLine.keyword:*bitsadmin\\\\ \\\\/transfer* AND winlog.event_data.CommandLine.keyword:*CSIDL_APPDATA*) OR winlog.event_data.CommandLine.keyword:(*CSIDL_SYSTEM_DRIVE*) OR winlog.event_data.CommandLine.keyword:(*\\\\\\\\msf.ps1* OR *8989\\\\ \\\\-e\\\\ cmd.exe* OR *system.Data.SqlClient.SqlDataAdapter\\\\($cmd\\\\);\\\\ \\\\[void\\\\]$da.fill* OR *\\\\-nop\\\\ \\\\-w\\\\ hidden\\\\ \\\\-c\\\\ $k\\\\=new\\\\-object* OR *\\\\[Net.CredentialCache\\\\]\\\\:\\\\:DefaultCredentials;IEX\\\\ * OR *\\\\ \\\\-nop\\\\ \\\\-w\\\\ hidden\\\\ \\\\-c\\\\ $m\\\\=new\\\\-object\\\\ net.webclient;$m* OR *\\\\-noninteractive\\\\ \\\\-executionpolicy\\\\ bypass\\\\ whoami* OR *\\\\-noninteractive\\\\ \\\\-executionpolicy\\\\ bypass\\\\ netstat\\\\ \\\\-a* OR *L3NlcnZlc*) OR winlog.event_data.Image.keyword:(*\\\\\\\\adobe\\\\\\\\Adobe.exe OR *\\\\\\\\oracle\\\\\\\\local.exe OR *\\\\\\\\revshell.exe OR *infopagesbackup\\\\\\\\ncat.exe OR *CSIDL_SYSTEM\\\\\\\\cmd.exe OR *\\\\\\\\programdata\\\\\\\\oracle\\\\\\\\java.exe OR *CSIDL_COMMON_APPDATA\\\\\\\\comms\\\\\\\\comms.exe OR *\\\\\\\\Programdata\\\\\\\\VMware\\\\\\\\Vmware.exe))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.CommandLine.keyword:*bitsadmin\\\\ \\\\/transfer* AND winlog.event_data.CommandLine.keyword:*CSIDL_APPDATA*) OR winlog.event_data.CommandLine.keyword:(*CSIDL_SYSTEM_DRIVE*) OR winlog.event_data.CommandLine.keyword:(*\\\\\\\\msf.ps1* OR *8989\\\\ \\\\-e\\\\ cmd.exe* OR *system.Data.SqlClient.SqlDataAdapter\\\\($cmd\\\\);\\\\ \\\\[void\\\\]$da.fill* OR *\\\\-nop\\\\ \\\\-w\\\\ hidden\\\\ \\\\-c\\\\ $k\\\\=new\\\\-object* OR *\\\\[Net.CredentialCache\\\\]\\\\:\\\\:DefaultCredentials;IEX\\\\ * OR *\\\\ \\\\-nop\\\\ \\\\-w\\\\ hidden\\\\ \\\\-c\\\\ $m\\\\=new\\\\-object\\\\ net.webclient;$m* OR *\\\\-noninteractive\\\\ \\\\-executionpolicy\\\\ bypass\\\\ whoami* OR *\\\\-noninteractive\\\\ \\\\-executionpolicy\\\\ bypass\\\\ netstat\\\\ \\\\-a* OR *L3NlcnZlc*) OR winlog.event_data.Image.keyword:(*\\\\\\\\adobe\\\\\\\\Adobe.exe OR *\\\\\\\\oracle\\\\\\\\local.exe OR *\\\\\\\\revshell.exe OR *infopagesbackup\\\\\\\\ncat.exe OR *CSIDL_SYSTEM\\\\\\\\cmd.exe OR *\\\\\\\\programdata\\\\\\\\oracle\\\\\\\\java.exe OR *CSIDL_COMMON_APPDATA\\\\\\\\comms\\\\\\\\comms.exe OR *\\\\\\\\Programdata\\\\\\\\VMware\\\\\\\\Vmware.exe))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Greenbug Campaign Indicators\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/3711eee4-a808-4849-8a14-faf733da3612 <<EOF
+{
+  "metadata": {
+    "title": "Greenbug Campaign Indicators",
+    "description": "Detects tools and process executions as observed in a Greenbug campaign in May 2020",
+    "tags": [
+      "attack.g0049",
+      "attack.execution",
+      "attack.t1059.001",
+      "attack.t1086",
+      "attack.command_and_control",
+      "attack.t1105",
+      "attack.defense_evasion",
+      "attack.t1036",
+      "attack.t1036.005"
+    ],
+    "query": "((winlog.event_data.CommandLine.keyword:*bitsadmin\\ \\/transfer* AND winlog.event_data.CommandLine.keyword:*CSIDL_APPDATA*) OR winlog.event_data.CommandLine.keyword:(*CSIDL_SYSTEM_DRIVE*) OR winlog.event_data.CommandLine.keyword:(*\\\\msf.ps1* OR *8989\\ \\-e\\ cmd.exe* OR *system.Data.SqlClient.SqlDataAdapter\\($cmd\\);\\ \\[void\\]$da.fill* OR *\\-nop\\ \\-w\\ hidden\\ \\-c\\ $k\\=new\\-object* OR *\\[Net.CredentialCache\\]\\:\\:DefaultCredentials;IEX\\ * OR *\\ \\-nop\\ \\-w\\ hidden\\ \\-c\\ $m\\=new\\-object\\ net.webclient;$m* OR *\\-noninteractive\\ \\-executionpolicy\\ bypass\\ whoami* OR *\\-noninteractive\\ \\-executionpolicy\\ bypass\\ netstat\\ \\-a* OR *L3NlcnZlc*) OR winlog.event_data.Image.keyword:(*\\\\adobe\\\\Adobe.exe OR *\\\\oracle\\\\local.exe OR *\\\\revshell.exe OR *infopagesbackup\\\\ncat.exe OR *CSIDL_SYSTEM\\\\cmd.exe OR *\\\\programdata\\\\oracle\\\\java.exe OR *CSIDL_COMMON_APPDATA\\\\comms\\\\comms.exe OR *\\\\Programdata\\\\VMware\\\\Vmware.exe))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.CommandLine.keyword:*bitsadmin\\ \\/transfer* AND winlog.event_data.CommandLine.keyword:*CSIDL_APPDATA*) OR winlog.event_data.CommandLine.keyword:(*CSIDL_SYSTEM_DRIVE*) OR winlog.event_data.CommandLine.keyword:(*\\\\msf.ps1* OR *8989\\ \\-e\\ cmd.exe* OR *system.Data.SqlClient.SqlDataAdapter\\($cmd\\);\\ \\[void\\]$da.fill* OR *\\-nop\\ \\-w\\ hidden\\ \\-c\\ $k\\=new\\-object* OR *\\[Net.CredentialCache\\]\\:\\:DefaultCredentials;IEX\\ * OR *\\ \\-nop\\ \\-w\\ hidden\\ \\-c\\ $m\\=new\\-object\\ net.webclient;$m* OR *\\-noninteractive\\ \\-executionpolicy\\ bypass\\ whoami* OR *\\-noninteractive\\ \\-executionpolicy\\ bypass\\ netstat\\ \\-a* OR *L3NlcnZlc*) OR winlog.event_data.Image.keyword:(*\\\\adobe\\\\Adobe.exe OR *\\\\oracle\\\\local.exe OR *\\\\revshell.exe OR *infopagesbackup\\\\ncat.exe OR *CSIDL_SYSTEM\\\\cmd.exe OR *\\\\programdata\\\\oracle\\\\java.exe OR *CSIDL_COMMON_APPDATA\\\\comms\\\\comms.exe OR *\\\\Programdata\\\\VMware\\\\Vmware.exe))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Greenbug Campaign Indicators'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((CommandLine.keyword:*bitsadmin \\/transfer* AND CommandLine.keyword:*CSIDL_APPDATA*) OR CommandLine.keyword:(*CSIDL_SYSTEM_DRIVE*) OR CommandLine.keyword:(*\\\\msf.ps1* *8989 \\-e cmd.exe* *system.Data.SqlClient.SqlDataAdapter\\($cmd\\); \\[void\\]$da.fill* *\\-nop \\-w hidden \\-c $k=new\\-object* *\\[Net.CredentialCache\\]\\:\\:DefaultCredentials;IEX * * \\-nop \\-w hidden \\-c $m=new\\-object net.webclient;$m* *\\-noninteractive \\-executionpolicy bypass whoami* *\\-noninteractive \\-executionpolicy bypass netstat \\-a* *L3NlcnZlc*) OR Image.keyword:(*\\\\adobe\\\\Adobe.exe *\\\\oracle\\\\local.exe *\\\\revshell.exe *infopagesbackup\\\\ncat.exe *CSIDL_SYSTEM\\\\cmd.exe *\\\\programdata\\\\oracle\\\\java.exe *CSIDL_COMMON_APPDATA\\\\comms\\\\comms.exe *\\\\Programdata\\\\VMware\\\\Vmware.exe))
+((CommandLine.keyword:*bitsadmin \/transfer* AND CommandLine.keyword:*CSIDL_APPDATA*) OR CommandLine.keyword:(*CSIDL_SYSTEM_DRIVE*) OR CommandLine.keyword:(*\\msf.ps1* *8989 \-e cmd.exe* *system.Data.SqlClient.SqlDataAdapter\($cmd\); \[void\]$da.fill* *\-nop \-w hidden \-c $k=new\-object* *\[Net.CredentialCache\]\:\:DefaultCredentials;IEX * * \-nop \-w hidden \-c $m=new\-object net.webclient;$m* *\-noninteractive \-executionpolicy bypass whoami* *\-noninteractive \-executionpolicy bypass netstat \-a* *L3NlcnZlc*) OR Image.keyword:(*\\adobe\\Adobe.exe *\\oracle\\local.exe *\\revshell.exe *infopagesbackup\\ncat.exe *CSIDL_SYSTEM\\cmd.exe *\\programdata\\oracle\\java.exe *CSIDL_COMMON_APPDATA\\comms\\comms.exe *\\Programdata\\VMware\\Vmware.exe))
 ```
 
 
 ### splunk
     
 ```
-((CommandLine="*bitsadmin /transfer*" CommandLine="*CSIDL_APPDATA*") OR (CommandLine="*CSIDL_SYSTEM_DRIVE*") OR (CommandLine="*\\\\msf.ps1*" OR CommandLine="*8989 -e cmd.exe*" OR CommandLine="*system.Data.SqlClient.SqlDataAdapter($cmd); [void]$da.fill*" OR CommandLine="*-nop -w hidden -c $k=new-object*" OR CommandLine="*[Net.CredentialCache]::DefaultCredentials;IEX *" OR CommandLine="* -nop -w hidden -c $m=new-object net.webclient;$m*" OR CommandLine="*-noninteractive -executionpolicy bypass whoami*" OR CommandLine="*-noninteractive -executionpolicy bypass netstat -a*" OR CommandLine="*L3NlcnZlc*") OR (Image="*\\\\adobe\\\\Adobe.exe" OR Image="*\\\\oracle\\\\local.exe" OR Image="*\\\\revshell.exe" OR Image="*infopagesbackup\\\\ncat.exe" OR Image="*CSIDL_SYSTEM\\\\cmd.exe" OR Image="*\\\\programdata\\\\oracle\\\\java.exe" OR Image="*CSIDL_COMMON_APPDATA\\\\comms\\\\comms.exe" OR Image="*\\\\Programdata\\\\VMware\\\\Vmware.exe"))
+((CommandLine="*bitsadmin /transfer*" CommandLine="*CSIDL_APPDATA*") OR (CommandLine="*CSIDL_SYSTEM_DRIVE*") OR (CommandLine="*\\msf.ps1*" OR CommandLine="*8989 -e cmd.exe*" OR CommandLine="*system.Data.SqlClient.SqlDataAdapter($cmd); [void]$da.fill*" OR CommandLine="*-nop -w hidden -c $k=new-object*" OR CommandLine="*[Net.CredentialCache]::DefaultCredentials;IEX *" OR CommandLine="* -nop -w hidden -c $m=new-object net.webclient;$m*" OR CommandLine="*-noninteractive -executionpolicy bypass whoami*" OR CommandLine="*-noninteractive -executionpolicy bypass netstat -a*" OR CommandLine="*L3NlcnZlc*") OR (Image="*\\adobe\\Adobe.exe" OR Image="*\\oracle\\local.exe" OR Image="*\\revshell.exe" OR Image="*infopagesbackup\\ncat.exe" OR Image="*CSIDL_SYSTEM\\cmd.exe" OR Image="*\\programdata\\oracle\\java.exe" OR Image="*CSIDL_COMMON_APPDATA\\comms\\comms.exe" OR Image="*\\Programdata\\VMware\\Vmware.exe"))
 ```
 
 
 ### logpoint
     
 ```
-((CommandLine="*bitsadmin /transfer*" CommandLine="*CSIDL_APPDATA*") OR CommandLine IN ["*CSIDL_SYSTEM_DRIVE*"] OR CommandLine IN ["*\\\\msf.ps1*", "*8989 -e cmd.exe*", "*system.Data.SqlClient.SqlDataAdapter($cmd); [void]$da.fill*", "*-nop -w hidden -c $k=new-object*", "*[Net.CredentialCache]::DefaultCredentials;IEX *", "* -nop -w hidden -c $m=new-object net.webclient;$m*", "*-noninteractive -executionpolicy bypass whoami*", "*-noninteractive -executionpolicy bypass netstat -a*", "*L3NlcnZlc*"] OR Image IN ["*\\\\adobe\\\\Adobe.exe", "*\\\\oracle\\\\local.exe", "*\\\\revshell.exe", "*infopagesbackup\\\\ncat.exe", "*CSIDL_SYSTEM\\\\cmd.exe", "*\\\\programdata\\\\oracle\\\\java.exe", "*CSIDL_COMMON_APPDATA\\\\comms\\\\comms.exe", "*\\\\Programdata\\\\VMware\\\\Vmware.exe"])
+((CommandLine="*bitsadmin /transfer*" CommandLine="*CSIDL_APPDATA*") OR CommandLine IN ["*CSIDL_SYSTEM_DRIVE*"] OR CommandLine IN ["*\\msf.ps1*", "*8989 -e cmd.exe*", "*system.Data.SqlClient.SqlDataAdapter($cmd); [void]$da.fill*", "*-nop -w hidden -c $k=new-object*", "*[Net.CredentialCache]::DefaultCredentials;IEX *", "* -nop -w hidden -c $m=new-object net.webclient;$m*", "*-noninteractive -executionpolicy bypass whoami*", "*-noninteractive -executionpolicy bypass netstat -a*", "*L3NlcnZlc*"] OR Image IN ["*\\adobe\\Adobe.exe", "*\\oracle\\local.exe", "*\\revshell.exe", "*infopagesbackup\\ncat.exe", "*CSIDL_SYSTEM\\cmd.exe", "*\\programdata\\oracle\\java.exe", "*CSIDL_COMMON_APPDATA\\comms\\comms.exe", "*\\Programdata\\VMware\\Vmware.exe"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?:.*(?:.*(?=.*.*bitsadmin /transfer.*)(?=.*.*CSIDL_APPDATA.*))|.*(?:.*.*CSIDL_SYSTEM_DRIVE.*)|.*(?:.*.*\\msf\\.ps1.*|.*.*8989 -e cmd\\.exe.*|.*.*system\\.Data\\.SqlClient\\.SqlDataAdapter\\(\\$cmd\\); \\[void\\]\\$da\\.fill.*|.*.*-nop -w hidden -c \\$k=new-object.*|.*.*\\[Net\\.CredentialCache\\]::DefaultCredentials;IEX .*|.*.* -nop -w hidden -c \\$m=new-object net\\.webclient;\\$m.*|.*.*-noninteractive -executionpolicy bypass whoami.*|.*.*-noninteractive -executionpolicy bypass netstat -a.*|.*.*L3NlcnZlc.*)|.*(?:.*.*\\adobe\\Adobe\\.exe|.*.*\\oracle\\local\\.exe|.*.*\\revshell\\.exe|.*.*infopagesbackup\\ncat\\.exe|.*.*CSIDL_SYSTEM\\cmd\\.exe|.*.*\\programdata\\oracle\\java\\.exe|.*.*CSIDL_COMMON_APPDATA\\comms\\comms\\.exe|.*.*\\Programdata\\VMware\\Vmware\\.exe)))'
+grep -P '^(?:.*(?:.*(?:.*(?=.*.*bitsadmin /transfer.*)(?=.*.*CSIDL_APPDATA.*))|.*(?:.*.*CSIDL_SYSTEM_DRIVE.*)|.*(?:.*.*\msf\.ps1.*|.*.*8989 -e cmd\.exe.*|.*.*system\.Data\.SqlClient\.SqlDataAdapter\(\$cmd\); \[void\]\$da\.fill.*|.*.*-nop -w hidden -c \$k=new-object.*|.*.*\[Net\.CredentialCache\]::DefaultCredentials;IEX .*|.*.* -nop -w hidden -c \$m=new-object net\.webclient;\$m.*|.*.*-noninteractive -executionpolicy bypass whoami.*|.*.*-noninteractive -executionpolicy bypass netstat -a.*|.*.*L3NlcnZlc.*)|.*(?:.*.*\adobe\Adobe\.exe|.*.*\oracle\local\.exe|.*.*\revshell\.exe|.*.*infopagesbackup\ncat\.exe|.*.*CSIDL_SYSTEM\cmd\.exe|.*.*\programdata\oracle\java\.exe|.*.*CSIDL_COMMON_APPDATA\comms\comms\.exe|.*.*\Programdata\VMware\Vmware\.exe)))'
 ```
 
 

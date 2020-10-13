@@ -74,49 +74,292 @@ detection:
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "CommandLine.*.*\\\\AppData\\\\Roaming\\\\Oracle.*\\\\java.*.exe .*" -or $_.message -match "CommandLine.*.*cscript.exe .*Retrive.*.vbs .*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message\nGet-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "11" -and ($_.message -match "TargetFilename.*.*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java.*.exe" -or $_.message -match "TargetFilename.*.*\\\\Retrive.*.vbs")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message\nGet-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "13" -and $_.message -match "TargetObject.*HKLM\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run.*" -and $_.message -match "Details.*%AppData%\\\\Roaming\\\\Oracle\\\\bin\\\\.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "CommandLine.*.*\\AppData\\Roaming\\Oracle.*\\java.*.exe .*" -or $_.message -match "CommandLine.*.*cscript.exe .*Retrive.*.vbs .*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "11" -and ($_.message -match "TargetFilename.*.*\\AppData\\Roaming\\Oracle\\bin\\java.*.exe" -or $_.message -match "TargetFilename.*.*\\Retrive.*.vbs")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "13" -and $_.message -match "TargetObject.*HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run.*" -and $_.message -match "Details.*%AppData%\\Roaming\\Oracle\\bin\\.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.CommandLine.keyword:(*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe\\ * OR *cscript.exe\\ *Retrive*.vbs\\ *)\n(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"11" AND winlog.event_data.TargetFilename.keyword:(*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe OR *\\\\Retrive*.vbs))\n(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"13" AND winlog.event_data.TargetObject.keyword:HKLM\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run* AND winlog.event_data.Details.keyword:%AppData%\\\\Roaming\\\\Oracle\\\\bin\\\\*)
+winlog.event_data.CommandLine.keyword:(*\\AppData\\Roaming\\Oracle*\\java*.exe\ * OR *cscript.exe\ *Retrive*.vbs\ *)
+(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND winlog.event_id:"11" AND winlog.event_data.TargetFilename.keyword:(*\\AppData\\Roaming\\Oracle\\bin\\java*.exe OR *\\Retrive*.vbs))
+(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND winlog.event_id:"13" AND winlog.event_data.TargetObject.keyword:HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run* AND winlog.event_data.Details.keyword:%AppData%\\Roaming\\Oracle\\bin\\*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1fac1481-2dbc-48b2-9096-753c49b4ec71 <<EOF\n{\n  "metadata": {\n    "title": "Adwind RAT / JRAT",\n    "description": "Detects javaw.exe in AppData folder as used by Adwind / JRAT",\n    "tags": [\n      "attack.execution",\n      "attack.t1059.005",\n      "attack.t1059.007",\n      "attack.t1064"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Oracle*\\\\\\\\java*.exe\\\\ * OR *cscript.exe\\\\ *Retrive*.vbs\\\\ *)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Oracle*\\\\\\\\java*.exe\\\\ * OR *cscript.exe\\\\ *Retrive*.vbs\\\\ *)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Adwind RAT / JRAT\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1fac1481-2dbc-48b2-9096-753c49b4ec71-2 <<EOF\n{\n  "metadata": {\n    "title": "Adwind RAT / JRAT",\n    "description": "Detects javaw.exe in AppData folder as used by Adwind / JRAT",\n    "tags": [\n      "attack.execution",\n      "attack.t1059.005",\n      "attack.t1059.007",\n      "attack.t1064"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"11\\" AND winlog.event_data.TargetFilename.keyword:(*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Oracle\\\\\\\\bin\\\\\\\\java*.exe OR *\\\\\\\\Retrive*.vbs))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"11\\" AND winlog.event_data.TargetFilename.keyword:(*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Oracle\\\\\\\\bin\\\\\\\\java*.exe OR *\\\\\\\\Retrive*.vbs))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Adwind RAT / JRAT\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/1fac1481-2dbc-48b2-9096-753c49b4ec71-3 <<EOF\n{\n  "metadata": {\n    "title": "Adwind RAT / JRAT",\n    "description": "Detects javaw.exe in AppData folder as used by Adwind / JRAT",\n    "tags": [\n      "attack.execution",\n      "attack.t1059.005",\n      "attack.t1059.007",\n      "attack.t1064"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"13\\" AND winlog.event_data.TargetObject.keyword:HKLM\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run* AND winlog.event_data.Details.keyword:%AppData%\\\\\\\\Roaming\\\\\\\\Oracle\\\\\\\\bin\\\\\\\\*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"13\\" AND winlog.event_data.TargetObject.keyword:HKLM\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run* AND winlog.event_data.Details.keyword:%AppData%\\\\\\\\Roaming\\\\\\\\Oracle\\\\\\\\bin\\\\\\\\*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Adwind RAT / JRAT\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/1fac1481-2dbc-48b2-9096-753c49b4ec71 <<EOF
+{
+  "metadata": {
+    "title": "Adwind RAT / JRAT",
+    "description": "Detects javaw.exe in AppData folder as used by Adwind / JRAT",
+    "tags": [
+      "attack.execution",
+      "attack.t1059.005",
+      "attack.t1059.007",
+      "attack.t1064"
+    ],
+    "query": "winlog.event_data.CommandLine.keyword:(*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe\\ * OR *cscript.exe\\ *Retrive*.vbs\\ *)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.CommandLine.keyword:(*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe\\ * OR *cscript.exe\\ *Retrive*.vbs\\ *)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Adwind RAT / JRAT'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/1fac1481-2dbc-48b2-9096-753c49b4ec71-2 <<EOF
+{
+  "metadata": {
+    "title": "Adwind RAT / JRAT",
+    "description": "Detects javaw.exe in AppData folder as used by Adwind / JRAT",
+    "tags": [
+      "attack.execution",
+      "attack.t1059.005",
+      "attack.t1059.007",
+      "attack.t1064"
+    ],
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"11\" AND winlog.event_data.TargetFilename.keyword:(*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe OR *\\\\Retrive*.vbs))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"11\" AND winlog.event_data.TargetFilename.keyword:(*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe OR *\\\\Retrive*.vbs))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Adwind RAT / JRAT'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/1fac1481-2dbc-48b2-9096-753c49b4ec71-3 <<EOF
+{
+  "metadata": {
+    "title": "Adwind RAT / JRAT",
+    "description": "Detects javaw.exe in AppData folder as used by Adwind / JRAT",
+    "tags": [
+      "attack.execution",
+      "attack.t1059.005",
+      "attack.t1059.007",
+      "attack.t1064"
+    ],
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"13\" AND winlog.event_data.TargetObject.keyword:HKLM\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run* AND winlog.event_data.Details.keyword:%AppData%\\\\Roaming\\\\Oracle\\\\bin\\\\*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"13\" AND winlog.event_data.TargetObject.keyword:HKLM\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run* AND winlog.event_data.Details.keyword:%AppData%\\\\Roaming\\\\Oracle\\\\bin\\\\*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Adwind RAT / JRAT'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-CommandLine.keyword:(*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe * *cscript.exe *Retrive*.vbs *)\n(EventID:"11" AND TargetFilename.keyword:(*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe *\\\\Retrive*.vbs))\n(EventID:"13" AND TargetObject.keyword:HKLM\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run* AND Details.keyword:%AppData%\\\\Roaming\\\\Oracle\\\\bin\\\\*)
+CommandLine.keyword:(*\\AppData\\Roaming\\Oracle*\\java*.exe * *cscript.exe *Retrive*.vbs *)
+(EventID:"11" AND TargetFilename.keyword:(*\\AppData\\Roaming\\Oracle\\bin\\java*.exe *\\Retrive*.vbs))
+(EventID:"13" AND TargetObject.keyword:HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run* AND Details.keyword:%AppData%\\Roaming\\Oracle\\bin\\*)
 ```
 
 
 ### splunk
     
 ```
-(CommandLine="*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe *" OR CommandLine="*cscript.exe *Retrive*.vbs *")\n(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="11" (TargetFilename="*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe" OR TargetFilename="*\\\\Retrive*.vbs"))\n(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="13" TargetObject="HKLM\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run*" Details="%AppData%\\\\Roaming\\\\Oracle\\\\bin\\\\*")
+(CommandLine="*\\AppData\\Roaming\\Oracle*\\java*.exe *" OR CommandLine="*cscript.exe *Retrive*.vbs *")
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="11" (TargetFilename="*\\AppData\\Roaming\\Oracle\\bin\\java*.exe" OR TargetFilename="*\\Retrive*.vbs"))
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="13" TargetObject="HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run*" Details="%AppData%\\Roaming\\Oracle\\bin\\*")
 ```
 
 
 ### logpoint
     
 ```
-CommandLine IN ["*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe *", "*cscript.exe *Retrive*.vbs *"]\n(event_id="11" TargetFilename IN ["*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe", "*\\\\Retrive*.vbs"])\n(event_id="13" TargetObject="HKLM\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run*" Details="%AppData%\\\\Roaming\\\\Oracle\\\\bin\\\\*")
+CommandLine IN ["*\\AppData\\Roaming\\Oracle*\\java*.exe *", "*cscript.exe *Retrive*.vbs *"]
+(event_id="11" TargetFilename IN ["*\\AppData\\Roaming\\Oracle\\bin\\java*.exe", "*\\Retrive*.vbs"])
+(event_id="13" TargetObject="HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run*" Details="%AppData%\\Roaming\\Oracle\\bin\\*")
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*.*\\AppData\\Roaming\\Oracle.*\\java.*\\.exe .*|.*.*cscript\\.exe .*Retrive.*\\.vbs .*)'\ngrep -P '^(?:.*(?=.*11)(?=.*(?:.*.*\\AppData\\Roaming\\Oracle\\bin\\java.*\\.exe|.*.*\\Retrive.*\\.vbs)))'\ngrep -P '^(?:.*(?=.*13)(?=.*HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run.*)(?=.*%AppData%\\Roaming\\Oracle\\bin\\\\.*))'
+grep -P '^(?:.*.*\AppData\Roaming\Oracle.*\java.*\.exe .*|.*.*cscript\.exe .*Retrive.*\.vbs .*)'
+grep -P '^(?:.*(?=.*11)(?=.*(?:.*.*\AppData\Roaming\Oracle\bin\java.*\.exe|.*.*\Retrive.*\.vbs)))'
+grep -P '^(?:.*(?=.*13)(?=.*HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run.*)(?=.*%AppData%\Roaming\Oracle\bin\\.*))'
 ```
 
 

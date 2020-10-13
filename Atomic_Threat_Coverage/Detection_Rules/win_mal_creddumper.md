@@ -94,49 +94,309 @@ detection:
 ### powershell
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/builtin/win_mal_creddumper.yml): Backend does not support map values of type <class 'sigma.parser.modifiers.type.SigmaRegularExpressionModifier'>
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_id:"7045" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))\n(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"6" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))\n(winlog.channel:"Security" AND winlog.event_id:"4697" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))
+(winlog.event_id:"7045" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\.*\\.*|.*\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))
+(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND winlog.event_id:"6" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\.*\\.*|.*\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))
+(winlog.channel:"Security" AND winlog.event_id:"4697" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\.*\\.*|.*\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/4976aa50-8f41-45c6-8b15-ab3fc10e79ed <<EOF\n{\n  "metadata": {\n    "title": "Credential Dumping Tools Service Execution",\n    "description": "Detects well-known credential dumping tools execution via service execution events",\n    "tags": [\n      "attack.credential_access",\n      "attack.execution",\n      "attack.t1003",\n      "attack.t1003.001",\n      "attack.t1003.002",\n      "attack.t1003.004",\n      "attack.t1003.005",\n      "attack.t1003.006",\n      "attack.t1035",\n      "attack.t1569.002",\n      "attack.s0005"\n    ],\n    "query": "(winlog.event_id:\\"7045\\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\\\\\\\\\.*\\\\\\\\.*|.*\\\\\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_id:\\"7045\\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\\\\\\\\\.*\\\\\\\\.*|.*\\\\\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Credential Dumping Tools Service Execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/4976aa50-8f41-45c6-8b15-ab3fc10e79ed-2 <<EOF\n{\n  "metadata": {\n    "title": "Credential Dumping Tools Service Execution",\n    "description": "Detects well-known credential dumping tools execution via service execution events",\n    "tags": [\n      "attack.credential_access",\n      "attack.execution",\n      "attack.t1003",\n      "attack.t1003.001",\n      "attack.t1003.002",\n      "attack.t1003.004",\n      "attack.t1003.005",\n      "attack.t1003.006",\n      "attack.t1035",\n      "attack.t1569.002",\n      "attack.s0005"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"6\\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\\\\\\\\\.*\\\\\\\\.*|.*\\\\\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"6\\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\\\\\\\\\.*\\\\\\\\.*|.*\\\\\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Credential Dumping Tools Service Execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/4976aa50-8f41-45c6-8b15-ab3fc10e79ed-3 <<EOF\n{\n  "metadata": {\n    "title": "Credential Dumping Tools Service Execution",\n    "description": "Detects well-known credential dumping tools execution via service execution events",\n    "tags": [\n      "attack.credential_access",\n      "attack.execution",\n      "attack.t1003",\n      "attack.t1003.001",\n      "attack.t1003.002",\n      "attack.t1003.004",\n      "attack.t1003.005",\n      "attack.t1003.006",\n      "attack.t1035",\n      "attack.t1569.002",\n      "attack.s0005"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4697\\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\\\\\\\\\.*\\\\\\\\.*|.*\\\\\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4697\\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\\\\\\\\\.*\\\\\\\\.*|.*\\\\\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Credential Dumping Tools Service Execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/4976aa50-8f41-45c6-8b15-ab3fc10e79ed <<EOF
+{
+  "metadata": {
+    "title": "Credential Dumping Tools Service Execution",
+    "description": "Detects well-known credential dumping tools execution via service execution events",
+    "tags": [
+      "attack.credential_access",
+      "attack.execution",
+      "attack.t1003",
+      "attack.t1003.001",
+      "attack.t1003.002",
+      "attack.t1003.004",
+      "attack.t1003.005",
+      "attack.t1003.006",
+      "attack.t1035",
+      "attack.t1569.002",
+      "attack.s0005"
+    ],
+    "query": "(winlog.event_id:\"7045\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_id:\"7045\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Credential Dumping Tools Service Execution'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/4976aa50-8f41-45c6-8b15-ab3fc10e79ed-2 <<EOF
+{
+  "metadata": {
+    "title": "Credential Dumping Tools Service Execution",
+    "description": "Detects well-known credential dumping tools execution via service execution events",
+    "tags": [
+      "attack.credential_access",
+      "attack.execution",
+      "attack.t1003",
+      "attack.t1003.001",
+      "attack.t1003.002",
+      "attack.t1003.004",
+      "attack.t1003.005",
+      "attack.t1003.006",
+      "attack.t1035",
+      "attack.t1569.002",
+      "attack.s0005"
+    ],
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"6\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"6\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Credential Dumping Tools Service Execution'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/4976aa50-8f41-45c6-8b15-ab3fc10e79ed-3 <<EOF
+{
+  "metadata": {
+    "title": "Credential Dumping Tools Service Execution",
+    "description": "Detects well-known credential dumping tools execution via service execution events",
+    "tags": [
+      "attack.credential_access",
+      "attack.execution",
+      "attack.t1003",
+      "attack.t1003.001",
+      "attack.t1003.002",
+      "attack.t1003.004",
+      "attack.t1003.005",
+      "attack.t1003.006",
+      "attack.t1035",
+      "attack.t1569.002",
+      "attack.s0005"
+    ],
+    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4697\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4697\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Credential Dumping Tools Service Execution'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(EventID:"7045" AND (ServiceName.keyword:(*fgexec* *wceservice* *wce service* *pwdump* *gsecdump* *cachedump* *mimikatz* *mimidrv*) OR ImagePath.keyword:(*fgexec* *dumpsvc* *cachedump* *mimidrv* *gsecdump* *servpw* *pwdump*) OR ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))\n(EventID:"6" AND (ServiceName.keyword:(*fgexec* *wceservice* *wce service* *pwdump* *gsecdump* *cachedump* *mimikatz* *mimidrv*) OR ImagePath.keyword:(*fgexec* *dumpsvc* *cachedump* *mimidrv* *gsecdump* *servpw* *pwdump*) OR ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))\n(EventID:"4697" AND (ServiceName.keyword:(*fgexec* *wceservice* *wce service* *pwdump* *gsecdump* *cachedump* *mimikatz* *mimidrv*) OR ImagePath.keyword:(*fgexec* *dumpsvc* *cachedump* *mimidrv* *gsecdump* *servpw* *pwdump*) OR ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))
+(EventID:"7045" AND (ServiceName.keyword:(*fgexec* *wceservice* *wce service* *pwdump* *gsecdump* *cachedump* *mimikatz* *mimidrv*) OR ImagePath.keyword:(*fgexec* *dumpsvc* *cachedump* *mimidrv* *gsecdump* *servpw* *pwdump*) OR ImagePath:/((\\\\.*\\.*|.*\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))
+(EventID:"6" AND (ServiceName.keyword:(*fgexec* *wceservice* *wce service* *pwdump* *gsecdump* *cachedump* *mimikatz* *mimidrv*) OR ImagePath.keyword:(*fgexec* *dumpsvc* *cachedump* *mimidrv* *gsecdump* *servpw* *pwdump*) OR ImagePath:/((\\\\.*\\.*|.*\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))
+(EventID:"4697" AND (ServiceName.keyword:(*fgexec* *wceservice* *wce service* *pwdump* *gsecdump* *cachedump* *mimikatz* *mimidrv*) OR ImagePath.keyword:(*fgexec* *dumpsvc* *cachedump* *mimidrv* *gsecdump* *servpw* *pwdump*) OR ImagePath:/((\\\\.*\\.*|.*\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))
 ```
 
 
 ### splunk
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/builtin/win_mal_creddumper.yml): Type modifier 're' is not supported by backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 
 ### logpoint
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/builtin/win_mal_creddumper.yml): Type modifier 're' is not supported by backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 
 ### grep
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/builtin/win_mal_creddumper.yml): Node type not implemented for this backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 

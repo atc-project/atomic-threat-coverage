@@ -57,49 +57,125 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "Image.*.*\\\\mshta.exe" -and $_.message -match "CommandLine.*.*javascript.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "Image.*.*\\mshta.exe" -and $_.message -match "CommandLine.*.*javascript.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:*\\\\mshta.exe AND winlog.event_data.CommandLine.keyword:*javascript*)
+(winlog.event_data.Image.keyword:*\\mshta.exe AND winlog.event_data.CommandLine.keyword:*javascript*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/67f113fa-e23d-4271-befa-30113b3e08b1 <<EOF\n{\n  "metadata": {\n    "title": "Mshta JavaScript Execution",\n    "description": "Identifies suspicious mshta.exe commands",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1170",\n      "attack.t1218.005"\n    ],\n    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\mshta.exe AND winlog.event_data.CommandLine.keyword:*javascript*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\mshta.exe AND winlog.event_data.CommandLine.keyword:*javascript*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Mshta JavaScript Execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nComputerName = {{_source.ComputerName}}\\n        User = {{_source.User}}\\n CommandLine = {{_source.CommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/67f113fa-e23d-4271-befa-30113b3e08b1 <<EOF
+{
+  "metadata": {
+    "title": "Mshta JavaScript Execution",
+    "description": "Identifies suspicious mshta.exe commands",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.t1170",
+      "attack.t1218.005"
+    ],
+    "query": "(winlog.event_data.Image.keyword:*\\\\mshta.exe AND winlog.event_data.CommandLine.keyword:*javascript*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.Image.keyword:*\\\\mshta.exe AND winlog.event_data.CommandLine.keyword:*javascript*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Mshta JavaScript Execution'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(Image.keyword:*\\\\mshta.exe AND CommandLine.keyword:*javascript*)
+(Image.keyword:*\\mshta.exe AND CommandLine.keyword:*javascript*)
 ```
 
 
 ### splunk
     
 ```
-(Image="*\\\\mshta.exe" CommandLine="*javascript*") | table ComputerName,User,CommandLine
+(Image="*\\mshta.exe" CommandLine="*javascript*") | table ComputerName,User,CommandLine
 ```
 
 
 ### logpoint
     
 ```
-(Image="*\\\\mshta.exe" CommandLine="*javascript*")
+(Image="*\\mshta.exe" CommandLine="*javascript*")
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*.*\\mshta\\.exe)(?=.*.*javascript.*))'
+grep -P '^(?:.*(?=.*.*\mshta\.exe)(?=.*.*javascript.*))'
 ```
 
 

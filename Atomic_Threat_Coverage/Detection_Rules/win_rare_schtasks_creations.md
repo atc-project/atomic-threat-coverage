@@ -60,21 +60,113 @@ Get-WinEvent -LogName Security | where {($_.ID -eq "4698") }  | group-object Tas
 ### es-qs
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/builtin/win_rare_schtasks_creations.yml): Aggregations not implemented for this backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/b0d77106-7bb0-41fe-bd94-d1752164d066 <<EOF\n{\n  "metadata": {\n    "title": "Rare Schtasks Creations",\n    "description": "Detects rare scheduled tasks creations that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious code",\n    "tags": [\n      "attack.execution",\n      "attack.privilege_escalation",\n      "attack.persistence",\n      "attack.t1053",\n      "car.2013-08-001",\n      "attack.t1053.005"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4698\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "7d"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"4698\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          },\n          "aggs": {\n            "by": {\n              "terms": {\n                "field": "TaskName",\n                "size": 10,\n                "order": {\n                  "_count": "asc"\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.aggregations.by.buckets.0.doc_count": {\n        "lt": 5\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Rare Schtasks Creations\'",\n        "body": "Hits:\\n{{#aggregations.by.buckets}}\\n {{key}} {{doc_count}}\\n{{/aggregations.by.buckets}}\\n",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/b0d77106-7bb0-41fe-bd94-d1752164d066 <<EOF
+{
+  "metadata": {
+    "title": "Rare Schtasks Creations",
+    "description": "Detects rare scheduled tasks creations that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious code",
+    "tags": [
+      "attack.execution",
+      "attack.privilege_escalation",
+      "attack.persistence",
+      "attack.t1053",
+      "car.2013-08-001",
+      "attack.t1053.005"
+    ],
+    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4698\")"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "7d"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4698\")",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          },
+          "aggs": {
+            "by": {
+              "terms": {
+                "field": "TaskName",
+                "size": 10,
+                "order": {
+                  "_count": "asc"
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.aggregations.by.buckets.0.doc_count": {
+        "lt": 5
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Rare Schtasks Creations'",
+        "body": "Hits:\n{{#aggregations.by.buckets}}\n {{key}} {{doc_count}}\n{{/aggregations.by.buckets}}\n",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/builtin/win_rare_schtasks_creations.yml): Aggregations not implemented for this backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 

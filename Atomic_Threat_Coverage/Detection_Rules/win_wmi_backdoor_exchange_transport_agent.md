@@ -51,49 +51,125 @@ level: critical
 ### powershell
     
 ```
-Get-WinEvent | where {$_.message -match "ParentImage.*.*\\\\EdgeTransport.exe" } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {$_.message -match "ParentImage.*.*\\EdgeTransport.exe" } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.ParentImage.keyword:*\\\\EdgeTransport.exe
+winlog.event_data.ParentImage.keyword:*\\EdgeTransport.exe
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/797011dc-44f4-4e6f-9f10-a8ceefbe566b <<EOF\n{\n  "metadata": {\n    "title": "WMI Backdoor Exchange Transport Agent",\n    "description": "Detects a WMi backdoor in Exchange Transport Agents via WMi event filters",\n    "tags": [\n      "attack.persistence",\n      "attack.t1546.003",\n      "attack.t1084"\n    ],\n    "query": "winlog.event_data.ParentImage.keyword:*\\\\\\\\EdgeTransport.exe"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.ParentImage.keyword:*\\\\\\\\EdgeTransport.exe",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'WMI Backdoor Exchange Transport Agent\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/797011dc-44f4-4e6f-9f10-a8ceefbe566b <<EOF
+{
+  "metadata": {
+    "title": "WMI Backdoor Exchange Transport Agent",
+    "description": "Detects a WMi backdoor in Exchange Transport Agents via WMi event filters",
+    "tags": [
+      "attack.persistence",
+      "attack.t1546.003",
+      "attack.t1084"
+    ],
+    "query": "winlog.event_data.ParentImage.keyword:*\\\\EdgeTransport.exe"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.ParentImage.keyword:*\\\\EdgeTransport.exe",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'WMI Backdoor Exchange Transport Agent'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-ParentImage.keyword:*\\\\EdgeTransport.exe
+ParentImage.keyword:*\\EdgeTransport.exe
 ```
 
 
 ### splunk
     
 ```
-ParentImage="*\\\\EdgeTransport.exe"
+ParentImage="*\\EdgeTransport.exe"
 ```
 
 
 ### logpoint
     
 ```
-ParentImage="*\\\\EdgeTransport.exe"
+ParentImage="*\\EdgeTransport.exe"
 ```
 
 
 ### grep
     
 ```
-grep -P '^.*\\EdgeTransport\\.exe'
+grep -P '^.*\EdgeTransport\.exe'
 ```
 
 

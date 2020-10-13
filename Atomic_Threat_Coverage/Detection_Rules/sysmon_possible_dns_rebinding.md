@@ -71,28 +71,129 @@ level: medium
 ### powershell
     
 ```
-Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "22" -and $_.message -match "QueryName.*.*" -and $_.message -match "QueryStatus.*0" -and ($_.message -match "QueryResults.*(::ffff:)?10..*" -or $_.message -match "QueryResults.*(::ffff:)?192.168..*" -or $_.message -match "QueryResults.*(::ffff:)?172.16..*" -or $_.message -match "QueryResults.*(::ffff:)?172.17..*" -or $_.message -match "QueryResults.*(::ffff:)?172.18..*" -or $_.message -match "QueryResults.*(::ffff:)?172.19..*" -or $_.message -match "QueryResults.*(::ffff:)?172.20..*" -or $_.message -match "QueryResults.*(::ffff:)?172.21..*" -or $_.message -match "QueryResults.*(::ffff:)?172.22..*" -or $_.message -match "QueryResults.*(::ffff:)?172.23..*" -or $_.message -match "QueryResults.*(::ffff:)?172.24..*" -or $_.message -match "QueryResults.*(::ffff:)?172.25..*" -or $_.message -match "QueryResults.*(::ffff:)?172.26..*" -or $_.message -match "QueryResults.*(::ffff:)?172.27..*" -or $_.message -match "QueryResults.*(::ffff:)?172.28..*" -or $_.message -match "QueryResults.*(::ffff:)?172.29..*" -or $_.message -match "QueryResults.*(::ffff:)?172.30..*" -or $_.message -match "QueryResults.*(::ffff:)?172.31..*" -or $_.message -match "QueryResults.*(::ffff:)?127..*") -and ($_.ID -eq "22" -and $_.message -match "QueryName.*.*" -and $_.message -match "QueryStatus.*0") -and  -not (($_.message -match "QueryResults.*(::ffff:)?10..*" -or $_.message -match "QueryResults.*(::ffff:)?192.168..*" -or $_.message -match "QueryResults.*(::ffff:)?172.16..*" -or $_.message -match "QueryResults.*(::ffff:)?172.17..*" -or $_.message -match "QueryResults.*(::ffff:)?172.18..*" -or $_.message -match "QueryResults.*(::ffff:)?172.19..*" -or $_.message -match "QueryResults.*(::ffff:)?172.20..*" -or $_.message -match "QueryResults.*(::ffff:)?172.21..*" -or $_.message -match "QueryResults.*(::ffff:)?172.22..*" -or $_.message -match "QueryResults.*(::ffff:)?172.23..*" -or $_.message -match "QueryResults.*(::ffff:)?172.24..*" -or $_.message -match "QueryResults.*(::ffff:)?172.25..*" -or $_.message -match "QueryResults.*(::ffff:)?172.26..*" -or $_.message -match "QueryResults.*(::ffff:)?172.27..*" -or $_.message -match "QueryResults.*(::ffff:)?172.28..*" -or $_.message -match "QueryResults.*(::ffff:)?172.29..*" -or $_.message -match "QueryResults.*(::ffff:)?172.30..*" -or $_.message -match "QueryResults.*(::ffff:)?172.31..*" -or $_.message -match "QueryResults.*(::ffff:)?127..*"))) }  | select ComputerName, QueryName | group ComputerName | foreach { [PSCustomObject]@{\'ComputerName\'=$_.name;\'Count\'=($_.group.QueryName | sort -u).count} }  | sort count -desc | where { $_.count -gt 3 }
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "22" -and $_.message -match "QueryName.*.*" -and $_.message -match "QueryStatus.*0" -and ($_.message -match "QueryResults.*(::ffff:)?10..*" -or $_.message -match "QueryResults.*(::ffff:)?192.168..*" -or $_.message -match "QueryResults.*(::ffff:)?172.16..*" -or $_.message -match "QueryResults.*(::ffff:)?172.17..*" -or $_.message -match "QueryResults.*(::ffff:)?172.18..*" -or $_.message -match "QueryResults.*(::ffff:)?172.19..*" -or $_.message -match "QueryResults.*(::ffff:)?172.20..*" -or $_.message -match "QueryResults.*(::ffff:)?172.21..*" -or $_.message -match "QueryResults.*(::ffff:)?172.22..*" -or $_.message -match "QueryResults.*(::ffff:)?172.23..*" -or $_.message -match "QueryResults.*(::ffff:)?172.24..*" -or $_.message -match "QueryResults.*(::ffff:)?172.25..*" -or $_.message -match "QueryResults.*(::ffff:)?172.26..*" -or $_.message -match "QueryResults.*(::ffff:)?172.27..*" -or $_.message -match "QueryResults.*(::ffff:)?172.28..*" -or $_.message -match "QueryResults.*(::ffff:)?172.29..*" -or $_.message -match "QueryResults.*(::ffff:)?172.30..*" -or $_.message -match "QueryResults.*(::ffff:)?172.31..*" -or $_.message -match "QueryResults.*(::ffff:)?127..*") -and ($_.ID -eq "22" -and $_.message -match "QueryName.*.*" -and $_.message -match "QueryStatus.*0") -and  -not (($_.message -match "QueryResults.*(::ffff:)?10..*" -or $_.message -match "QueryResults.*(::ffff:)?192.168..*" -or $_.message -match "QueryResults.*(::ffff:)?172.16..*" -or $_.message -match "QueryResults.*(::ffff:)?172.17..*" -or $_.message -match "QueryResults.*(::ffff:)?172.18..*" -or $_.message -match "QueryResults.*(::ffff:)?172.19..*" -or $_.message -match "QueryResults.*(::ffff:)?172.20..*" -or $_.message -match "QueryResults.*(::ffff:)?172.21..*" -or $_.message -match "QueryResults.*(::ffff:)?172.22..*" -or $_.message -match "QueryResults.*(::ffff:)?172.23..*" -or $_.message -match "QueryResults.*(::ffff:)?172.24..*" -or $_.message -match "QueryResults.*(::ffff:)?172.25..*" -or $_.message -match "QueryResults.*(::ffff:)?172.26..*" -or $_.message -match "QueryResults.*(::ffff:)?172.27..*" -or $_.message -match "QueryResults.*(::ffff:)?172.28..*" -or $_.message -match "QueryResults.*(::ffff:)?172.29..*" -or $_.message -match "QueryResults.*(::ffff:)?172.30..*" -or $_.message -match "QueryResults.*(::ffff:)?172.31..*" -or $_.message -match "QueryResults.*(::ffff:)?127..*"))) }  | select ComputerName, QueryName | group ComputerName | foreach { [PSCustomObject]@{'ComputerName'=$_.name;'Count'=($_.group.QueryName | sort -u).count} }  | sort count -desc | where { $_.count -gt 3 }
 ```
 
 
 ### es-qs
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/sysmon/sysmon_possible_dns_rebinding.yml): Aggregations not implemented for this backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/eb07e747-2552-44cd-af36-b659ae0958e4 <<EOF\n{\n  "metadata": {\n    "title": "Possible DNS Rebinding",\n    "description": "Detects several different DNS-answers by one domain with IPs from internal and external networks. Normally, DNS-answer contain TTL >100. (DNS-record will saved in host cache for a while TTL).",\n    "tags": [\n      "attack.initial_access",\n      "attack.t1189"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"22\\" AND QueryName.keyword:* AND QueryStatus:\\"0\\" AND QueryResults.keyword:(\\\\(\\\\:\\\\:ffff\\\\:\\\\)?10.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?192.168.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.16.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.17.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.18.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.19.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.20.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.21.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.22.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.23.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.24.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.25.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.26.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.27.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.28.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.29.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.30.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.31.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?127.*) AND (winlog.event_id:\\"22\\" AND QueryName.keyword:* AND QueryStatus:\\"0\\") AND (NOT (QueryResults.keyword:(\\\\(\\\\:\\\\:ffff\\\\:\\\\)?10.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?192.168.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.16.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.17.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.18.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.19.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.20.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.21.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.22.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.23.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.24.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.25.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.26.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.27.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.28.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.29.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.30.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.31.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?127.*))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30s"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"22\\" AND QueryName.keyword:* AND QueryStatus:\\"0\\" AND QueryResults.keyword:(\\\\(\\\\:\\\\:ffff\\\\:\\\\)?10.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?192.168.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.16.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.17.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.18.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.19.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.20.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.21.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.22.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.23.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.24.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.25.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.26.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.27.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.28.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.29.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.30.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.31.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?127.*) AND (winlog.event_id:\\"22\\" AND QueryName.keyword:* AND QueryStatus:\\"0\\") AND (NOT (QueryResults.keyword:(\\\\(\\\\:\\\\:ffff\\\\:\\\\)?10.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?192.168.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.16.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.17.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.18.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.19.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.20.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.21.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.22.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.23.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.24.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.25.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.26.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.27.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.28.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.29.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.30.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?172.31.* OR \\\\(\\\\:\\\\:ffff\\\\:\\\\)?127.*))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          },\n          "aggs": {\n            "by": {\n              "terms": {\n                "field": "winlog.ComputerName",\n                "size": 10,\n                "order": {\n                  "_count": "desc"\n                },\n                "min_doc_count": 4\n              },\n              "aggs": {\n                "agg": {\n                  "terms": {\n                    "field": "QueryName",\n                    "size": 10,\n                    "order": {\n                      "_count": "desc"\n                    },\n                    "min_doc_count": 4\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.aggregations.by.buckets.0.agg.buckets.0.doc_count": {\n        "gt": 3\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Possible DNS Rebinding\'",\n        "body": "Hits:\\n{{#aggregations.agg.buckets}}\\n {{key}} {{doc_count}}\\n\\n{{#by.buckets}}\\n-- {{key}} {{doc_count}}\\n{{/by.buckets}}\\n\\n{{/aggregations.agg.buckets}}\\n",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/eb07e747-2552-44cd-af36-b659ae0958e4 <<EOF
+{
+  "metadata": {
+    "title": "Possible DNS Rebinding",
+    "description": "Detects several different DNS-answers by one domain with IPs from internal and external networks. Normally, DNS-answer contain TTL >100. (DNS-record will saved in host cache for a while TTL).",
+    "tags": [
+      "attack.initial_access",
+      "attack.t1189"
+    ],
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"22\" AND QueryName.keyword:* AND QueryStatus:\"0\" AND QueryResults.keyword:(\\(\\:\\:ffff\\:\\)?10.* OR \\(\\:\\:ffff\\:\\)?192.168.* OR \\(\\:\\:ffff\\:\\)?172.16.* OR \\(\\:\\:ffff\\:\\)?172.17.* OR \\(\\:\\:ffff\\:\\)?172.18.* OR \\(\\:\\:ffff\\:\\)?172.19.* OR \\(\\:\\:ffff\\:\\)?172.20.* OR \\(\\:\\:ffff\\:\\)?172.21.* OR \\(\\:\\:ffff\\:\\)?172.22.* OR \\(\\:\\:ffff\\:\\)?172.23.* OR \\(\\:\\:ffff\\:\\)?172.24.* OR \\(\\:\\:ffff\\:\\)?172.25.* OR \\(\\:\\:ffff\\:\\)?172.26.* OR \\(\\:\\:ffff\\:\\)?172.27.* OR \\(\\:\\:ffff\\:\\)?172.28.* OR \\(\\:\\:ffff\\:\\)?172.29.* OR \\(\\:\\:ffff\\:\\)?172.30.* OR \\(\\:\\:ffff\\:\\)?172.31.* OR \\(\\:\\:ffff\\:\\)?127.*) AND (winlog.event_id:\"22\" AND QueryName.keyword:* AND QueryStatus:\"0\") AND (NOT (QueryResults.keyword:(\\(\\:\\:ffff\\:\\)?10.* OR \\(\\:\\:ffff\\:\\)?192.168.* OR \\(\\:\\:ffff\\:\\)?172.16.* OR \\(\\:\\:ffff\\:\\)?172.17.* OR \\(\\:\\:ffff\\:\\)?172.18.* OR \\(\\:\\:ffff\\:\\)?172.19.* OR \\(\\:\\:ffff\\:\\)?172.20.* OR \\(\\:\\:ffff\\:\\)?172.21.* OR \\(\\:\\:ffff\\:\\)?172.22.* OR \\(\\:\\:ffff\\:\\)?172.23.* OR \\(\\:\\:ffff\\:\\)?172.24.* OR \\(\\:\\:ffff\\:\\)?172.25.* OR \\(\\:\\:ffff\\:\\)?172.26.* OR \\(\\:\\:ffff\\:\\)?172.27.* OR \\(\\:\\:ffff\\:\\)?172.28.* OR \\(\\:\\:ffff\\:\\)?172.29.* OR \\(\\:\\:ffff\\:\\)?172.30.* OR \\(\\:\\:ffff\\:\\)?172.31.* OR \\(\\:\\:ffff\\:\\)?127.*))))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30s"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"22\" AND QueryName.keyword:* AND QueryStatus:\"0\" AND QueryResults.keyword:(\\(\\:\\:ffff\\:\\)?10.* OR \\(\\:\\:ffff\\:\\)?192.168.* OR \\(\\:\\:ffff\\:\\)?172.16.* OR \\(\\:\\:ffff\\:\\)?172.17.* OR \\(\\:\\:ffff\\:\\)?172.18.* OR \\(\\:\\:ffff\\:\\)?172.19.* OR \\(\\:\\:ffff\\:\\)?172.20.* OR \\(\\:\\:ffff\\:\\)?172.21.* OR \\(\\:\\:ffff\\:\\)?172.22.* OR \\(\\:\\:ffff\\:\\)?172.23.* OR \\(\\:\\:ffff\\:\\)?172.24.* OR \\(\\:\\:ffff\\:\\)?172.25.* OR \\(\\:\\:ffff\\:\\)?172.26.* OR \\(\\:\\:ffff\\:\\)?172.27.* OR \\(\\:\\:ffff\\:\\)?172.28.* OR \\(\\:\\:ffff\\:\\)?172.29.* OR \\(\\:\\:ffff\\:\\)?172.30.* OR \\(\\:\\:ffff\\:\\)?172.31.* OR \\(\\:\\:ffff\\:\\)?127.*) AND (winlog.event_id:\"22\" AND QueryName.keyword:* AND QueryStatus:\"0\") AND (NOT (QueryResults.keyword:(\\(\\:\\:ffff\\:\\)?10.* OR \\(\\:\\:ffff\\:\\)?192.168.* OR \\(\\:\\:ffff\\:\\)?172.16.* OR \\(\\:\\:ffff\\:\\)?172.17.* OR \\(\\:\\:ffff\\:\\)?172.18.* OR \\(\\:\\:ffff\\:\\)?172.19.* OR \\(\\:\\:ffff\\:\\)?172.20.* OR \\(\\:\\:ffff\\:\\)?172.21.* OR \\(\\:\\:ffff\\:\\)?172.22.* OR \\(\\:\\:ffff\\:\\)?172.23.* OR \\(\\:\\:ffff\\:\\)?172.24.* OR \\(\\:\\:ffff\\:\\)?172.25.* OR \\(\\:\\:ffff\\:\\)?172.26.* OR \\(\\:\\:ffff\\:\\)?172.27.* OR \\(\\:\\:ffff\\:\\)?172.28.* OR \\(\\:\\:ffff\\:\\)?172.29.* OR \\(\\:\\:ffff\\:\\)?172.30.* OR \\(\\:\\:ffff\\:\\)?172.31.* OR \\(\\:\\:ffff\\:\\)?127.*))))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          },
+          "aggs": {
+            "by": {
+              "terms": {
+                "field": "winlog.ComputerName",
+                "size": 10,
+                "order": {
+                  "_count": "desc"
+                },
+                "min_doc_count": 4
+              },
+              "aggs": {
+                "agg": {
+                  "terms": {
+                    "field": "QueryName",
+                    "size": 10,
+                    "order": {
+                      "_count": "desc"
+                    },
+                    "min_doc_count": 4
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.aggregations.by.buckets.0.agg.buckets.0.doc_count": {
+        "gt": 3
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Possible DNS Rebinding'",
+        "body": "Hits:\n{{#aggregations.agg.buckets}}\n {{key}} {{doc_count}}\n\n{{#by.buckets}}\n-- {{key}} {{doc_count}}\n{{/by.buckets}}\n\n{{/aggregations.agg.buckets}}\n",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/sysmon/sysmon_possible_dns_rebinding.yml): Aggregations not implemented for this backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 
@@ -113,7 +214,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*22)(?=.*.*)(?=.*0)(?=.*(?:.*\\(::ffff:\\)?10\\..*|.*\\(::ffff:\\)?192\\.168\\..*|.*\\(::ffff:\\)?172\\.16\\..*|.*\\(::ffff:\\)?172\\.17\\..*|.*\\(::ffff:\\)?172\\.18\\..*|.*\\(::ffff:\\)?172\\.19\\..*|.*\\(::ffff:\\)?172\\.20\\..*|.*\\(::ffff:\\)?172\\.21\\..*|.*\\(::ffff:\\)?172\\.22\\..*|.*\\(::ffff:\\)?172\\.23\\..*|.*\\(::ffff:\\)?172\\.24\\..*|.*\\(::ffff:\\)?172\\.25\\..*|.*\\(::ffff:\\)?172\\.26\\..*|.*\\(::ffff:\\)?172\\.27\\..*|.*\\(::ffff:\\)?172\\.28\\..*|.*\\(::ffff:\\)?172\\.29\\..*|.*\\(::ffff:\\)?172\\.30\\..*|.*\\(::ffff:\\)?172\\.31\\..*|.*\\(::ffff:\\)?127\\..*))(?=.*(?:.*(?=.*22)(?=.*.*)(?=.*0)))(?=.*(?!.*(?:.*(?=.*(?:.*\\(::ffff:\\)?10\\..*|.*\\(::ffff:\\)?192\\.168\\..*|.*\\(::ffff:\\)?172\\.16\\..*|.*\\(::ffff:\\)?172\\.17\\..*|.*\\(::ffff:\\)?172\\.18\\..*|.*\\(::ffff:\\)?172\\.19\\..*|.*\\(::ffff:\\)?172\\.20\\..*|.*\\(::ffff:\\)?172\\.21\\..*|.*\\(::ffff:\\)?172\\.22\\..*|.*\\(::ffff:\\)?172\\.23\\..*|.*\\(::ffff:\\)?172\\.24\\..*|.*\\(::ffff:\\)?172\\.25\\..*|.*\\(::ffff:\\)?172\\.26\\..*|.*\\(::ffff:\\)?172\\.27\\..*|.*\\(::ffff:\\)?172\\.28\\..*|.*\\(::ffff:\\)?172\\.29\\..*|.*\\(::ffff:\\)?172\\.30\\..*|.*\\(::ffff:\\)?172\\.31\\..*|.*\\(::ffff:\\)?127\\..*))))))'
+grep -P '^(?:.*(?=.*22)(?=.*.*)(?=.*0)(?=.*(?:.*\(::ffff:\)?10\..*|.*\(::ffff:\)?192\.168\..*|.*\(::ffff:\)?172\.16\..*|.*\(::ffff:\)?172\.17\..*|.*\(::ffff:\)?172\.18\..*|.*\(::ffff:\)?172\.19\..*|.*\(::ffff:\)?172\.20\..*|.*\(::ffff:\)?172\.21\..*|.*\(::ffff:\)?172\.22\..*|.*\(::ffff:\)?172\.23\..*|.*\(::ffff:\)?172\.24\..*|.*\(::ffff:\)?172\.25\..*|.*\(::ffff:\)?172\.26\..*|.*\(::ffff:\)?172\.27\..*|.*\(::ffff:\)?172\.28\..*|.*\(::ffff:\)?172\.29\..*|.*\(::ffff:\)?172\.30\..*|.*\(::ffff:\)?172\.31\..*|.*\(::ffff:\)?127\..*))(?=.*(?:.*(?=.*22)(?=.*.*)(?=.*0)))(?=.*(?!.*(?:.*(?=.*(?:.*\(::ffff:\)?10\..*|.*\(::ffff:\)?192\.168\..*|.*\(::ffff:\)?172\.16\..*|.*\(::ffff:\)?172\.17\..*|.*\(::ffff:\)?172\.18\..*|.*\(::ffff:\)?172\.19\..*|.*\(::ffff:\)?172\.20\..*|.*\(::ffff:\)?172\.21\..*|.*\(::ffff:\)?172\.22\..*|.*\(::ffff:\)?172\.23\..*|.*\(::ffff:\)?172\.24\..*|.*\(::ffff:\)?172\.25\..*|.*\(::ffff:\)?172\.26\..*|.*\(::ffff:\)?172\.27\..*|.*\(::ffff:\)?172\.28\..*|.*\(::ffff:\)?172\.29\..*|.*\(::ffff:\)?172\.30\..*|.*\(::ffff:\)?172\.31\..*|.*\(::ffff:\)?127\..*))))))'
 ```
 
 

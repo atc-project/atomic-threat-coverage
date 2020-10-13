@@ -58,49 +58,125 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {((($_.message -match "ParentImage.*.*\\\\userinit.exe" -and  -not ($_.message -match "Image.*.*\\\\explorer.exe")) -and  -not (($_.message -match "CommandLine.*.*netlogon.bat.*" -or $_.message -match "CommandLine.*.*UsrLogon.cmd.*"))) -or $_.message -match "CommandLine.*.*UserInitMprLogonScript.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {((($_.message -match "ParentImage.*.*\\userinit.exe" -and  -not ($_.message -match "Image.*.*\\explorer.exe")) -and  -not (($_.message -match "CommandLine.*.*netlogon.bat.*" -or $_.message -match "CommandLine.*.*UsrLogon.cmd.*"))) -or $_.message -match "CommandLine.*.*UserInitMprLogonScript.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(((winlog.event_data.ParentImage.keyword:*\\\\userinit.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\explorer.exe))) AND (NOT (winlog.event_data.CommandLine.keyword:(*netlogon.bat* OR *UsrLogon.cmd*)))) OR winlog.event_data.CommandLine.keyword:*UserInitMprLogonScript*)
+(((winlog.event_data.ParentImage.keyword:*\\userinit.exe AND (NOT (winlog.event_data.Image.keyword:*\\explorer.exe))) AND (NOT (winlog.event_data.CommandLine.keyword:(*netlogon.bat* OR *UsrLogon.cmd*)))) OR winlog.event_data.CommandLine.keyword:*UserInitMprLogonScript*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/0a98a10c-685d-4ab0-bddc-b6bdd1d48458 <<EOF\n{\n  "metadata": {\n    "title": "Logon Scripts (UserInitMprLogonScript)",\n    "description": "Detects creation or execution of UserInitMprLogonScript persistence method",\n    "tags": [\n      "attack.t1037",\n      "attack.t1037.001",\n      "attack.persistence"\n    ],\n    "query": "(((winlog.event_data.ParentImage.keyword:*\\\\\\\\userinit.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\\\\\explorer.exe))) AND (NOT (winlog.event_data.CommandLine.keyword:(*netlogon.bat* OR *UsrLogon.cmd*)))) OR winlog.event_data.CommandLine.keyword:*UserInitMprLogonScript*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(((winlog.event_data.ParentImage.keyword:*\\\\\\\\userinit.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\\\\\explorer.exe))) AND (NOT (winlog.event_data.CommandLine.keyword:(*netlogon.bat* OR *UsrLogon.cmd*)))) OR winlog.event_data.CommandLine.keyword:*UserInitMprLogonScript*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Logon Scripts (UserInitMprLogonScript)\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/0a98a10c-685d-4ab0-bddc-b6bdd1d48458 <<EOF
+{
+  "metadata": {
+    "title": "Logon Scripts (UserInitMprLogonScript)",
+    "description": "Detects creation or execution of UserInitMprLogonScript persistence method",
+    "tags": [
+      "attack.t1037",
+      "attack.t1037.001",
+      "attack.persistence"
+    ],
+    "query": "(((winlog.event_data.ParentImage.keyword:*\\\\userinit.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\explorer.exe))) AND (NOT (winlog.event_data.CommandLine.keyword:(*netlogon.bat* OR *UsrLogon.cmd*)))) OR winlog.event_data.CommandLine.keyword:*UserInitMprLogonScript*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(((winlog.event_data.ParentImage.keyword:*\\\\userinit.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\explorer.exe))) AND (NOT (winlog.event_data.CommandLine.keyword:(*netlogon.bat* OR *UsrLogon.cmd*)))) OR winlog.event_data.CommandLine.keyword:*UserInitMprLogonScript*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Logon Scripts (UserInitMprLogonScript)'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(((ParentImage.keyword:*\\\\userinit.exe AND (NOT (Image.keyword:*\\\\explorer.exe))) AND (NOT (CommandLine.keyword:(*netlogon.bat* *UsrLogon.cmd*)))) OR CommandLine.keyword:*UserInitMprLogonScript*)
+(((ParentImage.keyword:*\\userinit.exe AND (NOT (Image.keyword:*\\explorer.exe))) AND (NOT (CommandLine.keyword:(*netlogon.bat* *UsrLogon.cmd*)))) OR CommandLine.keyword:*UserInitMprLogonScript*)
 ```
 
 
 ### splunk
     
 ```
-(((ParentImage="*\\\\userinit.exe" NOT (Image="*\\\\explorer.exe")) NOT ((CommandLine="*netlogon.bat*" OR CommandLine="*UsrLogon.cmd*"))) OR CommandLine="*UserInitMprLogonScript*")
+(((ParentImage="*\\userinit.exe" NOT (Image="*\\explorer.exe")) NOT ((CommandLine="*netlogon.bat*" OR CommandLine="*UsrLogon.cmd*"))) OR CommandLine="*UserInitMprLogonScript*")
 ```
 
 
 ### logpoint
     
 ```
-(((ParentImage="*\\\\userinit.exe"  -(Image="*\\\\explorer.exe"))  -(CommandLine IN ["*netlogon.bat*", "*UsrLogon.cmd*"])) OR CommandLine="*UserInitMprLogonScript*")
+(((ParentImage="*\\userinit.exe"  -(Image="*\\explorer.exe"))  -(CommandLine IN ["*netlogon.bat*", "*UsrLogon.cmd*"])) OR CommandLine="*UserInitMprLogonScript*")
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?:.*(?:.*(?=.*(?:.*(?=.*.*\\userinit\\.exe)(?=.*(?!.*(?:.*(?=.*.*\\explorer\\.exe))))))(?=.*(?!.*(?:.*(?=.*(?:.*.*netlogon\\.bat.*|.*.*UsrLogon\\.cmd.*))))))|.*.*UserInitMprLogonScript.*))'
+grep -P '^(?:.*(?:.*(?:.*(?=.*(?:.*(?=.*.*\userinit\.exe)(?=.*(?!.*(?:.*(?=.*.*\explorer\.exe))))))(?=.*(?!.*(?:.*(?=.*(?:.*.*netlogon\.bat.*|.*.*UsrLogon\.cmd.*))))))|.*.*UserInitMprLogonScript.*))'
 ```
 
 

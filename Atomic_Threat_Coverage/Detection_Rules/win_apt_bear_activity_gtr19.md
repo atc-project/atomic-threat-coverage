@@ -55,49 +55,127 @@ level: critical
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "Image.*.*\\\\xcopy.exe" -and $_.message -match "CommandLine.*.* /S /E /C /Q /H \\\\.*") -or ($_.message -match "Image.*.*\\\\adexplorer.exe" -and $_.message -match "CommandLine.*.* -snapshot \\"\\" c:\\\\users\\\\.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "Image.*.*\\xcopy.exe" -and $_.message -match "CommandLine.*.* /S /E /C /Q /H \\.*") -or ($_.message -match "Image.*.*\\adexplorer.exe" -and $_.message -match "CommandLine.*.* -snapshot \"\" c:\\users\\.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.Image.keyword:*\\\\xcopy.exe AND winlog.event_data.CommandLine.keyword:*\\ \\/S\\ \\/E\\ \\/C\\ \\/Q\\ \\/H\\ \\\\*) OR (winlog.event_data.Image.keyword:*\\\\adexplorer.exe AND winlog.event_data.CommandLine.keyword:*\\ \\-snapshot\\ \\"\\"\\ c\\:\\\\users\\\\*))
+((winlog.event_data.Image.keyword:*\\xcopy.exe AND winlog.event_data.CommandLine.keyword:*\ \/S\ \/E\ \/C\ \/Q\ \/H\ \\*) OR (winlog.event_data.Image.keyword:*\\adexplorer.exe AND winlog.event_data.CommandLine.keyword:*\ \-snapshot\ \"\"\ c\:\\users\\*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/b83f5166-9237-4b5e-9cd4-7b5d52f4d8ee <<EOF\n{\n  "metadata": {\n    "title": "Judgement Panda Credential Access Activity",\n    "description": "Detects Russian group activity as described in Global Threat Report 2019 by Crowdstrike",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1081",\n      "attack.t1003",\n      "attack.t1552.001",\n      "attack.t1003.003"\n    ],\n    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\xcopy.exe AND winlog.event_data.CommandLine.keyword:*\\\\ \\\\/S\\\\ \\\\/E\\\\ \\\\/C\\\\ \\\\/Q\\\\ \\\\/H\\\\ \\\\\\\\*) OR (winlog.event_data.Image.keyword:*\\\\\\\\adexplorer.exe AND winlog.event_data.CommandLine.keyword:*\\\\ \\\\-snapshot\\\\ \\\\\\"\\\\\\"\\\\ c\\\\:\\\\\\\\users\\\\\\\\*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\xcopy.exe AND winlog.event_data.CommandLine.keyword:*\\\\ \\\\/S\\\\ \\\\/E\\\\ \\\\/C\\\\ \\\\/Q\\\\ \\\\/H\\\\ \\\\\\\\*) OR (winlog.event_data.Image.keyword:*\\\\\\\\adexplorer.exe AND winlog.event_data.CommandLine.keyword:*\\\\ \\\\-snapshot\\\\ \\\\\\"\\\\\\"\\\\ c\\\\:\\\\\\\\users\\\\\\\\*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Judgement Panda Credential Access Activity\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/b83f5166-9237-4b5e-9cd4-7b5d52f4d8ee <<EOF
+{
+  "metadata": {
+    "title": "Judgement Panda Credential Access Activity",
+    "description": "Detects Russian group activity as described in Global Threat Report 2019 by Crowdstrike",
+    "tags": [
+      "attack.credential_access",
+      "attack.t1081",
+      "attack.t1003",
+      "attack.t1552.001",
+      "attack.t1003.003"
+    ],
+    "query": "((winlog.event_data.Image.keyword:*\\\\xcopy.exe AND winlog.event_data.CommandLine.keyword:*\\ \\/S\\ \\/E\\ \\/C\\ \\/Q\\ \\/H\\ \\\\*) OR (winlog.event_data.Image.keyword:*\\\\adexplorer.exe AND winlog.event_data.CommandLine.keyword:*\\ \\-snapshot\\ \\\"\\\"\\ c\\:\\\\users\\\\*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.Image.keyword:*\\\\xcopy.exe AND winlog.event_data.CommandLine.keyword:*\\ \\/S\\ \\/E\\ \\/C\\ \\/Q\\ \\/H\\ \\\\*) OR (winlog.event_data.Image.keyword:*\\\\adexplorer.exe AND winlog.event_data.CommandLine.keyword:*\\ \\-snapshot\\ \\\"\\\"\\ c\\:\\\\users\\\\*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Judgement Panda Credential Access Activity'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((Image.keyword:*\\\\xcopy.exe AND CommandLine.keyword:* \\/S \\/E \\/C \\/Q \\/H \\\\*) OR (Image.keyword:*\\\\adexplorer.exe AND CommandLine.keyword:* \\-snapshot \\"\\" c\\:\\\\users\\\\*))
+((Image.keyword:*\\xcopy.exe AND CommandLine.keyword:* \/S \/E \/C \/Q \/H \\*) OR (Image.keyword:*\\adexplorer.exe AND CommandLine.keyword:* \-snapshot \"\" c\:\\users\\*))
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\\\xcopy.exe" CommandLine="* /S /E /C /Q /H \\\\*") OR (Image="*\\\\adexplorer.exe" CommandLine="* -snapshot \\"\\" c:\\\\users\\\\*"))
+((Image="*\\xcopy.exe" CommandLine="* /S /E /C /Q /H \\*") OR (Image="*\\adexplorer.exe" CommandLine="* -snapshot \"\" c:\\users\\*"))
 ```
 
 
 ### logpoint
     
 ```
-((Image="*\\\\xcopy.exe" CommandLine="* /S /E /C /Q /H \\\\*") OR (Image="*\\\\adexplorer.exe" CommandLine="* -snapshot \\"\\" c:\\\\users\\\\*"))
+((Image="*\\xcopy.exe" CommandLine="* /S /E /C /Q /H \\*") OR (Image="*\\adexplorer.exe" CommandLine="* -snapshot \"\" c:\\users\\*"))
 ```
 
 
 ### grep
     
 ```
-grep -P \'^(?:.*(?:.*(?:.*(?=.*.*\\xcopy\\.exe)(?=.*.* /S /E /C /Q /H \\\\.*))|.*(?:.*(?=.*.*\\adexplorer\\.exe)(?=.*.* -snapshot "" c:\\users\\\\.*))))\'
+grep -P '^(?:.*(?:.*(?:.*(?=.*.*\xcopy\.exe)(?=.*.* /S /E /C /Q /H \\.*))|.*(?:.*(?=.*.*\adexplorer\.exe)(?=.*.* -snapshot "" c:\users\\.*))))'
 ```
 
 

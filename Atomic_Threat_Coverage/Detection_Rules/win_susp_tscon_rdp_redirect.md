@@ -59,21 +59,98 @@ Get-WinEvent | where {$_.message -match "CommandLine.*.* /dest:rdp-tcp:.*" } | s
 ### es-qs
     
 ```
-winlog.event_data.CommandLine.keyword:*\\ \\/dest\\:rdp\\-tcp\\:*
+winlog.event_data.CommandLine.keyword:*\ \/dest\:rdp\-tcp\:*
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/f72aa3e8-49f9-4c7d-bd74-f8ab84ff9bbb <<EOF\n{\n  "metadata": {\n    "title": "Suspicious RDP Redirect Using TSCON",\n    "description": "Detects a suspicious RDP session redirect using tscon.exe",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1563.002",\n      "attack.t1076",\n      "car.2013-07-002"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:*\\\\ \\\\/dest\\\\:rdp\\\\-tcp\\\\:*"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:*\\\\ \\\\/dest\\\\:rdp\\\\-tcp\\\\:*",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious RDP Redirect Using TSCON\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/f72aa3e8-49f9-4c7d-bd74-f8ab84ff9bbb <<EOF
+{
+  "metadata": {
+    "title": "Suspicious RDP Redirect Using TSCON",
+    "description": "Detects a suspicious RDP session redirect using tscon.exe",
+    "tags": [
+      "attack.lateral_movement",
+      "attack.t1563.002",
+      "attack.t1076",
+      "car.2013-07-002"
+    ],
+    "query": "winlog.event_data.CommandLine.keyword:*\\ \\/dest\\:rdp\\-tcp\\:*"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.CommandLine.keyword:*\\ \\/dest\\:rdp\\-tcp\\:*",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious RDP Redirect Using TSCON'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-CommandLine.keyword:* \\/dest\\:rdp\\-tcp\\:*
+CommandLine.keyword:* \/dest\:rdp\-tcp\:*
 ```
 
 

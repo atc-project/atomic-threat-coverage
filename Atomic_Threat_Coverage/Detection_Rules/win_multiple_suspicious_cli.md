@@ -93,21 +93,109 @@ Get-WinEvent | where {($_.message -match "arp.exe" -or $_.message -match "at.exe
 ### es-qs
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/process_creation/win_multiple_suspicious_cli.yml): Aggregations not implemented for this backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/61ab5496-748e-4818-a92f-de78e20fe7f1 <<EOF\n{\n  "metadata": {\n    "title": "Quick Execution of a Series of Suspicious Commands",\n    "description": "Detects multiple suspicious process in a limited timeframe",\n    "tags": [\n      "car.2013-04-002"\n    ],\n    "query": "winlog.event_data.CommandLine:(\\"arp.exe\\" OR \\"at.exe\\" OR \\"attrib.exe\\" OR \\"cscript.exe\\" OR \\"dsquery.exe\\" OR \\"hostname.exe\\" OR \\"ipconfig.exe\\" OR \\"mimikatz.exe\\" OR \\"nbtstat.exe\\" OR \\"net.exe\\" OR \\"netsh.exe\\" OR \\"nslookup.exe\\" OR \\"ping.exe\\" OR \\"quser.exe\\" OR \\"qwinsta.exe\\" OR \\"reg.exe\\" OR \\"runas.exe\\" OR \\"sc.exe\\" OR \\"schtasks.exe\\" OR \\"ssh.exe\\" OR \\"systeminfo.exe\\" OR \\"taskkill.exe\\" OR \\"telnet.exe\\" OR \\"tracert.exe\\" OR \\"wscript.exe\\" OR \\"xcopy.exe\\" OR \\"pscp.exe\\" OR \\"copy.exe\\" OR \\"robocopy.exe\\" OR \\"certutil.exe\\" OR \\"vssadmin.exe\\" OR \\"powershell.exe\\" OR \\"wevtutil.exe\\" OR \\"psexec.exe\\" OR \\"bcedit.exe\\" OR \\"wbadmin.exe\\" OR \\"icacls.exe\\" OR \\"diskpart.exe\\")"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "5m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine:(\\"arp.exe\\" OR \\"at.exe\\" OR \\"attrib.exe\\" OR \\"cscript.exe\\" OR \\"dsquery.exe\\" OR \\"hostname.exe\\" OR \\"ipconfig.exe\\" OR \\"mimikatz.exe\\" OR \\"nbtstat.exe\\" OR \\"net.exe\\" OR \\"netsh.exe\\" OR \\"nslookup.exe\\" OR \\"ping.exe\\" OR \\"quser.exe\\" OR \\"qwinsta.exe\\" OR \\"reg.exe\\" OR \\"runas.exe\\" OR \\"sc.exe\\" OR \\"schtasks.exe\\" OR \\"ssh.exe\\" OR \\"systeminfo.exe\\" OR \\"taskkill.exe\\" OR \\"telnet.exe\\" OR \\"tracert.exe\\" OR \\"wscript.exe\\" OR \\"xcopy.exe\\" OR \\"pscp.exe\\" OR \\"copy.exe\\" OR \\"robocopy.exe\\" OR \\"certutil.exe\\" OR \\"vssadmin.exe\\" OR \\"powershell.exe\\" OR \\"wevtutil.exe\\" OR \\"psexec.exe\\" OR \\"bcedit.exe\\" OR \\"wbadmin.exe\\" OR \\"icacls.exe\\" OR \\"diskpart.exe\\")",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          },\n          "aggs": {\n            "by": {\n              "terms": {\n                "field": "MachineName",\n                "size": 10,\n                "order": {\n                  "_count": "desc"\n                },\n                "min_doc_count": 6\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.aggregations.by.buckets.0.doc_count": {\n        "gt": 5\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Quick Execution of a Series of Suspicious Commands\'",\n        "body": "Hits:\\n{{#aggregations.by.buckets}}\\n {{key}} {{doc_count}}\\n{{/aggregations.by.buckets}}\\n",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/61ab5496-748e-4818-a92f-de78e20fe7f1 <<EOF
+{
+  "metadata": {
+    "title": "Quick Execution of a Series of Suspicious Commands",
+    "description": "Detects multiple suspicious process in a limited timeframe",
+    "tags": [
+      "car.2013-04-002"
+    ],
+    "query": "winlog.event_data.CommandLine:(\"arp.exe\" OR \"at.exe\" OR \"attrib.exe\" OR \"cscript.exe\" OR \"dsquery.exe\" OR \"hostname.exe\" OR \"ipconfig.exe\" OR \"mimikatz.exe\" OR \"nbtstat.exe\" OR \"net.exe\" OR \"netsh.exe\" OR \"nslookup.exe\" OR \"ping.exe\" OR \"quser.exe\" OR \"qwinsta.exe\" OR \"reg.exe\" OR \"runas.exe\" OR \"sc.exe\" OR \"schtasks.exe\" OR \"ssh.exe\" OR \"systeminfo.exe\" OR \"taskkill.exe\" OR \"telnet.exe\" OR \"tracert.exe\" OR \"wscript.exe\" OR \"xcopy.exe\" OR \"pscp.exe\" OR \"copy.exe\" OR \"robocopy.exe\" OR \"certutil.exe\" OR \"vssadmin.exe\" OR \"powershell.exe\" OR \"wevtutil.exe\" OR \"psexec.exe\" OR \"bcedit.exe\" OR \"wbadmin.exe\" OR \"icacls.exe\" OR \"diskpart.exe\")"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "5m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.CommandLine:(\"arp.exe\" OR \"at.exe\" OR \"attrib.exe\" OR \"cscript.exe\" OR \"dsquery.exe\" OR \"hostname.exe\" OR \"ipconfig.exe\" OR \"mimikatz.exe\" OR \"nbtstat.exe\" OR \"net.exe\" OR \"netsh.exe\" OR \"nslookup.exe\" OR \"ping.exe\" OR \"quser.exe\" OR \"qwinsta.exe\" OR \"reg.exe\" OR \"runas.exe\" OR \"sc.exe\" OR \"schtasks.exe\" OR \"ssh.exe\" OR \"systeminfo.exe\" OR \"taskkill.exe\" OR \"telnet.exe\" OR \"tracert.exe\" OR \"wscript.exe\" OR \"xcopy.exe\" OR \"pscp.exe\" OR \"copy.exe\" OR \"robocopy.exe\" OR \"certutil.exe\" OR \"vssadmin.exe\" OR \"powershell.exe\" OR \"wevtutil.exe\" OR \"psexec.exe\" OR \"bcedit.exe\" OR \"wbadmin.exe\" OR \"icacls.exe\" OR \"diskpart.exe\")",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          },
+          "aggs": {
+            "by": {
+              "terms": {
+                "field": "MachineName",
+                "size": 10,
+                "order": {
+                  "_count": "desc"
+                },
+                "min_doc_count": 6
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.aggregations.by.buckets.0.doc_count": {
+        "gt": 5
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Quick Execution of a Series of Suspicious Commands'",
+        "body": "Hits:\n{{#aggregations.by.buckets}}\n {{key}} {{doc_count}}\n{{/aggregations.by.buckets}}\n",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-
+An unsupported feature is required for this Sigma rule (detection_rules/sigma/rules/windows/process_creation/win_multiple_suspicious_cli.yml): Aggregations not implemented for this backend
+Feel free to contribute for fun and fame, this is open source :) -> https://github.com/Neo23x0/sigma
 ```
 
 
@@ -128,7 +216,7 @@ CommandLine IN ["arp.exe", "at.exe", "attrib.exe", "cscript.exe", "dsquery.exe",
 ### grep
     
 ```
-grep -P '^(?:.*arp\\.exe|.*at\\.exe|.*attrib\\.exe|.*cscript\\.exe|.*dsquery\\.exe|.*hostname\\.exe|.*ipconfig\\.exe|.*mimikatz\\.exe|.*nbtstat\\.exe|.*net\\.exe|.*netsh\\.exe|.*nslookup\\.exe|.*ping\\.exe|.*quser\\.exe|.*qwinsta\\.exe|.*reg\\.exe|.*runas\\.exe|.*sc\\.exe|.*schtasks\\.exe|.*ssh\\.exe|.*systeminfo\\.exe|.*taskkill\\.exe|.*telnet\\.exe|.*tracert\\.exe|.*wscript\\.exe|.*xcopy\\.exe|.*pscp\\.exe|.*copy\\.exe|.*robocopy\\.exe|.*certutil\\.exe|.*vssadmin\\.exe|.*powershell\\.exe|.*wevtutil\\.exe|.*psexec\\.exe|.*bcedit\\.exe|.*wbadmin\\.exe|.*icacls\\.exe|.*diskpart\\.exe)'
+grep -P '^(?:.*arp\.exe|.*at\.exe|.*attrib\.exe|.*cscript\.exe|.*dsquery\.exe|.*hostname\.exe|.*ipconfig\.exe|.*mimikatz\.exe|.*nbtstat\.exe|.*net\.exe|.*netsh\.exe|.*nslookup\.exe|.*ping\.exe|.*quser\.exe|.*qwinsta\.exe|.*reg\.exe|.*runas\.exe|.*sc\.exe|.*schtasks\.exe|.*ssh\.exe|.*systeminfo\.exe|.*taskkill\.exe|.*telnet\.exe|.*tracert\.exe|.*wscript\.exe|.*xcopy\.exe|.*pscp\.exe|.*copy\.exe|.*robocopy\.exe|.*certutil\.exe|.*vssadmin\.exe|.*powershell\.exe|.*wevtutil\.exe|.*psexec\.exe|.*bcedit\.exe|.*wbadmin\.exe|.*icacls\.exe|.*diskpart\.exe)'
 ```
 
 

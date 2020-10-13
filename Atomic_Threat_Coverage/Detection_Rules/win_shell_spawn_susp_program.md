@@ -72,49 +72,128 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {((($_.message -match "ParentImage.*.*\\\\mshta.exe" -or $_.message -match "ParentImage.*.*\\\\powershell.exe" -or $_.message -match "ParentImage.*.*\\\\rundll32.exe" -or $_.message -match "ParentImage.*.*\\\\cscript.exe" -or $_.message -match "ParentImage.*.*\\\\wscript.exe" -or $_.message -match "ParentImage.*.*\\\\wmiprvse.exe") -and ($_.message -match "Image.*.*\\\\schtasks.exe" -or $_.message -match "Image.*.*\\\\nslookup.exe" -or $_.message -match "Image.*.*\\\\certutil.exe" -or $_.message -match "Image.*.*\\\\bitsadmin.exe" -or $_.message -match "Image.*.*\\\\mshta.exe")) -and  -not ($_.message -match "CurrentDirectory.*.*\\\\ccmcache\\\\.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {((($_.message -match "ParentImage.*.*\\mshta.exe" -or $_.message -match "ParentImage.*.*\\powershell.exe" -or $_.message -match "ParentImage.*.*\\rundll32.exe" -or $_.message -match "ParentImage.*.*\\cscript.exe" -or $_.message -match "ParentImage.*.*\\wscript.exe" -or $_.message -match "ParentImage.*.*\\wmiprvse.exe") -and ($_.message -match "Image.*.*\\schtasks.exe" -or $_.message -match "Image.*.*\\nslookup.exe" -or $_.message -match "Image.*.*\\certutil.exe" -or $_.message -match "Image.*.*\\bitsadmin.exe" -or $_.message -match "Image.*.*\\mshta.exe")) -and  -not ($_.message -match "CurrentDirectory.*.*\\ccmcache\\.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.ParentImage.keyword:(*\\\\mshta.exe OR *\\\\powershell.exe OR *\\\\rundll32.exe OR *\\\\cscript.exe OR *\\\\wscript.exe OR *\\\\wmiprvse.exe) AND winlog.event_data.Image.keyword:(*\\\\schtasks.exe OR *\\\\nslookup.exe OR *\\\\certutil.exe OR *\\\\bitsadmin.exe OR *\\\\mshta.exe)) AND (NOT (winlog.event_data.CurrentDirectory.keyword:*\\\\ccmcache\\\\*)))
+((winlog.event_data.ParentImage.keyword:(*\\mshta.exe OR *\\powershell.exe OR *\\rundll32.exe OR *\\cscript.exe OR *\\wscript.exe OR *\\wmiprvse.exe) AND winlog.event_data.Image.keyword:(*\\schtasks.exe OR *\\nslookup.exe OR *\\certutil.exe OR *\\bitsadmin.exe OR *\\mshta.exe)) AND (NOT (winlog.event_data.CurrentDirectory.keyword:*\\ccmcache\\*)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/3a6586ad-127a-4d3b-a677-1e6eacdf8fde <<EOF\n{\n  "metadata": {\n    "title": "Windows Shell Spawning Suspicious Program",\n    "description": "Detects a suspicious child process of a Windows shell",\n    "tags": [\n      "attack.execution",\n      "attack.defense_evasion",\n      "attack.t1064",\n      "attack.t1059.005",\n      "attack.t1059.001",\n      "attack.t1218"\n    ],\n    "query": "((winlog.event_data.ParentImage.keyword:(*\\\\\\\\mshta.exe OR *\\\\\\\\powershell.exe OR *\\\\\\\\rundll32.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\wscript.exe OR *\\\\\\\\wmiprvse.exe) AND winlog.event_data.Image.keyword:(*\\\\\\\\schtasks.exe OR *\\\\\\\\nslookup.exe OR *\\\\\\\\certutil.exe OR *\\\\\\\\bitsadmin.exe OR *\\\\\\\\mshta.exe)) AND (NOT (winlog.event_data.CurrentDirectory.keyword:*\\\\\\\\ccmcache\\\\\\\\*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.ParentImage.keyword:(*\\\\\\\\mshta.exe OR *\\\\\\\\powershell.exe OR *\\\\\\\\rundll32.exe OR *\\\\\\\\cscript.exe OR *\\\\\\\\wscript.exe OR *\\\\\\\\wmiprvse.exe) AND winlog.event_data.Image.keyword:(*\\\\\\\\schtasks.exe OR *\\\\\\\\nslookup.exe OR *\\\\\\\\certutil.exe OR *\\\\\\\\bitsadmin.exe OR *\\\\\\\\mshta.exe)) AND (NOT (winlog.event_data.CurrentDirectory.keyword:*\\\\\\\\ccmcache\\\\\\\\*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Windows Shell Spawning Suspicious Program\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/3a6586ad-127a-4d3b-a677-1e6eacdf8fde <<EOF
+{
+  "metadata": {
+    "title": "Windows Shell Spawning Suspicious Program",
+    "description": "Detects a suspicious child process of a Windows shell",
+    "tags": [
+      "attack.execution",
+      "attack.defense_evasion",
+      "attack.t1064",
+      "attack.t1059.005",
+      "attack.t1059.001",
+      "attack.t1218"
+    ],
+    "query": "((winlog.event_data.ParentImage.keyword:(*\\\\mshta.exe OR *\\\\powershell.exe OR *\\\\rundll32.exe OR *\\\\cscript.exe OR *\\\\wscript.exe OR *\\\\wmiprvse.exe) AND winlog.event_data.Image.keyword:(*\\\\schtasks.exe OR *\\\\nslookup.exe OR *\\\\certutil.exe OR *\\\\bitsadmin.exe OR *\\\\mshta.exe)) AND (NOT (winlog.event_data.CurrentDirectory.keyword:*\\\\ccmcache\\\\*)))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.ParentImage.keyword:(*\\\\mshta.exe OR *\\\\powershell.exe OR *\\\\rundll32.exe OR *\\\\cscript.exe OR *\\\\wscript.exe OR *\\\\wmiprvse.exe) AND winlog.event_data.Image.keyword:(*\\\\schtasks.exe OR *\\\\nslookup.exe OR *\\\\certutil.exe OR *\\\\bitsadmin.exe OR *\\\\mshta.exe)) AND (NOT (winlog.event_data.CurrentDirectory.keyword:*\\\\ccmcache\\\\*)))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Windows Shell Spawning Suspicious Program'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((ParentImage.keyword:(*\\\\mshta.exe *\\\\powershell.exe *\\\\rundll32.exe *\\\\cscript.exe *\\\\wscript.exe *\\\\wmiprvse.exe) AND Image.keyword:(*\\\\schtasks.exe *\\\\nslookup.exe *\\\\certutil.exe *\\\\bitsadmin.exe *\\\\mshta.exe)) AND (NOT (CurrentDirectory.keyword:*\\\\ccmcache\\\\*)))
+((ParentImage.keyword:(*\\mshta.exe *\\powershell.exe *\\rundll32.exe *\\cscript.exe *\\wscript.exe *\\wmiprvse.exe) AND Image.keyword:(*\\schtasks.exe *\\nslookup.exe *\\certutil.exe *\\bitsadmin.exe *\\mshta.exe)) AND (NOT (CurrentDirectory.keyword:*\\ccmcache\\*)))
 ```
 
 
 ### splunk
     
 ```
-(((ParentImage="*\\\\mshta.exe" OR ParentImage="*\\\\powershell.exe" OR ParentImage="*\\\\rundll32.exe" OR ParentImage="*\\\\cscript.exe" OR ParentImage="*\\\\wscript.exe" OR ParentImage="*\\\\wmiprvse.exe") (Image="*\\\\schtasks.exe" OR Image="*\\\\nslookup.exe" OR Image="*\\\\certutil.exe" OR Image="*\\\\bitsadmin.exe" OR Image="*\\\\mshta.exe")) NOT (CurrentDirectory="*\\\\ccmcache\\\\*")) | table CommandLine,ParentCommandLine
+(((ParentImage="*\\mshta.exe" OR ParentImage="*\\powershell.exe" OR ParentImage="*\\rundll32.exe" OR ParentImage="*\\cscript.exe" OR ParentImage="*\\wscript.exe" OR ParentImage="*\\wmiprvse.exe") (Image="*\\schtasks.exe" OR Image="*\\nslookup.exe" OR Image="*\\certutil.exe" OR Image="*\\bitsadmin.exe" OR Image="*\\mshta.exe")) NOT (CurrentDirectory="*\\ccmcache\\*")) | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-((ParentImage IN ["*\\\\mshta.exe", "*\\\\powershell.exe", "*\\\\rundll32.exe", "*\\\\cscript.exe", "*\\\\wscript.exe", "*\\\\wmiprvse.exe"] Image IN ["*\\\\schtasks.exe", "*\\\\nslookup.exe", "*\\\\certutil.exe", "*\\\\bitsadmin.exe", "*\\\\mshta.exe"])  -(CurrentDirectory="*\\\\ccmcache\\\\*"))
+((ParentImage IN ["*\\mshta.exe", "*\\powershell.exe", "*\\rundll32.exe", "*\\cscript.exe", "*\\wscript.exe", "*\\wmiprvse.exe"] Image IN ["*\\schtasks.exe", "*\\nslookup.exe", "*\\certutil.exe", "*\\bitsadmin.exe", "*\\mshta.exe"])  -(CurrentDirectory="*\\ccmcache\\*"))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?=.*(?:.*.*\\mshta\\.exe|.*.*\\powershell\\.exe|.*.*\\rundll32\\.exe|.*.*\\cscript\\.exe|.*.*\\wscript\\.exe|.*.*\\wmiprvse\\.exe))(?=.*(?:.*.*\\schtasks\\.exe|.*.*\\nslookup\\.exe|.*.*\\certutil\\.exe|.*.*\\bitsadmin\\.exe|.*.*\\mshta\\.exe))))(?=.*(?!.*(?:.*(?=.*.*\\ccmcache\\\\.*)))))'
+grep -P '^(?:.*(?=.*(?:.*(?=.*(?:.*.*\mshta\.exe|.*.*\powershell\.exe|.*.*\rundll32\.exe|.*.*\cscript\.exe|.*.*\wscript\.exe|.*.*\wmiprvse\.exe))(?=.*(?:.*.*\schtasks\.exe|.*.*\nslookup\.exe|.*.*\certutil\.exe|.*.*\bitsadmin\.exe|.*.*\mshta\.exe))))(?=.*(?!.*(?:.*(?=.*.*\ccmcache\\.*)))))'
 ```
 
 

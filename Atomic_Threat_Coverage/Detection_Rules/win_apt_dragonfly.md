@@ -48,49 +48,123 @@ level: critical
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "Image.*.*\\\\crackmapexec.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "Image.*.*\\crackmapexec.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.Image.keyword:(*\\\\crackmapexec.exe)
+winlog.event_data.Image.keyword:(*\\crackmapexec.exe)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/04d9079e-3905-4b70-ad37-6bdf11304965 <<EOF\n{\n  "metadata": {\n    "title": "CrackMapExecWin",\n    "description": "Detects CrackMapExecWin Activity as Described by NCSC",\n    "tags": [\n      "attack.g0035"\n    ],\n    "query": "winlog.event_data.Image.keyword:(*\\\\\\\\crackmapexec.exe)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.Image.keyword:(*\\\\\\\\crackmapexec.exe)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'CrackMapExecWin\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/04d9079e-3905-4b70-ad37-6bdf11304965 <<EOF
+{
+  "metadata": {
+    "title": "CrackMapExecWin",
+    "description": "Detects CrackMapExecWin Activity as Described by NCSC",
+    "tags": [
+      "attack.g0035"
+    ],
+    "query": "winlog.event_data.Image.keyword:(*\\\\crackmapexec.exe)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.Image.keyword:(*\\\\crackmapexec.exe)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'CrackMapExecWin'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-Image.keyword:(*\\\\crackmapexec.exe)
+Image.keyword:(*\\crackmapexec.exe)
 ```
 
 
 ### splunk
     
 ```
-(Image="*\\\\crackmapexec.exe")
+(Image="*\\crackmapexec.exe")
 ```
 
 
 ### logpoint
     
 ```
-Image IN ["*\\\\crackmapexec.exe"]
+Image IN ["*\\crackmapexec.exe"]
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*.*\\crackmapexec\\.exe)'
+grep -P '^(?:.*.*\crackmapexec\.exe)'
 ```
 
 

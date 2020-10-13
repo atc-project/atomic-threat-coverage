@@ -67,49 +67,129 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "CommandLine.*.*cmd.exe /Q /c .* 1> \\\\\\\\.*\\\\.*\\\\.* 2>&1" -or $_.message -match "CommandLine.*.*cmd.exe /C .* > \\\\\\\\.*\\\\.*\\\\.* 2>&1" -or $_.message -match "CommandLine.*.*cmd.exe /C .* > .*\\\\Temp\\\\.* 2>&1" -or $_.message -match "CommandLine.*.*powershell.exe -exec bypass -noni -nop -w 1 -C \\".*" -or $_.message -match "CommandLine.*.*powershell.exe -noni -nop -w 1 -enc .*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "CommandLine.*.*cmd.exe /Q /c .* 1> \\\\.*\\.*\\.* 2>&1" -or $_.message -match "CommandLine.*.*cmd.exe /C .* > \\\\.*\\.*\\.* 2>&1" -or $_.message -match "CommandLine.*.*cmd.exe /C .* > .*\\Temp\\.* 2>&1" -or $_.message -match "CommandLine.*.*powershell.exe -exec bypass -noni -nop -w 1 -C \".*" -or $_.message -match "CommandLine.*.*powershell.exe -noni -nop -w 1 -enc .*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.CommandLine.keyword:(*cmd.exe\\ \\/Q\\ \\/c\\ *\\ 1>\\ \\\\\\\\*\\\\*\\\\*\\ 2>&1 OR *cmd.exe\\ \\/C\\ *\\ >\\ \\\\\\\\*\\\\*\\\\*\\ 2>&1 OR *cmd.exe\\ \\/C\\ *\\ >\\ *\\\\Temp\\\\*\\ 2>&1 OR *powershell.exe\\ \\-exec\\ bypass\\ \\-noni\\ \\-nop\\ \\-w\\ 1\\ \\-C\\ \\"* OR *powershell.exe\\ \\-noni\\ \\-nop\\ \\-w\\ 1\\ \\-enc\\ *)
+winlog.event_data.CommandLine.keyword:(*cmd.exe\ \/Q\ \/c\ *\ 1>\ \\\\*\\*\\*\ 2>&1 OR *cmd.exe\ \/C\ *\ >\ \\\\*\\*\\*\ 2>&1 OR *cmd.exe\ \/C\ *\ >\ *\\Temp\\*\ 2>&1 OR *powershell.exe\ \-exec\ bypass\ \-noni\ \-nop\ \-w\ 1\ \-C\ \"* OR *powershell.exe\ \-noni\ \-nop\ \-w\ 1\ \-enc\ *)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/058f4380-962d-40a5-afce-50207d36d7e2 <<EOF\n{\n  "metadata": {\n    "title": "CrackMapExec Command Execution",\n    "description": "Detect various execution methods of the CrackMapExec pentesting framework",\n    "tags": [\n      "attack.execution",\n      "attack.t1047",\n      "attack.t1053",\n      "attack.t1059.003",\n      "attack.t1059.001",\n      "attack.s0106",\n      "attack.t1086"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(*cmd.exe\\\\ \\\\/Q\\\\ \\\\/c\\\\ *\\\\ 1>\\\\ \\\\\\\\\\\\\\\\*\\\\\\\\*\\\\\\\\*\\\\ 2>&1 OR *cmd.exe\\\\ \\\\/C\\\\ *\\\\ >\\\\ \\\\\\\\\\\\\\\\*\\\\\\\\*\\\\\\\\*\\\\ 2>&1 OR *cmd.exe\\\\ \\\\/C\\\\ *\\\\ >\\\\ *\\\\\\\\Temp\\\\\\\\*\\\\ 2>&1 OR *powershell.exe\\\\ \\\\-exec\\\\ bypass\\\\ \\\\-noni\\\\ \\\\-nop\\\\ \\\\-w\\\\ 1\\\\ \\\\-C\\\\ \\\\\\"* OR *powershell.exe\\\\ \\\\-noni\\\\ \\\\-nop\\\\ \\\\-w\\\\ 1\\\\ \\\\-enc\\\\ *)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(*cmd.exe\\\\ \\\\/Q\\\\ \\\\/c\\\\ *\\\\ 1>\\\\ \\\\\\\\\\\\\\\\*\\\\\\\\*\\\\\\\\*\\\\ 2>&1 OR *cmd.exe\\\\ \\\\/C\\\\ *\\\\ >\\\\ \\\\\\\\\\\\\\\\*\\\\\\\\*\\\\\\\\*\\\\ 2>&1 OR *cmd.exe\\\\ \\\\/C\\\\ *\\\\ >\\\\ *\\\\\\\\Temp\\\\\\\\*\\\\ 2>&1 OR *powershell.exe\\\\ \\\\-exec\\\\ bypass\\\\ \\\\-noni\\\\ \\\\-nop\\\\ \\\\-w\\\\ 1\\\\ \\\\-C\\\\ \\\\\\"* OR *powershell.exe\\\\ \\\\-noni\\\\ \\\\-nop\\\\ \\\\-w\\\\ 1\\\\ \\\\-enc\\\\ *)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'CrackMapExec Command Execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\nComputerName = {{_source.ComputerName}}\\n        User = {{_source.User}}\\n CommandLine = {{_source.CommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/058f4380-962d-40a5-afce-50207d36d7e2 <<EOF
+{
+  "metadata": {
+    "title": "CrackMapExec Command Execution",
+    "description": "Detect various execution methods of the CrackMapExec pentesting framework",
+    "tags": [
+      "attack.execution",
+      "attack.t1047",
+      "attack.t1053",
+      "attack.t1059.003",
+      "attack.t1059.001",
+      "attack.s0106",
+      "attack.t1086"
+    ],
+    "query": "winlog.event_data.CommandLine.keyword:(*cmd.exe\\ \\/Q\\ \\/c\\ *\\ 1>\\ \\\\\\\\*\\\\*\\\\*\\ 2>&1 OR *cmd.exe\\ \\/C\\ *\\ >\\ \\\\\\\\*\\\\*\\\\*\\ 2>&1 OR *cmd.exe\\ \\/C\\ *\\ >\\ *\\\\Temp\\\\*\\ 2>&1 OR *powershell.exe\\ \\-exec\\ bypass\\ \\-noni\\ \\-nop\\ \\-w\\ 1\\ \\-C\\ \\\"* OR *powershell.exe\\ \\-noni\\ \\-nop\\ \\-w\\ 1\\ \\-enc\\ *)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.CommandLine.keyword:(*cmd.exe\\ \\/Q\\ \\/c\\ *\\ 1>\\ \\\\\\\\*\\\\*\\\\*\\ 2>&1 OR *cmd.exe\\ \\/C\\ *\\ >\\ \\\\\\\\*\\\\*\\\\*\\ 2>&1 OR *cmd.exe\\ \\/C\\ *\\ >\\ *\\\\Temp\\\\*\\ 2>&1 OR *powershell.exe\\ \\-exec\\ bypass\\ \\-noni\\ \\-nop\\ \\-w\\ 1\\ \\-C\\ \\\"* OR *powershell.exe\\ \\-noni\\ \\-nop\\ \\-w\\ 1\\ \\-enc\\ *)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'CrackMapExec Command Execution'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-CommandLine.keyword:(*cmd.exe \\/Q \\/c * 1> \\\\\\\\*\\\\*\\\\* 2>&1 *cmd.exe \\/C * > \\\\\\\\*\\\\*\\\\* 2>&1 *cmd.exe \\/C * > *\\\\Temp\\\\* 2>&1 *powershell.exe \\-exec bypass \\-noni \\-nop \\-w 1 \\-C \\"* *powershell.exe \\-noni \\-nop \\-w 1 \\-enc *)
+CommandLine.keyword:(*cmd.exe \/Q \/c * 1> \\\\*\\*\\* 2>&1 *cmd.exe \/C * > \\\\*\\*\\* 2>&1 *cmd.exe \/C * > *\\Temp\\* 2>&1 *powershell.exe \-exec bypass \-noni \-nop \-w 1 \-C \"* *powershell.exe \-noni \-nop \-w 1 \-enc *)
 ```
 
 
 ### splunk
     
 ```
-(CommandLine="*cmd.exe /Q /c * 1> \\\\\\\\*\\\\*\\\\* 2>&1" OR CommandLine="*cmd.exe /C * > \\\\\\\\*\\\\*\\\\* 2>&1" OR CommandLine="*cmd.exe /C * > *\\\\Temp\\\\* 2>&1" OR CommandLine="*powershell.exe -exec bypass -noni -nop -w 1 -C \\"*" OR CommandLine="*powershell.exe -noni -nop -w 1 -enc *") | table ComputerName,User,CommandLine
+(CommandLine="*cmd.exe /Q /c * 1> \\\\*\\*\\* 2>&1" OR CommandLine="*cmd.exe /C * > \\\\*\\*\\* 2>&1" OR CommandLine="*cmd.exe /C * > *\\Temp\\* 2>&1" OR CommandLine="*powershell.exe -exec bypass -noni -nop -w 1 -C \"*" OR CommandLine="*powershell.exe -noni -nop -w 1 -enc *") | table ComputerName,User,CommandLine
 ```
 
 
 ### logpoint
     
 ```
-CommandLine IN ["*cmd.exe /Q /c * 1> \\\\\\\\*\\\\*\\\\* 2>&1", "*cmd.exe /C * > \\\\\\\\*\\\\*\\\\* 2>&1", "*cmd.exe /C * > *\\\\Temp\\\\* 2>&1", "*powershell.exe -exec bypass -noni -nop -w 1 -C \\"*", "*powershell.exe -noni -nop -w 1 -enc *"]
+CommandLine IN ["*cmd.exe /Q /c * 1> \\\\*\\*\\* 2>&1", "*cmd.exe /C * > \\\\*\\*\\* 2>&1", "*cmd.exe /C * > *\\Temp\\* 2>&1", "*powershell.exe -exec bypass -noni -nop -w 1 -C \"*", "*powershell.exe -noni -nop -w 1 -enc *"]
 ```
 
 
 ### grep
     
 ```
-grep -P \'^(?:.*.*cmd\\.exe /Q /c .* 1> \\\\\\\\.*\\\\.*\\\\.* 2>&1|.*.*cmd\\.exe /C .* > \\\\\\\\.*\\\\.*\\\\.* 2>&1|.*.*cmd\\.exe /C .* > .*\\\\Temp\\\\.* 2>&1|.*.*powershell\\.exe -exec bypass -noni -nop -w 1 -C ".*|.*.*powershell\\.exe -noni -nop -w 1 -enc .*)\'
+grep -P '^(?:.*.*cmd\.exe /Q /c .* 1> \\\\.*\\.*\\.* 2>&1|.*.*cmd\.exe /C .* > \\\\.*\\.*\\.* 2>&1|.*.*cmd\.exe /C .* > .*\\Temp\\.* 2>&1|.*.*powershell\.exe -exec bypass -noni -nop -w 1 -C ".*|.*.*powershell\.exe -noni -nop -w 1 -enc .*)'
 ```
 
 

@@ -69,21 +69,97 @@ Get-WinEvent -LogName Security | where {(($_.ID -eq "4624" -and (($_.message -ma
 ### es-qs
     
 ```
-(winlog.channel:"Security" AND (winlog.event_id:"4624" AND ((winlog.event_data.SubjectUserSid:"S\\-1\\-0\\-0" AND winlog.event_data.LogonType:"3" AND winlog.event_data.LogonProcessName:"NtLmSsp" AND winlog.event_data.KeyLength:"0") OR (winlog.event_data.LogonType:"9" AND winlog.event_data.LogonProcessName:"seclogo"))) AND (NOT (winlog.event_data.AccountName:"ANONYMOUS\\ LOGON")))
+(winlog.channel:"Security" AND (winlog.event_id:"4624" AND ((winlog.event_data.SubjectUserSid:"S\-1\-0\-0" AND winlog.event_data.LogonType:"3" AND winlog.event_data.LogonProcessName:"NtLmSsp" AND winlog.event_data.KeyLength:"0") OR (winlog.event_data.LogonType:"9" AND winlog.event_data.LogonProcessName:"seclogo"))) AND (NOT (winlog.event_data.AccountName:"ANONYMOUS\ LOGON")))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/8eef149c-bd26-49f2-9e5a-9b00e3af499b <<EOF\n{\n  "metadata": {\n    "title": "Pass the Hash Activity 2",\n    "description": "Detects the attack technique pass the hash which is used to move laterally inside the network",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1075",\n      "attack.t1550.002"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND (winlog.event_id:\\"4624\\" AND ((winlog.event_data.SubjectUserSid:\\"S\\\\-1\\\\-0\\\\-0\\" AND winlog.event_data.LogonType:\\"3\\" AND winlog.event_data.LogonProcessName:\\"NtLmSsp\\" AND winlog.event_data.KeyLength:\\"0\\") OR (winlog.event_data.LogonType:\\"9\\" AND winlog.event_data.LogonProcessName:\\"seclogo\\"))) AND (NOT (winlog.event_data.AccountName:\\"ANONYMOUS\\\\ LOGON\\")))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND (winlog.event_id:\\"4624\\" AND ((winlog.event_data.SubjectUserSid:\\"S\\\\-1\\\\-0\\\\-0\\" AND winlog.event_data.LogonType:\\"3\\" AND winlog.event_data.LogonProcessName:\\"NtLmSsp\\" AND winlog.event_data.KeyLength:\\"0\\") OR (winlog.event_data.LogonType:\\"9\\" AND winlog.event_data.LogonProcessName:\\"seclogo\\"))) AND (NOT (winlog.event_data.AccountName:\\"ANONYMOUS\\\\ LOGON\\")))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Pass the Hash Activity 2\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/8eef149c-bd26-49f2-9e5a-9b00e3af499b <<EOF
+{
+  "metadata": {
+    "title": "Pass the Hash Activity 2",
+    "description": "Detects the attack technique pass the hash which is used to move laterally inside the network",
+    "tags": [
+      "attack.lateral_movement",
+      "attack.t1075",
+      "attack.t1550.002"
+    ],
+    "query": "(winlog.channel:\"Security\" AND (winlog.event_id:\"4624\" AND ((winlog.event_data.SubjectUserSid:\"S\\-1\\-0\\-0\" AND winlog.event_data.LogonType:\"3\" AND winlog.event_data.LogonProcessName:\"NtLmSsp\" AND winlog.event_data.KeyLength:\"0\") OR (winlog.event_data.LogonType:\"9\" AND winlog.event_data.LogonProcessName:\"seclogo\"))) AND (NOT (winlog.event_data.AccountName:\"ANONYMOUS\\ LOGON\")))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Security\" AND (winlog.event_id:\"4624\" AND ((winlog.event_data.SubjectUserSid:\"S\\-1\\-0\\-0\" AND winlog.event_data.LogonType:\"3\" AND winlog.event_data.LogonProcessName:\"NtLmSsp\" AND winlog.event_data.KeyLength:\"0\") OR (winlog.event_data.LogonType:\"9\" AND winlog.event_data.LogonProcessName:\"seclogo\"))) AND (NOT (winlog.event_data.AccountName:\"ANONYMOUS\\ LOGON\")))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Pass the Hash Activity 2'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((EventID:"4624" AND ((SubjectUserSid:"S\\-1\\-0\\-0" AND LogonType:"3" AND LogonProcessName:"NtLmSsp" AND KeyLength:"0") OR (LogonType:"9" AND LogonProcessName:"seclogo"))) AND (NOT (AccountName:"ANONYMOUS LOGON")))
+((EventID:"4624" AND ((SubjectUserSid:"S\-1\-0\-0" AND LogonType:"3" AND LogonProcessName:"NtLmSsp" AND KeyLength:"0") OR (LogonType:"9" AND LogonProcessName:"seclogo"))) AND (NOT (AccountName:"ANONYMOUS LOGON")))
 ```
 
 

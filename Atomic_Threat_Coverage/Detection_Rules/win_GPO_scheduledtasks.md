@@ -54,49 +54,126 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent -LogName Security | where {($_.ID -eq "5145" -and $_.message -match "ShareName.*\\\\.*\\\\SYSVOL" -and $_.message -match "RelativeTargetName.*.*ScheduledTasks.xml" -and $_.message -match "Accesses.*.*WriteData.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Security | where {($_.ID -eq "5145" -and $_.message -match "ShareName.*\\.*\\SYSVOL" -and $_.message -match "RelativeTargetName.*.*ScheduledTasks.xml" -and $_.message -match "Accesses.*.*WriteData.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.channel:"Security" AND winlog.event_id:"5145" AND winlog.event_data.ShareName.keyword:\\\\*\\\\SYSVOL AND RelativeTargetName.keyword:*ScheduledTasks.xml AND Accesses.keyword:*WriteData*)
+(winlog.channel:"Security" AND winlog.event_id:"5145" AND winlog.event_data.ShareName.keyword:\\*\\SYSVOL AND RelativeTargetName.keyword:*ScheduledTasks.xml AND Accesses.keyword:*WriteData*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/a8f29a7b-b137-4446-80a0-b804272f3da2 <<EOF\n{\n  "metadata": {\n    "title": "Persistence and Execution at Scale via GPO Scheduled Task",\n    "description": "Detect lateral movement using GPO scheduled task, usually used to deploy ransomware at scale",\n    "tags": [\n      "attack.persistence",\n      "attack.lateral_movement",\n      "attack.t1053",\n      "attack.t1053.005"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"5145\\" AND winlog.event_data.ShareName.keyword:\\\\\\\\*\\\\\\\\SYSVOL AND RelativeTargetName.keyword:*ScheduledTasks.xml AND Accesses.keyword:*WriteData*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:\\"5145\\" AND winlog.event_data.ShareName.keyword:\\\\\\\\*\\\\\\\\SYSVOL AND RelativeTargetName.keyword:*ScheduledTasks.xml AND Accesses.keyword:*WriteData*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Persistence and Execution at Scale via GPO Scheduled Task\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/a8f29a7b-b137-4446-80a0-b804272f3da2 <<EOF
+{
+  "metadata": {
+    "title": "Persistence and Execution at Scale via GPO Scheduled Task",
+    "description": "Detect lateral movement using GPO scheduled task, usually used to deploy ransomware at scale",
+    "tags": [
+      "attack.persistence",
+      "attack.lateral_movement",
+      "attack.t1053",
+      "attack.t1053.005"
+    ],
+    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"5145\" AND winlog.event_data.ShareName.keyword:\\\\*\\\\SYSVOL AND RelativeTargetName.keyword:*ScheduledTasks.xml AND Accesses.keyword:*WriteData*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"5145\" AND winlog.event_data.ShareName.keyword:\\\\*\\\\SYSVOL AND RelativeTargetName.keyword:*ScheduledTasks.xml AND Accesses.keyword:*WriteData*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Persistence and Execution at Scale via GPO Scheduled Task'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(EventID:"5145" AND ShareName.keyword:\\\\*\\\\SYSVOL AND RelativeTargetName.keyword:*ScheduledTasks.xml AND Accesses.keyword:*WriteData*)
+(EventID:"5145" AND ShareName.keyword:\\*\\SYSVOL AND RelativeTargetName.keyword:*ScheduledTasks.xml AND Accesses.keyword:*WriteData*)
 ```
 
 
 ### splunk
     
 ```
-(source="WinEventLog:Security" EventCode="5145" ShareName="\\\\*\\\\SYSVOL" RelativeTargetName="*ScheduledTasks.xml" Accesses="*WriteData*")
+(source="WinEventLog:Security" EventCode="5145" ShareName="\\*\\SYSVOL" RelativeTargetName="*ScheduledTasks.xml" Accesses="*WriteData*")
 ```
 
 
 ### logpoint
     
 ```
-(event_source="Microsoft-Windows-Security-Auditing" event_id="5145" ShareName="\\\\*\\\\SYSVOL" RelativeTargetName="*ScheduledTasks.xml" Accesses="*WriteData*")
+(event_source="Microsoft-Windows-Security-Auditing" event_id="5145" ShareName="\\*\\SYSVOL" RelativeTargetName="*ScheduledTasks.xml" Accesses="*WriteData*")
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*5145)(?=.*\\\\.*\\SYSVOL)(?=.*.*ScheduledTasks\\.xml)(?=.*.*WriteData.*))'
+grep -P '^(?:.*(?=.*5145)(?=.*\\.*\SYSVOL)(?=.*.*ScheduledTasks\.xml)(?=.*.*WriteData.*))'
 ```
 
 

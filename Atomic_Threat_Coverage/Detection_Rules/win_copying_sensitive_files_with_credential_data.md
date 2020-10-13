@@ -60,7 +60,6 @@ detection:
 falsepositives:
     - Copying sensitive files for legitimate use (eg. backup) or forensic investigation by legitimate incident responder or forensic invetigator
 level: high
-
 ```
 
 
@@ -70,49 +69,128 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "Image.*.*\\\\esentutl.exe" -and ($_.message -match "CommandLine.*.*vss.*" -or $_.message -match "CommandLine.*.* /m .*" -or $_.message -match "CommandLine.*.* /y .*")) -or ($_.message -match "CommandLine.*.*\\\\windows\\\\ntds\\\\ntds.dit.*" -or $_.message -match "CommandLine.*.*\\\\config\\\\sam.*" -or $_.message -match "CommandLine.*.*\\\\config\\\\security.*" -or $_.message -match "CommandLine.*.*\\\\config\\\\system .*" -or $_.message -match "CommandLine.*.*\\\\repair\\\\sam.*" -or $_.message -match "CommandLine.*.*\\\\repair\\\\system.*" -or $_.message -match "CommandLine.*.*\\\\repair\\\\security.*" -or $_.message -match "CommandLine.*.*\\\\config\\\\RegBack\\\\sam.*" -or $_.message -match "CommandLine.*.*\\\\config\\\\RegBack\\\\system.*" -or $_.message -match "CommandLine.*.*\\\\config\\\\RegBack\\\\security.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "Image.*.*\\esentutl.exe" -and ($_.message -match "CommandLine.*.*vss.*" -or $_.message -match "CommandLine.*.* /m .*" -or $_.message -match "CommandLine.*.* /y .*")) -or ($_.message -match "CommandLine.*.*\\windows\\ntds\\ntds.dit.*" -or $_.message -match "CommandLine.*.*\\config\\sam.*" -or $_.message -match "CommandLine.*.*\\config\\security.*" -or $_.message -match "CommandLine.*.*\\config\\system .*" -or $_.message -match "CommandLine.*.*\\repair\\sam.*" -or $_.message -match "CommandLine.*.*\\repair\\system.*" -or $_.message -match "CommandLine.*.*\\repair\\security.*" -or $_.message -match "CommandLine.*.*\\config\\RegBack\\sam.*" -or $_.message -match "CommandLine.*.*\\config\\RegBack\\system.*" -or $_.message -match "CommandLine.*.*\\config\\RegBack\\security.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.Image.keyword:*\\\\esentutl.exe AND winlog.event_data.CommandLine.keyword:(*vss* OR *\\ \\/m\\ * OR *\\ \\/y\\ *)) OR winlog.event_data.CommandLine.keyword:(*\\\\windows\\\\ntds\\\\ntds.dit* OR *\\\\config\\\\sam* OR *\\\\config\\\\security* OR *\\\\config\\\\system\\ * OR *\\\\repair\\\\sam* OR *\\\\repair\\\\system* OR *\\\\repair\\\\security* OR *\\\\config\\\\RegBack\\\\sam* OR *\\\\config\\\\RegBack\\\\system* OR *\\\\config\\\\RegBack\\\\security*))
+((winlog.event_data.Image.keyword:*\\esentutl.exe AND winlog.event_data.CommandLine.keyword:(*vss* OR *\ \/m\ * OR *\ \/y\ *)) OR winlog.event_data.CommandLine.keyword:(*\\windows\\ntds\\ntds.dit* OR *\\config\\sam* OR *\\config\\security* OR *\\config\\system\ * OR *\\repair\\sam* OR *\\repair\\system* OR *\\repair\\security* OR *\\config\\RegBack\\sam* OR *\\config\\RegBack\\system* OR *\\config\\RegBack\\security*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/e7be6119-fc37-43f0-ad4f-1f3f99be2f9f <<EOF\n{\n  "metadata": {\n    "title": "Copying Sensitive Files with Credential Data",\n    "description": "Files with well-known filenames (sensitive files with credential data) copying",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003.002",\n      "attack.t1003.003",\n      "attack.t1003",\n      "car.2013-07-001",\n      "attack.s0404"\n    ],\n    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\esentutl.exe AND winlog.event_data.CommandLine.keyword:(*vss* OR *\\\\ \\\\/m\\\\ * OR *\\\\ \\\\/y\\\\ *)) OR winlog.event_data.CommandLine.keyword:(*\\\\\\\\windows\\\\\\\\ntds\\\\\\\\ntds.dit* OR *\\\\\\\\config\\\\\\\\sam* OR *\\\\\\\\config\\\\\\\\security* OR *\\\\\\\\config\\\\\\\\system\\\\ * OR *\\\\\\\\repair\\\\\\\\sam* OR *\\\\\\\\repair\\\\\\\\system* OR *\\\\\\\\repair\\\\\\\\security* OR *\\\\\\\\config\\\\\\\\RegBack\\\\\\\\sam* OR *\\\\\\\\config\\\\\\\\RegBack\\\\\\\\system* OR *\\\\\\\\config\\\\\\\\RegBack\\\\\\\\security*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\esentutl.exe AND winlog.event_data.CommandLine.keyword:(*vss* OR *\\\\ \\\\/m\\\\ * OR *\\\\ \\\\/y\\\\ *)) OR winlog.event_data.CommandLine.keyword:(*\\\\\\\\windows\\\\\\\\ntds\\\\\\\\ntds.dit* OR *\\\\\\\\config\\\\\\\\sam* OR *\\\\\\\\config\\\\\\\\security* OR *\\\\\\\\config\\\\\\\\system\\\\ * OR *\\\\\\\\repair\\\\\\\\sam* OR *\\\\\\\\repair\\\\\\\\system* OR *\\\\\\\\repair\\\\\\\\security* OR *\\\\\\\\config\\\\\\\\RegBack\\\\\\\\sam* OR *\\\\\\\\config\\\\\\\\RegBack\\\\\\\\system* OR *\\\\\\\\config\\\\\\\\RegBack\\\\\\\\security*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Copying Sensitive Files with Credential Data\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/e7be6119-fc37-43f0-ad4f-1f3f99be2f9f <<EOF
+{
+  "metadata": {
+    "title": "Copying Sensitive Files with Credential Data",
+    "description": "Files with well-known filenames (sensitive files with credential data) copying",
+    "tags": [
+      "attack.credential_access",
+      "attack.t1003.002",
+      "attack.t1003.003",
+      "attack.t1003",
+      "car.2013-07-001",
+      "attack.s0404"
+    ],
+    "query": "((winlog.event_data.Image.keyword:*\\\\esentutl.exe AND winlog.event_data.CommandLine.keyword:(*vss* OR *\\ \\/m\\ * OR *\\ \\/y\\ *)) OR winlog.event_data.CommandLine.keyword:(*\\\\windows\\\\ntds\\\\ntds.dit* OR *\\\\config\\\\sam* OR *\\\\config\\\\security* OR *\\\\config\\\\system\\ * OR *\\\\repair\\\\sam* OR *\\\\repair\\\\system* OR *\\\\repair\\\\security* OR *\\\\config\\\\RegBack\\\\sam* OR *\\\\config\\\\RegBack\\\\system* OR *\\\\config\\\\RegBack\\\\security*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.Image.keyword:*\\\\esentutl.exe AND winlog.event_data.CommandLine.keyword:(*vss* OR *\\ \\/m\\ * OR *\\ \\/y\\ *)) OR winlog.event_data.CommandLine.keyword:(*\\\\windows\\\\ntds\\\\ntds.dit* OR *\\\\config\\\\sam* OR *\\\\config\\\\security* OR *\\\\config\\\\system\\ * OR *\\\\repair\\\\sam* OR *\\\\repair\\\\system* OR *\\\\repair\\\\security* OR *\\\\config\\\\RegBack\\\\sam* OR *\\\\config\\\\RegBack\\\\system* OR *\\\\config\\\\RegBack\\\\security*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Copying Sensitive Files with Credential Data'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((Image.keyword:*\\\\esentutl.exe AND CommandLine.keyword:(*vss* * \\/m * * \\/y *)) OR CommandLine.keyword:(*\\\\windows\\\\ntds\\\\ntds.dit* *\\\\config\\\\sam* *\\\\config\\\\security* *\\\\config\\\\system * *\\\\repair\\\\sam* *\\\\repair\\\\system* *\\\\repair\\\\security* *\\\\config\\\\RegBack\\\\sam* *\\\\config\\\\RegBack\\\\system* *\\\\config\\\\RegBack\\\\security*))
+((Image.keyword:*\\esentutl.exe AND CommandLine.keyword:(*vss* * \/m * * \/y *)) OR CommandLine.keyword:(*\\windows\\ntds\\ntds.dit* *\\config\\sam* *\\config\\security* *\\config\\system * *\\repair\\sam* *\\repair\\system* *\\repair\\security* *\\config\\RegBack\\sam* *\\config\\RegBack\\system* *\\config\\RegBack\\security*))
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\\\esentutl.exe" (CommandLine="*vss*" OR CommandLine="* /m *" OR CommandLine="* /y *")) OR (CommandLine="*\\\\windows\\\\ntds\\\\ntds.dit*" OR CommandLine="*\\\\config\\\\sam*" OR CommandLine="*\\\\config\\\\security*" OR CommandLine="*\\\\config\\\\system *" OR CommandLine="*\\\\repair\\\\sam*" OR CommandLine="*\\\\repair\\\\system*" OR CommandLine="*\\\\repair\\\\security*" OR CommandLine="*\\\\config\\\\RegBack\\\\sam*" OR CommandLine="*\\\\config\\\\RegBack\\\\system*" OR CommandLine="*\\\\config\\\\RegBack\\\\security*"))
+((Image="*\\esentutl.exe" (CommandLine="*vss*" OR CommandLine="* /m *" OR CommandLine="* /y *")) OR (CommandLine="*\\windows\\ntds\\ntds.dit*" OR CommandLine="*\\config\\sam*" OR CommandLine="*\\config\\security*" OR CommandLine="*\\config\\system *" OR CommandLine="*\\repair\\sam*" OR CommandLine="*\\repair\\system*" OR CommandLine="*\\repair\\security*" OR CommandLine="*\\config\\RegBack\\sam*" OR CommandLine="*\\config\\RegBack\\system*" OR CommandLine="*\\config\\RegBack\\security*"))
 ```
 
 
 ### logpoint
     
 ```
-((Image="*\\\\esentutl.exe" CommandLine IN ["*vss*", "* /m *", "* /y *"]) OR CommandLine IN ["*\\\\windows\\\\ntds\\\\ntds.dit*", "*\\\\config\\\\sam*", "*\\\\config\\\\security*", "*\\\\config\\\\system *", "*\\\\repair\\\\sam*", "*\\\\repair\\\\system*", "*\\\\repair\\\\security*", "*\\\\config\\\\RegBack\\\\sam*", "*\\\\config\\\\RegBack\\\\system*", "*\\\\config\\\\RegBack\\\\security*"])
+((Image="*\\esentutl.exe" CommandLine IN ["*vss*", "* /m *", "* /y *"]) OR CommandLine IN ["*\\windows\\ntds\\ntds.dit*", "*\\config\\sam*", "*\\config\\security*", "*\\config\\system *", "*\\repair\\sam*", "*\\repair\\system*", "*\\repair\\security*", "*\\config\\RegBack\\sam*", "*\\config\\RegBack\\system*", "*\\config\\RegBack\\security*"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?:.*(?:.*(?=.*.*\\esentutl\\.exe)(?=.*(?:.*.*vss.*|.*.* /m .*|.*.* /y .*)))|.*(?:.*.*\\windows\\ntds\\ntds\\.dit.*|.*.*\\config\\sam.*|.*.*\\config\\security.*|.*.*\\config\\system .*|.*.*\\repair\\sam.*|.*.*\\repair\\system.*|.*.*\\repair\\security.*|.*.*\\config\\RegBack\\sam.*|.*.*\\config\\RegBack\\system.*|.*.*\\config\\RegBack\\security.*)))'
+grep -P '^(?:.*(?:.*(?:.*(?=.*.*\esentutl\.exe)(?=.*(?:.*.*vss.*|.*.* /m .*|.*.* /y .*)))|.*(?:.*.*\windows\ntds\ntds\.dit.*|.*.*\config\sam.*|.*.*\config\security.*|.*.*\config\system .*|.*.*\repair\sam.*|.*.*\repair\system.*|.*.*\repair\security.*|.*.*\config\RegBack\sam.*|.*.*\config\RegBack\system.*|.*.*\config\RegBack\security.*)))'
 ```
 
 

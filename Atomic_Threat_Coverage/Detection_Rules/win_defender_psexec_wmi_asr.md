@@ -55,49 +55,127 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {($_.ID -eq "1121" -and ($_.message -match "ProcessName.*.*\\\\wmiprvse.exe" -or $_.message -match "ProcessName.*.*\\\\psexesvc.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.ID -eq "1121" -and ($_.message -match "ProcessName.*.*\\wmiprvse.exe" -or $_.message -match "ProcessName.*.*\\psexesvc.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_id:"1121" AND winlog.event_data.ProcessName.keyword:(*\\\\wmiprvse.exe OR *\\\\psexesvc.exe))
+(winlog.event_id:"1121" AND winlog.event_data.ProcessName.keyword:(*\\wmiprvse.exe OR *\\psexesvc.exe))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/97b9ce1e-c5ab-11ea-87d0-0242ac130003 <<EOF\n{\n  "metadata": {\n    "title": "PSExec and WMI Process Creations Block",\n    "description": "Detects blocking of process creations originating from PSExec and WMI commands",\n    "tags": [\n      "attack.execution",\n      "attack.lateral_movement",\n      "attack.t1047",\n      "attack.t1035",\n      "attack.t1569.002"\n    ],\n    "query": "(winlog.event_id:\\"1121\\" AND winlog.event_data.ProcessName.keyword:(*\\\\\\\\wmiprvse.exe OR *\\\\\\\\psexesvc.exe))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_id:\\"1121\\" AND winlog.event_data.ProcessName.keyword:(*\\\\\\\\wmiprvse.exe OR *\\\\\\\\psexesvc.exe))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'PSExec and WMI Process Creations Block\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/97b9ce1e-c5ab-11ea-87d0-0242ac130003 <<EOF
+{
+  "metadata": {
+    "title": "PSExec and WMI Process Creations Block",
+    "description": "Detects blocking of process creations originating from PSExec and WMI commands",
+    "tags": [
+      "attack.execution",
+      "attack.lateral_movement",
+      "attack.t1047",
+      "attack.t1035",
+      "attack.t1569.002"
+    ],
+    "query": "(winlog.event_id:\"1121\" AND winlog.event_data.ProcessName.keyword:(*\\\\wmiprvse.exe OR *\\\\psexesvc.exe))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_id:\"1121\" AND winlog.event_data.ProcessName.keyword:(*\\\\wmiprvse.exe OR *\\\\psexesvc.exe))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'PSExec and WMI Process Creations Block'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(EventID:"1121" AND ProcessName.keyword:(*\\\\wmiprvse.exe *\\\\psexesvc.exe))
+(EventID:"1121" AND ProcessName.keyword:(*\\wmiprvse.exe *\\psexesvc.exe))
 ```
 
 
 ### splunk
     
 ```
-(EventCode="1121" (ProcessName="*\\\\wmiprvse.exe" OR ProcessName="*\\\\psexesvc.exe"))
+(EventCode="1121" (ProcessName="*\\wmiprvse.exe" OR ProcessName="*\\psexesvc.exe"))
 ```
 
 
 ### logpoint
     
 ```
-(event_id="1121" ProcessName IN ["*\\\\wmiprvse.exe", "*\\\\psexesvc.exe"])
+(event_id="1121" ProcessName IN ["*\\wmiprvse.exe", "*\\psexesvc.exe"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*1121)(?=.*(?:.*.*\\wmiprvse\\.exe|.*.*\\psexesvc\\.exe)))'
+grep -P '^(?:.*(?=.*1121)(?=.*(?:.*.*\wmiprvse\.exe|.*.*\psexesvc\.exe)))'
 ```
 
 

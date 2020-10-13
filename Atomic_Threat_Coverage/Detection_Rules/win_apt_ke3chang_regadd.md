@@ -66,21 +66,98 @@ Get-WinEvent | where {($_.message -match "CommandLine.*.*-Property DWORD -name D
 ### es-qs
     
 ```
-winlog.event_data.CommandLine.keyword:(*\\-Property\\ DWORD\\ \\-name\\ DisableFirstRunCustomize\\ \\-value\\ 2\\ \\-Force* OR *\\-Property\\ String\\ \\-name\\ Check_Associations\\ \\-value* OR *\\-Property\\ DWORD\\ \\-name\\ IEHarden\\ \\-value\\ 0\\ \\-Force*)
+winlog.event_data.CommandLine.keyword:(*\-Property\ DWORD\ \-name\ DisableFirstRunCustomize\ \-value\ 2\ \-Force* OR *\-Property\ String\ \-name\ Check_Associations\ \-value* OR *\-Property\ DWORD\ \-name\ IEHarden\ \-value\ 0\ \-Force*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/7b544661-69fc-419f-9a59-82ccc328f205 <<EOF\n{\n  "metadata": {\n    "title": "Ke3chang Registry Key Modifications",\n    "description": "Detects Registry modifcations performaed by Ke3chang malware in campaigns running in 2019 and 2020",\n    "tags": [\n      "attack.g0004",\n      "attack.defense_evasion",\n      "attack.t1089",\n      "attack.t1562.001"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(*\\\\-Property\\\\ DWORD\\\\ \\\\-name\\\\ DisableFirstRunCustomize\\\\ \\\\-value\\\\ 2\\\\ \\\\-Force* OR *\\\\-Property\\\\ String\\\\ \\\\-name\\\\ Check_Associations\\\\ \\\\-value* OR *\\\\-Property\\\\ DWORD\\\\ \\\\-name\\\\ IEHarden\\\\ \\\\-value\\\\ 0\\\\ \\\\-Force*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(*\\\\-Property\\\\ DWORD\\\\ \\\\-name\\\\ DisableFirstRunCustomize\\\\ \\\\-value\\\\ 2\\\\ \\\\-Force* OR *\\\\-Property\\\\ String\\\\ \\\\-name\\\\ Check_Associations\\\\ \\\\-value* OR *\\\\-Property\\\\ DWORD\\\\ \\\\-name\\\\ IEHarden\\\\ \\\\-value\\\\ 0\\\\ \\\\-Force*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Ke3chang Registry Key Modifications\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/7b544661-69fc-419f-9a59-82ccc328f205 <<EOF
+{
+  "metadata": {
+    "title": "Ke3chang Registry Key Modifications",
+    "description": "Detects Registry modifcations performaed by Ke3chang malware in campaigns running in 2019 and 2020",
+    "tags": [
+      "attack.g0004",
+      "attack.defense_evasion",
+      "attack.t1089",
+      "attack.t1562.001"
+    ],
+    "query": "winlog.event_data.CommandLine.keyword:(*\\-Property\\ DWORD\\ \\-name\\ DisableFirstRunCustomize\\ \\-value\\ 2\\ \\-Force* OR *\\-Property\\ String\\ \\-name\\ Check_Associations\\ \\-value* OR *\\-Property\\ DWORD\\ \\-name\\ IEHarden\\ \\-value\\ 0\\ \\-Force*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.CommandLine.keyword:(*\\-Property\\ DWORD\\ \\-name\\ DisableFirstRunCustomize\\ \\-value\\ 2\\ \\-Force* OR *\\-Property\\ String\\ \\-name\\ Check_Associations\\ \\-value* OR *\\-Property\\ DWORD\\ \\-name\\ IEHarden\\ \\-value\\ 0\\ \\-Force*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Ke3chang Registry Key Modifications'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-CommandLine.keyword:(*\\-Property DWORD \\-name DisableFirstRunCustomize \\-value 2 \\-Force* *\\-Property String \\-name Check_Associations \\-value* *\\-Property DWORD \\-name IEHarden \\-value 0 \\-Force*)
+CommandLine.keyword:(*\-Property DWORD \-name DisableFirstRunCustomize \-value 2 \-Force* *\-Property String \-name Check_Associations \-value* *\-Property DWORD \-name IEHarden \-value 0 \-Force*)
 ```
 
 

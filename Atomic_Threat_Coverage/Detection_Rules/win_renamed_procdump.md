@@ -55,49 +55,125 @@ level: critical
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "OriginalFileName.*procdump" -and  -not (($_.message -match "Image.*.*\\\\procdump.exe" -or $_.message -match "Image.*.*\\\\procdump64.exe"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "OriginalFileName.*procdump" -and  -not (($_.message -match "Image.*.*\\procdump.exe" -or $_.message -match "Image.*.*\\procdump64.exe"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(OriginalFileName:"procdump" AND (NOT (winlog.event_data.Image.keyword:(*\\\\procdump.exe OR *\\\\procdump64.exe))))
+(OriginalFileName:"procdump" AND (NOT (winlog.event_data.Image.keyword:(*\\procdump.exe OR *\\procdump64.exe))))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/4a0b2c7e-7cb2-495d-8b63-5f268e7bfd67 <<EOF\n{\n  "metadata": {\n    "title": "Renamed ProcDump",\n    "description": "Detects the execution of a renamed ProcDump executable often used by attackers or malware",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1036",\n      "attack.t1036.003"\n    ],\n    "query": "(OriginalFileName:\\"procdump\\" AND (NOT (winlog.event_data.Image.keyword:(*\\\\\\\\procdump.exe OR *\\\\\\\\procdump64.exe))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(OriginalFileName:\\"procdump\\" AND (NOT (winlog.event_data.Image.keyword:(*\\\\\\\\procdump.exe OR *\\\\\\\\procdump64.exe))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Renamed ProcDump\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/4a0b2c7e-7cb2-495d-8b63-5f268e7bfd67 <<EOF
+{
+  "metadata": {
+    "title": "Renamed ProcDump",
+    "description": "Detects the execution of a renamed ProcDump executable often used by attackers or malware",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.t1036",
+      "attack.t1036.003"
+    ],
+    "query": "(OriginalFileName:\"procdump\" AND (NOT (winlog.event_data.Image.keyword:(*\\\\procdump.exe OR *\\\\procdump64.exe))))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(OriginalFileName:\"procdump\" AND (NOT (winlog.event_data.Image.keyword:(*\\\\procdump.exe OR *\\\\procdump64.exe))))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Renamed ProcDump'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(OriginalFileName:"procdump" AND (NOT (Image.keyword:(*\\\\procdump.exe *\\\\procdump64.exe))))
+(OriginalFileName:"procdump" AND (NOT (Image.keyword:(*\\procdump.exe *\\procdump64.exe))))
 ```
 
 
 ### splunk
     
 ```
-(OriginalFileName="procdump" NOT ((Image="*\\\\procdump.exe" OR Image="*\\\\procdump64.exe")))
+(OriginalFileName="procdump" NOT ((Image="*\\procdump.exe" OR Image="*\\procdump64.exe")))
 ```
 
 
 ### logpoint
     
 ```
-(OriginalFileName="procdump"  -(Image IN ["*\\\\procdump.exe", "*\\\\procdump64.exe"]))
+(OriginalFileName="procdump"  -(Image IN ["*\\procdump.exe", "*\\procdump64.exe"]))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*procdump)(?=.*(?!.*(?:.*(?=.*(?:.*.*\\procdump\\.exe|.*.*\\procdump64\\.exe))))))'
+grep -P '^(?:.*(?=.*procdump)(?=.*(?!.*(?:.*(?=.*(?:.*.*\procdump\.exe|.*.*\procdump64\.exe))))))'
 ```
 
 

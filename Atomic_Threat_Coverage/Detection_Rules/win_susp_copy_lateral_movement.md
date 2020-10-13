@@ -58,49 +58,128 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "CommandLine.*.*copy .*\\\\c$.*" -or $_.message -match "CommandLine.*.*copy .*\\\\ADMIN$.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "CommandLine.*.*copy .*\\c$.*" -or $_.message -match "CommandLine.*.*copy .*\\ADMIN$.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.CommandLine.keyword:(*copy\\ *\\\\c$* OR *copy\\ *\\\\ADMIN$*)
+winlog.event_data.CommandLine.keyword:(*copy\ *\\c$* OR *copy\ *\\ADMIN$*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/855bc8b5-2ae8-402e-a9ed-b889e6df1900 <<EOF\n{\n  "metadata": {\n    "title": "Copy from Admin Share",\n    "description": "Detects a suspicious copy command from a remote C$ or ADMIN$ share",\n    "tags": [\n      "attack.lateral_movement",\n      "attack.t1021.002",\n      "attack.command_and_control",\n      "attack.t1105",\n      "attack.s0106",\n      "attack.t1077"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(*copy\\\\ *\\\\\\\\c$* OR *copy\\\\ *\\\\\\\\ADMIN$*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(*copy\\\\ *\\\\\\\\c$* OR *copy\\\\ *\\\\\\\\ADMIN$*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Copy from Admin Share\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/855bc8b5-2ae8-402e-a9ed-b889e6df1900 <<EOF
+{
+  "metadata": {
+    "title": "Copy from Admin Share",
+    "description": "Detects a suspicious copy command from a remote C$ or ADMIN$ share",
+    "tags": [
+      "attack.lateral_movement",
+      "attack.t1021.002",
+      "attack.command_and_control",
+      "attack.t1105",
+      "attack.s0106",
+      "attack.t1077"
+    ],
+    "query": "winlog.event_data.CommandLine.keyword:(*copy\\ *\\\\c$* OR *copy\\ *\\\\ADMIN$*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.CommandLine.keyword:(*copy\\ *\\\\c$* OR *copy\\ *\\\\ADMIN$*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Copy from Admin Share'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-CommandLine.keyword:(*copy *\\\\c$* *copy *\\\\ADMIN$*)
+CommandLine.keyword:(*copy *\\c$* *copy *\\ADMIN$*)
 ```
 
 
 ### splunk
     
 ```
-(CommandLine="*copy *\\\\c$*" OR CommandLine="*copy *\\\\ADMIN$*") | table CommandLine,ParentCommandLine
+(CommandLine="*copy *\\c$*" OR CommandLine="*copy *\\ADMIN$*") | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-CommandLine IN ["*copy *\\\\c$*", "*copy *\\\\ADMIN$*"]
+CommandLine IN ["*copy *\\c$*", "*copy *\\ADMIN$*"]
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*.*copy .*\\c\\$.*|.*.*copy .*\\ADMIN\\$.*)'
+grep -P '^(?:.*.*copy .*\c\$.*|.*.*copy .*\ADMIN\$.*)'
 ```
 
 

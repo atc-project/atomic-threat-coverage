@@ -69,21 +69,97 @@ Get-WinEvent -LogName Security | where {(($_.ID -eq "4662" -and $_.message -matc
 ### es-qs
     
 ```
-(winlog.channel:"Security" AND (winlog.event_id:"4662" AND winlog.event_data.AccessMask:"0x100" AND winlog.event_data.Properties.keyword:(*1131f6aa\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2* OR *1131f6ad\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2* OR *89e95b76\\-444d\\-4c62\\-991a\\-0facbeda640c*)) AND (NOT (winlog.event_data.SubjectUserName.keyword:*$ OR winlog.event_data.SubjectUserName.keyword:MSOL_*)))
+(winlog.channel:"Security" AND (winlog.event_id:"4662" AND winlog.event_data.AccessMask:"0x100" AND winlog.event_data.Properties.keyword:(*1131f6aa\-9c07\-11d1\-f79f\-00c04fc2dcd2* OR *1131f6ad\-9c07\-11d1\-f79f\-00c04fc2dcd2* OR *89e95b76\-444d\-4c62\-991a\-0facbeda640c*)) AND (NOT (winlog.event_data.SubjectUserName.keyword:*$ OR winlog.event_data.SubjectUserName.keyword:MSOL_*)))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/17d619c1-e020-4347-957e-1d1207455c93 <<EOF\n{\n  "metadata": {\n    "title": "Active Directory Replication from Non Machine Account",\n    "description": "Detects potential abuse of Active Directory Replication Service (ADRS) from a non machine account to request credentials.",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003",\n      "attack.t1003.006"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND (winlog.event_id:\\"4662\\" AND winlog.event_data.AccessMask:\\"0x100\\" AND winlog.event_data.Properties.keyword:(*1131f6aa\\\\-9c07\\\\-11d1\\\\-f79f\\\\-00c04fc2dcd2* OR *1131f6ad\\\\-9c07\\\\-11d1\\\\-f79f\\\\-00c04fc2dcd2* OR *89e95b76\\\\-444d\\\\-4c62\\\\-991a\\\\-0facbeda640c*)) AND (NOT (winlog.event_data.SubjectUserName.keyword:*$ OR winlog.event_data.SubjectUserName.keyword:MSOL_*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND (winlog.event_id:\\"4662\\" AND winlog.event_data.AccessMask:\\"0x100\\" AND winlog.event_data.Properties.keyword:(*1131f6aa\\\\-9c07\\\\-11d1\\\\-f79f\\\\-00c04fc2dcd2* OR *1131f6ad\\\\-9c07\\\\-11d1\\\\-f79f\\\\-00c04fc2dcd2* OR *89e95b76\\\\-444d\\\\-4c62\\\\-991a\\\\-0facbeda640c*)) AND (NOT (winlog.event_data.SubjectUserName.keyword:*$ OR winlog.event_data.SubjectUserName.keyword:MSOL_*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Active Directory Replication from Non Machine Account\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n     ComputerName = {{_source.ComputerName}}\\nSubjectDomainName = {{_source.SubjectDomainName}}\\n  SubjectUserName = {{_source.SubjectUserName}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/17d619c1-e020-4347-957e-1d1207455c93 <<EOF
+{
+  "metadata": {
+    "title": "Active Directory Replication from Non Machine Account",
+    "description": "Detects potential abuse of Active Directory Replication Service (ADRS) from a non machine account to request credentials.",
+    "tags": [
+      "attack.credential_access",
+      "attack.t1003",
+      "attack.t1003.006"
+    ],
+    "query": "(winlog.channel:\"Security\" AND (winlog.event_id:\"4662\" AND winlog.event_data.AccessMask:\"0x100\" AND winlog.event_data.Properties.keyword:(*1131f6aa\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2* OR *1131f6ad\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2* OR *89e95b76\\-444d\\-4c62\\-991a\\-0facbeda640c*)) AND (NOT (winlog.event_data.SubjectUserName.keyword:*$ OR winlog.event_data.SubjectUserName.keyword:MSOL_*)))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Security\" AND (winlog.event_id:\"4662\" AND winlog.event_data.AccessMask:\"0x100\" AND winlog.event_data.Properties.keyword:(*1131f6aa\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2* OR *1131f6ad\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2* OR *89e95b76\\-444d\\-4c62\\-991a\\-0facbeda640c*)) AND (NOT (winlog.event_data.SubjectUserName.keyword:*$ OR winlog.event_data.SubjectUserName.keyword:MSOL_*)))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Active Directory Replication from Non Machine Account'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n     ComputerName = {{_source.ComputerName}}\nSubjectDomainName = {{_source.SubjectDomainName}}\n  SubjectUserName = {{_source.SubjectUserName}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((EventID:"4662" AND AccessMask:"0x100" AND Properties.keyword:(*1131f6aa\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2* *1131f6ad\\-9c07\\-11d1\\-f79f\\-00c04fc2dcd2* *89e95b76\\-444d\\-4c62\\-991a\\-0facbeda640c*)) AND (NOT (SubjectUserName.keyword:*$ OR SubjectUserName.keyword:MSOL_*)))
+((EventID:"4662" AND AccessMask:"0x100" AND Properties.keyword:(*1131f6aa\-9c07\-11d1\-f79f\-00c04fc2dcd2* *1131f6ad\-9c07\-11d1\-f79f\-00c04fc2dcd2* *89e95b76\-444d\-4c62\-991a\-0facbeda640c*)) AND (NOT (SubjectUserName.keyword:*$ OR SubjectUserName.keyword:MSOL_*)))
 ```
 
 
@@ -104,7 +180,7 @@ curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?=.*4662)(?=.*0x100)(?=.*(?:.*.*1131f6aa-9c07-11d1-f79f-00c04fc2dcd2.*|.*.*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2.*|.*.*89e95b76-444d-4c62-991a-0facbeda640c.*))))(?=.*(?!.*(?:.*(?:.*(?=.*.*\\$)|.*(?=.*MSOL_.*))))))'
+grep -P '^(?:.*(?=.*(?:.*(?=.*4662)(?=.*0x100)(?=.*(?:.*.*1131f6aa-9c07-11d1-f79f-00c04fc2dcd2.*|.*.*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2.*|.*.*89e95b76-444d-4c62-991a-0facbeda640c.*))))(?=.*(?!.*(?:.*(?:.*(?=.*.*\$)|.*(?=.*MSOL_.*))))))'
 ```
 
 

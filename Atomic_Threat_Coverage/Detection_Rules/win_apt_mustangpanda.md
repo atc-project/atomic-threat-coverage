@@ -58,49 +58,121 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "CommandLine.*.*Temp\\\\wtask.exe /create.*" -or $_.message -match "CommandLine.*.*%windir:~-3,1%%PUBLIC:~-9,1%.*" -or $_.message -match "CommandLine.*.*/E:vbscript .* C:\\\\Users\\\\.*.txt\\" /F" -or $_.message -match "CommandLine.*.*/tn \\"Security Script .*" -or $_.message -match "CommandLine.*.*%windir:~-1,1%.*") -or ($_.message -match "Image.*.*Temp\\\\winwsh.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "CommandLine.*.*Temp\\wtask.exe /create.*" -or $_.message -match "CommandLine.*.*%windir:~-3,1%%PUBLIC:~-9,1%.*" -or $_.message -match "CommandLine.*.*/E:vbscript .* C:\\Users\\.*.txt\" /F" -or $_.message -match "CommandLine.*.*/tn \"Security Script .*" -or $_.message -match "CommandLine.*.*%windir:~-1,1%.*") -or ($_.message -match "Image.*.*Temp\\winwsh.exe")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.CommandLine.keyword:(*Temp\\\\wtask.exe\\ \\/create* OR *%windir\\:\\~\\-3,1%%PUBLIC\\:\\~\\-9,1%* OR *\\/E\\:vbscript\\ *\\ C\\:\\\\Users\\\\*.txt\\"\\ \\/F OR *\\/tn\\ \\"Security\\ Script\\ * OR *%windir\\:\\~\\-1,1%*) OR winlog.event_data.Image.keyword:(*Temp\\\\winwsh.exe))
+(winlog.event_data.CommandLine.keyword:(*Temp\\wtask.exe\ \/create* OR *%windir\:\~\-3,1%%PUBLIC\:\~\-9,1%* OR *\/E\:vbscript\ *\ C\:\\Users\\*.txt\"\ \/F OR *\/tn\ \"Security\ Script\ * OR *%windir\:\~\-1,1%*) OR winlog.event_data.Image.keyword:(*Temp\\winwsh.exe))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/2d87d610-d760-45ee-a7e6-7a6f2a65de00 <<EOF\n{\n  "metadata": {\n    "title": "Mustang Panda Dropper",\n    "description": "Detects specific process parameters as used by Mustang Panda droppers",\n    "tags": "",\n    "query": "(winlog.event_data.CommandLine.keyword:(*Temp\\\\\\\\wtask.exe\\\\ \\\\/create* OR *%windir\\\\:\\\\~\\\\-3,1%%PUBLIC\\\\:\\\\~\\\\-9,1%* OR *\\\\/E\\\\:vbscript\\\\ *\\\\ C\\\\:\\\\\\\\Users\\\\\\\\*.txt\\\\\\"\\\\ \\\\/F OR *\\\\/tn\\\\ \\\\\\"Security\\\\ Script\\\\ * OR *%windir\\\\:\\\\~\\\\-1,1%*) OR winlog.event_data.Image.keyword:(*Temp\\\\\\\\winwsh.exe))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.CommandLine.keyword:(*Temp\\\\\\\\wtask.exe\\\\ \\\\/create* OR *%windir\\\\:\\\\~\\\\-3,1%%PUBLIC\\\\:\\\\~\\\\-9,1%* OR *\\\\/E\\\\:vbscript\\\\ *\\\\ C\\\\:\\\\\\\\Users\\\\\\\\*.txt\\\\\\"\\\\ \\\\/F OR *\\\\/tn\\\\ \\\\\\"Security\\\\ Script\\\\ * OR *%windir\\\\:\\\\~\\\\-1,1%*) OR winlog.event_data.Image.keyword:(*Temp\\\\\\\\winwsh.exe))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Mustang Panda Dropper\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/2d87d610-d760-45ee-a7e6-7a6f2a65de00 <<EOF
+{
+  "metadata": {
+    "title": "Mustang Panda Dropper",
+    "description": "Detects specific process parameters as used by Mustang Panda droppers",
+    "tags": "",
+    "query": "(winlog.event_data.CommandLine.keyword:(*Temp\\\\wtask.exe\\ \\/create* OR *%windir\\:\\~\\-3,1%%PUBLIC\\:\\~\\-9,1%* OR *\\/E\\:vbscript\\ *\\ C\\:\\\\Users\\\\*.txt\\\"\\ \\/F OR *\\/tn\\ \\\"Security\\ Script\\ * OR *%windir\\:\\~\\-1,1%*) OR winlog.event_data.Image.keyword:(*Temp\\\\winwsh.exe))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.CommandLine.keyword:(*Temp\\\\wtask.exe\\ \\/create* OR *%windir\\:\\~\\-3,1%%PUBLIC\\:\\~\\-9,1%* OR *\\/E\\:vbscript\\ *\\ C\\:\\\\Users\\\\*.txt\\\"\\ \\/F OR *\\/tn\\ \\\"Security\\ Script\\ * OR *%windir\\:\\~\\-1,1%*) OR winlog.event_data.Image.keyword:(*Temp\\\\winwsh.exe))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Mustang Panda Dropper'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(CommandLine.keyword:(*Temp\\\\wtask.exe \\/create* *%windir\\:\\~\\-3,1%%PUBLIC\\:\\~\\-9,1%* *\\/E\\:vbscript * C\\:\\\\Users\\\\*.txt\\" \\/F *\\/tn \\"Security Script * *%windir\\:\\~\\-1,1%*) OR Image.keyword:(*Temp\\\\winwsh.exe))
+(CommandLine.keyword:(*Temp\\wtask.exe \/create* *%windir\:\~\-3,1%%PUBLIC\:\~\-9,1%* *\/E\:vbscript * C\:\\Users\\*.txt\" \/F *\/tn \"Security Script * *%windir\:\~\-1,1%*) OR Image.keyword:(*Temp\\winwsh.exe))
 ```
 
 
 ### splunk
     
 ```
-((CommandLine="*Temp\\\\wtask.exe /create*" OR CommandLine="*%windir:~-3,1%%PUBLIC:~-9,1%*" OR CommandLine="*/E:vbscript * C:\\\\Users\\\\*.txt\\" /F" OR CommandLine="*/tn \\"Security Script *" OR CommandLine="*%windir:~-1,1%*") OR (Image="*Temp\\\\winwsh.exe")) | table CommandLine,ParentCommandLine
+((CommandLine="*Temp\\wtask.exe /create*" OR CommandLine="*%windir:~-3,1%%PUBLIC:~-9,1%*" OR CommandLine="*/E:vbscript * C:\\Users\\*.txt\" /F" OR CommandLine="*/tn \"Security Script *" OR CommandLine="*%windir:~-1,1%*") OR (Image="*Temp\\winwsh.exe")) | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-(CommandLine IN ["*Temp\\\\wtask.exe /create*", "*%windir:~-3,1%%PUBLIC:~-9,1%*", "*/E:vbscript * C:\\\\Users\\\\*.txt\\" /F", "*/tn \\"Security Script *", "*%windir:~-1,1%*"] OR Image IN ["*Temp\\\\winwsh.exe"])
+(CommandLine IN ["*Temp\\wtask.exe /create*", "*%windir:~-3,1%%PUBLIC:~-9,1%*", "*/E:vbscript * C:\\Users\\*.txt\" /F", "*/tn \"Security Script *", "*%windir:~-1,1%*"] OR Image IN ["*Temp\\winwsh.exe"])
 ```
 
 
 ### grep
     
 ```
-grep -P \'^(?:.*(?:.*(?:.*.*Temp\\wtask\\.exe /create.*|.*.*%windir:~-3,1%%PUBLIC:~-9,1%.*|.*.*/E:vbscript .* C:\\Users\\\\.*\\.txt" /F|.*.*/tn "Security Script .*|.*.*%windir:~-1,1%.*)|.*(?:.*.*Temp\\winwsh\\.exe)))\'
+grep -P '^(?:.*(?:.*(?:.*.*Temp\wtask\.exe /create.*|.*.*%windir:~-3,1%%PUBLIC:~-9,1%.*|.*.*/E:vbscript .* C:\Users\\.*\.txt" /F|.*.*/tn "Security Script .*|.*.*%windir:~-1,1%.*)|.*(?:.*.*Temp\winwsh\.exe)))'
 ```
 
 

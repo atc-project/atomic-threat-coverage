@@ -65,49 +65,133 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "ParentImage.*.*\\\\powershell.exe") -and ($_.message -match "CommandLine.*.*schtasks.*/Create.*/SC .*ONLOGON.*/TN .*Updater.*/TR .*powershell.*" -or $_.message -match "CommandLine.*.*schtasks.*/Create.*/SC .*DAILY.*/TN .*Updater.*/TR .*powershell.*" -or $_.message -match "CommandLine.*.*schtasks.*/Create.*/SC .*ONIDLE.*/TN .*Updater.*/TR .*powershell.*" -or $_.message -match "CommandLine.*.*schtasks.*/Create.*/SC .*Updater.*/TN .*Updater.*/TR .*powershell.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "ParentImage.*.*\\powershell.exe") -and ($_.message -match "CommandLine.*.*schtasks.*/Create.*/SC .*ONLOGON.*/TN .*Updater.*/TR .*powershell.*" -or $_.message -match "CommandLine.*.*schtasks.*/Create.*/SC .*DAILY.*/TN .*Updater.*/TR .*powershell.*" -or $_.message -match "CommandLine.*.*schtasks.*/Create.*/SC .*ONIDLE.*/TN .*Updater.*/TR .*powershell.*" -or $_.message -match "CommandLine.*.*schtasks.*/Create.*/SC .*Updater.*/TN .*Updater.*/TR .*powershell.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.ParentImage.keyword:(*\\\\powershell.exe) AND winlog.event_data.CommandLine.keyword:(*schtasks*\\/Create*\\/SC\\ *ONLOGON*\\/TN\\ *Updater*\\/TR\\ *powershell* OR *schtasks*\\/Create*\\/SC\\ *DAILY*\\/TN\\ *Updater*\\/TR\\ *powershell* OR *schtasks*\\/Create*\\/SC\\ *ONIDLE*\\/TN\\ *Updater*\\/TR\\ *powershell* OR *schtasks*\\/Create*\\/SC\\ *Updater*\\/TN\\ *Updater*\\/TR\\ *powershell*))
+(winlog.event_data.ParentImage.keyword:(*\\powershell.exe) AND winlog.event_data.CommandLine.keyword:(*schtasks*\/Create*\/SC\ *ONLOGON*\/TN\ *Updater*\/TR\ *powershell* OR *schtasks*\/Create*\/SC\ *DAILY*\/TN\ *Updater*\/TR\ *powershell* OR *schtasks*\/Create*\/SC\ *ONIDLE*\/TN\ *Updater*\/TR\ *powershell* OR *schtasks*\/Create*\/SC\ *Updater*\/TN\ *Updater*\/TR\ *powershell*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/56c217c3-2de2-479b-990f-5c109ba8458f <<EOF\n{\n  "metadata": {\n    "title": "Default PowerSploit and Empire Schtasks Persistence",\n    "description": "Detects the creation of a schtask via PowerSploit or Empire Default Configuration.",\n    "tags": [\n      "attack.execution",\n      "attack.persistence",\n      "attack.privilege_escalation",\n      "attack.t1053",\n      "attack.t1086",\n      "attack.s0111",\n      "attack.g0022",\n      "attack.g0060",\n      "car.2013-08-001",\n      "attack.t1053.005",\n      "attack.t1059.001"\n    ],\n    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\\\\\powershell.exe) AND winlog.event_data.CommandLine.keyword:(*schtasks*\\\\/Create*\\\\/SC\\\\ *ONLOGON*\\\\/TN\\\\ *Updater*\\\\/TR\\\\ *powershell* OR *schtasks*\\\\/Create*\\\\/SC\\\\ *DAILY*\\\\/TN\\\\ *Updater*\\\\/TR\\\\ *powershell* OR *schtasks*\\\\/Create*\\\\/SC\\\\ *ONIDLE*\\\\/TN\\\\ *Updater*\\\\/TR\\\\ *powershell* OR *schtasks*\\\\/Create*\\\\/SC\\\\ *Updater*\\\\/TN\\\\ *Updater*\\\\/TR\\\\ *powershell*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\\\\\powershell.exe) AND winlog.event_data.CommandLine.keyword:(*schtasks*\\\\/Create*\\\\/SC\\\\ *ONLOGON*\\\\/TN\\\\ *Updater*\\\\/TR\\\\ *powershell* OR *schtasks*\\\\/Create*\\\\/SC\\\\ *DAILY*\\\\/TN\\\\ *Updater*\\\\/TR\\\\ *powershell* OR *schtasks*\\\\/Create*\\\\/SC\\\\ *ONIDLE*\\\\/TN\\\\ *Updater*\\\\/TR\\\\ *powershell* OR *schtasks*\\\\/Create*\\\\/SC\\\\ *Updater*\\\\/TN\\\\ *Updater*\\\\/TR\\\\ *powershell*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Default PowerSploit and Empire Schtasks Persistence\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/56c217c3-2de2-479b-990f-5c109ba8458f <<EOF
+{
+  "metadata": {
+    "title": "Default PowerSploit and Empire Schtasks Persistence",
+    "description": "Detects the creation of a schtask via PowerSploit or Empire Default Configuration.",
+    "tags": [
+      "attack.execution",
+      "attack.persistence",
+      "attack.privilege_escalation",
+      "attack.t1053",
+      "attack.t1086",
+      "attack.s0111",
+      "attack.g0022",
+      "attack.g0060",
+      "car.2013-08-001",
+      "attack.t1053.005",
+      "attack.t1059.001"
+    ],
+    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\powershell.exe) AND winlog.event_data.CommandLine.keyword:(*schtasks*\\/Create*\\/SC\\ *ONLOGON*\\/TN\\ *Updater*\\/TR\\ *powershell* OR *schtasks*\\/Create*\\/SC\\ *DAILY*\\/TN\\ *Updater*\\/TR\\ *powershell* OR *schtasks*\\/Create*\\/SC\\ *ONIDLE*\\/TN\\ *Updater*\\/TR\\ *powershell* OR *schtasks*\\/Create*\\/SC\\ *Updater*\\/TN\\ *Updater*\\/TR\\ *powershell*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.ParentImage.keyword:(*\\\\powershell.exe) AND winlog.event_data.CommandLine.keyword:(*schtasks*\\/Create*\\/SC\\ *ONLOGON*\\/TN\\ *Updater*\\/TR\\ *powershell* OR *schtasks*\\/Create*\\/SC\\ *DAILY*\\/TN\\ *Updater*\\/TR\\ *powershell* OR *schtasks*\\/Create*\\/SC\\ *ONIDLE*\\/TN\\ *Updater*\\/TR\\ *powershell* OR *schtasks*\\/Create*\\/SC\\ *Updater*\\/TN\\ *Updater*\\/TR\\ *powershell*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Default PowerSploit and Empire Schtasks Persistence'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(ParentImage.keyword:(*\\\\powershell.exe) AND CommandLine.keyword:(*schtasks*\\/Create*\\/SC *ONLOGON*\\/TN *Updater*\\/TR *powershell* *schtasks*\\/Create*\\/SC *DAILY*\\/TN *Updater*\\/TR *powershell* *schtasks*\\/Create*\\/SC *ONIDLE*\\/TN *Updater*\\/TR *powershell* *schtasks*\\/Create*\\/SC *Updater*\\/TN *Updater*\\/TR *powershell*))
+(ParentImage.keyword:(*\\powershell.exe) AND CommandLine.keyword:(*schtasks*\/Create*\/SC *ONLOGON*\/TN *Updater*\/TR *powershell* *schtasks*\/Create*\/SC *DAILY*\/TN *Updater*\/TR *powershell* *schtasks*\/Create*\/SC *ONIDLE*\/TN *Updater*\/TR *powershell* *schtasks*\/Create*\/SC *Updater*\/TN *Updater*\/TR *powershell*))
 ```
 
 
 ### splunk
     
 ```
-((ParentImage="*\\\\powershell.exe") (CommandLine="*schtasks*/Create*/SC *ONLOGON*/TN *Updater*/TR *powershell*" OR CommandLine="*schtasks*/Create*/SC *DAILY*/TN *Updater*/TR *powershell*" OR CommandLine="*schtasks*/Create*/SC *ONIDLE*/TN *Updater*/TR *powershell*" OR CommandLine="*schtasks*/Create*/SC *Updater*/TN *Updater*/TR *powershell*"))
+((ParentImage="*\\powershell.exe") (CommandLine="*schtasks*/Create*/SC *ONLOGON*/TN *Updater*/TR *powershell*" OR CommandLine="*schtasks*/Create*/SC *DAILY*/TN *Updater*/TR *powershell*" OR CommandLine="*schtasks*/Create*/SC *ONIDLE*/TN *Updater*/TR *powershell*" OR CommandLine="*schtasks*/Create*/SC *Updater*/TN *Updater*/TR *powershell*"))
 ```
 
 
 ### logpoint
     
 ```
-(ParentImage IN ["*\\\\powershell.exe"] CommandLine IN ["*schtasks*/Create*/SC *ONLOGON*/TN *Updater*/TR *powershell*", "*schtasks*/Create*/SC *DAILY*/TN *Updater*/TR *powershell*", "*schtasks*/Create*/SC *ONIDLE*/TN *Updater*/TR *powershell*", "*schtasks*/Create*/SC *Updater*/TN *Updater*/TR *powershell*"])
+(ParentImage IN ["*\\powershell.exe"] CommandLine IN ["*schtasks*/Create*/SC *ONLOGON*/TN *Updater*/TR *powershell*", "*schtasks*/Create*/SC *DAILY*/TN *Updater*/TR *powershell*", "*schtasks*/Create*/SC *ONIDLE*/TN *Updater*/TR *powershell*", "*schtasks*/Create*/SC *Updater*/TN *Updater*/TR *powershell*"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*.*\\powershell\\.exe))(?=.*(?:.*.*schtasks.*/Create.*/SC .*ONLOGON.*/TN .*Updater.*/TR .*powershell.*|.*.*schtasks.*/Create.*/SC .*DAILY.*/TN .*Updater.*/TR .*powershell.*|.*.*schtasks.*/Create.*/SC .*ONIDLE.*/TN .*Updater.*/TR .*powershell.*|.*.*schtasks.*/Create.*/SC .*Updater.*/TN .*Updater.*/TR .*powershell.*)))'
+grep -P '^(?:.*(?=.*(?:.*.*\powershell\.exe))(?=.*(?:.*.*schtasks.*/Create.*/SC .*ONLOGON.*/TN .*Updater.*/TR .*powershell.*|.*.*schtasks.*/Create.*/SC .*DAILY.*/TN .*Updater.*/TR .*powershell.*|.*.*schtasks.*/Create.*/SC .*ONIDLE.*/TN .*Updater.*/TR .*powershell.*|.*.*schtasks.*/Create.*/SC .*Updater.*/TN .*Updater.*/TR .*powershell.*)))'
 ```
 
 

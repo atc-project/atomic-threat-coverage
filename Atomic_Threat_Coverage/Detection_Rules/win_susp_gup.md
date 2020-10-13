@@ -55,49 +55,125 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "Image.*.*\\\\GUP.exe" -and  -not (($_.message -match "Image.*C:\\\\Users\\\\.*\\\\AppData\\\\Local\\\\Notepad\\+\\+\\\\updater\\\\gup.exe" -or $_.message -match "Image.*C:\\\\Users\\\\.*\\\\AppData\\\\Roaming\\\\Notepad\\+\\+\\\\updater\\\\gup.exe" -or $_.message -match "C:\\\\Program Files\\\\Notepad\\+\\+\\\\updater\\\\gup.exe" -or $_.message -match "C:\\\\Program Files (x86)\\\\Notepad\\+\\+\\\\updater\\\\gup.exe"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "Image.*.*\\GUP.exe" -and  -not (($_.message -match "Image.*C:\\Users\\.*\\AppData\\Local\\Notepad\+\+\\updater\\gup.exe" -or $_.message -match "Image.*C:\\Users\\.*\\AppData\\Roaming\\Notepad\+\+\\updater\\gup.exe" -or $_.message -match "C:\\Program Files\\Notepad\+\+\\updater\\gup.exe" -or $_.message -match "C:\\Program Files (x86)\\Notepad\+\+\\updater\\gup.exe"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:*\\\\GUP.exe AND (NOT (winlog.event_data.Image.keyword:(C\\:\\\\Users\\\\*\\\\AppData\\\\Local\\\\Notepad\\+\\+\\\\updater\\\\gup.exe OR C\\:\\\\Users\\\\*\\\\AppData\\\\Roaming\\\\Notepad\\+\\+\\\\updater\\\\gup.exe OR C\\:\\\\Program\\ Files\\\\Notepad\\+\\+\\\\updater\\\\gup.exe OR C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Notepad\\+\\+\\\\updater\\\\gup.exe))))
+(winlog.event_data.Image.keyword:*\\GUP.exe AND (NOT (winlog.event_data.Image.keyword:(C\:\\Users\\*\\AppData\\Local\\Notepad\+\+\\updater\\gup.exe OR C\:\\Users\\*\\AppData\\Roaming\\Notepad\+\+\\updater\\gup.exe OR C\:\\Program\ Files\\Notepad\+\+\\updater\\gup.exe OR C\:\\Program\ Files\ \(x86\)\\Notepad\+\+\\updater\\gup.exe))))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/0a4f6091-223b-41f6-8743-f322ec84930b <<EOF\n{\n  "metadata": {\n    "title": "Suspicious GUP Usage",\n    "description": "Detects execution of the Notepad++ updater in a suspicious directory, which is often used in DLL side-loading attacks",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.t1574.002",\n      "attack.t1073"\n    ],\n    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\GUP.exe AND (NOT (winlog.event_data.Image.keyword:(C\\\\:\\\\\\\\Users\\\\\\\\*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\gup.exe OR C\\\\:\\\\\\\\Users\\\\\\\\*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\gup.exe OR C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\gup.exe OR C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\gup.exe))))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_data.Image.keyword:*\\\\\\\\GUP.exe AND (NOT (winlog.event_data.Image.keyword:(C\\\\:\\\\\\\\Users\\\\\\\\*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\gup.exe OR C\\\\:\\\\\\\\Users\\\\\\\\*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\gup.exe OR C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\gup.exe OR C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\gup.exe))))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious GUP Usage\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/0a4f6091-223b-41f6-8743-f322ec84930b <<EOF
+{
+  "metadata": {
+    "title": "Suspicious GUP Usage",
+    "description": "Detects execution of the Notepad++ updater in a suspicious directory, which is often used in DLL side-loading attacks",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.t1574.002",
+      "attack.t1073"
+    ],
+    "query": "(winlog.event_data.Image.keyword:*\\\\GUP.exe AND (NOT (winlog.event_data.Image.keyword:(C\\:\\\\Users\\\\*\\\\AppData\\\\Local\\\\Notepad\\+\\+\\\\updater\\\\gup.exe OR C\\:\\\\Users\\\\*\\\\AppData\\\\Roaming\\\\Notepad\\+\\+\\\\updater\\\\gup.exe OR C\\:\\\\Program\\ Files\\\\Notepad\\+\\+\\\\updater\\\\gup.exe OR C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Notepad\\+\\+\\\\updater\\\\gup.exe))))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_data.Image.keyword:*\\\\GUP.exe AND (NOT (winlog.event_data.Image.keyword:(C\\:\\\\Users\\\\*\\\\AppData\\\\Local\\\\Notepad\\+\\+\\\\updater\\\\gup.exe OR C\\:\\\\Users\\\\*\\\\AppData\\\\Roaming\\\\Notepad\\+\\+\\\\updater\\\\gup.exe OR C\\:\\\\Program\\ Files\\\\Notepad\\+\\+\\\\updater\\\\gup.exe OR C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Notepad\\+\\+\\\\updater\\\\gup.exe))))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious GUP Usage'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(Image.keyword:*\\\\GUP.exe AND (NOT (Image.keyword:(C\\:\\\\Users\\\\*\\\\AppData\\\\Local\\\\Notepad\\+\\+\\\\updater\\\\gup.exe C\\:\\\\Users\\\\*\\\\AppData\\\\Roaming\\\\Notepad\\+\\+\\\\updater\\\\gup.exe C\\:\\\\Program Files\\\\Notepad\\+\\+\\\\updater\\\\gup.exe C\\:\\\\Program Files \\(x86\\)\\\\Notepad\\+\\+\\\\updater\\\\gup.exe))))
+(Image.keyword:*\\GUP.exe AND (NOT (Image.keyword:(C\:\\Users\\*\\AppData\\Local\\Notepad\+\+\\updater\\gup.exe C\:\\Users\\*\\AppData\\Roaming\\Notepad\+\+\\updater\\gup.exe C\:\\Program Files\\Notepad\+\+\\updater\\gup.exe C\:\\Program Files \(x86\)\\Notepad\+\+\\updater\\gup.exe))))
 ```
 
 
 ### splunk
     
 ```
-(Image="*\\\\GUP.exe" NOT ((Image="C:\\\\Users\\\\*\\\\AppData\\\\Local\\\\Notepad++\\\\updater\\\\gup.exe" OR Image="C:\\\\Users\\\\*\\\\AppData\\\\Roaming\\\\Notepad++\\\\updater\\\\gup.exe" OR Image="C:\\\\Program Files\\\\Notepad++\\\\updater\\\\gup.exe" OR Image="C:\\\\Program Files (x86)\\\\Notepad++\\\\updater\\\\gup.exe")))
+(Image="*\\GUP.exe" NOT ((Image="C:\\Users\\*\\AppData\\Local\\Notepad++\\updater\\gup.exe" OR Image="C:\\Users\\*\\AppData\\Roaming\\Notepad++\\updater\\gup.exe" OR Image="C:\\Program Files\\Notepad++\\updater\\gup.exe" OR Image="C:\\Program Files (x86)\\Notepad++\\updater\\gup.exe")))
 ```
 
 
 ### logpoint
     
 ```
-(Image="*\\\\GUP.exe"  -(Image IN ["C:\\\\Users\\\\*\\\\AppData\\\\Local\\\\Notepad++\\\\updater\\\\gup.exe", "C:\\\\Users\\\\*\\\\AppData\\\\Roaming\\\\Notepad++\\\\updater\\\\gup.exe", "C:\\\\Program Files\\\\Notepad++\\\\updater\\\\gup.exe", "C:\\\\Program Files (x86)\\\\Notepad++\\\\updater\\\\gup.exe"]))
+(Image="*\\GUP.exe"  -(Image IN ["C:\\Users\\*\\AppData\\Local\\Notepad++\\updater\\gup.exe", "C:\\Users\\*\\AppData\\Roaming\\Notepad++\\updater\\gup.exe", "C:\\Program Files\\Notepad++\\updater\\gup.exe", "C:\\Program Files (x86)\\Notepad++\\updater\\gup.exe"]))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*.*\\GUP\\.exe)(?=.*(?!.*(?:.*(?=.*(?:.*C:\\Users\\\\.*\\AppData\\Local\\Notepad\\+\\+\\updater\\gup\\.exe|.*C:\\Users\\\\.*\\AppData\\Roaming\\Notepad\\+\\+\\updater\\gup\\.exe|.*C:\\Program Files\\Notepad\\+\\+\\updater\\gup\\.exe|.*C:\\Program Files \\(x86\\)\\Notepad\\+\\+\\updater\\gup\\.exe))))))'
+grep -P '^(?:.*(?=.*.*\GUP\.exe)(?=.*(?!.*(?:.*(?=.*(?:.*C:\Users\\.*\AppData\Local\Notepad\+\+\updater\gup\.exe|.*C:\Users\\.*\AppData\Roaming\Notepad\+\+\updater\gup\.exe|.*C:\Program Files\Notepad\+\+\updater\gup\.exe|.*C:\Program Files \(x86\)\Notepad\+\+\updater\gup\.exe))))))'
 ```
 
 

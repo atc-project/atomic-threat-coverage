@@ -57,49 +57,128 @@ status: experimental
 ### powershell
     
 ```
-Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "17" -and ($_.message -match "PipeName.*.*\\\\lsadump.*" -or $_.message -match "PipeName.*.*\\\\cachedump.*" -or $_.message -match "PipeName.*.*\\\\wceservicepipe.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "17" -and ($_.message -match "PipeName.*.*\\lsadump.*" -or $_.message -match "PipeName.*.*\\cachedump.*" -or $_.message -match "PipeName.*.*\\wceservicepipe.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND winlog.event_id:"17" AND winlog.event_data.PipeName.keyword:(*\\\\lsadump* OR *\\\\cachedump* OR *\\\\wceservicepipe*))
+(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND winlog.event_id:"17" AND winlog.event_data.PipeName.keyword:(*\\lsadump* OR *\\cachedump* OR *\\wceservicepipe*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/961d0ba2-3eea-4303-a930-2cf78bbfcc5e <<EOF\n{\n  "metadata": {\n    "title": "Cred Dump-Tools Named Pipes",\n    "description": "Detects well-known credential dumping tools execution via specific named pipes",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1003",\n      "attack.t1003.001",\n      "attack.t1003.002",\n      "attack.t1003.004",\n      "attack.t1003.005"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"17\\" AND winlog.event_data.PipeName.keyword:(*\\\\\\\\lsadump* OR *\\\\\\\\cachedump* OR *\\\\\\\\wceservicepipe*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND winlog.event_id:\\"17\\" AND winlog.event_data.PipeName.keyword:(*\\\\\\\\lsadump* OR *\\\\\\\\cachedump* OR *\\\\\\\\wceservicepipe*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Cred Dump-Tools Named Pipes\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/961d0ba2-3eea-4303-a930-2cf78bbfcc5e <<EOF
+{
+  "metadata": {
+    "title": "Cred Dump-Tools Named Pipes",
+    "description": "Detects well-known credential dumping tools execution via specific named pipes",
+    "tags": [
+      "attack.credential_access",
+      "attack.t1003",
+      "attack.t1003.001",
+      "attack.t1003.002",
+      "attack.t1003.004",
+      "attack.t1003.005"
+    ],
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"17\" AND winlog.event_data.PipeName.keyword:(*\\\\lsadump* OR *\\\\cachedump* OR *\\\\wceservicepipe*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"17\" AND winlog.event_data.PipeName.keyword:(*\\\\lsadump* OR *\\\\cachedump* OR *\\\\wceservicepipe*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Cred Dump-Tools Named Pipes'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-(EventID:"17" AND PipeName.keyword:(*\\\\lsadump* *\\\\cachedump* *\\\\wceservicepipe*))
+(EventID:"17" AND PipeName.keyword:(*\\lsadump* *\\cachedump* *\\wceservicepipe*))
 ```
 
 
 ### splunk
     
 ```
-(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="17" (PipeName="*\\\\lsadump*" OR PipeName="*\\\\cachedump*" OR PipeName="*\\\\wceservicepipe*"))
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="17" (PipeName="*\\lsadump*" OR PipeName="*\\cachedump*" OR PipeName="*\\wceservicepipe*"))
 ```
 
 
 ### logpoint
     
 ```
-(event_id="17" PipeName IN ["*\\\\lsadump*", "*\\\\cachedump*", "*\\\\wceservicepipe*"])
+(event_id="17" PipeName IN ["*\\lsadump*", "*\\cachedump*", "*\\wceservicepipe*"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*17)(?=.*(?:.*.*\\lsadump.*|.*.*\\cachedump.*|.*.*\\wceservicepipe.*)))'
+grep -P '^(?:.*(?=.*17)(?=.*(?:.*.*\lsadump.*|.*.*\cachedump.*|.*.*\wceservicepipe.*)))'
 ```
 
 

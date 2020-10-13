@@ -94,7 +94,82 @@ Get-WinEvent -LogName Security | where {(($_.ID -eq "675" -or $_.ID -eq "4768" -
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/f7644214-0eb0-4ace-9455-331ec4c09253 <<EOF\n{\n  "metadata": {\n    "title": "Kerberos Manipulation",\n    "description": "This method triggers on rare Kerberos Failure Codes caused by manipulations of Kerberos messages",\n    "tags": [\n      "attack.credential_access",\n      "attack.t1212"\n    ],\n    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:(\\"675\\" OR \\"4768\\" OR \\"4769\\" OR \\"4771\\") AND winlog.event_data.FailureCode:(\\"0x9\\" OR \\"0xA\\" OR \\"0xB\\" OR \\"0xF\\" OR \\"0x10\\" OR \\"0x11\\" OR \\"0x13\\" OR \\"0x14\\" OR \\"0x1A\\" OR \\"0x1F\\" OR \\"0x21\\" OR \\"0x22\\" OR \\"0x23\\" OR \\"0x24\\" OR \\"0x26\\" OR \\"0x27\\" OR \\"0x28\\" OR \\"0x29\\" OR \\"0x2C\\" OR \\"0x2D\\" OR \\"0x2E\\" OR \\"0x2F\\" OR \\"0x31\\" OR \\"0x32\\" OR \\"0x3E\\" OR \\"0x3F\\" OR \\"0x40\\" OR \\"0x41\\" OR \\"0x43\\" OR \\"0x44\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Security\\" AND winlog.event_id:(\\"675\\" OR \\"4768\\" OR \\"4769\\" OR \\"4771\\") AND winlog.event_data.FailureCode:(\\"0x9\\" OR \\"0xA\\" OR \\"0xB\\" OR \\"0xF\\" OR \\"0x10\\" OR \\"0x11\\" OR \\"0x13\\" OR \\"0x14\\" OR \\"0x1A\\" OR \\"0x1F\\" OR \\"0x21\\" OR \\"0x22\\" OR \\"0x23\\" OR \\"0x24\\" OR \\"0x26\\" OR \\"0x27\\" OR \\"0x28\\" OR \\"0x29\\" OR \\"0x2C\\" OR \\"0x2D\\" OR \\"0x2E\\" OR \\"0x2F\\" OR \\"0x31\\" OR \\"0x32\\" OR \\"0x3E\\" OR \\"0x3F\\" OR \\"0x40\\" OR \\"0x41\\" OR \\"0x43\\" OR \\"0x44\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Kerberos Manipulation\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/f7644214-0eb0-4ace-9455-331ec4c09253 <<EOF
+{
+  "metadata": {
+    "title": "Kerberos Manipulation",
+    "description": "This method triggers on rare Kerberos Failure Codes caused by manipulations of Kerberos messages",
+    "tags": [
+      "attack.credential_access",
+      "attack.t1212"
+    ],
+    "query": "(winlog.channel:\"Security\" AND winlog.event_id:(\"675\" OR \"4768\" OR \"4769\" OR \"4771\") AND winlog.event_data.FailureCode:(\"0x9\" OR \"0xA\" OR \"0xB\" OR \"0xF\" OR \"0x10\" OR \"0x11\" OR \"0x13\" OR \"0x14\" OR \"0x1A\" OR \"0x1F\" OR \"0x21\" OR \"0x22\" OR \"0x23\" OR \"0x24\" OR \"0x26\" OR \"0x27\" OR \"0x28\" OR \"0x29\" OR \"0x2C\" OR \"0x2D\" OR \"0x2E\" OR \"0x2F\" OR \"0x31\" OR \"0x32\" OR \"0x3E\" OR \"0x3F\" OR \"0x40\" OR \"0x41\" OR \"0x43\" OR \"0x44\"))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:(\"675\" OR \"4768\" OR \"4769\" OR \"4771\") AND winlog.event_data.FailureCode:(\"0x9\" OR \"0xA\" OR \"0xB\" OR \"0xF\" OR \"0x10\" OR \"0x11\" OR \"0x13\" OR \"0x14\" OR \"0x1A\" OR \"0x1F\" OR \"0x21\" OR \"0x22\" OR \"0x23\" OR \"0x24\" OR \"0x26\" OR \"0x27\" OR \"0x28\" OR \"0x29\" OR \"0x2C\" OR \"0x2D\" OR \"0x2E\" OR \"0x2F\" OR \"0x31\" OR \"0x32\" OR \"0x3E\" OR \"0x3F\" OR \"0x40\" OR \"0x41\" OR \"0x43\" OR \"0x44\"))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Kerberos Manipulation'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 

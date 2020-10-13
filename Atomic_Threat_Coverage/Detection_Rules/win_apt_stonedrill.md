@@ -58,14 +58,91 @@ Get-WinEvent -LogName System | where {($_.ID -eq "7045" -and $_.message -match "
 ### es-qs
     
 ```
-(winlog.event_id:"7045" AND winlog.event_data.ServiceName:"NtsSrv" AND winlog.event_data.ServiceFileName.keyword:*\\ LocalService)
+(winlog.event_id:"7045" AND winlog.event_data.ServiceName:"NtsSrv" AND winlog.event_data.ServiceFileName.keyword:*\ LocalService)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9e987c6c-4c1e-40d8-bd85-dd26fba8fdd6 <<EOF\n{\n  "metadata": {\n    "title": "StoneDrill Service Install",\n    "description": "This method detects a service install of the malicious Microsoft Network Realtime Inspection Service service described in StoneDrill report by Kaspersky",\n    "tags": [\n      "attack.persistence",\n      "attack.g0064",\n      "attack.t1050",\n      "attack.t1543.003"\n    ],\n    "query": "(winlog.event_id:\\"7045\\" AND winlog.event_data.ServiceName:\\"NtsSrv\\" AND winlog.event_data.ServiceFileName.keyword:*\\\\ LocalService)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.event_id:\\"7045\\" AND winlog.event_data.ServiceName:\\"NtsSrv\\" AND winlog.event_data.ServiceFileName.keyword:*\\\\ LocalService)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'StoneDrill Service Install\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/9e987c6c-4c1e-40d8-bd85-dd26fba8fdd6 <<EOF
+{
+  "metadata": {
+    "title": "StoneDrill Service Install",
+    "description": "This method detects a service install of the malicious Microsoft Network Realtime Inspection Service service described in StoneDrill report by Kaspersky",
+    "tags": [
+      "attack.persistence",
+      "attack.g0064",
+      "attack.t1050",
+      "attack.t1543.003"
+    ],
+    "query": "(winlog.event_id:\"7045\" AND winlog.event_data.ServiceName:\"NtsSrv\" AND winlog.event_data.ServiceFileName.keyword:*\\ LocalService)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.event_id:\"7045\" AND winlog.event_data.ServiceName:\"NtsSrv\" AND winlog.event_data.ServiceFileName.keyword:*\\ LocalService)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'StoneDrill Service Install'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 

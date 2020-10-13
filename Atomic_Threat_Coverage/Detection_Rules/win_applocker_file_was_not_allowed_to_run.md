@@ -78,14 +78,98 @@ Get-WinEvent | where {(($_.message -match "Microsoft-Windows-AppLocker/MSI and S
 ### es-qs
     
 ```
-(winlog.channel:("Microsoft\\-Windows\\-AppLocker\\/MSI\\ and\\ Script" OR "Microsoft\\-Windows\\-AppLocker\\/EXE\\ and\\ DLL" OR "Microsoft\\-Windows\\-AppLocker\\/Packaged\\ app\\-Deployment" OR "Microsoft\\-Windows\\-AppLocker\\/Packaged\\ app\\-Execution") AND winlog.event_id:("8004" OR "8007"))
+(winlog.channel:("Microsoft\-Windows\-AppLocker\/MSI\ and\ Script" OR "Microsoft\-Windows\-AppLocker\/EXE\ and\ DLL" OR "Microsoft\-Windows\-AppLocker\/Packaged\ app\-Deployment" OR "Microsoft\-Windows\-AppLocker\/Packaged\ app\-Execution") AND winlog.event_id:("8004" OR "8007"))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/401e5d00-b944-11ea-8f9a-00163ecd60ae <<EOF\n{\n  "metadata": {\n    "title": "File Was Not Allowed To Run",\n    "description": "Detect run not allowed files. Applocker is a very useful tool, especially on servers where unprivileged users have access. For example terminal servers. You need configure applocker and log collect to receive these events.",\n    "tags": [\n      "attack.execution",\n      "attack.t1086",\n      "attack.t1064",\n      "attack.t1204",\n      "attack.t1035",\n      "attack.t1204.002",\n      "attack.t1059.001",\n      "attack.t1059.003",\n      "attack.t1059.005",\n      "attack.t1059.006",\n      "attack.t1059.007"\n    ],\n    "query": "(winlog.channel:(\\"Microsoft\\\\-Windows\\\\-AppLocker\\\\/MSI\\\\ and\\\\ Script\\" OR \\"Microsoft\\\\-Windows\\\\-AppLocker\\\\/EXE\\\\ and\\\\ DLL\\" OR \\"Microsoft\\\\-Windows\\\\-AppLocker\\\\/Packaged\\\\ app\\\\-Deployment\\" OR \\"Microsoft\\\\-Windows\\\\-AppLocker\\\\/Packaged\\\\ app\\\\-Execution\\") AND winlog.event_id:(\\"8004\\" OR \\"8007\\"))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:(\\"Microsoft\\\\-Windows\\\\-AppLocker\\\\/MSI\\\\ and\\\\ Script\\" OR \\"Microsoft\\\\-Windows\\\\-AppLocker\\\\/EXE\\\\ and\\\\ DLL\\" OR \\"Microsoft\\\\-Windows\\\\-AppLocker\\\\/Packaged\\\\ app\\\\-Deployment\\" OR \\"Microsoft\\\\-Windows\\\\-AppLocker\\\\/Packaged\\\\ app\\\\-Execution\\") AND winlog.event_id:(\\"8004\\" OR \\"8007\\"))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'File Was Not Allowed To Run\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n     PolicyName = {{_source.PolicyName}}\\n         RuleId = {{_source.RuleId}}\\n       RuleName = {{_source.RuleName}}\\n     TargetUser = {{_source.TargetUser}}\\nTargetProcessId = {{_source.TargetProcessId}}\\n       FilePath = {{_source.FilePath}}\\n       FileHash = {{_source.FileHash}}\\n           Fqbn = {{_source.Fqbn}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/401e5d00-b944-11ea-8f9a-00163ecd60ae <<EOF
+{
+  "metadata": {
+    "title": "File Was Not Allowed To Run",
+    "description": "Detect run not allowed files. Applocker is a very useful tool, especially on servers where unprivileged users have access. For example terminal servers. You need configure applocker and log collect to receive these events.",
+    "tags": [
+      "attack.execution",
+      "attack.t1086",
+      "attack.t1064",
+      "attack.t1204",
+      "attack.t1035",
+      "attack.t1204.002",
+      "attack.t1059.001",
+      "attack.t1059.003",
+      "attack.t1059.005",
+      "attack.t1059.006",
+      "attack.t1059.007"
+    ],
+    "query": "(winlog.channel:(\"Microsoft\\-Windows\\-AppLocker\\/MSI\\ and\\ Script\" OR \"Microsoft\\-Windows\\-AppLocker\\/EXE\\ and\\ DLL\" OR \"Microsoft\\-Windows\\-AppLocker\\/Packaged\\ app\\-Deployment\" OR \"Microsoft\\-Windows\\-AppLocker\\/Packaged\\ app\\-Execution\") AND winlog.event_id:(\"8004\" OR \"8007\"))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:(\"Microsoft\\-Windows\\-AppLocker\\/MSI\\ and\\ Script\" OR \"Microsoft\\-Windows\\-AppLocker\\/EXE\\ and\\ DLL\" OR \"Microsoft\\-Windows\\-AppLocker\\/Packaged\\ app\\-Deployment\" OR \"Microsoft\\-Windows\\-AppLocker\\/Packaged\\ app\\-Execution\") AND winlog.event_id:(\"8004\" OR \"8007\"))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'File Was Not Allowed To Run'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n     PolicyName = {{_source.PolicyName}}\n         RuleId = {{_source.RuleId}}\n       RuleName = {{_source.RuleName}}\n     TargetUser = {{_source.TargetUser}}\nTargetProcessId = {{_source.TargetProcessId}}\n       FilePath = {{_source.FilePath}}\n       FileHash = {{_source.FileHash}}\n           Fqbn = {{_source.Fqbn}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 

@@ -51,49 +51,123 @@ level: medium
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "CommandLine.*.*\\\\sysprep.exe .*\\\\AppData\\\\.*" -or $_.message -match "CommandLine.*sysprep.exe .*\\\\AppData\\\\.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "CommandLine.*.*\\sysprep.exe .*\\AppData\\.*" -or $_.message -match "CommandLine.*sysprep.exe .*\\AppData\\.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.CommandLine.keyword:(*\\\\sysprep.exe\\ *\\\\AppData\\\\* OR sysprep.exe\\ *\\\\AppData\\\\*)
+winlog.event_data.CommandLine.keyword:(*\\sysprep.exe\ *\\AppData\\* OR sysprep.exe\ *\\AppData\\*)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/d5b9ae7a-e6fc-405e-80ff-2ff9dcc64e7e <<EOF\n{\n  "metadata": {\n    "title": "Sysprep on AppData Folder",\n    "description": "Detects suspicious sysprep process start with AppData folder as target (as used by Trojan Syndicasec in Thrip report by Symantec)",\n    "tags": [\n      "attack.execution"\n    ],\n    "query": "winlog.event_data.CommandLine.keyword:(*\\\\\\\\sysprep.exe\\\\ *\\\\\\\\AppData\\\\\\\\* OR sysprep.exe\\\\ *\\\\\\\\AppData\\\\\\\\*)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.CommandLine.keyword:(*\\\\\\\\sysprep.exe\\\\ *\\\\\\\\AppData\\\\\\\\* OR sysprep.exe\\\\ *\\\\\\\\AppData\\\\\\\\*)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Sysprep on AppData Folder\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}{{_source}}\\n================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/d5b9ae7a-e6fc-405e-80ff-2ff9dcc64e7e <<EOF
+{
+  "metadata": {
+    "title": "Sysprep on AppData Folder",
+    "description": "Detects suspicious sysprep process start with AppData folder as target (as used by Trojan Syndicasec in Thrip report by Symantec)",
+    "tags": [
+      "attack.execution"
+    ],
+    "query": "winlog.event_data.CommandLine.keyword:(*\\\\sysprep.exe\\ *\\\\AppData\\\\* OR sysprep.exe\\ *\\\\AppData\\\\*)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.CommandLine.keyword:(*\\\\sysprep.exe\\ *\\\\AppData\\\\* OR sysprep.exe\\ *\\\\AppData\\\\*)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Sysprep on AppData Folder'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-CommandLine.keyword:(*\\\\sysprep.exe *\\\\AppData\\\\* sysprep.exe *\\\\AppData\\\\*)
+CommandLine.keyword:(*\\sysprep.exe *\\AppData\\* sysprep.exe *\\AppData\\*)
 ```
 
 
 ### splunk
     
 ```
-(CommandLine="*\\\\sysprep.exe *\\\\AppData\\\\*" OR CommandLine="sysprep.exe *\\\\AppData\\\\*")
+(CommandLine="*\\sysprep.exe *\\AppData\\*" OR CommandLine="sysprep.exe *\\AppData\\*")
 ```
 
 
 ### logpoint
     
 ```
-CommandLine IN ["*\\\\sysprep.exe *\\\\AppData\\\\*", "sysprep.exe *\\\\AppData\\\\*"]
+CommandLine IN ["*\\sysprep.exe *\\AppData\\*", "sysprep.exe *\\AppData\\*"]
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*.*\\sysprep\\.exe .*\\AppData\\\\.*|.*sysprep\\.exe .*\\AppData\\\\.*)'
+grep -P '^(?:.*.*\sysprep\.exe .*\AppData\\.*|.*sysprep\.exe .*\AppData\\.*)'
 ```
 
 

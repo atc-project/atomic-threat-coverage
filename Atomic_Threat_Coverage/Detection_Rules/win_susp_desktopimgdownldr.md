@@ -62,49 +62,124 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "CommandLine.*.* /lockscreenurl:.*" -and  -not (($_.message -match "CommandLine.*.*.jpg.*" -or $_.message -match "CommandLine.*.*.jpeg.*" -or $_.message -match "CommandLine.*.*.png.*"))) -or ($_.message -match "CommandLine.*.*reg delete.*" -and $_.message -match "CommandLine.*.*\\\\PersonalizationCSP.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "CommandLine.*.* /lockscreenurl:.*" -and  -not (($_.message -match "CommandLine.*.*.jpg.*" -or $_.message -match "CommandLine.*.*.jpeg.*" -or $_.message -match "CommandLine.*.*.png.*"))) -or ($_.message -match "CommandLine.*.*reg delete.*" -and $_.message -match "CommandLine.*.*\\PersonalizationCSP.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.CommandLine.keyword:*\\ \\/lockscreenurl\\:* AND (NOT (winlog.event_data.CommandLine.keyword:(*.jpg* OR *.jpeg* OR *.png*)))) OR (winlog.event_data.CommandLine.keyword:*reg\\ delete* AND winlog.event_data.CommandLine.keyword:*\\\\PersonalizationCSP*))
+((winlog.event_data.CommandLine.keyword:*\ \/lockscreenurl\:* AND (NOT (winlog.event_data.CommandLine.keyword:(*.jpg* OR *.jpeg* OR *.png*)))) OR (winlog.event_data.CommandLine.keyword:*reg\ delete* AND winlog.event_data.CommandLine.keyword:*\\PersonalizationCSP*))
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/bb58aa4a-b80b-415a-a2c0-2f65a4c81009 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Desktopimgdownldr Command",\n    "description": "Detects a suspicious Microsoft desktopimgdownldr execution with parameters used to download files from the Internet",\n    "tags": [\n      "attack.command_and_control",\n      "attack.t1105"\n    ],\n    "query": "((winlog.event_data.CommandLine.keyword:*\\\\ \\\\/lockscreenurl\\\\:* AND (NOT (winlog.event_data.CommandLine.keyword:(*.jpg* OR *.jpeg* OR *.png*)))) OR (winlog.event_data.CommandLine.keyword:*reg\\\\ delete* AND winlog.event_data.CommandLine.keyword:*\\\\\\\\PersonalizationCSP*))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.CommandLine.keyword:*\\\\ \\\\/lockscreenurl\\\\:* AND (NOT (winlog.event_data.CommandLine.keyword:(*.jpg* OR *.jpeg* OR *.png*)))) OR (winlog.event_data.CommandLine.keyword:*reg\\\\ delete* AND winlog.event_data.CommandLine.keyword:*\\\\\\\\PersonalizationCSP*))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Desktopimgdownldr Command\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/bb58aa4a-b80b-415a-a2c0-2f65a4c81009 <<EOF
+{
+  "metadata": {
+    "title": "Suspicious Desktopimgdownldr Command",
+    "description": "Detects a suspicious Microsoft desktopimgdownldr execution with parameters used to download files from the Internet",
+    "tags": [
+      "attack.command_and_control",
+      "attack.t1105"
+    ],
+    "query": "((winlog.event_data.CommandLine.keyword:*\\ \\/lockscreenurl\\:* AND (NOT (winlog.event_data.CommandLine.keyword:(*.jpg* OR *.jpeg* OR *.png*)))) OR (winlog.event_data.CommandLine.keyword:*reg\\ delete* AND winlog.event_data.CommandLine.keyword:*\\\\PersonalizationCSP*))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.CommandLine.keyword:*\\ \\/lockscreenurl\\:* AND (NOT (winlog.event_data.CommandLine.keyword:(*.jpg* OR *.jpeg* OR *.png*)))) OR (winlog.event_data.CommandLine.keyword:*reg\\ delete* AND winlog.event_data.CommandLine.keyword:*\\\\PersonalizationCSP*))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious Desktopimgdownldr Command'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((CommandLine.keyword:* \\/lockscreenurl\\:* AND (NOT (CommandLine.keyword:(*.jpg* *.jpeg* *.png*)))) OR (CommandLine.keyword:*reg delete* AND CommandLine.keyword:*\\\\PersonalizationCSP*))
+((CommandLine.keyword:* \/lockscreenurl\:* AND (NOT (CommandLine.keyword:(*.jpg* *.jpeg* *.png*)))) OR (CommandLine.keyword:*reg delete* AND CommandLine.keyword:*\\PersonalizationCSP*))
 ```
 
 
 ### splunk
     
 ```
-((CommandLine="* /lockscreenurl:*" NOT ((CommandLine="*.jpg*" OR CommandLine="*.jpeg*" OR CommandLine="*.png*"))) OR (CommandLine="*reg delete*" CommandLine="*\\\\PersonalizationCSP*")) | table CommandLine,ParentCommandLine
+((CommandLine="* /lockscreenurl:*" NOT ((CommandLine="*.jpg*" OR CommandLine="*.jpeg*" OR CommandLine="*.png*"))) OR (CommandLine="*reg delete*" CommandLine="*\\PersonalizationCSP*")) | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-((CommandLine="* /lockscreenurl:*"  -(CommandLine IN ["*.jpg*", "*.jpeg*", "*.png*"])) OR (CommandLine="*reg delete*" CommandLine="*\\\\PersonalizationCSP*"))
+((CommandLine="* /lockscreenurl:*"  -(CommandLine IN ["*.jpg*", "*.jpeg*", "*.png*"])) OR (CommandLine="*reg delete*" CommandLine="*\\PersonalizationCSP*"))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?:.*(?:.*(?=.*.* /lockscreenurl:.*)(?=.*(?!.*(?:.*(?=.*(?:.*.*\\.jpg.*|.*.*\\.jpeg.*|.*.*\\.png.*))))))|.*(?:.*(?=.*.*reg delete.*)(?=.*.*\\PersonalizationCSP.*))))'
+grep -P '^(?:.*(?:.*(?:.*(?=.*.* /lockscreenurl:.*)(?=.*(?!.*(?:.*(?=.*(?:.*.*\.jpg.*|.*.*\.jpeg.*|.*.*\.png.*))))))|.*(?:.*(?=.*.*reg delete.*)(?=.*.*\PersonalizationCSP.*))))'
 ```
 
 

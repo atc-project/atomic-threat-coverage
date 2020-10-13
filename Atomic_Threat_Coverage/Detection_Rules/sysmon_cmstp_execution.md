@@ -79,49 +79,213 @@ detection:
 ### powershell
     
 ```
-Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {((($_.ID -eq "12" -and $_.message -match "TargetObject.*.*\\\\cmmgr32.exe.*" -and $_.message -match "EventType.*CreateKey") -or ($_.ID -eq "13" -and $_.message -match "TargetObject.*.*\\\\cmmgr32.exe.*") -or ($_.ID -eq "10" -and $_.message -match "CallTrace.*.*cmlua.dll.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message\nGet-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {$_.message -match "ParentImage.*.*\\\\cmstp.exe" } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {((($_.ID -eq "12" -and $_.message -match "TargetObject.*.*\\cmmgr32.exe.*" -and $_.message -match "EventType.*CreateKey") -or ($_.ID -eq "13" -and $_.message -match "TargetObject.*.*\\cmmgr32.exe.*") -or ($_.ID -eq "10" -and $_.message -match "CallTrace.*.*cmlua.dll.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {$_.message -match "ParentImage.*.*\\cmstp.exe" } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.channel:"Microsoft\\-Windows\\-Sysmon\\/Operational" AND ((winlog.event_id:"12" AND winlog.event_data.TargetObject.keyword:*\\\\cmmgr32.exe* AND winlog.event_data.EventType:"CreateKey") OR (winlog.event_id:"13" AND winlog.event_data.TargetObject.keyword:*\\\\cmmgr32.exe*) OR (winlog.event_id:"10" AND winlog.event_data.CallTrace.keyword:*cmlua.dll*)))\nwinlog.event_data.ParentImage.keyword:*\\\\cmstp.exe
+(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND ((winlog.event_id:"12" AND winlog.event_data.TargetObject.keyword:*\\cmmgr32.exe* AND winlog.event_data.EventType:"CreateKey") OR (winlog.event_id:"13" AND winlog.event_data.TargetObject.keyword:*\\cmmgr32.exe*) OR (winlog.event_id:"10" AND winlog.event_data.CallTrace.keyword:*cmlua.dll*)))
+winlog.event_data.ParentImage.keyword:*\\cmstp.exe
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9d26fede-b526-4413-b069-6e24b6d07167 <<EOF\n{\n  "metadata": {\n    "title": "CMSTP Execution",\n    "description": "Detects various indicators of Microsoft Connection Manager Profile Installer execution",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.execution",\n      "attack.t1191",\n      "attack.t1218.003",\n      "attack.g0069",\n      "car.2019-04-001"\n    ],\n    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND ((winlog.event_id:\\"12\\" AND winlog.event_data.TargetObject.keyword:*\\\\\\\\cmmgr32.exe* AND winlog.event_data.EventType:\\"CreateKey\\") OR (winlog.event_id:\\"13\\" AND winlog.event_data.TargetObject.keyword:*\\\\\\\\cmmgr32.exe*) OR (winlog.event_id:\\"10\\" AND winlog.event_data.CallTrace.keyword:*cmlua.dll*)))"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "(winlog.channel:\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\" AND ((winlog.event_id:\\"12\\" AND winlog.event_data.TargetObject.keyword:*\\\\\\\\cmmgr32.exe* AND winlog.event_data.EventType:\\"CreateKey\\") OR (winlog.event_id:\\"13\\" AND winlog.event_data.TargetObject.keyword:*\\\\\\\\cmmgr32.exe*) OR (winlog.event_id:\\"10\\" AND winlog.event_data.CallTrace.keyword:*cmlua.dll*)))",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'CMSTP Execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}\\n          Details = {{_source.Details}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\ncurl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/9d26fede-b526-4413-b069-6e24b6d07167-2 <<EOF\n{\n  "metadata": {\n    "title": "CMSTP Execution",\n    "description": "Detects various indicators of Microsoft Connection Manager Profile Installer execution",\n    "tags": [\n      "attack.defense_evasion",\n      "attack.execution",\n      "attack.t1191",\n      "attack.t1218.003",\n      "attack.g0069",\n      "car.2019-04-001"\n    ],\n    "query": "winlog.event_data.ParentImage.keyword:*\\\\\\\\cmstp.exe"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "winlog.event_data.ParentImage.keyword:*\\\\\\\\cmstp.exe",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'CMSTP Execution\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}\\n          Details = {{_source.Details}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/9d26fede-b526-4413-b069-6e24b6d07167 <<EOF
+{
+  "metadata": {
+    "title": "CMSTP Execution",
+    "description": "Detects various indicators of Microsoft Connection Manager Profile Installer execution",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.execution",
+      "attack.t1191",
+      "attack.t1218.003",
+      "attack.g0069",
+      "car.2019-04-001"
+    ],
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND ((winlog.event_id:\"12\" AND winlog.event_data.TargetObject.keyword:*\\\\cmmgr32.exe* AND winlog.event_data.EventType:\"CreateKey\") OR (winlog.event_id:\"13\" AND winlog.event_data.TargetObject.keyword:*\\\\cmmgr32.exe*) OR (winlog.event_id:\"10\" AND winlog.event_data.CallTrace.keyword:*cmlua.dll*)))"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND ((winlog.event_id:\"12\" AND winlog.event_data.TargetObject.keyword:*\\\\cmmgr32.exe* AND winlog.event_data.EventType:\"CreateKey\") OR (winlog.event_id:\"13\" AND winlog.event_data.TargetObject.keyword:*\\\\cmmgr32.exe*) OR (winlog.event_id:\"10\" AND winlog.event_data.CallTrace.keyword:*cmlua.dll*)))",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'CMSTP Execution'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}\n          Details = {{_source.Details}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/9d26fede-b526-4413-b069-6e24b6d07167-2 <<EOF
+{
+  "metadata": {
+    "title": "CMSTP Execution",
+    "description": "Detects various indicators of Microsoft Connection Manager Profile Installer execution",
+    "tags": [
+      "attack.defense_evasion",
+      "attack.execution",
+      "attack.t1191",
+      "attack.t1218.003",
+      "attack.g0069",
+      "car.2019-04-001"
+    ],
+    "query": "winlog.event_data.ParentImage.keyword:*\\\\cmstp.exe"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "winlog.event_data.ParentImage.keyword:*\\\\cmstp.exe",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'CMSTP Execution'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}\n          Details = {{_source.Details}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((EventID:"12" AND TargetObject.keyword:*\\\\cmmgr32.exe* AND EventType:"CreateKey") OR (EventID:"13" AND TargetObject.keyword:*\\\\cmmgr32.exe*) OR (EventID:"10" AND CallTrace.keyword:*cmlua.dll*))\nParentImage.keyword:*\\\\cmstp.exe
+((EventID:"12" AND TargetObject.keyword:*\\cmmgr32.exe* AND EventType:"CreateKey") OR (EventID:"13" AND TargetObject.keyword:*\\cmmgr32.exe*) OR (EventID:"10" AND CallTrace.keyword:*cmlua.dll*))
+ParentImage.keyword:*\\cmstp.exe
 ```
 
 
 ### splunk
     
 ```
-(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" ((EventCode="12" TargetObject="*\\\\cmmgr32.exe*" EventType="CreateKey") OR (EventCode="13" TargetObject="*\\\\cmmgr32.exe*") OR (EventCode="10" CallTrace="*cmlua.dll*"))) | table CommandLine,ParentCommandLine,Details\nParentImage="*\\\\cmstp.exe" | table CommandLine,ParentCommandLine,Details
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" ((EventCode="12" TargetObject="*\\cmmgr32.exe*" EventType="CreateKey") OR (EventCode="13" TargetObject="*\\cmmgr32.exe*") OR (EventCode="10" CallTrace="*cmlua.dll*"))) | table CommandLine,ParentCommandLine,Details
+ParentImage="*\\cmstp.exe" | table CommandLine,ParentCommandLine,Details
 ```
 
 
 ### logpoint
     
 ```
-((event_id="12" TargetObject="*\\\\cmmgr32.exe*" EventType="CreateKey") OR (event_id="13" TargetObject="*\\\\cmmgr32.exe*") OR (event_id="10" CallTrace="*cmlua.dll*"))\nParentImage="*\\\\cmstp.exe"
+((event_id="12" TargetObject="*\\cmmgr32.exe*" EventType="CreateKey") OR (event_id="13" TargetObject="*\\cmmgr32.exe*") OR (event_id="10" CallTrace="*cmlua.dll*"))
+ParentImage="*\\cmstp.exe"
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?:.*(?:.*(?=.*12)(?=.*.*\\cmmgr32\\.exe.*)(?=.*CreateKey))|.*(?:.*(?=.*13)(?=.*.*\\cmmgr32\\.exe.*))|.*(?:.*(?=.*10)(?=.*.*cmlua\\.dll.*))))'\ngrep -P '^.*\\cmstp\\.exe'
+grep -P '^(?:.*(?:.*(?:.*(?=.*12)(?=.*.*\cmmgr32\.exe.*)(?=.*CreateKey))|.*(?:.*(?=.*13)(?=.*.*\cmmgr32\.exe.*))|.*(?:.*(?=.*10)(?=.*.*cmlua\.dll.*))))'
+grep -P '^.*\cmstp\.exe'
 ```
 
 

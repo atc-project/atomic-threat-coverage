@@ -57,49 +57,124 @@ level: medium
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "Image.*.*\\\\curl.exe" -or $_.message -match "Product.*The curl executable") -and $_.message -match "CommandLine.*.* -O .*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "Image.*.*\\curl.exe" -or $_.message -match "Product.*The curl executable") -and $_.message -match "CommandLine.*.* -O .*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.Image.keyword:*\\\\curl.exe OR Product:"The\\ curl\\ executable") AND winlog.event_data.CommandLine.keyword:*\\ \\-O\\ *)
+((winlog.event_data.Image.keyword:*\\curl.exe OR Product:"The\ curl\ executable") AND winlog.event_data.CommandLine.keyword:*\ \-O\ *)
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H \'Content-Type: application/json\' --data-binary @- localhost:9200/_watcher/watch/e218595b-bbe7-4ee5-8a96-f32a24ad3468 <<EOF\n{\n  "metadata": {\n    "title": "Suspicious Curl Usage on Windows",\n    "description": "Detects a suspicious curl process start on Windows and outputs the requested document to a local file",\n    "tags": [\n      "attack.command_and_control",\n      "attack.t1105"\n    ],\n    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\curl.exe OR Product:\\"The\\\\ curl\\\\ executable\\") AND winlog.event_data.CommandLine.keyword:*\\\\ \\\\-O\\\\ *)"\n  },\n  "trigger": {\n    "schedule": {\n      "interval": "30m"\n    }\n  },\n  "input": {\n    "search": {\n      "request": {\n        "body": {\n          "size": 0,\n          "query": {\n            "bool": {\n              "must": [\n                {\n                  "query_string": {\n                    "query": "((winlog.event_data.Image.keyword:*\\\\\\\\curl.exe OR Product:\\"The\\\\ curl\\\\ executable\\") AND winlog.event_data.CommandLine.keyword:*\\\\ \\\\-O\\\\ *)",\n                    "analyze_wildcard": true\n                  }\n                }\n              ],\n              "filter": {\n                "range": {\n                  "timestamp": {\n                    "gte": "now-30m/m"\n                  }\n                }\n              }\n            }\n          }\n        },\n        "indices": [\n          "winlogbeat-*"\n        ]\n      }\n    }\n  },\n  "condition": {\n    "compare": {\n      "ctx.payload.hits.total": {\n        "not_eq": 0\n      }\n    }\n  },\n  "actions": {\n    "send_email": {\n      "throttle_period": "15m",\n      "email": {\n        "profile": "standard",\n        "from": "root@localhost",\n        "to": "root@localhost",\n        "subject": "Sigma Rule \'Suspicious Curl Usage on Windows\'",\n        "body": "Hits:\\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\\n      CommandLine = {{_source.CommandLine}}\\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\\n{{/ctx.payload.hits.hits}}",\n        "attachments": {\n          "data.json": {\n            "data": {\n              "format": "json"\n            }\n          }\n        }\n      }\n    }\n  }\n}\nEOF\n
+curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/e218595b-bbe7-4ee5-8a96-f32a24ad3468 <<EOF
+{
+  "metadata": {
+    "title": "Suspicious Curl Usage on Windows",
+    "description": "Detects a suspicious curl process start on Windows and outputs the requested document to a local file",
+    "tags": [
+      "attack.command_and_control",
+      "attack.t1105"
+    ],
+    "query": "((winlog.event_data.Image.keyword:*\\\\curl.exe OR Product:\"The\\ curl\\ executable\") AND winlog.event_data.CommandLine.keyword:*\\ \\-O\\ *)"
+  },
+  "trigger": {
+    "schedule": {
+      "interval": "30m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "body": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "query_string": {
+                    "query": "((winlog.event_data.Image.keyword:*\\\\curl.exe OR Product:\"The\\ curl\\ executable\") AND winlog.event_data.CommandLine.keyword:*\\ \\-O\\ *)",
+                    "analyze_wildcard": true
+                  }
+                }
+              ],
+              "filter": {
+                "range": {
+                  "timestamp": {
+                    "gte": "now-30m/m"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "indices": [
+          "winlogbeat-*"
+        ]
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "not_eq": 0
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "throttle_period": "15m",
+      "email": {
+        "profile": "standard",
+        "from": "root@localhost",
+        "to": "root@localhost",
+        "subject": "Sigma Rule 'Suspicious Curl Usage on Windows'",
+        "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
+        "attachments": {
+          "data.json": {
+            "data": {
+              "format": "json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+EOF
+
 ```
 
 
 ### graylog
     
 ```
-((Image.keyword:*\\\\curl.exe OR Product:"The curl executable") AND CommandLine.keyword:* \\-O *)
+((Image.keyword:*\\curl.exe OR Product:"The curl executable") AND CommandLine.keyword:* \-O *)
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\\\curl.exe" OR Product="The curl executable") CommandLine="* -O *") | table CommandLine,ParentCommandLine
+((Image="*\\curl.exe" OR Product="The curl executable") CommandLine="* -O *") | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-((Image="*\\\\curl.exe" OR Product="The curl executable") CommandLine="* -O *")
+((Image="*\\curl.exe" OR Product="The curl executable") CommandLine="* -O *")
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?:.*.*\\curl\\.exe|.*The curl executable)))(?=.*.* -O .*))'
+grep -P '^(?:.*(?=.*(?:.*(?:.*.*\curl\.exe|.*The curl executable)))(?=.*.* -O .*))'
 ```
 
 
