@@ -107,7 +107,7 @@ class DetectionRule:
 
                 #(query2, err) = p.communicate()
 
-               query2 = subprocess.getoutput(cmd)
+                query2 = subprocess.getoutput(cmd)
 
                 # Wait for date to terminate. Get return returncode
                 # p_status = p.wait()
