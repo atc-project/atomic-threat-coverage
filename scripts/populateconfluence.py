@@ -423,6 +423,11 @@ class PopulateConfluence:
                         self.apipath, self.auth, self.space,
                         "Customers")),
                     "confluencecontent": cu.content,
+                    "metadata": {
+                        "labels": [{
+                        "name": "atc_customer"
+                        }]
+                    }
                 }
 
                 res = ATCutils.push_to_confluence(confluence_data, self.apipath,
