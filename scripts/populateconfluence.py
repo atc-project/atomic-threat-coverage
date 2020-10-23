@@ -12,6 +12,7 @@ from scripts.enrichment import Enrichment
 from scripts.customer import Customer
 from scripts.attack_mapping import te_mapping
 from scripts.init_confluence import main as init_main
+from scripts.usecases import Usecase
 
 # Import ATC Utils
 from scripts.atcutils import ATCutils
@@ -29,10 +30,11 @@ class PopulateConfluence:
     """Desc"""
 
     def __init__(self, auth, lp=False, dn=False, dr=False, en=False, tg=False,
-                 cu=False, ms=False, mp=False, hp=False, auto=False, 
+                 cu=False, ms=False, mp=False, hp=False, auto=False, uc=False,
                  art_dir=False, atc_dir=False, lp_path=False, dn_path=False, 
                  dr_path=False, en_path=False, tg_path=False, cu_path=False, 
-                 hp_path=False, ms_path=False, mp_path=False, init=False):
+                 hp_path=False, ms_path=False, mp_path=False, uc_path=False, 
+                 init=False):
         """Desc"""
 
         self.auth = auth
@@ -74,6 +76,7 @@ class PopulateConfluence:
             self.triggers(tg_path)
             self.detection_rule(dr_path)
             self.customer(cu_path)
+            self.usecases(uc_path)
 
         if hp:
             self.hardening_policy(hp_path)
@@ -102,6 +105,8 @@ class PopulateConfluence:
         if cu:
             self.customer(cu_path)
 
+        if uc:
+            self.usecases(uc_path)
 
     def triggers(self, tg_path):
         """Populate Triggers"""
@@ -422,7 +427,7 @@ class PopulateConfluence:
                     "parentid": str(ATCutils.confluence_get_page_id(
                         self.apipath, self.auth, self.space,
                         "Customers")),
-                    "confluencecontent": cu.content,
+                    "confluencecontent": cu.content
                 }
 
                 res = ATCutils.push_to_confluence(confluence_data, self.apipath,
@@ -437,3 +442,41 @@ class PopulateConfluence:
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
         print("[+] Customers populated!")
+
+    def usecases(self, uc_path):
+        """Nothing here yet"""
+
+        print("[+] Populating UseCases...")
+        if uc_path:
+            uc_list = glob.glob(uc_path + '*.yml')
+        else:
+            uc_dir = ATCconfig.get('usecases_directory')
+            uc_list = glob.glob(uc_dir + '/*.yml')
+
+        for uc_file in uc_list:
+            try:
+                uc = Usecase(uc_file, apipath=self.apipath,
+                              auth=self.auth, space=self.space)
+                uc.render_template("confluence")
+
+                confluence_data = {
+                    "title": uc.title,
+                    "spacekey": self.space,
+                    "parentid": str(ATCutils.confluence_get_page_id(
+                        self.apipath, self.auth, self.space,
+                        "Use Cases")),
+                    "confluencecontent": uc.content
+                }
+
+                res = ATCutils.push_to_confluence(confluence_data, self.apipath,
+                                            self.auth)
+                if res == 'Page updated':
+                    print("==> updated page: UC '" + uc.usecase_name + "'")
+                # print("Done: ", cu.title)
+            except Exception as err:
+                print(uc_file + " failed")
+                print("Err message: %s" % err)
+                print('-' * 60)
+                traceback.print_exc(file=sys.stdout)
+                print('-' * 60)
+        print("[+] UseCases populated!")

@@ -7,7 +7,7 @@ import os
 
 
 # ########################################################################### #
-# ############################## Customer ################################### #
+# ############################## Use Case ################################### #
 # ########################################################################### #
 
 env = Environment(loader=FileSystemLoader('scripts/templates'))
@@ -31,48 +31,27 @@ for dr_path in dr_dirs:
 _ = zip(all_rules, all_names, all_titles)
 rules_by_title = {title: (rule, name) for (rule, name, title) in _}
 
-uc_dirs = ATCconfig.get('usecases_directory')
 
-all_usecases = []
-all_ucnames = []
-all_uctitles = []
-
-if isinstance(uc_dirs, str):
-    uc_dirs = uc_dirs.split()
-
-for uc_path in uc_dirs:
-    usecases, paths = ATCutils.load_yamls_with_paths(uc_path)
-    all_usecases = all_usecases + usecases
-    names = [path.split('/')[-1].replace('.yml', '') for path in paths]
-    all_ucnames = all_ucnames + names
-    titles = [usecase.get('title') for usecase in usecases]
-    all_uctitles = all_uctitles + titles
-
-a = zip(all_usecases, all_ucnames, all_uctitles)
-usecases_by_title = {title: (usecase, name) for (usecase, name, title) in a}
-
-
-class Customer:
-    """Class for Customer entity"""
+class Usecase:
+    """Class for Usecase entity"""
 
     def __init__(self, yaml_file, apipath=None, auth=None, space=None):
         """ Init method """
 
         # Init vars
         self.title = None
-        self.customer_name = None
+        self.usecase_name = None
         self.description = None
         self.data_needed = None
         self.logging_policies = None
         self.detection_rules = None
-        self.use_cases = None
 
         self.yaml_file = yaml_file
 
         self.apipath, self.auth, self.space = apipath, auth, space
 
-        # The name of the directory containing future markdown Customer
-        self.parent_title = "Customers"
+        # The name of the directory containing future markdown Usecase
+        self.parent_title = "Use_Cases"
 
         # Init methods
         self.parse_into_fields()
@@ -81,32 +60,23 @@ class Customer:
         """Description"""
 
         # self.fields contains parsed fields obtained from yaml file
-        self.cu_fields = ATCutils.read_yaml_file(self.yaml_file)
+        self.uc_fields = ATCutils.read_yaml_file(self.yaml_file)
 
         """Fill the fields with values. Put None if key not found"""
-        self.title = self.cu_fields.get('title')
-        self.customer_name = self.cu_fields.get('customer_name')
-        self.description = self.cu_fields.get('description')
-        self.data_needed = self.cu_fields.get('dataneeded')
-        self.logging_policies = self.cu_fields.get('loggingpolicy')
-        self.detection_rules = self.cu_fields.get('detectionrule')
-        self.use_cases = self.cu_fields.get('usecase')
+        self.title = self.uc_fields.get('title')
+        self.usecase_name = self.uc_fields.get('usecase_name')
+        self.description = self.uc_fields.get('description')
+        self.data_needed = self.uc_fields.get('dataneeded')
+        self.logging_policies = self.uc_fields.get('loggingpolicy')
+        self.detection_rules = self.uc_fields.get('detectionrule')
 
     def get_rules(self):
-        """ Retruns list of detection rules for customer
+        """ Retruns list of detection rules for usecase
         """
-        dr_list_per_customer = [rules_by_title.get(dr_title)[0]
+        dr_list_per_usecase = [rules_by_title.get(dr_title)[0]
                                 for dr_title in self.detection_rules]
 
-        return dr_list_per_customer
-
-    def get_usecases(self):
-        """ Retruns list of use cases for customer
-        """
-        uc_list_per_customer = [usecases_by_title.get(uc_title)[0]
-                                for uc_title in self.use_cases]
-
-        return uc_list_per_customer
+        return dr_list_per_usecase
 
     def render_template(self, template_type):
         """Render template with data in it
@@ -120,17 +90,17 @@ class Customer:
                 "Bad template_type. Available values: " +
                 "[\"markdown\", \"confluence\"]")
 
-        self.cu_fields.update(
+        self.uc_fields.update(
             {'description': self.description.strip()}
         )
 
         # Transform variables to arrays if not provided correctly in yaml
 
         if isinstance(self.data_needed, str):
-            self.cu_fields.update({'dataneeded': [self.data_needed]})
+            self.uc_fields.update({'dataneeded': [self.data_needed]})
 
         if isinstance(self.logging_policies, str):
-            self.cu_fields.update({'loggingpolicy': [self.logging_policies]})
+            self.uc_fields.update({'loggingpolicy': [self.logging_policies]})
 
         detectionrule_with_path = []
 
@@ -142,31 +112,18 @@ class Customer:
             dr = (title, name)
             detectionrule_with_path.append(dr)
 
-        self.cu_fields.update({'detectionrule': detectionrule_with_path})
-
-        usecase_with_path = []
-
-        if self.use_cases is not None:
-            for title in self.use_cases:
-                if title is not None:
-                    name = usecases_by_title.get(title)[1]
-                else:
-                    name = ''
-                uc = (title, name)
-                usecase_with_path.append(uc)
-
-        self.cu_fields.update({'usecase': usecase_with_path})
+        self.uc_fields.update({'detectionrule': detectionrule_with_path})
 
         # Get proper template
         if template_type == "markdown":
             template = env\
-                .get_template('markdown_customer_template.md.j2')
+                .get_template('markdown_usecase_template.md.j2')
 
         elif template_type == "confluence":
             template = env.get_template(
-                'confluence_customer_template.html.j2')
+                'confluence_usecase_template.html.j2')
 
-            self.cu_fields.update(
+            self.uc_fields.update(
                 {'confluence_viewpage_url':
                     ATCconfig.get('confluence_viewpage_url')})
 
@@ -184,7 +141,7 @@ class Customer:
                 lp = (lp, logging_policies_id)
                 logging_policies_with_id.append(lp)
 
-            self.cu_fields.update({'loggingpolicy': logging_policies_with_id})
+            self.uc_fields.update({'loggingpolicy': logging_policies_with_id})
 
             if not self.data_needed:
                 self.data_needed = ["None", ]
@@ -200,21 +157,7 @@ class Customer:
                 dn = (dn, data_needed_id)
                 data_needed_with_id.append(dn)
 
-            self.cu_fields.update({'data_needed': data_needed_with_id})
-
-            usecases_with_id = []
-
-            if self.use_cases is not None:
-                for uc in self.use_cases:
-                    if uc != "None" and self.apipath and self.auth and self.space:
-                        usecase_id = str(ATCutils.confluence_get_page_id(
-                            self.apipath, self.auth, self.space, uc))
-                    else:
-                        usecase_id = ""
-                    uc = (uc, usecase_id)
-                    usecases_with_id.append(uc)
-
-            self.cu_fields.update({'usecase': usecases_with_id})
+            self.uc_fields.update({'data_needed': data_needed_with_id})
 
             detection_rules_with_id = []
 
@@ -227,9 +170,9 @@ class Customer:
                 dn = (dn, detection_rules_id)
                 detection_rules_with_id.append(dn)
 
-            self.cu_fields.update({'detectionrule': detection_rules_with_id})
+            self.uc_fields.update({'detectionrule': detection_rules_with_id})
 
-        self.content = template.render(self.cu_fields)
+        self.content = template.render(self.uc_fields)
 
         return True
 

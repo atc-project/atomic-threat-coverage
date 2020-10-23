@@ -49,7 +49,7 @@ def main(c_auth=None):
     pages = ["Detection Rules", "Logging Policies",
               "Data Needed", "Triggers", "Enrichments", "Customers",
               "Mitigation Systems", "Mitigation Policies",
-              "Hardening Policies"]
+              "Hardening Policies", "Use Cases"]
 
     for page in pages:
         print("Creating %s..." % page)

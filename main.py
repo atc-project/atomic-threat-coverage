@@ -90,6 +90,9 @@ if __name__ == '__main__':
                         help='Build response stage part')
     group2.add_argument('-CU', '--customers', action='store_true',
                         help='Build response customers part')
+    group2.add_argument('-UC', '--usecases', action='store_true',
+                        help='Build response use case part')
+
 
     # Init capabilities
     parser.add_argument('-i', '--init', action='store_true',
@@ -128,7 +131,7 @@ if __name__ == '__main__':
                          dn=args.dataneeded, dr=args.detectionrule,
                          tg=args.triggers, en=args.enrichment,
                          cu=args.customers, hp=args.hardeningpolicy,
-                         init=args.init)
+                         uc=args.usecases, init=args.init)
         ReactPopulateMarkdown(auto=args.auto, ra=args.responseactions,
                               rp=args.responseplaybook, rs=args.responsestage,
                               init=args.init)
@@ -146,7 +149,7 @@ if __name__ == '__main__':
                            dn=args.dataneeded, dr=args.detectionrule,
                            tg=args.triggers, en=args.enrichment,
                            cu=args.customers, hp=args.hardeningpolicy, 
-                           init=args.init)
+                           uc=args.usecases, init=args.init)
         ReactPopulateConfluence(auth=auth, auto=args.auto, 
                                 ra=args.responseactions, rp=args.responseplaybook,
                                 rs=args.responsestage, init=args.init)
