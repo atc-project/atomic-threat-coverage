@@ -24,6 +24,7 @@ all_paths = []
 for dr_path in dr_dirs:
     rules, paths = ATCutils.load_yamls_with_paths(dr_path)
     all_rules = all_rules + rules
+    all_paths = all_paths + paths
     names = [path.split('/')[-1].replace('.yml', '') for path in paths]
     all_names = all_names + names
     titles = [rule.get('title') for rule in rules]
