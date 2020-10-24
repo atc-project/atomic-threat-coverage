@@ -46,6 +46,10 @@ markdown:
 	@echo "[*] Creating markdown repository and pushing data"
 	python3 main.py --markdown --auto --init
 
+mkdocs:
+	@echo "[*] Creating mkdocs site"
+	mkdocs build
+
 confluence:
 	@echo "[*] Creating confluence repository and pushing data"
 	python3 main.py --confluence --auto --init
@@ -70,6 +74,7 @@ thehive_templates:
 clean:
 	@echo "[*] Cleaning up..."
 	@rm -rf ./Atomic_Threat_Coverage
+	@rm -rf ./site
 	@rm -f ./analytics/generated/analytics.csv
 	@rm -f ./analytics/generated/atc_es_index.json
 	@rm -f ./analytics/generated/pivoting.csv
