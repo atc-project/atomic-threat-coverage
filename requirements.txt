@@ -4,3 +4,7 @@ jinja2
 elasticsearch
 pytest
 stix2
+mkdocs
+mkdocs-awesome-pages-plugin
+mkdocs-exclude
+mkdocs-windmill
