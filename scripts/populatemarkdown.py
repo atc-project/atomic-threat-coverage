@@ -8,6 +8,7 @@ from scripts.mitigationpolicy import MitigationPolicy
 
 # from triggers import Triggers
 from scripts.customer import Customer
+from scripts.usecases import Usecase
 
 # Import ATC Utils
 from scripts.atcutils import ATCutils
@@ -26,11 +27,11 @@ class PopulateMarkdown:
     """Class for populating markdown repo"""
 
     def __init__(self, dr=False, tg=False, ra=False, rp=False, 
-                 cu=False, ms=False, mp=False, auto=False,
+                 cu=False, ms=False, mp=False, uc=False, auto=False,
                  hp=False, art_dir=False, atc_dir=False,
                  dr_path=False, tg_path=False, cu_path=False, 
                  ms_path=False, mp_path=False, hp_path=False,
-                 init=False):
+                 uc_dir=False, init=False):
         """Init"""
 
         # Check if atc_dir provided
@@ -62,6 +63,7 @@ class PopulateMarkdown:
             self.triggers(tg_path)
             self.detection_rule(dr_path)
             self.customer(cu_path)
+            self.usecases(uc_path)
 
         if hp:
             self.hardening_policy(hp_path)
@@ -80,6 +82,9 @@ class PopulateMarkdown:
 
         if cu:
             self.customer(cu_path)
+
+        if uc:
+            self.usecases(uc_path)
 
     def init_export(self):
         try:
@@ -228,3 +233,26 @@ class PopulateMarkdown:
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
         print("[+] Customers populated!")
+
+    def usecases(self, uc_path):
+        """Populate Use Cases"""
+
+        print("[*] Populating Use Cases...")
+        if uc_path:
+            uc_list = glob.glob(uc_path + '*.yml')
+        else:
+            uc_dir = ATCconfig.get('usecases_directory')
+            uc_list = glob.glob(uc_dir + '/*.yml')
+
+        for uc_file in uc_list:
+            try:
+                uc = Usecase(uc_file)
+                uc.render_template("markdown")
+                uc.save_markdown_file(atc_dir=self.atc_dir)
+            except Exception as e:
+                print(uc_file + " failed\n\n%s\n\n" % e)
+                print("Err message: %s" % e)
+                print('-' * 60)
+                traceback.print_exc(file=sys.stdout)
+                print('-' * 60)
+        print("[+] Use Cases populated!")

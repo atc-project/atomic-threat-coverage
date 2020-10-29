@@ -94,6 +94,9 @@ if __name__ == '__main__':
                         help='Build response stage part')
     group2.add_argument('-CU', '--customers', action='store_true',
                         help='Build response customers part')
+    group2.add_argument('-UC', '--usecases', action='store_true',
+                        help='Build response use case part')
+
 
     # Init capabilities
     parser.add_argument('-i', '--init', action='store_true',
@@ -129,7 +132,7 @@ if __name__ == '__main__':
         UpdateAttackMapping()
         PopulateMarkdown(auto=args.auto, ms=args.mitigationsystem,
                          mp=args.mitigationpolicy, dr=args.detectionrule,
-                         tg=args.triggers, cu=args.customers, 
+                         tg=args.triggers, cu=args.customers, uc=args.usecases, 
                          hp=args.hardeningpolicy,init=args.init)
         ReactPopulateMarkdown(auto=args.auto, ra=args.responseactions,
                               rp=args.responseplaybook, rs=args.responsestage,
@@ -151,7 +154,7 @@ if __name__ == '__main__':
                                 init=args.init)
         PopulateConfluence(auth=auth, auto=args.auto, ms=args.mitigationsystem, 
                             mp=args.mitigationpolicy, dr=args.detectionrule,
-                            tg=args.triggers, cu=args.customers, 
+                            tg=args.triggers, cu=args.customers, uc=args.usecases
                             hp=args.hardeningpolicy, init=args.init)
         ReactPopulateConfluence(auth=auth, auto=args.auto, 
                                 ra=args.responseactions, rp=args.responseplaybook,
