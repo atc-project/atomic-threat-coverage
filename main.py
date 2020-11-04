@@ -8,7 +8,6 @@ from scripts.atc_visualizations.yaml_handler import YamlHandler
 from scripts.update_attack_mapping import UpdateAttackMapping
 from scripts.attack_navigator_export import GenerateDetectionNavigator
 from scripts.attack_navigator_per_customer_export import GenerateDetectionNavigatorCustomers
-from scripts.yamls2csv import GenerateCSV
 from scripts.es_index_export import GenerateESIndex
 
 # For RE&CT
@@ -19,6 +18,7 @@ from response.atc_react.scripts.react2stix import GenerateSTIX
 from response.atc_react.scripts.react_navigator import GenerateNavigator
 
 # For DATA
+from data.atc_data.scripts.yamls2csv import GenerateCSV
 from data.atc_data.scripts.populatemarkdown import DataPopulateMarkdown
 from data.atc_data.scripts.populateconfluence import DataPopulateConfluence
 
@@ -154,7 +154,7 @@ if __name__ == '__main__':
                                 init=args.init)
         PopulateConfluence(auth=auth, auto=args.auto, ms=args.mitigationsystem, 
                             mp=args.mitigationpolicy, dr=args.detectionrule,
-                            tg=args.triggers, cu=args.customers, uc=args.usecases
+                            tg=args.triggers, cu=args.customers, uc=args.usecases,
                             hp=args.hardeningpolicy, init=args.init)
         ReactPopulateConfluence(auth=auth, auto=args.auto, 
                                 ra=args.responseactions, rp=args.responseplaybook,

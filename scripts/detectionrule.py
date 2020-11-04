@@ -104,9 +104,6 @@ class DetectionRule:
                         #" 2> /dev/null"
                 
                 #p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-
-                #(query2, err) = p.communicate()
-                
                 query2 = subprocess.getoutput(cmd)
 
                 # Wait for date to terminate. Get return returncode
@@ -148,7 +145,7 @@ class DetectionRule:
             tactic = []
             tactic_re = re.compile(r'attack\.\w\D+$')
             technique = []
-            technique_re = re.compile(r'attack\.t\d{1,5}$')
+            technique_re = re.compile(r'(?:attack\.t\d{4}$|attack\.t\d{4}\.\d{3}$)')
             # AM!TT Tactics and Techniques
             amitt_tactic = []
             amitt_tactic_re = re.compile(r'amitt\.\w\D+$')

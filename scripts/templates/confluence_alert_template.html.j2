@@ -41,7 +41,7 @@
                     <td class="confluenceTd">
                         {%- if techniques |length > 1 -%}<ul>{%endif%}
                         {%- for technique_name, technique_id in techniques %}
-                            {%- if techniques |length > 1 -%}<li>{%endif%}<a href="https://attack.mitre.org/techniques/{{technique_id}}">{{ technique_id }}: {{technique_name}}</a>{%- if techniques |length > 1 -%}</li>{%endif%}
+                            {%- if techniques |length > 1 -%}<li>{%endif%}<a href="https://attack.mitre.org/techniques/{{technique_id|replace('.','/')}}}">{{ technique_id }}: {{technique_name}}</a>{%- if techniques |length > 1 -%}</li>{%endif%}
                         {%- endfor %}
                         {%- if techniques |length > 1 -%}</ul>{%endif%}
                     </td>

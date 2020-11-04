@@ -31,7 +31,7 @@ class PopulateMarkdown:
                  hp=False, art_dir=False, atc_dir=False,
                  dr_path=False, tg_path=False, cu_path=False, 
                  ms_path=False, mp_path=False, hp_path=False,
-                 uc_dir=False, init=False):
+                 uc_path=False, init=False):
         """Init"""
 
         # Check if atc_dir provided

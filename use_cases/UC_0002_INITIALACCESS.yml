@@ -10,7 +10,7 @@ loggingpolicy:
   - LP_0002_windows_audit_process_creation_with_commandline
   - LP_0003_windows_sysmon_process_creation
 detectionrule:
-  - Flash Player Update from Suspicious Location
+  - Terminal Service Process Spawn
   - Possible DNS Rebinding
   # - Hack Tool User Agent
   # - CVE-2020-0688 Exploitation via Eventlog
