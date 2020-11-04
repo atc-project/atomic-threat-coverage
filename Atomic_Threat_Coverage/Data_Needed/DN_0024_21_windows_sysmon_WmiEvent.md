@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | When a consumer binds to a filter, this event logs the consumer name and  filter path |
-| **Logging Policy** | <ul><li>[LP0010_windows_sysmon_WmiEvent](../Logging_Policies/LP0010_windows_sysmon_WmiEvent.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0010_windows_sysmon_WmiEvent](../Logging_Policies/LP_0010_windows_sysmon_WmiEvent.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-21.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-21.md)</li><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90021](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90021)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Applications and Services Logs        |

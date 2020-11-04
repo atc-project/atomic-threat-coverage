@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | Kerberos pre-authentication failed |
-| **Logging Policy** | <ul><li>[LP0004_windows_audit_logon](../Logging_Policies/LP0004_windows_audit_logon.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0004_windows_audit_logon](../Logging_Policies/LP_0004_windows_audit_logon.md)</li></ul> |
 | **References**     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=675](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=675)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |

@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | This event generates every time a scheduled task is disabled |
-| **Logging Policy** | <ul><li>[LP0041_windows_audit_other_object_access_events](../Logging_Policies/LP0041_windows_audit_other_object_access_events.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0041_windows_audit_other_object_access_events](../Logging_Policies/LP_0041_windows_audit_other_object_access_events.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4701.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4701.md)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |

@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | Linux named (BIND) messages relating to client access and security |
-| **Logging Policy** | <ul><li>[LP0034_linux_named_client_security_log](../Logging_Policies/LP0034_linux_named_client_security_log.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0034_linux_named_client_security_log](../Logging_Policies/LP_0034_linux_named_client_security_log.md)</li></ul> |
 | **References**     | <ul><li>[https://kb.isc.org/docs/aa-01526](https://kb.isc.org/docs/aa-01526)</li><li>[http://jhurani.com/linux/2013/02/12/named-disable-xfer.html](http://jhurani.com/linux/2013/02/12/named-disable-xfer.html)</li></ul> |
 | **Platform**       | Linux    |
 | **Type**           | client_security_log        |

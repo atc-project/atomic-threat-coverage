@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | This event generates every time a security-enabled (security) local group is changed. This event generates on domain controllers, member servers, and workstations |
-| **Logging Policy** | <ul><li>[LP0101_windows_audit_security_group_management](../Logging_Policies/LP0101_windows_audit_security_group_management.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0101_windows_audit_security_group_management](../Logging_Policies/LP_0101_windows_audit_security_group_management.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4735.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4735.md)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |

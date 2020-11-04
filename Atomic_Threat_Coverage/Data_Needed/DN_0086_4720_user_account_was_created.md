@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | A user account was created |
-| **Logging Policy** | <ul><li>[LP0026_windows_audit_user_account_management](../Logging_Policies/LP0026_windows_audit_user_account_management.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0026_windows_audit_user_account_management](../Logging_Policies/LP_0026_windows_audit_user_account_management.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4720.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4720.md)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |

@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | This event generates when a registry key value was modified. It doesn't generate  when a registry key was modified. This event generates only if "Set Value" auditing  is set in registry key’s SACL |
-| **Logging Policy** | <ul><li>[LP0103_windows_audit_registry](../Logging_Policies/LP0103_windows_audit_registry.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0103_windows_audit_registry](../Logging_Policies/LP_0103_windows_audit_registry.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4657.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4657.md)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |

@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | This event generates when a process executes a DNS query, whether the result is  successful or fails, cached or not |
-| **Logging Policy** | <ul><li>[LP0011_windows_sysmon_DnsQuery](../Logging_Policies/LP0011_windows_sysmon_DnsQuery.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0011_windows_sysmon_DnsQuery](../Logging_Policies/LP_0011_windows_sysmon_DnsQuery.md)</li></ul> |
 | **References**     | <ul><li>[https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon#event-id-22-dnsevent-dns-query](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon#event-id-22-dnsevent-dns-query)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-22.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-22.md)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Applications and Services Logs        |

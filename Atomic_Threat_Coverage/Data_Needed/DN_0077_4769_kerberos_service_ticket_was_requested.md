@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | This event generates every time Key Distribution Center gets a Kerberos Ticket Granting  Service (TGS) ticket request. This event generates only on domain controllers. If TGS  issue fails then you will see Failure event with Failure Code field not equal to "0x0" |
-| **Logging Policy** | <ul><li>[LP0106_windows_audit_kerberos_service_ticket_operations](../Logging_Policies/LP0106_windows_audit_kerberos_service_ticket_operations.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0106_windows_audit_kerberos_service_ticket_operations](../Logging_Policies/LP_0106_windows_audit_kerberos_service_ticket_operations.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4769.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4769.md)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |

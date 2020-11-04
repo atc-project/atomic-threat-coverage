@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | This event generates every time Key Distribution Center issues a  Kerberos Ticket Granting Ticket (TGT). This event generates only  on domain controllers. If TGT issue fails then you will see  Failure event with Result Code field not equal to "0x0" |
-| **Logging Policy** | <ul><li>[LP0038_windows_audit_kerberos_authentication_service](../Logging_Policies/LP0038_windows_audit_kerberos_authentication_service.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0038_windows_audit_kerberos_authentication_service](../Logging_Policies/LP_0038_windows_audit_kerberos_authentication_service.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4768.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4768.md)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |

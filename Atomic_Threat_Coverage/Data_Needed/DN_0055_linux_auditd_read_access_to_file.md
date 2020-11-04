@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | Linux auditd log of read access to file |
-| **Logging Policy** | <ul><li>[LP0034_linux_auditd_read_access_to_file](../Logging_Policies/LP0034_linux_auditd_read_access_to_file.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0034_linux_auditd_read_access_to_file](../Logging_Policies/LP_0034_linux_auditd_read_access_to_file.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/linux-audit/audit-documentation](https://github.com/linux-audit/audit-documentation)</li><li>[https://github.com/linux-audit/audit-documentation/blob/master/specs/fields/field-dictionary.csv](https://github.com/linux-audit/audit-documentation/blob/master/specs/fields/field-dictionary.csv)</li><li>[https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/app-audit_reference](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/app-audit_reference)</li></ul> |
 | **Platform**       | Linux    |
 | **Type**           | PATH        |

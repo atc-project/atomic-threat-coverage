@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | File create operations are logged when a file is created or overwritten. This  event is useful for monitoring autostart locations, like the Startup folder,  as well as temporary and download directories, which are common places  malware drops during initial infection |
-| **Logging Policy** | <ul><li>[LP0008_windows_sysmon_FileCreate](../Logging_Policies/LP0008_windows_sysmon_FileCreate.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0008_windows_sysmon_FileCreate](../Logging_Policies/LP_0008_windows_sysmon_FileCreate.md)</li></ul> |
 | **References**     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90011](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90011)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-11.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-11.md)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Applications and Services Logs        |

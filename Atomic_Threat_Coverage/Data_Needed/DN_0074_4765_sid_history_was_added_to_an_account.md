@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | SID History was added to an account |
-| **Logging Policy** | <ul><li>[LP0026_windows_audit_user_account_management](../Logging_Policies/LP0026_windows_audit_user_account_management.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0026_windows_audit_user_account_management](../Logging_Policies/LP_0026_windows_audit_user_account_management.md)</li></ul> |
 | **References**     | <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4765](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4765)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |

@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | An account failed to log on |
-| **Logging Policy** | <ul><li>[LP0004_windows_audit_logon](../Logging_Policies/LP0004_windows_audit_logon.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0004_windows_audit_logon](../Logging_Policies/LP_0004_windows_audit_logon.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4625.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4625.md)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |

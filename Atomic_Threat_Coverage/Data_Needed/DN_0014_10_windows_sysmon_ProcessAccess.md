@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | The process accessed event reports when a process opens another process, an  operation that’s often followed by information queries or reading and writing  the address space of the target process |
-| **Logging Policy** | <ul><li>[LP0007_windows_sysmon_ProcessAccess](../Logging_Policies/LP0007_windows_sysmon_ProcessAccess.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0007_windows_sysmon_ProcessAccess](../Logging_Policies/LP_0007_windows_sysmon_ProcessAccess.md)</li></ul> |
 | **References**     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90010](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90010)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-10.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-10.md)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Applications and Services Logs        |

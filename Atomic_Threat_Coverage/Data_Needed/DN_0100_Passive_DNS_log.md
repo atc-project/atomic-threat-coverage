@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | Log from Passive DNS |
-| **Logging Policy** | <ul><li>[LP0048_Passive_DNS_logging](../Logging_Policies/LP0048_Passive_DNS_logging.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0048_Passive_DNS_logging](../Logging_Policies/LP_0048_Passive_DNS_logging.md)</li></ul> |
 | **References**     | <ul><li>[None](None)</li></ul> |
 | **Platform**       | Linux    |
 | **Type**           | queries log        |

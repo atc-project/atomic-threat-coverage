@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | An operation was performed on an Active Directory object |
-| **Logging Policy** | <ul><li>[LP0027_windows_audit_directory_service_access](../Logging_Policies/LP0027_windows_audit_directory_service_access.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0027_windows_audit_directory_service_access](../Logging_Policies/LP_0027_windows_audit_directory_service_access.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4662.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4662.md)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |

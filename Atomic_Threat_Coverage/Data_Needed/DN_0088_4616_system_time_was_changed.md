@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | The system time was changed |
-| **Logging Policy** | <ul><li>[LP0046_windows_audit_security_state_change](../Logging_Policies/LP0046_windows_audit_security_state_change.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0046_windows_audit_security_state_change](../Logging_Policies/LP_0046_windows_audit_security_state_change.md)</li></ul> |
 | **References**     | <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4616](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4616)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |

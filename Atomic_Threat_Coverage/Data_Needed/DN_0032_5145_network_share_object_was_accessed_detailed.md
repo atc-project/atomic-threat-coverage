@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | Network share object (file or folder) was accessed. Detailed log with  AccessReason and RelativeTargetName |
-| **Logging Policy** | <ul><li>[LP0029_windows_audit_detailed_file_share](../Logging_Policies/LP0029_windows_audit_detailed_file_share.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0029_windows_audit_detailed_file_share](../Logging_Policies/LP_0029_windows_audit_detailed_file_share.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-5145.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-5145.md)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |

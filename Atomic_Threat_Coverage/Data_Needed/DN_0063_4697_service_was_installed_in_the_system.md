@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | A service was installed in the system |
-| **Logging Policy** | <ul><li>[LP0100_windows_audit_security_system_extension](../Logging_Policies/LP0100_windows_audit_security_system_extension.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0100_windows_audit_security_system_extension](../Logging_Policies/LP_0100_windows_audit_security_system_extension.md)</li></ul> |
 | **References**     | <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4697](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4697)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |

@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | DNS Query from BIND Server |
-| **Logging Policy** | <ul><li>[LP0047_BIND_DNS_queries](../Logging_Policies/LP0047_BIND_DNS_queries.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0047_BIND_DNS_queries](../Logging_Policies/LP_0047_BIND_DNS_queries.md)</li></ul> |
 | **References**     | <ul><li>[None](None)</li></ul> |
 | **Platform**       | Linux    |
 | **Type**           | queries log        |

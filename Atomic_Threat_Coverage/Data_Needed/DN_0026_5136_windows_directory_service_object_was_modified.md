@@ -2,7 +2,7 @@
 |:-------------------|:------------------|
 | **Author**         | @atc_project        |
 | **Description**    | A directory service object was modified |
-| **Logging Policy** | <ul><li>[LP0025_windows_audit_directory_service_changes](../Logging_Policies/LP0025_windows_audit_directory_service_changes.md)</li></ul> |
+| **Logging Policy** | <ul><li>[LP_0025_windows_audit_directory_service_changes](../Logging_Policies/LP_0025_windows_audit_directory_service_changes.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-5136.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-5136.md)</li></ul> |
 | **Platform**       | Windows    |
 | **Type**           | Windows Log        |
