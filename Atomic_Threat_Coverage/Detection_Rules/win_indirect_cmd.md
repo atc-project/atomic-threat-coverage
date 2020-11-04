@@ -128,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Indirect Command Execution'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n     ComputerName = {{_source.ComputerName}}\n             User = {{_source.User}}\nParentCommandLine = {{_source.ParentCommandLine}}\n      CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

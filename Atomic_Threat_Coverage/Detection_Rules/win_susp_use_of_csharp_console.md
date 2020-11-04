@@ -4,7 +4,7 @@
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1127: Trusted Developer Utilities Proxy Execution](https://attack.mitre.org/techniques/T1127)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Trigger**              | <ul><li>[T1127: Trusted Developer Utilities Proxy Execution](../Triggers/T1127.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Possible depending on environment. Pair with other factors such as net connections, command-line args, etc.</li></ul>  |
 | **Development Status**   | experimental |
@@ -120,10 +120,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Use of CSharp Interactive Console'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

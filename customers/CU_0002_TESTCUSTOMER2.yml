@@ -14,3 +14,4 @@ detectionrule:
   - SquiblyTwo
   - Cmdkey Cached Credentials Recon
   - CMSTP UAC Bypass via COM Object Access
+usecase:

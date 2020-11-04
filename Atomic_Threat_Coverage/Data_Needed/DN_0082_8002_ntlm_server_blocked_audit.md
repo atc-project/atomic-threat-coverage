@@ -1,5 +1,6 @@
 | Title              | DN_0082_8002_ntlm_server_blocked_audit       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | NTLM server blocked audit: Audit Incoming NTLM Traffic that would be blocked. Actually it's just event about NTLM authentication, it doesn't necessary supposed to be blocked. Blocked NTLM auth is the same provider but Event ID 4002 |
 | **Logging Policy** | <ul><li>[LP_0044_windows_ntlm_audit](../Logging_Policies/LP_0044_windows_ntlm_audit.md)</li></ul> |
 | **References**     | <ul><li>[https://twitter.com/JohnLaTwC/status/1004895902010507266](https://twitter.com/JohnLaTwC/status/1004895902010507266)</li></ul> |

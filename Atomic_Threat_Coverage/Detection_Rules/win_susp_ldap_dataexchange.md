@@ -1,8 +1,8 @@
 | Title                    | Suspicious LDAP-Attributes Used       |
 |:-------------------------|:------------------|
-| **Description**          | Detects the usage of particular AttributeLDAPDisplayNames, which are known for data exchange via LDAP by the tool LDAPFragger and are additionally not commonly used in companies. |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1071: Application Layer Protocol](https://attack.mitre.org/techniques/T1071)</li><li>[T1001.003: Protocol Impersonation](https://attack.mitre.org/techniques/T1001/003)</li></ul>  |
+| **Description**          | detects the usage of particular AttributeLDAPDisplayNames, which are known for data exchange via LDAP by the tool LDAPFragger and are additionally not commonly used in companies. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1041: Exfiltration Over C2 Channel](https://attack.mitre.org/techniques/T1041)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0026_5136_windows_directory_service_object_was_modified](../Data_Needed/DN_0026_5136_windows_directory_service_object_was_modified.md)</li></ul>  |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
@@ -19,19 +19,17 @@
 ```
 title: Suspicious LDAP-Attributes Used
 id: d00a9a72-2c09-4459-ad03-5e0a23351e36
-description: Detects the usage of particular AttributeLDAPDisplayNames, which are known for data exchange via LDAP by the tool LDAPFragger and are additionally not commonly used in companies.
+description: detects the usage of particular AttributeLDAPDisplayNames, which are known for data exchange via LDAP by the tool LDAPFragger and are additionally not commonly used in companies.
 status: experimental
 date: 2019/03/24
-modified: 2020/08/23
 author: xknow @xknow_infosec
 references:
     - https://medium.com/@ivecodoe/detecting-ldapfragger-a-newly-released-cobalt-strike-beacon-using-ldap-for-c2-communication-c274a7f00961
     - https://blog.fox-it.com/2020/03/19/ldapfragger-command-and-control-over-ldap-attributes/
     - https://github.com/fox-it/LDAPFragger
 tags:
-    - attack.t1071          # an old one
-    - attack.t1001.003
-    - attack.command_and_control
+    - attack.t1041
+    - attack.persistence
 logsource:
     product: windows
     service: security
@@ -75,11 +73,10 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
 {
   "metadata": {
     "title": "Suspicious LDAP-Attributes Used",
-    "description": "Detects the usage of particular AttributeLDAPDisplayNames, which are known for data exchange via LDAP by the tool LDAPFragger and are additionally not commonly used in companies.",
+    "description": "detects the usage of particular AttributeLDAPDisplayNames, which are known for data exchange via LDAP by the tool LDAPFragger and are additionally not commonly used in companies.",
     "tags": [
-      "attack.t1071",
-      "attack.t1001.003",
-      "attack.command_and_control"
+      "attack.t1041",
+      "attack.persistence"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"5136\" AND AttributeValue.keyword:* AND winlog.event_data.AttributeLDAPDisplayName:(\"primaryInternationalISDNNumber\" OR \"otherFacsimileTelephoneNumber\" OR \"primaryTelexNumber\"))"
   },
@@ -128,10 +125,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious LDAP-Attributes Used'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

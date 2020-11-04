@@ -3,7 +3,7 @@
 | **ID**                      | RA3601            |
 | **Description**             | Lock an user account   |
 | **Author**                  | your name/nickname/twitter        |
-| **Creation Date**           | YYYY/MM/DD |
+| **Creation Date**           | DD.MM.YYYY |
 | **Category**                | Identity      |
 | **Stage**                   |[RS0003: Containment](../Response_Stages/RS0003.md)| 
 | **References** |<ul><li>[https://example.com](https://example.com)</li></ul>|

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects access to $ADMIN share |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1077: Windows Admin Shares](https://attack.mitre.org/techniques/T1077)</li><li>[T1021.002: SMB/Windows Admin Shares](https://attack.mitre.org/techniques/T1021/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1077: Windows Admin Shares](https://attack.mitre.org/techniques/T1077)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0033_5140_network_share_object_was_accessed](../Data_Needed/DN_0033_5140_network_share_object_was_accessed.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1021.002: SMB/Windows Admin Shares](../Triggers/T1021.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1077: Windows Admin Shares](../Triggers/T1077.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>Legitimate administrative activity</li></ul>  |
 | **Development Status**   | experimental |
@@ -22,12 +22,10 @@ id: 098d7118-55bc-4912-a836-dc6483a8d150
 description: Detects access to $ADMIN share
 tags:
     - attack.lateral_movement
-    - attack.t1077          # an old one
-    - attack.t1021.002
+    - attack.t1077
 status: experimental
 author: Florian Roth
 date: 2017/03/04
-modified: 2020/08/23
 logsource:
     product: windows
     service: security
@@ -73,8 +71,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects access to $ADMIN share",
     "tags": [
       "attack.lateral_movement",
-      "attack.t1077",
-      "attack.t1021.002"
+      "attack.t1077"
     ],
     "query": "(winlog.channel:\"Security\" AND (winlog.event_id:\"5140\" AND winlog.event_data.ShareName:\"Admin$\") AND (NOT (winlog.event_data.SubjectUserName.keyword:*$)))"
   },
@@ -123,10 +120,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Access to ADMIN$ Share'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

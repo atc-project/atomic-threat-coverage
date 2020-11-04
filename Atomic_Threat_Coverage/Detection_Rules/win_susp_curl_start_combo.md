@@ -1,10 +1,10 @@
 | Title                    | Curl Start Combination       |
 |:-------------------------|:------------------|
 | **Description**          | Adversaries can use curl to download payloads remotely and execute them. Curl is included by default in Windows 10 build 17063 and later. |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li><li>[T1105: Ingress Tool Transfer](https://attack.mitre.org/techniques/T1105)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li><li>[T1105: Ingress Tool Transfer](../Triggers/T1105.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Administrative scripts (installers)</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,12 +25,9 @@ references:
     - https://medium.com/@reegun/curl-exe-is-the-new-rundll32-exe-lolbin-3f79c5f35983
 author: Sreeman
 date: 2020/01/13
-modified: 2020/09/05
 tags:
     - attack.execution
     - attack.t1218
-    - attack.command_and_control
-    - attack.t1105    
 logsource:
    category: process_creation
    product: windows
@@ -75,9 +72,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Adversaries can use curl to download payloads remotely and execute them. Curl is included by default in Windows 10 build 17063 and later.",
     "tags": [
       "attack.execution",
-      "attack.t1218",
-      "attack.command_and_control",
-      "attack.t1105"
+      "attack.t1218"
     ],
     "query": "winlog.event_data.CommandLine.keyword:*curl*\\ start\\ *"
   },
@@ -126,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Curl Start Combination'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nParentImage = {{_source.ParentImage}}\nCommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

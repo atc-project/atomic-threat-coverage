@@ -1,5 +1,6 @@
 | Title            | LP_0038_windows_audit_kerberos_authentication_service                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit Kerberos Authentication Service determines whether to generate  audit events for Kerberos authentication ticket-granting ticket (TGT) requests                                                               |
 | **Default**      | Partially (Other)                                                                   |
 | **Event Volume** | High                                                                    |

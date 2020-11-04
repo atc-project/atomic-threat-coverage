@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | An attacker can use the SID history attribute to gain additional privileges. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1178: SID-History Injection](https://attack.mitre.org/techniques/T1178)</li><li>[T1134.005: SID-History Injection](https://attack.mitre.org/techniques/T1134/005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1178: SID-History Injection](https://attack.mitre.org/techniques/T1178)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0027_4738_user_account_was_changed](../Data_Needed/DN_0027_4738_user_account_was_changed.md)</li><li>[DN_0074_4765_sid_history_was_added_to_an_account](../Data_Needed/DN_0074_4765_sid_history_was_added_to_an_account.md)</li><li>[DN_0075_4766_attempt_to_add_sid_history_to_an_account_failed](../Data_Needed/DN_0075_4766_attempt_to_add_sid_history_to_an_account_failed.md)</li></ul>  |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | medium |
@@ -28,8 +28,7 @@ date: 2017/02/19
 tags:
     - attack.persistence
     - attack.privilege_escalation
-    - attack.t1178          # an old one
-    - attack.t1134.005
+    - attack.t1178
 logsource:
     product: windows
     service: security
@@ -44,9 +43,7 @@ detection:
         SidHistory:
             - '-'
             - '%%1793'
-    filter_null:
-        SidHistory:
-    condition: selection1 or (selection2 and not selection3 and not filter_null)
+    condition: selection1 or (selection2 and not selection3)
 falsepositives:
     - Migration of an account into a new domain
 level: medium
@@ -60,14 +57,14 @@ level: medium
 ### powershell
     
 ```
-Get-WinEvent -LogName Security | where {((($_.ID -eq "4765" -or $_.ID -eq "4766") -or (($_.ID -eq "4738" -and  -not (($_.message -match "-" -or $_.message -match "%%1793"))) -and  -not (-not SidHistory="*")))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Security | where {((($_.ID -eq "4765" -or $_.ID -eq "4766") -or ($_.ID -eq "4738" -and  -not (($_.message -match "-" -or $_.message -match "%%1793"))))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.channel:"Security" AND (winlog.event_id:("4765" OR "4766") OR (winlog.channel:"Security" AND (winlog.event_id:"4738" AND (NOT (SidHistory:("\-" OR "%%1793")))) AND (NOT (NOT _exists_:SidHistory)))))
+(winlog.channel:"Security" AND (winlog.event_id:("4765" OR "4766") OR (winlog.channel:"Security" AND winlog.event_id:"4738" AND (NOT (SidHistory:("\-" OR "%%1793"))))))
 ```
 
 
@@ -82,10 +79,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.persistence",
       "attack.privilege_escalation",
-      "attack.t1178",
-      "attack.t1134.005"
+      "attack.t1178"
     ],
-    "query": "(winlog.channel:\"Security\" AND (winlog.event_id:(\"4765\" OR \"4766\") OR (winlog.channel:\"Security\" AND (winlog.event_id:\"4738\" AND (NOT (SidHistory:(\"\\-\" OR \"%%1793\")))) AND (NOT (NOT _exists_:SidHistory)))))"
+    "query": "(winlog.channel:\"Security\" AND (winlog.event_id:(\"4765\" OR \"4766\") OR (winlog.channel:\"Security\" AND winlog.event_id:\"4738\" AND (NOT (SidHistory:(\"\\-\" OR \"%%1793\"))))))"
   },
   "trigger": {
     "schedule": {
@@ -102,7 +98,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Security\" AND (winlog.event_id:(\"4765\" OR \"4766\") OR (winlog.channel:\"Security\" AND (winlog.event_id:\"4738\" AND (NOT (SidHistory:(\"\\-\" OR \"%%1793\")))) AND (NOT (NOT _exists_:SidHistory)))))",
+                    "query": "(winlog.channel:\"Security\" AND (winlog.event_id:(\"4765\" OR \"4766\") OR (winlog.channel:\"Security\" AND winlog.event_id:\"4738\" AND (NOT (SidHistory:(\"\\-\" OR \"%%1793\"))))))",
                     "analyze_wildcard": true
                   }
                 }
@@ -132,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Addition of SID History to Active Directory Object'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -158,28 +151,28 @@ EOF
 ### graylog
     
 ```
-(EventID:("4765" "4766") OR ((EventID:"4738" AND (NOT (SidHistory:("\-" "%%1793")))) AND (NOT (NOT _exists_:SidHistory))))
+(EventID:("4765" "4766") OR (EventID:"4738" AND (NOT (SidHistory:("\-" "%%1793")))))
 ```
 
 
 ### splunk
     
 ```
-(source="WinEventLog:Security" ((EventCode="4765" OR EventCode="4766") OR (source="WinEventLog:Security" (EventCode="4738" NOT ((SidHistory="-" OR SidHistory="%%1793"))) NOT (NOT SidHistory="*"))))
+(source="WinEventLog:Security" ((EventCode="4765" OR EventCode="4766") OR (source="WinEventLog:Security" EventCode="4738" NOT ((SidHistory="-" OR SidHistory="%%1793")))))
 ```
 
 
 ### logpoint
     
 ```
-(event_source="Microsoft-Windows-Security-Auditing" (event_id IN ["4765", "4766"] OR (event_source="Microsoft-Windows-Security-Auditing" (event_id="4738"  -(SidHistory IN ["-", "%%1793"]))  -(-SidHistory=*))))
+(event_source="Microsoft-Windows-Security-Auditing" (event_id IN ["4765", "4766"] OR (event_source="Microsoft-Windows-Security-Auditing" event_id="4738"  -(SidHistory IN ["-", "%%1793"]))))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?:.*(?:.*4765|.*4766)|.*(?:.*(?=.*(?:.*(?=.*4738)(?=.*(?!.*(?:.*(?=.*(?:.*-|.*%%1793)))))))(?=.*(?!.*(?:.*(?=.*(?!SidHistory))))))))'
+grep -P '^(?:.*(?:.*(?:.*4765|.*4766)|.*(?:.*(?=.*4738)(?=.*(?!.*(?:.*(?=.*(?:.*-|.*%%1793))))))))'
 ```
 
 

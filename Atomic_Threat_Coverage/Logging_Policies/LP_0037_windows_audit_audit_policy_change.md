@@ -1,5 +1,6 @@
 | Title            | LP_0037_windows_audit_audit_policy_change                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | This policy determines whether the operating system generates  audit events when changes are made to audit policy                                                               |
 | **Default**      | Partially (Success)                                                                   |
 | **Event Volume** | Low                                                                    |

@@ -1,10 +1,10 @@
 | Title                    | PowerShell DownloadFile       |
 |:-------------------------|:------------------|
 | **Description**          | Detects the execution of powershell, a WebClient object creation and the invocation of DownloadFile in a single command line |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li><li>[T1104: Multi-Stage Channels](https://attack.mitre.org/techniques/T1104)</li><li>[T1105: Ingress Tool Transfer](https://attack.mitre.org/techniques/T1105)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li><li>[T1105: Ingress Tool Transfer](../Triggers/T1105.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -24,20 +24,16 @@ description: Detects the execution of powershell, a WebClient object creation an
 references:
     - https://www.fireeye.com/blog/threat-research/2020/03/apt41-initiates-global-intrusion-campaign-using-multiple-exploits.html
 author: Florian Roth
-date: 2020/08/28
+date: 2020/03/25
 tags:
     - attack.execution
-    - attack.t1059.001
-    - attack.t1086      # an old one     
-    - attack.command_and_control
-    - attack.t1104
-    - attack.t1105
+    - attack.t1086
 logsource:
     category: process_creation
     product: windows
 detection:
     selection:
-        CommandLine|contains|all:
+        CommandLine|contains|all: 
             - 'powershell'
             - '.DownloadFile'
             - 'System.Net.WebClient'
@@ -76,11 +72,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects the execution of powershell, a WebClient object creation and the invocation of DownloadFile in a single command line",
     "tags": [
       "attack.execution",
-      "attack.t1059.001",
-      "attack.t1086",
-      "attack.command_and_control",
-      "attack.t1104",
-      "attack.t1105"
+      "attack.t1086"
     ],
     "query": "(winlog.event_data.CommandLine.keyword:*powershell* AND winlog.event_data.CommandLine.keyword:*.DownloadFile* AND winlog.event_data.CommandLine.keyword:*System.Net.WebClient*)"
   },
@@ -129,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'PowerShell DownloadFile'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -1,10 +1,10 @@
 | Title                    | Net.exe User Account Creation       |
 |:-------------------------|:------------------|
 | **Description**          | Identifies creation of local users via the net.exe command |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1136: Create Account](https://attack.mitre.org/techniques/T1136)</li><li>[T1136.001: Local Account](https://attack.mitre.org/techniques/T1136/001)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1136: Create Account](https://attack.mitre.org/techniques/T1136)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1136.001: Local Account](../Triggers/T1136.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1136: Create Account](../Triggers/T1136.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Legit user creation</li><li>Better use event ids for user creation rather than command line rules</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,11 +26,11 @@ references:
     - https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1136/T1136.yaml
 author: Endgame, JHasenbusch (adapted to sigma for oscd.community)
 date: 2018/10/30
-modified: 2020/09/01
+modified: 2019/11/11
 tags:
     - attack.persistence
-    - attack.t1136          # an old one
-    - attack.t1136.001
+    - attack.credential_access
+    - attack.t1136
 logsource:
     category: process_creation
     product: windows
@@ -82,8 +82,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Identifies creation of local users via the net.exe command",
     "tags": [
       "attack.persistence",
-      "attack.t1136",
-      "attack.t1136.001"
+      "attack.credential_access",
+      "attack.t1136"
     ],
     "query": "(winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*user* AND winlog.event_data.CommandLine.keyword:*add*)"
   },
@@ -132,10 +132,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Net.exe User Account Creation'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -1,5 +1,6 @@
 | Title              | DN_0037_4103_windows_powershell_executing_pipeline       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | This event records pipeline execution, including variable initialization and command command invocations. |
 | **Logging Policy** | <ul><li>[LP_0108_windows_powershell_module_logging](../Logging_Policies/LP_0108_windows_powershell_module_logging.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/powershell/events/event-4103.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/powershell/events/event-4103.md)</li></ul> |

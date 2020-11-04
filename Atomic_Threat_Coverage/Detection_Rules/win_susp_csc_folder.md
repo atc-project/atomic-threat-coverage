@@ -4,7 +4,7 @@
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1500: Compile After Delivery](https://attack.mitre.org/techniques/T1500)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Trigger**              | <ul><li>[T1500: Compile After Delivery](../Triggers/T1500.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>https://twitter.com/gN3mes1s/status/1206874118282448897</li><li>https://twitter.com/gabriele_pippi/status/1206907900268072962</li></ul>  |
 | **Development Status**   | experimental |
@@ -28,7 +28,7 @@ references:
     - https://twitter.com/gN3mes1s/status/1206874118282448897
 author: Florian Roth
 date: 2019/08/24
-modified: 2020/09/05
+modified: 2019/12/17
 tags:
     - attack.defense_evasion
     - attack.t1500
@@ -38,11 +38,11 @@ logsource:
 detection:
     selection:
         Image: '*\csc.exe'
-        CommandLine:
+        CommandLine: 
             - '*\AppData\\*'
             - '*\Windows\Temp\\*'
     filter:
-        ParentImage:
+        ParentImage: 
             - 'C:\Program Files*'  # https://twitter.com/gN3mes1s/status/1206874118282448897
             - '*\sdiagnhost.exe'  # https://twitter.com/gN3mes1s/status/1206874118282448897
             - '*\w3wp.exe'  # https://twitter.com/gabriele_pippi/status/1206907900268072962
@@ -131,10 +131,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Csc.exe Source File Folder'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

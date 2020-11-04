@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects tools extracting LSA secret DPAPI domain backup key from Domain Controllers |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1003.004: LSA Secrets](https://attack.mitre.org/techniques/T1003/004)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0030_4662_operation_was_performed_on_an_object](../Data_Needed/DN_0030_4662_operation_was_performed_on_an_object.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.004: LSA Secrets](../Triggers/T1003.004.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -27,13 +27,12 @@ references:
     - https://github.com/Cyb3rWard0g/ThreatHunter-Playbook/tree/master/playbooks/windows/06_credential_access/T1003_credential_dumping/domain_dpapi_backupkey_extraction.md
 tags:
     - attack.credential_access
-    - attack.t1003          # an old one
-    - attack.t1003.004
+    - attack.t1003
 logsource:
     product: windows
     service: security
 detection:
-    selection:
+    selection: 
         EventID: 4662
         ObjectType: 'SecretObject'
         AccessMask: '0x2'
@@ -42,7 +41,6 @@ detection:
 falsepositives:
     - Unknown
 level: critical
-
 ```
 
 
@@ -73,8 +71,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects tools extracting LSA secret DPAPI domain backup key from Domain Controllers",
     "tags": [
       "attack.credential_access",
-      "attack.t1003",
-      "attack.t1003.004"
+      "attack.t1003"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4662\" AND winlog.event_data.ObjectType:\"SecretObject\" AND winlog.event_data.AccessMask:\"0x2\" AND winlog.event_data.ObjectName:\"BCKUPKEY\")"
   },
@@ -123,10 +120,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'DPAPI Domain Backup Key Extraction'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

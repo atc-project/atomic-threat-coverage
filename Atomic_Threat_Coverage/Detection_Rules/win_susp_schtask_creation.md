@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the creation of scheduled tasks in user session |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1053.005: Scheduled Task](https://attack.mitre.org/techniques/T1053/005)</li><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1053.005: Scheduled Task](../Triggers/T1053.005.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1053: Scheduled Task/Job](../Triggers/T1053.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>Administrative activity</li><li>Software installation</li></ul>  |
 | **Development Status**   | experimental |
@@ -40,8 +40,7 @@ tags:
     - attack.execution
     - attack.persistence
     - attack.privilege_escalation
-    - attack.t1053.005
-    - attack.t1053     # an old one 
+    - attack.t1053
     - attack.s0111
     - car.2013-08-001
 falsepositives:
@@ -81,7 +80,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.execution",
       "attack.persistence",
       "attack.privilege_escalation",
-      "attack.t1053.005",
       "attack.t1053",
       "attack.s0111",
       "car.2013-08-001"
@@ -133,10 +131,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Scheduled Task Creation'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

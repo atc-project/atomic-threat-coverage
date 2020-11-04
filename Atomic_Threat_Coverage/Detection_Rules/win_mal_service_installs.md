@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects known malicious service installs that only appear in cases of lateral movement, credential dumping and other suspicious activity |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li><li>[T1543.003: Windows Service](https://attack.mitre.org/techniques/T1543/003)</li><li>[T1569.002: Service Execution](https://attack.mitre.org/techniques/T1569/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1543.003: Windows Service](../Triggers/T1543.003.md)</li><li>[T1569.002: Service Execution](../Triggers/T1569.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1035: Service Execution](../Triggers/T1035.md)</li><li>[T1050: New Service](../Triggers/T1050.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Penetration testing</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -27,11 +27,9 @@ tags:
     - attack.persistence
     - attack.privilege_escalation
     - attack.t1003
-    - attack.t1035          # an old one
-    - attack.t1050          # an old one
+    - attack.t1035
+    - attack.t1050
     - car.2013-09-005
-    - attack.t1543.003
-    - attack.t1569.002
 logsource:
     product: windows
     service: system
@@ -45,7 +43,7 @@ detection:
     malsvc_persistence:
         ServiceFileName|contains: 'net user'
     condition: selection and 1 of malsvc_*
-falsepositives:
+falsepositives: 
     - Penetration testing
 level: critical
 
@@ -83,9 +81,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.t1003",
       "attack.t1035",
       "attack.t1050",
-      "car.2013-09-005",
-      "attack.t1543.003",
-      "attack.t1569.002"
+      "car.2013-09-005"
     ],
     "query": "(winlog.event_id:\"7045\" AND (winlog.event_data.ServiceFileName.keyword:*\\\\PAExec* OR winlog.event_data.ServiceName:\"mssecsvc2.0\" OR winlog.event_data.ServiceFileName.keyword:*net\\ user*))"
   },
@@ -134,10 +130,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Malicious Service Installations'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

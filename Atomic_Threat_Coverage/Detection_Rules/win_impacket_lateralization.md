@@ -1,10 +1,10 @@
 | Title                    | Impacket Lateralization Detection       |
 |:-------------------------|:------------------|
 | **Description**          | Detects wmiexec/dcomexec/atexec/smbexec from Impacket framework |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li><li>[T1175: Component Object Model and Distributed COM](https://attack.mitre.org/techniques/T1175)</li><li>[T1021.003: Distributed Component Object Model](https://attack.mitre.org/techniques/T1021/003)</li><li>[T1021: Remote Services](https://attack.mitre.org/techniques/T1021)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li><li>[T1175: Component Object Model and Distributed COM](https://attack.mitre.org/techniques/T1175)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li><li>[T1021.003: Distributed Component Object Model](../Triggers/T1021.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>pentesters</li></ul>  |
 | **Development Status**   | experimental |
@@ -28,7 +28,6 @@ references:
     - https://github.com/SecureAuthCorp/impacket/blob/master/examples/dcomexec.py
 author: Ecco
 date: 2019/09/03
-modified: 2020/09/01
 logsource:
     category: process_creation
     product: windows
@@ -70,12 +69,9 @@ fields:
     - CommandLine
     - ParentCommandLine
 tags:
-    - attack.execution
-    - attack.t1047
     - attack.lateral_movement
-    - attack.t1175  # an old one
-    - attack.t1021.003
-    - attack.t1021  # an old one
+    - attack.t1047
+    - attack.t1175
 falsepositives:
     - pentesters
 level: critical
@@ -109,12 +105,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Impacket Lateralization Detection",
     "description": "Detects wmiexec/dcomexec/atexec/smbexec from Impacket framework",
     "tags": [
-      "attack.execution",
-      "attack.t1047",
       "attack.lateral_movement",
-      "attack.t1175",
-      "attack.t1021.003",
-      "attack.t1021"
+      "attack.t1047",
+      "attack.t1175"
     ],
     "query": "((winlog.event_data.ParentImage.keyword:(*\\\\wmiprvse.exe OR *\\\\mmc.exe OR *\\\\explorer.exe OR *\\\\services.exe) AND winlog.event_data.CommandLine.keyword:(*cmd.exe*\\ \\/Q\\ \\/c\\ *\\ \\\\\\\\127.0.0.1\\\\*&1*)) OR (winlog.event_data.ParentCommandLine.keyword:(*svchost.exe\\ \\-k\\ netsvcs OR taskeng.exe*) AND winlog.event_data.CommandLine.keyword:(cmd.exe\\ \\/C\\ *Windows\\\\Temp\\\\*&1)))"
   },
@@ -163,10 +156,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Impacket Lateralization Detection'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

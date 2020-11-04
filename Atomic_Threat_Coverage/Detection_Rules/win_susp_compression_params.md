@@ -1,10 +1,10 @@
 | Title                    | Suspicious Compression Tool Parameters       |
 |:-------------------------|:------------------|
 | **Description**          | Detects suspicious command line arguments of common data compression tools |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0009: Collection](https://attack.mitre.org/tactics/TA0009)</li><li>[TA0010: Exfiltration](https://attack.mitre.org/tactics/TA0010)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1560.001: Archive via Utility](https://attack.mitre.org/techniques/T1560/001)</li><li>[T1020: Automated Exfiltration](https://attack.mitre.org/techniques/T1020)</li><li>[T1002: Data Compressed](https://attack.mitre.org/techniques/T1002)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0010: Exfiltration](https://attack.mitre.org/tactics/TA0010)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1020: Automated Exfiltration](https://attack.mitre.org/techniques/T1020)</li><li>[T1002: Data Compressed](https://attack.mitre.org/techniques/T1002)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1560.001: Archive via Utility](../Triggers/T1560.001.md)</li><li>[T1020: Automated Exfiltration](../Triggers/T1020.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1002: Data Compressed](../Triggers/T1002.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -24,14 +24,11 @@ description: Detects suspicious command line arguments of common data compressio
 references:
     - https://twitter.com/SBousseaden/status/1184067445612535811
 tags:
-    - attack.collection
-    - attack.t1560.001
-    - attack.exfiltration # an old one
-    - attack.t1020 # an old one
-    - attack.t1002 # an old one
+    - attack.exfiltration
+    - attack.t1020
+    - attack.t1002
 author: Florian Roth, Samir Bousseaden
 date: 2019/10/15
-modified: 2020/09/05
 logsource:
     category: process_creation
     product: windows
@@ -84,8 +81,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Suspicious Compression Tool Parameters",
     "description": "Detects suspicious command line arguments of common data compression tools",
     "tags": [
-      "attack.collection",
-      "attack.t1560.001",
       "attack.exfiltration",
       "attack.t1020",
       "attack.t1002"
@@ -137,10 +132,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Compression Tool Parameters'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

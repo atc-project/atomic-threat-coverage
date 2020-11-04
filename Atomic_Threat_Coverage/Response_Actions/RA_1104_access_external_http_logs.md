@@ -3,7 +3,7 @@
 | **ID**                      | RA1104            |
 | **Description**             | Make sure you have access to external communication HTTP logs   |
 | **Author**                  | @atc_project        |
-| **Creation Date**           | 2020/05/06 |
+| **Creation Date**           | 06.05.2020 |
 | **Category**                | Network      |
 | **Stage**                   |[RS0001: Preparation](../Response_Stages/RS0001.md)| 
 | **References** |<ul><li>[https://docs.zeek.org/en/current/examples/httpmonitor/](https://docs.zeek.org/en/current/examples/httpmonitor/)</li><li>[https://en.wikipedia.org/wiki/Common_Log_Format](https://en.wikipedia.org/wiki/Common_Log_Format)</li></ul>|

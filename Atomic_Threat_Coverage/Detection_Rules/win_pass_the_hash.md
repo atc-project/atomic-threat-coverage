@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the attack technique pass the hash which is used to move laterally inside the network |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1075: Pass the Hash](https://attack.mitre.org/techniques/T1075)</li><li>[T1550.002: Pass the Hash](https://attack.mitre.org/techniques/T1550/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1075: Pass the Hash](https://attack.mitre.org/techniques/T1075)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li><li>[DN_0057_4625_account_failed_to_logon](../Data_Needed/DN_0057_4625_account_failed_to_logon.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1550.002: Pass the Hash](../Triggers/T1550.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1075: Pass the Hash](../Triggers/T1075.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Administrator activity</li><li>Penetration tests</li></ul>  |
 | **Development Status**   | experimental |
@@ -27,9 +27,8 @@ author: Ilias el Matani (rule), The Information Assurance Directorate at the NSA
 date: 2017/03/08
 tags:
     - attack.lateral_movement
-    - attack.t1075          # an old one
+    - attack.t1075
     - car.2016-04-004
-    - attack.t1550.002
 logsource:
     product: windows
     service: security
@@ -70,7 +69,7 @@ Get-WinEvent -LogName Security | where {(($_.message -match "LogonType.*3" -and 
 ### es-qs
     
 ```
-(winlog.channel:"Security" AND (winlog.event_data.LogonType:"3" AND winlog.event_data.LogonProcessName:"NtLmSsp" AND winlog.event_data.WorkstationName:"%Workstations%" AND winlog.ComputerName:"%Workstations%" AND (winlog.event_id:"4624" OR winlog.event_id:"4625")) AND (NOT (winlog.event_data.AccountName:"ANONYMOUS\ LOGON")))
+(winlog.channel:"Security" AND (winlog.event_data.LogonType:"3" AND winlog.event_data.LogonProcessName:"NtLmSsp" AND winlog.event_data.WorkstationName:"%Workstations%" AND winlog.computer_name:"%Workstations%" AND (winlog.event_id:"4624" OR winlog.event_id:"4625")) AND (NOT (winlog.event_data.AccountName:"ANONYMOUS\ LOGON")))
 ```
 
 
@@ -85,10 +84,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.lateral_movement",
       "attack.t1075",
-      "car.2016-04-004",
-      "attack.t1550.002"
+      "car.2016-04-004"
     ],
-    "query": "(winlog.channel:\"Security\" AND (winlog.event_data.LogonType:\"3\" AND winlog.event_data.LogonProcessName:\"NtLmSsp\" AND winlog.event_data.WorkstationName:\"%Workstations%\" AND winlog.ComputerName:\"%Workstations%\" AND (winlog.event_id:\"4624\" OR winlog.event_id:\"4625\")) AND (NOT (winlog.event_data.AccountName:\"ANONYMOUS\\ LOGON\")))"
+    "query": "(winlog.channel:\"Security\" AND (winlog.event_data.LogonType:\"3\" AND winlog.event_data.LogonProcessName:\"NtLmSsp\" AND winlog.event_data.WorkstationName:\"%Workstations%\" AND winlog.computer_name:\"%Workstations%\" AND (winlog.event_id:\"4624\" OR winlog.event_id:\"4625\")) AND (NOT (winlog.event_data.AccountName:\"ANONYMOUS\\ LOGON\")))"
   },
   "trigger": {
     "schedule": {
@@ -105,7 +103,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Security\" AND (winlog.event_data.LogonType:\"3\" AND winlog.event_data.LogonProcessName:\"NtLmSsp\" AND winlog.event_data.WorkstationName:\"%Workstations%\" AND winlog.ComputerName:\"%Workstations%\" AND (winlog.event_id:\"4624\" OR winlog.event_id:\"4625\")) AND (NOT (winlog.event_data.AccountName:\"ANONYMOUS\\ LOGON\")))",
+                    "query": "(winlog.channel:\"Security\" AND (winlog.event_data.LogonType:\"3\" AND winlog.event_data.LogonProcessName:\"NtLmSsp\" AND winlog.event_data.WorkstationName:\"%Workstations%\" AND winlog.computer_name:\"%Workstations%\" AND (winlog.event_id:\"4624\" OR winlog.event_id:\"4625\")) AND (NOT (winlog.event_data.AccountName:\"ANONYMOUS\\ LOGON\")))",
                     "analyze_wildcard": true
                   }
                 }
@@ -135,10 +133,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Pass the Hash Activity'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

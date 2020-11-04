@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects service ticket requests using RC4 encryption type |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li><li>[T1558.003: Kerberoasting](https://attack.mitre.org/techniques/T1558/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0077_4769_kerberos_service_ticket_was_requested](../Data_Needed/DN_0077_4769_kerberos_service_ticket_was_requested.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1558.003: Kerberoasting](../Triggers/T1558.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1208: Kerberoasting](../Triggers/T1208.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Service accounts used on legacy systems (e.g. NetApp)</li><li>Windows Domains with DFL 2003 and legacy systems</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,8 +25,7 @@ references:
     - https://www.trimarcsecurity.com/single-post/TrimarcResearch/Detecting-Kerberoasting-Activity
 tags:
     - attack.credential_access
-    - attack.t1208           # an old one
-    - attack.t1558.003
+    - attack.t1208
 description: Detects service ticket requests using RC4 encryption type
 author: Florian Roth
 date: 2017/02/06
@@ -76,8 +75,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects service ticket requests using RC4 encryption type",
     "tags": [
       "attack.credential_access",
-      "attack.t1208",
-      "attack.t1558.003"
+      "attack.t1208"
     ],
     "query": "(winlog.channel:\"Security\" AND (winlog.event_id:\"4769\" AND winlog.event_data.TicketOptions:\"0x40810000\" AND winlog.event_data.TicketEncryptionType:\"0x17\") AND (NOT (winlog.event_data.ServiceName.keyword:$*)))"
   },
@@ -126,10 +124,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Kerberos RC4 Ticket Encryption'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

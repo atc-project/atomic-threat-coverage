@@ -1,10 +1,10 @@
 | Title                    | Wsreset UAC Bypass       |
 |:-------------------------|:------------------|
 | **Description**          | Detects a method that uses Wsreset.exe tool that can be used to reset the Windows Store to bypass UAC |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1548.002: Bypass User Access Control](https://attack.mitre.org/techniques/T1548/002)</li><li>[T1088: Bypass User Account Control](https://attack.mitre.org/techniques/T1088)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1088: Bypass User Account Control](https://attack.mitre.org/techniques/T1088)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1548.002: Bypass User Access Control](../Triggers/T1548.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1088: Bypass User Account Control](../Triggers/T1088.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown sub processes of Wsreset.exe</li></ul>  |
 | **Development Status**   | experimental |
@@ -20,19 +20,17 @@
 title: Wsreset UAC Bypass
 id: bdc8918e-a1d5-49d1-9db7-ea0fd91aa2ae
 status: experimental
-description: Detects a method that uses Wsreset.exe tool that can be used to reset the Windows Store to bypass UAC
+description: Detects a method that uses Wsreset.exe tool that can be used to reset the Windows Store to bypass UAC 
 references:
     - https://lolbas-project.github.io/lolbas/Binaries/Wsreset/
     - https://www.activecyber.us/activelabs/windows-uac-bypass
     - https://twitter.com/ReaQta/status/1222548288731217921
 author: Florian Roth
 date: 2020/01/30
-modified: 2020/08/29
 tags:
-    - attack.privilege_escalation
-    - attack.defense_evasion 
-    - attack.t1548.002
-    - attack.t1088      # an old one
+    - attack.defense_evasion
+    - attack.execution
+    - attack.t1088
 logsource:
     category: process_creation
     product: windows
@@ -76,9 +74,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Wsreset UAC Bypass",
     "description": "Detects a method that uses Wsreset.exe tool that can be used to reset the Windows Store to bypass UAC",
     "tags": [
-      "attack.privilege_escalation",
       "attack.defense_evasion",
-      "attack.t1548.002",
+      "attack.execution",
       "attack.t1088"
     ],
     "query": "winlog.event_data.ParentImage.keyword:(*\\\\WSreset.exe)"
@@ -128,10 +125,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Wsreset UAC Bypass'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nCommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

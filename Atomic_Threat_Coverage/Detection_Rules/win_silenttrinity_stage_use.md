@@ -1,7 +1,7 @@
 | Title                    | SILENTTRINITY Stager Execution       |
 |:-------------------------|:------------------|
 | **Description**          | Detects SILENTTRINITY stager use |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
 | **Data Needed**          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0011_7_windows_sysmon_image_loaded](../Data_Needed/DN_0011_7_windows_sysmon_image_loaded.md)</li></ul>  |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
@@ -26,9 +26,9 @@ references:
     - https://github.com/byt3bl33d3r/SILENTTRINITY
 author: Aleksey Potapov, oscd.community
 date: 2019/10/22
-modified: 2020/09/06
+modified: 2019/11/04
 tags:
-    - attack.command_and_control
+    - attack.execution
 detection:
     selection:
         Description|contains: 'st2stager'
@@ -79,7 +79,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "SILENTTRINITY Stager Execution",
     "description": "Detects SILENTTRINITY stager use",
     "tags": [
-      "attack.command_and_control"
+      "attack.execution"
     ],
     "query": "winlog.event_data.Description.keyword:*st2stager*"
   },
@@ -128,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'SILENTTRINITY Stager Execution'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -153,7 +150,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "SILENTTRINITY Stager Execution",
     "description": "Detects SILENTTRINITY stager use",
     "tags": [
-      "attack.command_and_control"
+      "attack.execution"
     ],
     "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"7\" AND winlog.event_data.Description.keyword:*st2stager*)"
   },
@@ -202,10 +199,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'SILENTTRINITY Stager Execution'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

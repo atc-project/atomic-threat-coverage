@@ -1,5 +1,6 @@
 | Title            | LP_0106_windows_audit_kerberos_service_ticket_operations                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit Kerberos Service Ticket Operations determines whether the operating  system generates security audit events for Kerberos service ticket requests. Events are generated every time Kerberos is used to authenticate a user who  wants to access a protected network resource. Kerberos service ticket  operation audit events can be used to track user activity                                                               |
 | **Default**      | Partially (Other)                                                                   |
 | **Event Volume** | Extremely High                                                                    |

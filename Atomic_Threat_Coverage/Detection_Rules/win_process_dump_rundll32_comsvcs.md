@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a process memory dump performed via ordinal function 24 in comsvcs.dll |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1003.001: LSASS Memory](https://attack.mitre.org/techniques/T1003/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.001: LSASS Memory](../Triggers/T1003.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unlikely, because no one should dump the process memory in that way</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,14 +25,12 @@ references:
     - https://twitter.com/shantanukhande/status/1229348874298388484
 author: Florian Roth
 date: 2020/02/18
-modified: 2020/09/06
 tags:
     - attack.defense_evasion
     - attack.t1036
     - attack.credential_access
-    - attack.t1003 # an old one
+    - attack.t1003
     - car.2013-05-009
-    - attack.t1003.001
 logsource:
     category: process_creation
     product: windows
@@ -79,8 +77,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.t1036",
       "attack.credential_access",
       "attack.t1003",
-      "car.2013-05-009",
-      "attack.t1003.001"
+      "car.2013-05-009"
     ],
     "query": "winlog.event_data.CommandLine.keyword:(*comsvcs.dll,#24* OR *comsvcs.dll,MiniDump*)"
   },
@@ -129,10 +126,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Process Dump via Rundll32 and Comsvcs.dll'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects javaw.exe in AppData folder as used by Adwind / JRAT |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.005: Visual Basic](https://attack.mitre.org/techniques/T1059/005)</li><li>[T1059.007: JavaScript/JScript](https://attack.mitre.org/techniques/T1059/007)</li><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.005: Visual Basic](../Triggers/T1059.005.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1064: Scripting](../Triggers/T1064.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      |  There are no documented False Positives for this Detection Rule yet  |
 | **Development Status**   | experimental |
@@ -27,12 +27,10 @@ references:
     - https://www.first.org/resources/papers/conf2017/Advanced-Incident-Detection-and-Threat-Hunting-using-Sysmon-and-Splunk.pdf
 author: Florian Roth, Tom Ueltschi
 date: 2017/11/10
-modified: 2020/09/01
+modified: 2018/12/11
 tags:
     - attack.execution
-    - attack.t1059.005
-    - attack.t1059.007
-    - attack.t1064  # an old one
+    - attack.t1064
 detection:
     condition: selection
 level: high
@@ -99,8 +97,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects javaw.exe in AppData folder as used by Adwind / JRAT",
     "tags": [
       "attack.execution",
-      "attack.t1059.005",
-      "attack.t1059.007",
       "attack.t1064"
     ],
     "query": "winlog.event_data.CommandLine.keyword:(*\\\\AppData\\\\Roaming\\\\Oracle*\\\\java*.exe\\ * OR *cscript.exe\\ *Retrive*.vbs\\ *)"
@@ -150,10 +146,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Adwind RAT / JRAT'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -176,8 +169,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects javaw.exe in AppData folder as used by Adwind / JRAT",
     "tags": [
       "attack.execution",
-      "attack.t1059.005",
-      "attack.t1059.007",
       "attack.t1064"
     ],
     "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"11\" AND winlog.event_data.TargetFilename.keyword:(*\\\\AppData\\\\Roaming\\\\Oracle\\\\bin\\\\java*.exe OR *\\\\Retrive*.vbs))"
@@ -227,10 +218,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Adwind RAT / JRAT'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -253,8 +241,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects javaw.exe in AppData folder as used by Adwind / JRAT",
     "tags": [
       "attack.execution",
-      "attack.t1059.005",
-      "attack.t1059.007",
       "attack.t1064"
     ],
     "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"13\" AND winlog.event_data.TargetObject.keyword:HKLM\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run* AND winlog.event_data.Details.keyword:%AppData%\\\\Roaming\\\\Oracle\\\\bin\\\\*)"
@@ -304,10 +290,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Adwind RAT / JRAT'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

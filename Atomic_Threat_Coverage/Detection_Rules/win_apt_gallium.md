@@ -110,7 +110,7 @@ Get-WinEvent | where {(($_.message -match "e570585edc69f9074cb5e8a790708336bd45c
 ```
 sha1:("53a44c2396d15c3a03723fa5e5db54cafd527635" OR "9c5e496921e3bc882dc40694f1dcc3746a75db19" OR "aeb573accfd95758550cf30bf04f389a92922844" OR "79ef78a797403a4ed1a616c68e07fff868a8650a" OR "4f6f38b4cec35e895d91c052b1f5a83d665c2196" OR "1e8c2cac2e4ce7cbd33c3858eb2e24531cb8a84d" OR "e841a63e47361a572db9a7334af459ddca11347a" OR "c28f606df28a9bc8df75a4d5e5837fc5522dd34d" OR "2e94b305d6812a9f96e6781c888e48c7fb157b6b" OR "dd44133716b8a241957b912fa6a02efde3ce3025" OR "8793bf166cb89eb55f0593404e4e933ab605e803" OR "a39b57032dbb2335499a51e13470a7cd5d86b138" OR "41cc2b15c662bc001c0eb92f6cc222934f0beeea" OR "d209430d6af54792371174e70e27dd11d3def7a7" OR "1c6452026c56efd2c94cea7e0f671eb55515edb0" OR "c6b41d3afdcdcaf9f442bbe772f5da871801fd5a" OR "4923d460e22fbbf165bbbaba168e5a46b8157d9f" OR "f201504bd96e81d0d350c3a8332593ee1c9e09de" OR "ddd2db1127632a2a52943a2fe516a2e7d05d70d2")
 (winlog.channel:"DNS\ Server" AND winlog.event_id:"257" AND QNAME:("asyspy256.ddns.net" OR "hotkillmail9sddcc.ddns.net" OR "rosaf112.ddns.net" OR "cvdfhjh1231.myftp.biz" OR "sz2016rose.ddns.net" OR "dffwescwer4325.myftp.biz" OR "cvdfhjh1231.ddns.net"))
-(sha1:("e570585edc69f9074cb5e8a790708336bd45ca0f") AND (NOT (winlog.event_data.Image.keyword:(*\:\\Program\ Files\(x86\)\\* OR *\:\\Program\ Files\\*))))
+(sha1:("e570585edc69f9074cb5e8a790708336bd45ca0f") AND (NOT (winlog.event_data.Image.keyword:(*\:\\Program\ Files\(x86\)\* OR *\:\\Program\ Files\*))))
 ```
 
 
@@ -173,10 +173,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'GALLIUM Artefacts'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -248,10 +245,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'GALLIUM Artefacts'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -276,7 +270,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.credential_access",
       "attack.command_and_control"
     ],
-    "query": "(sha1:(\"e570585edc69f9074cb5e8a790708336bd45ca0f\") AND (NOT (winlog.event_data.Image.keyword:(*\\:\\\\Program\\ Files\\(x86\\)\\\\* OR *\\:\\\\Program\\ Files\\\\*))))"
+    "query": "(sha1:(\"e570585edc69f9074cb5e8a790708336bd45ca0f\") AND (NOT (winlog.event_data.Image.keyword:(*\\:\\\\Program\\ Files\\(x86\\)\\* OR *\\:\\\\Program\\ Files\\*))))"
   },
   "trigger": {
     "schedule": {
@@ -293,7 +287,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(sha1:(\"e570585edc69f9074cb5e8a790708336bd45ca0f\") AND (NOT (winlog.event_data.Image.keyword:(*\\:\\\\Program\\ Files\\(x86\\)\\\\* OR *\\:\\\\Program\\ Files\\\\*))))",
+                    "query": "(sha1:(\"e570585edc69f9074cb5e8a790708336bd45ca0f\") AND (NOT (winlog.event_data.Image.keyword:(*\\:\\\\Program\\ Files\\(x86\\)\\* OR *\\:\\\\Program\\ Files\\*))))",
                     "analyze_wildcard": true
                   }
                 }
@@ -323,10 +317,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'GALLIUM Artefacts'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -351,7 +342,7 @@ EOF
 ```
 sha1:("53a44c2396d15c3a03723fa5e5db54cafd527635" "9c5e496921e3bc882dc40694f1dcc3746a75db19" "aeb573accfd95758550cf30bf04f389a92922844" "79ef78a797403a4ed1a616c68e07fff868a8650a" "4f6f38b4cec35e895d91c052b1f5a83d665c2196" "1e8c2cac2e4ce7cbd33c3858eb2e24531cb8a84d" "e841a63e47361a572db9a7334af459ddca11347a" "c28f606df28a9bc8df75a4d5e5837fc5522dd34d" "2e94b305d6812a9f96e6781c888e48c7fb157b6b" "dd44133716b8a241957b912fa6a02efde3ce3025" "8793bf166cb89eb55f0593404e4e933ab605e803" "a39b57032dbb2335499a51e13470a7cd5d86b138" "41cc2b15c662bc001c0eb92f6cc222934f0beeea" "d209430d6af54792371174e70e27dd11d3def7a7" "1c6452026c56efd2c94cea7e0f671eb55515edb0" "c6b41d3afdcdcaf9f442bbe772f5da871801fd5a" "4923d460e22fbbf165bbbaba168e5a46b8157d9f" "f201504bd96e81d0d350c3a8332593ee1c9e09de" "ddd2db1127632a2a52943a2fe516a2e7d05d70d2")
 (EventID:"257" AND QNAME:("asyspy256.ddns.net" "hotkillmail9sddcc.ddns.net" "rosaf112.ddns.net" "cvdfhjh1231.myftp.biz" "sz2016rose.ddns.net" "dffwescwer4325.myftp.biz" "cvdfhjh1231.ddns.net"))
-(sha1:("e570585edc69f9074cb5e8a790708336bd45ca0f") AND (NOT (Image.keyword:(*\:\\Program Files\(x86\)\\* *\:\\Program Files\\*))))
+(sha1:("e570585edc69f9074cb5e8a790708336bd45ca0f") AND (NOT (Image.keyword:(*\:\\Program Files\(x86\)\* *\:\\Program Files\*))))
 ```
 
 
@@ -360,7 +351,7 @@ sha1:("53a44c2396d15c3a03723fa5e5db54cafd527635" "9c5e496921e3bc882dc40694f1dcc3
 ```
 (sha1="53a44c2396d15c3a03723fa5e5db54cafd527635" OR sha1="9c5e496921e3bc882dc40694f1dcc3746a75db19" OR sha1="aeb573accfd95758550cf30bf04f389a92922844" OR sha1="79ef78a797403a4ed1a616c68e07fff868a8650a" OR sha1="4f6f38b4cec35e895d91c052b1f5a83d665c2196" OR sha1="1e8c2cac2e4ce7cbd33c3858eb2e24531cb8a84d" OR sha1="e841a63e47361a572db9a7334af459ddca11347a" OR sha1="c28f606df28a9bc8df75a4d5e5837fc5522dd34d" OR sha1="2e94b305d6812a9f96e6781c888e48c7fb157b6b" OR sha1="dd44133716b8a241957b912fa6a02efde3ce3025" OR sha1="8793bf166cb89eb55f0593404e4e933ab605e803" OR sha1="a39b57032dbb2335499a51e13470a7cd5d86b138" OR sha1="41cc2b15c662bc001c0eb92f6cc222934f0beeea" OR sha1="d209430d6af54792371174e70e27dd11d3def7a7" OR sha1="1c6452026c56efd2c94cea7e0f671eb55515edb0" OR sha1="c6b41d3afdcdcaf9f442bbe772f5da871801fd5a" OR sha1="4923d460e22fbbf165bbbaba168e5a46b8157d9f" OR sha1="f201504bd96e81d0d350c3a8332593ee1c9e09de" OR sha1="ddd2db1127632a2a52943a2fe516a2e7d05d70d2")
 (EventCode="257" (QNAME="asyspy256.ddns.net" OR QNAME="hotkillmail9sddcc.ddns.net" OR QNAME="rosaf112.ddns.net" OR QNAME="cvdfhjh1231.myftp.biz" OR QNAME="sz2016rose.ddns.net" OR QNAME="dffwescwer4325.myftp.biz" OR QNAME="cvdfhjh1231.ddns.net"))
-((sha1="e570585edc69f9074cb5e8a790708336bd45ca0f") NOT ((Image="*:\\Program Files(x86)\\*" OR Image="*:\\Program Files\\*")))
+((sha1="e570585edc69f9074cb5e8a790708336bd45ca0f") NOT ((Image="*:\\Program Files(x86)\*" OR Image="*:\\Program Files\*")))
 ```
 
 
@@ -369,7 +360,7 @@ sha1:("53a44c2396d15c3a03723fa5e5db54cafd527635" "9c5e496921e3bc882dc40694f1dcc3
 ```
 sha1 IN ["53a44c2396d15c3a03723fa5e5db54cafd527635", "9c5e496921e3bc882dc40694f1dcc3746a75db19", "aeb573accfd95758550cf30bf04f389a92922844", "79ef78a797403a4ed1a616c68e07fff868a8650a", "4f6f38b4cec35e895d91c052b1f5a83d665c2196", "1e8c2cac2e4ce7cbd33c3858eb2e24531cb8a84d", "e841a63e47361a572db9a7334af459ddca11347a", "c28f606df28a9bc8df75a4d5e5837fc5522dd34d", "2e94b305d6812a9f96e6781c888e48c7fb157b6b", "dd44133716b8a241957b912fa6a02efde3ce3025", "8793bf166cb89eb55f0593404e4e933ab605e803", "a39b57032dbb2335499a51e13470a7cd5d86b138", "41cc2b15c662bc001c0eb92f6cc222934f0beeea", "d209430d6af54792371174e70e27dd11d3def7a7", "1c6452026c56efd2c94cea7e0f671eb55515edb0", "c6b41d3afdcdcaf9f442bbe772f5da871801fd5a", "4923d460e22fbbf165bbbaba168e5a46b8157d9f", "f201504bd96e81d0d350c3a8332593ee1c9e09de", "ddd2db1127632a2a52943a2fe516a2e7d05d70d2"]
 (event_source="DNS Server" event_id="257" QNAME IN ["asyspy256.ddns.net", "hotkillmail9sddcc.ddns.net", "rosaf112.ddns.net", "cvdfhjh1231.myftp.biz", "sz2016rose.ddns.net", "dffwescwer4325.myftp.biz", "cvdfhjh1231.ddns.net"])
-(sha1 IN ["e570585edc69f9074cb5e8a790708336bd45ca0f"]  -(Image IN ["*:\\Program Files(x86)\\*", "*:\\Program Files\\*"]))
+(sha1 IN ["e570585edc69f9074cb5e8a790708336bd45ca0f"]  -(Image IN ["*:\\Program Files(x86)\*", "*:\\Program Files\*"]))
 ```
 
 
@@ -378,7 +369,7 @@ sha1 IN ["53a44c2396d15c3a03723fa5e5db54cafd527635", "9c5e496921e3bc882dc40694f1
 ```
 grep -P '^(?:.*53a44c2396d15c3a03723fa5e5db54cafd527635|.*9c5e496921e3bc882dc40694f1dcc3746a75db19|.*aeb573accfd95758550cf30bf04f389a92922844|.*79ef78a797403a4ed1a616c68e07fff868a8650a|.*4f6f38b4cec35e895d91c052b1f5a83d665c2196|.*1e8c2cac2e4ce7cbd33c3858eb2e24531cb8a84d|.*e841a63e47361a572db9a7334af459ddca11347a|.*c28f606df28a9bc8df75a4d5e5837fc5522dd34d|.*2e94b305d6812a9f96e6781c888e48c7fb157b6b|.*dd44133716b8a241957b912fa6a02efde3ce3025|.*8793bf166cb89eb55f0593404e4e933ab605e803|.*a39b57032dbb2335499a51e13470a7cd5d86b138|.*41cc2b15c662bc001c0eb92f6cc222934f0beeea|.*d209430d6af54792371174e70e27dd11d3def7a7|.*1c6452026c56efd2c94cea7e0f671eb55515edb0|.*c6b41d3afdcdcaf9f442bbe772f5da871801fd5a|.*4923d460e22fbbf165bbbaba168e5a46b8157d9f|.*f201504bd96e81d0d350c3a8332593ee1c9e09de|.*ddd2db1127632a2a52943a2fe516a2e7d05d70d2)'
 grep -P '^(?:.*(?=.*257)(?=.*(?:.*asyspy256\.ddns\.net|.*hotkillmail9sddcc\.ddns\.net|.*rosaf112\.ddns\.net|.*cvdfhjh1231\.myftp\.biz|.*sz2016rose\.ddns\.net|.*dffwescwer4325\.myftp\.biz|.*cvdfhjh1231\.ddns\.net)))'
-grep -P '^(?:.*(?=.*(?:.*e570585edc69f9074cb5e8a790708336bd45ca0f))(?=.*(?!.*(?:.*(?=.*(?:.*.*:\Program Files\(x86\)\\.*|.*.*:\Program Files\\.*))))))'
+grep -P '^(?:.*(?=.*(?:.*e570585edc69f9074cb5e8a790708336bd45ca0f))(?=.*(?!.*(?:.*(?=.*(?:.*.*:\Program Files\(x86\)\.*|.*.*:\Program Files\.*))))))'
 ```
 
 

@@ -1,10 +1,10 @@
 | Title                    | Remote Service Activity via SVCCTL Named Pipe       |
 |:-------------------------|:------------------|
-| **Description**          | Detects remote service activity via remote access to the svcctl named pipe |
+| **Description**          | Detects remote remote service activity via remote access to the svcctl named pipe |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1077: Windows Admin Shares](https://attack.mitre.org/techniques/T1077)</li><li>[T1021.002: SMB/Windows Admin Shares](https://attack.mitre.org/techniques/T1021/002)</li></ul>  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
 | **Data Needed**          | <ul><li>[DN_0032_5145_network_share_object_was_accessed_detailed](../Data_Needed/DN_0032_5145_network_share_object_was_accessed_detailed.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1021.002: SMB/Windows Admin Shares](../Triggers/T1021.002.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>pentesting</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -19,7 +19,7 @@
 ```
 title: Remote Service Activity via SVCCTL Named Pipe
 id: 586a8d6b-6bfe-4ad9-9d78-888cd2fe50c3
-description: Detects remote service activity via remote access to the svcctl named pipe
+description: Detects remote remote service activity via remote access to the svcctl named pipe
 author: Samir Bousseaden
 date: 2019/04/03
 references:
@@ -27,12 +27,10 @@ references:
 tags:
     - attack.lateral_movement
     - attack.persistence
-    - attack.t1077          # an old one
-    - attack.t1021.002
 logsource:
     product: windows
     service: security
-    definition: 'The advanced audit policy setting "Object Access > Audit Detailed File Share" must be configured for Success/Failure'
+    description: 'The advanced audit policy setting "Object Access > Audit Detailed File Share" must be configured for Success/Failure'
 detection:
     selection:
         EventID: 5145
@@ -71,12 +69,10 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
 {
   "metadata": {
     "title": "Remote Service Activity via SVCCTL Named Pipe",
-    "description": "Detects remote service activity via remote access to the svcctl named pipe",
+    "description": "Detects remote remote service activity via remote access to the svcctl named pipe",
     "tags": [
       "attack.lateral_movement",
-      "attack.persistence",
-      "attack.t1077",
-      "attack.t1021.002"
+      "attack.persistence"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"5145\" AND winlog.event_data.ShareName.keyword:\\\\*\\\\IPC$ AND RelativeTargetName:\"svcctl\" AND Accesses.keyword:*WriteData*)"
   },
@@ -125,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Remote Service Activity via SVCCTL Named Pipe'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

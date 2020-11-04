@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects potential mimikatz-like tools accessing LSASS from non system account |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1003.001: LSASS Memory](https://attack.mitre.org/techniques/T1003/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0058_4656_handle_to_an_object_was_requested](../Data_Needed/DN_0058_4656_handle_to_an_object_was_requested.md)</li><li>[DN_0062_4663_attempt_was_made_to_access_an_object](../Data_Needed/DN_0062_4663_attempt_was_made_to_access_an_object.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.001: LSASS Memory](../Triggers/T1003.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -28,13 +28,12 @@ references:
     - https://github.com/Cyb3rWard0g/ThreatHunter-Playbook/tree/master/playbooks/windows/06_credential_access/T1003_credential_dumping/lsass_access_non_system_account.md
 tags:
     - attack.credential_access
-    - attack.t1003          # an old one
-    - attack.t1003.001
+    - attack.t1003
 logsource:
     product: windows
     service: security
 detection:
-    selection:
+    selection: 
         EventID:
             - 4663
             - 4656
@@ -82,8 +81,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects potential mimikatz-like tools accessing LSASS from non system account",
     "tags": [
       "attack.credential_access",
-      "attack.t1003",
-      "attack.t1003.001"
+      "attack.t1003"
     ],
     "query": "(winlog.channel:\"Security\" AND (winlog.event_id:(\"4663\" OR \"4656\") AND winlog.event_data.ObjectType:\"Process\" AND winlog.event_data.ObjectName.keyword:*\\\\lsass.exe) AND (NOT (winlog.event_data.SubjectUserName.keyword:*$)))"
   },
@@ -132,10 +130,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'LSASS Access from Non System Account'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n   ComputerName = {{_source.ComputerName}}\n     ObjectName = {{_source.ObjectName}}\nSubjectUserName = {{_source.SubjectUserName}}\n    ProcessName = {{_source.ProcessName}}================================================================================\n{{/ctx.payload.hits.hits}}",

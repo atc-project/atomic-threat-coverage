@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects execution of renamed paexec via imphash and executable product string |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li><li>[T1036.003: Rename System Utilities](https://attack.mitre.org/techniques/T1036/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1036.003: Rename System Utilities](../Triggers/T1036.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Unknown imphashes</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,12 +26,10 @@ references:
     - https://summit.fireeye.com/content/dam/fireeye-www/summit/cds-2018/presentations/cds18-technical-s05-att&cking-fin7.pdf
 tags:
     - attack.defense_evasion
-    - attack.t1036 # an old one
-    - attack.t1036.003
+    - attack.t1036
     - FIN7
     - car.2013-05-009
 date: 2019/04/17
-modified: 2020/09/06
 author: Jason Lynch 
 falsepositives:
     - Unknown imphashes
@@ -69,7 +67,7 @@ Get-WinEvent | where {((($_.message -match "Product.*.*PAExec.*") -and ($_.messa
 ### es-qs
     
 ```
-((Product.keyword:(*PAExec*) AND winlog.event_data.Imphash:("11d40a7b7876288f919ab819cc2d9802" OR "11D40A7B7876288F919AB819CC2D9802" OR "6444f8a34e99b8f7d9647de66aabe516" OR "6444F8A34E99B8F7D9647DE66AABE516" OR "dfd6aa3f7b2b1035b76b718f1ddc689f" OR "DFD6AA3F7B2B1035B76B718F1DDC689F" OR "1a6cca4d5460b1710a12dea39e4a592c" OR "1A6CCA4D5460B1710A12DEA39E4A592C")) AND (NOT (winlog.event_data.Image.keyword:*paexec*)))
+((Product.keyword:(*PAExec*) AND winlog.event_data.Imphash:("11D40A7B7876288F919AB819CC2D9802" OR "6444f8a34e99b8f7d9647de66aabe516" OR "dfd6aa3f7b2b1035b76b718f1ddc689f" OR "1a6cca4d5460b1710a12dea39e4a592c")) AND (NOT (winlog.event_data.Image.keyword:*paexec*)))
 ```
 
 
@@ -84,11 +82,10 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.defense_evasion",
       "attack.t1036",
-      "attack.t1036.003",
       "FIN7",
       "car.2013-05-009"
     ],
-    "query": "((Product.keyword:(*PAExec*) AND winlog.event_data.Imphash:(\"11d40a7b7876288f919ab819cc2d9802\" OR \"11D40A7B7876288F919AB819CC2D9802\" OR \"6444f8a34e99b8f7d9647de66aabe516\" OR \"6444F8A34E99B8F7D9647DE66AABE516\" OR \"dfd6aa3f7b2b1035b76b718f1ddc689f\" OR \"DFD6AA3F7B2B1035B76B718F1DDC689F\" OR \"1a6cca4d5460b1710a12dea39e4a592c\" OR \"1A6CCA4D5460B1710A12DEA39E4A592C\")) AND (NOT (winlog.event_data.Image.keyword:*paexec*)))"
+    "query": "((Product.keyword:(*PAExec*) AND winlog.event_data.Imphash:(\"11D40A7B7876288F919AB819CC2D9802\" OR \"6444f8a34e99b8f7d9647de66aabe516\" OR \"dfd6aa3f7b2b1035b76b718f1ddc689f\" OR \"1a6cca4d5460b1710a12dea39e4a592c\")) AND (NOT (winlog.event_data.Image.keyword:*paexec*)))"
   },
   "trigger": {
     "schedule": {
@@ -105,7 +102,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "((Product.keyword:(*PAExec*) AND winlog.event_data.Imphash:(\"11d40a7b7876288f919ab819cc2d9802\" OR \"11D40A7B7876288F919AB819CC2D9802\" OR \"6444f8a34e99b8f7d9647de66aabe516\" OR \"6444F8A34E99B8F7D9647DE66AABE516\" OR \"dfd6aa3f7b2b1035b76b718f1ddc689f\" OR \"DFD6AA3F7B2B1035B76B718F1DDC689F\" OR \"1a6cca4d5460b1710a12dea39e4a592c\" OR \"1A6CCA4D5460B1710A12DEA39E4A592C\")) AND (NOT (winlog.event_data.Image.keyword:*paexec*)))",
+                    "query": "((Product.keyword:(*PAExec*) AND winlog.event_data.Imphash:(\"11D40A7B7876288F919AB819CC2D9802\" OR \"6444f8a34e99b8f7d9647de66aabe516\" OR \"dfd6aa3f7b2b1035b76b718f1ddc689f\" OR \"1a6cca4d5460b1710a12dea39e4a592c\")) AND (NOT (winlog.event_data.Image.keyword:*paexec*)))",
                     "analyze_wildcard": true
                   }
                 }
@@ -135,10 +132,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Execution of Renamed PaExec'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -161,7 +155,7 @@ EOF
 ### graylog
     
 ```
-((Product.keyword:(*PAExec*) AND Imphash:("11d40a7b7876288f919ab819cc2d9802" "11D40A7B7876288F919AB819CC2D9802" "6444f8a34e99b8f7d9647de66aabe516" "6444F8A34E99B8F7D9647DE66AABE516" "dfd6aa3f7b2b1035b76b718f1ddc689f" "DFD6AA3F7B2B1035B76B718F1DDC689F" "1a6cca4d5460b1710a12dea39e4a592c" "1A6CCA4D5460B1710A12DEA39E4A592C")) AND (NOT (Image.keyword:*paexec*)))
+((Product.keyword:(*PAExec*) AND Imphash:("11D40A7B7876288F919AB819CC2D9802" "6444f8a34e99b8f7d9647de66aabe516" "dfd6aa3f7b2b1035b76b718f1ddc689f" "1a6cca4d5460b1710a12dea39e4a592c")) AND (NOT (Image.keyword:*paexec*)))
 ```
 
 

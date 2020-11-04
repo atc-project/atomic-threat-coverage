@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | RDP login with localhost source address may be a tunnelled login |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1076: Remote Desktop Protocol](https://attack.mitre.org/techniques/T1076)</li><li>[T1021.001: Remote Desktop Protocol](https://attack.mitre.org/techniques/T1021/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1076: Remote Desktop Protocol](https://attack.mitre.org/techniques/T1076)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1021.001: Remote Desktop Protocol](../Triggers/T1021.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1076: Remote Desktop Protocol](../Triggers/T1076.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,9 +26,8 @@ date: 2019/01/28
 modified: 2019/01/29
 tags:
     - attack.lateral_movement
-    - attack.t1076          # an old one
+    - attack.t1076
     - car.2013-07-002
-    - attack.t1021.001
 status: experimental
 author: Thomas Patzke
 logsource:
@@ -77,8 +76,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.lateral_movement",
       "attack.t1076",
-      "car.2013-07-002",
-      "attack.t1021.001"
+      "car.2013-07-002"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4624\" AND winlog.event_data.LogonType:\"10\" AND SourceNetworkAddress:(\"\\:\\:1\" OR \"127.0.0.1\"))"
   },
@@ -127,10 +125,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'RDP Login from Localhost'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -3,7 +3,7 @@
 | **ID**            | RP0001            |
 | **Description**   | Response playbook for Phishing Email case   |
 | **Author**        | @atc_project        |
-| **Creation Date** | 2019/01/31 |
+| **Creation Date** | 31.01.2019 |
 | **Severity**      | M      |
 | **TLP**           | AMBER           |
 | **PAP**           | WHITE           |

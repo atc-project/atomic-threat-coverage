@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects access to a protected_storage service over the network. Potential abuse of DPAPI to extract domain backup keys from Domain Controllers |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1021: Remote Services](https://attack.mitre.org/techniques/T1021)</li><li>[T1021.002: SMB/Windows Admin Shares](https://attack.mitre.org/techniques/T1021/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1021: Remote Services](https://attack.mitre.org/techniques/T1021)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0032_5145_network_share_object_was_accessed_detailed](../Data_Needed/DN_0032_5145_network_share_object_was_accessed_detailed.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1021.002: SMB/Windows Admin Shares](../Triggers/T1021.002.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -22,14 +22,13 @@ id: 45545954-4016-43c6-855e-eae8f1c369dc
 description: Detects access to a protected_storage service over the network. Potential abuse of DPAPI to extract domain backup keys from Domain Controllers
 status: experimental
 date: 2019/08/10
-modified: 2020/08/23
+modified: 2019/11/10
 author: Roberto Rodriguez @Cyb3rWard0g
 references:
     - https://github.com/Cyb3rWard0g/ThreatHunter-Playbook/tree/master/playbooks/windows/06_credential_access/T1003_credential_dumping/domain_dpapi_backupkey_extraction.md
 tags:
     - attack.lateral_movement
-    - attack.t1021          # an old one
-    - attack.t1021.002
+    - attack.t1021
 logsource:
     product: windows
     service: security
@@ -72,8 +71,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects access to a protected_storage service over the network. Potential abuse of DPAPI to extract domain backup keys from Domain Controllers",
     "tags": [
       "attack.lateral_movement",
-      "attack.t1021",
-      "attack.t1021.002"
+      "attack.t1021"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"5145\" AND winlog.event_data.ShareName.keyword:*IPC* AND RelativeTargetName:\"protected_storage\")"
   },
@@ -122,10 +120,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Protected Storage Service Access'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

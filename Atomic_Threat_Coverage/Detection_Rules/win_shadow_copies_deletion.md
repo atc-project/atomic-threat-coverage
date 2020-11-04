@@ -3,7 +3,7 @@
 | **Description**          | Shadow Copies deletion using operating systems utilities |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0040: Impact](https://attack.mitre.org/tactics/TA0040)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1070: Indicator Removal on Host](https://attack.mitre.org/techniques/T1070)</li><li>[T1490: Inhibit System Recovery](https://attack.mitre.org/techniques/T1490)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1070: Indicator Removal on Host](../Triggers/T1070.md)</li><li>[T1490: Inhibit System Recovery](../Triggers/T1490.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Legitimate Administrator deletes Shadow Copies using operating systems utilities for legitimate reason</li></ul>  |
@@ -39,12 +39,12 @@ logsource:
     product: windows
 detection:
     selection:
-        Image|endswith:
+        NewProcessName|endswith:
             - '\powershell.exe'
             - '\wmic.exe'
             - '\vssadmin.exe'
         CommandLine|contains|all:
-            - shadow  # will mach "delete shadows" and "shadowcopy delete"
+            - shadow
             - delete
     condition: selection
 fields:
@@ -63,14 +63,14 @@ level: critical
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "Image.*.*\\powershell.exe" -or $_.message -match "Image.*.*\\wmic.exe" -or $_.message -match "Image.*.*\\vssadmin.exe") -and $_.message -match "CommandLine.*.*shadow.*" -and $_.message -match "CommandLine.*.*delete.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "NewProcessName.*.*\\powershell.exe" -or $_.message -match "NewProcessName.*.*\\wmic.exe" -or $_.message -match "NewProcessName.*.*\\vssadmin.exe") -and $_.message -match "CommandLine.*.*shadow.*" -and $_.message -match "CommandLine.*.*delete.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:(*\\powershell.exe OR *\\wmic.exe OR *\\vssadmin.exe) AND winlog.event_data.CommandLine.keyword:*shadow* AND winlog.event_data.CommandLine.keyword:*delete*)
+(winlog.event_data.NewProcessName.keyword:(*\\powershell.exe OR *\\wmic.exe OR *\\vssadmin.exe) AND winlog.event_data.CommandLine.keyword:*shadow* AND winlog.event_data.CommandLine.keyword:*delete*)
 ```
 
 
@@ -88,7 +88,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.t1070",
       "attack.t1490"
     ],
-    "query": "(winlog.event_data.Image.keyword:(*\\\\powershell.exe OR *\\\\wmic.exe OR *\\\\vssadmin.exe) AND winlog.event_data.CommandLine.keyword:*shadow* AND winlog.event_data.CommandLine.keyword:*delete*)"
+    "query": "(winlog.event_data.NewProcessName.keyword:(*\\\\powershell.exe OR *\\\\wmic.exe OR *\\\\vssadmin.exe) AND winlog.event_data.CommandLine.keyword:*shadow* AND winlog.event_data.CommandLine.keyword:*delete*)"
   },
   "trigger": {
     "schedule": {
@@ -105,7 +105,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.event_data.Image.keyword:(*\\\\powershell.exe OR *\\\\wmic.exe OR *\\\\vssadmin.exe) AND winlog.event_data.CommandLine.keyword:*shadow* AND winlog.event_data.CommandLine.keyword:*delete*)",
+                    "query": "(winlog.event_data.NewProcessName.keyword:(*\\\\powershell.exe OR *\\\\wmic.exe OR *\\\\vssadmin.exe) AND winlog.event_data.CommandLine.keyword:*shadow* AND winlog.event_data.CommandLine.keyword:*delete*)",
                     "analyze_wildcard": true
                   }
                 }
@@ -135,10 +135,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Shadow Copies Deletion Using Operating Systems Utilities'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -161,21 +158,21 @@ EOF
 ### graylog
     
 ```
-(Image.keyword:(*\\powershell.exe *\\wmic.exe *\\vssadmin.exe) AND CommandLine.keyword:*shadow* AND CommandLine.keyword:*delete*)
+(NewProcessName.keyword:(*\\powershell.exe *\\wmic.exe *\\vssadmin.exe) AND CommandLine.keyword:*shadow* AND CommandLine.keyword:*delete*)
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\powershell.exe" OR Image="*\\wmic.exe" OR Image="*\\vssadmin.exe") CommandLine="*shadow*" CommandLine="*delete*") | table CommandLine,ParentCommandLine
+((NewProcessName="*\\powershell.exe" OR NewProcessName="*\\wmic.exe" OR NewProcessName="*\\vssadmin.exe") CommandLine="*shadow*" CommandLine="*delete*") | table CommandLine,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-(Image IN ["*\\powershell.exe", "*\\wmic.exe", "*\\vssadmin.exe"] CommandLine="*shadow*" CommandLine="*delete*")
+(NewProcessName IN ["*\\powershell.exe", "*\\wmic.exe", "*\\vssadmin.exe"] CommandLine="*shadow*" CommandLine="*delete*")
 ```
 
 

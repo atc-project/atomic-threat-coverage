@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a possible remote threat creation with certain characteristics which are typical for Cobalt Strike beacons |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li><li>[T1055.001: Dynamic-link Library Injection](https://attack.mitre.org/techniques/T1055/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0012_8_windows_sysmon_CreateRemoteThread](../Data_Needed/DN_0012_8_windows_sysmon_CreateRemoteThread.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li></ul>  |
 | **Severity Level**       | high |
@@ -25,12 +25,11 @@ references:
     - https://blog.cobaltstrike.com/2018/04/09/cobalt-strike-3-11-the-snake-that-eats-its-tail/
 tags:
     - attack.defense_evasion
-    - attack.t1055          # an old one
-    - attack.t1055.001
+    - attack.t1055
 status: experimental
 author: Olaf Hartong, Florian Roth, Aleksey Potapov, oscd.community
 date: 2018/11/30
-modified: 2020/08/28
+modified: 2019/11/08
 logsource:
     product: windows
     service: sysmon
@@ -77,8 +76,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects a possible remote threat creation with certain characteristics which are typical for Cobalt Strike beacons",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1055",
-      "attack.t1055.001"
+      "attack.t1055"
     ],
     "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"8\" AND TargetProcessAddress.keyword:(*0B80 OR *0C7C OR *0C88))"
   },
@@ -127,10 +125,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'CobaltStrike Process Injection'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

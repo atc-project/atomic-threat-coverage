@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | This method detects malicious services mentioned in APT29 report by FireEye. The legitimate path for the Google update service is C:\Program Files (x86)\Google\Update\GoogleUpdate.exe so the service names and executable locations used by APT29 are specific enough to be detected in log files. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li><li>[T1543.003: Windows Service](https://attack.mitre.org/techniques/T1543/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1543.003: Windows Service](../Triggers/T1543.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1050: New Service](../Triggers/T1050.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -27,10 +27,8 @@ references:
 tags:
     - attack.persistence
     - attack.g0016
-    - attack.t1050          # an old one
-    - attack.t1543.003
+    - attack.t1050
 date: 2017/11/01
-modified: 2020/08/23
 author: Thomas Patzke 
 logsource:
     product: windows
@@ -91,8 +89,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.persistence",
       "attack.g0016",
-      "attack.t1050",
-      "attack.t1543.003"
+      "attack.t1050"
     ],
     "query": "(winlog.event_id:\"7045\" AND winlog.event_data.ServiceName:\"Google\\ Update\")"
   },
@@ -141,10 +138,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'APT29 Google Update Service Install'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -3,7 +3,7 @@
 | **ID**                      | RA4601            |
 | **Description**             | Revoke authentication credentials   |
 | **Author**                  | @atc_project        |
-| **Creation Date**           | 2019/01/31 |
+| **Creation Date**           | 31.01.2019 |
 | **Category**                | Identity      |
 | **Stage**                   |[RS0004: Eradication](../Response_Stages/RS0004.md)| 
 | **References** |<ul><li>[https://adsecurity.org/?p=556](https://adsecurity.org/?p=556)</li><li>[https://adsecurity.org/?p=483](https://adsecurity.org/?p=483)</li></ul>|

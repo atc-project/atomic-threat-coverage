@@ -1,5 +1,6 @@
 | Title            | LP_0105_windows_audit_authorization_policy_change                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit Authorization Policy Change allows you to audit assignment and removal  of user rights in user right policies, changes in security token object  permission, resource attributes changes and Central Access Policy changes  for file system objects                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | Low                                                                    |

@@ -1,5 +1,6 @@
 | Title            | LP_0031_linux_auditd_execve                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Policy to enable auditd to log process (binary) execution (execeve syscall)  with command line arguments                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | High                                                                    |

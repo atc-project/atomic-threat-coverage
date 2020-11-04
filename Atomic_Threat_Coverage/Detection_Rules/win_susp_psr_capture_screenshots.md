@@ -1,10 +1,10 @@
 | Title                    | Psr.exe Capture Screenshots       |
 |:-------------------------|:------------------|
 | **Description**          | The psr.exe captures desktop screenshots and saves them on the local machine |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0009: Collection](https://attack.mitre.org/tactics/TA0009)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1113: Screen Capture](https://attack.mitre.org/techniques/T1113)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1113: Screen Capture](../Triggers/T1113.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,10 +26,10 @@ references:
     - https://www.sans.org/summit-archives/file/summit-archive-1493861893.pdf
 author: Beyu Denis, oscd.community
 date: 2019/10/12
-modified: 2020/08/28
+modified: 2019/11/04
 tags:
-    - attack.collection
-    - attack.t1113
+    - attack.persistence
+    - attack.t1218
 level: medium
 logsource:
     category: process_creation
@@ -71,8 +71,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Psr.exe Capture Screenshots",
     "description": "The psr.exe captures desktop screenshots and saves them on the local machine",
     "tags": [
-      "attack.collection",
-      "attack.t1113"
+      "attack.persistence",
+      "attack.t1218"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\Psr.exe AND winlog.event_data.CommandLine.keyword:*\\/start*)"
   },
@@ -121,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Psr.exe Capture Screenshots'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

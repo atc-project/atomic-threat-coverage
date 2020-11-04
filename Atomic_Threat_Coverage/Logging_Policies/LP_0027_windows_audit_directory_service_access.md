@@ -1,5 +1,6 @@
 | Title            | LP_0027_windows_audit_directory_service_access                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit Directory Service Access determines whether the operating  system generates audit events when an Active Directory Domain  Services (AD DS) object is accessed                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | High                                                                    |

@@ -1,5 +1,6 @@
 | Title              | DN_0073_4756_member_was_added_to_a_security_enabled_universal_group       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Member was added to a security-enabled universal group |
 | **Logging Policy** | <ul><li>[LP_0101_windows_audit_security_group_management](../Logging_Policies/LP_0101_windows_audit_security_group_management.md)</li></ul> |
 | **References**     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=4756](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=4756)</li></ul> |

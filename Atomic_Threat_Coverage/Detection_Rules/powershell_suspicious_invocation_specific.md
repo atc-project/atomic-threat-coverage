@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects suspicious PowerShell invocation command parameters |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
-| **Trigger**              | <ul><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Penetration tests</li></ul>  |
 | **Development Status**   | experimental |
@@ -23,8 +23,7 @@ status: experimental
 description: Detects suspicious PowerShell invocation command parameters
 tags:
     - attack.execution
-    - attack.t1059.001
-    - attack.t1086  #an old one
+    - attack.t1086
 author: Florian Roth (rule)
 date: 2017/03/05
 logsource:
@@ -53,14 +52,14 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent -LogName Microsoft-Windows-PowerShell/Operational | where {(($_.message -match ".* -nop -w hidden -c .* [Convert]::FromBase64String.*" -or $_.message -match ".* -w hidden -noni -nop -c \"iex(New-Object.*" -or $_.message -match ".* -w hidden -ep bypass -Enc.*" -or $_.message -match ".*powershell.exe reg add HKCU\\software\\microsoft\\windows\\currentversion\\run.*" -or $_.message -match ".*bypass -noprofile -windowstyle hidden (new-object system.net.webclient).download.*" -or $_.message -match ".*iex(New-Object Net.WebClient).Download.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-PowerShell/Operational | where {(($_.message -match "Message.*.* -nop -w hidden -c .* [Convert]::FromBase64String.*" -or $_.message -match "Message.*.* -w hidden -noni -nop -c \"iex(New-Object.*" -or $_.message -match "Message.*.* -w hidden -ep bypass -Enc.*" -or $_.message -match "Message.*.*powershell.exe reg add HKCU\\software\\microsoft\\windows\\currentversion\\run.*" -or $_.message -match "Message.*.*bypass -noprofile -windowstyle hidden (new-object system.net.webclient).download.*" -or $_.message -match "Message.*.*iex(New-Object Net.WebClient).Download.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-Message.keyword:(*\ \-nop\ \-w\ hidden\ \-c\ *\ \[Convert\]\:\:FromBase64String* OR *\ \-w\ hidden\ \-noni\ \-nop\ \-c\ \"iex\(New\-Object* OR *\ \-w\ hidden\ \-ep\ bypass\ \-Enc* OR *powershell.exe\ reg\ add\ HKCU\\software\\microsoft\\windows\\currentversion\\run* OR *bypass\ \-noprofile\ \-windowstyle\ hidden\ \(new\-object\ system.net.webclient\).download* OR *iex\(New\-Object\ Net.WebClient\).Download*)
+winlog.event_data.Message.keyword:(*\ \-nop\ \-w\ hidden\ \-c\ *\ \[Convert\]\:\:FromBase64String* OR *\ \-w\ hidden\ \-noni\ \-nop\ \-c\ \"iex\(New\-Object* OR *\ \-w\ hidden\ \-ep\ bypass\ \-Enc* OR *powershell.exe\ reg\ add\ HKCU\\software\\microsoft\\windows\\currentversion\\run* OR *bypass\ \-noprofile\ \-windowstyle\ hidden\ \(new\-object\ system.net.webclient\).download* OR *iex\(New\-Object\ Net.WebClient\).Download*)
 ```
 
 
@@ -74,10 +73,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects suspicious PowerShell invocation command parameters",
     "tags": [
       "attack.execution",
-      "attack.t1059.001",
       "attack.t1086"
     ],
-    "query": "Message.keyword:(*\\ \\-nop\\ \\-w\\ hidden\\ \\-c\\ *\\ \\[Convert\\]\\:\\:FromBase64String* OR *\\ \\-w\\ hidden\\ \\-noni\\ \\-nop\\ \\-c\\ \\\"iex\\(New\\-Object* OR *\\ \\-w\\ hidden\\ \\-ep\\ bypass\\ \\-Enc* OR *powershell.exe\\ reg\\ add\\ HKCU\\\\software\\\\microsoft\\\\windows\\\\currentversion\\\\run* OR *bypass\\ \\-noprofile\\ \\-windowstyle\\ hidden\\ \\(new\\-object\\ system.net.webclient\\).download* OR *iex\\(New\\-Object\\ Net.WebClient\\).Download*)"
+    "query": "winlog.event_data.Message.keyword:(*\\ \\-nop\\ \\-w\\ hidden\\ \\-c\\ *\\ \\[Convert\\]\\:\\:FromBase64String* OR *\\ \\-w\\ hidden\\ \\-noni\\ \\-nop\\ \\-c\\ \\\"iex\\(New\\-Object* OR *\\ \\-w\\ hidden\\ \\-ep\\ bypass\\ \\-Enc* OR *powershell.exe\\ reg\\ add\\ HKCU\\\\software\\\\microsoft\\\\windows\\\\currentversion\\\\run* OR *bypass\\ \\-noprofile\\ \\-windowstyle\\ hidden\\ \\(new\\-object\\ system.net.webclient\\).download* OR *iex\\(New\\-Object\\ Net.WebClient\\).Download*)"
   },
   "trigger": {
     "schedule": {
@@ -94,7 +92,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "Message.keyword:(*\\ \\-nop\\ \\-w\\ hidden\\ \\-c\\ *\\ \\[Convert\\]\\:\\:FromBase64String* OR *\\ \\-w\\ hidden\\ \\-noni\\ \\-nop\\ \\-c\\ \\\"iex\\(New\\-Object* OR *\\ \\-w\\ hidden\\ \\-ep\\ bypass\\ \\-Enc* OR *powershell.exe\\ reg\\ add\\ HKCU\\\\software\\\\microsoft\\\\windows\\\\currentversion\\\\run* OR *bypass\\ \\-noprofile\\ \\-windowstyle\\ hidden\\ \\(new\\-object\\ system.net.webclient\\).download* OR *iex\\(New\\-Object\\ Net.WebClient\\).Download*)",
+                    "query": "winlog.event_data.Message.keyword:(*\\ \\-nop\\ \\-w\\ hidden\\ \\-c\\ *\\ \\[Convert\\]\\:\\:FromBase64String* OR *\\ \\-w\\ hidden\\ \\-noni\\ \\-nop\\ \\-c\\ \\\"iex\\(New\\-Object* OR *\\ \\-w\\ hidden\\ \\-ep\\ bypass\\ \\-Enc* OR *powershell.exe\\ reg\\ add\\ HKCU\\\\software\\\\microsoft\\\\windows\\\\currentversion\\\\run* OR *bypass\\ \\-noprofile\\ \\-windowstyle\\ hidden\\ \\(new\\-object\\ system.net.webclient\\).download* OR *iex\\(New\\-Object\\ Net.WebClient\\).Download*)",
                     "analyze_wildcard": true
                   }
                 }
@@ -124,10 +122,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious PowerShell Invocations - Specific'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

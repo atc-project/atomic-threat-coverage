@@ -8,7 +8,6 @@ from scripts.atc_visualizations.yaml_handler import YamlHandler
 from scripts.update_attack_mapping import UpdateAttackMapping
 from scripts.attack_navigator_export import GenerateDetectionNavigator
 from scripts.attack_navigator_per_customer_export import GenerateDetectionNavigatorCustomers
-from scripts.yamls2csv import GenerateCSV
 from scripts.es_index_export import GenerateESIndex
 
 # For RE&CT
@@ -17,6 +16,11 @@ from response.atc_react.scripts.populatemarkdown import ReactPopulateMarkdown
 from response.atc_react.scripts.populateconfluence import ReactPopulateConfluence
 from response.atc_react.scripts.react2stix import GenerateSTIX
 from response.atc_react.scripts.react_navigator import GenerateNavigator
+
+# For DATA
+from data.atc_data.scripts.yamls2csv import GenerateCSV
+from data.atc_data.scripts.populatemarkdown import DataPopulateMarkdown
+from data.atc_data.scripts.populateconfluence import DataPopulateConfluence
 
 # For confluence
 from requests.auth import HTTPBasicAuth
@@ -90,6 +94,9 @@ if __name__ == '__main__':
                         help='Build response stage part')
     group2.add_argument('-CU', '--customers', action='store_true',
                         help='Build response customers part')
+    group2.add_argument('-UC', '--usecases', action='store_true',
+                        help='Build response use case part')
+
 
     # Init capabilities
     parser.add_argument('-i', '--init', action='store_true',
@@ -123,15 +130,16 @@ if __name__ == '__main__':
 
     if args.markdown:
         UpdateAttackMapping()
-        PopulateMarkdown(auto=args.auto, lp=args.loggingpolicy,
-                         ms=args.mitigationsystem, mp=args.mitigationpolicy,
-                         dn=args.dataneeded, dr=args.detectionrule,
-                         tg=args.triggers, en=args.enrichment,
-                         cu=args.customers, hp=args.hardeningpolicy,
-                         init=args.init)
+        PopulateMarkdown(auto=args.auto, ms=args.mitigationsystem,
+                         mp=args.mitigationpolicy, dr=args.detectionrule,
+                         tg=args.triggers, cu=args.customers, uc=args.usecases, 
+                         hp=args.hardeningpolicy,init=args.init)
         ReactPopulateMarkdown(auto=args.auto, ra=args.responseactions,
                               rp=args.responseplaybook, rs=args.responsestage,
                               init=args.init)
+        DataPopulateMarkdown(auto=args.auto, lp=args.loggingpolicy,
+                             dn=args.dataneeded,en=args.enrichment,
+                             init=args.init)
 
     elif args.confluence:
         print("Provide Confluence credentials\n")
@@ -141,12 +149,13 @@ if __name__ == '__main__':
 
         auth = HTTPBasicAuth(mail, password)
         UpdateAttackMapping()
-        PopulateConfluence(auth=auth, auto=args.auto, lp=args.loggingpolicy,
-                           ms=args.mitigationsystem, mp=args.mitigationpolicy,
-                           dn=args.dataneeded, dr=args.detectionrule,
-                           tg=args.triggers, en=args.enrichment,
-                           cu=args.customers, hp=args.hardeningpolicy, 
-                           init=args.init)
+        DataPopulateConfluence(auth=auth, auto=args.auto, lp=args.loggingpolicy,
+                                dn=args.dataneeded,en=args.enrichment,
+                                init=args.init)
+        PopulateConfluence(auth=auth, auto=args.auto, ms=args.mitigationsystem, 
+                            mp=args.mitigationpolicy, dr=args.detectionrule,
+                            tg=args.triggers, cu=args.customers, uc=args.usecases,
+                            hp=args.hardeningpolicy, init=args.init)
         ReactPopulateConfluence(auth=auth, auto=args.auto, 
                                 ra=args.responseactions, rp=args.responseplaybook,
                                 rs=args.responsestage, init=args.init)

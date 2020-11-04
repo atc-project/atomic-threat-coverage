@@ -1,10 +1,10 @@
 | Title                    | HTML Help Shell Spawn       |
 |:-------------------------|:------------------|
 | **Description**          | Detects a suspicious child process of a Microsoft HTML Help system when executing compiled HTML files (.chm) |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1218.001: Compiled HTML File](https://attack.mitre.org/techniques/T1218/001)</li><li>[T1218.010: Regsvr32](https://attack.mitre.org/techniques/T1218/010)</li><li>[T1218.011: Rundll32](https://attack.mitre.org/techniques/T1218/011)</li><li>[T1223: Compiled HTML File](https://attack.mitre.org/techniques/T1223)</li><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1059.003: Windows Command Shell](https://attack.mitre.org/techniques/T1059/003)</li><li>[T1059.005: Visual Basic](https://attack.mitre.org/techniques/T1059/005)</li><li>[T1059.007: JavaScript/JScript](https://attack.mitre.org/techniques/T1059/007)</li><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1223: Compiled HTML File](https://attack.mitre.org/techniques/T1223)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.001: Compiled HTML File](../Triggers/T1218.001.md)</li><li>[T1218.010: Regsvr32](../Triggers/T1218.010.md)</li><li>[T1218.011: Rundll32](../Triggers/T1218.011.md)</li><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li><li>[T1059.003: Windows Command Shell](../Triggers/T1059.003.md)</li><li>[T1059.005: Visual Basic](../Triggers/T1059.005.md)</li><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1223: Compiled HTML File](../Triggers/T1223.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,19 +25,11 @@ references:
     - https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/chm-badness-delivers-a-banking-trojan/
 author: Maxim Pavlunin
 date: 2020/04/01
-modified: 2020/09/01
+modified: 2020/04/03
 tags:
-    - attack.defense_evasion
-    - attack.t1218.001
-    - attack.t1218.010
-    - attack.t1218.011
     - attack.execution
-    - attack.t1223  # an old one
-    - attack.t1059.001
-    - attack.t1059.003
-    - attack.t1059.005
-    - attack.t1059.007
-    - attack.t1047
+    - attack.defense_evasion
+    - attack.t1223
 logsource:
     category: process_creation
     product: windows
@@ -89,17 +81,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "HTML Help Shell Spawn",
     "description": "Detects a suspicious child process of a Microsoft HTML Help system when executing compiled HTML files (.chm)",
     "tags": [
-      "attack.defense_evasion",
-      "attack.t1218.001",
-      "attack.t1218.010",
-      "attack.t1218.011",
       "attack.execution",
-      "attack.t1223",
-      "attack.t1059.001",
-      "attack.t1059.003",
-      "attack.t1059.005",
-      "attack.t1059.007",
-      "attack.t1047"
+      "attack.defense_evasion",
+      "attack.t1223"
     ],
     "query": "(winlog.event_data.ParentImage:\"C\\:\\\\Windows\\\\hh.exe\" AND winlog.event_data.Image.keyword:(*\\\\cmd.exe OR *\\\\powershell.exe OR *\\\\wscript.exe OR *\\\\cscript.exe OR *\\\\regsvr32.exe OR *\\\\wmic.exe OR *\\\\rundll32.exe))"
   },
@@ -148,10 +132,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'HTML Help Shell Spawn'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

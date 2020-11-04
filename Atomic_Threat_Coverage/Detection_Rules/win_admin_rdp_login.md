@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detect remote login by Administrator user depending on internal pattern |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1078: Valid Accounts](https://attack.mitre.org/techniques/T1078)</li><li>[T1078.001: Default Accounts](https://attack.mitre.org/techniques/T1078/001)</li><li>[T1078.002: Domain Accounts](https://attack.mitre.org/techniques/T1078/002)</li><li>[T1078.003: Local Accounts](https://attack.mitre.org/techniques/T1078/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1078: Valid Accounts](https://attack.mitre.org/techniques/T1078)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1078.001: Default Accounts](../Triggers/T1078.001.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>Legitimate administrative activity</li></ul>  |
 | **Development Status**   | experimental |
@@ -24,15 +24,11 @@ references:
     - https://car.mitre.org/wiki/CAR-2016-04-005
 tags:
     - attack.lateral_movement
-    - attack.t1078          # an old one
-    - attack.t1078.001
-    - attack.t1078.002
-    - attack.t1078.003
+    - attack.t1078
     - car.2016-04-005
 status: experimental
 author: juju4
 date: 2017/10/29
-modified: 2020/08/23
 logsource:
     product: windows
     service: security
@@ -79,9 +75,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.lateral_movement",
       "attack.t1078",
-      "attack.t1078.001",
-      "attack.t1078.002",
-      "attack.t1078.003",
       "car.2016-04-005"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4624\" AND winlog.event_data.LogonType:\"10\" AND winlog.event_data.AuthenticationPackageName:\"Negotiate\" AND winlog.event_data.AccountName.keyword:Admin\\-*)"
@@ -131,10 +124,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Admin User Remote Logon'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

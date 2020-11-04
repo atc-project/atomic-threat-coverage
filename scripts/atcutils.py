@@ -14,7 +14,7 @@ import warnings
 import html
 
 from os import listdir
-from os.path import isfile, join
+from posixpath import isfile, join
 from requests.auth import HTTPBasicAuth
 from jinja2 import Environment, FileSystemLoader
 from pprint import pprint
@@ -670,7 +670,7 @@ class ATCutils:
         # we will collect all Data Needed fields from "data_needed" field of 
         # linked Enrichment entities
         if ATCutils.check_for_enrichment_presence(detectionrule):
-            en_obj_list = ATCutils.load_yamls(ATCconfig.get('enrichments_directory'))
+            en_obj_list = ATCutils.load_yamls(ATCconfig.get('enrichments_dir'))
 
             for linked_enrichments in detectionrule['enrichment']:
                 for enrichment in en_obj_list:

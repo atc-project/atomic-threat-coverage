@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | This detection excludes known namped pipes accessible remotely and notify on newly observed ones, may help to detect lateral movement and remote exec using named pipes |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1077: Windows Admin Shares](https://attack.mitre.org/techniques/T1077)</li><li>[T1021.002: SMB/Windows Admin Shares](https://attack.mitre.org/techniques/T1021/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1077: Windows Admin Shares](https://attack.mitre.org/techniques/T1077)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0032_5145_network_share_object_was_accessed_detailed](../Data_Needed/DN_0032_5145_network_share_object_was_accessed_detailed.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1021.002: SMB/Windows Admin Shares](../Triggers/T1021.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1077: Windows Admin Shares](../Triggers/T1077.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>update the excluded named pipe to filter out any newly observed legit named pipe</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -19,19 +19,19 @@
 ```
 title: First Time Seen Remote Named Pipe
 id: 52d8b0c6-53d6-439a-9e41-52ad442ad9ad
-description: This detection excludes known namped pipes accessible remotely and notify on newly observed ones, may help to detect lateral movement and remote exec using named pipes
+description: This detection excludes known namped pipes accessible remotely and notify on newly observed ones, may help to detect lateral movement and remote exec
+    using named pipes
 author: Samir Bousseaden
 date: 2019/04/03
 references:
     - https://twitter.com/menasec1/status/1104489274387451904
 tags:
     - attack.lateral_movement
-    - attack.t1077          # an old one
-    - attack.t1021.002
+    - attack.t1077
 logsource:
     product: windows
     service: security
-    definition: 'The advanced audit policy setting "Object Access > Audit Detailed File Share" must be configured for Success/Failure'
+    description: 'The advanced audit policy setting "Object Access > Audit Detailed File Share" must be configured for Success/Failure'
 detection:
     selection1:
         EventID: 5145
@@ -40,23 +40,23 @@ detection:
         EventID: 5145
         ShareName: \\*\IPC$
         RelativeTargetName:
-            - 'atsvc'
-            - 'samr'
-            - 'lsarpc'
-            - 'winreg'
-            - 'netlogon'
-            - 'srvsvc'
-            - 'protected_storage'
-            - 'wkssvc'
-            - 'browser'
-            - 'netdfs'
-            - 'svcctl'
-            - 'spoolss'
-            - 'ntsvcs'
-            - 'LSM_API_service'
-            - 'HydraLsPipe'
-            - 'TermSrv_API_service'
-            - 'MsFteWds'
+         - 'atsvc'
+         - 'samr'
+         - 'lsarpc'
+         - 'winreg'
+         - 'netlogon'
+         - 'srvsvc'
+         - 'protected_storage'
+         - 'wkssvc'
+         - 'browser'
+         - 'netdfs'
+         - 'svcctl'
+         - 'spoolss'
+         - 'ntsvcs'
+         - 'LSM_API_service'
+         - 'HydraLsPipe'
+         - 'TermSrv_API_service'
+         - 'MsFteWds'
     condition: selection1 and not selection2
 falsepositives:
     - update the excluded named pipe to filter out any newly observed legit named pipe
@@ -92,8 +92,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "This detection excludes known namped pipes accessible remotely and notify on newly observed ones, may help to detect lateral movement and remote exec using named pipes",
     "tags": [
       "attack.lateral_movement",
-      "attack.t1077",
-      "attack.t1021.002"
+      "attack.t1077"
     ],
     "query": "(winlog.channel:\"Security\" AND (winlog.event_id:\"5145\" AND winlog.event_data.ShareName.keyword:\\\\*\\\\IPC$) AND (NOT (winlog.event_id:\"5145\" AND winlog.event_data.ShareName.keyword:\\\\*\\\\IPC$ AND RelativeTargetName:(\"atsvc\" OR \"samr\" OR \"lsarpc\" OR \"winreg\" OR \"netlogon\" OR \"srvsvc\" OR \"protected_storage\" OR \"wkssvc\" OR \"browser\" OR \"netdfs\" OR \"svcctl\" OR \"spoolss\" OR \"ntsvcs\" OR \"LSM_API_service\" OR \"HydraLsPipe\" OR \"TermSrv_API_service\" OR \"MsFteWds\"))))"
   },
@@ -142,10 +141,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'First Time Seen Remote Named Pipe'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

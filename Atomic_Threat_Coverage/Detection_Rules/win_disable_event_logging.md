@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects scenarios where system auditing (ie: windows event log auditing) is disabled. This may be used in a scenario where an entity would want to bypass local logging to evade detection when windows event logging is enabled and reviewed. Also, it is recommended to turn off "Local Group Policy Object Processing" via GPO, which will make sure that Active Directory GPOs take precedence over local/edited computer policies via something such as "gpedit.msc". Please note, that disabling "Local Group Policy Object Processing" may cause an issue in scenarios of one off specific GPO modifications -- however it is recommended to perform these modifications in Active Directory anyways. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1054: Indicator Blocking](https://attack.mitre.org/techniques/T1054)</li><li>[T1562.002: Disable Windows Event Logging](https://attack.mitre.org/techniques/T1562/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1054: Indicator Blocking](https://attack.mitre.org/techniques/T1054)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0067_4719_system_audit_policy_was_changed](../Data_Needed/DN_0067_4719_system_audit_policy_was_changed.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1562.002: Disable Windows Event Logging](../Triggers/T1562.002.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -19,13 +19,16 @@
 ```
 title: Disabling Windows Event Auditing
 id: 69aeb277-f15f-4d2d-b32a-55e883609563
-description: 'Detects scenarios where system auditing (ie: windows event log auditing) is disabled. This may be used in a scenario where an entity would want to bypass local logging to evade detection when windows event logging is enabled and reviewed. Also, it is recommended to turn off "Local Group Policy Object Processing" via GPO, which will make sure that Active Directory GPOs take precedence over local/edited computer policies via something such as "gpedit.msc". Please note, that disabling "Local Group Policy Object Processing" may cause an issue in scenarios of one off specific GPO modifications -- however it is recommended to perform these modifications in Active Directory anyways.'
+description: 'Detects scenarios where system auditing (ie: windows event log auditing) is disabled. This may be used in a scenario where an entity would want to bypass
+    local logging to evade detection when windows event logging is enabled and reviewed. Also, it is recommended to turn off "Local Group Policy Object Processing"
+    via GPO, which will make sure that Active Directory GPOs take precedence over local/edited computer policies via something such as "gpedit.msc". Please note,
+    that disabling "Local Group Policy Object Processing" may cause an issue in scenarios of one off specific GPO modifications -- however it is recommended to perform
+    these modifications in Active Directory anyways.'
 references:
     - https://bit.ly/WinLogsZero2Hero
 tags:
     - attack.defense_evasion
-    - attack.t1054          # an old one
-    - attack.t1562.002
+    - attack.t1054
 author: '@neu5ron'
 date: 2017/11/19
 logsource:
@@ -71,8 +74,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects scenarios where system auditing (ie: windows event log auditing) is disabled. This may be used in a scenario where an entity would want to bypass local logging to evade detection when windows event logging is enabled and reviewed. Also, it is recommended to turn off \"Local Group Policy Object Processing\" via GPO, which will make sure that Active Directory GPOs take precedence over local/edited computer policies via something such as \"gpedit.msc\". Please note, that disabling \"Local Group Policy Object Processing\" may cause an issue in scenarios of one off specific GPO modifications -- however it is recommended to perform these modifications in Active Directory anyways.",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1054",
-      "attack.t1562.002"
+      "attack.t1054"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4719\" AND winlog.event_data.AuditPolicyChanges:\"removed\")"
   },
@@ -121,10 +123,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Disabling Windows Event Auditing'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

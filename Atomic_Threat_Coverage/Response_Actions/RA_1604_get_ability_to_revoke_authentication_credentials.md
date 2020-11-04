@@ -3,7 +3,7 @@
 | **ID**                      | RA1604            |
 | **Description**             | Make sure you have the ability to revoke authentication credentials   |
 | **Author**                  | your name/nickname/twitter        |
-| **Creation Date**           | YYYY/MM/DD |
+| **Creation Date**           | DD.MM.YYYY |
 | **Category**                | Identity      |
 | **Stage**                   |[RS0001: Preparation](../Response_Stages/RS0001.md)| 
 | **References** |<ul><li>[https://example.com](https://example.com)</li></ul>|

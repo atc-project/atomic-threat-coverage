@@ -3,7 +3,7 @@
 | **ID**                      | RA1002            |
 | **Description**             | Take training courses to gain relevant knowledge   |
 | **Author**                  | @atc_project        |
-| **Creation Date**           | 2020/04/08 |
+| **Creation Date**           | 08.04.2020 |
 | **Category**                | General      |
 | **Stage**                   |[RS0001: Preparation](../Response_Stages/RS0001.md)| 
 

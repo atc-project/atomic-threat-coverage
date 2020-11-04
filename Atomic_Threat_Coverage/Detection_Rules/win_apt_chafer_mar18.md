@@ -1,10 +1,10 @@
 | Title                    | Chafer Activity       |
 |:-------------------------|:------------------|
 | **Description**          | Detects Chafer activity attributed to OilRig as reported in Nyotron report in March 2018 |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li><li>[T1053.005: Scheduled Task](https://attack.mitre.org/techniques/T1053/005)</li><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li><li>[T1543.003: Windows Service](https://attack.mitre.org/techniques/T1543/003)</li><li>[T1112: Modify Registry](https://attack.mitre.org/techniques/T1112)</li><li>[T1071: Application Layer Protocol](https://attack.mitre.org/techniques/T1071)</li><li>[T1071.004: DNS](https://attack.mitre.org/techniques/T1071/004)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li><li>[T1112: Modify Registry](https://attack.mitre.org/techniques/T1112)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li><li>[DN_0064_4698_scheduled_task_was_created](../Data_Needed/DN_0064_4698_scheduled_task_was_created.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1053.005: Scheduled Task](../Triggers/T1053.005.md)</li><li>[T1543.003: Windows Service](../Triggers/T1543.003.md)</li><li>[T1112: Modify Registry](../Triggers/T1112.md)</li><li>[T1071.004: DNS](../Triggers/T1071.004.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1053: Scheduled Task/Job](../Triggers/T1053.md)</li><li>[T1112: Modify Registry](../Triggers/T1112.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -26,18 +26,12 @@ references:
 tags:
     - attack.persistence
     - attack.g0049
-    - attack.t1053 # an old one
-    - attack.t1053.005
+    - attack.t1053
     - attack.s0111
-    - attack.t1050 # an old one
-    - attack.t1543.003
     - attack.defense_evasion
     - attack.t1112
-    - attack.command_and_control
-    - attack.t1071 # an old one
-    - attack.t1071.004
 date: 2018/03/23
-modified: 2020/08/26
+modified: 2019/03/01
 author: Florian Roth, Markus Neis
 detection:
     condition: 1 of them
@@ -135,15 +129,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.persistence",
       "attack.g0049",
       "attack.t1053",
-      "attack.t1053.005",
       "attack.s0111",
-      "attack.t1050",
-      "attack.t1543.003",
       "attack.defense_evasion",
-      "attack.t1112",
-      "attack.command_and_control",
-      "attack.t1071",
-      "attack.t1071.004"
+      "attack.t1112"
     ],
     "query": "(winlog.event_id:\"7045\" AND winlog.event_data.ServiceName:(\"SC\\ Scheduled\\ Scan\" OR \"UpdatMachine\"))"
   },
@@ -192,10 +180,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Chafer Activity'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -220,15 +205,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.persistence",
       "attack.g0049",
       "attack.t1053",
-      "attack.t1053.005",
       "attack.s0111",
-      "attack.t1050",
-      "attack.t1543.003",
       "attack.defense_evasion",
-      "attack.t1112",
-      "attack.command_and_control",
-      "attack.t1071",
-      "attack.t1071.004"
+      "attack.t1112"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4698\" AND TaskName:(\"SC\\ Scheduled\\ Scan\" OR \"UpdatMachine\"))"
   },
@@ -277,10 +256,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Chafer Activity'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -305,15 +281,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.persistence",
       "attack.g0049",
       "attack.t1053",
-      "attack.t1053.005",
       "attack.s0111",
-      "attack.t1050",
-      "attack.t1543.003",
       "attack.defense_evasion",
-      "attack.t1112",
-      "attack.command_and_control",
-      "attack.t1071",
-      "attack.t1071.004"
+      "attack.t1112"
     ],
     "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"13\" AND winlog.event_data.EventType:\"SetValue\" AND (winlog.event_data.TargetObject.keyword:(*SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UMe OR *SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\UT) OR (winlog.event_data.TargetObject.keyword:*\\\\Control\\\\SecurityProviders\\\\WDigest\\\\UseLogonCredential AND winlog.event_data.Details:\"DWORD\\ \\(0x00000001\\)\")))"
   },
@@ -362,10 +332,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Chafer Activity'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -390,15 +357,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.persistence",
       "attack.g0049",
       "attack.t1053",
-      "attack.t1053.005",
       "attack.s0111",
-      "attack.t1050",
-      "attack.t1543.003",
       "attack.defense_evasion",
-      "attack.t1112",
-      "attack.command_and_control",
-      "attack.t1071",
-      "attack.t1071.004"
+      "attack.t1112"
     ],
     "query": "(winlog.event_data.CommandLine.keyword:(*\\\\Service.exe\\ i OR *\\\\Service.exe\\ u OR *\\\\microsoft\\\\Taskbar\\\\autoit3.exe OR C\\:\\\\wsc.exe*) OR winlog.event_data.Image.keyword:*\\\\Windows\\\\Temp\\\\DB\\\\*.exe OR (winlog.event_data.CommandLine.keyword:*\\\\nslookup.exe\\ \\-q\\=TXT* AND winlog.event_data.ParentImage.keyword:*\\\\Autoit*))"
   },
@@ -447,10 +408,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Chafer Activity'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

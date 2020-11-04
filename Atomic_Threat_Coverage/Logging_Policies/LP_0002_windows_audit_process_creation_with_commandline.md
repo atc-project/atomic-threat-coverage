@@ -1,5 +1,6 @@
 | Title            | LP_0002_windows_audit_process_creation_with_commandline                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit Process Creation determines whether the operating  system generates audit events when a process is created (starts).  These audit events can help you track user activity and understand  how a computer is being used. Information includes the name of the  program or the user that created the process (incl. commanline of new process).                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | Medium                                                                    |

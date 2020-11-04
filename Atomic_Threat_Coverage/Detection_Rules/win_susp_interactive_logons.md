@@ -1,6 +1,6 @@
 | Title                    | Interactive Logon to Server Systems       |
 |:-------------------------|:------------------|
-| **Description**          | Detects interactive console logons to Server Systems |
+| **Description**          | Detects interactive console logons to |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1078: Valid Accounts](https://attack.mitre.org/techniques/T1078)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li><li>[DN_0040_528_user_successfully_logged_on_to_a_computer](../Data_Needed/DN_0040_528_user_successfully_logged_on_to_a_computer.md)</li><li>[DN_0041_529_logon_failure](../Data_Needed/DN_0041_529_logon_failure.md)</li><li>[DN_0057_4625_account_failed_to_logon](../Data_Needed/DN_0057_4625_account_failed_to_logon.md)</li></ul>  |
@@ -19,7 +19,7 @@
 ```
 title: Interactive Logon to Server Systems
 id: 3ff152b2-1388-4984-9cd9-a323323fdadf
-description: Detects interactive console logons to Server Systems
+description: Detects interactive console logons to
 author: Florian Roth
 date: 2017/03/17
 tags:
@@ -63,7 +63,7 @@ Get-WinEvent -LogName Security | where {((($_.ID -eq "528" -or $_.ID -eq "529" -
 ### es-qs
     
 ```
-(winlog.channel:"Security" AND (winlog.event_id:("528" OR "529" OR "4624" OR "4625") AND winlog.event_data.LogonType:"2" AND winlog.ComputerName:("%ServerSystems%" OR "%DomainControllers%")) AND (NOT (winlog.event_data.LogonProcessName:"Advapi" AND winlog.ComputerName:"%Workstations%")))
+(winlog.channel:"Security" AND (winlog.event_id:("528" OR "529" OR "4624" OR "4625") AND winlog.event_data.LogonType:"2" AND winlog.computer_name:("%ServerSystems%" OR "%DomainControllers%")) AND (NOT (winlog.event_data.LogonProcessName:"Advapi" AND winlog.computer_name:"%Workstations%")))
 ```
 
 
@@ -74,12 +74,12 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
 {
   "metadata": {
     "title": "Interactive Logon to Server Systems",
-    "description": "Detects interactive console logons to Server Systems",
+    "description": "Detects interactive console logons to",
     "tags": [
       "attack.lateral_movement",
       "attack.t1078"
     ],
-    "query": "(winlog.channel:\"Security\" AND (winlog.event_id:(\"528\" OR \"529\" OR \"4624\" OR \"4625\") AND winlog.event_data.LogonType:\"2\" AND winlog.ComputerName:(\"%ServerSystems%\" OR \"%DomainControllers%\")) AND (NOT (winlog.event_data.LogonProcessName:\"Advapi\" AND winlog.ComputerName:\"%Workstations%\")))"
+    "query": "(winlog.channel:\"Security\" AND (winlog.event_id:(\"528\" OR \"529\" OR \"4624\" OR \"4625\") AND winlog.event_data.LogonType:\"2\" AND winlog.computer_name:(\"%ServerSystems%\" OR \"%DomainControllers%\")) AND (NOT (winlog.event_data.LogonProcessName:\"Advapi\" AND winlog.computer_name:\"%Workstations%\")))"
   },
   "trigger": {
     "schedule": {
@@ -96,7 +96,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Security\" AND (winlog.event_id:(\"528\" OR \"529\" OR \"4624\" OR \"4625\") AND winlog.event_data.LogonType:\"2\" AND winlog.ComputerName:(\"%ServerSystems%\" OR \"%DomainControllers%\")) AND (NOT (winlog.event_data.LogonProcessName:\"Advapi\" AND winlog.ComputerName:\"%Workstations%\")))",
+                    "query": "(winlog.channel:\"Security\" AND (winlog.event_id:(\"528\" OR \"529\" OR \"4624\" OR \"4625\") AND winlog.event_data.LogonType:\"2\" AND winlog.computer_name:(\"%ServerSystems%\" OR \"%DomainControllers%\")) AND (NOT (winlog.event_data.LogonProcessName:\"Advapi\" AND winlog.computer_name:\"%Workstations%\")))",
                     "analyze_wildcard": true
                   }
                 }
@@ -126,10 +126,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Interactive Logon to Server Systems'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

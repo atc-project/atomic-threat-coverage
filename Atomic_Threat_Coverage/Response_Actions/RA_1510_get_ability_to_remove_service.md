@@ -3,7 +3,7 @@
 | **ID**                      | RA1510            |
 | **Description**             | Make sure you have the ability to remove a service   |
 | **Author**                  | your name/nickname/twitter        |
-| **Creation Date**           | YYYY/MM/DD |
+| **Creation Date**           | DD.MM.YYYY |
 | **Category**                | Configuration      |
 | **Stage**                   |[RS0001: Preparation](../Response_Stages/RS0001.md)| 
 | **References** |<ul><li>[https://example.com](https://example.com)</li></ul>|

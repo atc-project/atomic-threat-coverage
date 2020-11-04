@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects suspicious calls of DLLs in rundll32.dll exports by ordinal |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1218.011: Rundll32](https://attack.mitre.org/techniques/T1218/011)</li><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.011: Rundll32](../Triggers/T1218.011.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1085: Rundll32](../Triggers/T1085.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li><li>Windows contol panel elements have been identified as source (mmc)</li></ul>  |
 | **Development Status**   | experimental |
@@ -27,9 +27,8 @@ references:
     - https://twitter.com/cyb3rops/status/1186631731543236608
 tags:
     - attack.defense_evasion
-    - attack.execution  # an old one
-    - attack.t1218.011
-    - attack.t1085      # an old one
+    - attack.execution
+    - attack.t1085
 author: Florian Roth
 date: 2019/10/22
 logsource:
@@ -75,7 +74,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.defense_evasion",
       "attack.execution",
-      "attack.t1218.011",
       "attack.t1085"
     ],
     "query": "winlog.event_data.CommandLine.keyword:*\\\\rundll32.exe\\ *,#*"
@@ -125,10 +123,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Call by Ordinal'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

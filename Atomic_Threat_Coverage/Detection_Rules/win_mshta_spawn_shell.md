@@ -1,10 +1,10 @@
 | Title                    | MSHTA Spawning Windows Shell       |
 |:-------------------------|:------------------|
-| **Description**          | Detects a Windows command line executable started from MSHTA |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li><li>[T1218.005: Mshta](https://attack.mitre.org/techniques/T1218/005)</li></ul>  |
+| **Description**          | Detects a Windows command line executable started from MSHTA. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.005: Mshta](../Triggers/T1218.005.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1170: Mshta](../Triggers/T1170.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Printer software / driver installations</li><li>HP software</li></ul>  |
 | **Development Status**   | experimental |
@@ -20,12 +20,11 @@
 title: MSHTA Spawning Windows Shell
 id: 03cc0c25-389f-4bf8-b48d-11878079f1ca
 status: experimental
-description: Detects a Windows command line executable started from MSHTA
+description: Detects a Windows command line executable started from MSHTA.
 references:
     - https://www.trustedsec.com/july-2015/malicious-htas/
 author: Michael Haag
 date: 2019/01/16
-modified: 2020/09/01
 logsource:
     category: process_creation
     product: windows
@@ -48,8 +47,8 @@ fields:
     - ParentCommandLine
 tags:
     - attack.defense_evasion
-    - attack.t1170          # an old one
-    - attack.t1218.005
+    - attack.execution
+    - attack.t1170
     - car.2013-02-003
     - car.2013-03-001
     - car.2014-04-003
@@ -85,11 +84,11 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
 {
   "metadata": {
     "title": "MSHTA Spawning Windows Shell",
-    "description": "Detects a Windows command line executable started from MSHTA",
+    "description": "Detects a Windows command line executable started from MSHTA.",
     "tags": [
       "attack.defense_evasion",
+      "attack.execution",
       "attack.t1170",
-      "attack.t1218.005",
       "car.2013-02-003",
       "car.2013-03-001",
       "car.2014-04-003"
@@ -141,10 +140,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'MSHTA Spawning Windows Shell'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

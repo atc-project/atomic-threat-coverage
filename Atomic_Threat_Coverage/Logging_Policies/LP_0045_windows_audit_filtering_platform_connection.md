@@ -1,5 +1,6 @@
 | Title            | LP_0045_windows_audit_filtering_platform_connection                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit Filtering Platform Connection determines whether the operating  system generates audit events when connections are allowed or blocked  by the Windows Filtering Platform                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | Extremely High                                                                    |

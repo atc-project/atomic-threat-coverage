@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | This events that are generated when using the hacktool Ruler by Sensepost |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li><li>[T1075: Pass the Hash](https://attack.mitre.org/techniques/T1075)</li><li>[T1114: Email Collection](https://attack.mitre.org/techniques/T1114)</li><li>[T1059: Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)</li><li>[T1550.002: Pass the Hash](https://attack.mitre.org/techniques/T1550/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li><li>[T1075: Pass the Hash](https://attack.mitre.org/techniques/T1075)</li><li>[T1114: Email Collection](https://attack.mitre.org/techniques/T1114)</li><li>[T1059: Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li><li>[DN_0057_4625_account_failed_to_logon](../Data_Needed/DN_0057_4625_account_failed_to_logon.md)</li><li>[DN_0079_4776_computer_attempted_to_validate_the_credentials_for_an_account](../Data_Needed/DN_0079_4776_computer_attempted_to_validate_the_credentials_for_an_account.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1550.002: Pass the Hash](../Triggers/T1550.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1087: Account Discovery](../Triggers/T1087.md)</li><li>[T1075: Pass the Hash](../Triggers/T1075.md)</li><li>[T1114: Email Collection](../Triggers/T1114.md)</li><li>[T1059: Command and Scripting Interpreter](../Triggers/T1059.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Go utilities that use staaldraad awesome NTLM library</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -33,22 +33,21 @@ tags:
     - attack.discovery
     - attack.execution
     - attack.t1087
-    - attack.t1075          # an old one
+    - attack.t1075
     - attack.t1114
     - attack.t1059
-    - attack.t1550.002
 logsource:
     product: windows
     service: security
 detection:
     selection1:
-        EventID:
-            - 4776
+        EventID: 
+          - 4776
         Workstation: 'RULER'
     selection2:
         EventID:
-            - 4624
-            - 4625
+          - 4624
+          - 4625
         WorkstationName: 'RULER'
     condition: (1 of selection*)
 falsepositives:
@@ -89,8 +88,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.t1087",
       "attack.t1075",
       "attack.t1114",
-      "attack.t1059",
-      "attack.t1550.002"
+      "attack.t1059"
     ],
     "query": "(winlog.channel:\"Security\" AND ((winlog.event_id:(\"4776\") AND Workstation:\"RULER\") OR (winlog.event_id:(\"4624\" OR \"4625\") AND winlog.event_data.WorkstationName:\"RULER\")))"
   },
@@ -139,10 +137,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Hacktool Ruler'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

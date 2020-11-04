@@ -1,10 +1,10 @@
 | Title                    | Possible Privilege Escalation via Weak Service Permissions       |
 |:-------------------------|:------------------|
 | **Description**          | Detection of sc.exe utility spawning by user with Medium integrity level to change service ImagePath or FailureCommand |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1574.011: Services Registry Permissions Weakness](https://attack.mitre.org/techniques/T1574/011)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1134: Access Token Manipulation](https://attack.mitre.org/techniques/T1134)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1574.011: Services Registry Permissions Weakness](../Triggers/T1574.011.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -24,14 +24,12 @@ references:
     - https://speakerdeck.com/heirhabarov/hunting-for-privilege-escalation-in-windows-environment
     - https://pentestlab.blog/2017/03/30/weak-service-permissions/
 tags:
-    - attack.persistence
-    - attack.defense_evasion
     - attack.privilege_escalation
-    - attack.t1574.011
+    - attack.t1134
 status: experimental
 author: Teymur Kheirkhabarov
 date: 2019/10/26
-modified: 2020/08/29
+modified: 2019/11/11
 logsource:
     category: process_creation
     product: windows
@@ -81,10 +79,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Possible Privilege Escalation via Weak Service Permissions",
     "description": "Detection of sc.exe utility spawning by user with Medium integrity level to change service ImagePath or FailureCommand",
     "tags": [
-      "attack.persistence",
-      "attack.defense_evasion",
       "attack.privilege_escalation",
-      "attack.t1574.011"
+      "attack.t1134"
     ],
     "query": "((winlog.event_data.Image.keyword:*\\\\sc.exe AND IntegrityLevel:\"Medium\") AND ((winlog.event_data.CommandLine.keyword:*config* AND winlog.event_data.CommandLine.keyword:*binPath*) OR (winlog.event_data.CommandLine.keyword:*failure* AND winlog.event_data.CommandLine.keyword:*command*)))"
   },
@@ -133,10 +129,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Possible Privilege Escalation via Weak Service Permissions'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

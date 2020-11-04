@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects well-known credential dumping tools execution via service execution events |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1003.001: LSASS Memory](https://attack.mitre.org/techniques/T1003/001)</li><li>[T1003.002: Security Account Manager](https://attack.mitre.org/techniques/T1003/002)</li><li>[T1003.004: LSA Secrets](https://attack.mitre.org/techniques/T1003/004)</li><li>[T1003.005: Cached Domain Credentials](https://attack.mitre.org/techniques/T1003/005)</li><li>[T1003.006: DCSync](https://attack.mitre.org/techniques/T1003/006)</li><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li><li>[T1569.002: Service Execution](https://attack.mitre.org/techniques/T1569/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li><li>[DN_0010_6_windows_sysmon_driver_loaded](../Data_Needed/DN_0010_6_windows_sysmon_driver_loaded.md)</li><li>[DN_0063_4697_service_was_installed_in_the_system](../Data_Needed/DN_0063_4697_service_was_installed_in_the_system.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.001: LSASS Memory](../Triggers/T1003.001.md)</li><li>[T1003.002: Security Account Manager](../Triggers/T1003.002.md)</li><li>[T1003.004: LSA Secrets](../Triggers/T1003.004.md)</li><li>[T1569.002: Service Execution](../Triggers/T1569.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1035: Service Execution](../Triggers/T1035.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Legitimate Administrator using credential dumping tool for password recovery</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -24,20 +24,14 @@ description: Detects well-known credential dumping tools execution via service e
 author: Florian Roth, Teymur Kheirkhabarov, Daniil Yugoslavskiy, oscd.community
 id: 4976aa50-8f41-45c6-8b15-ab3fc10e79ed
 date: 2017/03/05
-modified: 2020/08/23
+modified: 2019/11/01
 references:
     - https://www.slideshare.net/heirhabarov/hunting-for-credentials-dumping-in-windows-environment
 tags:
     - attack.credential_access
     - attack.execution
-    - attack.t1003          # an old one
-    - attack.t1003.001
-    - attack.t1003.002
-    - attack.t1003.004
-    - attack.t1003.005
-    - attack.t1003.006
-    - attack.t1035          # an old one
-    - attack.t1569.002
+    - attack.t1003
+    - attack.t1035
     - attack.s0005
 detection:
     selection_1:
@@ -120,13 +114,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.credential_access",
       "attack.execution",
       "attack.t1003",
-      "attack.t1003.001",
-      "attack.t1003.002",
-      "attack.t1003.004",
-      "attack.t1003.005",
-      "attack.t1003.006",
       "attack.t1035",
-      "attack.t1569.002",
       "attack.s0005"
     ],
     "query": "(winlog.event_id:\"7045\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))"
@@ -176,10 +164,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Credential Dumping Tools Service Execution'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -204,13 +189,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.credential_access",
       "attack.execution",
       "attack.t1003",
-      "attack.t1003.001",
-      "attack.t1003.002",
-      "attack.t1003.004",
-      "attack.t1003.005",
-      "attack.t1003.006",
       "attack.t1035",
-      "attack.t1569.002",
       "attack.s0005"
     ],
     "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"6\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))"
@@ -260,10 +239,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Credential Dumping Tools Service Execution'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -288,13 +264,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.credential_access",
       "attack.execution",
       "attack.t1003",
-      "attack.t1003.001",
-      "attack.t1003.002",
-      "attack.t1003.004",
-      "attack.t1003.005",
-      "attack.t1003.006",
       "attack.t1035",
-      "attack.t1569.002",
       "attack.s0005"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4697\" AND (winlog.event_data.ServiceName.keyword:(*fgexec* OR *wceservice* OR *wce\\ service* OR *pwdump* OR *gsecdump* OR *cachedump* OR *mimikatz* OR *mimidrv*) OR winlog.event_data.ImagePath.keyword:(*fgexec* OR *dumpsvc* OR *cachedump* OR *mimidrv* OR *gsecdump* OR *servpw* OR *pwdump*) OR winlog.event_data.ImagePath:/((\\\\\\\\.*\\\\.*|.*\\\\)([{]?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}[}])?\\.(exe|scr|cpl|bat|js|cmd|vbs).*)/))"
@@ -344,10 +314,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Credential Dumping Tools Service Execution'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

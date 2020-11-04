@@ -1,5 +1,6 @@
 | Title            | LP_0046_windows_audit_security_state_change                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit Security State Change contains Windows startup, recovery,  and shutdown events, and information about changes in system time                                                               |
 | **Default**      | Configured                                                                   |
 | **Event Volume** | Low                                                                    |

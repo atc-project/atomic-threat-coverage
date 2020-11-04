@@ -1,5 +1,6 @@
 | Title            | LP_0109_windows_powershell_script_block_logging                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Script block logging records blocks of code as they are executed by the PowerShell engine,  thereby capturing the full contents of code executed by an attacker, including scripts and commands.  Due to the nature of script block logging, it also records de-obfuscated code as it is executed.  PowerShell 5.0 will automatically log code blocks if the block’s contents match on a list of suspicious commands or scripting techniques,  even if script block logging is not enabled. These suspicious blocks are logged at the “warning” level in EID 4104,  unless script block logging is explicitly disabled.                                                               |
 | **Default**      | Partially (Other)                                                                   |
 | **Event Volume** | High                                                                    |

@@ -1,5 +1,6 @@
 | Title            | LP_0003_windows_sysmon_process_creation                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | The process creation event provides extended information  about a newly created process. The full command line provides  context on the process execution. The ProcessGUID field is a  unique value for this process across a domain to make event  correlation easier. The hash is a full hash of the file with  the algorithms in the HashType field.                                                               |
 | **Default**      | Partially (Other)                                                                   |
 | **Event Volume** | Medium                                                                    |

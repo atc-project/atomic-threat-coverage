@@ -1,5 +1,6 @@
 | Title              | DN_0020_17_windows_sysmon_PipeEvent       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | This event generates when a named pipe is created. Malware often uses named  pipes for interprocess communication |
 | **Logging Policy** | <ul><li>[LP_0009_windows_sysmon_PipeEvent](../Logging_Policies/LP_0009_windows_sysmon_PipeEvent.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-17.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-17.md)</li><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90017](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90017)</li></ul> |

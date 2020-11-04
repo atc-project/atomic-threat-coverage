@@ -1,5 +1,6 @@
 | Title            | LP_0007_windows_sysmon_ProcessAccess                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | The process accessed event reports when a process opens another process,  an operation that’s often followed by information queries or reading and writing the address  space of the target process. This enables detection of hacking tools that read the memory  contents of processes like Local Security Authority (Lsass.exe) in order to steal credentials for use in Pass-the-Hash  attacks. Enabling it can generate significant amounts of logging if there are diagnostic utilities active  that repeatedly open processes to query their state, so it generally should only be done so with filters  that remove expected accesses.                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | High                                                                    |

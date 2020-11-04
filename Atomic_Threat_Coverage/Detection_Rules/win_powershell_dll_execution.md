@@ -1,16 +1,16 @@
 | Title                    | Detection of PowerShell Execution via DLL       |
 |:-------------------------|:------------------|
-| **Description**          | Detects PowerShell Strings applied to rundll as seen in PowerShdll.dll |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li><li>[T1218.011: Rundll32](https://attack.mitre.org/techniques/T1218/011)</li></ul>  |
+| **Description**          | Detects PowerShell Strings applied to rundllas seen in PowerShdll.dll |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.011: Rundll32](../Triggers/T1218.011.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
 | **References**           | <ul><li>[https://github.com/p3nt4/PowerShdll/blob/master/README.md](https://github.com/p3nt4/PowerShdll/blob/master/README.md)</li></ul>  |
 | **Author**               | Markus Neis |
-
+| Other Tags           | <ul><li>car.2014-04-003</li></ul> | 
 
 ## Detection Rules
 
@@ -20,16 +20,15 @@
 title: Detection of PowerShell Execution via DLL
 id: 6812a10b-60ea-420c-832f-dfcc33b646ba
 status: experimental
-description: Detects PowerShell Strings applied to rundll as seen in PowerShdll.dll
+description: Detects PowerShell Strings applied to rundllas seen in PowerShdll.dll
 references:
     - https://github.com/p3nt4/PowerShdll/blob/master/README.md
 tags:
-    - attack.defense_evasion
-    - attack.t1085          # an old one
-    - attack.t1218.011
+    - attack.execution
+    - attack.t1086
+    - car.2014-04-003
 author: Markus Neis
 date: 2018/08/25
-modified: 2020/09/01
 logsource:
     category: process_creation
     product: windows
@@ -76,11 +75,11 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
 {
   "metadata": {
     "title": "Detection of PowerShell Execution via DLL",
-    "description": "Detects PowerShell Strings applied to rundll as seen in PowerShdll.dll",
+    "description": "Detects PowerShell Strings applied to rundllas seen in PowerShdll.dll",
     "tags": [
-      "attack.defense_evasion",
-      "attack.t1085",
-      "attack.t1218.011"
+      "attack.execution",
+      "attack.t1086",
+      "car.2014-04-003"
     ],
     "query": "((winlog.event_data.Image.keyword:(*\\\\rundll32.exe) OR winlog.event_data.Description.keyword:(*Windows\\-Hostprozess\\ \\(Rundll32\\)*)) AND winlog.event_data.CommandLine.keyword:(*Default.GetString* OR *FromBase64String*))"
   },
@@ -129,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Detection of PowerShell Execution via DLL'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

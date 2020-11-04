@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the execution of an executable that is typically used by PlugX for DLL side loading started from an uncommon location |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li><li>[T1574.002: DLL Side-Loading](https://attack.mitre.org/techniques/T1574/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1574.002: DLL Side-Loading](../Triggers/T1574.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -29,8 +29,7 @@ date: 2017/06/12
 tags:
     - attack.s0013
     - attack.defense_evasion
-    - attack.t1073          # an old one
-    - attack.t1574.002
+    - attack.t1073
 logsource:
     category: process_creation
     product: windows
@@ -104,7 +103,10 @@ detection:
             - '*\Windows Kit*'
             - '*\Windows Resource Kit\\*'
             - '*\Microsoft.NET\\*'
-    condition: ( selection_cammute and not filter_cammute ) or ( selection_chrome_frame and not filter_chrome_frame ) or ( selection_devemu and not filter_devemu ) or ( selection_gadget and not filter_gadget ) or ( selection_hcc and not filter_hcc ) or ( selection_hkcmd and not filter_hkcmd ) or ( selection_mc and not filter_mc ) or ( selection_msmpeng and not filter_msmpeng ) or ( selection_msseces and not filter_msseces ) or ( selection_oinfo and not filter_oinfo ) or ( selection_oleview and not filter_oleview ) or ( selection_rc and not filter_rc )
+    condition: ( selection_cammute and not filter_cammute ) or ( selection_chrome_frame and not filter_chrome_frame ) or ( selection_devemu and not filter_devemu )
+        or ( selection_gadget and not filter_gadget ) or ( selection_hcc and not filter_hcc ) or ( selection_hkcmd and not filter_hkcmd ) or ( selection_mc and not filter_mc
+        ) or ( selection_msmpeng and not filter_msmpeng ) or ( selection_msseces and not filter_msseces ) or ( selection_oinfo and not filter_oinfo ) or ( selection_oleview
+        and not filter_oleview ) or ( selection_rc and not filter_rc )
 fields:
     - CommandLine
     - ParentCommandLine
@@ -143,8 +145,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.s0013",
       "attack.defense_evasion",
-      "attack.t1073",
-      "attack.t1574.002"
+      "attack.t1073"
     ],
     "query": "((((((((((((winlog.event_data.Image.keyword:*\\\\CamMute.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\Lenovo\\\\Communication\\ Utility\\\\*))) OR (winlog.event_data.Image.keyword:*\\\\chrome_frame_helper.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\Google\\\\Chrome\\\\application\\\\*)))) OR (winlog.event_data.Image.keyword:*\\\\dvcemumanager.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\Microsoft\\ Device\\ Emulator\\\\*)))) OR (winlog.event_data.Image.keyword:*\\\\Gadget.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\Windows\\ Media\\ Player\\\\*)))) OR (winlog.event_data.Image.keyword:*\\\\hcc.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\HTML\\ Help\\ Workshop\\\\*)))) OR (winlog.event_data.Image.keyword:*\\\\hkcmd.exe AND (NOT (winlog.event_data.Image.keyword:(*\\\\System32\\\\* OR *\\\\SysNative\\\\* OR *\\\\SysWowo64\\\\*))))) OR (winlog.event_data.Image.keyword:*\\\\Mc.exe AND (NOT (winlog.event_data.Image.keyword:(*\\\\Microsoft\\ Visual\\ Studio* OR *\\\\Microsoft\\ SDK* OR *\\\\Windows\\ Kit*))))) OR (winlog.event_data.Image.keyword:*\\\\MsMpEng.exe AND (NOT (winlog.event_data.Image.keyword:(*\\\\Microsoft\\ Security\\ Client\\\\* OR *\\\\Windows\\ Defender\\\\* OR *\\\\AntiMalware\\\\*))))) OR (winlog.event_data.Image.keyword:*\\\\msseces.exe AND (NOT (winlog.event_data.Image.keyword:(*\\\\Microsoft\\ Security\\ Center\\\\* OR *\\\\Microsoft\\ Security\\ Client\\\\* OR *\\\\Microsoft\\ Security\\ Essentials\\\\*))))) OR (winlog.event_data.Image.keyword:*\\\\OInfoP11.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\Common\\ Files\\\\Microsoft\\ Shared\\\\*)))) OR (winlog.event_data.Image.keyword:*\\\\OleView.exe AND (NOT (winlog.event_data.Image.keyword:(*\\\\Microsoft\\ Visual\\ Studio* OR *\\\\Microsoft\\ SDK* OR *\\\\Windows\\ Kit* OR *\\\\Windows\\ Resource\\ Kit\\\\*))))) OR (winlog.event_data.Image.keyword:*\\\\rc.exe AND (NOT (winlog.event_data.Image.keyword:(*\\\\Microsoft\\ Visual\\ Studio* OR *\\\\Microsoft\\ SDK* OR *\\\\Windows\\ Kit* OR *\\\\Windows\\ Resource\\ Kit\\\\* OR *\\\\Microsoft.NET\\\\*)))))"
   },
@@ -193,10 +194,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Executable Used by PlugX in Uncommon Location'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

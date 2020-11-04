@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | This rule detects a DNS server error in which a specified plugin DLL (in registry) could not be loaded |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li><li>[T1574.002: DLL Side-Loading](https://attack.mitre.org/techniques/T1574/002)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0036_150_dns_server_could_not_load_dll](../Data_Needed/DN_0036_150_dns_server_could_not_load_dll.md)</li><li>[DN_0043_770_dns_server_plugin_dll_has_been_loaded](../Data_Needed/DN_0043_770_dns_server_plugin_dll_has_been_loaded.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1574.002: DLL Side-Loading](../Triggers/T1574.002.md)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0043_770_dns_server_plugin_dll_has_been_loaded](../Data_Needed/DN_0043_770_dns_server_plugin_dll_has_been_loaded.md)</li><li>[DN_0108_150_dns_server_could_not_load_dll](../Data_Needed/DN_0108_150_dns_server_could_not_load_dll.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -28,19 +28,18 @@ references:
     - https://twitter.com/gentilkiwi/status/861641945944391680
 tags:
     - attack.defense_evasion
-    - attack.t1073           # an old one
-    - attack.t1574.002
+    - attack.t1073
 author: Florian Roth
 logsource:
     product: windows
     service: dns-server
 detection:
     selection:
-        EventID:
+        EventID: 
             - 150
             - 770
     condition: selection
-falsepositives:
+falsepositives: 
     - Unknown
 level: critical
 
@@ -76,8 +75,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "This rule detects a DNS server error in which a specified plugin DLL (in registry) could not be loaded",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1073",
-      "attack.t1574.002"
+      "attack.t1073"
     ],
     "query": "(winlog.channel:\"DNS\\ Server\" AND winlog.event_id:(\"150\" OR \"770\"))"
   },
@@ -126,10 +124,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'DNS Server Error Failed Loading the ServerLevelPluginDLL'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

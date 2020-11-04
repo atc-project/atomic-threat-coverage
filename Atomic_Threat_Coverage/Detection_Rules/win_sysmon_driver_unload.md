@@ -1,10 +1,10 @@
 | Title                    | Sysmon Driver Unload       |
 |:-------------------------|:------------------|
 | **Description**          | Detect possible Sysmon driver unload |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1070: Indicator Removal on Host](https://attack.mitre.org/techniques/T1070)</li></ul>  |
+| **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1070: Indicator Removal on Host](../Triggers/T1070.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -23,15 +23,12 @@ status: experimental
 author: Kirill Kiryanov, oscd.community
 description: Detect possible Sysmon driver unload
 date: 2019/10/23
-modified: 2020/08/29
+modified: 2019/11/07
 references:
     - https://www.darkoperator.com/blog/2018/10/5/operating-offensively-against-sysmon
 logsource:
     product: windows
     category: process_creation
-tags:
-    - attack.defense_evasion
-    - attack.t1070
 detection:
     selection:
         Image|endswith: '\fltmc.exe'
@@ -74,10 +71,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   "metadata": {
     "title": "Sysmon Driver Unload",
     "description": "Detect possible Sysmon driver unload",
-    "tags": [
-      "attack.defense_evasion",
-      "attack.t1070"
-    ],
+    "tags": "",
     "query": "(winlog.event_data.Image.keyword:*\\\\fltmc.exe AND winlog.event_data.CommandLine.keyword:*unload* AND winlog.event_data.CommandLine.keyword:*sys*)"
   },
   "trigger": {
@@ -125,10 +119,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Sysmon Driver Unload'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nCommandLine = {{_source.CommandLine}}\n    Details = {{_source.Details}}================================================================================\n{{/ctx.payload.hits.hits}}",

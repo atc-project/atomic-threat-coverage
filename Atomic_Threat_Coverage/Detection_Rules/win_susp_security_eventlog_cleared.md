@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Some threat groups tend to delete the local 'Security' Eventlog using certain utitlities |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1070: Indicator Removal on Host](https://attack.mitre.org/techniques/T1070)</li><li>[T1070.001: Clear Windows Event Logs](https://attack.mitre.org/techniques/T1070/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1070: Indicator Removal on Host](https://attack.mitre.org/techniques/T1070)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0050_1102_audit_log_was_cleared](../Data_Needed/DN_0050_1102_audit_log_was_cleared.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1070: Indicator Removal on Host](../Triggers/T1070.md)</li><li>[T1070.001: Clear Windows Event Logs](../Triggers/T1070.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1070: Indicator Removal on Host](../Triggers/T1070.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Rollout of log collection agents (the setup routine often includes a reset of the local Eventlog)</li><li>System provisioning (system reset before the golden image creation)</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -22,12 +22,10 @@ id: f2f01843-e7b8-4f95-a35a-d23584476423
 description: Some threat groups tend to delete the local 'Security' Eventlog using certain utitlities
 tags:
     - attack.defense_evasion
-    - attack.t1070          # an old one
-    - attack.t1070.001
+    - attack.t1070
     - car.2016-04-002
 author: Florian Roth
 date: 2017/02/19
-modified: 2020/08/23
 logsource:
     product: windows
     service: security
@@ -73,7 +71,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.defense_evasion",
       "attack.t1070",
-      "attack.t1070.001",
       "car.2016-04-002"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:(\"517\" OR \"1102\"))"
@@ -123,10 +120,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Security Eventlog Cleared'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

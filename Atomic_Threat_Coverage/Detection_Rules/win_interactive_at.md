@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detect an interactive AT job, which may be used as a form of privilege escalation |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1053.002: At (Windows)](https://attack.mitre.org/techniques/T1053/002)</li><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1053.002: At (Windows)](../Triggers/T1053.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1053: Scheduled Task/Job](../Triggers/T1053.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unlikely (at.exe deprecated as of Windows 8)</li></ul>  |
 | **Development Status**   | experimental |
@@ -29,8 +29,7 @@ date: 2019/10/24
 modified: 2019/11/11
 tags:
     - attack.privilege_escalation
-    - attack.t1053.002
-    - attack.t1053  # an old one
+    - attack.t1053
 logsource:
     category: process_creation
     product: windows
@@ -77,7 +76,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detect an interactive AT job, which may be used as a form of privilege escalation",
     "tags": [
       "attack.privilege_escalation",
-      "attack.t1053.002",
       "attack.t1053"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\at.exe AND winlog.event_data.CommandLine.keyword:*interactive*)"
@@ -127,10 +125,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Interactive AT Job'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

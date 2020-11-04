@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Local accounts, System Owner/User discovery using operating systems utilities |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1033: System Owner/User Discovery](https://attack.mitre.org/techniques/T1033)</li><li>[T1087.001: Local Account](https://attack.mitre.org/techniques/T1087/001)</li><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1033: System Owner/User Discovery](https://attack.mitre.org/techniques/T1033)</li><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1033: System Owner/User Discovery](../Triggers/T1033.md)</li><li>[T1087.001: Local Account](../Triggers/T1087.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1033: System Owner/User Discovery](../Triggers/T1033.md)</li><li>[T1087: Account Discovery](../Triggers/T1087.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>Legitimate administrator or user enumerates local users for legitimate reason</li></ul>  |
 | **Development Status**   | experimental |
@@ -23,7 +23,7 @@ status: experimental
 description: Local accounts, System Owner/User discovery using operating systems utilities
 author: Timur Zinniatullin, Daniil Yugoslavskiy, oscd.community
 date: 2019/10/21
-modified: 2020/09/01
+modified: 2019/11/04
 references:
     - https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1033/T1033.yaml
 logsource:
@@ -80,8 +80,7 @@ level: low
 tags:
     - attack.discovery
     - attack.t1033
-    - attack.t1087.001
-    - attack.t1087  # an old one
+    - attack.t1087
 
 ```
 
@@ -99,7 +98,7 @@ Get-WinEvent | where {((($_.message -match "Image.*.*\\whoami.exe" -or ($_.messa
 ### es-qs
     
 ```
-(((winlog.event_data.Image.keyword:*\\whoami.exe OR (winlog.event_data.Image.keyword:*\\wmic.exe AND winlog.event_data.CommandLine.keyword:*useraccount* AND winlog.event_data.CommandLine.keyword:*get*) OR winlog.event_data.Image.keyword:(*\\quser.exe OR *\\qwinsta.exe) OR (winlog.event_data.Image.keyword:*\\cmdkey.exe AND winlog.event_data.CommandLine.keyword:*\/list*) OR (winlog.event_data.Image.keyword:*\\cmd.exe AND winlog.event_data.CommandLine.keyword:*\/c* AND winlog.event_data.CommandLine.keyword:*dir\ * AND winlog.event_data.CommandLine.keyword:*\\Users\\*)) AND (NOT (winlog.event_data.CommandLine.keyword:(*\ rmdir\ *)))) OR ((winlog.event_data.Image.keyword:(*\\net.exe OR *\\net1.exe) AND winlog.event_data.CommandLine.keyword:*user*) AND (NOT (winlog.event_data.CommandLine.keyword:(*\/domain* OR *\/add* OR *\/delete* OR *\/active* OR *\/expires* OR *\/passwordreq* OR *\/scriptpath* OR *\/times* OR *\/workstations*)))))
+(((winlog.event_data.Image.keyword:*\\whoami.exe OR (winlog.event_data.Image.keyword:*\\wmic.exe AND winlog.event_data.CommandLine.keyword:*useraccount* AND winlog.event_data.CommandLine.keyword:*get*) OR winlog.event_data.Image.keyword:(*\\quser.exe OR *\\qwinsta.exe) OR (winlog.event_data.Image.keyword:*\\cmdkey.exe AND winlog.event_data.CommandLine.keyword:*\/list*) OR (winlog.event_data.Image.keyword:*\\cmd.exe AND winlog.event_data.CommandLine.keyword:*\/c* AND winlog.event_data.CommandLine.keyword:*dir\ * AND winlog.event_data.CommandLine.keyword:*\\Users\*)) AND (NOT (winlog.event_data.CommandLine.keyword:(*\ rmdir\ *)))) OR ((winlog.event_data.Image.keyword:(*\\net.exe OR *\\net1.exe) AND winlog.event_data.CommandLine.keyword:*user*) AND (NOT (winlog.event_data.CommandLine.keyword:(*\/domain* OR *\/add* OR *\/delete* OR *\/active* OR *\/expires* OR *\/passwordreq* OR *\/scriptpath* OR *\/times* OR *\/workstations*)))))
 ```
 
 
@@ -114,10 +113,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.discovery",
       "attack.t1033",
-      "attack.t1087.001",
       "attack.t1087"
     ],
-    "query": "(((winlog.event_data.Image.keyword:*\\\\whoami.exe OR (winlog.event_data.Image.keyword:*\\\\wmic.exe AND winlog.event_data.CommandLine.keyword:*useraccount* AND winlog.event_data.CommandLine.keyword:*get*) OR winlog.event_data.Image.keyword:(*\\\\quser.exe OR *\\\\qwinsta.exe) OR (winlog.event_data.Image.keyword:*\\\\cmdkey.exe AND winlog.event_data.CommandLine.keyword:*\\/list*) OR (winlog.event_data.Image.keyword:*\\\\cmd.exe AND winlog.event_data.CommandLine.keyword:*\\/c* AND winlog.event_data.CommandLine.keyword:*dir\\ * AND winlog.event_data.CommandLine.keyword:*\\\\Users\\\\*)) AND (NOT (winlog.event_data.CommandLine.keyword:(*\\ rmdir\\ *)))) OR ((winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*user*) AND (NOT (winlog.event_data.CommandLine.keyword:(*\\/domain* OR *\\/add* OR *\\/delete* OR *\\/active* OR *\\/expires* OR *\\/passwordreq* OR *\\/scriptpath* OR *\\/times* OR *\\/workstations*)))))"
+    "query": "(((winlog.event_data.Image.keyword:*\\\\whoami.exe OR (winlog.event_data.Image.keyword:*\\\\wmic.exe AND winlog.event_data.CommandLine.keyword:*useraccount* AND winlog.event_data.CommandLine.keyword:*get*) OR winlog.event_data.Image.keyword:(*\\\\quser.exe OR *\\\\qwinsta.exe) OR (winlog.event_data.Image.keyword:*\\\\cmdkey.exe AND winlog.event_data.CommandLine.keyword:*\\/list*) OR (winlog.event_data.Image.keyword:*\\\\cmd.exe AND winlog.event_data.CommandLine.keyword:*\\/c* AND winlog.event_data.CommandLine.keyword:*dir\\ * AND winlog.event_data.CommandLine.keyword:*\\\\Users\\*)) AND (NOT (winlog.event_data.CommandLine.keyword:(*\\ rmdir\\ *)))) OR ((winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*user*) AND (NOT (winlog.event_data.CommandLine.keyword:(*\\/domain* OR *\\/add* OR *\\/delete* OR *\\/active* OR *\\/expires* OR *\\/passwordreq* OR *\\/scriptpath* OR *\\/times* OR *\\/workstations*)))))"
   },
   "trigger": {
     "schedule": {
@@ -134,7 +132,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(((winlog.event_data.Image.keyword:*\\\\whoami.exe OR (winlog.event_data.Image.keyword:*\\\\wmic.exe AND winlog.event_data.CommandLine.keyword:*useraccount* AND winlog.event_data.CommandLine.keyword:*get*) OR winlog.event_data.Image.keyword:(*\\\\quser.exe OR *\\\\qwinsta.exe) OR (winlog.event_data.Image.keyword:*\\\\cmdkey.exe AND winlog.event_data.CommandLine.keyword:*\\/list*) OR (winlog.event_data.Image.keyword:*\\\\cmd.exe AND winlog.event_data.CommandLine.keyword:*\\/c* AND winlog.event_data.CommandLine.keyword:*dir\\ * AND winlog.event_data.CommandLine.keyword:*\\\\Users\\\\*)) AND (NOT (winlog.event_data.CommandLine.keyword:(*\\ rmdir\\ *)))) OR ((winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*user*) AND (NOT (winlog.event_data.CommandLine.keyword:(*\\/domain* OR *\\/add* OR *\\/delete* OR *\\/active* OR *\\/expires* OR *\\/passwordreq* OR *\\/scriptpath* OR *\\/times* OR *\\/workstations*)))))",
+                    "query": "(((winlog.event_data.Image.keyword:*\\\\whoami.exe OR (winlog.event_data.Image.keyword:*\\\\wmic.exe AND winlog.event_data.CommandLine.keyword:*useraccount* AND winlog.event_data.CommandLine.keyword:*get*) OR winlog.event_data.Image.keyword:(*\\\\quser.exe OR *\\\\qwinsta.exe) OR (winlog.event_data.Image.keyword:*\\\\cmdkey.exe AND winlog.event_data.CommandLine.keyword:*\\/list*) OR (winlog.event_data.Image.keyword:*\\\\cmd.exe AND winlog.event_data.CommandLine.keyword:*\\/c* AND winlog.event_data.CommandLine.keyword:*dir\\ * AND winlog.event_data.CommandLine.keyword:*\\\\Users\\*)) AND (NOT (winlog.event_data.CommandLine.keyword:(*\\ rmdir\\ *)))) OR ((winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*user*) AND (NOT (winlog.event_data.CommandLine.keyword:(*\\/domain* OR *\\/add* OR *\\/delete* OR *\\/active* OR *\\/expires* OR *\\/passwordreq* OR *\\/scriptpath* OR *\\/times* OR *\\/workstations*)))))",
                     "analyze_wildcard": true
                   }
                 }
@@ -164,10 +162,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Local Accounts Discovery'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n            Image = {{_source.Image}}\n      CommandLine = {{_source.CommandLine}}\n             User = {{_source.User}}\n        LogonGuid = {{_source.LogonGuid}}\n           Hashes = {{_source.Hashes}}\nParentProcessGuid = {{_source.ParentProcessGuid}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -190,28 +185,28 @@ EOF
 ### graylog
     
 ```
-(((Image.keyword:*\\whoami.exe OR (Image.keyword:*\\wmic.exe AND CommandLine.keyword:*useraccount* AND CommandLine.keyword:*get*) OR Image.keyword:(*\\quser.exe *\\qwinsta.exe) OR (Image.keyword:*\\cmdkey.exe AND CommandLine.keyword:*\/list*) OR (Image.keyword:*\\cmd.exe AND CommandLine.keyword:*\/c* AND CommandLine.keyword:*dir * AND CommandLine.keyword:*\\Users\\*)) AND (NOT (CommandLine.keyword:(* rmdir *)))) OR ((Image.keyword:(*\\net.exe *\\net1.exe) AND CommandLine.keyword:*user*) AND (NOT (CommandLine.keyword:(*\/domain* *\/add* *\/delete* *\/active* *\/expires* *\/passwordreq* *\/scriptpath* *\/times* *\/workstations*)))))
+(((Image.keyword:*\\whoami.exe OR (Image.keyword:*\\wmic.exe AND CommandLine.keyword:*useraccount* AND CommandLine.keyword:*get*) OR Image.keyword:(*\\quser.exe *\\qwinsta.exe) OR (Image.keyword:*\\cmdkey.exe AND CommandLine.keyword:*\/list*) OR (Image.keyword:*\\cmd.exe AND CommandLine.keyword:*\/c* AND CommandLine.keyword:*dir * AND CommandLine.keyword:*\\Users\*)) AND (NOT (CommandLine.keyword:(* rmdir *)))) OR ((Image.keyword:(*\\net.exe *\\net1.exe) AND CommandLine.keyword:*user*) AND (NOT (CommandLine.keyword:(*\/domain* *\/add* *\/delete* *\/active* *\/expires* *\/passwordreq* *\/scriptpath* *\/times* *\/workstations*)))))
 ```
 
 
 ### splunk
     
 ```
-(((Image="*\\whoami.exe" OR (Image="*\\wmic.exe" CommandLine="*useraccount*" CommandLine="*get*") OR (Image="*\\quser.exe" OR Image="*\\qwinsta.exe") OR (Image="*\\cmdkey.exe" CommandLine="*/list*") OR (Image="*\\cmd.exe" CommandLine="*/c*" CommandLine="*dir *" CommandLine="*\\Users\\*")) NOT ((CommandLine="* rmdir *"))) OR (((Image="*\\net.exe" OR Image="*\\net1.exe") CommandLine="*user*") NOT ((CommandLine="*/domain*" OR CommandLine="*/add*" OR CommandLine="*/delete*" OR CommandLine="*/active*" OR CommandLine="*/expires*" OR CommandLine="*/passwordreq*" OR CommandLine="*/scriptpath*" OR CommandLine="*/times*" OR CommandLine="*/workstations*")))) | table Image,CommandLine,User,LogonGuid,Hashes,ParentProcessGuid,ParentCommandLine
+(((Image="*\\whoami.exe" OR (Image="*\\wmic.exe" CommandLine="*useraccount*" CommandLine="*get*") OR (Image="*\\quser.exe" OR Image="*\\qwinsta.exe") OR (Image="*\\cmdkey.exe" CommandLine="*/list*") OR (Image="*\\cmd.exe" CommandLine="*/c*" CommandLine="*dir *" CommandLine="*\\Users\*")) NOT ((CommandLine="* rmdir *"))) OR (((Image="*\\net.exe" OR Image="*\\net1.exe") CommandLine="*user*") NOT ((CommandLine="*/domain*" OR CommandLine="*/add*" OR CommandLine="*/delete*" OR CommandLine="*/active*" OR CommandLine="*/expires*" OR CommandLine="*/passwordreq*" OR CommandLine="*/scriptpath*" OR CommandLine="*/times*" OR CommandLine="*/workstations*")))) | table Image,CommandLine,User,LogonGuid,Hashes,ParentProcessGuid,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-(((Image="*\\whoami.exe" OR (Image="*\\wmic.exe" CommandLine="*useraccount*" CommandLine="*get*") OR Image IN ["*\\quser.exe", "*\\qwinsta.exe"] OR (Image="*\\cmdkey.exe" CommandLine="*/list*") OR (Image="*\\cmd.exe" CommandLine="*/c*" CommandLine="*dir *" CommandLine="*\\Users\\*"))  -(CommandLine IN ["* rmdir *"])) OR ((Image IN ["*\\net.exe", "*\\net1.exe"] CommandLine="*user*")  -(CommandLine IN ["*/domain*", "*/add*", "*/delete*", "*/active*", "*/expires*", "*/passwordreq*", "*/scriptpath*", "*/times*", "*/workstations*"])))
+(((Image="*\\whoami.exe" OR (Image="*\\wmic.exe" CommandLine="*useraccount*" CommandLine="*get*") OR Image IN ["*\\quser.exe", "*\\qwinsta.exe"] OR (Image="*\\cmdkey.exe" CommandLine="*/list*") OR (Image="*\\cmd.exe" CommandLine="*/c*" CommandLine="*dir *" CommandLine="*\\Users\*"))  -(CommandLine IN ["* rmdir *"])) OR ((Image IN ["*\\net.exe", "*\\net1.exe"] CommandLine="*user*")  -(CommandLine IN ["*/domain*", "*/add*", "*/delete*", "*/active*", "*/expires*", "*/passwordreq*", "*/scriptpath*", "*/times*", "*/workstations*"])))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?:.*(?:.*(?=.*(?:.*(?:.*.*\whoami\.exe|.*(?:.*(?=.*.*\wmic\.exe)(?=.*.*useraccount.*)(?=.*.*get.*))|.*(?:.*.*\quser\.exe|.*.*\qwinsta\.exe)|.*(?:.*(?=.*.*\cmdkey\.exe)(?=.*.*/list.*))|.*(?:.*(?=.*.*\cmd\.exe)(?=.*.*/c.*)(?=.*.*dir .*)(?=.*.*\Users\\.*)))))(?=.*(?!.*(?:.*(?=.*(?:.*.* rmdir .*))))))|.*(?:.*(?=.*(?:.*(?=.*(?:.*.*\net\.exe|.*.*\net1\.exe))(?=.*.*user.*)))(?=.*(?!.*(?:.*(?=.*(?:.*.*/domain.*|.*.*/add.*|.*.*/delete.*|.*.*/active.*|.*.*/expires.*|.*.*/passwordreq.*|.*.*/scriptpath.*|.*.*/times.*|.*.*/workstations.*))))))))'
+grep -P '^(?:.*(?:.*(?:.*(?=.*(?:.*(?:.*.*\whoami\.exe|.*(?:.*(?=.*.*\wmic\.exe)(?=.*.*useraccount.*)(?=.*.*get.*))|.*(?:.*.*\quser\.exe|.*.*\qwinsta\.exe)|.*(?:.*(?=.*.*\cmdkey\.exe)(?=.*.*/list.*))|.*(?:.*(?=.*.*\cmd\.exe)(?=.*.*/c.*)(?=.*.*dir .*)(?=.*.*\Users\.*)))))(?=.*(?!.*(?:.*(?=.*(?:.*.* rmdir .*))))))|.*(?:.*(?=.*(?:.*(?=.*(?:.*.*\net\.exe|.*.*\net1\.exe))(?=.*.*user.*)))(?=.*(?!.*(?:.*(?=.*(?:.*.*/domain.*|.*.*/add.*|.*.*/delete.*|.*.*/active.*|.*.*/expires.*|.*.*/passwordreq.*|.*.*/scriptpath.*|.*.*/times.*|.*.*/workstations.*))))))))'
 ```
 
 

@@ -1,5 +1,6 @@
 | Title              | DN_0043_770_dns_server_plugin_dll_has_been_loaded       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Windows DNS server plug-in DLL has been loaded |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
 | **References**     | <ul><li>[https://blog.3or.de/hunting-dns-server-level-plugin-dll-injection.html](https://blog.3or.de/hunting-dns-server-level-plugin-dll-injection.html)</li></ul> |

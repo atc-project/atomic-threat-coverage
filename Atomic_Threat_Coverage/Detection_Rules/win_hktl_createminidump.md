@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the use of CreateMiniDump hack tool used to dump the LSASS process memory for credential extraction on the attacker's machine |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003.001: LSASS Memory](https://attack.mitre.org/techniques/T1003/001)</li><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0015_11_windows_sysmon_FileCreate](../Data_Needed/DN_0015_11_windows_sysmon_FileCreate.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003.001: LSASS Memory](../Triggers/T1003.001.md)</li><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -27,8 +27,7 @@ references:
 date: 2019/12/22
 tags:
     - attack.credential_access
-    - attack.t1003.001
-    - attack.t1003  # an old one
+    - attack.t1003
 falsepositives:
     - Unknown
 level: high
@@ -49,7 +48,7 @@ logsource:
 detection:
     selection:
         EventID: 11
-        TargetFilename|contains: '*\lsass.dmp'
+        TargetFileName|contains: '*\lsass.dmp'
     condition: 1 of them
 
 ```
@@ -62,15 +61,15 @@ detection:
     
 ```
 Get-WinEvent | where {($_.message -match "Image.*.*\\CreateMiniDump.exe.*" -or $_.message -match "Imphash.*4a07f944a83e8a7c2525efa35dd30e2f") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
-Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "11" -and $_.message -match "TargetFilename.*.*\\lsass.dmp.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "11" -and $_.message -match "TargetFileName.*.*\\lsass.dmp.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:*\\CreateMiniDump.exe* OR winlog.event_data.Imphash:("4A07F944A83E8A7C2525EFA35DD30E2F" OR "4a07f944a83e8a7c2525efa35dd30e2f"))
-(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND winlog.event_id:"11" AND winlog.event_data.TargetFilename.keyword:*\\lsass.dmp*)
+(winlog.event_data.Image.keyword:*\\CreateMiniDump.exe* OR winlog.event_data.Imphash:"4a07f944a83e8a7c2525efa35dd30e2f")
+(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND winlog.event_id:"11" AND TargetFileName.keyword:*\\lsass.dmp*)
 ```
 
 
@@ -84,10 +83,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects the use of CreateMiniDump hack tool used to dump the LSASS process memory for credential extraction on the attacker's machine",
     "tags": [
       "attack.credential_access",
-      "attack.t1003.001",
       "attack.t1003"
     ],
-    "query": "(winlog.event_data.Image.keyword:*\\\\CreateMiniDump.exe* OR winlog.event_data.Imphash:(\"4A07F944A83E8A7C2525EFA35DD30E2F\" OR \"4a07f944a83e8a7c2525efa35dd30e2f\"))"
+    "query": "(winlog.event_data.Image.keyword:*\\\\CreateMiniDump.exe* OR winlog.event_data.Imphash:\"4a07f944a83e8a7c2525efa35dd30e2f\")"
   },
   "trigger": {
     "schedule": {
@@ -104,7 +102,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.event_data.Image.keyword:*\\\\CreateMiniDump.exe* OR winlog.event_data.Imphash:(\"4A07F944A83E8A7C2525EFA35DD30E2F\" OR \"4a07f944a83e8a7c2525efa35dd30e2f\"))",
+                    "query": "(winlog.event_data.Image.keyword:*\\\\CreateMiniDump.exe* OR winlog.event_data.Imphash:\"4a07f944a83e8a7c2525efa35dd30e2f\")",
                     "analyze_wildcard": true
                   }
                 }
@@ -134,10 +132,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'CreateMiniDump Hacktool'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -160,10 +155,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects the use of CreateMiniDump hack tool used to dump the LSASS process memory for credential extraction on the attacker's machine",
     "tags": [
       "attack.credential_access",
-      "attack.t1003.001",
       "attack.t1003"
     ],
-    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"11\" AND winlog.event_data.TargetFilename.keyword:*\\\\lsass.dmp*)"
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"11\" AND TargetFileName.keyword:*\\\\lsass.dmp*)"
   },
   "trigger": {
     "schedule": {
@@ -180,7 +174,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"11\" AND winlog.event_data.TargetFilename.keyword:*\\\\lsass.dmp*)",
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"11\" AND TargetFileName.keyword:*\\\\lsass.dmp*)",
                     "analyze_wildcard": true
                   }
                 }
@@ -210,10 +204,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'CreateMiniDump Hacktool'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -236,8 +227,8 @@ EOF
 ### graylog
     
 ```
-(Image.keyword:*\\CreateMiniDump.exe* OR Imphash:("4A07F944A83E8A7C2525EFA35DD30E2F" "4a07f944a83e8a7c2525efa35dd30e2f"))
-(EventID:"11" AND TargetFilename.keyword:*\\lsass.dmp*)
+(Image.keyword:*\\CreateMiniDump.exe* OR Imphash:"4a07f944a83e8a7c2525efa35dd30e2f")
+(EventID:"11" AND TargetFileName.keyword:*\\lsass.dmp*)
 ```
 
 
@@ -245,7 +236,7 @@ EOF
     
 ```
 (Image="*\\CreateMiniDump.exe*" OR Imphash="4a07f944a83e8a7c2525efa35dd30e2f")
-(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="11" TargetFilename="*\\lsass.dmp*")
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="11" TargetFileName="*\\lsass.dmp*")
 ```
 
 
@@ -253,7 +244,7 @@ EOF
     
 ```
 (Image="*\\CreateMiniDump.exe*" OR Imphash="4a07f944a83e8a7c2525efa35dd30e2f")
-(event_id="11" TargetFilename="*\\lsass.dmp*")
+(event_id="11" TargetFileName="*\\lsass.dmp*")
 ```
 
 

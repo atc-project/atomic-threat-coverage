@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects suspicious PowerShell invocation command parameters |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li><li>[DN_0037_4103_windows_powershell_executing_pipeline](../Data_Needed/DN_0037_4103_windows_powershell_executing_pipeline.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Penetration tests</li><li>Very special / sneaky PowerShell scripts</li></ul>  |
 | **Development Status**   | experimental |
@@ -23,8 +23,7 @@ status: experimental
 description: Detects suspicious PowerShell invocation command parameters
 tags:
     - attack.execution
-    - attack.t1059.001
-    - attack.t1086  #an old one
+    - attack.t1086
 author: Florian Roth (rule)
 date: 2017/03/12
 logsource:
@@ -77,7 +76,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects suspicious PowerShell invocation command parameters",
     "tags": [
       "attack.execution",
-      "attack.t1059.001",
       "attack.t1086"
     ],
     "query": "(\\*.keyword:(*\\ \\-enc\\ * OR *\\ \\-EncodedCommand\\ *) AND \\*.keyword:(*\\ \\-w\\ hidden\\ * OR *\\ \\-window\\ hidden\\ * OR *\\ \\-windowstyle\\ hidden\\ *) AND \\*.keyword:(*\\ \\-noni\\ * OR *\\ \\-noninteractive\\ *))"
@@ -127,10 +125,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious PowerShell Invocations - Generic'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

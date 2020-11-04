@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects logons using NTLM, which could be caused by a legacy source or attackers |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1075: Pass the Hash](https://attack.mitre.org/techniques/T1075)</li><li>[T1550.002: Pass the Hash](https://attack.mitre.org/techniques/T1550/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1075: Pass the Hash](https://attack.mitre.org/techniques/T1075)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0082_8002_ntlm_server_blocked_audit](../Data_Needed/DN_0082_8002_ntlm_server_blocked_audit.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1550.002: Pass the Hash](../Triggers/T1550.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1075: Pass the Hash](../Triggers/T1075.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>Legacy hosts</li></ul>  |
 | **Development Status**   | experimental |
@@ -28,8 +28,7 @@ author: Florian Roth
 date: 2018/06/08
 tags:
     - attack.lateral_movement
-    - attack.t1075          # an old one
-    - attack.t1550.002
+    - attack.t1075
 logsource:
     product: windows
     service: ntlm
@@ -59,7 +58,7 @@ Get-WinEvent -LogName Microsoft-Windows-NTLM/Operational | where {($_.ID -eq "80
 ### es-qs
     
 ```
-(winlog.channel:"Microsoft\-Windows\-NTLM\/Operational" AND winlog.event_id:"8002" AND winlog.event_data.CallingProcessName.keyword:*)
+(winlog.event_id:"8002" AND winlog.event_data.CallingProcessName.keyword:*)
 ```
 
 
@@ -73,10 +72,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects logons using NTLM, which could be caused by a legacy source or attackers",
     "tags": [
       "attack.lateral_movement",
-      "attack.t1075",
-      "attack.t1550.002"
+      "attack.t1075"
     ],
-    "query": "(winlog.channel:\"Microsoft\\-Windows\\-NTLM\\/Operational\" AND winlog.event_id:\"8002\" AND winlog.event_data.CallingProcessName.keyword:*)"
+    "query": "(winlog.event_id:\"8002\" AND winlog.event_data.CallingProcessName.keyword:*)"
   },
   "trigger": {
     "schedule": {
@@ -93,7 +91,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-NTLM\\/Operational\" AND winlog.event_id:\"8002\" AND winlog.event_data.CallingProcessName.keyword:*)",
+                    "query": "(winlog.event_id:\"8002\" AND winlog.event_data.CallingProcessName.keyword:*)",
                     "analyze_wildcard": true
                   }
                 }
@@ -123,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'NTLM Logon'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -163,7 +158,7 @@ EOF
 ### logpoint
     
 ```
-(event_source="Microsoft-Windows-NTLM/Operational" event_id="8002" CallingProcessName="*")
+(event_id="8002" CallingProcessName="*")
 ```
 
 

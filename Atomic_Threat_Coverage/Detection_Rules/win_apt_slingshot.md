@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the deactivation of the Scheduled defragmentation task as seen by Slingshot APT group |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
+| **ATT&amp;CK Technique** | <ul><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0065_4701_scheduled_task_was_disabled](../Data_Needed/DN_0065_4701_scheduled_task_was_disabled.md)</li></ul>  |
-| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Trigger**              | <ul><li>[T1053: Scheduled Task/Job](../Triggers/T1053.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -22,12 +22,12 @@ title: Defrag Deactivation
 id: 958d81aa-8566-4cea-a565-59ccd4df27b0
 author: Florian Roth
 date: 2019/03/04
-modified: 2020/08/27
 description: Detects the deactivation of the Scheduled defragmentation task as seen by Slingshot APT group
 references:
     - https://securelist.com/apt-slingshot/84312/
 tags:
     - attack.persistence
+    - attack.t1053
     - attack.s0111
 detection:
     condition: 1 of them
@@ -84,6 +84,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects the deactivation of the Scheduled defragmentation task as seen by Slingshot APT group",
     "tags": [
       "attack.persistence",
+      "attack.t1053",
       "attack.s0111"
     ],
     "query": "winlog.event_data.CommandLine.keyword:(*schtasks*\\ \\/delete\\ *Defrag\\\\ScheduledDefrag*)"
@@ -133,10 +134,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Defrag Deactivation'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -159,6 +157,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects the deactivation of the Scheduled defragmentation task as seen by Slingshot APT group",
     "tags": [
       "attack.persistence",
+      "attack.t1053",
       "attack.s0111"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4701\" AND TaskName:\"\\\\Microsoft\\\\Windows\\\\Defrag\\\\ScheduledDefrag\")"
@@ -208,10 +207,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Defrag Deactivation'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

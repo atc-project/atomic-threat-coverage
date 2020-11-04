@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects Trojan loader acitivty as used by APT28 |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059: Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)</li><li>[T1059.003: Windows Command Shell](https://attack.mitre.org/techniques/T1059/003)</li><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li><li>[T1218.011: Rundll32](https://attack.mitre.org/techniques/T1218/011)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1059: Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)</li><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.003: Windows Command Shell](../Triggers/T1059.003.md)</li><li>[T1218.011: Rundll32](../Triggers/T1218.011.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1059: Command and Scripting Interpreter](../Triggers/T1059.md)</li><li>[T1085: Rundll32](../Triggers/T1085.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -22,7 +22,6 @@ id: ba778144-5e3d-40cf-8af9-e28fb1df1e20
 author: Florian Roth
 status: experimental
 date: 2018/03/01
-modified: 2020/08/27
 description: Detects Trojan loader acitivty as used by APT28
 references:
     - https://researchcenter.paloaltonetworks.com/2018/02/unit42-sofacy-attacks-multiple-government-entities/
@@ -31,12 +30,10 @@ references:
 tags:
     - attack.g0007
     - attack.execution
-    - attack.t1059 # an old one
-    - attack.t1059.003
+    - attack.t1059
     - attack.defense_evasion
-    - attack.t1085 # an old one
+    - attack.t1085
     - car.2013-10-002
-    - attack.t1218.011
 logsource:
     category: process_creation
     product: windows
@@ -82,11 +79,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.g0007",
       "attack.execution",
       "attack.t1059",
-      "attack.t1059.003",
       "attack.defense_evasion",
       "attack.t1085",
-      "car.2013-10-002",
-      "attack.t1218.011"
+      "car.2013-10-002"
     ],
     "query": "winlog.event_data.CommandLine.keyword:(rundll32.exe\\ %APPDATA%\\\\*.dat\\\",* OR rundll32.exe\\ %APPDATA%\\\\*.dll\\\",#1)"
   },
@@ -135,10 +130,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Sofacy Trojan Loader Activity'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

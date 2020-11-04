@@ -1,10 +1,10 @@
 | Title                    | Suspicious Service Path Modification       |
 |:-------------------------|:------------------|
 | **Description**          | Detects service path modification to powershell/cmd |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1543.003: Windows Service](https://attack.mitre.org/techniques/T1543/003)</li><li>[T1031: Modify Existing Service](https://attack.mitre.org/techniques/T1031)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1031: Modify Existing Service](https://attack.mitre.org/techniques/T1031)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1543.003: Windows Service](../Triggers/T1543.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1031: Modify Existing Service](../Triggers/T1031.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,11 +25,9 @@ references:
     - https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1031/T1031.yaml
 tags:
     - attack.persistence
-    - attack.privilege_escalation
-    - attack.t1543.003
-    - attack.t1031      # an old one     
+    - attack.t1031
 date: 2019/10/21
-modified: 2020/08/28
+modified: 2019/11/10
 author: Victor Sergeev, oscd.community
 logsource:
     category: process_creation
@@ -82,8 +80,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects service path modification to powershell/cmd",
     "tags": [
       "attack.persistence",
-      "attack.privilege_escalation",
-      "attack.t1543.003",
       "attack.t1031"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\sc.exe AND winlog.event_data.CommandLine.keyword:*config* AND winlog.event_data.CommandLine.keyword:*binpath* AND winlog.event_data.CommandLine.keyword:(*powershell* OR *cmd*))"
@@ -133,10 +129,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Service Path Modification'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects execution of executables that can be used to bypass Applocker whitelisting |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1118: InstallUtil](https://attack.mitre.org/techniques/T1118)</li><li>[T1218.004: InstallUtil](https://attack.mitre.org/techniques/T1218/004)</li><li>[T1121: Regsvcs/Regasm](https://attack.mitre.org/techniques/T1121)</li><li>[T1218.009: Regsvcs/Regasm](https://attack.mitre.org/techniques/T1218/009)</li><li>[T1127: Trusted Developer Utilities Proxy Execution](https://attack.mitre.org/techniques/T1127)</li><li>[T1127.001: MSBuild](https://attack.mitre.org/techniques/T1127/001)</li><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li><li>[T1218.005: Mshta](https://attack.mitre.org/techniques/T1218/005)</li><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1118: InstallUtil](https://attack.mitre.org/techniques/T1118)</li><li>[T1121: Regsvcs/Regasm](https://attack.mitre.org/techniques/T1121)</li><li>[T1127: Trusted Developer Utilities Proxy Execution](https://attack.mitre.org/techniques/T1127)</li><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.004: InstallUtil](../Triggers/T1218.004.md)</li><li>[T1218.009: Regsvcs/Regasm](../Triggers/T1218.009.md)</li><li>[T1127.001: MSBuild](../Triggers/T1127.001.md)</li><li>[T1218.005: Mshta](../Triggers/T1218.005.md)</li><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1118: InstallUtil](../Triggers/T1118.md)</li><li>[T1121: Regsvcs/Regasm](../Triggers/T1121.md)</li><li>[T1127: Trusted Developer Utilities Proxy Execution](../Triggers/T1127.md)</li><li>[T1170: Mshta](../Triggers/T1170.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li><li>Using installutil to add features for .NET applications (primarly would occur in developer environments)</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,18 +26,12 @@ references:
     - https://room362.com/post/2014/2014-01-16-application-whitelist-bypass-using-ieexec-dot-exe/
 author: juju4
 date: 2019/01/16
-modified: 2020/09/01
 tags:
     - attack.defense_evasion
-    - attack.t1118          # an old one
-    - attack.t1218.004
-    - attack.t1121          # an old one
-    - attack.t1218.009
-    - attack.t1127          # an old one
-    - attack.t1127.001
-    - attack.t1170          # an old one
-    - attack.t1218.005
-    - attack.t1218 # no way to map 1:1, so the technique level is required
+    - attack.t1118
+    - attack.t1121
+    - attack.t1127
+    - attack.t1170
 logsource:
     category: process_creation
     product: windows
@@ -90,14 +84,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.defense_evasion",
       "attack.t1118",
-      "attack.t1218.004",
       "attack.t1121",
-      "attack.t1218.009",
       "attack.t1127",
-      "attack.t1127.001",
-      "attack.t1170",
-      "attack.t1218.005",
-      "attack.t1218"
+      "attack.t1170"
     ],
     "query": "winlog.event_data.CommandLine.keyword:(*\\\\msdt.exe* OR *\\\\installutil.exe* OR *\\\\regsvcs.exe* OR *\\\\regasm.exe* OR *\\\\msbuild.exe* OR *\\\\ieexec.exe*)"
   },
@@ -146,10 +135,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Possible Applocker Bypass'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

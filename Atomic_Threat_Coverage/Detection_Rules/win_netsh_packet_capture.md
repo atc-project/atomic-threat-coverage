@@ -1,7 +1,7 @@
 | Title                    | Capture a Network Trace with netsh.exe       |
 |:-------------------------|:------------------|
 | **Description**          | Detects capture a network trace via netsh.exe trace functionality |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1040: Network Sniffing](https://attack.mitre.org/techniques/T1040)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1040: Network Sniffing](../Triggers/T1040.md)</li></ul>  |
@@ -25,10 +25,8 @@ references:
     - https://blogs.msdn.microsoft.com/canberrapfe/2012/03/30/capture-a-network-trace-without-installing-anything-capture-a-network-trace-of-a-reboot/
 author: Kutepov Anton, oscd.community
 date: 2019/10/24
-modified: 2020/09/01
 tags:
     - attack.discovery
-    - attack.credential_access
     - attack.t1040
 logsource:
     category: process_creation
@@ -74,7 +72,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects capture a network trace via netsh.exe trace functionality",
     "tags": [
       "attack.discovery",
-      "attack.credential_access",
       "attack.t1040"
     ],
     "query": "(winlog.event_data.CommandLine.keyword:*netsh* AND winlog.event_data.CommandLine.keyword:*trace* AND winlog.event_data.CommandLine.keyword:*start*)"
@@ -124,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Capture a Network Trace with netsh.exe'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

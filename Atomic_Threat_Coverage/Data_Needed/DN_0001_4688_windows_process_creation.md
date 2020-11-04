@@ -1,5 +1,6 @@
 | Title              | DN_0001_4688_windows_process_creation       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Windows process creation log, not including command line |
 | **Logging Policy** | <ul><li>[LP_0001_windows_audit_process_creation](../Logging_Policies/LP_0001_windows_audit_process_creation.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4688.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4688.md)</li></ul> |

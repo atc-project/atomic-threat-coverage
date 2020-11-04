@@ -37,7 +37,7 @@ logsource:
 detection:
     selection1:
         Image|endswith: \bcdedit.exe
-        CommandLine|contains: set
+        CommandLine: set
     selection2:
         - CommandLine|contains|all:
             - bootstatuspolicy
@@ -63,14 +63,14 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "Image.*.*\\bcdedit.exe" -and $_.message -match "CommandLine.*.*set.*") -and (($_.message -match "CommandLine.*.*bootstatuspolicy.*" -and $_.message -match "CommandLine.*.*ignoreallfailures.*") -or ($_.message -match "CommandLine.*.*recoveryenabled.*" -and $_.message -match "CommandLine.*.*no.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "Image.*.*\\bcdedit.exe" -and $_.message -match "CommandLine.*set") -and (($_.message -match "CommandLine.*.*bootstatuspolicy.*" -and $_.message -match "CommandLine.*.*ignoreallfailures.*") -or ($_.message -match "CommandLine.*.*recoveryenabled.*" -and $_.message -match "CommandLine.*.*no.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.Image.keyword:*\\bcdedit.exe AND winlog.event_data.CommandLine.keyword:*set*) AND ((winlog.event_data.CommandLine.keyword:*bootstatuspolicy* AND winlog.event_data.CommandLine.keyword:*ignoreallfailures*) OR (winlog.event_data.CommandLine.keyword:*recoveryenabled* AND winlog.event_data.CommandLine.keyword:*no*)))
+((winlog.event_data.Image.keyword:*\\bcdedit.exe AND winlog.event_data.CommandLine:"set") AND ((winlog.event_data.CommandLine.keyword:*bootstatuspolicy* AND winlog.event_data.CommandLine.keyword:*ignoreallfailures*) OR (winlog.event_data.CommandLine.keyword:*recoveryenabled* AND winlog.event_data.CommandLine.keyword:*no*)))
 ```
 
 
@@ -86,7 +86,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.impact",
       "attack.t1490"
     ],
-    "query": "((winlog.event_data.Image.keyword:*\\\\bcdedit.exe AND winlog.event_data.CommandLine.keyword:*set*) AND ((winlog.event_data.CommandLine.keyword:*bootstatuspolicy* AND winlog.event_data.CommandLine.keyword:*ignoreallfailures*) OR (winlog.event_data.CommandLine.keyword:*recoveryenabled* AND winlog.event_data.CommandLine.keyword:*no*)))"
+    "query": "((winlog.event_data.Image.keyword:*\\\\bcdedit.exe AND winlog.event_data.CommandLine:\"set\") AND ((winlog.event_data.CommandLine.keyword:*bootstatuspolicy* AND winlog.event_data.CommandLine.keyword:*ignoreallfailures*) OR (winlog.event_data.CommandLine.keyword:*recoveryenabled* AND winlog.event_data.CommandLine.keyword:*no*)))"
   },
   "trigger": {
     "schedule": {
@@ -103,7 +103,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "((winlog.event_data.Image.keyword:*\\\\bcdedit.exe AND winlog.event_data.CommandLine.keyword:*set*) AND ((winlog.event_data.CommandLine.keyword:*bootstatuspolicy* AND winlog.event_data.CommandLine.keyword:*ignoreallfailures*) OR (winlog.event_data.CommandLine.keyword:*recoveryenabled* AND winlog.event_data.CommandLine.keyword:*no*)))",
+                    "query": "((winlog.event_data.Image.keyword:*\\\\bcdedit.exe AND winlog.event_data.CommandLine:\"set\") AND ((winlog.event_data.CommandLine.keyword:*bootstatuspolicy* AND winlog.event_data.CommandLine.keyword:*ignoreallfailures*) OR (winlog.event_data.CommandLine.keyword:*recoveryenabled* AND winlog.event_data.CommandLine.keyword:*no*)))",
                     "analyze_wildcard": true
                   }
                 }
@@ -133,10 +133,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Modification of Boot Configuration'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -159,28 +156,28 @@ EOF
 ### graylog
     
 ```
-((Image.keyword:*\\bcdedit.exe AND CommandLine.keyword:*set*) AND ((CommandLine.keyword:*bootstatuspolicy* AND CommandLine.keyword:*ignoreallfailures*) OR (CommandLine.keyword:*recoveryenabled* AND CommandLine.keyword:*no*)))
+((Image.keyword:*\\bcdedit.exe AND CommandLine:"set") AND ((CommandLine.keyword:*bootstatuspolicy* AND CommandLine.keyword:*ignoreallfailures*) OR (CommandLine.keyword:*recoveryenabled* AND CommandLine.keyword:*no*)))
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\bcdedit.exe" CommandLine="*set*") ((CommandLine="*bootstatuspolicy*" CommandLine="*ignoreallfailures*") OR (CommandLine="*recoveryenabled*" CommandLine="*no*"))) | table ComputerName,User,CommandLine
+((Image="*\\bcdedit.exe" CommandLine="set") ((CommandLine="*bootstatuspolicy*" CommandLine="*ignoreallfailures*") OR (CommandLine="*recoveryenabled*" CommandLine="*no*"))) | table ComputerName,User,CommandLine
 ```
 
 
 ### logpoint
     
 ```
-((Image="*\\bcdedit.exe" CommandLine="*set*") ((CommandLine="*bootstatuspolicy*" CommandLine="*ignoreallfailures*") OR (CommandLine="*recoveryenabled*" CommandLine="*no*")))
+((Image="*\\bcdedit.exe" CommandLine="set") ((CommandLine="*bootstatuspolicy*" CommandLine="*ignoreallfailures*") OR (CommandLine="*recoveryenabled*" CommandLine="*no*")))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?=.*.*\bcdedit\.exe)(?=.*.*set.*)))(?=.*(?:.*(?:.*(?:.*(?=.*.*bootstatuspolicy.*)(?=.*.*ignoreallfailures.*))|.*(?:.*(?=.*.*recoveryenabled.*)(?=.*.*no.*))))))'
+grep -P '^(?:.*(?=.*(?:.*(?=.*.*\bcdedit\.exe)(?=.*set)))(?=.*(?:.*(?:.*(?:.*(?=.*.*bootstatuspolicy.*)(?=.*.*ignoreallfailures.*))|.*(?:.*(?=.*.*recoveryenabled.*)(?=.*.*no.*))))))'
 ```
 
 

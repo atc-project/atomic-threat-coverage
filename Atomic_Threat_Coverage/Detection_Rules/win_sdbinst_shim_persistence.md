@@ -1,10 +1,10 @@
 | Title                    | Possible Shim Database Persistence via sdbinst.exe       |
 |:-------------------------|:------------------|
 | **Description**          | Detects installation of a new shim using sdbinst.exe. A shim can be used to load malicious DLLs into applications. |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1546.011: Application Shimming](https://attack.mitre.org/techniques/T1546/011)</li><li>[T1138: Application Shimming](https://attack.mitre.org/techniques/T1138)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1138: Application Shimming](https://attack.mitre.org/techniques/T1138)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1546.011: Application Shimming](../Triggers/T1546.011.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1138: Application Shimming](../Triggers/T1138.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,12 +25,9 @@ references:
     - https://www.fireeye.com/blog/threat-research/2017/05/fin7-shim-databases-persistence.html
 tags:
     - attack.persistence
-    - attack.privilege_escalation
-    - attack.t1546.011
-    - attack.t1138 # an old one
+    - attack.t1138
 author: Markus Neis
 date: 2019/01/16
-modified: 2020/09/06
 logsource:
     category: process_creation
     product: windows
@@ -75,8 +72,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects installation of a new shim using sdbinst.exe. A shim can be used to load malicious DLLs into applications.",
     "tags": [
       "attack.persistence",
-      "attack.privilege_escalation",
-      "attack.t1546.011",
       "attack.t1138"
     ],
     "query": "(winlog.event_data.Image.keyword:(*\\\\sdbinst.exe) AND winlog.event_data.CommandLine.keyword:(*.sdb*))"
@@ -126,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Possible Shim Database Persistence via sdbinst.exe'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

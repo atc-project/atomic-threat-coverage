@@ -1,5 +1,6 @@
 | Title              | DN_0094_linux_sshd_log       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | OpenSSH SSH daemon (sshd) log |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
 | **References**     | <ul><li>[https://en.wikibooks.org/wiki/OpenSSH/Logging_and_Troubleshooting](https://en.wikibooks.org/wiki/OpenSSH/Logging_and_Troubleshooting)</li></ul> |

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects Judgement Panda activity as described in Global Threat Report 2019 by Crowdstrike |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li><li>[TA0010: Exfiltration](https://attack.mitre.org/tactics/TA0010)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1003.001: LSASS Memory](https://attack.mitre.org/techniques/T1003/001)</li><li>[T1002: Data Compressed](https://attack.mitre.org/techniques/T1002)</li><li>[T1560.001: Archive via Utility](https://attack.mitre.org/techniques/T1560/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1098: Account Manipulation](https://attack.mitre.org/techniques/T1098)</li><li>[T1002: Data Compressed](https://attack.mitre.org/techniques/T1002)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.001: LSASS Memory](../Triggers/T1003.001.md)</li><li>[T1560.001: Archive via Utility](../Triggers/T1560.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1098: Account Manipulation](../Triggers/T1098.md)</li><li>[T1002: Data Compressed](../Triggers/T1002.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -24,16 +24,13 @@ references:
     - https://www.crowdstrike.com/resources/reports/2019-crowdstrike-global-threat-report/
 author: Florian Roth
 date: 2019/02/21
-modified: 2020/08/27
 tags:
     - attack.lateral_movement
     - attack.g0010
     - attack.credential_access
-    - attack.t1003 # an old one
-    - attack.t1003.001
+    - attack.t1098
     - attack.exfiltration
-    - attack.t1002 # an old one
-    - attack.t1560.001
+    - attack.t1002
 logsource:
     category: process_creation
     product: windows
@@ -87,11 +84,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.lateral_movement",
       "attack.g0010",
       "attack.credential_access",
-      "attack.t1003",
-      "attack.t1003.001",
+      "attack.t1098",
       "attack.exfiltration",
-      "attack.t1002",
-      "attack.t1560.001"
+      "attack.t1002"
     ],
     "query": "(winlog.event_data.CommandLine.keyword:(*\\\\ldifde.exe\\ \\-f\\ \\-n\\ * OR *\\\\7za.exe\\ a\\ 1.7z\\ * OR *\\ eprod.ldf OR *\\\\aaaa\\\\procdump64.exe* OR *\\\\aaaa\\\\netsess.exe* OR *\\\\aaaa\\\\7za.exe* OR *copy\\ .\\\\1.7z\\ \\\\* OR *copy\\ \\\\client\\\\c$\\\\aaaa\\\\*) OR winlog.event_data.Image:\"C\\:\\\\Users\\\\Public\\\\7za.exe\")"
   },
@@ -140,10 +135,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Judgement Panda Exfil Activity'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -1,10 +1,10 @@
 | Title                    | Mshta JavaScript Execution       |
 |:-------------------------|:------------------|
 | **Description**          | Identifies suspicious mshta.exe commands |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li><li>[T1218.005: Mshta](https://attack.mitre.org/techniques/T1218/005)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.005: Mshta](../Triggers/T1218.005.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1170: Mshta](../Triggers/T1170.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -23,14 +23,14 @@ description: Identifies suspicious mshta.exe commands
 status: experimental
 author: E.M. Anhaus (orignally from Atomic Blue Detections, Endgame), oscd.community
 date: 2019/10/24
-modified: 2020/09/01
+modified: 2019/11/11
 references:
     - https://eqllib.readthedocs.io/en/latest/analytics/6bc283c4-21f2-4aed-a05c-a9a3ffa95dd4.html
     - https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1170/T1170.yaml
 tags:
+    - attack.execution
     - attack.defense_evasion
-    - attack.t1170          # an old one
-    - attack.t1218.005
+    - attack.t1170
 logsource:
     category: process_creation
     product: windows
@@ -77,9 +77,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Mshta JavaScript Execution",
     "description": "Identifies suspicious mshta.exe commands",
     "tags": [
+      "attack.execution",
       "attack.defense_evasion",
-      "attack.t1170",
-      "attack.t1218.005"
+      "attack.t1170"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\mshta.exe AND winlog.event_data.CommandLine.keyword:*javascript*)"
   },
@@ -128,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Mshta JavaScript Execution'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

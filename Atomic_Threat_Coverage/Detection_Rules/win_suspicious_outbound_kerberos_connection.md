@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects suspicious outbound network activity via kerberos default port indicating possible lateral movement or first stage PrivEsc via delegation. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li><li>[T1558.003: Kerberoasting](https://attack.mitre.org/techniques/T1558/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0087_5156_windows_filtering_platform_has_permitted_connection](../Data_Needed/DN_0087_5156_windows_filtering_platform_has_permitted_connection.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1558.003: Kerberoasting](../Triggers/T1558.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1208: Kerberoasting](../Triggers/T1208.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Other browsers</li></ul>  |
 | **Development Status**   | experimental |
@@ -28,8 +28,7 @@ date: 2019/10/24
 modified: 2019/11/13
 tags:
     - attack.lateral_movement
-    - attack.t1208           # an old one
-    - attack.t1558.003
+    - attack.t1208
 logsource:
     product: windows
     service: security
@@ -43,7 +42,7 @@ detection:
             - '\opera.exe'
             - '\chrome.exe'
             - '\firefox.exe'
-    condition: selection and not filter
+    condition: selection and not filter 
 falsepositives:
     - Other browsers
 level: high
@@ -78,8 +77,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects suspicious outbound network activity via kerberos default port indicating possible lateral movement or first stage PrivEsc via delegation.",
     "tags": [
       "attack.lateral_movement",
-      "attack.t1208",
-      "attack.t1558.003"
+      "attack.t1208"
     ],
     "query": "(winlog.channel:\"Security\" AND (winlog.event_id:\"5156\" AND winlog.event_data.DestinationPort:\"88\") AND (NOT (winlog.event_data.Image.keyword:(*\\\\lsass.exe OR *\\\\opera.exe OR *\\\\chrome.exe OR *\\\\firefox.exe))))"
   },
@@ -128,10 +126,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Outbound Kerberos Connection'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

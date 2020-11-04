@@ -1,5 +1,6 @@
 | Title            | LP_0041_windows_audit_other_object_access_events                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | This security policy setting determines whether the operating system generates  audit events for the management of Task Scheduler jobs or COM+ objects                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | Medium                                                                    |

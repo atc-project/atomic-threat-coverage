@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects suspicious command line activity on Windows systems |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1087.001: Local Account](https://attack.mitre.org/techniques/T1087/001)</li><li>[T1087.002: Domain Account](https://attack.mitre.org/techniques/T1087/002)</li><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1087.001: Local Account](../Triggers/T1087.001.md)</li><li>[T1087.002: Domain Account](../Triggers/T1087.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1087: Account Discovery](../Triggers/T1087.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Inventory tool runs</li><li>Penetration tests</li><li>Administrative activity</li></ul>  |
 | **Development Status**   | experimental |
@@ -23,12 +23,9 @@ status: experimental
 description: Detects suspicious command line activity on Windows systems
 author: Florian Roth
 date: 2019/01/16
-modified: 2020/08/28
 tags:
     - attack.discovery
-    - attack.t1087.001
-    - attack.t1087.002
-    - attack.t1087      # an old one 
+    - attack.t1087
 logsource:
     category: process_creation
     product: windows
@@ -79,8 +76,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects suspicious command line activity on Windows systems",
     "tags": [
       "attack.discovery",
-      "attack.t1087.001",
-      "attack.t1087.002",
       "attack.t1087"
     ],
     "query": "winlog.event_data.CommandLine:(\"net\\ group\\ \\\"domain\\ admins\\\"\\ \\/domain\" OR \"net\\ localgroup\\ administrators\")"
@@ -130,10 +125,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Reconnaissance Activity'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

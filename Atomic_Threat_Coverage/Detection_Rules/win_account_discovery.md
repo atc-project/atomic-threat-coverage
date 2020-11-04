@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detect priv users or groups recon based on 4661 eventid and known privileged users or groups SIDs |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li><li>[T1087.002: Domain Account](https://attack.mitre.org/techniques/T1087/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0029_4661_handle_to_an_object_was_requested](../Data_Needed/DN_0029_4661_handle_to_an_object_was_requested.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1087.002: Domain Account](../Triggers/T1087.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1087: Account Discovery](../Triggers/T1087.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>if source account name is not an admin then its super suspicious</li></ul>  |
 | **Development Status**   | experimental |
@@ -24,12 +24,10 @@ references:
     - https://blog.menasec.net/2019/02/threat-hunting-5-detecting-enumeration.html
 tags:
     - attack.discovery
-    - attack.t1087          # an old one
-    - attack.t1087.002
+    - attack.t1087
 status: experimental
 author: Samir Bousseaden
 date: 2019/04/03
-modified: 2020/08/23
 logsource:
     product: windows
     service: security
@@ -86,8 +84,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detect priv users or groups recon based on 4661 eventid and known privileged users or groups SIDs",
     "tags": [
       "attack.discovery",
-      "attack.t1087",
-      "attack.t1087.002"
+      "attack.t1087"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4661\" AND winlog.event_data.ObjectType:(\"SAM_USER\" OR \"SAM_GROUP\") AND winlog.event_data.ObjectName.keyword:(*\\-512 OR *\\-502 OR *\\-500 OR *\\-505 OR *\\-519 OR *\\-520 OR *\\-544 OR *\\-551 OR *\\-555 OR *admin*))"
   },
@@ -136,10 +133,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'AD Privileged Users or Groups Reconnaissance'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

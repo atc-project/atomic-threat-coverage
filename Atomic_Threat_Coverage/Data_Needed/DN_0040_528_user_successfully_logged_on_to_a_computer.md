@@ -1,5 +1,6 @@
 | Title              | DN_0040_528_user_successfully_logged_on_to_a_computer       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | User successfully logged on to a computer |
 | **Logging Policy** | <ul><li>[LP_0004_windows_audit_logon](../Logging_Policies/LP_0004_windows_audit_logon.md)</li></ul> |
 | **References**     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=528](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=528)</li></ul> |

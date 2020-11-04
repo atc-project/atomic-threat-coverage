@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | This rule detects a suspicious crash of the Microsoft Malware Protection Engine |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1089: Disabling Security Tools](https://attack.mitre.org/techniques/T1089)</li><li>[T1211: Exploitation for Defense Evasion](https://attack.mitre.org/techniques/T1211)</li><li>[T1562.001: Disable or Modify Tools](https://attack.mitre.org/techniques/T1562/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1089: Disabling Security Tools](https://attack.mitre.org/techniques/T1089)</li><li>[T1211: Exploitation for Defense Evasion](https://attack.mitre.org/techniques/T1211)</li></ul>  |
 | **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
-| **Trigger**              | <ul><li>[T1562.001: Disable or Modify Tools](../Triggers/T1562.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1089: Disabling Security Tools](../Triggers/T1089.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>MsMpEng.exe can crash when C:\ is full</li></ul>  |
 | **Development Status**   | experimental |
@@ -22,9 +22,8 @@ id: 6c82cf5c-090d-4d57-9188-533577631108
 description: This rule detects a suspicious crash of the Microsoft Malware Protection Engine
 tags:
     - attack.defense_evasion
-    - attack.t1089          # an old one
+    - attack.t1089
     - attack.t1211
-    - attack.t1562.001
 status: experimental
 date: 2017/05/09
 references:
@@ -59,14 +58,14 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent -LogName Application | where {((($_.message -match "Source.*Application Error" -and $_.ID -eq "1000") -or ($_.message -match "Source.*Windows Error Reporting" -and $_.ID -eq "1001")) -and ($_.message -match ".*MsMpEng.exe.*" -or $_.message -match ".*mpengine.dll.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Application | where {((($_.message -match "Source.*Application Error" -and $_.ID -eq "1000") -or ($_.message -match "Source.*Windows Error Reporting" -and $_.ID -eq "1001")) -and ($_.message -match "Message.*.*MsMpEng.exe.*" -or $_.message -match "Message.*.*mpengine.dll.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.channel:"Application" AND ((winlog.event_data.Source:"Application\ Error" AND winlog.event_id:"1000") OR (winlog.event_data.Source:"Windows\ Error\ Reporting" AND winlog.event_id:"1001")) AND Message.keyword:(*MsMpEng.exe* OR *mpengine.dll*))
+(winlog.channel:"Application" AND ((winlog.event_data.Source:"Application\ Error" AND winlog.event_id:"1000") OR (winlog.event_data.Source:"Windows\ Error\ Reporting" AND winlog.event_id:"1001")) AND winlog.event_data.Message.keyword:(*MsMpEng.exe* OR *mpengine.dll*))
 ```
 
 
@@ -81,10 +80,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.defense_evasion",
       "attack.t1089",
-      "attack.t1211",
-      "attack.t1562.001"
+      "attack.t1211"
     ],
-    "query": "(winlog.channel:\"Application\" AND ((winlog.event_data.Source:\"Application\\ Error\" AND winlog.event_id:\"1000\") OR (winlog.event_data.Source:\"Windows\\ Error\\ Reporting\" AND winlog.event_id:\"1001\")) AND Message.keyword:(*MsMpEng.exe* OR *mpengine.dll*))"
+    "query": "(winlog.channel:\"Application\" AND ((winlog.event_data.Source:\"Application\\ Error\" AND winlog.event_id:\"1000\") OR (winlog.event_data.Source:\"Windows\\ Error\\ Reporting\" AND winlog.event_id:\"1001\")) AND winlog.event_data.Message.keyword:(*MsMpEng.exe* OR *mpengine.dll*))"
   },
   "trigger": {
     "schedule": {
@@ -101,7 +99,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Application\" AND ((winlog.event_data.Source:\"Application\\ Error\" AND winlog.event_id:\"1000\") OR (winlog.event_data.Source:\"Windows\\ Error\\ Reporting\" AND winlog.event_id:\"1001\")) AND Message.keyword:(*MsMpEng.exe* OR *mpengine.dll*))",
+                    "query": "(winlog.channel:\"Application\" AND ((winlog.event_data.Source:\"Application\\ Error\" AND winlog.event_id:\"1000\") OR (winlog.event_data.Source:\"Windows\\ Error\\ Reporting\" AND winlog.event_id:\"1001\")) AND winlog.event_data.Message.keyword:(*MsMpEng.exe* OR *mpengine.dll*))",
                     "analyze_wildcard": true
                   }
                 }
@@ -131,10 +129,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Microsoft Malware Protection Engine Crash'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

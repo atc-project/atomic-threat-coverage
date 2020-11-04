@@ -1,5 +1,6 @@
 | Title              | DN_0039_524_system_catalog_has_been_deleted       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | The System Catalog has been deleted |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
 | **References**     | <ul><li>[http://kb.eventtracker.com/evtpass/evtpages/EventId_524_Microsoft-Windows-Backup_61998.asp](http://kb.eventtracker.com/evtpass/evtpages/EventId_524_Microsoft-Windows-Backup_61998.asp)</li></ul> |

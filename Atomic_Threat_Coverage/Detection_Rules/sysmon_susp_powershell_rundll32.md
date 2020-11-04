@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects PowerShell remote thread creation in Rundll32.exe |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li><li>[T1218.011: Rundll32](https://attack.mitre.org/techniques/T1218/011)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0012_8_windows_sysmon_CreateRemoteThread](../Data_Needed/DN_0012_8_windows_sysmon_CreateRemoteThread.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.011: Rundll32](../Triggers/T1218.011.md)</li><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1085: Rundll32](../Triggers/T1085.md)</li><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unkown</li></ul>  |
 | **Development Status**   | experimental |
@@ -37,10 +37,8 @@ detection:
 tags:
     - attack.defense_evasion
     - attack.execution
-    - attack.t1085          # an old one
-    - attack.t1218.011
-    - attack.t1086          # an old one
-    - attack.t1059.001
+    - attack.t1085
+    - attack.t1086
 falsepositives:
     - Unkown
 level: high
@@ -77,9 +75,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.defense_evasion",
       "attack.execution",
       "attack.t1085",
-      "attack.t1218.011",
-      "attack.t1086",
-      "attack.t1059.001"
+      "attack.t1086"
     ],
     "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"8\" AND winlog.event_data.SourceImage.keyword:*\\\\powershell.exe AND winlog.event_data.TargetImage.keyword:*\\\\rundll32.exe)"
   },
@@ -128,10 +124,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'PowerShell Rundll32 Remote Thread Creation'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

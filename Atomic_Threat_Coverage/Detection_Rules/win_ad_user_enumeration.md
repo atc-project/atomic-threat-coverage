@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects access to a domain user from a non-machine account |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li><li>[T1087.002: Domain Account](https://attack.mitre.org/techniques/T1087/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0030_4662_operation_was_performed_on_an_object](../Data_Needed/DN_0030_4662_operation_was_performed_on_an_object.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1087.002: Domain Account](../Triggers/T1087.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1087: Account Discovery](../Triggers/T1087.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Administrators configuring new users.</li></ul>  |
 | **Development Status**   | experimental |
@@ -22,7 +22,6 @@ id: ab6bffca-beff-4baa-af11-6733f296d57a
 description: Detects access to a domain user from a non-machine account
 status: experimental
 date: 2020/03/30
-modified: 2020/08/23
 author: Maxime Thiebaut (@0xThiebaut)
 references:
     - https://www.specterops.io/assets/resources/an_ace_up_the_sleeve.pdf
@@ -30,8 +29,7 @@ references:
     - https://docs.microsoft.com/en-us/windows/win32/adschema/attributes-all # For further investigation of the accessed properties
 tags:
     - attack.discovery
-    - attack.t1087          # an old one
-    - attack.t1087.002
+    - attack.t1087
 logsource:
     product: windows
     service: security
@@ -79,8 +77,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects access to a domain user from a non-machine account",
     "tags": [
       "attack.discovery",
-      "attack.t1087",
-      "attack.t1087.002"
+      "attack.t1087"
     ],
     "query": "(winlog.channel:\"Security\" AND (winlog.event_id:\"4662\" AND winlog.event_data.ObjectType.keyword:(*bf967aba\\-0de6\\-11d0\\-a285\\-00aa003049e2*)) AND (NOT (winlog.event_data.SubjectUserName.keyword:*$ OR winlog.event_data.SubjectUserName.keyword:MSOL_*)))"
   },
@@ -129,10 +126,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'AD User Enumeration'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

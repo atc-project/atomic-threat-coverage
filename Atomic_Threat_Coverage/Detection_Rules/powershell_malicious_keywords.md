@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects keywords from well-known PowerShell exploitation frameworks |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
-| **Trigger**              | <ul><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Penetration tests</li></ul>  |
 | **Development Status**   | experimental |
@@ -21,12 +21,12 @@ title: Malicious PowerShell Keywords
 id: f62176f3-8128-4faa-bf6c-83261322e5eb
 status: experimental
 description: Detects keywords from well-known PowerShell exploitation frameworks
+modified: 2019/01/22
 references:
     - https://adsecurity.org/?p=2921
 tags:
     - attack.execution
-    - attack.t1059.001
-    - attack.t1086  #an old one
+    - attack.t1086
 author: Sean Metcalf (source), Florian Roth (rule)
 date: 2017/03/05
 logsource:
@@ -70,14 +70,14 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent -LogName Microsoft-Windows-PowerShell/Operational | where {(($_.message -match ".*AdjustTokenPrivileges.*" -or $_.message -match ".*IMAGE_NT_OPTIONAL_HDR64_MAGIC.*" -or $_.message -match ".*Microsoft.Win32.UnsafeNativeMethods.*" -or $_.message -match ".*ReadProcessMemory.Invoke.*" -or $_.message -match ".*SE_PRIVILEGE_ENABLED.*" -or $_.message -match ".*LSA_UNICODE_STRING.*" -or $_.message -match ".*MiniDumpWriteDump.*" -or $_.message -match ".*PAGE_EXECUTE_READ.*" -or $_.message -match ".*SECURITY_DELEGATION.*" -or $_.message -match ".*TOKEN_ADJUST_PRIVILEGES.*" -or $_.message -match ".*TOKEN_ALL_ACCESS.*" -or $_.message -match ".*TOKEN_ASSIGN_PRIMARY.*" -or $_.message -match ".*TOKEN_DUPLICATE.*" -or $_.message -match ".*TOKEN_ELEVATION.*" -or $_.message -match ".*TOKEN_IMPERSONATE.*" -or $_.message -match ".*TOKEN_INFORMATION_CLASS.*" -or $_.message -match ".*TOKEN_PRIVILEGES.*" -or $_.message -match ".*TOKEN_QUERY.*" -or $_.message -match ".*Metasploit.*" -or $_.message -match ".*Mimikatz.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-PowerShell/Operational | where {(($_.message -match "Message.*.*AdjustTokenPrivileges.*" -or $_.message -match "Message.*.*IMAGE_NT_OPTIONAL_HDR64_MAGIC.*" -or $_.message -match "Message.*.*Microsoft.Win32.UnsafeNativeMethods.*" -or $_.message -match "Message.*.*ReadProcessMemory.Invoke.*" -or $_.message -match "Message.*.*SE_PRIVILEGE_ENABLED.*" -or $_.message -match "Message.*.*LSA_UNICODE_STRING.*" -or $_.message -match "Message.*.*MiniDumpWriteDump.*" -or $_.message -match "Message.*.*PAGE_EXECUTE_READ.*" -or $_.message -match "Message.*.*SECURITY_DELEGATION.*" -or $_.message -match "Message.*.*TOKEN_ADJUST_PRIVILEGES.*" -or $_.message -match "Message.*.*TOKEN_ALL_ACCESS.*" -or $_.message -match "Message.*.*TOKEN_ASSIGN_PRIMARY.*" -or $_.message -match "Message.*.*TOKEN_DUPLICATE.*" -or $_.message -match "Message.*.*TOKEN_ELEVATION.*" -or $_.message -match "Message.*.*TOKEN_IMPERSONATE.*" -or $_.message -match "Message.*.*TOKEN_INFORMATION_CLASS.*" -or $_.message -match "Message.*.*TOKEN_PRIVILEGES.*" -or $_.message -match "Message.*.*TOKEN_QUERY.*" -or $_.message -match "Message.*.*Metasploit.*" -or $_.message -match "Message.*.*Mimikatz.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-Message.keyword:(*AdjustTokenPrivileges* OR *IMAGE_NT_OPTIONAL_HDR64_MAGIC* OR *Microsoft.Win32.UnsafeNativeMethods* OR *ReadProcessMemory.Invoke* OR *SE_PRIVILEGE_ENABLED* OR *LSA_UNICODE_STRING* OR *MiniDumpWriteDump* OR *PAGE_EXECUTE_READ* OR *SECURITY_DELEGATION* OR *TOKEN_ADJUST_PRIVILEGES* OR *TOKEN_ALL_ACCESS* OR *TOKEN_ASSIGN_PRIMARY* OR *TOKEN_DUPLICATE* OR *TOKEN_ELEVATION* OR *TOKEN_IMPERSONATE* OR *TOKEN_INFORMATION_CLASS* OR *TOKEN_PRIVILEGES* OR *TOKEN_QUERY* OR *Metasploit* OR *Mimikatz*)
+winlog.event_data.Message.keyword:(*AdjustTokenPrivileges* OR *IMAGE_NT_OPTIONAL_HDR64_MAGIC* OR *Microsoft.Win32.UnsafeNativeMethods* OR *ReadProcessMemory.Invoke* OR *SE_PRIVILEGE_ENABLED* OR *LSA_UNICODE_STRING* OR *MiniDumpWriteDump* OR *PAGE_EXECUTE_READ* OR *SECURITY_DELEGATION* OR *TOKEN_ADJUST_PRIVILEGES* OR *TOKEN_ALL_ACCESS* OR *TOKEN_ASSIGN_PRIMARY* OR *TOKEN_DUPLICATE* OR *TOKEN_ELEVATION* OR *TOKEN_IMPERSONATE* OR *TOKEN_INFORMATION_CLASS* OR *TOKEN_PRIVILEGES* OR *TOKEN_QUERY* OR *Metasploit* OR *Mimikatz*)
 ```
 
 
@@ -91,10 +91,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects keywords from well-known PowerShell exploitation frameworks",
     "tags": [
       "attack.execution",
-      "attack.t1059.001",
       "attack.t1086"
     ],
-    "query": "Message.keyword:(*AdjustTokenPrivileges* OR *IMAGE_NT_OPTIONAL_HDR64_MAGIC* OR *Microsoft.Win32.UnsafeNativeMethods* OR *ReadProcessMemory.Invoke* OR *SE_PRIVILEGE_ENABLED* OR *LSA_UNICODE_STRING* OR *MiniDumpWriteDump* OR *PAGE_EXECUTE_READ* OR *SECURITY_DELEGATION* OR *TOKEN_ADJUST_PRIVILEGES* OR *TOKEN_ALL_ACCESS* OR *TOKEN_ASSIGN_PRIMARY* OR *TOKEN_DUPLICATE* OR *TOKEN_ELEVATION* OR *TOKEN_IMPERSONATE* OR *TOKEN_INFORMATION_CLASS* OR *TOKEN_PRIVILEGES* OR *TOKEN_QUERY* OR *Metasploit* OR *Mimikatz*)"
+    "query": "winlog.event_data.Message.keyword:(*AdjustTokenPrivileges* OR *IMAGE_NT_OPTIONAL_HDR64_MAGIC* OR *Microsoft.Win32.UnsafeNativeMethods* OR *ReadProcessMemory.Invoke* OR *SE_PRIVILEGE_ENABLED* OR *LSA_UNICODE_STRING* OR *MiniDumpWriteDump* OR *PAGE_EXECUTE_READ* OR *SECURITY_DELEGATION* OR *TOKEN_ADJUST_PRIVILEGES* OR *TOKEN_ALL_ACCESS* OR *TOKEN_ASSIGN_PRIMARY* OR *TOKEN_DUPLICATE* OR *TOKEN_ELEVATION* OR *TOKEN_IMPERSONATE* OR *TOKEN_INFORMATION_CLASS* OR *TOKEN_PRIVILEGES* OR *TOKEN_QUERY* OR *Metasploit* OR *Mimikatz*)"
   },
   "trigger": {
     "schedule": {
@@ -111,7 +110,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "Message.keyword:(*AdjustTokenPrivileges* OR *IMAGE_NT_OPTIONAL_HDR64_MAGIC* OR *Microsoft.Win32.UnsafeNativeMethods* OR *ReadProcessMemory.Invoke* OR *SE_PRIVILEGE_ENABLED* OR *LSA_UNICODE_STRING* OR *MiniDumpWriteDump* OR *PAGE_EXECUTE_READ* OR *SECURITY_DELEGATION* OR *TOKEN_ADJUST_PRIVILEGES* OR *TOKEN_ALL_ACCESS* OR *TOKEN_ASSIGN_PRIMARY* OR *TOKEN_DUPLICATE* OR *TOKEN_ELEVATION* OR *TOKEN_IMPERSONATE* OR *TOKEN_INFORMATION_CLASS* OR *TOKEN_PRIVILEGES* OR *TOKEN_QUERY* OR *Metasploit* OR *Mimikatz*)",
+                    "query": "winlog.event_data.Message.keyword:(*AdjustTokenPrivileges* OR *IMAGE_NT_OPTIONAL_HDR64_MAGIC* OR *Microsoft.Win32.UnsafeNativeMethods* OR *ReadProcessMemory.Invoke* OR *SE_PRIVILEGE_ENABLED* OR *LSA_UNICODE_STRING* OR *MiniDumpWriteDump* OR *PAGE_EXECUTE_READ* OR *SECURITY_DELEGATION* OR *TOKEN_ADJUST_PRIVILEGES* OR *TOKEN_ALL_ACCESS* OR *TOKEN_ASSIGN_PRIMARY* OR *TOKEN_DUPLICATE* OR *TOKEN_ELEVATION* OR *TOKEN_IMPERSONATE* OR *TOKEN_INFORMATION_CLASS* OR *TOKEN_PRIVILEGES* OR *TOKEN_QUERY* OR *Metasploit* OR *Mimikatz*)",
                     "analyze_wildcard": true
                   }
                 }
@@ -141,10 +140,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Malicious PowerShell Keywords'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

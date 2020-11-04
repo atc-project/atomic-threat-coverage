@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects suspicious SAM dump activity as cause by QuarksPwDump and other password dumpers |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1003.002: Security Account Manager](https://attack.mitre.org/techniques/T1003/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0083_16_access_history_in_hive_was_cleared](../Data_Needed/DN_0083_16_access_history_in_hive_was_cleared.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.002: Security Account Manager](../Triggers/T1003.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Penetration testing</li></ul>  |
 | **Development Status**   | experimental |
@@ -23,8 +23,7 @@ status: experimental
 description: Detects suspicious SAM dump activity as cause by QuarksPwDump and other password dumpers
 tags:
     - attack.credential_access
-    - attack.t1003          # an old one
-    - attack.t1003.002
+    - attack.t1003
 author: Florian Roth
 date: 2018/01/27
 logsource:
@@ -50,14 +49,14 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent -LogName System | where {($_.ID -eq "16" -and ($_.message -match ".*\\AppData\\Local\\Temp\\SAM-.*.dmp .*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName System | where {($_.ID -eq "16" -and ($_.message -match "Message.*.*\\AppData\\Local\\Temp\\SAM-.*.dmp .*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_id:"16" AND Message.keyword:(*\\AppData\\Local\\Temp\\SAM\-*.dmp\ *))
+(winlog.event_id:"16" AND winlog.event_data.Message.keyword:(*\\AppData\\Local\\Temp\\SAM\-*.dmp\ *))
 ```
 
 
@@ -71,10 +70,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects suspicious SAM dump activity as cause by QuarksPwDump and other password dumpers",
     "tags": [
       "attack.credential_access",
-      "attack.t1003",
-      "attack.t1003.002"
+      "attack.t1003"
     ],
-    "query": "(winlog.event_id:\"16\" AND Message.keyword:(*\\\\AppData\\\\Local\\\\Temp\\\\SAM\\-*.dmp\\ *))"
+    "query": "(winlog.event_id:\"16\" AND winlog.event_data.Message.keyword:(*\\\\AppData\\\\Local\\\\Temp\\\\SAM\\-*.dmp\\ *))"
   },
   "trigger": {
     "schedule": {
@@ -91,7 +89,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.event_id:\"16\" AND Message.keyword:(*\\\\AppData\\\\Local\\\\Temp\\\\SAM\\-*.dmp\\ *))",
+                    "query": "(winlog.event_id:\"16\" AND winlog.event_data.Message.keyword:(*\\\\AppData\\\\Local\\\\Temp\\\\SAM\\-*.dmp\\ *))",
                     "analyze_wildcard": true
                   }
                 }
@@ -121,10 +119,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'SAM Dump to AppData'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

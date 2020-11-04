@@ -1,5 +1,6 @@
 | Title            | LP_0044_windows_ntlm_audit                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | This is combined audit policy, consist of 3 policies under "Network security:  Restrict NTLM" — Audit NTLM authentication in this domain, Audit Incoming NTLM Traffic,  Outgoing NTLM traffic to remote servers. It will provide visibility on  NTLM authentication attempts. This policy is only about auditing events, it will not disable NTLM authentication itself.                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | High                                                                    |

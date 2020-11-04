@@ -1,5 +1,6 @@
 | Title            | LP_0107_windows_audit_credential_validation                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit Credential Validation determines whether the operating system  generates audit events on credentials that are submitted for a user  account logon request                                                               |
 | **Default**      | Configured                                                                   |
 | **Event Volume** | High                                                                    |

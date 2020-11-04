@@ -3,7 +3,7 @@
 | **ID**                      | RA2403            |
 | **Description**             | Find a process that is being executed at the moment or at a particular time in the past by its executable metadata (i.e. signature, permissions, MAC times)   |
 | **Author**                  | your name/nickname/twitter        |
-| **Creation Date**           | YYYY/MM/DD |
+| **Creation Date**           | DD.MM.YYYY |
 | **Category**                | Process      |
 | **Stage**                   |[RS0002: Identification](../Response_Stages/RS0002.md)| 
 | **References** |<ul><li>[https://example.com](https://example.com)</li></ul>|

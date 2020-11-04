@@ -1,5 +1,6 @@
 | Title            | LP_0042_windows_audit_handle_manipulation                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | This security policy setting determines whether the operating system  generates audit events when a handle to an object is opened or closed.  Policy to enable smb share access logon events logging                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | High                                                                    |

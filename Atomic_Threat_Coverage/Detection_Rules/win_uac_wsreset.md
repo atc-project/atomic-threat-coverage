@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Identifies use of WSReset.exe to bypass User Account Control. Adversaries use this technique to execute privileged processes. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1548.002: Bypass User Access Control](https://attack.mitre.org/techniques/T1548/002)</li><li>[T1088: Bypass User Account Control](https://attack.mitre.org/techniques/T1088)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1088: Bypass User Account Control](https://attack.mitre.org/techniques/T1088)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1548.002: Bypass User Access Control](../Triggers/T1548.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1088: Bypass User Account Control](../Triggers/T1088.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -28,8 +28,7 @@ references:
     - https://eqllib.readthedocs.io/en/latest/analytics/532b5ed4-7930-11e9-8f5c-d46d6d62a49e.html
 tags:
     - attack.privilege_escalation
-    - attack.t1548.002
-    - attack.t1088      # an old one
+    - attack.t1088
 logsource:
     category: process_creation
     product: windows
@@ -73,7 +72,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Identifies use of WSReset.exe to bypass User Account Control. Adversaries use this technique to execute privileged processes.",
     "tags": [
       "attack.privilege_escalation",
-      "attack.t1548.002",
       "attack.t1088"
     ],
     "query": "(winlog.event_data.ParentImage.keyword:*\\\\wsreset.exe AND (NOT (winlog.event_data.Image.keyword:*\\\\conhost.exe)))"
@@ -123,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Bypass UAC via WSReset.exe'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

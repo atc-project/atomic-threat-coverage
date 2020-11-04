@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects keywords that could indicate clearing PowerShell history |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1070.003: Clear Command History](https://attack.mitre.org/techniques/T1070/003)</li><li>[T1146: Clear Command History](https://attack.mitre.org/techniques/T1146)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1146: Clear Command History](https://attack.mitre.org/techniques/T1146)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li><li>[DN_0037_4103_windows_powershell_executing_pipeline](../Data_Needed/DN_0037_4103_windows_powershell_executing_pipeline.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1070.003: Clear Command History](../Triggers/T1070.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1146: Clear Command History](../Triggers/T1146.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>some PS-scripts</li></ul>  |
 | **Development Status**   | experimental |
@@ -27,8 +27,7 @@ references:
     - https://gist.github.com/hook-s3c/7363a856c3cdbadeb71085147f042c1a
 tags:
     - attack.defense_evasion
-    - attack.t1070.003
-    - attack.t1146  # an old one
+    - attack.t1146
 logsource:
     product: windows
     service: powershell
@@ -73,7 +72,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects keywords that could indicate clearing PowerShell history",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1070.003",
       "attack.t1146"
     ],
     "query": "\\*.keyword:(*del\\ \\(Get\\-PSReadlineOption\\).HistorySavePath* OR *Set\\-PSReadlineOption\\ \u2013HistorySaveStyle\\ SaveNothing* OR *Remove\\-Item\\ \\(Get\\-PSReadlineOption\\).HistorySavePath* OR *rm\\ \\(Get\\-PSReadlineOption\\).HistorySavePath*)"
@@ -123,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Clear PowerShell History'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

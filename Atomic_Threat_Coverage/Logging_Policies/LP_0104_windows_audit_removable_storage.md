@@ -1,5 +1,6 @@
 | Title            | LP_0104_windows_audit_removable_storage                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit Removable Storage allows you to audit user attempts to access file  system objects on a removable storage device. A security audit event is  generated for all objects and all types of access requested, with no  dependency on object’s SACL                                                               |
 | **Default**      | Configured                                                                   |
 | **Event Volume** | Medium                                                                    |

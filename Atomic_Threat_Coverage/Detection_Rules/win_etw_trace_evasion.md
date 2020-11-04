@@ -1,8 +1,8 @@
 | Title                    | Disable of ETW Trace       |
 |:-------------------------|:------------------|
 | **Description**          | Detects a command that clears or disables any ETW trace log which could indicate a logging evasion. |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1070: Indicator Removal on Host](https://attack.mitre.org/techniques/T1070)</li><li>[T1562.006: Indicator Blocking](https://attack.mitre.org/techniques/T1562/006)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1070: Indicator Removal on Host](https://attack.mitre.org/techniques/T1070)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1070: Indicator Removal on Host](../Triggers/T1070.md)</li></ul>  |
 | **Severity Level**       | high |
@@ -28,10 +28,9 @@ references:
 author: '@neu5ron, Florian Roth'
 date: 2019/03/22
 tags:
-    - attack.defense_evasion
-    - attack.t1070
-    - attack.t1562.006
-    - car.2016-04-002
+    - attack.execution
+    - attack.t1070  
+    - car.2016-04-002  
 level: high
 logsource:
     category: process_creation
@@ -78,9 +77,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Disable of ETW Trace",
     "description": "Detects a command that clears or disables any ETW trace log which could indicate a logging evasion.",
     "tags": [
-      "attack.defense_evasion",
+      "attack.execution",
       "attack.t1070",
-      "attack.t1562.006",
       "car.2016-04-002"
     ],
     "query": "(winlog.event_data.CommandLine.keyword:*\\ cl\\ *\\/Trace* OR winlog.event_data.CommandLine.keyword:*\\ clear\\-log\\ *\\/Trace* OR winlog.event_data.CommandLine.keyword:*\\ sl*\\ \\/e\\:false* OR winlog.event_data.CommandLine.keyword:*\\ set\\-log*\\ \\/e\\:false*)"
@@ -130,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Disable of ETW Trace'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

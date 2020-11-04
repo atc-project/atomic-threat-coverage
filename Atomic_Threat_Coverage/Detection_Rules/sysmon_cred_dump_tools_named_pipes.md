@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects well-known credential dumping tools execution via specific named pipes |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1003.001: LSASS Memory](https://attack.mitre.org/techniques/T1003/001)</li><li>[T1003.002: Security Account Manager](https://attack.mitre.org/techniques/T1003/002)</li><li>[T1003.004: LSA Secrets](https://attack.mitre.org/techniques/T1003/004)</li><li>[T1003.005: Cached Domain Credentials](https://attack.mitre.org/techniques/T1003/005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0020_17_windows_sysmon_PipeEvent](../Data_Needed/DN_0020_17_windows_sysmon_PipeEvent.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.001: LSASS Memory](../Triggers/T1003.001.md)</li><li>[T1003.002: Security Account Manager](../Triggers/T1003.002.md)</li><li>[T1003.004: LSA Secrets](../Triggers/T1003.004.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Legitimate Administrator using tool for password recovery</li></ul>  |
 | **Development Status**   | experimental |
@@ -22,16 +22,11 @@ id: 961d0ba2-3eea-4303-a930-2cf78bbfcc5e
 description: Detects well-known credential dumping tools execution via specific named pipes
 author: Teymur Kheirkhabarov, oscd.community
 date: 2019/11/01
-modified: 2020/08/28
 references:
     - https://www.slideshare.net/heirhabarov/hunting-for-credentials-dumping-in-windows-environment
 tags:
     - attack.credential_access
-    - attack.t1003          # an old one
-    - attack.t1003.001
-    - attack.t1003.002
-    - attack.t1003.004
-    - attack.t1003.005
+    - attack.t1003
 logsource:
     product: windows
     service: sysmon
@@ -78,11 +73,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects well-known credential dumping tools execution via specific named pipes",
     "tags": [
       "attack.credential_access",
-      "attack.t1003",
-      "attack.t1003.001",
-      "attack.t1003.002",
-      "attack.t1003.004",
-      "attack.t1003.005"
+      "attack.t1003"
     ],
     "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"17\" AND winlog.event_data.PipeName.keyword:(*\\\\lsadump* OR *\\\\cachedump* OR *\\\\wceservicepipe*))"
   },
@@ -131,10 +122,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Cred Dump-Tools Named Pipes'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

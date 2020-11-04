@@ -1,5 +1,6 @@
 | Title              | DN_0079_4776_computer_attempted_to_validate_the_credentials_for_an_account       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | This event generates every time that a credential validation occurs  using NTLM authentication. This event occurs only on the computer  that is authoritative for the provided credentials. For domain  accounts, the domain controller is authoritative. For local accounts,  the local computer is authoritative |
 | **Logging Policy** | <ul><li>[LP_0107_windows_audit_credential_validation](../Logging_Policies/LP_0107_windows_audit_credential_validation.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4776.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4776.md)</li></ul> |

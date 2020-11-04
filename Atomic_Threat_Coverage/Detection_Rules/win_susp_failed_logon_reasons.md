@@ -1,7 +1,7 @@
 | Title                    | Account Tampering - Suspicious Failed Logon Reasons       |
 |:-------------------------|:------------------|
 | **Description**          | This method uses uncommon error codes on failed logons to determine suspicious activity and tampering with accounts that have been disabled or somehow restricted. |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1078: Valid Accounts](https://attack.mitre.org/techniques/T1078)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0057_4625_account_failed_to_logon](../Data_Needed/DN_0057_4625_account_failed_to_logon.md)</li><li>[DN_0079_4776_computer_attempted_to_validate_the_credentials_for_an_account](../Data_Needed/DN_0079_4776_computer_attempted_to_validate_the_credentials_for_an_account.md)</li></ul>  |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
@@ -23,14 +23,12 @@ description: This method uses uncommon error codes on failed logons to determine
     restricted.
 author: Florian Roth
 date: 2017/02/19
-modified: 2020/08/23
+modified: 2019/03/01
 references:
     - https://twitter.com/SBousseaden/status/1101431884540710913
 tags:
     - attack.persistence
-    - attack.defense_evasion
     - attack.privilege_escalation
-    - attack.initial_access
     - attack.t1078
 logsource:
     product: windows
@@ -82,9 +80,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "This method uses uncommon error codes on failed logons to determine suspicious activity and tampering with accounts that have been disabled or somehow restricted.",
     "tags": [
       "attack.persistence",
-      "attack.defense_evasion",
       "attack.privilege_escalation",
-      "attack.initial_access",
       "attack.t1078"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:(\"4625\" OR \"4776\") AND winlog.event_data.Status:(\"0xC0000072\" OR \"0xC000006F\" OR \"0xC0000070\" OR \"0xC0000413\" OR \"0xC000018C\" OR \"0xC000015B\"))"
@@ -134,10 +130,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Account Tampering - Suspicious Failed Logon Reasons'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

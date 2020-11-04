@@ -1,10 +1,10 @@
 | Title                    | Netsh Port Forwarding       |
 |:-------------------------|:------------------|
 | **Description**          | Detects netsh commands that configure a port forwarding |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1090: Proxy](https://attack.mitre.org/techniques/T1090)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Trigger**              | <ul><li>[T1090: Proxy](../Triggers/T1090.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Legitimate administration</li></ul>  |
 | **Development Status**   | experimental |
@@ -23,10 +23,8 @@ description: Detects netsh commands that configure a port forwarding
 references:
     - https://www.fireeye.com/blog/threat-research/2019/01/bypassing-network-restrictions-through-rdp-tunneling.html
 date: 2019/01/29
-modified: 2020/09/01
 tags:
     - attack.lateral_movement
-    - attack.defense_evasion
     - attack.command_and_control
     - attack.t1090
 status: experimental
@@ -73,7 +71,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects netsh commands that configure a port forwarding",
     "tags": [
       "attack.lateral_movement",
-      "attack.defense_evasion",
       "attack.command_and_control",
       "attack.t1090"
     ],
@@ -124,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Netsh Port Forwarding'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

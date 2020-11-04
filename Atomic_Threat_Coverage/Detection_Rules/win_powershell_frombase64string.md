@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects suspicious FromBase64String expressions in command line arguments |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1027: Obfuscated Files or Information](https://attack.mitre.org/techniques/T1027)</li><li>[T1140: Deobfuscate/Decode Files or Information](https://attack.mitre.org/techniques/T1140)</li><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1027: Obfuscated Files or Information](https://attack.mitre.org/techniques/T1027)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1027: Obfuscated Files or Information](../Triggers/T1027.md)</li><li>[T1140: Deobfuscate/Decode Files or Information](../Triggers/T1140.md)</li><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1027: Obfuscated Files or Information](../Triggers/T1027.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Administrative script libraries</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,12 +25,9 @@ references:
     - https://gist.github.com/Neo23x0/6af876ee72b51676c82a2db8d2cd3639
 author: Florian Roth
 date: 2020/01/29
-modified: 2020/09/06
 tags: 
     - attack.t1027
     - attack.defense_evasion
-    - attack.t1140
-    - attack.t1059.001    
 logsource:
     category: process_creation
     product: windows
@@ -72,9 +69,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects suspicious FromBase64String expressions in command line arguments",
     "tags": [
       "attack.t1027",
-      "attack.defense_evasion",
-      "attack.t1140",
-      "attack.t1059.001"
+      "attack.defense_evasion"
     ],
     "query": "winlog.event_data.CommandLine.keyword:*\\:\\:FromBase64String\\(*"
   },
@@ -123,10 +118,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'FromBase64String Command Line'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

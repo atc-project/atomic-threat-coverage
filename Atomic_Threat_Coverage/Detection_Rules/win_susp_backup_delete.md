@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects backup catalog deletions |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1107: File Deletion](https://attack.mitre.org/techniques/T1107)</li><li>[T1070.004: File Deletion](https://attack.mitre.org/techniques/T1070/004)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1107: File Deletion](https://attack.mitre.org/techniques/T1107)</li></ul>  |
 | **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
-| **Trigger**              | <ul><li>[T1070.004: File Deletion](../Triggers/T1070.004.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1107: File Deletion](../Triggers/T1107.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -28,15 +28,14 @@ author: Florian Roth (rule), Tom U. @c_APT_ure (collection)
 date: 2017/05/12
 tags:
     - attack.defense_evasion
-    - attack.t1107          # an old one
-    - attack.t1070.004
+    - attack.t1107
 logsource:
     product: windows
     service: application
 detection:
     selection:
         EventID: 524
-        Source: Microsoft-Windows-Backup
+        Source: Backup
     condition: selection
 falsepositives:
     - Unknown
@@ -51,14 +50,14 @@ level: medium
 ### powershell
     
 ```
-Get-WinEvent -LogName Application | where {($_.ID -eq "524" -and $_.message -match "Source.*Microsoft-Windows-Backup") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Application | where {($_.ID -eq "524" -and $_.message -match "Source.*Backup") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.channel:"Application" AND winlog.event_id:"524" AND winlog.event_data.Source:"Microsoft\-Windows\-Backup")
+(winlog.channel:"Application" AND winlog.event_id:"524" AND winlog.event_data.Source:"Backup")
 ```
 
 
@@ -72,10 +71,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects backup catalog deletions",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1107",
-      "attack.t1070.004"
+      "attack.t1107"
     ],
-    "query": "(winlog.channel:\"Application\" AND winlog.event_id:\"524\" AND winlog.event_data.Source:\"Microsoft\\-Windows\\-Backup\")"
+    "query": "(winlog.channel:\"Application\" AND winlog.event_id:\"524\" AND winlog.event_data.Source:\"Backup\")"
   },
   "trigger": {
     "schedule": {
@@ -92,7 +90,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Application\" AND winlog.event_id:\"524\" AND winlog.event_data.Source:\"Microsoft\\-Windows\\-Backup\")",
+                    "query": "(winlog.channel:\"Application\" AND winlog.event_id:\"524\" AND winlog.event_data.Source:\"Backup\")",
                     "analyze_wildcard": true
                   }
                 }
@@ -122,10 +120,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Backup Catalog Deleted'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -148,28 +143,28 @@ EOF
 ### graylog
     
 ```
-(EventID:"524" AND Source:"Microsoft\-Windows\-Backup")
+(EventID:"524" AND Source:"Backup")
 ```
 
 
 ### splunk
     
 ```
-(source="WinEventLog:Application" EventCode="524" Source="Microsoft-Windows-Backup")
+(source="WinEventLog:Application" EventCode="524" Source="Backup")
 ```
 
 
 ### logpoint
     
 ```
-(event_id="524" Source="Microsoft-Windows-Backup")
+(event_id="524" Source="Backup")
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*524)(?=.*Microsoft-Windows-Backup))'
+grep -P '^(?:.*(?=.*524)(?=.*Backup))'
 ```
 
 

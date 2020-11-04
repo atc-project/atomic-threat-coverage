@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detect creation of dump files containing the memory space of lsass.exe, which contains sensitive credentials. Identifies usage of Sysinternals procdump.exe to export the memory space of lsass.exe which contains sensitive credentials. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003.001: LSASS Memory](https://attack.mitre.org/techniques/T1003/001)</li><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003.001: LSASS Memory](../Triggers/T1003.001.md)</li><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unlikely</li></ul>  |
 | **Development Status**   | experimental |
@@ -19,7 +19,8 @@
 ```
 title: LSASS Memory Dumping
 id: ffa6861c-4461-4f59-8a41-578c39f3f23e
-description: Detect creation of dump files containing the memory space of lsass.exe, which contains sensitive credentials. Identifies usage of Sysinternals procdump.exe to export the memory space of lsass.exe which contains sensitive credentials.
+description: Detect creation of dump files containing the memory space of lsass.exe, which contains sensitive credentials. Identifies usage of Sysinternals procdump.exe
+    to export the memory space of lsass.exe which contains sensitive credentials.
 status: experimental
 author: E.M. Anhaus (orignally from Atomic Blue Detections, Tony Lambert), oscd.community
 date: 2019/10/24
@@ -30,8 +31,7 @@ references:
     - https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1003/T1003.yaml
 tags:
     - attack.credential_access
-    - attack.t1003.001
-    - attack.t1003  # an old one
+    - attack.t1003
 logsource:
     category: process_creation
     product: windows
@@ -85,7 +85,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detect creation of dump files containing the memory space of lsass.exe, which contains sensitive credentials. Identifies usage of Sysinternals procdump.exe to export the memory space of lsass.exe which contains sensitive credentials.",
     "tags": [
       "attack.credential_access",
-      "attack.t1003.001",
       "attack.t1003"
     ],
     "query": "(((winlog.event_data.CommandLine.keyword:*lsass* AND winlog.event_data.CommandLine.keyword:*.dmp*) AND (NOT (winlog.event_data.Image.keyword:*\\\\werfault.exe))) OR (winlog.event_data.Image.keyword:*\\\\procdump* AND winlog.event_data.Image.keyword:*.exe AND winlog.event_data.CommandLine.keyword:*lsass*))"
@@ -135,10 +134,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'LSASS Memory Dumping'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

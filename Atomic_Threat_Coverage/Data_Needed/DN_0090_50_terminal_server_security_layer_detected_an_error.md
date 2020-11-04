@@ -1,5 +1,6 @@
 | Title              | DN_0090_50_terminal_server_security_layer_detected_an_error       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | The RDP protocol component <component> detected an error in the  protocol stream and has disconnected the client |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
 | **References**     | <ul><li>[http://www.eventid.net/display-eventid-50-source-TermDD-eventno-606-phase-1.htm](http://www.eventid.net/display-eventid-50-source-TermDD-eventno-606-phase-1.htm)</li></ul> |

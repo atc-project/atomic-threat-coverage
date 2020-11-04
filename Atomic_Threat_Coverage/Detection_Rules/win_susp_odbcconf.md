@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects defence evasion attempt via odbcconf.exe execution to load DLL |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1218.008: Odbcconf](https://attack.mitre.org/techniques/T1218/008)</li><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.008: Odbcconf](../Triggers/T1218.008.md)</li><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Legitimate use of odbcconf.exe by legitimate user</li></ul>  |
 | **Development Status**   | experimental |
@@ -29,9 +29,8 @@ date: 2019/10/25
 modified: 2019/11/07
 tags:
     - attack.defense_evasion
-    - attack.t1218.008
-    - attack.execution      # an old one
-    - attack.t1218      # an old one
+    - attack.execution
+    - attack.t1218
 logsource:
     category: process_creation
     product: windows
@@ -79,7 +78,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects defence evasion attempt via odbcconf.exe execution to load DLL",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1218.008",
       "attack.execution",
       "attack.t1218"
     ],
@@ -130,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Application Whitelisting Bypass via DLL Loaded by odbcconf.exe'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

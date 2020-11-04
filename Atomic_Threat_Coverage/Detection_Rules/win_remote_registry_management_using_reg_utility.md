@@ -1,10 +1,10 @@
 | Title                    | Remote Registry Management Using Reg Utility       |
 |:-------------------------|:------------------|
 | **Description**          | Remote registry management using REG utility from non-admin workstation |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1112: Modify Registry](https://attack.mitre.org/techniques/T1112)</li><li>[T1012: Query Registry](https://attack.mitre.org/techniques/T1012)</li><li>[T1552.002: Credentials in Registry](https://attack.mitre.org/techniques/T1552/002)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1112: Modify Registry](https://attack.mitre.org/techniques/T1112)</li><li>[T1012: Query Registry](https://attack.mitre.org/techniques/T1012)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0032_5145_network_share_object_was_accessed_detailed](../Data_Needed/DN_0032_5145_network_share_object_was_accessed_detailed.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1112: Modify Registry](../Triggers/T1112.md)</li><li>[T1012: Query Registry](../Triggers/T1012.md)</li><li>[T1552.002: Credentials in Registry](../Triggers/T1552.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1112: Modify Registry](../Triggers/T1112.md)</li><li>[T1012: Query Registry](../Triggers/T1012.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Legitimate usage of remote registry management by administrator</li></ul>  |
 | **Development Status**   | experimental |
@@ -22,16 +22,14 @@ id: 68fcba0d-73a5-475e-a915-e8b4c576827e
 description: Remote registry management using REG utility from non-admin workstation
 author: Teymur Kheirkhabarov, oscd.community
 date: 2019/10/22
-modified: 2020/08/23
+modified: 2019/11/13
 references:
     - https://www.slideshare.net/heirhabarov/hunting-for-credentials-dumping-in-windows-environment
 tags:
     - attack.defense_evasion
-    - attack.t1112
     - attack.discovery
+    - attack.t1112
     - attack.t1012
-    - attack.credential_access
-    - attack.t1552.002
     - attack.s0075
 logsource:
     product: windows
@@ -78,11 +76,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Remote registry management using REG utility from non-admin workstation",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1112",
       "attack.discovery",
+      "attack.t1112",
       "attack.t1012",
-      "attack.credential_access",
-      "attack.t1552.002",
       "attack.s0075"
     ],
     "query": "(winlog.channel:\"Security\" AND (winlog.event_id:\"5145\" AND RelativeTargetName.keyword:*\\\\winreg*) AND (NOT (winlog.event_data.IpAddress:\"%Admins_Workstations%\")))"
@@ -132,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Remote Registry Management Using Reg Utility'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

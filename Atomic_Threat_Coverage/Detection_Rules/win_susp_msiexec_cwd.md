@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects suspicious msiexec process starts in an uncommon directory |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1036.005: Match Legitimate Name or Location](https://attack.mitre.org/techniques/T1036/005)</li><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Trigger**              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,8 +25,7 @@ references:
     - https://twitter.com/200_okay_/status/1194765831911215104
 tags:
     - attack.defense_evasion
-    - attack.t1036.005
-    - attack.t1036      # an old one
+    - attack.t1036
 author: Florian Roth
 date: 2019/11/14
 logsource:
@@ -75,7 +74,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects suspicious msiexec process starts in an uncommon directory",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1036.005",
       "attack.t1036"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\msiexec.exe AND (NOT (winlog.event_data.Image.keyword:(C\\:\\\\Windows\\\\System32\\\\* OR C\\:\\\\Windows\\\\SysWOW64\\\\* OR C\\:\\\\Windows\\\\WinSxS\\\\*))))"
@@ -125,10 +123,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious MsiExec Directory'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

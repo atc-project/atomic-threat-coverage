@@ -1,5 +1,6 @@
 | Title            | LP_0004_windows_audit_logon                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit Logon determines whether the operating system generates audit  events when a user attempts to log on to a computer                                                               |
 | **Default**      | Partially (Success)                                                                   |
 | **Event Volume** | Medium                                                                    |

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a suspicious command line execution that invokes PowerShell with reference to an AppData folder |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Administrative scripts</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,8 +26,7 @@ references:
     - https://app.any.run/tasks/f87f1c4e-47e2-4c46-9cf4-31454c06ce03
 tags:
     - attack.execution
-    - attack.t1059.001
-    - attack.t1086      # an old one     
+    - attack.t1086
 author: Florian Roth
 date: 2019/01/09
 logsource:
@@ -73,7 +72,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects a suspicious command line execution that invokes PowerShell with reference to an AppData folder",
     "tags": [
       "attack.execution",
-      "attack.t1059.001",
       "attack.t1086"
     ],
     "query": "winlog.event_data.CommandLine.keyword:(*\\ \\/c\\ powershell*\\\\AppData\\\\Local\\\\* OR *\\ \\/c\\ powershell*\\\\AppData\\\\Roaming\\\\*)"
@@ -123,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'PowerShell Script Run in AppData'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the registration of a debugger for a program that is available in the logon screen (sticky key backdoor). |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1546.008: Accessibility Features](https://attack.mitre.org/techniques/T1546/008)</li><li>[T1015: Accessibility Features](https://attack.mitre.org/techniques/T1015)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1015: Accessibility Features](https://attack.mitre.org/techniques/T1015)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1546.008: Accessibility Features](../Triggers/T1546.008.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1015: Accessibility Features](../Triggers/T1015.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Penetration Tests</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,8 +26,7 @@ references:
 tags:
     - attack.persistence
     - attack.privilege_escalation
-    - attack.t1546.008
-    - attack.t1015  # an old one
+    - attack.t1015
 author: Florian Roth
 date: 2019/09/06
 logsource:
@@ -47,7 +46,7 @@ detection:
 falsepositives:
     - Penetration Tests
 level: high
-
+        
 
 ```
 
@@ -80,7 +79,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.persistence",
       "attack.privilege_escalation",
-      "attack.t1546.008",
       "attack.t1015"
     ],
     "query": "winlog.event_data.CommandLine.keyword:(*\\\\CurrentVersion\\\\Image\\ File\\ Execution\\ Options\\\\sethc.exe* OR *\\\\CurrentVersion\\\\Image\\ File\\ Execution\\ Options\\\\utilman.exe* OR *\\\\CurrentVersion\\\\Image\\ File\\ Execution\\ Options\\\\osk.exe* OR *\\\\CurrentVersion\\\\Image\\ File\\ Execution\\ Options\\\\magnify.exe* OR *\\\\CurrentVersion\\\\Image\\ File\\ Execution\\ Options\\\\narrator.exe* OR *\\\\CurrentVersion\\\\Image\\ File\\ Execution\\ Options\\\\displayswitch.exe* OR *\\\\CurrentVersion\\\\Image\\ File\\ Execution\\ Options\\\\atbroker.exe*)"
@@ -130,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Debugger Registration Cmdline'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

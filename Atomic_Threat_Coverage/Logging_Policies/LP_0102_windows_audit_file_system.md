@@ -1,5 +1,6 @@
 | Title            | LP_0102_windows_audit_file_system                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit File System determines whether the operating system generates audit events when users attempt to access file system objects                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | Low                                                                    |

@@ -3,7 +3,7 @@
 | **ID**                      | RA1501            |
 | **Description**             | Make sure you can manage Remote Computer Management system policies   |
 | **Author**                  | your name/nickname/twitter        |
-| **Creation Date**           | YYYY/MM/DD |
+| **Creation Date**           | DD.MM.YYYY |
 | **Category**                | Configuration      |
 | **Stage**                   |[RS0001: Preparation](../Response_Stages/RS0001.md)| 
 | **Automation** |<ul><li>thehive/phantom/demisto/etc</li></ul>|

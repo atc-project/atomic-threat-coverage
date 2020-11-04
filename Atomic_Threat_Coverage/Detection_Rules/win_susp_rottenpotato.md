@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects logon events that have characteristics of events generated during an attack with RottenPotato and the like |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1171: LLMNR/NBT-NS Poisoning and Relay](https://attack.mitre.org/techniques/T1171)</li><li>[T1557.001: LLMNR/NBT-NS Poisoning and SMB Relay](https://attack.mitre.org/techniques/T1557/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1171: LLMNR/NBT-NS Poisoning and Relay](https://attack.mitre.org/techniques/T1171)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li></ul>  |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
@@ -28,8 +28,7 @@ date: 2019/11/15
 tags:
     - attack.privilege_escalation
     - attack.credential_access
-    - attack.t1171          # an old one
-    - attack.t1557.001
+    - attack.t1171
 logsource:
     product: windows
     service: security
@@ -76,8 +75,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.privilege_escalation",
       "attack.credential_access",
-      "attack.t1171",
-      "attack.t1557.001"
+      "attack.t1171"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4624\" AND winlog.event_data.LogonType:\"3\" AND TargetUserName:\"ANONYMOUS_LOGON\" AND winlog.event_data.WorkstationName:\"\\-\" AND SourceNetworkAddress:\"127.0.0.1\")"
   },
@@ -126,10 +124,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'RottenPotato Like Attack Pattern'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

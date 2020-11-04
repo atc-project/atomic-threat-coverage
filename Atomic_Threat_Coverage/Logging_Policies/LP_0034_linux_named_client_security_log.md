@@ -1,5 +1,6 @@
 | Title            | LP_0034_linux_named_client_security_log                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Policy to enable BIND (named) DNS server client_security log                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | Low                                                                    |

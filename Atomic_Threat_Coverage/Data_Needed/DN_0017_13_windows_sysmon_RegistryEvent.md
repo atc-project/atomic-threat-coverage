@@ -1,5 +1,6 @@
 | Title              | DN_0017_13_windows_sysmon_RegistryEvent       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | This Registry event type identifies Registry value modifications. The event  records the value written for Registry values of type DWORD and QWORD |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
 | **References**     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90013](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90013)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-13.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-13.md)</li></ul> |

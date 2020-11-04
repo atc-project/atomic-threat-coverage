@@ -1,5 +1,6 @@
 | Title              | DN_0023_20_windows_sysmon_WmiEvent       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | This event logs the registration of WMI consumers, recording the consumer  name, log, and destination |
 | **Logging Policy** | <ul><li>[LP_0010_windows_sysmon_WmiEvent](../Logging_Policies/LP_0010_windows_sysmon_WmiEvent.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-20.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-20.md)</li><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90020](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90020)</li></ul> |

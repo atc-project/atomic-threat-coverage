@@ -1,5 +1,6 @@
 | Title              | DN_0044_1000_application_crashed       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | This is a very generic error and it doesn't tell much about what caused it. Some applications may fail with this error when the system is left unstable by another faulty program. |
 | **Logging Policy** | <ul><li>[none](../Logging_Policies/none.md)</li></ul> |
 | **References**     | <ul><li>[https://www.morgantechspace.com/2014/12/event-id-1000-application-error.html](https://www.morgantechspace.com/2014/12/event-id-1000-application-error.html)</li></ul> |

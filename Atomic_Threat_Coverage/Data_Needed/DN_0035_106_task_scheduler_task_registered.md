@@ -1,5 +1,6 @@
 | Title              | DN_0035_106_task_scheduler_task_registered       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | General Windows Task Registration |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
 | **References**     | <ul><li>[https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc774938(v=ws.10)](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc774938(v=ws.10))</li></ul> |

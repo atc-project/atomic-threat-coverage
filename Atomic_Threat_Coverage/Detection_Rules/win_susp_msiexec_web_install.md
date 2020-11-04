@@ -1,10 +1,10 @@
 | Title                    | MsiExec Web Install       |
 |:-------------------------|:------------------|
 | **Description**          | Detects suspicious msiexec process starts with web addreses as parameter |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1218.007: Msiexec](https://attack.mitre.org/techniques/T1218/007)</li><li>[T1105: Ingress Tool Transfer](https://attack.mitre.org/techniques/T1105)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.007: Msiexec](../Triggers/T1218.007.md)</li><li>[T1105: Ingress Tool Transfer](../Triggers/T1105.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,12 +25,9 @@ references:
     - https://blog.trendmicro.com/trendlabs-security-intelligence/attack-using-windows-installer-msiexec-exe-leads-lokibot/
 tags:
     - attack.defense_evasion
-    - attack.t1218.007
-    - attack.command_and_control
-    - attack.t1105
 author: Florian Roth
 date: 2018/02/09
-modified: 2020/08/30
+modified: 2012/12/11
 logsource:
     category: process_creation
     product: windows
@@ -72,10 +69,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "MsiExec Web Install",
     "description": "Detects suspicious msiexec process starts with web addreses as parameter",
     "tags": [
-      "attack.defense_evasion",
-      "attack.t1218.007",
-      "attack.command_and_control",
-      "attack.t1105"
+      "attack.defense_evasion"
     ],
     "query": "winlog.event_data.CommandLine.keyword:(*\\ msiexec*\\:\\/\\/*)"
   },
@@ -124,10 +118,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'MsiExec Web Install'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

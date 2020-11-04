@@ -3,7 +3,7 @@
 | **ID**                      | RA4501            |
 | **Description**             | Remove a registry key   |
 | **Author**                  | your name/nickname/twitter        |
-| **Creation Date**           | YYYY/MM/DD |
+| **Creation Date**           | DD.MM.YYYY |
 | **Category**                | Configuration      |
 | **Stage**                   |[RS0004: Eradication](../Response_Stages/RS0004.md)| 
 | **References** |<ul><li>[https://example.com](https://example.com)</li></ul>|

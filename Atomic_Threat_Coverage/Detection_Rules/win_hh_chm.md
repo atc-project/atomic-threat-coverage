@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Identifies usage of hh.exe executing recently modified .chm files. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1218.001: Compiled HTML File](https://attack.mitre.org/techniques/T1218/001)</li><li>[T1223: Compiled HTML File](https://attack.mitre.org/techniques/T1223)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1223: Compiled HTML File](https://attack.mitre.org/techniques/T1223)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.001: Compiled HTML File](../Triggers/T1218.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1223: Compiled HTML File](../Triggers/T1223.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>unlike</li></ul>  |
 | **Development Status**   | experimental |
@@ -29,9 +29,8 @@ date: 2019/10/24
 modified: 2019/11/11
 tags:
     - attack.defense_evasion
-    - attack.t1218.001
-    - attack.execution  # an old one
-    - attack.t1223  # an old one
+    - attack.execution
+    - attack.t1223
 logsource:
     category: process_creation
     product: windows
@@ -78,7 +77,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Identifies usage of hh.exe executing recently modified .chm files.",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1218.001",
       "attack.execution",
       "attack.t1223"
     ],
@@ -129,10 +127,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'HH.exe Execution'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

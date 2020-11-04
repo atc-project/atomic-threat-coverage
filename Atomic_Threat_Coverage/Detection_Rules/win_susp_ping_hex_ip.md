@@ -34,9 +34,9 @@ logsource:
     product: windows
 detection:
     selection:
-        CommandLine|contains:
-            - 'ping.exe*0x*'
-            - 'ping*0x*'
+        CommandLine:
+            - '*\ping.exe 0x*'
+            - '*\ping 0x*'
     condition: selection
 fields:
     - ParentCommandLine
@@ -53,14 +53,14 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "CommandLine.*.*ping.exe.*0x.*" -or $_.message -match "CommandLine.*.*ping.*0x.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "CommandLine.*.*\\ping.exe 0x.*" -or $_.message -match "CommandLine.*.*\\ping 0x.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.CommandLine.keyword:(*ping.exe*0x* OR *ping*0x*)
+winlog.event_data.CommandLine.keyword:(*\\ping.exe\ 0x* OR *\\ping\ 0x*)
 ```
 
 
@@ -77,7 +77,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.t1140",
       "attack.t1027"
     ],
-    "query": "winlog.event_data.CommandLine.keyword:(*ping.exe*0x* OR *ping*0x*)"
+    "query": "winlog.event_data.CommandLine.keyword:(*\\\\ping.exe\\ 0x* OR *\\\\ping\\ 0x*)"
   },
   "trigger": {
     "schedule": {
@@ -94,7 +94,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "winlog.event_data.CommandLine.keyword:(*ping.exe*0x* OR *ping*0x*)",
+                    "query": "winlog.event_data.CommandLine.keyword:(*\\\\ping.exe\\ 0x* OR *\\\\ping\\ 0x*)",
                     "analyze_wildcard": true
                   }
                 }
@@ -124,10 +124,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Ping Hex IP'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -150,28 +147,28 @@ EOF
 ### graylog
     
 ```
-CommandLine.keyword:(*ping.exe*0x* *ping*0x*)
+CommandLine.keyword:(*\\ping.exe 0x* *\\ping 0x*)
 ```
 
 
 ### splunk
     
 ```
-(CommandLine="*ping.exe*0x*" OR CommandLine="*ping*0x*") | table ParentCommandLine
+(CommandLine="*\\ping.exe 0x*" OR CommandLine="*\\ping 0x*") | table ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-CommandLine IN ["*ping.exe*0x*", "*ping*0x*"]
+CommandLine IN ["*\\ping.exe 0x*", "*\\ping 0x*"]
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*.*ping\.exe.*0x.*|.*.*ping.*0x.*)'
+grep -P '^(?:.*.*\ping\.exe 0x.*|.*.*\ping 0x.*)'
 ```
 
 

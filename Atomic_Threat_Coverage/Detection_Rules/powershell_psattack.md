@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the use of PSAttack PowerShell hack tool |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0037_4103_windows_powershell_executing_pipeline](../Data_Needed/DN_0037_4103_windows_powershell_executing_pipeline.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Pentesters</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,8 +25,7 @@ references:
     - https://adsecurity.org/?p=2921
 tags:
     - attack.execution
-    - attack.t1059.001
-    - attack.t1086  #an old one
+    - attack.t1086
 author: Sean Metcalf (source), Florian Roth (rule)
 date: 2017/03/05
 logsource:
@@ -73,7 +72,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects the use of PSAttack PowerShell hack tool",
     "tags": [
       "attack.execution",
-      "attack.t1059.001",
       "attack.t1086"
     ],
     "query": "(winlog.event_id:\"4103\" AND \"PS\\ ATTACK\\!\\!\\!\")"
@@ -123,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'PowerShell PSAttack'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

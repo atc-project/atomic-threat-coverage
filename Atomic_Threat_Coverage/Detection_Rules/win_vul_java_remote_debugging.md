@@ -1,10 +1,10 @@
 | Title                    | Java Running with Remote Debugging       |
 |:-------------------------|:------------------|
 | **Description**          | Detects a JAVA process running with remote debugging allowing more than just localhost to connect |
-| **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
-| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1046: Network Service Scanning](https://attack.mitre.org/techniques/T1046)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Trigger**              | <ul><li>[T1046: Network Service Scanning](../Triggers/T1046.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -22,7 +22,9 @@ id: 8f88e3f6-2a49-48f5-a5c4-2f7eedf78710
 description: Detects a JAVA process running with remote debugging allowing more than just localhost to connect
 author: Florian Roth
 date: 2019/01/16
-modified: 2020/08/29
+tags:
+    - attack.discovery
+    - attack.t1046
 logsource:
     category: process_creation
     product: windows
@@ -68,7 +70,10 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   "metadata": {
     "title": "Java Running with Remote Debugging",
     "description": "Detects a JAVA process running with remote debugging allowing more than just localhost to connect",
-    "tags": "",
+    "tags": [
+      "attack.discovery",
+      "attack.t1046"
+    ],
     "query": "(winlog.event_data.CommandLine.keyword:*transport\\=dt_socket,address\\=* AND (NOT (winlog.event_data.CommandLine.keyword:*address\\=127.0.0.1* OR winlog.event_data.CommandLine.keyword:*address\\=localhost*)))"
   },
   "trigger": {
@@ -116,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Java Running with Remote Debugging'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

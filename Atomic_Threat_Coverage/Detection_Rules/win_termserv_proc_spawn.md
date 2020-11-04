@@ -1,8 +1,8 @@
 | Title                    | Terminal Service Process Spawn       |
 |:-------------------------|:------------------|
 | **Description**          | Detects a process spawned by the terminal service server process (this could be an indicator for an exploitation of CVE-2019-0708) |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1190: Exploit Public-Facing Application](https://attack.mitre.org/techniques/T1190)</li><li>[T1210: Exploitation of Remote Services](https://attack.mitre.org/techniques/T1210)</li></ul>  |
+| **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
@@ -25,12 +25,7 @@ references:
     - https://securingtomorrow.mcafee.com/other-blogs/mcafee-labs/rdp-stands-for-really-do-patch-understanding-the-wormable-rdp-vulnerability-cve-2019-0708/
 author: Florian Roth
 date: 2019/05/22
-modified: 2020/08/29
 tags:
-    - attack.initial_access 
-    - attack.t1190
-    - attack.lateral_movement
-    - attack.t1210
     - car.2013-07-002
 logsource:
     product: windows
@@ -44,6 +39,8 @@ detection:
 falsepositives:
     - Unknown
 level: high
+
+
 ```
 
 
@@ -73,10 +70,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Terminal Service Process Spawn",
     "description": "Detects a process spawned by the terminal service server process (this could be an indicator for an exploitation of CVE-2019-0708)",
     "tags": [
-      "attack.initial_access",
-      "attack.t1190",
-      "attack.lateral_movement",
-      "attack.t1210",
       "car.2013-07-002"
     ],
     "query": "(winlog.event_data.ParentCommandLine.keyword:*\\\\svchost.exe*termsvcs AND (NOT (winlog.event_data.Image.keyword:*\\\\rdpclip.exe)))"
@@ -126,10 +119,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Terminal Service Process Spawn'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

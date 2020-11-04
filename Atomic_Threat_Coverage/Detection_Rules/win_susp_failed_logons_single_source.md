@@ -156,10 +156,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Failed Logins with Different Accounts from Single Source System'",
         "body": "Hits:\n{{#aggregations.agg.buckets}}\n {{key}} {{doc_count}}\n\n{{#by.buckets}}\n-- {{key}} {{doc_count}}\n{{/by.buckets}}\n\n{{/aggregations.agg.buckets}}\n",
@@ -256,10 +253,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Failed Logins with Different Accounts from Single Source System'",
         "body": "Hits:\n{{#aggregations.agg.buckets}}\n {{key}} {{doc_count}}\n\n{{#by.buckets}}\n-- {{key}} {{doc_count}}\n{{/by.buckets}}\n\n{{/aggregations.agg.buckets}}\n",

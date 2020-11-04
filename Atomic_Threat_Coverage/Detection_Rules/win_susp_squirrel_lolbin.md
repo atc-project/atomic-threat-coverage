@@ -1,10 +1,10 @@
 | Title                    | Squirrel Lolbin       |
 |:-------------------------|:------------------|
 | **Description**          | Detects Possible Squirrel Packages Manager as Lolbin |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>1Clipboard</li><li>Beaker Browser</li><li>Caret</li><li>Collectie</li><li>Discord</li><li>Figma</li><li>Flow</li><li>Ghost</li><li>GitHub Desktop</li><li>GitKraken</li><li>Hyper</li><li>Insomnia</li><li>JIBO</li><li>Kap</li><li>Kitematic</li><li>Now Desktop</li><li>Postman</li><li>PostmanCanary</li><li>Rambox</li><li>Simplenote</li><li>Skype</li><li>Slack</li><li>SourceTree</li><li>Stride</li><li>Svgsus</li><li>WebTorrent</li><li>WhatsApp</li><li>WordPress.com</li><li>atom</li><li>gitkraken</li><li>slack</li><li>teams</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,11 +26,8 @@ references:
     - http://www.hexacorn.com/blog/2018/08/16/squirrel-as-a-lolbin/
 tags:
     - attack.execution
-    - attack.defense_evasion
-    - attack.t1218
 author: Karneades / Markus Neis
 date: 2019/11/12
-modified: 2020/08/28
 falsepositives:
     - 1Clipboard
     - Beaker Browser
@@ -107,9 +104,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Squirrel Lolbin",
     "description": "Detects Possible Squirrel Packages Manager as Lolbin",
     "tags": [
-      "attack.execution",
-      "attack.defense_evasion",
-      "attack.t1218"
+      "attack.execution"
     ],
     "query": "(winlog.event_data.Image.keyword:(*\\\\update.exe) AND winlog.event_data.CommandLine.keyword:(*\\-\\-processStart*.exe* OR *\\-\\-processStartAndWait*.exe* OR *\\-\\-createShortcut*.exe*))"
   },
@@ -158,10 +153,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Squirrel Lolbin'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

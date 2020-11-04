@@ -1,5 +1,6 @@
 | Title            | LP_0029_windows_audit_detailed_file_share                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit Detailed File Share allows you to audit attempts to  access files and folders on a shared folder.                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | High                                                                    |

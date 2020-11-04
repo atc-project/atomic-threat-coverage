@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects Service Principal Name Enumeration used for Kerberoasting |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1558.003: Kerberoasting](https://attack.mitre.org/techniques/T1558/003)</li><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1558.003: Kerberoasting](../Triggers/T1558.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1208: Kerberoasting](../Triggers/T1208.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Administrator Activity</li></ul>  |
 | **Development Status**   | experimental |
@@ -27,8 +27,7 @@ author: Markus Neis, keepwatch
 date: 2018/11/14
 tags:
     - attack.credential_access
-    - attack.t1558.003
-    - attack.t1208      # an old one
+    - attack.t1208
 logsource:
     category: process_creation
     product: windows
@@ -74,7 +73,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects Service Principal Name Enumeration used for Kerberoasting",
     "tags": [
       "attack.credential_access",
-      "attack.t1558.003",
       "attack.t1208"
     ],
     "query": "((winlog.event_data.Image.keyword:*\\\\setspn.exe OR winlog.event_data.Description.keyword:*Query\\ or\\ reset\\ the\\ computer*\\ SPN\\ attribute*) AND winlog.event_data.CommandLine.keyword:*\\-q*)"
@@ -124,10 +122,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Possible SPN Enumeration'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

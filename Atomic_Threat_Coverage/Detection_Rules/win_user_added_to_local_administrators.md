@@ -1,10 +1,10 @@
 | Title                    | User Added to Local Administrators       |
 |:-------------------------|:------------------|
 | **Description**          | This rule triggers on user accounts that are added to the local Administrators group, which could be legitimate activity or a sign of privilege escalation activity |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1078: Valid Accounts](https://attack.mitre.org/techniques/T1078)</li><li>[T1098: Account Manipulation](https://attack.mitre.org/techniques/T1098)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1078: Valid Accounts](https://attack.mitre.org/techniques/T1078)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0069_4732_member_was_added_to_security_enabled_local_group](../Data_Needed/DN_0069_4732_member_was_added_to_security_enabled_local_group.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1098: Account Manipulation](../Triggers/T1098.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Legitimate administrative activity</li></ul>  |
 | **Development Status**   | stable |
@@ -24,12 +24,9 @@ description: This rule triggers on user accounts that are added to the local Adm
 status: stable
 author: Florian Roth
 date: 2017/03/14
-modified: 2020/08/23
 tags:
     - attack.privilege_escalation
     - attack.t1078
-    - attack.persistence
-    - attack.t1098
 logsource:
     product: windows
     service: security
@@ -77,9 +74,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "This rule triggers on user accounts that are added to the local Administrators group, which could be legitimate activity or a sign of privilege escalation activity",
     "tags": [
       "attack.privilege_escalation",
-      "attack.t1078",
-      "attack.persistence",
-      "attack.t1098"
+      "attack.t1078"
     ],
     "query": "(winlog.channel:\"Security\" AND (winlog.event_id:\"4732\" AND winlog.channel:\"Security\" AND (winlog.event_data.GroupName:\"Administrators\" OR winlog.event_data.GroupSid:\"S\\-1\\-5\\-32\\-544\")) AND (NOT (winlog.event_data.SubjectUserName.keyword:*$)))"
   },
@@ -128,10 +123,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'User Added to Local Administrators'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

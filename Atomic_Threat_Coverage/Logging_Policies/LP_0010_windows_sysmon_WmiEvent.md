@@ -1,5 +1,6 @@
 | Title            | LP_0010_windows_sysmon_WmiEvent                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Enables logging of events related to usage of windows management interface. Possible events are:
   - WmiEventFilter activity detected
   - WmiEventConsumer activity detected

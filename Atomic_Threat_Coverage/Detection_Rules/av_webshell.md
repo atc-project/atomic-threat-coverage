@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a highly relevant Antivirus alert that reports a web shell |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1100: Web Shell](https://attack.mitre.org/techniques/T1100)</li><li>[T1505.003: Web Shell](https://attack.mitre.org/techniques/T1505/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1100: Web Shell](https://attack.mitre.org/techniques/T1100)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0084_av_alert](../Data_Needed/DN_0084_av_alert.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1505.003: Web Shell](../Triggers/T1505.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1100: Web Shell](../Triggers/T1100.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unlikely</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -28,12 +28,11 @@ references:
 tags:
     - attack.persistence
     - attack.t1100
-    - attack.t1505.003
 logsource:
     product: antivirus
 detection:
     selection:
-        Signature:
+        Signature: 
             - "PHP/Backdoor*"
             - "JSP/Backdoor*"
             - "ASP/Backdoor*"
@@ -79,8 +78,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects a highly relevant Antivirus alert that reports a web shell",
     "tags": [
       "attack.persistence",
-      "attack.t1100",
-      "attack.t1505.003"
+      "attack.t1100"
     ],
     "query": "winlog.event_data.Signature.keyword:(PHP\\/Backdoor* OR JSP\\/Backdoor* OR ASP\\/Backdoor* OR Backdoor.PHP* OR Backdoor.JSP* OR Backdoor.ASP* OR *Webshell*)"
   },
@@ -129,10 +127,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Antivirus Web Shell Detection'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nFileName = {{_source.FileName}}\n    User = {{_source.User}}================================================================================\n{{/ctx.payload.hits.hits}}",

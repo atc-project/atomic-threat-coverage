@@ -1,5 +1,6 @@
 | Title              | DN_0054_2102_pnp_or_power_operation_for_usb_device       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Finished PnP or Power operation for USB device |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
 | **References**     | <ul><li>[https://www.techrepublic.com/article/how-to-track-down-usb-flash-drive-usage-in-windows-10s-event-viewer/](https://www.techrepublic.com/article/how-to-track-down-usb-flash-drive-usage-in-windows-10s-event-viewer/)</li></ul> |

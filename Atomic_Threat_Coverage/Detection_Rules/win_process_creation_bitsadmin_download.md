@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects usage of bitsadmin downloading a file |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1197: BITS Jobs](https://attack.mitre.org/techniques/T1197)</li><li>[T1036.003: Rename System Utilities](https://attack.mitre.org/techniques/T1036/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1197: BITS Jobs](https://attack.mitre.org/techniques/T1197)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1197: BITS Jobs](../Triggers/T1197.md)</li><li>[T1036.003: Rename System Utilities](../Triggers/T1036.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1197: BITS Jobs](../Triggers/T1197.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Some legitimate apps use this, but limited.</li></ul>  |
 | **Development Status**   | experimental |
@@ -29,9 +29,8 @@ tags:
     - attack.persistence
     - attack.t1197
     - attack.s0190
-    - attack.t1036.003    
 date: 2017/03/09
-modified: 2020/09/06
+modified: 2019/12/06
 author: Michael Haag
 logsource:
     category: process_creation
@@ -85,8 +84,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.defense_evasion",
       "attack.persistence",
       "attack.t1197",
-      "attack.s0190",
-      "attack.t1036.003"
+      "attack.s0190"
     ],
     "query": "((winlog.event_data.Image.keyword:(*\\\\bitsadmin.exe) AND winlog.event_data.CommandLine.keyword:(*\\ \\/transfer\\ *)) OR winlog.event_data.CommandLine.keyword:(*copy\\ bitsadmin.exe*))"
   },
@@ -135,10 +133,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Bitsadmin Download'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

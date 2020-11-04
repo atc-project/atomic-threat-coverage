@@ -3,7 +3,7 @@
 | **ID**                      | RA1101            |
 | **Description**             | Make sure you have access to external communication Network Flow logs   |
 | **Author**                  | @atc_project        |
-| **Creation Date**           | 2020/05/06 |
+| **Creation Date**           | 06.05.2020 |
 | **Category**                | Network      |
 | **Stage**                   |[RS0001: Preparation](../Response_Stages/RS0001.md)| 
 | **References** |<ul><li>[https://en.wikipedia.org/wiki/NetFlow](https://en.wikipedia.org/wiki/NetFlow)</li><li>[https://www.plixer.com/blog/how-accurate-is-sampled-netflow/](https://www.plixer.com/blog/how-accurate-is-sampled-netflow/)</li></ul>|

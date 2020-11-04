@@ -1,5 +1,6 @@
 | Title              | DN_0083_16_access_history_in_hive_was_cleared       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | The access history in hive was cleared updating X keys and creating Y modified pages |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
 | **References**     | <ul><li>[http://www.eventid.net/display-eventid-16-source-Microsoft-Windows-Kernel-General-eventno-11563-phase-1.htm](http://www.eventid.net/display-eventid-16-source-Microsoft-Windows-Kernel-General-eventno-11563-phase-1.htm)</li></ul> |

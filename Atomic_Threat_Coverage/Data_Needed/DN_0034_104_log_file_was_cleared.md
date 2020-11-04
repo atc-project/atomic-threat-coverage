@@ -1,5 +1,6 @@
 | Title              | DN_0034_104_log_file_was_cleared       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Windows log file was cleared |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
 | **References**     | <ul><li>[http://kb.eventtracker.com/evtpass/evtpages/EventId_104_Microsoft-Windows-Eventlog_64337.asp](http://kb.eventtracker.com/evtpass/evtpages/EventId_104_Microsoft-Windows-Eventlog_64337.asp)</li></ul> |

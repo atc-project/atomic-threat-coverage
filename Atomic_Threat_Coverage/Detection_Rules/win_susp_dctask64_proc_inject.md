@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects suspicious process injection using ZOHO's dctask64.exe |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1055.001: Dynamic-link Library Injection](https://attack.mitre.org/techniques/T1055/001)</li><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li></ul>  |
 | **Severity Level**       | high |
@@ -27,11 +27,9 @@ references:
     - https://twitter.com/gN3mes1s/status/1222095371175911424
 author: Florian Roth
 date: 2020/01/28
-modified: 2020/08/30
 tags:
     - attack.defense_evasion
-    - attack.t1055.001
-    - attack.t1055      # an old one
+    - attack.t1055
 logsource:
     category: process_creation
     product: windows
@@ -81,7 +79,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects suspicious process injection using ZOHO's dctask64.exe",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1055.001",
       "attack.t1055"
     ],
     "query": "(winlog.event_data.Image.keyword:(*\\\\dctask64.exe) AND (NOT (winlog.event_data.CommandLine.keyword:(*DesktopCentral_Agent\\\\agent*))))"
@@ -131,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'ZOHO Dctask64 Process Injection'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}\n      ParentImage = {{_source.ParentImage}}================================================================================\n{{/ctx.payload.hits.hits}}",

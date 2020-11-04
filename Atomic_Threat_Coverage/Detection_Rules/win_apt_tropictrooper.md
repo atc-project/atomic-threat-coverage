@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects TropicTrooper activity, an actor who targeted high-profile organizations in the energy and food and beverage sectors in Asia |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059: Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)</li><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1085: Rundll32](../Triggers/T1085.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      |  There are no documented False Positives for this Detection Rule yet  |
 | **Development Status**   | stable |
@@ -22,14 +22,12 @@ id: 8c7090c3-e0a0-4944-bd08-08c3a0cecf79
 author: '@41thexplorer, Microsoft Defender ATP'
 status: stable
 date: 2019/11/12
-modified: 2020/08/27
 description: Detects TropicTrooper activity, an actor who targeted high-profile organizations in the energy and food and beverage sectors in Asia
 references:
     - https://cloudblogs.microsoft.com/microsoftsecure/2018/11/28/windows-defender-atp-device-risk-score-exposes-new-cyberattack-drives-conditional-access-to-protect-networks/
 tags:
     - attack.execution
-    - attack.t1059 # an old one
-    - attack.t1059.001
+    - attack.t1085
 logsource:
     category: process_creation
     product: windows
@@ -69,8 +67,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects TropicTrooper activity, an actor who targeted high-profile organizations in the energy and food and beverage sectors in Asia",
     "tags": [
       "attack.execution",
-      "attack.t1059",
-      "attack.t1059.001"
+      "attack.t1085"
     ],
     "query": "winlog.event_data.CommandLine.keyword:*abCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCc*"
   },
@@ -119,10 +116,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'TropicTrooper Campaign November 2018'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

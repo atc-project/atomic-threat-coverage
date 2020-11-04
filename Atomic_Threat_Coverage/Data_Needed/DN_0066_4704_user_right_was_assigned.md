@@ -1,5 +1,6 @@
 | Title              | DN_0066_4704_user_right_was_assigned       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | This event generates every time local user right policy is changed and  user right was assigned to an account. You will see unique event for  every user |
 | **Logging Policy** | <ul><li>[LP_0105_windows_audit_authorization_policy_change](../Logging_Policies/LP_0105_windows_audit_authorization_policy_change.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4704.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4704.md)</li></ul> |

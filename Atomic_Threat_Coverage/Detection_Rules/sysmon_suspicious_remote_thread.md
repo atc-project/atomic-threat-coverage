@@ -1,7 +1,7 @@
 | Title                    | Suspicious Remote Thread Created       |
 |:-------------------------|:------------------|
 | **Description**          | Offensive tradecraft is switching away from using APIs like "CreateRemoteThread", however, this is still largely observed in the wild. This rule aims to detect suspicious processes (those we would not expect to behave in this way like word.exe or outlook.exe) creating remote threads on other processes. It is a generalistic rule, but it should have a low FP ratio due to the selected range of processes. |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0012_8_windows_sysmon_CreateRemoteThread](../Data_Needed/DN_0012_8_windows_sysmon_CreateRemoteThread.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li></ul>  |
@@ -26,7 +26,7 @@ notes:
     - MonitoringHost.exe is a process that loads .NET CLR by default and thus a favorite for process injection for .NET in-memory offensive tools.
 status: experimental
 date: 2019/10/27
-modified: 2020/08/28
+modified: 2019/11/13
 author: Perez Diego (@darkquassar), oscd.community
 references:
     - Personal research, statistical analysis
@@ -36,7 +36,6 @@ logsource:
     service: sysmon
 tags:
     - attack.privilege_escalation
-    - attack.defense_evasion
     - attack.t1055
 detection:
     selection: 
@@ -132,7 +131,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Offensive tradecraft is switching away from using APIs like \"CreateRemoteThread\", however, this is still largely observed in the wild. This rule aims to detect suspicious processes (those we would not expect to behave in this way like word.exe or outlook.exe) creating remote threads on other processes. It is a generalistic rule, but it should have a low FP ratio due to the selected range of processes.",
     "tags": [
       "attack.privilege_escalation",
-      "attack.defense_evasion",
       "attack.t1055"
     ],
     "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND (winlog.event_id:\"8\" AND winlog.event_data.SourceImage.keyword:(*\\\\bash.exe OR *\\\\cvtres.exe OR *\\\\defrag.exe OR *\\\\dnx.exe OR *\\\\esentutl.exe OR *\\\\excel.exe OR *\\\\expand.exe OR *\\\\explorer.exe OR *\\\\find.exe OR *\\\\findstr.exe OR *\\\\forfiles.exe OR *\\\\git.exe OR *\\\\gpupdate.exe OR *\\\\hh.exe OR *\\\\iexplore.exe OR *\\\\installutil.exe OR *\\\\lync.exe OR *\\\\makecab.exe OR *\\\\mDNSResponder.exe OR *\\\\monitoringhost.exe OR *\\\\msbuild.exe OR *\\\\mshta.exe OR *\\\\msiexec.exe OR *\\\\mspaint.exe OR *\\\\outlook.exe OR *\\\\ping.exe OR *\\\\powerpnt.exe OR *\\\\powershell.exe OR *\\\\provtool.exe OR *\\\\python.exe OR *\\\\regsvr32.exe OR *\\\\robocopy.exe OR *\\\\runonce.exe OR *\\\\sapcimc.exe OR *\\\\schtasks.exe OR *\\\\smartscreen.exe OR *\\\\spoolsv.exe OR *\\\\tstheme.exe OR *\\\\userinit.exe OR *\\\\vssadmin.exe OR *\\\\vssvc.exe OR *\\\\w3wp.exe* OR *\\\\winlogon.exe OR *\\\\winscp.exe OR *\\\\wmic.exe OR *\\\\word.exe OR *\\\\wscript.exe)) AND (NOT (winlog.event_data.SourceImage.keyword:*Visual\\ Studio*)))"
@@ -182,10 +180,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Remote Thread Created'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n SourceImage = {{_source.SourceImage}}\n TargetImage = {{_source.TargetImage}}================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -31,7 +31,7 @@ falsepositives:
     - Unknown
 level: high
 detection:
-    selection_1:
+    selection:
         - ImagePath|re: '\$PSHome\[\s*\d{1,3}\s*\]\s*\+\s*\$PSHome\['
         - ImagePath|re: '\$ShellId\[\s*\d{1,3}\s*\]\s*\+\s*\$ShellId\['
         - ImagePath|re: '\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\['
@@ -39,7 +39,7 @@ detection:
         - ImagePath|re: '\*mdr\*\W\s*\)\.Name'
         - ImagePath|re: '\$VerbosePreference\.ToString\('
         - ImagePath|re: '\String\]\s*\$VerbosePreference'
-    condition: selection and selection_1
+    condition: selection
 ---
 logsource:
     product: windows
@@ -79,9 +79,9 @@ Feel free to contribute for fun and fame, this is open source :) -> https://gith
 ### es-qs
     
 ```
-(winlog.event_id:"7045" AND (winlog.event_data.ImagePath:/\$PSHome\[\s*\d{1,3}\s*\]\s*\+\s*\$PSHome\[/ OR winlog.event_data.ImagePath:/\$ShellId\[\s*\d{1,3}\s*\]\s*\+\s*\$ShellId\[/ OR winlog.event_data.ImagePath:/\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\[/ OR winlog.event_data.ImagePath:/\$env:ComSpec\[(\s*\d{1,3}\s*,){2}/ OR winlog.event_data.ImagePath:/\*mdr\*\W\s*\)\.Name/ OR winlog.event_data.ImagePath:/\$VerbosePreference\.ToString\(/ OR winlog.event_data.ImagePath:/\String\]\s*\$VerbosePreference/))
-(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND winlog.event_id:"6" AND (winlog.event_data.ImagePath:/\$PSHome\[\s*\d{1,3}\s*\]\s*\+\s*\$PSHome\[/ OR winlog.event_data.ImagePath:/\$ShellId\[\s*\d{1,3}\s*\]\s*\+\s*\$ShellId\[/ OR winlog.event_data.ImagePath:/\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\[/ OR winlog.event_data.ImagePath:/\$env:ComSpec\[(\s*\d{1,3}\s*,){2}/ OR winlog.event_data.ImagePath:/\*mdr\*\W\s*\)\.Name/ OR winlog.event_data.ImagePath:/\$VerbosePreference\.ToString\(/ OR winlog.event_data.ImagePath:/\String\]\s*\$VerbosePreference/))
-(winlog.channel:"Security" AND winlog.event_id:"4697" AND (winlog.event_data.ImagePath:/\$PSHome\[\s*\d{1,3}\s*\]\s*\+\s*\$PSHome\[/ OR winlog.event_data.ImagePath:/\$ShellId\[\s*\d{1,3}\s*\]\s*\+\s*\$ShellId\[/ OR winlog.event_data.ImagePath:/\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\[/ OR winlog.event_data.ImagePath:/\$env:ComSpec\[(\s*\d{1,3}\s*,){2}/ OR winlog.event_data.ImagePath:/\*mdr\*\W\s*\)\.Name/ OR winlog.event_data.ImagePath:/\$VerbosePreference\.ToString\(/ OR winlog.event_data.ImagePath:/\String\]\s*\$VerbosePreference/))
+(winlog.event_data.ImagePath:/\$PSHome\[\s*\d{1,3}\s*\]\s*\+\s*\$PSHome\[/ OR winlog.event_data.ImagePath:/\$ShellId\[\s*\d{1,3}\s*\]\s*\+\s*\$ShellId\[/ OR winlog.event_data.ImagePath:/\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\[/ OR winlog.event_data.ImagePath:/\$env:ComSpec\[(\s*\d{1,3}\s*,){2}/ OR winlog.event_data.ImagePath:/\*mdr\*\W\s*\)\.Name/ OR winlog.event_data.ImagePath:/\$VerbosePreference\.ToString\(/ OR winlog.event_data.ImagePath:/\String\]\s*\$VerbosePreference/)
+(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND (winlog.event_data.ImagePath:/\$PSHome\[\s*\d{1,3}\s*\]\s*\+\s*\$PSHome\[/ OR winlog.event_data.ImagePath:/\$ShellId\[\s*\d{1,3}\s*\]\s*\+\s*\$ShellId\[/ OR winlog.event_data.ImagePath:/\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\[/ OR winlog.event_data.ImagePath:/\$env:ComSpec\[(\s*\d{1,3}\s*,){2}/ OR winlog.event_data.ImagePath:/\*mdr\*\W\s*\)\.Name/ OR winlog.event_data.ImagePath:/\$VerbosePreference\.ToString\(/ OR winlog.event_data.ImagePath:/\String\]\s*\$VerbosePreference/))
+(winlog.channel:"Security" AND (winlog.event_data.ImagePath:/\$PSHome\[\s*\d{1,3}\s*\]\s*\+\s*\$PSHome\[/ OR winlog.event_data.ImagePath:/\$ShellId\[\s*\d{1,3}\s*\]\s*\+\s*\$ShellId\[/ OR winlog.event_data.ImagePath:/\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\[/ OR winlog.event_data.ImagePath:/\$env:ComSpec\[(\s*\d{1,3}\s*,){2}/ OR winlog.event_data.ImagePath:/\*mdr\*\W\s*\)\.Name/ OR winlog.event_data.ImagePath:/\$VerbosePreference\.ToString\(/ OR winlog.event_data.ImagePath:/\String\]\s*\$VerbosePreference/))
 ```
 
 
@@ -97,7 +97,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.defense_evasion",
       "attack.t1027"
     ],
-    "query": "(winlog.event_id:\"7045\" AND (winlog.event_data.ImagePath:/\\$PSHome\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$PSHome\\[/ OR winlog.event_data.ImagePath:/\\$ShellId\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$ShellId\\[/ OR winlog.event_data.ImagePath:/\\$env:Public\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$env:Public\\[/ OR winlog.event_data.ImagePath:/\\$env:ComSpec\\[(\\s*\\d{1,3}\\s*,){2}/ OR winlog.event_data.ImagePath:/\\*mdr\\*\\W\\s*\\)\\.Name/ OR winlog.event_data.ImagePath:/\\$VerbosePreference\\.ToString\\(/ OR winlog.event_data.ImagePath:/\\String\\]\\s*\\$VerbosePreference/))"
+    "query": "(winlog.event_data.ImagePath:/\\$PSHome\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$PSHome\\[/ OR winlog.event_data.ImagePath:/\\$ShellId\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$ShellId\\[/ OR winlog.event_data.ImagePath:/\\$env:Public\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$env:Public\\[/ OR winlog.event_data.ImagePath:/\\$env:ComSpec\\[(\\s*\\d{1,3}\\s*,){2}/ OR winlog.event_data.ImagePath:/\\*mdr\\*\\W\\s*\\)\\.Name/ OR winlog.event_data.ImagePath:/\\$VerbosePreference\\.ToString\\(/ OR winlog.event_data.ImagePath:/\\String\\]\\s*\\$VerbosePreference/)"
   },
   "trigger": {
     "schedule": {
@@ -114,7 +114,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.event_id:\"7045\" AND (winlog.event_data.ImagePath:/\\$PSHome\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$PSHome\\[/ OR winlog.event_data.ImagePath:/\\$ShellId\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$ShellId\\[/ OR winlog.event_data.ImagePath:/\\$env:Public\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$env:Public\\[/ OR winlog.event_data.ImagePath:/\\$env:ComSpec\\[(\\s*\\d{1,3}\\s*,){2}/ OR winlog.event_data.ImagePath:/\\*mdr\\*\\W\\s*\\)\\.Name/ OR winlog.event_data.ImagePath:/\\$VerbosePreference\\.ToString\\(/ OR winlog.event_data.ImagePath:/\\String\\]\\s*\\$VerbosePreference/))",
+                    "query": "(winlog.event_data.ImagePath:/\\$PSHome\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$PSHome\\[/ OR winlog.event_data.ImagePath:/\\$ShellId\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$ShellId\\[/ OR winlog.event_data.ImagePath:/\\$env:Public\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$env:Public\\[/ OR winlog.event_data.ImagePath:/\\$env:ComSpec\\[(\\s*\\d{1,3}\\s*,){2}/ OR winlog.event_data.ImagePath:/\\*mdr\\*\\W\\s*\\)\\.Name/ OR winlog.event_data.ImagePath:/\\$VerbosePreference\\.ToString\\(/ OR winlog.event_data.ImagePath:/\\String\\]\\s*\\$VerbosePreference/)",
                     "analyze_wildcard": true
                   }
                 }
@@ -144,10 +144,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Invoke-Obfuscation Obfuscated IEX Invocation'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -172,7 +169,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.defense_evasion",
       "attack.t1027"
     ],
-    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"6\" AND (winlog.event_data.ImagePath:/\\$PSHome\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$PSHome\\[/ OR winlog.event_data.ImagePath:/\\$ShellId\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$ShellId\\[/ OR winlog.event_data.ImagePath:/\\$env:Public\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$env:Public\\[/ OR winlog.event_data.ImagePath:/\\$env:ComSpec\\[(\\s*\\d{1,3}\\s*,){2}/ OR winlog.event_data.ImagePath:/\\*mdr\\*\\W\\s*\\)\\.Name/ OR winlog.event_data.ImagePath:/\\$VerbosePreference\\.ToString\\(/ OR winlog.event_data.ImagePath:/\\String\\]\\s*\\$VerbosePreference/))"
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND (winlog.event_data.ImagePath:/\\$PSHome\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$PSHome\\[/ OR winlog.event_data.ImagePath:/\\$ShellId\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$ShellId\\[/ OR winlog.event_data.ImagePath:/\\$env:Public\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$env:Public\\[/ OR winlog.event_data.ImagePath:/\\$env:ComSpec\\[(\\s*\\d{1,3}\\s*,){2}/ OR winlog.event_data.ImagePath:/\\*mdr\\*\\W\\s*\\)\\.Name/ OR winlog.event_data.ImagePath:/\\$VerbosePreference\\.ToString\\(/ OR winlog.event_data.ImagePath:/\\String\\]\\s*\\$VerbosePreference/))"
   },
   "trigger": {
     "schedule": {
@@ -189,7 +186,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"6\" AND (winlog.event_data.ImagePath:/\\$PSHome\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$PSHome\\[/ OR winlog.event_data.ImagePath:/\\$ShellId\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$ShellId\\[/ OR winlog.event_data.ImagePath:/\\$env:Public\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$env:Public\\[/ OR winlog.event_data.ImagePath:/\\$env:ComSpec\\[(\\s*\\d{1,3}\\s*,){2}/ OR winlog.event_data.ImagePath:/\\*mdr\\*\\W\\s*\\)\\.Name/ OR winlog.event_data.ImagePath:/\\$VerbosePreference\\.ToString\\(/ OR winlog.event_data.ImagePath:/\\String\\]\\s*\\$VerbosePreference/))",
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND (winlog.event_data.ImagePath:/\\$PSHome\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$PSHome\\[/ OR winlog.event_data.ImagePath:/\\$ShellId\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$ShellId\\[/ OR winlog.event_data.ImagePath:/\\$env:Public\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$env:Public\\[/ OR winlog.event_data.ImagePath:/\\$env:ComSpec\\[(\\s*\\d{1,3}\\s*,){2}/ OR winlog.event_data.ImagePath:/\\*mdr\\*\\W\\s*\\)\\.Name/ OR winlog.event_data.ImagePath:/\\$VerbosePreference\\.ToString\\(/ OR winlog.event_data.ImagePath:/\\String\\]\\s*\\$VerbosePreference/))",
                     "analyze_wildcard": true
                   }
                 }
@@ -219,10 +216,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Invoke-Obfuscation Obfuscated IEX Invocation'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -247,7 +241,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.defense_evasion",
       "attack.t1027"
     ],
-    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4697\" AND (winlog.event_data.ImagePath:/\\$PSHome\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$PSHome\\[/ OR winlog.event_data.ImagePath:/\\$ShellId\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$ShellId\\[/ OR winlog.event_data.ImagePath:/\\$env:Public\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$env:Public\\[/ OR winlog.event_data.ImagePath:/\\$env:ComSpec\\[(\\s*\\d{1,3}\\s*,){2}/ OR winlog.event_data.ImagePath:/\\*mdr\\*\\W\\s*\\)\\.Name/ OR winlog.event_data.ImagePath:/\\$VerbosePreference\\.ToString\\(/ OR winlog.event_data.ImagePath:/\\String\\]\\s*\\$VerbosePreference/))"
+    "query": "(winlog.channel:\"Security\" AND (winlog.event_data.ImagePath:/\\$PSHome\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$PSHome\\[/ OR winlog.event_data.ImagePath:/\\$ShellId\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$ShellId\\[/ OR winlog.event_data.ImagePath:/\\$env:Public\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$env:Public\\[/ OR winlog.event_data.ImagePath:/\\$env:ComSpec\\[(\\s*\\d{1,3}\\s*,){2}/ OR winlog.event_data.ImagePath:/\\*mdr\\*\\W\\s*\\)\\.Name/ OR winlog.event_data.ImagePath:/\\$VerbosePreference\\.ToString\\(/ OR winlog.event_data.ImagePath:/\\String\\]\\s*\\$VerbosePreference/))"
   },
   "trigger": {
     "schedule": {
@@ -264,7 +258,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4697\" AND (winlog.event_data.ImagePath:/\\$PSHome\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$PSHome\\[/ OR winlog.event_data.ImagePath:/\\$ShellId\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$ShellId\\[/ OR winlog.event_data.ImagePath:/\\$env:Public\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$env:Public\\[/ OR winlog.event_data.ImagePath:/\\$env:ComSpec\\[(\\s*\\d{1,3}\\s*,){2}/ OR winlog.event_data.ImagePath:/\\*mdr\\*\\W\\s*\\)\\.Name/ OR winlog.event_data.ImagePath:/\\$VerbosePreference\\.ToString\\(/ OR winlog.event_data.ImagePath:/\\String\\]\\s*\\$VerbosePreference/))",
+                    "query": "(winlog.channel:\"Security\" AND (winlog.event_data.ImagePath:/\\$PSHome\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$PSHome\\[/ OR winlog.event_data.ImagePath:/\\$ShellId\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$ShellId\\[/ OR winlog.event_data.ImagePath:/\\$env:Public\\[\\s*\\d{1,3}\\s*\\]\\s*\\+\\s*\\$env:Public\\[/ OR winlog.event_data.ImagePath:/\\$env:ComSpec\\[(\\s*\\d{1,3}\\s*,){2}/ OR winlog.event_data.ImagePath:/\\*mdr\\*\\W\\s*\\)\\.Name/ OR winlog.event_data.ImagePath:/\\$VerbosePreference\\.ToString\\(/ OR winlog.event_data.ImagePath:/\\String\\]\\s*\\$VerbosePreference/))",
                     "analyze_wildcard": true
                   }
                 }
@@ -294,10 +288,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Invoke-Obfuscation Obfuscated IEX Invocation'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -320,9 +311,9 @@ EOF
 ### graylog
     
 ```
-(EventID:"7045" AND (ImagePath:/\$PSHome\[\s*\d{1,3}\s*\]\s*\+\s*\$PSHome\[/ OR ImagePath:/\$ShellId\[\s*\d{1,3}\s*\]\s*\+\s*\$ShellId\[/ OR ImagePath:/\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\[/ OR ImagePath:/\$env:ComSpec\[(\s*\d{1,3}\s*,){2}/ OR ImagePath:/\*mdr\*\W\s*\)\.Name/ OR ImagePath:/\$VerbosePreference\.ToString\(/ OR ImagePath:/\String\]\s*\$VerbosePreference/))
-(EventID:"6" AND (ImagePath:/\$PSHome\[\s*\d{1,3}\s*\]\s*\+\s*\$PSHome\[/ OR ImagePath:/\$ShellId\[\s*\d{1,3}\s*\]\s*\+\s*\$ShellId\[/ OR ImagePath:/\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\[/ OR ImagePath:/\$env:ComSpec\[(\s*\d{1,3}\s*,){2}/ OR ImagePath:/\*mdr\*\W\s*\)\.Name/ OR ImagePath:/\$VerbosePreference\.ToString\(/ OR ImagePath:/\String\]\s*\$VerbosePreference/))
-(EventID:"4697" AND (ImagePath:/\$PSHome\[\s*\d{1,3}\s*\]\s*\+\s*\$PSHome\[/ OR ImagePath:/\$ShellId\[\s*\d{1,3}\s*\]\s*\+\s*\$ShellId\[/ OR ImagePath:/\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\[/ OR ImagePath:/\$env:ComSpec\[(\s*\d{1,3}\s*,){2}/ OR ImagePath:/\*mdr\*\W\s*\)\.Name/ OR ImagePath:/\$VerbosePreference\.ToString\(/ OR ImagePath:/\String\]\s*\$VerbosePreference/))
+(ImagePath:/\$PSHome\[\s*\d{1,3}\s*\]\s*\+\s*\$PSHome\[/ OR ImagePath:/\$ShellId\[\s*\d{1,3}\s*\]\s*\+\s*\$ShellId\[/ OR ImagePath:/\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\[/ OR ImagePath:/\$env:ComSpec\[(\s*\d{1,3}\s*,){2}/ OR ImagePath:/\*mdr\*\W\s*\)\.Name/ OR ImagePath:/\$VerbosePreference\.ToString\(/ OR ImagePath:/\String\]\s*\$VerbosePreference/)
+(ImagePath:/\$PSHome\[\s*\d{1,3}\s*\]\s*\+\s*\$PSHome\[/ OR ImagePath:/\$ShellId\[\s*\d{1,3}\s*\]\s*\+\s*\$ShellId\[/ OR ImagePath:/\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\[/ OR ImagePath:/\$env:ComSpec\[(\s*\d{1,3}\s*,){2}/ OR ImagePath:/\*mdr\*\W\s*\)\.Name/ OR ImagePath:/\$VerbosePreference\.ToString\(/ OR ImagePath:/\String\]\s*\$VerbosePreference/)
+(ImagePath:/\$PSHome\[\s*\d{1,3}\s*\]\s*\+\s*\$PSHome\[/ OR ImagePath:/\$ShellId\[\s*\d{1,3}\s*\]\s*\+\s*\$ShellId\[/ OR ImagePath:/\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\[/ OR ImagePath:/\$env:ComSpec\[(\s*\d{1,3}\s*,){2}/ OR ImagePath:/\*mdr\*\W\s*\)\.Name/ OR ImagePath:/\$VerbosePreference\.ToString\(/ OR ImagePath:/\String\]\s*\$VerbosePreference/)
 ```
 
 

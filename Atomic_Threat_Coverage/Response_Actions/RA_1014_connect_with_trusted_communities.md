@@ -3,7 +3,7 @@
 | **ID**                      | RA1014            |
 | **Description**             | Connect with trusted communities for information exchange   |
 | **Author**                  | Andreas Hunkeler (@Karneades)        |
-| **Creation Date**           | 2020/05/14 |
+| **Creation Date**           | 14.05.2020 |
 | **Category**                | General      |
 | **Stage**                   |[RS0001: Preparation](../Response_Stages/RS0001.md)| 
 | **References** |<ul><li>[https://www.misp-project.org/](https://www.misp-project.org/)</li></ul>|

@@ -1,5 +1,6 @@
 | Title              | DN_0054_linux_auditd_execve       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Linux auditd log of process (binary) execution (execeve syscall) with command line arguments |
 | **Logging Policy** | <ul><li>[LP_0031_linux_auditd_execve](../Logging_Policies/LP_0031_linux_auditd_execve.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/linux-audit/audit-documentation](https://github.com/linux-audit/audit-documentation)</li><li>[https://github.com/linux-audit/audit-documentation/blob/master/specs/fields/field-dictionary.csv](https://github.com/linux-audit/audit-documentation/blob/master/specs/fields/field-dictionary.csv)</li><li>[https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/app-audit_reference](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/app-audit_reference)</li></ul> |

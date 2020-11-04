@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the creation of suspicious accounts simliar to ANONYMOUS LOGON, such as using additional spaces. Created as an covering detection for exclusion of Logon Type 3 from ANONYMOUS LOGON accounts. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1136: Create Account](https://attack.mitre.org/techniques/T1136)</li><li>[T1136.001: Local Account](https://attack.mitre.org/techniques/T1136/001)</li><li>[T1136.002: Domain Account](https://attack.mitre.org/techniques/T1136/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1136: Create Account](https://attack.mitre.org/techniques/T1136)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0086_4720_user_account_was_created](../Data_Needed/DN_0086_4720_user_account_was_created.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1136.001: Local Account](../Triggers/T1136.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1136: Create Account](../Triggers/T1136.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,12 +25,9 @@ references:
     - https://twitter.com/SBousseaden/status/1189469425482829824
 author: James Pemberton / @4A616D6573
 date: 2019/10/31
-modified: 2020/08/23
 tags:
     - attack.persistence
-    - attack.t1136          # an old one
-    - attack.t1136.001
-    - attack.t1136.002
+    - attack.t1136
 logsource:
     product: windows
     service: security
@@ -73,9 +70,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects the creation of suspicious accounts simliar to ANONYMOUS LOGON, such as using additional spaces. Created as an covering detection for exclusion of Logon Type 3 from ANONYMOUS LOGON accounts.",
     "tags": [
       "attack.persistence",
-      "attack.t1136",
-      "attack.t1136.001",
-      "attack.t1136.002"
+      "attack.t1136"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4720\" AND SAMAccountName.keyword:*ANONYMOUS*LOGON*)"
   },
@@ -124,10 +119,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Windows ANONYMOUS LOGON Local Account Created'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

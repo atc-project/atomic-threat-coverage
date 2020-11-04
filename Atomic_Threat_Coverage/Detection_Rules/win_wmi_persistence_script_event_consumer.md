@@ -1,10 +1,10 @@
 | Title                    | WMI Persistence - Script Event Consumer       |
 |:-------------------------|:------------------|
 | **Description**          | Detects WMI script event consumers |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1546.003: Windows Management Instrumentation Event Subscription](https://attack.mitre.org/techniques/T1546/003)</li><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1546.003: Windows Management Instrumentation Event Subscription](../Triggers/T1546.003.md)</li><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Legitimate event consumers</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,12 +25,10 @@ references:
     - https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/
 author: Thomas Patzke
 date: 2018/03/07
-modified: 2020/08/29
 tags:
+    - attack.execution
     - attack.persistence
-    - attack.privilege_escalation
-    - attack.t1546.003
-    - attack.t1047 # an old one
+    - attack.t1047
 logsource:
     category: process_creation
     product: windows
@@ -72,9 +70,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "WMI Persistence - Script Event Consumer",
     "description": "Detects WMI script event consumers",
     "tags": [
+      "attack.execution",
       "attack.persistence",
-      "attack.privilege_escalation",
-      "attack.t1546.003",
       "attack.t1047"
     ],
     "query": "(winlog.event_data.Image:\"C\\:\\\\WINDOWS\\\\system32\\\\wbem\\\\scrcons.exe\" AND winlog.event_data.ParentImage:\"C\\:\\\\Windows\\\\System32\\\\svchost.exe\")"
@@ -124,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'WMI Persistence - Script Event Consumer'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

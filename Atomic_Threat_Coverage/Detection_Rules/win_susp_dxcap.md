@@ -29,8 +29,8 @@ date: 2019/10/26
 modified: 2019/11/04
 tags:
     - attack.defense_evasion
+    - attack.execution
     - attack.t1218
-    - attack.execution # an old one
 level: medium
 logsource:
     category: process_creation
@@ -75,8 +75,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects execution of of Dxcap.exe",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1218",
-      "attack.execution"
+      "attack.execution",
+      "attack.t1218"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\dxcap.exe AND winlog.event_data.CommandLine.keyword:*\\-c* AND winlog.event_data.CommandLine.keyword:*.exe*)"
   },
@@ -125,10 +125,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Application Whitelisting Bypass via Dxcap.exe'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

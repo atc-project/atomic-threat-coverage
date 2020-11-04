@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects activity as "net user administrator /domain" and "net group domain admins /domain" |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li><li>[T1087.002: Domain Account](https://attack.mitre.org/techniques/T1087/002)</li><li>[T1069: Permission Groups Discovery](https://attack.mitre.org/techniques/T1069)</li><li>[T1069.002: Domain Groups](https://attack.mitre.org/techniques/T1069/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li><li>[T1069: Permission Groups Discovery](https://attack.mitre.org/techniques/T1069)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0029_4661_handle_to_an_object_was_requested](../Data_Needed/DN_0029_4661_handle_to_an_object_was_requested.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1087.002: Domain Account](../Triggers/T1087.002.md)</li><li>[T1069.002: Domain Groups](../Triggers/T1069.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1087: Account Discovery](../Triggers/T1087.md)</li><li>[T1069: Permission Groups Discovery](../Triggers/T1069.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Administrator activity</li><li>Penetration tests</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,13 +25,10 @@ references:
     - https://findingbad.blogspot.de/2017/01/hunting-what-does-it-look-like.html
 author: Florian Roth (rule), Jack Croock (method)
 date: 2017/03/07
-modified: 2020/08/23
 tags:
     - attack.discovery
-    - attack.t1087           # an old one
-    - attack.t1087.002
-    - attack.t1069           # an old one
-    - attack.t1069.002
+    - attack.t1087
+    - attack.t1069
     - attack.s0039
 logsource:
     product: windows
@@ -84,9 +81,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.discovery",
       "attack.t1087",
-      "attack.t1087.002",
       "attack.t1069",
-      "attack.t1069.002",
       "attack.s0039"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4661\" AND winlog.event_data.AccessMask:\"0x2d\" AND ((winlog.event_data.ObjectType:\"SAM_USER\" AND winlog.event_data.ObjectName.keyword:S\\-1\\-5\\-21\\-*\\-500) OR (winlog.event_data.ObjectType:\"SAM_GROUP\" AND winlog.event_data.ObjectName.keyword:S\\-1\\-5\\-21\\-*\\-512)))"
@@ -136,10 +131,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Reconnaissance Activity'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

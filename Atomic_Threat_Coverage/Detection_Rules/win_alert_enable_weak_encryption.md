@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects scenario where weak encryption is enabled for a user profile which could be used for hash/password cracking. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1089: Disabling Security Tools](https://attack.mitre.org/techniques/T1089)</li><li>[T1562.001: Disable or Modify Tools](https://attack.mitre.org/techniques/T1562/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1089: Disabling Security Tools](https://attack.mitre.org/techniques/T1089)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0027_4738_user_account_was_changed](../Data_Needed/DN_0027_4738_user_account_was_changed.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1562.001: Disable or Modify Tools](../Triggers/T1562.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1089: Disabling Security Tools](../Triggers/T1089.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -27,8 +27,7 @@ author: '@neu5ron'
 date: 2017/07/30
 tags:
     - attack.defense_evasion
-    - attack.t1089          # an old one
-    - attack.t1562.001
+    - attack.t1089
 logsource:
     product: windows
     service: security
@@ -38,9 +37,9 @@ detection:
         EventID: 4738
     keywords:
         Message:
-            - '*DES*'
-            - '*Preauth*'
-            - '*Encrypted*'
+        - '*DES*'
+        - '*Preauth*'
+        - '*Encrypted*'
     filters:
         Message:
             - '*Enabled*'
@@ -58,14 +57,14 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent -LogName Security | where {($_.ID -eq "4738" -and ($_.message -match ".*DES.*" -or $_.message -match ".*Preauth.*" -or $_.message -match ".*Encrypted.*") -and ($_.message -match ".*Enabled.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Security | where {($_.ID -eq "4738" -and ($_.message -match "Message.*.*DES.*" -or $_.message -match "Message.*.*Preauth.*" -or $_.message -match "Message.*.*Encrypted.*") -and ($_.message -match "Message.*.*Enabled.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.channel:"Security" AND winlog.event_id:"4738" AND Message.keyword:(*DES* OR *Preauth* OR *Encrypted*) AND Message.keyword:(*Enabled*))
+(winlog.channel:"Security" AND winlog.event_id:"4738" AND winlog.event_data.Message.keyword:(*DES* OR *Preauth* OR *Encrypted*) AND winlog.event_data.Message.keyword:(*Enabled*))
 ```
 
 
@@ -79,10 +78,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects scenario where weak encryption is enabled for a user profile which could be used for hash/password cracking.",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1089",
-      "attack.t1562.001"
+      "attack.t1089"
     ],
-    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4738\" AND Message.keyword:(*DES* OR *Preauth* OR *Encrypted*) AND Message.keyword:(*Enabled*))"
+    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4738\" AND winlog.event_data.Message.keyword:(*DES* OR *Preauth* OR *Encrypted*) AND winlog.event_data.Message.keyword:(*Enabled*))"
   },
   "trigger": {
     "schedule": {
@@ -99,7 +97,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4738\" AND Message.keyword:(*DES* OR *Preauth* OR *Encrypted*) AND Message.keyword:(*Enabled*))",
+                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4738\" AND winlog.event_data.Message.keyword:(*DES* OR *Preauth* OR *Encrypted*) AND winlog.event_data.Message.keyword:(*Enabled*))",
                     "analyze_wildcard": true
                   }
                 }
@@ -129,10 +127,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Weak Encryption Enabled and Kerberoast'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

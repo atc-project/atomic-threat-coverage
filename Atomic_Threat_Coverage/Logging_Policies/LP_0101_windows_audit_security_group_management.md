@@ -1,5 +1,6 @@
 | Title            | LP_0101_windows_audit_security_group_management                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit Security Group Management determines whether the operating system generates audit events when specific security group management tasks are performed                                                               |
 | **Default**      | Partially (Success)                                                                   |
 | **Event Volume** | Low                                                                    |

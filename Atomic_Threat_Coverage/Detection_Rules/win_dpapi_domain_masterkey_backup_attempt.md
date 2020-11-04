@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects anyone attempting a backup for the DPAPI Master Key. This events gets generated at the source and not the Domain Controller. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1003.004: LSA Secrets](https://attack.mitre.org/techniques/T1003/004)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.004: LSA Secrets](../Triggers/T1003.004.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -27,13 +27,12 @@ references:
     - https://github.com/Cyb3rWard0g/ThreatHunter-Playbook/tree/master/playbooks/windows/06_credential_access/T1003_credential_dumping/domain_dpapi_backupkey_extraction.md
 tags:
     - attack.credential_access
-    - attack.t1003          # an old one
-    - attack.t1003.004
+    - attack.t1003
 logsource:
     product: windows
     service: security
 detection:
-    selection:
+    selection: 
         EventID: 4692
     condition: selection
 fields:
@@ -74,8 +73,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects anyone attempting a backup for the DPAPI Master Key. This events gets generated at the source and not the Domain Controller.",
     "tags": [
       "attack.credential_access",
-      "attack.t1003",
-      "attack.t1003.004"
+      "attack.t1003"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4692\")"
   },
@@ -124,10 +122,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'DPAPI Domain Master Key Backup Attempt'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n     ComputerName = {{_source.ComputerName}}\nSubjectDomainName = {{_source.SubjectDomainName}}\n  SubjectUserName = {{_source.SubjectUserName}}================================================================================\n{{/ctx.payload.hits.hits}}",

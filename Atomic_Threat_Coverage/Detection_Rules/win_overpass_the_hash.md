@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects successful logon with logon type 9 (NewCredentials) which matches the Overpass the Hash behavior of e.g Mimikatz's sekurlsa::pth module. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1075: Pass the Hash](https://attack.mitre.org/techniques/T1075)</li><li>[T1550.002: Pass the Hash](https://attack.mitre.org/techniques/T1550/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1075: Pass the Hash](https://attack.mitre.org/techniques/T1075)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1550.002: Pass the Hash](../Triggers/T1550.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1075: Pass the Hash](../Triggers/T1075.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Runas command-line tool using /netonly parameter</li></ul>  |
 | **Development Status**   | experimental |
@@ -27,9 +27,8 @@ author: Roberto Rodriguez (source), Dominik Schaudel (rule)
 date: 2018/02/12
 tags:
     - attack.lateral_movement
-    - attack.t1075          # an old one
+    - attack.t1075
     - attack.s0002
-    - attack.t1550.002
 logsource:
     product: windows
     service: security
@@ -75,8 +74,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.lateral_movement",
       "attack.t1075",
-      "attack.s0002",
-      "attack.t1550.002"
+      "attack.s0002"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4624\" AND winlog.event_data.LogonType:\"9\" AND winlog.event_data.LogonProcessName:\"seclogo\" AND winlog.event_data.AuthenticationPackageName:\"Negotiate\")"
   },
@@ -125,10 +123,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Successful Overpass the Hash Attempt'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

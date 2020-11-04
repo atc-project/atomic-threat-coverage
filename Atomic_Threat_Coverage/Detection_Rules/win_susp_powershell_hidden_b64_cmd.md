@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects base64 encoded strings used in hidden malicious PowerShell command lines |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Penetration tests</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,8 +25,7 @@ references:
     - http://www.leeholmes.com/blog/2017/09/21/searching-for-content-in-base-64-strings/
 tags:
     - attack.execution
-    - attack.t1059.001
-    - attack.t1086      # an old one
+    - attack.t1086
 author: John Lambert (rule)
 date: 2019/01/16
 logsource:
@@ -121,7 +120,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects base64 encoded strings used in hidden malicious PowerShell command lines",
     "tags": [
       "attack.execution",
-      "attack.t1059.001",
       "attack.t1086"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\powershell.exe AND winlog.event_data.CommandLine.keyword:*\\ hidden\\ * AND winlog.event_data.CommandLine.keyword:(*AGkAdABzAGEAZABtAGkAbgAgAC8AdAByAGEAbgBzAGYAZQByA* OR *aXRzYWRtaW4gL3RyYW5zZmVy* OR *IAaQB0AHMAYQBkAG0AaQBuACAALwB0AHIAYQBuAHMAZgBlAHIA* OR *JpdHNhZG1pbiAvdHJhbnNmZX* OR *YgBpAHQAcwBhAGQAbQBpAG4AIAAvAHQAcgBhAG4AcwBmAGUAcg* OR *Yml0c2FkbWluIC90cmFuc2Zlc* OR *AGMAaAB1AG4AawBfAHMAaQB6AGUA* OR *JABjAGgAdQBuAGsAXwBzAGkAegBlA* OR *JGNodW5rX3Npem* OR *QAYwBoAHUAbgBrAF8AcwBpAHoAZQ* OR *RjaHVua19zaXpl* OR *Y2h1bmtfc2l6Z* OR *AE8ALgBDAG8AbQBwAHIAZQBzAHMAaQBvAG4A* OR *kATwAuAEMAbwBtAHAAcgBlAHMAcwBpAG8Abg* OR *lPLkNvbXByZXNzaW9u* OR *SQBPAC4AQwBvAG0AcAByAGUAcwBzAGkAbwBuA* OR *SU8uQ29tcHJlc3Npb2* OR *Ty5Db21wcmVzc2lvb* OR *AE8ALgBNAGUAbQBvAHIAeQBTAHQAcgBlAGEAbQ* OR *kATwAuAE0AZQBtAG8AcgB5AFMAdAByAGUAYQBtA* OR *lPLk1lbW9yeVN0cmVhb* OR *SQBPAC4ATQBlAG0AbwByAHkAUwB0AHIAZQBhAG0A* OR *SU8uTWVtb3J5U3RyZWFt* OR *Ty5NZW1vcnlTdHJlYW* OR *4ARwBlAHQAQwBoAHUAbgBrA* OR *5HZXRDaHVua* OR *AEcAZQB0AEMAaAB1AG4Aaw* OR *LgBHAGUAdABDAGgAdQBuAGsA* OR *LkdldENodW5r* OR *R2V0Q2h1bm* OR *AEgAUgBFAEEARABfAEkATgBGAE8ANgA0A* OR *QASABSAEUAQQBEAF8ASQBOAEYATwA2ADQA* OR *RIUkVBRF9JTkZPNj* OR *SFJFQURfSU5GTzY0* OR *VABIAFIARQBBAEQAXwBJAE4ARgBPADYANA* OR *VEhSRUFEX0lORk82N* OR *AHIAZQBhAHQAZQBSAGUAbQBvAHQAZQBUAGgAcgBlAGEAZA* OR *cmVhdGVSZW1vdGVUaHJlYW* OR *MAcgBlAGEAdABlAFIAZQBtAG8AdABlAFQAaAByAGUAYQBkA* OR *NyZWF0ZVJlbW90ZVRocmVhZ* OR *Q3JlYXRlUmVtb3RlVGhyZWFk* OR *QwByAGUAYQB0AGUAUgBlAG0AbwB0AGUAVABoAHIAZQBhAGQA* OR *0AZQBtAG0AbwB2AGUA* OR *1lbW1vdm* OR *AGUAbQBtAG8AdgBlA* OR *bQBlAG0AbQBvAHYAZQ* OR *bWVtbW92Z* OR *ZW1tb3Zl*))"
@@ -171,10 +169,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Malicious Base64 Encoded PowerShell Keywords in Command Lines'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

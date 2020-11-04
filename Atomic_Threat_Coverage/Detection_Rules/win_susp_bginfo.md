@@ -1,10 +1,10 @@
 | Title                    | Application Whitelisting Bypass via Bginfo       |
 |:-------------------------|:------------------|
 | **Description**          | Execute VBscript code that is referenced within the *.bgi file. |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.005: Visual Basic](https://attack.mitre.org/techniques/T1059/005)</li><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li><li>[T1202: Indirect Command Execution](https://attack.mitre.org/techniques/T1202)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.005: Visual Basic](../Triggers/T1059.005.md)</li><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li><li>[T1202: Indirect Command Execution](../Triggers/T1202.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,13 +26,11 @@ references:
     - https://oddvar.moe/2017/05/18/bypassing-application-whitelisting-with-bginfo/
 author: Beyu Denis, oscd.community
 date: 2019/10/26
-modified: 2020/09/05
+modified: 2019/11/04
 tags:
-    - attack.execution
-    - attack.t1059.005
     - attack.defense_evasion
+    - attack.execution
     - attack.t1218
-    - attack.t1202
 level: medium
 logsource:
     category: process_creation
@@ -76,11 +74,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Application Whitelisting Bypass via Bginfo",
     "description": "Execute VBscript code that is referenced within the *.bgi file.",
     "tags": [
-      "attack.execution",
-      "attack.t1059.005",
       "attack.defense_evasion",
-      "attack.t1218",
-      "attack.t1202"
+      "attack.execution",
+      "attack.t1218"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\bginfo.exe AND winlog.event_data.CommandLine.keyword:*\\/popup* AND winlog.event_data.CommandLine.keyword:*\\/nolicprompt*)"
   },
@@ -129,10 +125,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Application Whitelisting Bypass via Bginfo'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

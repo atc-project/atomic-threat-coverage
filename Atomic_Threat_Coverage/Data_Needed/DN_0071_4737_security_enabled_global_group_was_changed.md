@@ -1,5 +1,6 @@
 | Title              | DN_0071_4737_security_enabled_global_group_was_changed       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Security-enabled global group was changed |
 | **Logging Policy** | <ul><li>[LP_0101_windows_audit_security_group_management](../Logging_Policies/LP_0101_windows_audit_security_group_management.md)</li></ul> |
 | **References**     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=4737](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=4737)</li></ul> |

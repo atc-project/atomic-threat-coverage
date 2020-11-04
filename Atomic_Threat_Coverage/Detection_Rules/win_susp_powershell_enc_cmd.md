@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects suspicious powershell process starts with base64 encoded commands (e.g. Emotet) |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      |  There are no documented False Positives for this Detection Rule yet  |
 | **Development Status**   | experimental |
@@ -27,9 +27,8 @@ author: Florian Roth, Markus Neis
 date: 2018/09/03
 modified: 2019/12/16
 tags:
-    - attack.execution
-    - attack.t1059.001
-    - attack.t1086      # an old one
+  - attack.execution
+  - attack.t1086
 logsource:
     category: process_creation
     product: windows
@@ -90,7 +89,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects suspicious powershell process starts with base64 encoded commands (e.g. Emotet)",
     "tags": [
       "attack.execution",
-      "attack.t1059.001",
       "attack.t1086"
     ],
     "query": "(winlog.event_data.CommandLine.keyword:(*\\ \\-e\\ JAB* OR *\\ \\-e\\ \\ JAB* OR *\\ \\-e\\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ \\ JAB* OR *\\ \\-e\\ \\ \\ \\ \\ \\ JAB* OR *\\ \\-en\\ JAB* OR *\\ \\-enc\\ JAB* OR *\\ \\-enc*\\ JAB* OR *\\ \\-w\\ hidden\\ \\-e*\\ JAB* OR *\\ BA\\^J\\ e\\- OR *\\ \\-e\\ SUVYI* OR *\\ \\-e\\ aWV4I* OR *\\ \\-e\\ SQBFAFgA* OR *\\ \\-e\\ aQBlAHgA* OR *\\ \\-enc\\ SUVYI* OR *\\ \\-enc\\ aWV4I* OR *\\ \\-enc\\ SQBFAFgA* OR *\\ \\-enc\\ aQBlAHgA*) AND (NOT (winlog.event_data.CommandLine.keyword:*\\ \\-ExecutionPolicy\\ remotesigned\\ *)))"
@@ -140,10 +138,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Encoded PowerShell Command Line'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

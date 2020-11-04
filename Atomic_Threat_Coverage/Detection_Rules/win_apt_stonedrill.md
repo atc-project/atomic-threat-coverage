@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | This method detects a service install of the malicious Microsoft Network Realtime Inspection Service service described in StoneDrill report by Kaspersky |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li><li>[T1543.003: Windows Service](https://attack.mitre.org/techniques/T1543/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1543.003: Windows Service](../Triggers/T1543.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1050: New Service](../Triggers/T1050.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unlikely</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -27,8 +27,7 @@ references:
 tags:
     - attack.persistence
     - attack.g0064
-    - attack.t1050          # an old one
-    - attack.t1543.003
+    - attack.t1050
 logsource:
     product: windows
     service: system
@@ -73,8 +72,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.persistence",
       "attack.g0064",
-      "attack.t1050",
-      "attack.t1543.003"
+      "attack.t1050"
     ],
     "query": "(winlog.event_id:\"7045\" AND winlog.event_data.ServiceName:\"NtsSrv\" AND winlog.event_data.ServiceFileName.keyword:*\\ LocalService)"
   },
@@ -123,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'StoneDrill Service Install'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

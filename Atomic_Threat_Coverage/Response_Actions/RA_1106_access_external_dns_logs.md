@@ -3,7 +3,7 @@
 | **ID**                      | RA1106            |
 | **Description**             | Make sure you have access to external communication DNS logs   |
 | **Author**                  | @atc_project        |
-| **Creation Date**           | 2020/05/06 |
+| **Creation Date**           | 06.05.2020 |
 | **Category**                | Network      |
 | **Stage**                   |[RS0001: Preparation](../Response_Stages/RS0001.md)| 
 | **References** |<ul><li>[https://github.com/gamelinux/passivedns](https://github.com/gamelinux/passivedns)</li><li>[https://drive.google.com/drive/u/0/folders/0B5BuM3k0_mF3LXpnYVUtU091Vjg](https://drive.google.com/drive/u/0/folders/0B5BuM3k0_mF3LXpnYVUtU091Vjg)</li></ul>|

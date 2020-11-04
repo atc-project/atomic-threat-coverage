@@ -4,7 +4,7 @@
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **Trigger**              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Exotic software</li></ul>  |
 | **Development Status**   | experimental |
@@ -49,13 +49,6 @@ detection:
             - '*\winlogon.exe'
             - '*\explorer.exe'
             - '*\taskhost.exe'
-            - '*\Taskmgr.exe'
-            - '*\sihost.exe'
-            - '*\RuntimeBroker.exe'
-            - '*\smartscreen.exe'
-            - '*\dllhost.exe'
-            - '*\audiodg.exe'
-            - '*\wlanext.exe'
     filter:
         Image:
             - 'C:\Windows\System32\\*'
@@ -84,14 +77,14 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "Image.*.*\\svchost.exe" -or $_.message -match "Image.*.*\\rundll32.exe" -or $_.message -match "Image.*.*\\services.exe" -or $_.message -match "Image.*.*\\powershell.exe" -or $_.message -match "Image.*.*\\regsvr32.exe" -or $_.message -match "Image.*.*\\spoolsv.exe" -or $_.message -match "Image.*.*\\lsass.exe" -or $_.message -match "Image.*.*\\smss.exe" -or $_.message -match "Image.*.*\\csrss.exe" -or $_.message -match "Image.*.*\\conhost.exe" -or $_.message -match "Image.*.*\\wininit.exe" -or $_.message -match "Image.*.*\\lsm.exe" -or $_.message -match "Image.*.*\\winlogon.exe" -or $_.message -match "Image.*.*\\explorer.exe" -or $_.message -match "Image.*.*\\taskhost.exe" -or $_.message -match "Image.*.*\\Taskmgr.exe" -or $_.message -match "Image.*.*\\sihost.exe" -or $_.message -match "Image.*.*\\RuntimeBroker.exe" -or $_.message -match "Image.*.*\\smartscreen.exe" -or $_.message -match "Image.*.*\\dllhost.exe" -or $_.message -match "Image.*.*\\audiodg.exe" -or $_.message -match "Image.*.*\\wlanext.exe") -and  -not (($_.message -match "Image.*C:\\Windows\\System32\\.*" -or $_.message -match "Image.*C:\\Windows\\system32\\.*" -or $_.message -match "Image.*C:\\Windows\\SysWow64\\.*" -or $_.message -match "Image.*C:\\Windows\\SysWOW64\\.*" -or $_.message -match "C:\\Windows\\explorer.exe" -or $_.message -match "Image.*C:\\Windows\\winsxs\\.*" -or $_.message -match "Image.*C:\\Windows\\WinSxS\\.*" -or $_.message -match "Image.*\\SystemRoot\\System32\\.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "Image.*.*\\svchost.exe" -or $_.message -match "Image.*.*\\rundll32.exe" -or $_.message -match "Image.*.*\\services.exe" -or $_.message -match "Image.*.*\\powershell.exe" -or $_.message -match "Image.*.*\\regsvr32.exe" -or $_.message -match "Image.*.*\\spoolsv.exe" -or $_.message -match "Image.*.*\\lsass.exe" -or $_.message -match "Image.*.*\\smss.exe" -or $_.message -match "Image.*.*\\csrss.exe" -or $_.message -match "Image.*.*\\conhost.exe" -or $_.message -match "Image.*.*\\wininit.exe" -or $_.message -match "Image.*.*\\lsm.exe" -or $_.message -match "Image.*.*\\winlogon.exe" -or $_.message -match "Image.*.*\\explorer.exe" -or $_.message -match "Image.*.*\\taskhost.exe") -and  -not (($_.message -match "Image.*C:\\Windows\\System32\\.*" -or $_.message -match "Image.*C:\\Windows\\system32\\.*" -or $_.message -match "Image.*C:\\Windows\\SysWow64\\.*" -or $_.message -match "Image.*C:\\Windows\\SysWOW64\\.*" -or $_.message -match "C:\\Windows\\explorer.exe" -or $_.message -match "Image.*C:\\Windows\\winsxs\\.*" -or $_.message -match "Image.*C:\\Windows\\WinSxS\\.*" -or $_.message -match "Image.*\\SystemRoot\\System32\\.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:(*\\svchost.exe OR *\\rundll32.exe OR *\\services.exe OR *\\powershell.exe OR *\\regsvr32.exe OR *\\spoolsv.exe OR *\\lsass.exe OR *\\smss.exe OR *\\csrss.exe OR *\\conhost.exe OR *\\wininit.exe OR *\\lsm.exe OR *\\winlogon.exe OR *\\explorer.exe OR *\\taskhost.exe OR *\\Taskmgr.exe OR *\\sihost.exe OR *\\RuntimeBroker.exe OR *\\smartscreen.exe OR *\\dllhost.exe OR *\\audiodg.exe OR *\\wlanext.exe) AND (NOT (winlog.event_data.Image.keyword:(C\:\\Windows\\System32\\* OR C\:\\Windows\\system32\\* OR C\:\\Windows\\SysWow64\\* OR C\:\\Windows\\SysWOW64\\* OR C\:\\Windows\\explorer.exe OR C\:\\Windows\\winsxs\\* OR C\:\\Windows\\WinSxS\\* OR \\SystemRoot\\System32\\*))))
+(winlog.event_data.Image.keyword:(*\\svchost.exe OR *\\rundll32.exe OR *\\services.exe OR *\\powershell.exe OR *\\regsvr32.exe OR *\\spoolsv.exe OR *\\lsass.exe OR *\\smss.exe OR *\\csrss.exe OR *\\conhost.exe OR *\\wininit.exe OR *\\lsm.exe OR *\\winlogon.exe OR *\\explorer.exe OR *\\taskhost.exe) AND (NOT (winlog.event_data.Image.keyword:(C\:\\Windows\\System32\\* OR C\:\\Windows\\system32\\* OR C\:\\Windows\\SysWow64\\* OR C\:\\Windows\\SysWOW64\\* OR C\:\\Windows\\explorer.exe OR C\:\\Windows\\winsxs\\* OR C\:\\Windows\\WinSxS\\* OR \\SystemRoot\\System32\\*))))
 ```
 
 
@@ -107,7 +100,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.defense_evasion",
       "attack.t1036"
     ],
-    "query": "(winlog.event_data.Image.keyword:(*\\\\svchost.exe OR *\\\\rundll32.exe OR *\\\\services.exe OR *\\\\powershell.exe OR *\\\\regsvr32.exe OR *\\\\spoolsv.exe OR *\\\\lsass.exe OR *\\\\smss.exe OR *\\\\csrss.exe OR *\\\\conhost.exe OR *\\\\wininit.exe OR *\\\\lsm.exe OR *\\\\winlogon.exe OR *\\\\explorer.exe OR *\\\\taskhost.exe OR *\\\\Taskmgr.exe OR *\\\\sihost.exe OR *\\\\RuntimeBroker.exe OR *\\\\smartscreen.exe OR *\\\\dllhost.exe OR *\\\\audiodg.exe OR *\\\\wlanext.exe) AND (NOT (winlog.event_data.Image.keyword:(C\\:\\\\Windows\\\\System32\\\\* OR C\\:\\\\Windows\\\\system32\\\\* OR C\\:\\\\Windows\\\\SysWow64\\\\* OR C\\:\\\\Windows\\\\SysWOW64\\\\* OR C\\:\\\\Windows\\\\explorer.exe OR C\\:\\\\Windows\\\\winsxs\\\\* OR C\\:\\\\Windows\\\\WinSxS\\\\* OR \\\\SystemRoot\\\\System32\\\\*))))"
+    "query": "(winlog.event_data.Image.keyword:(*\\\\svchost.exe OR *\\\\rundll32.exe OR *\\\\services.exe OR *\\\\powershell.exe OR *\\\\regsvr32.exe OR *\\\\spoolsv.exe OR *\\\\lsass.exe OR *\\\\smss.exe OR *\\\\csrss.exe OR *\\\\conhost.exe OR *\\\\wininit.exe OR *\\\\lsm.exe OR *\\\\winlogon.exe OR *\\\\explorer.exe OR *\\\\taskhost.exe) AND (NOT (winlog.event_data.Image.keyword:(C\\:\\\\Windows\\\\System32\\\\* OR C\\:\\\\Windows\\\\system32\\\\* OR C\\:\\\\Windows\\\\SysWow64\\\\* OR C\\:\\\\Windows\\\\SysWOW64\\\\* OR C\\:\\\\Windows\\\\explorer.exe OR C\\:\\\\Windows\\\\winsxs\\\\* OR C\\:\\\\Windows\\\\WinSxS\\\\* OR \\\\SystemRoot\\\\System32\\\\*))))"
   },
   "trigger": {
     "schedule": {
@@ -124,7 +117,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.event_data.Image.keyword:(*\\\\svchost.exe OR *\\\\rundll32.exe OR *\\\\services.exe OR *\\\\powershell.exe OR *\\\\regsvr32.exe OR *\\\\spoolsv.exe OR *\\\\lsass.exe OR *\\\\smss.exe OR *\\\\csrss.exe OR *\\\\conhost.exe OR *\\\\wininit.exe OR *\\\\lsm.exe OR *\\\\winlogon.exe OR *\\\\explorer.exe OR *\\\\taskhost.exe OR *\\\\Taskmgr.exe OR *\\\\sihost.exe OR *\\\\RuntimeBroker.exe OR *\\\\smartscreen.exe OR *\\\\dllhost.exe OR *\\\\audiodg.exe OR *\\\\wlanext.exe) AND (NOT (winlog.event_data.Image.keyword:(C\\:\\\\Windows\\\\System32\\\\* OR C\\:\\\\Windows\\\\system32\\\\* OR C\\:\\\\Windows\\\\SysWow64\\\\* OR C\\:\\\\Windows\\\\SysWOW64\\\\* OR C\\:\\\\Windows\\\\explorer.exe OR C\\:\\\\Windows\\\\winsxs\\\\* OR C\\:\\\\Windows\\\\WinSxS\\\\* OR \\\\SystemRoot\\\\System32\\\\*))))",
+                    "query": "(winlog.event_data.Image.keyword:(*\\\\svchost.exe OR *\\\\rundll32.exe OR *\\\\services.exe OR *\\\\powershell.exe OR *\\\\regsvr32.exe OR *\\\\spoolsv.exe OR *\\\\lsass.exe OR *\\\\smss.exe OR *\\\\csrss.exe OR *\\\\conhost.exe OR *\\\\wininit.exe OR *\\\\lsm.exe OR *\\\\winlogon.exe OR *\\\\explorer.exe OR *\\\\taskhost.exe) AND (NOT (winlog.event_data.Image.keyword:(C\\:\\\\Windows\\\\System32\\\\* OR C\\:\\\\Windows\\\\system32\\\\* OR C\\:\\\\Windows\\\\SysWow64\\\\* OR C\\:\\\\Windows\\\\SysWOW64\\\\* OR C\\:\\\\Windows\\\\explorer.exe OR C\\:\\\\Windows\\\\winsxs\\\\* OR C\\:\\\\Windows\\\\WinSxS\\\\* OR \\\\SystemRoot\\\\System32\\\\*))))",
                     "analyze_wildcard": true
                   }
                 }
@@ -154,10 +147,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'System File Execution Location Anomaly'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n       Image = {{_source.Image}}================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -180,28 +170,28 @@ EOF
 ### graylog
     
 ```
-(Image.keyword:(*\\svchost.exe *\\rundll32.exe *\\services.exe *\\powershell.exe *\\regsvr32.exe *\\spoolsv.exe *\\lsass.exe *\\smss.exe *\\csrss.exe *\\conhost.exe *\\wininit.exe *\\lsm.exe *\\winlogon.exe *\\explorer.exe *\\taskhost.exe *\\Taskmgr.exe *\\sihost.exe *\\RuntimeBroker.exe *\\smartscreen.exe *\\dllhost.exe *\\audiodg.exe *\\wlanext.exe) AND (NOT (Image.keyword:(C\:\\Windows\\System32\\* C\:\\Windows\\system32\\* C\:\\Windows\\SysWow64\\* C\:\\Windows\\SysWOW64\\* C\:\\Windows\\explorer.exe C\:\\Windows\\winsxs\\* C\:\\Windows\\WinSxS\\* \\SystemRoot\\System32\\*))))
+(Image.keyword:(*\\svchost.exe *\\rundll32.exe *\\services.exe *\\powershell.exe *\\regsvr32.exe *\\spoolsv.exe *\\lsass.exe *\\smss.exe *\\csrss.exe *\\conhost.exe *\\wininit.exe *\\lsm.exe *\\winlogon.exe *\\explorer.exe *\\taskhost.exe) AND (NOT (Image.keyword:(C\:\\Windows\\System32\\* C\:\\Windows\\system32\\* C\:\\Windows\\SysWow64\\* C\:\\Windows\\SysWOW64\\* C\:\\Windows\\explorer.exe C\:\\Windows\\winsxs\\* C\:\\Windows\\WinSxS\\* \\SystemRoot\\System32\\*))))
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\svchost.exe" OR Image="*\\rundll32.exe" OR Image="*\\services.exe" OR Image="*\\powershell.exe" OR Image="*\\regsvr32.exe" OR Image="*\\spoolsv.exe" OR Image="*\\lsass.exe" OR Image="*\\smss.exe" OR Image="*\\csrss.exe" OR Image="*\\conhost.exe" OR Image="*\\wininit.exe" OR Image="*\\lsm.exe" OR Image="*\\winlogon.exe" OR Image="*\\explorer.exe" OR Image="*\\taskhost.exe" OR Image="*\\Taskmgr.exe" OR Image="*\\sihost.exe" OR Image="*\\RuntimeBroker.exe" OR Image="*\\smartscreen.exe" OR Image="*\\dllhost.exe" OR Image="*\\audiodg.exe" OR Image="*\\wlanext.exe") NOT ((Image="C:\\Windows\\System32\\*" OR Image="C:\\Windows\\system32\\*" OR Image="C:\\Windows\\SysWow64\\*" OR Image="C:\\Windows\\SysWOW64\\*" OR Image="C:\\Windows\\explorer.exe" OR Image="C:\\Windows\\winsxs\\*" OR Image="C:\\Windows\\WinSxS\\*" OR Image="\\SystemRoot\\System32\\*"))) | table ComputerName,User,Image
+((Image="*\\svchost.exe" OR Image="*\\rundll32.exe" OR Image="*\\services.exe" OR Image="*\\powershell.exe" OR Image="*\\regsvr32.exe" OR Image="*\\spoolsv.exe" OR Image="*\\lsass.exe" OR Image="*\\smss.exe" OR Image="*\\csrss.exe" OR Image="*\\conhost.exe" OR Image="*\\wininit.exe" OR Image="*\\lsm.exe" OR Image="*\\winlogon.exe" OR Image="*\\explorer.exe" OR Image="*\\taskhost.exe") NOT ((Image="C:\\Windows\\System32\\*" OR Image="C:\\Windows\\system32\\*" OR Image="C:\\Windows\\SysWow64\\*" OR Image="C:\\Windows\\SysWOW64\\*" OR Image="C:\\Windows\\explorer.exe" OR Image="C:\\Windows\\winsxs\\*" OR Image="C:\\Windows\\WinSxS\\*" OR Image="\\SystemRoot\\System32\\*"))) | table ComputerName,User,Image
 ```
 
 
 ### logpoint
     
 ```
-(Image IN ["*\\svchost.exe", "*\\rundll32.exe", "*\\services.exe", "*\\powershell.exe", "*\\regsvr32.exe", "*\\spoolsv.exe", "*\\lsass.exe", "*\\smss.exe", "*\\csrss.exe", "*\\conhost.exe", "*\\wininit.exe", "*\\lsm.exe", "*\\winlogon.exe", "*\\explorer.exe", "*\\taskhost.exe", "*\\Taskmgr.exe", "*\\sihost.exe", "*\\RuntimeBroker.exe", "*\\smartscreen.exe", "*\\dllhost.exe", "*\\audiodg.exe", "*\\wlanext.exe"]  -(Image IN ["C:\\Windows\\System32\\*", "C:\\Windows\\system32\\*", "C:\\Windows\\SysWow64\\*", "C:\\Windows\\SysWOW64\\*", "C:\\Windows\\explorer.exe", "C:\\Windows\\winsxs\\*", "C:\\Windows\\WinSxS\\*", "\\SystemRoot\\System32\\*"]))
+(Image IN ["*\\svchost.exe", "*\\rundll32.exe", "*\\services.exe", "*\\powershell.exe", "*\\regsvr32.exe", "*\\spoolsv.exe", "*\\lsass.exe", "*\\smss.exe", "*\\csrss.exe", "*\\conhost.exe", "*\\wininit.exe", "*\\lsm.exe", "*\\winlogon.exe", "*\\explorer.exe", "*\\taskhost.exe"]  -(Image IN ["C:\\Windows\\System32\\*", "C:\\Windows\\system32\\*", "C:\\Windows\\SysWow64\\*", "C:\\Windows\\SysWOW64\\*", "C:\\Windows\\explorer.exe", "C:\\Windows\\winsxs\\*", "C:\\Windows\\WinSxS\\*", "\\SystemRoot\\System32\\*"]))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*.*\svchost\.exe|.*.*\rundll32\.exe|.*.*\services\.exe|.*.*\powershell\.exe|.*.*\regsvr32\.exe|.*.*\spoolsv\.exe|.*.*\lsass\.exe|.*.*\smss\.exe|.*.*\csrss\.exe|.*.*\conhost\.exe|.*.*\wininit\.exe|.*.*\lsm\.exe|.*.*\winlogon\.exe|.*.*\explorer\.exe|.*.*\taskhost\.exe|.*.*\Taskmgr\.exe|.*.*\sihost\.exe|.*.*\RuntimeBroker\.exe|.*.*\smartscreen\.exe|.*.*\dllhost\.exe|.*.*\audiodg\.exe|.*.*\wlanext\.exe))(?=.*(?!.*(?:.*(?=.*(?:.*C:\Windows\System32\\.*|.*C:\Windows\system32\\.*|.*C:\Windows\SysWow64\\.*|.*C:\Windows\SysWOW64\\.*|.*C:\Windows\explorer\.exe|.*C:\Windows\winsxs\\.*|.*C:\Windows\WinSxS\\.*|.*\SystemRoot\System32\\.*))))))'
+grep -P '^(?:.*(?=.*(?:.*.*\svchost\.exe|.*.*\rundll32\.exe|.*.*\services\.exe|.*.*\powershell\.exe|.*.*\regsvr32\.exe|.*.*\spoolsv\.exe|.*.*\lsass\.exe|.*.*\smss\.exe|.*.*\csrss\.exe|.*.*\conhost\.exe|.*.*\wininit\.exe|.*.*\lsm\.exe|.*.*\winlogon\.exe|.*.*\explorer\.exe|.*.*\taskhost\.exe))(?=.*(?!.*(?:.*(?=.*(?:.*C:\Windows\System32\\.*|.*C:\Windows\system32\\.*|.*C:\Windows\SysWow64\\.*|.*C:\Windows\SysWOW64\\.*|.*C:\Windows\explorer\.exe|.*C:\Windows\winsxs\\.*|.*C:\Windows\WinSxS\\.*|.*\SystemRoot\System32\\.*))))))'
 ```
 
 

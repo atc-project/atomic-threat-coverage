@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the creation of a schtask via PowerSploit or Empire Default Configuration. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li><li>[T1053.005: Scheduled Task](https://attack.mitre.org/techniques/T1053/005)</li><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1053.005: Scheduled Task](../Triggers/T1053.005.md)</li><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1053: Scheduled Task/Job](../Triggers/T1053.md)</li><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>False positives are possible, depends on organisation and processes</li></ul>  |
 | **Development Status**   | experimental |
@@ -44,14 +44,12 @@ tags:
     - attack.execution
     - attack.persistence
     - attack.privilege_escalation
-    - attack.t1053 # an old one
-    - attack.t1086 # an old one
+    - attack.t1053
+    - attack.t1086
     - attack.s0111
     - attack.g0022
     - attack.g0060
     - car.2013-08-001
-    - attack.t1053.005
-    - attack.t1059.001
 falsepositives:
     - False positives are possible, depends on organisation and processes
 level: high
@@ -93,9 +91,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.s0111",
       "attack.g0022",
       "attack.g0060",
-      "car.2013-08-001",
-      "attack.t1053.005",
-      "attack.t1059.001"
+      "car.2013-08-001"
     ],
     "query": "(winlog.event_data.ParentImage.keyword:(*\\\\powershell.exe) AND winlog.event_data.CommandLine.keyword:(*schtasks*\\/Create*\\/SC\\ *ONLOGON*\\/TN\\ *Updater*\\/TR\\ *powershell* OR *schtasks*\\/Create*\\/SC\\ *DAILY*\\/TN\\ *Updater*\\/TR\\ *powershell* OR *schtasks*\\/Create*\\/SC\\ *ONIDLE*\\/TN\\ *Updater*\\/TR\\ *powershell* OR *schtasks*\\/Create*\\/SC\\ *Updater*\\/TN\\ *Updater*\\/TR\\ *powershell*))"
   },
@@ -144,10 +140,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Default PowerSploit and Empire Schtasks Persistence'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects WMI spawning PowerShell |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1064: Scripting](../Triggers/T1064.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>AppvClient</li><li>CCM</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,13 +26,10 @@ references:
     - https://any.run/report/68bc255f9b0db6a0d30a8f2dadfbee3256acfe12497bf93943bc1eab0735e45e/a2385d6f-34f7-403c-90d3-b1f9d2a90a5e
 author: Markus Neis / @Karneades
 date: 2019/04/03
-modified: 2020/08/29
 tags:
     - attack.execution
-    - attack.t1047
-    - attack.t1059.001
-    - attack.defense_evasion # an old one
-    - attack.t1064      # an old one
+    - attack.defense_evasion
+    - attack.t1064
 logsource:
     category: process_creation
     product: windows
@@ -78,8 +75,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects WMI spawning PowerShell",
     "tags": [
       "attack.execution",
-      "attack.t1047",
-      "attack.t1059.001",
       "attack.defense_evasion",
       "attack.t1064"
     ],
@@ -130,10 +125,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'WMI Spawning Windows PowerShell'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

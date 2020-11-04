@@ -1,10 +1,10 @@
 | Title                    | Empire Monkey       |
 |:-------------------------|:------------------|
 | **Description**          | Detects EmpireMonkey APT reported Activity |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1218.010: Regsvr32](https://attack.mitre.org/techniques/T1218/010)</li><li>[T1117: Regsvr32](https://attack.mitre.org/techniques/T1117)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.010: Regsvr32](../Triggers/T1218.010.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Very Unlikely</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -24,11 +24,9 @@ description: Detects EmpireMonkey APT reported Activity
 references:
     - https://app.any.run/tasks/a4107649-8cb0-41af-ad75-113152d4d57b
 tags:
-    - attack.defense_evasion
-    - attack.t1218.010
-    - attack.t1117  # an old one
+    - attack.t1086
+    - attack.execution
 date: 2019/04/02
-modified: 2020/08/27
 author: Markus Neis
 detection:
     condition: 1 of them
@@ -80,9 +78,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Empire Monkey",
     "description": "Detects EmpireMonkey APT reported Activity",
     "tags": [
-      "attack.defense_evasion",
-      "attack.t1218.010",
-      "attack.t1117"
+      "attack.t1086",
+      "attack.execution"
     ],
     "query": "(winlog.event_data.CommandLine.keyword:(*\\/i\\:%APPDATA%\\\\logs.txt\\ scrobj.dll) AND (winlog.event_data.Image.keyword:(*\\\\cutil.exe) OR winlog.event_data.Description:(\"Microsoft\\(C\\)\\ Registerserver\")))"
   },
@@ -131,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Empire Monkey'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a suspicious program execution in a web service root folder (filter out false positives) |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1505.003: Web Shell](https://attack.mitre.org/techniques/T1505/003)</li><li>[T1100: Web Shell](https://attack.mitre.org/techniques/T1100)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1100: Web Shell](https://attack.mitre.org/techniques/T1100)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1505.003: Web Shell](../Triggers/T1505.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1100: Web Shell](../Triggers/T1100.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Various applications</li><li>Tools that include ping or nslookup command invocations</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,8 +25,7 @@ author: Florian Roth
 date: 2019/01/16
 tags:
     - attack.persistence
-    - attack.t1505.003
-    - attack.t1100      # an old one
+    - attack.t1100
 logsource:
     category: process_creation
     product: windows
@@ -82,7 +81,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects a suspicious program execution in a web service root folder (filter out false positives)",
     "tags": [
       "attack.persistence",
-      "attack.t1505.003",
       "attack.t1100"
     ],
     "query": "(winlog.event_data.Image.keyword:(*\\\\wwwroot\\\\* OR *\\\\wmpub\\\\* OR *\\\\htdocs\\\\*) AND (NOT (winlog.event_data.Image.keyword:(*bin\\\\* OR *\\\\Tools\\\\* OR *\\\\SMSComponent\\\\*) AND winlog.event_data.ParentImage.keyword:(*\\\\services.exe))))"
@@ -132,10 +130,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Execution in Webserver Root Folder'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

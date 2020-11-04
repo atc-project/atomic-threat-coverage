@@ -1,5 +1,6 @@
 | Title              | DN_0084_av_alert       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Anti-virus alert |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
 | **References**     | <ul><li>[None](None)</li></ul> |

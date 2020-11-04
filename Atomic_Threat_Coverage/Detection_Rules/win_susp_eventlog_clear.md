@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects clearing or configuration of eventlogs uwing wevtutil, powershell and wmic. Might be used by ransomwares during the attack (seen by NotPetya and others) |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1070.001: Clear Windows Event Logs](https://attack.mitre.org/techniques/T1070/001)</li><li>[T1070: Indicator Removal on Host](https://attack.mitre.org/techniques/T1070)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1070: Indicator Removal on Host](https://attack.mitre.org/techniques/T1070)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1070.001: Clear Windows Event Logs](../Triggers/T1070.001.md)</li><li>[T1070: Indicator Removal on Host](../Triggers/T1070.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1070: Indicator Removal on Host](../Triggers/T1070.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Admin activity</li><li>Scripts and administrative tools used in the monitored environment</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -28,8 +28,7 @@ date: 2019/09/26
 modified: 2019/11/11
 tags:
     - attack.defense_evasion
-    - attack.t1070.001
-    - attack.t1070      # an old one
+    - attack.t1070
     - car.2016-04-002
 level: high
 logsource:
@@ -39,14 +38,14 @@ detection:
     selection_wevtutil_binary:
         Image|endswith: '\wevtutil.exe'
     selection_wevtutil_command:
-        CommandLine|contains:
+        CommandLine|contains:  
             - 'clear-log' # clears specified log
             - ' cl '        # short version of 'clear-log'
             - 'set-log'   # modifies config of specified log. could be uset to set it to a tiny size
             - ' sl '        # short version of 'set-log'
     selection_other_ps:
         Image|endswith: '\powershell.exe'
-        CommandLine|contains:
+        CommandLine|contains: 
             - 'Clear-EventLog'
             - 'Remove-EventLog'
             - 'Limit-EventLog'
@@ -88,7 +87,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects clearing or configuration of eventlogs uwing wevtutil, powershell and wmic. Might be used by ransomwares during the attack (seen by NotPetya and others)",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1070.001",
       "attack.t1070",
       "car.2016-04-002"
     ],
@@ -139,10 +137,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Eventlog Clear or Configuration Using Wevtutil'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

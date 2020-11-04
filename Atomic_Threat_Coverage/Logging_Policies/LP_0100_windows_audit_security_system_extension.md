@@ -1,5 +1,6 @@
 | Title            | LP_0100_windows_audit_security_system_extension                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit Security System Extension contains information about the loading of an  authentication package, notification package, or security package, plus  information about trusted logon process registration events                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | Low                                                                    |

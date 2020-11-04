@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects usage of cmdkey to look for cached credentials |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003.005: Cached Domain Credentials](https://attack.mitre.org/techniques/T1003/005)</li><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | low |
@@ -28,8 +28,7 @@ author: jmallette
 date: 2019/01/16
 tags:
     - attack.credential_access
-    - attack.t1003.005
-    - attack.t1003  # an old one
+    - attack.t1003
 logsource:
     category: process_creation
     product: windows
@@ -76,7 +75,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects usage of cmdkey to look for cached credentials",
     "tags": [
       "attack.credential_access",
-      "attack.t1003.005",
       "attack.t1003"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\cmdkey.exe AND winlog.event_data.CommandLine.keyword:*\\ \\/list\\ *)"
@@ -126,10 +124,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Cmdkey Cached Credentials Recon'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}\n             User = {{_source.User}}================================================================================\n{{/ctx.payload.hits.hits}}",

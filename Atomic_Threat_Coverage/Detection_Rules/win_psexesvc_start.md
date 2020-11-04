@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a PsExec service start |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li><li>[T1569.002: Service Execution](https://attack.mitre.org/techniques/T1569/002)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1569.002: Service Execution](../Triggers/T1569.002.md)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1035: Service Execution](../Triggers/T1035.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>Administrative activity</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -25,15 +25,14 @@ date: 2018/03/13
 modified: 2012/12/11
 tags:
     - attack.execution
-    - attack.t1035 # an old one
+    - attack.t1035
     - attack.s0029
-    - attack.t1569.002
 logsource:
     category: process_creation
     product: windows
 detection:
     selection:
-        CommandLine: C:\Windows\PSEXESVC.exe
+        ProcessCommandLine: C:\Windows\PSEXESVC.exe
     condition: selection
 falsepositives:
     - Administrative activity
@@ -48,14 +47,14 @@ level: low
 ### powershell
     
 ```
-Get-WinEvent | where {$_.message -match "CommandLine.*C:\\Windows\\PSEXESVC.exe" } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {$_.message -match "ProcessCommandLine.*C:\\Windows\\PSEXESVC.exe" } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.CommandLine:"C\:\\Windows\\PSEXESVC.exe"
+winlog.event_data.ProcessCommandLine:"C\:\\Windows\\PSEXESVC.exe"
 ```
 
 
@@ -70,10 +69,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.execution",
       "attack.t1035",
-      "attack.s0029",
-      "attack.t1569.002"
+      "attack.s0029"
     ],
-    "query": "winlog.event_data.CommandLine:\"C\\:\\\\Windows\\\\PSEXESVC.exe\""
+    "query": "winlog.event_data.ProcessCommandLine:\"C\\:\\\\Windows\\\\PSEXESVC.exe\""
   },
   "trigger": {
     "schedule": {
@@ -90,7 +88,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "winlog.event_data.CommandLine:\"C\\:\\\\Windows\\\\PSEXESVC.exe\"",
+                    "query": "winlog.event_data.ProcessCommandLine:\"C\\:\\\\Windows\\\\PSEXESVC.exe\"",
                     "analyze_wildcard": true
                   }
                 }
@@ -120,10 +118,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'PsExec Service Start'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -146,21 +141,21 @@ EOF
 ### graylog
     
 ```
-CommandLine:"C\:\\Windows\\PSEXESVC.exe"
+ProcessCommandLine:"C\:\\Windows\\PSEXESVC.exe"
 ```
 
 
 ### splunk
     
 ```
-CommandLine="C:\\Windows\\PSEXESVC.exe"
+ProcessCommandLine="C:\\Windows\\PSEXESVC.exe"
 ```
 
 
 ### logpoint
     
 ```
-CommandLine="C:\\Windows\\PSEXESVC.exe"
+ProcessCommandLine="C:\\Windows\\PSEXESVC.exe"
 ```
 
 

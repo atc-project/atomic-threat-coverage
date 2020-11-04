@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a suspicious child process of a Windows shell |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li><li>[T1059.005: Visual Basic](https://attack.mitre.org/techniques/T1059/005)</li><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.005: Visual Basic](../Triggers/T1059.005.md)</li><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1064: Scripting](../Triggers/T1064.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Administrative scripts</li><li>Microsoft SCCM</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,14 +25,11 @@ references:
     - https://mgreen27.github.io/posts/2018/04/02/DownloadCradle.html
 author: Florian Roth
 date: 2018/04/06
-modified: 2020/09/06
+modified: 2019/02/05
 tags:
     - attack.execution
     - attack.defense_evasion
-    - attack.t1064 # an old one
-    - attack.t1059.005
-    - attack.t1059.001
-    - attack.t1218    
+    - attack.t1064
 logsource:
     category: process_creation
     product: windows
@@ -94,10 +91,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.execution",
       "attack.defense_evasion",
-      "attack.t1064",
-      "attack.t1059.005",
-      "attack.t1059.001",
-      "attack.t1218"
+      "attack.t1064"
     ],
     "query": "((winlog.event_data.ParentImage.keyword:(*\\\\mshta.exe OR *\\\\powershell.exe OR *\\\\rundll32.exe OR *\\\\cscript.exe OR *\\\\wscript.exe OR *\\\\wmiprvse.exe) AND winlog.event_data.Image.keyword:(*\\\\schtasks.exe OR *\\\\nslookup.exe OR *\\\\certutil.exe OR *\\\\bitsadmin.exe OR *\\\\mshta.exe)) AND (NOT (winlog.event_data.CurrentDirectory.keyword:*\\\\ccmcache\\\\*)))"
   },
@@ -146,10 +140,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Windows Shell Spawning Suspicious Program'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

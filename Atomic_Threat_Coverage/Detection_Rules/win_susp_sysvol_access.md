@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects Access to Domain Group Policies stored in SYSVOL |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1552.006: Group Policy Preferences](https://attack.mitre.org/techniques/T1552/006)</li><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1552.006: Group Policy Preferences](../Triggers/T1552.006.md)</li><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>administrative activity</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,11 +26,10 @@ references:
     - https://www.hybrid-analysis.com/sample/f2943f5e45befa52fb12748ca7171d30096e1d4fc3c365561497c618341299d5?environmentId=100
 author: Markus Neis
 date: 2018/04/09
-modified: 2020/08/28
+modified: 2018/12/11
 tags:
     - attack.credential_access
-    - attack.t1552.006
-    - attack.t1003      # an old one
+    - attack.t1003
 logsource:
     category: process_creation
     product: windows
@@ -72,7 +71,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects Access to Domain Group Policies stored in SYSVOL",
     "tags": [
       "attack.credential_access",
-      "attack.t1552.006",
       "attack.t1003"
     ],
     "query": "winlog.event_data.CommandLine.keyword:*\\\\SYSVOL\\\\*\\\\policies\\\\*"
@@ -122,10 +120,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious SYSVOL Domain Group Policy Access'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

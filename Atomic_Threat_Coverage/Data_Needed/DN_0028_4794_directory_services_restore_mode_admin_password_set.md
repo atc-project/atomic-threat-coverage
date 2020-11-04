@@ -1,5 +1,6 @@
 | Title              | DN_0028_4794_directory_services_restore_mode_admin_password_set       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Directory Services Restore Mode (DSRM) administrator password is changed |
 | **Logging Policy** | <ul><li>[LP_0026_windows_audit_user_account_management](../Logging_Policies/LP_0026_windows_audit_user_account_management.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4794.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/95b9d7c01805839c067e352d1d16702604b15f11/windows/security/threat-protection/auditing/event-4794.md)</li></ul> |

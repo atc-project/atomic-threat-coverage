@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects manual service execution (start) via system utilities |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li><li>[T1569.002: Service Execution](https://attack.mitre.org/techniques/T1569/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1569.002: Service Execution](../Triggers/T1569.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1035: Service Execution](../Triggers/T1035.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>Legitimate administrator or user executes a service for legitimate reason</li></ul>  |
 | **Development Status**   | experimental |
@@ -31,7 +31,7 @@ logsource:
     product: windows
 detection:
     selection:
-        Image|endswith:
+        Image|endswith: 
             - '\net.exe'
             - '\net1.exe'
         CommandLine|contains: ' start ' # space character after the 'start' keyword indicates that a service name follows, in contrast to `net start` discovery expression 
@@ -41,8 +41,7 @@ falsepositives:
 level: low
 tags:
     - attack.execution
-    - attack.t1035 # an old one
-    - attack.t1569.002
+    - attack.t1035
 
 ```
 
@@ -74,8 +73,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects manual service execution (start) via system utilities",
     "tags": [
       "attack.execution",
-      "attack.t1035",
-      "attack.t1569.002"
+      "attack.t1035"
     ],
     "query": "(winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*\\ start\\ *)"
   },
@@ -124,10 +122,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Service Execution'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

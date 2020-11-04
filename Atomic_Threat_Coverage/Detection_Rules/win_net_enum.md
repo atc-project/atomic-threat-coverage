@@ -40,7 +40,7 @@ detection:
             - '\net1.exe'
         CommandLine|contains: 'view'
     filter:
-        CommandLine|contains: \\\
+        CommandLine|contains: '\\'
     condition: selection and not filter
 fields:
     - ComputerName
@@ -59,14 +59,14 @@ level: low
 ### powershell
     
 ```
-Get-WinEvent | where {((($_.message -match "Image.*.*\\net.exe" -or $_.message -match "Image.*.*\\net1.exe") -and $_.message -match "CommandLine.*.*view.*") -and  -not ($_.message -match "CommandLine.*.*\\\\.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {((($_.message -match "Image.*.*\\net.exe" -or $_.message -match "Image.*.*\\net1.exe") -and $_.message -match "CommandLine.*.*view.*") -and  -not ($_.message -match "CommandLine.*.*\\.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.Image.keyword:(*\\net.exe OR *\\net1.exe) AND winlog.event_data.CommandLine.keyword:*view*) AND (NOT (winlog.event_data.CommandLine.keyword:*\\\\*)))
+((winlog.event_data.Image.keyword:(*\\net.exe OR *\\net1.exe) AND winlog.event_data.CommandLine.keyword:*view*) AND (NOT (winlog.event_data.CommandLine.keyword:*\\*)))
 ```
 
 
@@ -82,7 +82,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.discovery",
       "attack.t1018"
     ],
-    "query": "((winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*view*) AND (NOT (winlog.event_data.CommandLine.keyword:*\\\\\\\\*)))"
+    "query": "((winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*view*) AND (NOT (winlog.event_data.CommandLine.keyword:*\\\\*)))"
   },
   "trigger": {
     "schedule": {
@@ -99,7 +99,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "((winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*view*) AND (NOT (winlog.event_data.CommandLine.keyword:*\\\\\\\\*)))",
+                    "query": "((winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:*view*) AND (NOT (winlog.event_data.CommandLine.keyword:*\\\\*)))",
                     "analyze_wildcard": true
                   }
                 }
@@ -129,10 +129,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Windows Network Enumeration'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n        User = {{_source.User}}\n CommandLine = {{_source.CommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -155,28 +152,28 @@ EOF
 ### graylog
     
 ```
-((Image.keyword:(*\\net.exe *\\net1.exe) AND CommandLine.keyword:*view*) AND (NOT (CommandLine.keyword:*\\\\*)))
+((Image.keyword:(*\\net.exe *\\net1.exe) AND CommandLine.keyword:*view*) AND (NOT (CommandLine.keyword:*\\*)))
 ```
 
 
 ### splunk
     
 ```
-(((Image="*\\net.exe" OR Image="*\\net1.exe") CommandLine="*view*") NOT (CommandLine="*\\\\*")) | table ComputerName,User,CommandLine
+(((Image="*\\net.exe" OR Image="*\\net1.exe") CommandLine="*view*") NOT (CommandLine="*\\*")) | table ComputerName,User,CommandLine
 ```
 
 
 ### logpoint
     
 ```
-((Image IN ["*\\net.exe", "*\\net1.exe"] CommandLine="*view*")  -(CommandLine="*\\\\*"))
+((Image IN ["*\\net.exe", "*\\net1.exe"] CommandLine="*view*")  -(CommandLine="*\\*"))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?=.*(?:.*.*\net\.exe|.*.*\net1\.exe))(?=.*.*view.*)))(?=.*(?!.*(?:.*(?=.*.*\\\\.*)))))'
+grep -P '^(?:.*(?=.*(?:.*(?=.*(?:.*.*\net\.exe|.*.*\net1\.exe))(?=.*.*view.*)))(?=.*(?!.*(?:.*(?=.*.*\\.*)))))'
 ```
 
 

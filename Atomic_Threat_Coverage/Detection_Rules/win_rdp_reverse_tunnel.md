@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects svchost hosting RDP termsvcs communicating with the loopback address |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1076: Remote Desktop Protocol](https://attack.mitre.org/techniques/T1076)</li><li>[T1090: Proxy](https://attack.mitre.org/techniques/T1090)</li><li>[T1090.001: Internal Proxy](https://attack.mitre.org/techniques/T1090/001)</li><li>[T1090.002: External Proxy](https://attack.mitre.org/techniques/T1090/002)</li><li>[T1021.001: Remote Desktop Protocol](https://attack.mitre.org/techniques/T1021/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1076: Remote Desktop Protocol](https://attack.mitre.org/techniques/T1076)</li><li>[T1090: Proxy](https://attack.mitre.org/techniques/T1090)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0087_5156_windows_filtering_platform_has_permitted_connection](../Data_Needed/DN_0087_5156_windows_filtering_platform_has_permitted_connection.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1090.001: Internal Proxy](../Triggers/T1090.001.md)</li><li>[T1021.001: Remote Desktop Protocol](../Triggers/T1021.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1076: Remote Desktop Protocol](../Triggers/T1076.md)</li><li>[T1090: Proxy](../Triggers/T1090.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,16 +26,12 @@ references:
     - https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES/blob/master/Command%20and%20Control/DE_RDP_Tunnel_5156.evtx
 author: Samir Bousseaden
 date: 2019/02/16
-modified: 2020/08/23
 tags:
     - attack.defense_evasion
     - attack.command_and_control
     - attack.lateral_movement
-    - attack.t1076          # an old one
-    - attack.t1090          # an old one
-    - attack.t1090.001
-    - attack.t1090.002
-    - attack.t1021.001
+    - attack.t1076
+    - attack.t1090
     - car.2013-07-002
 logsource:
     product: windows
@@ -74,7 +70,7 @@ Get-WinEvent -LogName Security | where {($_.ID -eq "5156" -and (($_.message -mat
 ### es-qs
     
 ```
-(winlog.channel:"Security" AND winlog.event_id:"5156" AND ((winlog.event_data.SourcePort:"3389" AND DestinationAddress.keyword:(127.* OR \:\:1)) OR (winlog.event_data.DestinationPort:"3389" AND SourceAddress.keyword:(127.* OR \:\:1))))
+(winlog.channel:"Security" AND winlog.event_id:"5156" AND ((SourcePort:"3389" AND DestinationAddress.keyword:(127.* OR \:\:1)) OR (winlog.event_data.DestinationPort:"3389" AND SourceAddress.keyword:(127.* OR \:\:1))))
 ```
 
 
@@ -92,12 +88,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.lateral_movement",
       "attack.t1076",
       "attack.t1090",
-      "attack.t1090.001",
-      "attack.t1090.002",
-      "attack.t1021.001",
       "car.2013-07-002"
     ],
-    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"5156\" AND ((winlog.event_data.SourcePort:\"3389\" AND DestinationAddress.keyword:(127.* OR \\:\\:1)) OR (winlog.event_data.DestinationPort:\"3389\" AND SourceAddress.keyword:(127.* OR \\:\\:1))))"
+    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"5156\" AND ((SourcePort:\"3389\" AND DestinationAddress.keyword:(127.* OR \\:\\:1)) OR (winlog.event_data.DestinationPort:\"3389\" AND SourceAddress.keyword:(127.* OR \\:\\:1))))"
   },
   "trigger": {
     "schedule": {
@@ -114,7 +107,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"5156\" AND ((winlog.event_data.SourcePort:\"3389\" AND DestinationAddress.keyword:(127.* OR \\:\\:1)) OR (winlog.event_data.DestinationPort:\"3389\" AND SourceAddress.keyword:(127.* OR \\:\\:1))))",
+                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"5156\" AND ((SourcePort:\"3389\" AND DestinationAddress.keyword:(127.* OR \\:\\:1)) OR (winlog.event_data.DestinationPort:\"3389\" AND SourceAddress.keyword:(127.* OR \\:\\:1))))",
                     "analyze_wildcard": true
                   }
                 }
@@ -144,10 +137,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'RDP over Reverse SSH Tunnel WFP'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

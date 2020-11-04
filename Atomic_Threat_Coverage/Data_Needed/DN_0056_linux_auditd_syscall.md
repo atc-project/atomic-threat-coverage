@@ -1,5 +1,6 @@
 | Title              | DN_0056_linux_auditd_syscall       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Linux auditd log of specific system call (syscall) |
 | **Logging Policy** | <ul><li>[LP_0033_linux_auditd_syscall](../Logging_Policies/LP_0033_linux_auditd_syscall.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/linux-audit/audit-documentation](https://github.com/linux-audit/audit-documentation)</li><li>[https://github.com/linux-audit/audit-documentation/blob/master/specs/fields/field-dictionary.csv](https://github.com/linux-audit/audit-documentation/blob/master/specs/fields/field-dictionary.csv)</li><li>[https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/app-audit_reference](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/app-audit_reference)</li><li>[https://access.redhat.com/solutions/36278](https://access.redhat.com/solutions/36278)</li><li>[https://filippo.io/linux-syscall-table/](https://filippo.io/linux-syscall-table/)</li></ul> |

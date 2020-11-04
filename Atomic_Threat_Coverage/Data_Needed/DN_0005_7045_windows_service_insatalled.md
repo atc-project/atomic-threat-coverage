@@ -1,5 +1,6 @@
 | Title              | DN_0005_7045_windows_service_insatalled       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | A service was installed in the system |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
 | **References**     | <ul><li>[None](None)</li></ul> |

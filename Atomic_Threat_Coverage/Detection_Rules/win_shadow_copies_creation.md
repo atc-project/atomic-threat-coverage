@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Shadow Copies creation using operating systems utilities, possible credential access |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1003.002: Security Account Manager](https://attack.mitre.org/techniques/T1003/002)</li><li>[T1003.003: NTDS](https://attack.mitre.org/techniques/T1003/003)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.002: Security Account Manager](../Triggers/T1003.002.md)</li><li>[T1003.003: NTDS](../Triggers/T1003.003.md)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Legitimate administrator working with shadow copies, access for backup purposes</li></ul>  |
 | **Development Status**   | experimental |
@@ -28,14 +28,12 @@ references:
 tags:
     - attack.credential_access
     - attack.t1003
-    - attack.t1003.002
-    - attack.t1003.003
 logsource:
     category: process_creation
     product: windows
 detection:
     selection:
-        Image|endswith:
+        NewProcessName|endswith:
             - '\powershell.exe'
             - '\wmic.exe'
             - '\vssadmin.exe'
@@ -57,14 +55,14 @@ level: medium
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "Image.*.*\\powershell.exe" -or $_.message -match "Image.*.*\\wmic.exe" -or $_.message -match "Image.*.*\\vssadmin.exe") -and $_.message -match "CommandLine.*.*shadow.*" -and $_.message -match "CommandLine.*.*create.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {(($_.message -match "NewProcessName.*.*\\powershell.exe" -or $_.message -match "NewProcessName.*.*\\wmic.exe" -or $_.message -match "NewProcessName.*.*\\vssadmin.exe") -and $_.message -match "CommandLine.*.*shadow.*" -and $_.message -match "CommandLine.*.*create.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:(*\\powershell.exe OR *\\wmic.exe OR *\\vssadmin.exe) AND winlog.event_data.CommandLine.keyword:*shadow* AND winlog.event_data.CommandLine.keyword:*create*)
+(winlog.event_data.NewProcessName.keyword:(*\\powershell.exe OR *\\wmic.exe OR *\\vssadmin.exe) AND winlog.event_data.CommandLine.keyword:*shadow* AND winlog.event_data.CommandLine.keyword:*create*)
 ```
 
 
@@ -78,11 +76,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Shadow Copies creation using operating systems utilities, possible credential access",
     "tags": [
       "attack.credential_access",
-      "attack.t1003",
-      "attack.t1003.002",
-      "attack.t1003.003"
+      "attack.t1003"
     ],
-    "query": "(winlog.event_data.Image.keyword:(*\\\\powershell.exe OR *\\\\wmic.exe OR *\\\\vssadmin.exe) AND winlog.event_data.CommandLine.keyword:*shadow* AND winlog.event_data.CommandLine.keyword:*create*)"
+    "query": "(winlog.event_data.NewProcessName.keyword:(*\\\\powershell.exe OR *\\\\wmic.exe OR *\\\\vssadmin.exe) AND winlog.event_data.CommandLine.keyword:*shadow* AND winlog.event_data.CommandLine.keyword:*create*)"
   },
   "trigger": {
     "schedule": {
@@ -99,7 +95,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.event_data.Image.keyword:(*\\\\powershell.exe OR *\\\\wmic.exe OR *\\\\vssadmin.exe) AND winlog.event_data.CommandLine.keyword:*shadow* AND winlog.event_data.CommandLine.keyword:*create*)",
+                    "query": "(winlog.event_data.NewProcessName.keyword:(*\\\\powershell.exe OR *\\\\wmic.exe OR *\\\\vssadmin.exe) AND winlog.event_data.CommandLine.keyword:*shadow* AND winlog.event_data.CommandLine.keyword:*create*)",
                     "analyze_wildcard": true
                   }
                 }
@@ -129,10 +125,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Shadow Copies Creation Using Operating Systems Utilities'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -155,21 +148,21 @@ EOF
 ### graylog
     
 ```
-(Image.keyword:(*\\powershell.exe *\\wmic.exe *\\vssadmin.exe) AND CommandLine.keyword:*shadow* AND CommandLine.keyword:*create*)
+(NewProcessName.keyword:(*\\powershell.exe *\\wmic.exe *\\vssadmin.exe) AND CommandLine.keyword:*shadow* AND CommandLine.keyword:*create*)
 ```
 
 
 ### splunk
     
 ```
-((Image="*\\powershell.exe" OR Image="*\\wmic.exe" OR Image="*\\vssadmin.exe") CommandLine="*shadow*" CommandLine="*create*")
+((NewProcessName="*\\powershell.exe" OR NewProcessName="*\\wmic.exe" OR NewProcessName="*\\vssadmin.exe") CommandLine="*shadow*" CommandLine="*create*")
 ```
 
 
 ### logpoint
     
 ```
-(Image IN ["*\\powershell.exe", "*\\wmic.exe", "*\\vssadmin.exe"] CommandLine="*shadow*" CommandLine="*create*")
+(NewProcessName IN ["*\\powershell.exe", "*\\wmic.exe", "*\\vssadmin.exe"] CommandLine="*shadow*" CommandLine="*create*")
 ```
 
 

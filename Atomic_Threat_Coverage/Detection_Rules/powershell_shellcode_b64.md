@@ -1,10 +1,10 @@
 | Title                    | PowerShell ShellCode       |
 |:-------------------------|:------------------|
 | **Description**          | Detects Base64 encoded Shellcode |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -24,25 +24,22 @@ description: Detects Base64 encoded Shellcode
 references:
     - https://twitter.com/cyb3rops/status/1063072865992523776
 tags:
-    - attack.defense_evasion
     - attack.privilege_escalation
-    - attack.t1055
     - attack.execution
-    - attack.t1059.001
-    - attack.t1086  #an old one
+    - attack.t1055
+    - attack.t1086
 author: David Ledbetter (shellcode), Florian Roth (rule)
 date: 2018/11/17
-modified: 2020/08/24
 logsource:
     product: windows
     service: powershell
-    definition: 'Script block logging must be enabled'
+    description: 'Script block logging must be enabled'
 detection:
     selection:
         EventID: 4104
-    keyword1:
+    keyword1: 
         - '*AAAAYInlM*'
-    keyword2:
+    keyword2: 
         - '*OiCAAAAYInlM*'
         - '*OiJAAAAYInlM*'
     condition: selection and keyword1 and keyword2
@@ -79,11 +76,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "PowerShell ShellCode",
     "description": "Detects Base64 encoded Shellcode",
     "tags": [
-      "attack.defense_evasion",
       "attack.privilege_escalation",
-      "attack.t1055",
       "attack.execution",
-      "attack.t1059.001",
+      "attack.t1055",
       "attack.t1086"
     ],
     "query": "((winlog.event_id:\"4104\" AND \"*AAAAYInlM*\") AND \\*.keyword:(*OiCAAAAYInlM* OR *OiJAAAAYInlM*))"
@@ -133,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'PowerShell ShellCode'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

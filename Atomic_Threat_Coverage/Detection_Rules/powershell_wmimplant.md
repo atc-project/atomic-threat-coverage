@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects parameters used by WMImplant |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Administrative scripts that use the same keywords.</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,14 +26,12 @@ references:
 tags:
   - attack.execution
   - attack.t1047
-  - attack.t1059.001
-  - attack.t1086  #an old one
 author: NVISO
 date: 2020/03/26
 logsource:
   product: windows
   service: powershell
-  definition: "Script block logging must be enabled"
+  description: "Script block logging must be enabled"
 detection:
   selection:
     ScriptBlockText|contains:
@@ -93,9 +91,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects parameters used by WMImplant",
     "tags": [
       "attack.execution",
-      "attack.t1047",
-      "attack.t1059.001",
-      "attack.t1086"
+      "attack.t1047"
     ],
     "query": "ScriptBlockText.keyword:(*WMImplant* OR *\\ change_user\\ * OR *\\ gen_cli\\ * OR *\\ command_exec\\ * OR *\\ disable_wdigest\\ * OR *\\ disable_winrm\\ * OR *\\ enable_wdigest\\ * OR *\\ enable_winrm\\ * OR *\\ registry_mod\\ * OR *\\ remote_posh\\ * OR *\\ sched_job\\ * OR *\\ service_mod\\ * OR *\\ process_kill\\ * OR *\\ active_users\\ * OR *\\ basic_info\\ * OR *\\ power_off\\ * OR *\\ vacant_system\\ * OR *\\ logon_events\\ *)"
   },
@@ -144,10 +140,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'WMImplant Hack Tool'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects local user creation on windows servers, which shouldn't happen in an Active Directory environment. Apply this Sigma Use Case on your windows server logs and not on your DC logs. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1136: Create Account](https://attack.mitre.org/techniques/T1136)</li><li>[T1136.001: Local Account](https://attack.mitre.org/techniques/T1136/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1136: Create Account](https://attack.mitre.org/techniques/T1136)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0086_4720_user_account_was_created](../Data_Needed/DN_0086_4720_user_account_was_created.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1136.001: Local Account](../Triggers/T1136.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1136: Create Account](../Triggers/T1136.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>Domain Controller Logs</li><li>Local accounts managed by privileged account management tools</li></ul>  |
 | **Development Status**   | experimental |
@@ -24,13 +24,11 @@ description: Detects local user creation on windows servers, which shouldn't hap
 status: experimental
 tags:
     - attack.persistence
-    - attack.t1136           # an old one
-    - attack.t1136.001
+    - attack.t1136
 references:
     - https://patrick-bareiss.com/detecting-local-user-creation-in-ad-with-sigma/
 author: Patrick Bareiss
 date: 2019/04/18
-modified: 2020/08/23
 logsource:
     product: windows
     service: security
@@ -77,8 +75,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects local user creation on windows servers, which shouldn't happen in an Active Directory environment. Apply this Sigma Use Case on your windows server logs and not on your DC logs.",
     "tags": [
       "attack.persistence",
-      "attack.t1136",
-      "attack.t1136.001"
+      "attack.t1136"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4720\")"
   },
@@ -127,10 +124,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Local User Creation'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n    EventCode = {{_source.EventCode}}\n  AccountName = {{_source.AccountName}}\nAccountDomain = {{_source.AccountDomain}}================================================================================\n{{/ctx.payload.hits.hits}}",

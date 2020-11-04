@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | This rule detects a DHCP server in which a specified Callout DLL (in registry) was loaded |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li><li>[T1574.002: DLL Side-Loading](https://attack.mitre.org/techniques/T1574/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0048_1033_dhcp_service_successfully_loaded_callout_dlls](../Data_Needed/DN_0048_1033_dhcp_service_successfully_loaded_callout_dlls.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1574.002: DLL Side-Loading](../Triggers/T1574.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -29,8 +29,7 @@ date: 2017/05/15
 author: Dimitrios Slamaris
 tags:
     - attack.defense_evasion
-    - attack.t1073          # an old one
-    - attack.t1574.002
+    - attack.t1073
 logsource:
     product: windows
     service: system
@@ -39,7 +38,7 @@ detection:
         EventID: 1033
         Source: Microsoft-Windows-DHCP-Server
     condition: selection
-falsepositives:
+falsepositives: 
     - Unknown
 level: critical
 
@@ -73,8 +72,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "This rule detects a DHCP server in which a specified Callout DLL (in registry) was loaded",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1073",
-      "attack.t1574.002"
+      "attack.t1073"
     ],
     "query": "(winlog.event_id:\"1033\" AND winlog.event_data.Source:\"Microsoft\\-Windows\\-DHCP\\-Server\")"
   },
@@ -123,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'DHCP Server Loaded the CallOut DLL'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects activity that could be related to Baby Shark malware |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059: Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li><li>[T1059.003: Windows Command Shell](https://attack.mitre.org/techniques/T1059/003)</li><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1012: Query Registry](https://attack.mitre.org/techniques/T1012)</li><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li><li>[T1218.005: Mshta](https://attack.mitre.org/techniques/T1218/005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1059: Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li><li>[T1012: Query Registry](https://attack.mitre.org/techniques/T1012)</li><li>[T1170: Mshta](https://attack.mitre.org/techniques/T1170)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.003: Windows Command Shell](../Triggers/T1059.003.md)</li><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li><li>[T1012: Query Registry](../Triggers/T1012.md)</li><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li><li>[T1218.005: Mshta](../Triggers/T1218.005.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1059: Command and Scripting Interpreter](../Triggers/T1059.md)</li><li>[T1086: PowerShell](../Triggers/T1086.md)</li><li>[T1012: Query Registry](../Triggers/T1012.md)</li><li>[T1170: Mshta](../Triggers/T1170.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,22 +25,17 @@ references:
     - https://unit42.paloaltonetworks.com/new-babyshark-malware-targets-u-s-national-security-think-tanks/
 tags:
     - attack.execution
-    - attack.t1059 # an old one
-    - attack.t1086 # an old one
-    - attack.t1059.003
-    - attack.t1059.001
+    - attack.t1059
+    - attack.t1086
     - attack.discovery
     - attack.t1012
     - attack.defense_evasion
-    - attack.t1170 # an old one
-    - attack.t1218 # an old one
-    - attack.t1218.005
+    - attack.t1170
 logsource:
     category: process_creation
     product: windows
 author: Florian Roth
 date: 2019/02/24
-modified: 2020/08/26
 detection:
     selection:
         CommandLine:
@@ -84,14 +79,10 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.execution",
       "attack.t1059",
       "attack.t1086",
-      "attack.t1059.003",
-      "attack.t1059.001",
       "attack.discovery",
       "attack.t1012",
       "attack.defense_evasion",
-      "attack.t1170",
-      "attack.t1218",
-      "attack.t1218.005"
+      "attack.t1170"
     ],
     "query": "winlog.event_data.CommandLine.keyword:(reg\\ query\\ \\\"HKEY_CURRENT_USER\\\\Software\\\\Microsoft\\\\Terminal\\ Server\\ Client\\\\Default\\\" OR powershell.exe\\ mshta.exe\\ http* OR cmd.exe\\ \\/c\\ taskkill\\ \\/im\\ cmd.exe)"
   },
@@ -140,10 +131,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Baby Shark Activity'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

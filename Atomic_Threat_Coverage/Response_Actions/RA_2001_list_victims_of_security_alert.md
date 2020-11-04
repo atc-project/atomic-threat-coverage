@@ -3,7 +3,7 @@
 | **ID**                      | RA2001            |
 | **Description**             | List victims of a security alert   |
 | **Author**                  | name/nickname/twitter        |
-| **Creation Date**           | YYYY/MM/DD |
+| **Creation Date**           | DD.MM.YYYY |
 | **Category**                | General      |
 | **Stage**                   |[RS0002: Identification](../Response_Stages/RS0002.md)| 
 | **Automation** |<ul><li>thehive</li></ul>|

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects keywords that could indicate the use of some PowerShell exploitation framework |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
-| **Trigger**              | <ul><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Penetration tests</li></ul>  |
 | **Development Status**   | experimental |
@@ -29,8 +29,7 @@ references:
     - https://github.com/hlldz/Invoke-Phant0m/blob/master/Invoke-Phant0m.ps1
 tags:
     - attack.execution
-    - attack.t1059.001
-    - attack.t1086  #an old one
+    - attack.t1086
 logsource:
     product: windows
     service: powershell
@@ -66,7 +65,7 @@ Get-WinEvent -LogName Microsoft-Windows-PowerShell/Operational | where {(($_.mes
 ### es-qs
     
 ```
-Message:("System.Reflection.Assembly.Load" OR "\[System.Reflection.Assembly\]\:\:Load" OR "\[Reflection.Assembly\]\:\:Load" OR "System.Reflection.AssemblyName" OR "Reflection.Emit.AssemblyBuilderAccess" OR "Runtime.InteropServices.DllImportAttribute" OR "SuspendThread")
+winlog.event_data.Message:("System.Reflection.Assembly.Load" OR "\[System.Reflection.Assembly\]\:\:Load" OR "\[Reflection.Assembly\]\:\:Load" OR "System.Reflection.AssemblyName" OR "Reflection.Emit.AssemblyBuilderAccess" OR "Runtime.InteropServices.DllImportAttribute" OR "SuspendThread")
 ```
 
 
@@ -80,10 +79,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects keywords that could indicate the use of some PowerShell exploitation framework",
     "tags": [
       "attack.execution",
-      "attack.t1059.001",
       "attack.t1086"
     ],
-    "query": "Message:(\"System.Reflection.Assembly.Load\" OR \"\\[System.Reflection.Assembly\\]\\:\\:Load\" OR \"\\[Reflection.Assembly\\]\\:\\:Load\" OR \"System.Reflection.AssemblyName\" OR \"Reflection.Emit.AssemblyBuilderAccess\" OR \"Runtime.InteropServices.DllImportAttribute\" OR \"SuspendThread\")"
+    "query": "winlog.event_data.Message:(\"System.Reflection.Assembly.Load\" OR \"\\[System.Reflection.Assembly\\]\\:\\:Load\" OR \"\\[Reflection.Assembly\\]\\:\\:Load\" OR \"System.Reflection.AssemblyName\" OR \"Reflection.Emit.AssemblyBuilderAccess\" OR \"Runtime.InteropServices.DllImportAttribute\" OR \"SuspendThread\")"
   },
   "trigger": {
     "schedule": {
@@ -100,7 +98,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "Message:(\"System.Reflection.Assembly.Load\" OR \"\\[System.Reflection.Assembly\\]\\:\\:Load\" OR \"\\[Reflection.Assembly\\]\\:\\:Load\" OR \"System.Reflection.AssemblyName\" OR \"Reflection.Emit.AssemblyBuilderAccess\" OR \"Runtime.InteropServices.DllImportAttribute\" OR \"SuspendThread\")",
+                    "query": "winlog.event_data.Message:(\"System.Reflection.Assembly.Load\" OR \"\\[System.Reflection.Assembly\\]\\:\\:Load\" OR \"\\[Reflection.Assembly\\]\\:\\:Load\" OR \"System.Reflection.AssemblyName\" OR \"Reflection.Emit.AssemblyBuilderAccess\" OR \"Runtime.InteropServices.DllImportAttribute\" OR \"SuspendThread\")",
                     "analyze_wildcard": true
                   }
                 }
@@ -130,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious PowerShell Keywords'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

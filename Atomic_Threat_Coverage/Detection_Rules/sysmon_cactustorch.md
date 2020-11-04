@@ -1,10 +1,10 @@
 | Title                    | CACTUSTORCH Remote Thread Creation       |
 |:-------------------------|:------------------|
 | **Description**          | Detects remote thread creation from CACTUSTORCH as described in references. |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1093: Process Hollowing](https://attack.mitre.org/techniques/T1093)</li><li>[T1055.012: Process Hollowing](https://attack.mitre.org/techniques/T1055/012)</li><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li><li>[T1059.005: Visual Basic](https://attack.mitre.org/techniques/T1059/005)</li><li>[T1059.007: JavaScript/JScript](https://attack.mitre.org/techniques/T1059/007)</li><li>[T1218.005: Mshta](https://attack.mitre.org/techniques/T1218/005)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0012_8_windows_sysmon_CreateRemoteThread](../Data_Needed/DN_0012_8_windows_sysmon_CreateRemoteThread.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1055.012: Process Hollowing](../Triggers/T1055.012.md)</li><li>[T1059.005: Visual Basic](../Triggers/T1059.005.md)</li><li>[T1218.005: Mshta](../Triggers/T1218.005.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li><li>[T1064: Scripting](../Triggers/T1064.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,7 +26,6 @@ references:
 status: experimental
 author: '@SBousseaden (detection), Thomas Patzke (rule)'
 date: 2019/02/01
-modified: 2020/08/28
 logsource:
     product: windows
     service: sysmon
@@ -43,14 +42,9 @@ detection:
         StartModule: null
     condition: selection
 tags:
-    - attack.defense_evasion
-    - attack.t1093          # an old one
-    - attack.t1055.012
     - attack.execution
-    - attack.t1064          # an old one
-    - attack.t1059.005
-    - attack.t1059.007
-    - attack.t1218.005
+    - attack.t1055
+    - attack.t1064
 falsepositives:
     - unknown
 level: high
@@ -84,14 +78,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "CACTUSTORCH Remote Thread Creation",
     "description": "Detects remote thread creation from CACTUSTORCH as described in references.",
     "tags": [
-      "attack.defense_evasion",
-      "attack.t1093",
-      "attack.t1055.012",
       "attack.execution",
-      "attack.t1064",
-      "attack.t1059.005",
-      "attack.t1059.007",
-      "attack.t1218.005"
+      "attack.t1055",
+      "attack.t1064"
     ],
     "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"8\" AND winlog.event_data.SourceImage.keyword:(*\\\\System32\\\\cscript.exe OR *\\\\System32\\\\wscript.exe OR *\\\\System32\\\\mshta.exe OR *\\\\winword.exe OR *\\\\excel.exe) AND winlog.event_data.TargetImage.keyword:*\\\\SysWOW64\\\\* AND NOT _exists_:winlog.event_data.StartModule)"
   },
@@ -140,10 +129,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'CACTUSTORCH Remote Thread Creation'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

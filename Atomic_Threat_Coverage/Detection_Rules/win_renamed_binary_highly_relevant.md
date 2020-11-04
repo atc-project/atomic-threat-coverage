@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the execution of a renamed binary often used by attackers or malware leveraging new Sysmon OriginalFileName datapoint. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li><li>[T1036.003: Rename System Utilities](https://attack.mitre.org/techniques/T1036/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1036.003: Rename System Utilities](../Triggers/T1036.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Custom applications use renamed binaries adding slight change to binary name. Typically this is easy to spot and add to whitelist</li></ul>  |
 | **Development Status**   | experimental |
@@ -23,15 +23,13 @@ status: experimental
 description: Detects the execution of a renamed binary often used by attackers or malware leveraging new Sysmon OriginalFileName datapoint.
 author: Matthew Green - @mgreen27, Florian Roth
 date: 2019/06/15
-modified: 2020/09/06
 references:
     - https://attack.mitre.org/techniques/T1036/
     - https://mgreen27.github.io/posts/2019/05/12/BinaryRename.html
     - https://mgreen27.github.io/posts/2019/05/29/BinaryRename2.html
 tags:
+    - attack.t1036
     - attack.defense_evasion
-    - attack.t1036 # an old one
-    - attack.t1036.003
 logsource:
     category: process_creation
     product: windows
@@ -100,9 +98,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Highly Relevant Renamed Binary",
     "description": "Detects the execution of a renamed binary often used by attackers or malware leveraging new Sysmon OriginalFileName datapoint.",
     "tags": [
-      "attack.defense_evasion",
       "attack.t1036",
-      "attack.t1036.003"
+      "attack.defense_evasion"
     ],
     "query": "(OriginalFileName:(\"powershell.exe\" OR \"powershell_ise.exe\" OR \"psexec.exe\" OR \"psexec.c\" OR \"cscript.exe\" OR \"wscript.exe\" OR \"mshta.exe\" OR \"regsvr32.exe\" OR \"wmic.exe\" OR \"certutil.exe\" OR \"rundll32.exe\" OR \"cmstp.exe\" OR \"msiexec.exe\") AND (NOT (winlog.event_data.Image.keyword:(*\\\\powershell.exe OR *\\\\powershell_ise.exe OR *\\\\psexec.exe OR *\\\\psexec64.exe OR *\\\\cscript.exe OR *\\\\wscript.exe OR *\\\\mshta.exe OR *\\\\regsvr32.exe OR *\\\\wmic.exe OR *\\\\certutil.exe OR *\\\\rundll32.exe OR *\\\\cmstp.exe OR *\\\\msiexec.exe))))"
   },
@@ -151,10 +148,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Highly Relevant Renamed Binary'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

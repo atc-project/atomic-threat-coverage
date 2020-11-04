@@ -1,10 +1,10 @@
 | Title                    | NetNTLM Downgrade Attack       |
 |:-------------------------|:------------------|
-| **Description**          | Detects NetNTLM downgrade attack |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1089: Disabling Security Tools](https://attack.mitre.org/techniques/T1089)</li><li>[T1562.001: Disable or Modify Tools](https://attack.mitre.org/techniques/T1562/001)</li><li>[T1112: Modify Registry](https://attack.mitre.org/techniques/T1112)</li></ul>  |
+| **Description**          | Detects post exploitation using NetNTLM downgrade attacks |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1212: Exploitation for Credential Access](https://attack.mitre.org/techniques/T1212)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0017_13_windows_sysmon_RegistryEvent](../Data_Needed/DN_0017_13_windows_sysmon_RegistryEvent.md)</li><li>[DN_0059_4657_registry_value_was_modified](../Data_Needed/DN_0059_4657_registry_value_was_modified.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1562.001: Disable or Modify Tools](../Triggers/T1562.001.md)</li><li>[T1112: Modify Registry](../Triggers/T1112.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -20,23 +20,20 @@
 action: global
 title: NetNTLM Downgrade Attack
 id: d67572a0-e2ec-45d6-b8db-c100d14b8ef2
-description: Detects NetNTLM downgrade attack
+description: Detects post exploitation using NetNTLM downgrade attacks
 references:
     - https://www.optiv.com/blog/post-exploitation-using-netntlm-downgrade-attacks
 author: Florian Roth
 date: 2018/03/20
-modified: 2020/08/23
 tags:
-    - attack.defense_evasion
-    - attack.t1089          # an old one
-    - attack.t1562.001
-    - attack.t1112
+    - attack.credential_access
+    - attack.t1212
 detection:
     condition: 1 of them
 falsepositives:
     - Unknown
 level: critical
----
+--- 
 logsource:
     product: windows
     service: sysmon
@@ -91,12 +88,10 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
 {
   "metadata": {
     "title": "NetNTLM Downgrade Attack",
-    "description": "Detects NetNTLM downgrade attack",
+    "description": "Detects post exploitation using NetNTLM downgrade attacks",
     "tags": [
-      "attack.defense_evasion",
-      "attack.t1089",
-      "attack.t1562.001",
-      "attack.t1112"
+      "attack.credential_access",
+      "attack.t1212"
     ],
     "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"13\" AND winlog.event_data.TargetObject.keyword:(*SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa\\\\lmcompatibilitylevel OR *SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa*\\\\NtlmMinClientSec OR *SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa*\\\\RestrictSendingNTLMTraffic))"
   },
@@ -145,10 +140,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'NetNTLM Downgrade Attack'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -168,12 +160,10 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
 {
   "metadata": {
     "title": "NetNTLM Downgrade Attack",
-    "description": "Detects NetNTLM downgrade attack",
+    "description": "Detects post exploitation using NetNTLM downgrade attacks",
     "tags": [
-      "attack.defense_evasion",
-      "attack.t1089",
-      "attack.t1562.001",
-      "attack.t1112"
+      "attack.credential_access",
+      "attack.t1212"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4657\" AND winlog.event_data.ObjectName.keyword:\\\\REGISTRY\\\\MACHINE\\\\SYSTEM\\\\*ControlSet*\\\\Control\\\\Lsa* AND winlog.event_data.ObjectValueName:(\"LmCompatibilityLevel\" OR \"NtlmMinClientSec\" OR \"RestrictSendingNTLMTraffic\"))"
   },
@@ -222,10 +212,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'NetNTLM Downgrade Attack'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

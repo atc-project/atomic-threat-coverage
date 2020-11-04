@@ -1,7 +1,7 @@
 | Title                    | Run Whoami as SYSTEM       |
 |:-------------------------|:------------------|
 | **Description**          | Detects a whoami.exe executed by LOCAL SYSTEM. This may be a sign of a successful local privilege escalation. |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1033: System Owner/User Discovery](https://attack.mitre.org/techniques/T1033)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1033: System Owner/User Discovery](../Triggers/T1033.md)</li></ul>  |
@@ -27,8 +27,8 @@ author: Teymur Kheirkhabarov
 date: 2019/10/23
 modified: 2019/11/11
 tags:
+    - attack.discovery
     - attack.privilege_escalation
-    - attack.discovery    
     - attack.t1033
 logsource:
     category: process_creation
@@ -71,8 +71,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Run Whoami as SYSTEM",
     "description": "Detects a whoami.exe executed by LOCAL SYSTEM. This may be a sign of a successful local privilege escalation.",
     "tags": [
-      "attack.privilege_escalation",
       "attack.discovery",
+      "attack.privilege_escalation",
       "attack.t1033"
     ],
     "query": "(winlog.event_data.User:\"NT\\ AUTHORITY\\\\SYSTEM\" AND winlog.event_data.Image.keyword:*\\\\whoami.exe)"
@@ -122,10 +122,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Run Whoami as SYSTEM'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

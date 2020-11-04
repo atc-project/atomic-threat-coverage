@@ -1,5 +1,6 @@
 | Title              | DN_0022_19_windows_sysmon_WmiEvent       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | When a WMI event filter is registered, which is a method used by malware to  execute, this event logs the WMI namespace, filter name and filter expression |
 | **Logging Policy** | <ul><li>[LP_0010_windows_sysmon_WmiEvent](../Logging_Policies/LP_0010_windows_sysmon_WmiEvent.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-19.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-19.md)</li><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90019](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90019)</li></ul> |

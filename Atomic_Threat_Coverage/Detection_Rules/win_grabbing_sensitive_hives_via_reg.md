@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Dump sam, system or security hives using REG.exe utility |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003.002: Security Account Manager](https://attack.mitre.org/techniques/T1003/002)</li><li>[T1003.004: LSA Secrets](https://attack.mitre.org/techniques/T1003/004)</li><li>[T1003.005: Cached Domain Credentials](https://attack.mitre.org/techniques/T1003/005)</li><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003.002: Security Account Manager](../Triggers/T1003.002.md)</li><li>[T1003.004: LSA Secrets](../Triggers/T1003.004.md)</li><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Dumping hives for legitimate purpouse i.e. backup or forensic investigation</li></ul>  |
 | **Development Status**   | experimental |
@@ -28,22 +28,19 @@ references:
     - https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1003/T1003.md
 tags:
     - attack.credential_access
-    - attack.t1003.002
-    - attack.t1003.004
-    - attack.t1003.005
-    - attack.t1003  # an old one
+    - attack.t1003
     - car.2013-07-001
 logsource:
     category: process_creation
     product: windows
 detection:
     selection_1:
-        Image: '*\reg.exe'
-        CommandLine|contains:
+        NewProcessName: '*\reg.exe'
+        CommandLine|contains: 
             - 'save'
             - 'export'
     selection_2:
-        CommandLine|contains:
+        CommandLine|contains: 
             - 'hklm'
             - 'hkey_local_machine'
     selection_3:
@@ -66,14 +63,14 @@ status: experimental
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "Image.*.*\\reg.exe" -and ($_.message -match "CommandLine.*.*save.*" -or $_.message -match "CommandLine.*.*export.*") -and ($_.message -match "CommandLine.*.*hklm.*" -or $_.message -match "CommandLine.*.*hkey_local_machine.*") -and ($_.message -match "CommandLine.*.*\\system" -or $_.message -match "CommandLine.*.*\\sam" -or $_.message -match "CommandLine.*.*\\security")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "NewProcessName.*.*\\reg.exe" -and ($_.message -match "CommandLine.*.*save.*" -or $_.message -match "CommandLine.*.*export.*") -and ($_.message -match "CommandLine.*.*hklm.*" -or $_.message -match "CommandLine.*.*hkey_local_machine.*") -and ($_.message -match "CommandLine.*.*\\system" -or $_.message -match "CommandLine.*.*\\sam" -or $_.message -match "CommandLine.*.*\\security")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:*\\reg.exe AND winlog.event_data.CommandLine.keyword:(*save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*hklm* OR *hkey_local_machine*) AND winlog.event_data.CommandLine.keyword:(*\\system OR *\\sam OR *\\security))
+(winlog.event_data.NewProcessName.keyword:*\\reg.exe AND winlog.event_data.CommandLine.keyword:(*save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*hklm* OR *hkey_local_machine*) AND winlog.event_data.CommandLine.keyword:(*\\system OR *\\sam OR *\\security))
 ```
 
 
@@ -87,13 +84,10 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Dump sam, system or security hives using REG.exe utility",
     "tags": [
       "attack.credential_access",
-      "attack.t1003.002",
-      "attack.t1003.004",
-      "attack.t1003.005",
       "attack.t1003",
       "car.2013-07-001"
     ],
-    "query": "(winlog.event_data.Image.keyword:*\\\\reg.exe AND winlog.event_data.CommandLine.keyword:(*save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*hklm* OR *hkey_local_machine*) AND winlog.event_data.CommandLine.keyword:(*\\\\system OR *\\\\sam OR *\\\\security))"
+    "query": "(winlog.event_data.NewProcessName.keyword:*\\\\reg.exe AND winlog.event_data.CommandLine.keyword:(*save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*hklm* OR *hkey_local_machine*) AND winlog.event_data.CommandLine.keyword:(*\\\\system OR *\\\\sam OR *\\\\security))"
   },
   "trigger": {
     "schedule": {
@@ -110,7 +104,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.event_data.Image.keyword:*\\\\reg.exe AND winlog.event_data.CommandLine.keyword:(*save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*hklm* OR *hkey_local_machine*) AND winlog.event_data.CommandLine.keyword:(*\\\\system OR *\\\\sam OR *\\\\security))",
+                    "query": "(winlog.event_data.NewProcessName.keyword:*\\\\reg.exe AND winlog.event_data.CommandLine.keyword:(*save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*hklm* OR *hkey_local_machine*) AND winlog.event_data.CommandLine.keyword:(*\\\\system OR *\\\\sam OR *\\\\security))",
                     "analyze_wildcard": true
                   }
                 }
@@ -140,10 +134,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Grabbing Sensitive Hives via Reg Utility'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -166,21 +157,21 @@ EOF
 ### graylog
     
 ```
-(Image.keyword:*\\reg.exe AND CommandLine.keyword:(*save* *export*) AND CommandLine.keyword:(*hklm* *hkey_local_machine*) AND CommandLine.keyword:(*\\system *\\sam *\\security))
+(NewProcessName.keyword:*\\reg.exe AND CommandLine.keyword:(*save* *export*) AND CommandLine.keyword:(*hklm* *hkey_local_machine*) AND CommandLine.keyword:(*\\system *\\sam *\\security))
 ```
 
 
 ### splunk
     
 ```
-(Image="*\\reg.exe" (CommandLine="*save*" OR CommandLine="*export*") (CommandLine="*hklm*" OR CommandLine="*hkey_local_machine*") (CommandLine="*\\system" OR CommandLine="*\\sam" OR CommandLine="*\\security"))
+(NewProcessName="*\\reg.exe" (CommandLine="*save*" OR CommandLine="*export*") (CommandLine="*hklm*" OR CommandLine="*hkey_local_machine*") (CommandLine="*\\system" OR CommandLine="*\\sam" OR CommandLine="*\\security"))
 ```
 
 
 ### logpoint
     
 ```
-(Image="*\\reg.exe" CommandLine IN ["*save*", "*export*"] CommandLine IN ["*hklm*", "*hkey_local_machine*"] CommandLine IN ["*\\system", "*\\sam", "*\\security"])
+(NewProcessName="*\\reg.exe" CommandLine IN ["*save*", "*export*"] CommandLine IN ["*hklm*", "*hkey_local_machine*"] CommandLine IN ["*\\system", "*\\sam", "*\\security"])
 ```
 
 

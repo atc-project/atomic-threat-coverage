@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | The 'LsaRegisterLogonProcess' function verifies that the application making the function call is a logon process by checking that it has the SeTcbPrivilege privilege set. Possible Rubeus tries to get a handle to LSA. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li><li>[T1558.003: Kerberoasting](https://attack.mitre.org/techniques/T1558/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li></ul>  |
 | **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
-| **Trigger**              | <ul><li>[T1558.003: Kerberoasting](../Triggers/T1558.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1208: Kerberoasting](../Triggers/T1208.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unkown</li></ul>  |
 | **Development Status**   | experimental |
@@ -19,15 +19,15 @@
 ```
 title: User Couldn't Call a Privileged Service 'LsaRegisterLogonProcess'
 id: 6daac7fc-77d1-449a-a71a-e6b4d59a0e54
-description: The 'LsaRegisterLogonProcess' function verifies that the application making the function call is a logon process by checking that it has the SeTcbPrivilege privilege set. Possible Rubeus tries to get a handle to LSA.
+description: The 'LsaRegisterLogonProcess' function verifies that the application making the function call is a logon process by checking that it has the SeTcbPrivilege
+    privilege set. Possible Rubeus tries to get a handle to LSA.
 status: experimental
 references:
     - https://posts.specterops.io/hunting-in-active-directory-unconstrained-delegation-forests-trusts-71f2b33688e1
 tags:
     - attack.lateral_movement
     - attack.privilege_escalation
-    - attack.t1208           # an old one
-    - attack.t1558.003
+    - attack.t1208
 author: Roberto Rodriguez (source), Ilyas Ochkov (rule), oscd.community
 date: 2019/10/24
 logsource:
@@ -37,7 +37,7 @@ detection:
     selection:
         - EventID: 4673
           Service: 'LsaRegisterLogonProcess()'
-          Keywords: '0x8010000000000000'     #failure
+          Keywords: '0x8010000000000000'   #failure
     condition: selection
 falsepositives:
     - Unkown
@@ -74,8 +74,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.lateral_movement",
       "attack.privilege_escalation",
-      "attack.t1208",
-      "attack.t1558.003"
+      "attack.t1208"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4673\" AND Service:\"LsaRegisterLogonProcess\\(\\)\" AND Keywords:\"0x8010000000000000\")"
   },
@@ -124,10 +123,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'User Couldn't Call a Privileged Service 'LsaRegisterLogonProcess''",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

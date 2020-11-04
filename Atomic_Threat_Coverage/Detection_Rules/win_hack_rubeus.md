@@ -1,16 +1,16 @@
 | Title                    | Rubeus Hack Tool       |
 |:-------------------------|:------------------|
 | **Description**          | Detects command line parameters used by Rubeus hack tool |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1558.003: Kerberoasting](https://attack.mitre.org/techniques/T1558/003)</li><li>[T1558: Steal or Forge Kerberos Tickets](https://attack.mitre.org/techniques/T1558)</li><li>[T1550.003: Pass the Ticket](https://attack.mitre.org/techniques/T1550/003)</li><li>[T1097: Pass the Ticket](https://attack.mitre.org/techniques/T1097)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1558.003: Kerberoasting](../Triggers/T1558.003.md)</li><li>[T1550.003: Pass the Ticket](../Triggers/T1550.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>unlikely</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
 | **References**           | <ul><li>[https://www.harmj0y.net/blog/redteaming/from-kekeo-to-rubeus/](https://www.harmj0y.net/blog/redteaming/from-kekeo-to-rubeus/)</li></ul>  |
 | **Author**               | Florian Roth |
-
+| Other Tags           | <ul><li>attack.s0005</li></ul> | 
 
 ## Detection Rules
 
@@ -27,11 +27,7 @@ date: 2018/12/19
 tags:
     - attack.credential_access
     - attack.t1003
-    - attack.t1558.003
-    - attack.t1558  # an old one
-    - attack.lateral_movement 
-    - attack.t1550.003
-    - attack.t1097  # an old one
+    - attack.s0005
 logsource:
     category: process_creation
     product: windows
@@ -83,11 +79,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.credential_access",
       "attack.t1003",
-      "attack.t1558.003",
-      "attack.t1558",
-      "attack.lateral_movement",
-      "attack.t1550.003",
-      "attack.t1097"
+      "attack.s0005"
     ],
     "query": "winlog.event_data.CommandLine.keyword:(*\\ asreproast\\ * OR *\\ dump\\ \\/service\\:krbtgt\\ * OR *\\ kerberoast\\ * OR *\\ createnetonly\\ \\/program\\:* OR *\\ ptt\\ \\/ticket\\:* OR *\\ \\/impersonateuser\\:* OR *\\ renew\\ \\/ticket\\:* OR *\\ asktgt\\ \\/user\\:* OR *\\ harvest\\ \\/interval\\:*)"
   },
@@ -136,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Rubeus Hack Tool'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

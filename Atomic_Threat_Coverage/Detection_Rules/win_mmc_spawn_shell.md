@@ -1,14 +1,14 @@
 | Title                    | MMC Spawning Windows Shell       |
 |:-------------------------|:------------------|
-| **Description**          | Detects a Windows command line executable started from MMC |
+| **Description**          | Detects a Windows command line executable started from MMC. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1175: Component Object Model and Distributed COM](https://attack.mitre.org/techniques/T1175)</li><li>[T1021.003: Distributed Component Object Model](https://attack.mitre.org/techniques/T1021/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1175: Component Object Model and Distributed COM](https://attack.mitre.org/techniques/T1175)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1021.003: Distributed Component Object Model](../Triggers/T1021.003.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
 | **False Positives**      |  There are no documented False Positives for this Detection Rule yet  |
 | **Development Status**   | experimental |
-| **References**           | <ul><li>[https://enigma0x3.net/2017/01/05/lateral-movement-using-the-mmc20-application-com-object/](https://enigma0x3.net/2017/01/05/lateral-movement-using-the-mmc20-application-com-object/)</li></ul>  |
+| **References**           |  There are no documented References for this Detection Rule yet  |
 | **Author**               | Karneades, Swisscom CSIRT |
 
 
@@ -20,16 +20,12 @@
 title: MMC Spawning Windows Shell
 id: 05a2ab7e-ce11-4b63-86db-ab32e763e11d
 status: experimental
-description: Detects a Windows command line executable started from MMC
+description: Detects a Windows command line executable started from MMC.
 author: Karneades, Swisscom CSIRT
 date: 2019/08/05
-modified: 2020/09/01
-references:
-    - https://enigma0x3.net/2017/01/05/lateral-movement-using-the-mmc20-application-com-object/
 tags:
     - attack.lateral_movement
-    - attack.t1175          # an old one
-    - attack.t1021.003
+    - attack.t1175
 logsource:
     category: process_creation
     product: windows
@@ -80,11 +76,10 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
 {
   "metadata": {
     "title": "MMC Spawning Windows Shell",
-    "description": "Detects a Windows command line executable started from MMC",
+    "description": "Detects a Windows command line executable started from MMC.",
     "tags": [
       "attack.lateral_movement",
-      "attack.t1175",
-      "attack.t1021.003"
+      "attack.t1175"
     ],
     "query": "(winlog.event_data.ParentImage.keyword:*\\\\mmc.exe AND winlog.event_data.Image.keyword:(*\\\\cmd.exe OR *\\\\powershell.exe OR *\\\\wscript.exe OR *\\\\cscript.exe OR *\\\\sh.exe OR *\\\\bash.exe OR *\\\\reg.exe OR *\\\\regsvr32.exe OR *\\\\BITSADMIN*))"
   },
@@ -133,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'MMC Spawning Windows Shell'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\n            Image = {{_source.Image}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

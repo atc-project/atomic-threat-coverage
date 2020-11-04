@@ -40,7 +40,7 @@ detection:
     binary_2:
         OriginalFileName: 'fsutil.exe'
     selection:
-        CommandLine|contains:
+        CommandLine|contains: 
             - 'deletejournal'  # usn deletejournal ==> generally ransomware or attacker
             - 'createjournal'  # usn createjournal ==> can modify config to set it to a tiny size
     condition: (1 of binary_*) and selection
@@ -127,10 +127,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Fsutil Suspicious Invocation'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detect scenarios where a potentially unauthorized application or user is modifying the system time. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1099: Timestomp](https://attack.mitre.org/techniques/T1099)</li><li>[T1070.006: Timestomp](https://attack.mitre.org/techniques/T1070/006)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1099: Timestomp](https://attack.mitre.org/techniques/T1099)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0088_4616_system_time_was_changed](../Data_Needed/DN_0088_4616_system_time_was_changed.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1070.006: Timestomp](../Triggers/T1070.006.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1099: Timestomp](../Triggers/T1099.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>HyperV or other virtualization technologies with binary not listed in filter portion of detection</li></ul>  |
 | **Development Status**   | experimental |
@@ -29,8 +29,7 @@ date: 2019/02/05
 midified: 2020/01/27
 tags:
     - attack.defense_evasion
-    - attack.t1099          # an old one
-    - attack.t1070.006
+    - attack.t1099
 logsource:
     product: windows
     service: security
@@ -80,8 +79,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detect scenarios where a potentially unauthorized application or user is modifying the system time.",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1099",
-      "attack.t1070.006"
+      "attack.t1099"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4616\" AND (NOT ((winlog.channel:\"Security\" AND ((winlog.event_data.ProcessName:\"C\\:\\\\Program\\ Files\\\\VMware\\\\VMware\\ Tools\\\\vmtoolsd.exe\" OR winlog.event_data.ProcessName:\"C\\:\\\\Windows\\\\System32\\\\VBoxService.exe\") OR (winlog.event_data.ProcessName:\"C\\:\\\\Windows\\\\System32\\\\svchost.exe\" AND winlog.event_data.SubjectUserSid:\"S\\-1\\-5\\-19\"))))))"
   },
@@ -130,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Unauthorized System Time Modification'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

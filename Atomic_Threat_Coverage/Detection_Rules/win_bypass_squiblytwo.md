@@ -1,10 +1,10 @@
 | Title                    | SquiblyTwo       |
 |:-------------------------|:------------------|
 | **Description**          | Detects WMI SquiblyTwo Attack with possible renamed WMI by looking for imphash |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li><li>[T1220: XSL Script Processing](https://attack.mitre.org/techniques/T1220)</li><li>[T1059.005: Visual Basic](https://attack.mitre.org/techniques/T1059/005)</li><li>[T1059.007: JavaScript/JScript](https://attack.mitre.org/techniques/T1059/007)</li><li>[T1059: Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1047: Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li><li>[T1220: XSL Script Processing](../Triggers/T1220.md)</li><li>[T1059.005: Visual Basic](../Triggers/T1059.005.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1047: Windows Management Instrumentation](../Triggers/T1047.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -27,14 +27,8 @@ references:
 tags:
     - attack.defense_evasion
     - attack.t1047
-    - attack.t1220
-    - attack.execution
-    - attack.t1059.005
-    - attack.t1059.007
-    - attack.t1059  # an old one
 author: Markus Neis / Florian Roth
 date: 2019/01/16
-modified: 2020/08/27
 falsepositives:
     - Unknown
 level: medium
@@ -76,7 +70,7 @@ Get-WinEvent | where {((($_.message -match "Image.*.*\\wmic.exe") -and ($_.messa
 ### es-qs
     
 ```
-((winlog.event_data.Image.keyword:(*\\wmic.exe) AND winlog.event_data.CommandLine.keyword:(wmic\ *\ *format\:\\\"http* OR wmic\ *\ \/format\:'http OR wmic\ *\ \/format\:http*)) OR (winlog.event_data.Imphash:("1b1a3f43bf37b5bfe60751f2ee2f326e" OR "1B1A3F43BF37B5BFE60751F2EE2F326E" OR "37777a96245a3c74eb217308f3546f4c" OR "37777A96245A3C74EB217308F3546F4C" OR "9d87c9d67ce724033c0b40cc4ca1b206" OR "9D87C9D67CE724033C0B40CC4CA1B206") AND winlog.event_data.CommandLine.keyword:(*\ *format\:\\\"http* OR *\ \/format\:'http OR *\ \/format\:http*)))
+((winlog.event_data.Image.keyword:(*\\wmic.exe) AND winlog.event_data.CommandLine.keyword:(wmic\ *\ *format\:\\\"http* OR wmic\ *\ \/format\:'http OR wmic\ *\ \/format\:http*)) OR (winlog.event_data.Imphash:("1B1A3F43BF37B5BFE60751F2EE2F326E" OR "37777A96245A3C74EB217308F3546F4C" OR "9D87C9D67CE724033C0B40CC4CA1B206") AND winlog.event_data.CommandLine.keyword:(*\ *format\:\\\"http* OR *\ \/format\:'http OR *\ \/format\:http*)))
 ```
 
 
@@ -90,14 +84,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects WMI SquiblyTwo Attack with possible renamed WMI by looking for imphash",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1047",
-      "attack.t1220",
-      "attack.execution",
-      "attack.t1059.005",
-      "attack.t1059.007",
-      "attack.t1059"
+      "attack.t1047"
     ],
-    "query": "((winlog.event_data.Image.keyword:(*\\\\wmic.exe) AND winlog.event_data.CommandLine.keyword:(wmic\\ *\\ *format\\:\\\\\\\"http* OR wmic\\ *\\ \\/format\\:'http OR wmic\\ *\\ \\/format\\:http*)) OR (winlog.event_data.Imphash:(\"1b1a3f43bf37b5bfe60751f2ee2f326e\" OR \"1B1A3F43BF37B5BFE60751F2EE2F326E\" OR \"37777a96245a3c74eb217308f3546f4c\" OR \"37777A96245A3C74EB217308F3546F4C\" OR \"9d87c9d67ce724033c0b40cc4ca1b206\" OR \"9D87C9D67CE724033C0B40CC4CA1B206\") AND winlog.event_data.CommandLine.keyword:(*\\ *format\\:\\\\\\\"http* OR *\\ \\/format\\:'http OR *\\ \\/format\\:http*)))"
+    "query": "((winlog.event_data.Image.keyword:(*\\\\wmic.exe) AND winlog.event_data.CommandLine.keyword:(wmic\\ *\\ *format\\:\\\\\\\"http* OR wmic\\ *\\ \\/format\\:'http OR wmic\\ *\\ \\/format\\:http*)) OR (winlog.event_data.Imphash:(\"1B1A3F43BF37B5BFE60751F2EE2F326E\" OR \"37777A96245A3C74EB217308F3546F4C\" OR \"9D87C9D67CE724033C0B40CC4CA1B206\") AND winlog.event_data.CommandLine.keyword:(*\\ *format\\:\\\\\\\"http* OR *\\ \\/format\\:'http OR *\\ \\/format\\:http*)))"
   },
   "trigger": {
     "schedule": {
@@ -114,7 +103,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "((winlog.event_data.Image.keyword:(*\\\\wmic.exe) AND winlog.event_data.CommandLine.keyword:(wmic\\ *\\ *format\\:\\\\\\\"http* OR wmic\\ *\\ \\/format\\:'http OR wmic\\ *\\ \\/format\\:http*)) OR (winlog.event_data.Imphash:(\"1b1a3f43bf37b5bfe60751f2ee2f326e\" OR \"1B1A3F43BF37B5BFE60751F2EE2F326E\" OR \"37777a96245a3c74eb217308f3546f4c\" OR \"37777A96245A3C74EB217308F3546F4C\" OR \"9d87c9d67ce724033c0b40cc4ca1b206\" OR \"9D87C9D67CE724033C0B40CC4CA1B206\") AND winlog.event_data.CommandLine.keyword:(*\\ *format\\:\\\\\\\"http* OR *\\ \\/format\\:'http OR *\\ \\/format\\:http*)))",
+                    "query": "((winlog.event_data.Image.keyword:(*\\\\wmic.exe) AND winlog.event_data.CommandLine.keyword:(wmic\\ *\\ *format\\:\\\\\\\"http* OR wmic\\ *\\ \\/format\\:'http OR wmic\\ *\\ \\/format\\:http*)) OR (winlog.event_data.Imphash:(\"1B1A3F43BF37B5BFE60751F2EE2F326E\" OR \"37777A96245A3C74EB217308F3546F4C\" OR \"9D87C9D67CE724033C0B40CC4CA1B206\") AND winlog.event_data.CommandLine.keyword:(*\\ *format\\:\\\\\\\"http* OR *\\ \\/format\\:'http OR *\\ \\/format\\:http*)))",
                     "analyze_wildcard": true
                   }
                 }
@@ -144,10 +133,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'SquiblyTwo'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -170,7 +156,7 @@ EOF
 ### graylog
     
 ```
-((Image.keyword:(*\\wmic.exe) AND CommandLine.keyword:(wmic * *format\:\\\"http* wmic * \/format\:'http wmic * \/format\:http*)) OR (Imphash:("1b1a3f43bf37b5bfe60751f2ee2f326e" "1B1A3F43BF37B5BFE60751F2EE2F326E" "37777a96245a3c74eb217308f3546f4c" "37777A96245A3C74EB217308F3546F4C" "9d87c9d67ce724033c0b40cc4ca1b206" "9D87C9D67CE724033C0B40CC4CA1B206") AND CommandLine.keyword:(* *format\:\\\"http* * \/format\:'http * \/format\:http*)))
+((Image.keyword:(*\\wmic.exe) AND CommandLine.keyword:(wmic * *format\:\\\"http* wmic * \/format\:'http wmic * \/format\:http*)) OR (Imphash:("1B1A3F43BF37B5BFE60751F2EE2F326E" "37777A96245A3C74EB217308F3546F4C" "9D87C9D67CE724033C0B40CC4CA1B206") AND CommandLine.keyword:(* *format\:\\\"http* * \/format\:'http * \/format\:http*)))
 ```
 
 

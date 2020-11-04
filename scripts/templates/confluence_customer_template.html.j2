@@ -21,6 +21,16 @@
                <td class="confluenceTd">{{ description|e }}<br /></td>
             </tr>
             <tr>
+                <th class="confluenceTh">Use Cases</th>
+                <td class="confluenceTd">
+                    {%- if usecase |length > 1 -%}<ul>{%endif%}
+                    {%- for data_name, data_id in usecase %}
+                        {%- if usecase |length > 1 -%}<li>{%endif%}{% if data_id != "None" %}<a href="{{confluence_viewpage_url}}{{data_id}}">{{ data_name }}</a>{% else %}{{ data_name }}{% endif %}{%- if usecase |length > 1 -%}</li>{%endif%}
+                    {%- endfor %}
+                    {%- if usecase |length > 1 -%}</ul>{%endif%}
+                </td>
+            </tr>
+            <tr>
                 <th class="confluenceTh">Data Needed</th>
                 <td class="confluenceTd">
                     {%- if data_needed |length > 1 -%}<ul>{%endif%}

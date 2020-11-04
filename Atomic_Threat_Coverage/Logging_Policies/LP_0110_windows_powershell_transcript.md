@@ -1,5 +1,6 @@
 | Title            | LP_0110_windows_powershell_transcript                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Records each PowerShell session with input and output to a file                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | High                                                                    |

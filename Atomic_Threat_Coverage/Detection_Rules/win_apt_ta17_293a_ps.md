@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects renamed SysInternals tool execution with a binary named ps.exe as used by Dragonfly APT group and documented in TA17-293A report |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li><li>[T1036.003: Rename System Utilities](https://attack.mitre.org/techniques/T1036/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1036.003: Rename System Utilities](../Triggers/T1036.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Renamed SysInternals tool</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -25,12 +25,10 @@ references:
 tags:
     - attack.defense_evasion
     - attack.g0035
-    - attack.t1036 # an old one
-    - attack.t1036.003
+    - attack.t1036
     - car.2013-05-009
 author: Florian Roth
 date: 2017/10/22
-modified: 2020/08/27
 logsource:
     category: process_creation
     product: windows
@@ -73,7 +71,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.defense_evasion",
       "attack.g0035",
       "attack.t1036",
-      "attack.t1036.003",
       "car.2013-05-009"
     ],
     "query": "winlog.event_data.CommandLine:\"ps.exe\\ \\-accepteula\""
@@ -123,10 +120,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Ps.exe Renamed SysInternals Tool'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

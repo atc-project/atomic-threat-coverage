@@ -1,10 +1,10 @@
 | Title                    | New Service Creation       |
 |:-------------------------|:------------------|
-| **Description**          | Detects creation of a new service |
+| **Description**          | Detects creation if a new service |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li><li>[T1543.003: Windows Service](https://attack.mitre.org/techniques/T1543/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1050: New Service](https://attack.mitre.org/techniques/T1050)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1543.003: Windows Service](../Triggers/T1543.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1050: New Service](../Triggers/T1050.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>Legitimate administrator or user creates a service for legitimate reason</li></ul>  |
 | **Development Status**   | experimental |
@@ -20,15 +20,14 @@
 title: New Service Creation
 id: 7fe71fc9-de3b-432a-8d57-8c809efc10ab
 status: experimental
-description: Detects creation of a new service
+description: Detects creation if a new service
 author: Timur Zinniatullin, Daniil Yugoslavskiy, oscd.community
 date: 2019/10/21
 modified: 2019/11/04
 tags:
     - attack.persistence
     - attack.privilege_escalation
-    - attack.t1050          # an old one
-    - attack.t1543.003
+    - attack.t1050
 references:
     - https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1050/T1050.yaml
 logsource:
@@ -36,12 +35,12 @@ logsource:
     product: windows
 detection:
     selection:
-        - Image|endswith: '\sc.exe'
-          CommandLine|contains|all:
+      - Image|endswith: '\sc.exe'
+        CommandLine|contains|all:
             - 'create'
             - 'binpath'
-        - Image|endswith: '\powershell.exe'
-          CommandLine|contains: 'new-service'
+      - Image|endswith: '\powershell.exe'
+        CommandLine|contains: 'new-service'
     condition: selection
 falsepositives:
     - Legitimate administrator or user creates a service for legitimate reason
@@ -74,12 +73,11 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
 {
   "metadata": {
     "title": "New Service Creation",
-    "description": "Detects creation of a new service",
+    "description": "Detects creation if a new service",
     "tags": [
       "attack.persistence",
       "attack.privilege_escalation",
-      "attack.t1050",
-      "attack.t1543.003"
+      "attack.t1050"
     ],
     "query": "((winlog.event_data.Image.keyword:*\\\\sc.exe AND winlog.event_data.CommandLine.keyword:*create* AND winlog.event_data.CommandLine.keyword:*binpath*) OR (winlog.event_data.Image.keyword:*\\\\powershell.exe AND winlog.event_data.CommandLine.keyword:*new\\-service*))"
   },
@@ -128,10 +126,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'New Service Creation'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

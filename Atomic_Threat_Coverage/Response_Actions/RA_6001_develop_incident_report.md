@@ -3,7 +3,7 @@
 | **ID**                      | RA6001            |
 | **Description**             | Develop the incident report   |
 | **Author**                  | @atc_project        |
-| **Creation Date**           | 2019/01/31 |
+| **Creation Date**           | 31.01.2019 |
 | **Category**                | General      |
 | **Stage**                   |[RS0006: Lessons Learned](../Response_Stages/RS0006.md)| 
 | **References** |<ul><li>[https://attack.mitre.org/tactics/enterprise/](https://attack.mitre.org/tactics/enterprise/)</li><li>[https://en.wikipedia.org/wiki/Kill_chain](https://en.wikipedia.org/wiki/Kill_chain)</li></ul>|

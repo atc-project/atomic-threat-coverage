@@ -1,7 +1,7 @@
 | Title                    | XSL Script Processing       |
 |:-------------------------|:------------------|
 | **Description**          | Extensible Stylesheet Language (XSL) files are commonly used to describe the processing and rendering of data within XML files, rule detects when adversaries abuse this functionality to execute arbitrary files while potentially bypassing application whitelisting defenses |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
 | **ATT&amp;CK Technique** | <ul><li>[T1220: XSL Script Processing](https://attack.mitre.org/techniques/T1220)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1220: XSL Script Processing](../Triggers/T1220.md)</li></ul>  |
@@ -41,9 +41,8 @@ falsepositives:
     - msxsl.exe is not installed by default so unlikely.
 level: medium
 tags:
-    - attack.defense_evasion
+    - attack.execution
     - attack.t1220
-    - attack.execution # an old one
 
 ```
 
@@ -74,9 +73,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "XSL Script Processing",
     "description": "Extensible Stylesheet Language (XSL) files are commonly used to describe the processing and rendering of data within XML files, rule detects when adversaries abuse this functionality to execute arbitrary files while potentially bypassing application whitelisting defenses",
     "tags": [
-      "attack.defense_evasion",
-      "attack.t1220",
-      "attack.execution"
+      "attack.execution",
+      "attack.t1220"
     ],
     "query": "((winlog.event_data.Image.keyword:*\\\\wmic.exe AND winlog.event_data.CommandLine.keyword:*\\/format*) OR winlog.event_data.Image.keyword:*\\\\msxsl.exe)"
   },
@@ -125,10 +123,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'XSL Script Processing'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

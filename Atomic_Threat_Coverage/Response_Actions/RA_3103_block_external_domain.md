@@ -3,7 +3,7 @@
 | **ID**                      | RA3103            |
 | **Description**             | Block an external domain name from being accessed by corporate assets   |
 | **Author**                  | @atc_project        |
-| **Creation Date**           | 2019/01/31 |
+| **Creation Date**           | 31.01.2019 |
 | **Category**                | Network      |
 | **Stage**                   |[RS0003: Containment](../Response_Stages/RS0003.md)| 
 | **References** |<ul><li>[https://en.wikipedia.org/wiki/DNS_sinkhole](https://en.wikipedia.org/wiki/DNS_sinkhole)</li></ul>|

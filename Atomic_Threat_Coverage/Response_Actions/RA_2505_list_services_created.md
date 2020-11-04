@@ -3,7 +3,7 @@
 | **ID**                      | RA2505            |
 | **Description**             | List services that have been created at a particular time in the past   |
 | **Author**                  | your name/nickname/twitter        |
-| **Creation Date**           | YYYY/MM/DD |
+| **Creation Date**           | DD.MM.YYYY |
 | **Category**                | Configuration      |
 | **Stage**                   |[RS0002: Identification](../Response_Stages/RS0002.md)| 
 | **References** |<ul><li>[https://example.com](https://example.com)</li></ul>|

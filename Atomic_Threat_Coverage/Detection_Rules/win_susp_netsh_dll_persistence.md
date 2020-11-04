@@ -2,15 +2,15 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects persitence via netsh helper |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1546.007: Netsh Helper DLL](https://attack.mitre.org/techniques/T1546/007)</li><li>[T1128: Netsh Helper DLL](https://attack.mitre.org/techniques/T1128)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1128: Netsh Helper DLL](https://attack.mitre.org/techniques/T1128)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1546.007: Netsh Helper DLL](../Triggers/T1546.007.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1128: Netsh Helper DLL](../Triggers/T1128.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
-| **Development Status**   | testing |
+| **Development Status**   | test |
 | **References**           | <ul><li>[https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1128/T1128.md](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1128/T1128.md)</li></ul>  |
 | **Author**               | Victor Sergeev, oscd.community |
-| Other Tags           | <ul><li>attack.s0108</li></ul> | 
+
 
 ## Detection Rules
 
@@ -20,20 +20,18 @@
 title: Suspicious Netsh DLL Persistence
 id: 56321594-9087-49d9-bf10-524fe8479452
 description: Detects persitence via netsh helper
-status: testing
+status: test
 references:
     - https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1128/T1128.md
 tags:
     - attack.persistence
-    - attack.t1546.007
-    - attack.s0108
-    - attack.t1128      # an old one
+    - attack.t1128
 date: 2019/10/25
-modified: 2020/08/30
+modified: 2019/10/25
 author: Victor Sergeev, oscd.community
 logsource:
     category: process_creation
-    product: windows
+    product: windows   
 detection:
     selection:
         Image|endswith: '\netsh.exe'
@@ -80,8 +78,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects persitence via netsh helper",
     "tags": [
       "attack.persistence",
-      "attack.t1546.007",
-      "attack.s0108",
       "attack.t1128"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\netsh.exe AND winlog.event_data.CommandLine.keyword:*add* AND winlog.event_data.CommandLine.keyword:*helper*)"
@@ -131,10 +127,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Netsh DLL Persistence'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n     ComputerName = {{_source.ComputerName}}\n             User = {{_source.User}}\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

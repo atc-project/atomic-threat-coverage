@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects process injection using the signed Windows tool Mavinject32.exe |
 | **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
-| **ATT&amp;CK Technique** | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li><li>[T1055.001: Dynamic-link Library Injection](https://attack.mitre.org/techniques/T1055/001)</li><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1055: Process Injection](https://attack.mitre.org/techniques/T1055)</li><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1055: Process Injection](../Triggers/T1055.md)</li><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li></ul>  |
 | **Severity Level**       | critical |
@@ -27,10 +27,8 @@ references:
     - https://twitter.com/Hexacorn/status/776122138063409152
 author: Florian Roth
 date: 2018/12/12
-modified: 2020/09/01
 tags:
-    - attack.t1055          # an old one
-    - attack.t1055.001
+    - attack.t1055
     - attack.t1218
 logsource:
     category: process_creation
@@ -73,7 +71,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects process injection using the signed Windows tool Mavinject32.exe",
     "tags": [
       "attack.t1055",
-      "attack.t1055.001",
       "attack.t1218"
     ],
     "query": "winlog.event_data.CommandLine.keyword:*\\ \\/INJECTRUNNING\\ *"
@@ -123,10 +120,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'MavInject Process Injection'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

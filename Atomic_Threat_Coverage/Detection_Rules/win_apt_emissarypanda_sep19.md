@@ -1,10 +1,10 @@
 | Title                    | Emissary Panda Malware SLLauncher       |
 |:-------------------------|:------------------|
 | **Description**          | Detects the execution of DLL side-loading malware used by threat group Emissary Panda aka APT27 |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li><li>[T1574.002: DLL Side-Loading](https://attack.mitre.org/techniques/T1574/002)</li></ul>  |
+| **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1574.002: DLL Side-Loading](../Triggers/T1574.002.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -24,13 +24,8 @@ description: Detects the execution of DLL side-loading malware used by threat gr
 references:
     - https://app.any.run/tasks/579e7587-f09d-4aae-8b07-472833262965
     - https://twitter.com/cyb3rops/status/1168863899531132929
-tags:
-    - attack.defense_evasion
-    - attack.t1073 # an old one
-    - attack.t1574.002
 author: Florian Roth
 date: 2018/09/03
-modified: 2020/08/27
 logsource:
     category: process_creation
     product: windows
@@ -71,11 +66,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   "metadata": {
     "title": "Emissary Panda Malware SLLauncher",
     "description": "Detects the execution of DLL side-loading malware used by threat group Emissary Panda aka APT27",
-    "tags": [
-      "attack.defense_evasion",
-      "attack.t1073",
-      "attack.t1574.002"
-    ],
+    "tags": "",
     "query": "(winlog.event_data.ParentImage.keyword:*\\\\sllauncher.exe AND winlog.event_data.Image.keyword:*\\\\svchost.exe)"
   },
   "trigger": {
@@ -123,10 +114,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Emissary Panda Malware SLLauncher'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

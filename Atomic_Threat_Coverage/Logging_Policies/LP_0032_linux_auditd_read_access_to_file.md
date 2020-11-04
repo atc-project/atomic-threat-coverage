@@ -1,5 +1,6 @@
 | Title            | LP_0032_linux_auditd_read_access_to_file                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Policy to enable auditd to log read access to file                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | Medium                                                                    |

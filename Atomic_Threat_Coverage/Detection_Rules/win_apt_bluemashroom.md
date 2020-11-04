@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a suspicious DLL loading from AppData Local path as described in BlueMashroom report |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1117: Regsvr32](https://attack.mitre.org/techniques/T1117)</li><li>[T1218.010: Regsvr32](https://attack.mitre.org/techniques/T1218/010)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1117: Regsvr32](https://attack.mitre.org/techniques/T1117)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.010: Regsvr32](../Triggers/T1218.010.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1117: Regsvr32](../Triggers/T1117.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unlikely</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,8 +25,7 @@ references:
     - https://www.virusbulletin.com/conference/vb2019/abstracts/apt-cases-exploiting-vulnerabilities-region-specific-software
 tags:
     - attack.defense_evasion
-    - attack.t1117 # an old one
-    - attack.t1218.010
+    - attack.t1117
 author: Florian Roth
 date: 2019/10/02
 logsource:
@@ -34,7 +33,7 @@ logsource:
     product: windows
 detection:
     selection:
-        CommandLine:
+        CommandLine: 
             - '*\regsvr32*\AppData\Local\\*'
             - '*\AppData\Local\\*,DllEntry*'
     condition: selection
@@ -72,8 +71,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects a suspicious DLL loading from AppData Local path as described in BlueMashroom report",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1117",
-      "attack.t1218.010"
+      "attack.t1117"
     ],
     "query": "winlog.event_data.CommandLine.keyword:(*\\\\regsvr32*\\\\AppData\\\\Local\\\\* OR *\\\\AppData\\\\Local\\\\*,DllEntry*)"
   },
@@ -122,10 +120,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'BlueMashroom DLL Load'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -3,7 +3,7 @@
 | **ID**                      | RA4101            |
 | **Description**             | Remove a rogue network device   |
 | **Author**                  | your name/nickname/twitter        |
-| **Creation Date**           | YYYY/MM/DD |
+| **Creation Date**           | DD.MM.YYYY |
 | **Category**                | Network      |
 | **Stage**                   |[RS0004: Eradication](../Response_Stages/RS0004.md)| 
 | **Automation** |<ul><li>thehive/phantom/demisto/etc</li></ul>|

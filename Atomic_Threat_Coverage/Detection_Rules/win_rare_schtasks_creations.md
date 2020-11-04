@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects rare scheduled tasks creations that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious code |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li><li>[T1053.005: Scheduled Task](https://attack.mitre.org/techniques/T1053/005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0064_4698_scheduled_task_was_created](../Data_Needed/DN_0064_4698_scheduled_task_was_created.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1053.005: Scheduled Task](../Triggers/T1053.005.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1053: Scheduled Task/Job](../Triggers/T1053.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>Software installation</li><li>Software updates</li></ul>  |
 | **Development Status**   | experimental |
@@ -27,9 +27,8 @@ tags:
     - attack.execution
     - attack.privilege_escalation
     - attack.persistence
-    - attack.t1053           # an old one
+    - attack.t1053
     - car.2013-08-001
-    - attack.t1053.005
 logsource:
     product: windows
     service: security
@@ -78,8 +77,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.privilege_escalation",
       "attack.persistence",
       "attack.t1053",
-      "car.2013-08-001",
-      "attack.t1053.005"
+      "car.2013-08-001"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4698\")"
   },
@@ -139,10 +137,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Rare Schtasks Creations'",
         "body": "Hits:\n{{#aggregations.by.buckets}}\n {{key}} {{doc_count}}\n{{/aggregations.by.buckets}}\n",

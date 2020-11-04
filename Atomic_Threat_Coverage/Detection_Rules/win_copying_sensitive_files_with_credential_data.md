@@ -2,15 +2,15 @@
 |:-------------------------|:------------------|
 | **Description**          | Files with well-known filenames (sensitive files with credential data) copying |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003.002: Security Account Manager](https://attack.mitre.org/techniques/T1003/002)</li><li>[T1003.003: NTDS](https://attack.mitre.org/techniques/T1003/003)</li><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003.002: Security Account Manager](../Triggers/T1003.002.md)</li><li>[T1003.003: NTDS](../Triggers/T1003.003.md)</li><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Copying sensitive files for legitimate use (eg. backup) or forensic investigation by legitimate incident responder or forensic invetigator</li></ul>  |
 | **Development Status**   | experimental |
 | **References**           | <ul><li>[https://room362.com/post/2013/2013-06-10-volume-shadow-copy-ntdsdit-domain-hashes-remotely-part-1/](https://room362.com/post/2013/2013-06-10-volume-shadow-copy-ntdsdit-domain-hashes-remotely-part-1/)</li><li>[https://www.slideshare.net/heirhabarov/hunting-for-credentials-dumping-in-windows-environment](https://www.slideshare.net/heirhabarov/hunting-for-credentials-dumping-in-windows-environment)</li><li>[https://dfironthemountain.wordpress.com/2018/12/06/locked-file-access-using-esentutl-exe/](https://dfironthemountain.wordpress.com/2018/12/06/locked-file-access-using-esentutl-exe/)</li></ul>  |
 | **Author**               | Teymur Kheirkhabarov, Daniil Yugoslavskiy, oscd.community |
-| Other Tags           | <ul><li>car.2013-07-001</li><li>attack.s0404</li></ul> | 
+| Other Tags           | <ul><li>car.2013-07-001</li></ul> | 
 
 ## Detection Rules
 
@@ -30,11 +30,8 @@ references:
     - https://dfironthemountain.wordpress.com/2018/12/06/locked-file-access-using-esentutl-exe/
 tags:
     - attack.credential_access
-    - attack.t1003.002
-    - attack.t1003.003
-    - attack.t1003  # an old one
+    - attack.t1003
     - car.2013-07-001
-    - attack.s0404
 logsource:
     category: process_creation
     product: windows
@@ -60,6 +57,7 @@ detection:
 falsepositives:
     - Copying sensitive files for legitimate use (eg. backup) or forensic investigation by legitimate incident responder or forensic invetigator
 level: high
+
 ```
 
 
@@ -90,11 +88,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Files with well-known filenames (sensitive files with credential data) copying",
     "tags": [
       "attack.credential_access",
-      "attack.t1003.002",
-      "attack.t1003.003",
       "attack.t1003",
-      "car.2013-07-001",
-      "attack.s0404"
+      "car.2013-07-001"
     ],
     "query": "((winlog.event_data.Image.keyword:*\\\\esentutl.exe AND winlog.event_data.CommandLine.keyword:(*vss* OR *\\ \\/m\\ * OR *\\ \\/y\\ *)) OR winlog.event_data.CommandLine.keyword:(*\\\\windows\\\\ntds\\\\ntds.dit* OR *\\\\config\\\\sam* OR *\\\\config\\\\security* OR *\\\\config\\\\system\\ * OR *\\\\repair\\\\sam* OR *\\\\repair\\\\system* OR *\\\\repair\\\\security* OR *\\\\config\\\\RegBack\\\\sam* OR *\\\\config\\\\RegBack\\\\system* OR *\\\\config\\\\RegBack\\\\security*))"
   },
@@ -143,10 +138,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Copying Sensitive Files with Credential Data'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

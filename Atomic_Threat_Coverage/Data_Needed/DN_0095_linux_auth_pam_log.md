@@ -1,5 +1,6 @@
 | Title              | DN_0095_linux_auth_pam_log       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Linux Pluggable Authentication Modules (PAM) authentication log |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
 | **References**     | <ul><li>[http://manpages.ubuntu.com/manpages/trusty/en/man7/pam.7.html](http://manpages.ubuntu.com/manpages/trusty/en/man7/pam.7.html)</li></ul> |

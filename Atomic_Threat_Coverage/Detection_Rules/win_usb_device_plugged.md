@@ -59,7 +59,7 @@ Get-WinEvent -LogName Microsoft-Windows-DriverFrameworks-UserMode/Operational | 
 ### es-qs
     
 ```
-(winlog.channel:"Microsoft\-Windows\-DriverFrameworks\-UserMode\/Operational" AND winlog.event_id:("2003" OR "2100" OR "2102"))
+(winlog.provider_name:"Microsoft\-Windows\-DriverFrameworks\-UserMode\/Operational" AND winlog.event_id:("2003" OR "2100" OR "2102"))
 ```
 
 
@@ -75,7 +75,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.initial_access",
       "attack.t1200"
     ],
-    "query": "(winlog.channel:\"Microsoft\\-Windows\\-DriverFrameworks\\-UserMode\\/Operational\" AND winlog.event_id:(\"2003\" OR \"2100\" OR \"2102\"))"
+    "query": "(winlog.provider_name:\"Microsoft\\-Windows\\-DriverFrameworks\\-UserMode\\/Operational\" AND winlog.event_id:(\"2003\" OR \"2100\" OR \"2102\"))"
   },
   "trigger": {
     "schedule": {
@@ -92,7 +92,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-DriverFrameworks\\-UserMode\\/Operational\" AND winlog.event_id:(\"2003\" OR \"2100\" OR \"2102\"))",
+                    "query": "(winlog.provider_name:\"Microsoft\\-Windows\\-DriverFrameworks\\-UserMode\\/Operational\" AND winlog.event_id:(\"2003\" OR \"2100\" OR \"2102\"))",
                     "analyze_wildcard": true
                   }
                 }
@@ -122,10 +122,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'USB Device Plugged'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -162,7 +159,7 @@ EventID:("2003" "2100" "2102")
 ### logpoint
     
 ```
-(event_source="Microsoft-Windows-DriverFrameworks-UserMode/Operational" event_id IN ["2003", "2100", "2102"])
+(source="Microsoft-Windows-DriverFrameworks-UserMode/Operational" event_id IN ["2003", "2100", "2102"])
 ```
 
 

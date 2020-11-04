@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects password dumper activity by monitoring remote thread creation EventID 8 in combination with the lsass.exe process as TargetImage. The process in field Process is the malicious program. A single execution can lead to hundreds of events. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1003.001: LSASS Memory](https://attack.mitre.org/techniques/T1003/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0012_8_windows_sysmon_CreateRemoteThread](../Data_Needed/DN_0012_8_windows_sysmon_CreateRemoteThread.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.001: LSASS Memory](../Triggers/T1003.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   | stable |
@@ -19,7 +19,8 @@
 ```
 title: Password Dumper Remote Thread in LSASS
 id: f239b326-2f41-4d6b-9dfa-c846a60ef505
-description: Detects password dumper activity by monitoring remote thread creation EventID 8 in combination with the lsass.exe process as TargetImage. The process in field Process is the malicious program. A single execution can lead to hundreds of events.
+description: Detects password dumper activity by monitoring remote thread creation EventID 8 in combination with the lsass.exe process as TargetImage. The process
+    in field Process is the malicious program. A single execution can lead to hundreds of events.
 references:
     - https://jpcertcc.github.io/ToolAnalysisResultSheet/details/WCE.htm
 status: stable
@@ -32,13 +33,12 @@ detection:
     selection:
         EventID: 8
         TargetImage: 'C:\Windows\System32\lsass.exe'
-        StartModule: ''
+        StartModule: null
     condition: selection
 tags:
     - attack.credential_access
-    - attack.t1003          # an old one
+    - attack.t1003
     - attack.s0005
-    - attack.t1003.001
 falsepositives:
     - unknown
 level: high
@@ -52,14 +52,14 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "8" -and $_.message -match "TargetImage.*C:\\Windows\\System32\\lsass.exe" -and $_.message -match "StartModule.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Microsoft-Windows-Sysmon/Operational | where {($_.ID -eq "8" -and $_.message -match "TargetImage.*C:\\Windows\\System32\\lsass.exe" -and -not StartModule="*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND winlog.event_id:"8" AND winlog.event_data.TargetImage:"C\:\\Windows\\System32\\lsass.exe" AND winlog.event_data.StartModule:"")
+(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND winlog.event_id:"8" AND winlog.event_data.TargetImage:"C\:\\Windows\\System32\\lsass.exe" AND NOT _exists_:winlog.event_data.StartModule)
 ```
 
 
@@ -74,10 +74,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.credential_access",
       "attack.t1003",
-      "attack.s0005",
-      "attack.t1003.001"
+      "attack.s0005"
     ],
-    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"8\" AND winlog.event_data.TargetImage:\"C\\:\\\\Windows\\\\System32\\\\lsass.exe\" AND winlog.event_data.StartModule:\"\")"
+    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"8\" AND winlog.event_data.TargetImage:\"C\\:\\\\Windows\\\\System32\\\\lsass.exe\" AND NOT _exists_:winlog.event_data.StartModule)"
   },
   "trigger": {
     "schedule": {
@@ -94,7 +93,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"8\" AND winlog.event_data.TargetImage:\"C\\:\\\\Windows\\\\System32\\\\lsass.exe\" AND winlog.event_data.StartModule:\"\")",
+                    "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"8\" AND winlog.event_data.TargetImage:\"C\\:\\\\Windows\\\\System32\\\\lsass.exe\" AND NOT _exists_:winlog.event_data.StartModule)",
                     "analyze_wildcard": true
                   }
                 }
@@ -124,10 +123,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Password Dumper Remote Thread in LSASS'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -150,28 +146,28 @@ EOF
 ### graylog
     
 ```
-(EventID:"8" AND TargetImage:"C\:\\Windows\\System32\\lsass.exe" AND StartModule:"")
+(EventID:"8" AND TargetImage:"C\:\\Windows\\System32\\lsass.exe" AND NOT _exists_:StartModule)
 ```
 
 
 ### splunk
     
 ```
-(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="8" TargetImage="C:\\Windows\\System32\\lsass.exe" StartModule="")
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode="8" TargetImage="C:\\Windows\\System32\\lsass.exe" NOT StartModule="*")
 ```
 
 
 ### logpoint
     
 ```
-(event_id="8" TargetImage="C:\\Windows\\System32\\lsass.exe" StartModule="")
+(event_id="8" TargetImage="C:\\Windows\\System32\\lsass.exe" -StartModule=*)
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*8)(?=.*C:\Windows\System32\lsass\.exe)(?=.*))'
+grep -P '^(?:.*(?=.*8)(?=.*C:\Windows\System32\lsass\.exe)(?=.*(?!StartModule)))'
 ```
 
 

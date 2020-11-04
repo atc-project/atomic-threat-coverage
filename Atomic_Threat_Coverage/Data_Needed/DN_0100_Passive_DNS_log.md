@@ -1,5 +1,6 @@
 | Title              | DN_0100_Passive_DNS_log       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Log from Passive DNS |
 | **Logging Policy** | <ul><li>[LP_0048_Passive_DNS_logging](../Logging_Policies/LP_0048_Passive_DNS_logging.md)</li></ul> |
 | **References**     | <ul><li>[None](None)</li></ul> |

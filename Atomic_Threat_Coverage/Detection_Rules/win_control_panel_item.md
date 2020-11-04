@@ -1,15 +1,15 @@
 | Title                    | Control Panel Items       |
 |:-------------------------|:------------------|
-| **Description**          | Detects the malicious use of a control panel item |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1218.002: Control Panel](https://attack.mitre.org/techniques/T1218/002)</li><li>[T1196: Control Panel Items](https://attack.mitre.org/techniques/T1196)</li><li>[T1546: Event Triggered Execution](https://attack.mitre.org/techniques/T1546)</li></ul>  |
+| **Description**          | Detects the use of a control panel item (.cpl) outside of the System32 folder |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1196: Control Panel Items](https://attack.mitre.org/techniques/T1196)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.002: Control Panel](../Triggers/T1218.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1196: Control Panel Items](../Triggers/T1196.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
 | **References**           |  There are no documented References for this Detection Rule yet  |
-| **Author**               | Kyaw Min Thein, Furkan Caliskan (@caliskanfurkan_) |
+| **Author**               | Kyaw Min Thein |
 
 
 ## Detection Rules
@@ -20,38 +20,27 @@
 title: Control Panel Items
 id: 0ba863e6-def5-4e50-9cea-4dd8c7dc46a4
 status: experimental
-description: Detects the malicious use of a control panel item
+description: Detects the use of a control panel item (.cpl) outside of the System32 folder
 reference:
     - https://attack.mitre.org/techniques/T1196/
-    - https://ired.team/offensive-security/code-execution/code-execution-through-control-panel-add-ins
 tags:
     - attack.execution
+    - attack.t1196
     - attack.defense_evasion
-    - attack.t1218.002
-    - attack.t1196  # an old one
-    - attack.persistence
-    - attack.t1546
-author: Kyaw Min Thein, Furkan Caliskan (@caliskanfurkan_)
-date: 2020/06/22
-modified: 2020/08/29
+author: Kyaw Min Thein
+date: 2019/08/27
 level: critical
 logsource:
     product: windows
     category: process_creation
 detection:
-    selection1:
+    selection:
         CommandLine: '*.cpl'
     filter:
         CommandLine:
             - '*\System32\\*'
             - '*%System%*'
-    selection2:
-        CommandLine:
-            - '*reg add*'
-    selection3:
-        CommandLine:
-            - '*CurrentVersion\\Control Panel\\CPLs*'
-    condition: (selection1 and not filter) or (selection2 and selection3)
+    condition: selection and not filter
 falsepositives:
     - Unknown
 
@@ -64,14 +53,14 @@ falsepositives:
 ### powershell
     
 ```
-Get-WinEvent | where {(($_.message -match "CommandLine.*.*.cpl" -and  -not (($_.message -match "CommandLine.*.*\\System32\\.*" -or $_.message -match "CommandLine.*.*%System%.*"))) -or (($_.message -match "CommandLine.*.*reg add.*") -and ($_.message -match "CommandLine.*.*CurrentVersion\\Control Panel\\CPLs.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "CommandLine.*.*.cpl" -and  -not (($_.message -match "CommandLine.*.*\\System32\\.*" -or $_.message -match "CommandLine.*.*%System%.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_data.CommandLine.keyword:*.cpl AND (NOT (winlog.event_data.CommandLine.keyword:(*\\System32\\* OR *%System%*)))) OR (winlog.event_data.CommandLine.keyword:(*reg\ add*) AND winlog.event_data.CommandLine.keyword:(*CurrentVersion\\Control\ Panel\\CPLs*)))
+(winlog.event_data.CommandLine.keyword:*.cpl AND (NOT (winlog.event_data.CommandLine.keyword:(*\\System32\\* OR *%System%*))))
 ```
 
 
@@ -82,16 +71,13 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
 {
   "metadata": {
     "title": "Control Panel Items",
-    "description": "Detects the malicious use of a control panel item",
+    "description": "Detects the use of a control panel item (.cpl) outside of the System32 folder",
     "tags": [
       "attack.execution",
-      "attack.defense_evasion",
-      "attack.t1218.002",
       "attack.t1196",
-      "attack.persistence",
-      "attack.t1546"
+      "attack.defense_evasion"
     ],
-    "query": "((winlog.event_data.CommandLine.keyword:*.cpl AND (NOT (winlog.event_data.CommandLine.keyword:(*\\\\System32\\\\* OR *%System%*)))) OR (winlog.event_data.CommandLine.keyword:(*reg\\ add*) AND winlog.event_data.CommandLine.keyword:(*CurrentVersion\\\\Control\\ Panel\\\\CPLs*)))"
+    "query": "(winlog.event_data.CommandLine.keyword:*.cpl AND (NOT (winlog.event_data.CommandLine.keyword:(*\\\\System32\\\\* OR *%System%*))))"
   },
   "trigger": {
     "schedule": {
@@ -108,7 +94,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "((winlog.event_data.CommandLine.keyword:*.cpl AND (NOT (winlog.event_data.CommandLine.keyword:(*\\\\System32\\\\* OR *%System%*)))) OR (winlog.event_data.CommandLine.keyword:(*reg\\ add*) AND winlog.event_data.CommandLine.keyword:(*CurrentVersion\\\\Control\\ Panel\\\\CPLs*)))",
+                    "query": "(winlog.event_data.CommandLine.keyword:*.cpl AND (NOT (winlog.event_data.CommandLine.keyword:(*\\\\System32\\\\* OR *%System%*))))",
                     "analyze_wildcard": true
                   }
                 }
@@ -138,10 +124,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Control Panel Items'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -164,28 +147,28 @@ EOF
 ### graylog
     
 ```
-((CommandLine.keyword:*.cpl AND (NOT (CommandLine.keyword:(*\\System32\\* *%System%*)))) OR (CommandLine.keyword:(*reg add*) AND CommandLine.keyword:(*CurrentVersion\\Control Panel\\CPLs*)))
+(CommandLine.keyword:*.cpl AND (NOT (CommandLine.keyword:(*\\System32\\* *%System%*))))
 ```
 
 
 ### splunk
     
 ```
-((CommandLine="*.cpl" NOT ((CommandLine="*\\System32\\*" OR CommandLine="*%System%*"))) OR ((CommandLine="*reg add*") (CommandLine="*CurrentVersion\\Control Panel\\CPLs*")))
+(CommandLine="*.cpl" NOT ((CommandLine="*\\System32\\*" OR CommandLine="*%System%*")))
 ```
 
 
 ### logpoint
     
 ```
-((CommandLine="*.cpl"  -(CommandLine IN ["*\\System32\\*", "*%System%*"])) OR (CommandLine IN ["*reg add*"] CommandLine IN ["*CurrentVersion\\Control Panel\\CPLs*"]))
+(CommandLine="*.cpl"  -(CommandLine IN ["*\\System32\\*", "*%System%*"]))
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?:.*(?:.*(?=.*.*\.cpl)(?=.*(?!.*(?:.*(?=.*(?:.*.*\System32\\.*|.*.*%System%.*))))))|.*(?:.*(?=.*(?:.*.*reg add.*))(?=.*(?:.*.*CurrentVersion\\Control Panel\\CPLs.*)))))'
+grep -P '^(?:.*(?=.*.*\.cpl)(?=.*(?!.*(?:.*(?=.*(?:.*.*\System32\\.*|.*.*%System%.*))))))'
 ```
 
 

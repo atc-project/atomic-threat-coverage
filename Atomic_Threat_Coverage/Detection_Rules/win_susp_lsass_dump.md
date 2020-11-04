@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects process handle on LSASS process with certain access mask and object type SAM_DOMAIN |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1003.001: LSASS Memory](https://attack.mitre.org/techniques/T1003/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0058_4656_handle_to_an_object_was_requested](../Data_Needed/DN_0058_4656_handle_to_an_object_was_requested.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.001: LSASS Memory](../Triggers/T1003.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unkown</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,8 +26,7 @@ references:
     - https://twitter.com/jackcr/status/807385668833968128
 tags:
     - attack.credential_access
-    - attack.t1003           # an old one
-    - attack.t1003.001
+    - attack.t1003
 logsource:
     product: windows
     service: security
@@ -72,8 +71,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects process handle on LSASS process with certain access mask and object type SAM_DOMAIN",
     "tags": [
       "attack.credential_access",
-      "attack.t1003",
-      "attack.t1003.001"
+      "attack.t1003"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4656\" AND winlog.event_data.ProcessName:\"C\\:\\\\Windows\\\\System32\\\\lsass.exe\" AND winlog.event_data.AccessMask:\"0x705\" AND winlog.event_data.ObjectType:\"SAM_DOMAIN\")"
   },
@@ -122,10 +120,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Password Dumper Activity on LSASS'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

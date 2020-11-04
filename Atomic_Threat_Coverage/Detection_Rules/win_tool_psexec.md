@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects PsExec service installation and execution events (service and Sysmon) |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li><li>[T1569.002: Service Execution](https://attack.mitre.org/techniques/T1569/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1035: Service Execution](https://attack.mitre.org/techniques/T1035)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li><li>[DN_0005_7045_windows_service_insatalled](../Data_Needed/DN_0005_7045_windows_service_insatalled.md)</li><li>[DN_0031_7036_service_started_stopped](../Data_Needed/DN_0031_7036_service_started_stopped.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1569.002: Service Execution](../Triggers/T1569.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1035: Service Execution](../Triggers/T1035.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -24,14 +24,12 @@ status: experimental
 description: Detects PsExec service installation and execution events (service and Sysmon)
 author: Thomas Patzke
 date: 2017/06/12
-modified: 2020/08/23
 references:
     - https://www.jpcert.or.jp/english/pub/sr/ir_research.html
     - https://jpcertcc.github.io/ToolAnalysisResultSheet
 tags:
     - attack.execution
-    - attack.t1035           # an old one
-    - attack.t1569.002
+    - attack.t1035
     - attack.s0029
 detection:
     condition: 1 of them
@@ -98,7 +96,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.execution",
       "attack.t1035",
-      "attack.t1569.002",
       "attack.s0029"
     ],
     "query": "(winlog.event_data.ServiceName:\"PSEXESVC\" AND ((winlog.event_id:\"7045\" AND winlog.event_data.ServiceFileName.keyword:*\\\\PSEXESVC.exe) OR winlog.event_id:\"7036\"))"
@@ -148,10 +145,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'PsExec Tool Execution'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n          EventID = {{_source.EventID}}\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}\n      ServiceName = {{_source.ServiceName}}\n  ServiceFileName = {{_source.ServiceFileName}}================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -175,7 +169,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.execution",
       "attack.t1035",
-      "attack.t1569.002",
       "attack.s0029"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\PSEXESVC.exe AND winlog.event_data.User:\"NT\\ AUTHORITY\\\\SYSTEM\")"
@@ -225,10 +218,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'PsExec Tool Execution'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n          EventID = {{_source.EventID}}\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}\n      ServiceName = {{_source.ServiceName}}\n  ServiceFileName = {{_source.ServiceFileName}}================================================================================\n{{/ctx.payload.hits.hits}}",

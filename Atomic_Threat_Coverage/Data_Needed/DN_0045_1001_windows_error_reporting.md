@@ -1,5 +1,6 @@
 | Title              | DN_0045_1001_windows_error_reporting       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | When application fails, the result is recorded as an informational event in the Application log by Windows Error Reporting as event 1001. |
 | **Logging Policy** | <ul><li>[none](../Logging_Policies/none.md)</li></ul> |
 | **References**     | <ul><li>[https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc754364(v=ws.11)](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc754364(v=ws.11))</li><li>[https://social.technet.microsoft.com/wiki/contents/articles/3116.event-id-1001-windows-error-reporting.aspx?Sort=MostRecent&PageIndex=1](https://social.technet.microsoft.com/wiki/contents/articles/3116.event-id-1001-windows-error-reporting.aspx?Sort=MostRecent&PageIndex=1)</li></ul> |

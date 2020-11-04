@@ -3,7 +3,7 @@
 | **ID**                      | RA2102            |
 | **Description**             | List hosts communicated with an internal IP address   |
 | **Author**                  | name/nickname/twitter        |
-| **Creation Date**           | YYYY/MM/DD |
+| **Creation Date**           | DD.MM.YYYY |
 | **Category**                | Network      |
 | **Stage**                   |[RS0002: Identification](../Response_Stages/RS0002.md)| 
 | **Automation** |<ul><li>thehive</li></ul>|

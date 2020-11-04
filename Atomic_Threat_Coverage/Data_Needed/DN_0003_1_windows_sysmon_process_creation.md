@@ -1,5 +1,6 @@
 | Title              | DN_0003_1_windows_sysmon_process_creation       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Windows process creation log, including command line |
 | **Logging Policy** | <ul><li>[LP_0003_windows_sysmon_process_creation](../Logging_Policies/LP_0003_windows_sysmon_process_creation.md)</li></ul> |
 | **References**     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90001](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90001)</li></ul> |

@@ -1,5 +1,6 @@
 | Title            | LP_0011_windows_sysmon_DnsQuery                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Enables logging of events related to DNS queries and responses                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | High                                                                    |

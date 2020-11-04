@@ -3,7 +3,7 @@
 | **ID**                      | RA2112            |
 | **Description**             | Identify the data that is being transferred at the moment or at a particular time in the past (i.e. its content, value)   |
 | **Author**                  | your name/nickname/twitter        |
-| **Creation Date**           | YYYY/MM/DD |
+| **Creation Date**           | DD.MM.YYYY |
 | **Category**                | Network      |
 | **Stage**                   |[RS0002: Identification](../Response_Stages/RS0002.md)| 
 | **References** |<ul><li>[https://example.com](https://example.com)</li></ul>|

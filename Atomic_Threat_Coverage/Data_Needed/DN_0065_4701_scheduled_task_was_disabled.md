@@ -1,5 +1,6 @@
 | Title              | DN_0065_4701_scheduled_task_was_disabled       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | This event generates every time a scheduled task is disabled |
 | **Logging Policy** | <ul><li>[LP_0041_windows_audit_other_object_access_events](../Logging_Policies/LP_0041_windows_audit_other_object_access_events.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4701.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4701.md)</li></ul> |

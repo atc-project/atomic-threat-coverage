@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Code integrity failures may indicate tampered executables. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1009: Binary Padding](https://attack.mitre.org/techniques/T1009)</li><li>[T1027.001: Binary Padding](https://attack.mitre.org/techniques/T1027/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1009: Binary Padding](https://attack.mitre.org/techniques/T1009)</li></ul>  |
 | **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
-| **Trigger**              | <ul><li>[T1027.001: Binary Padding](../Triggers/T1027.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1009: Binary Padding](../Triggers/T1009.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>Disk device errors</li></ul>  |
 | **Development Status**   | stable |
@@ -23,11 +23,9 @@ status: stable
 description: Code integrity failures may indicate tampered executables.
 author: Thomas Patzke
 date: 2019/12/03
-modified: 2020/08/23
 tags:
     - attack.defense_evasion
-    - attack.t1009          # an old one
-    - attack.t1027.001
+    - attack.t1009
 logsource:
     product: windows
     service: security
@@ -71,8 +69,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Code integrity failures may indicate tampered executables.",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1009",
-      "attack.t1027.001"
+      "attack.t1009"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:(\"5038\" OR \"6281\"))"
   },
@@ -121,10 +118,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Failed Code Integrity Checks'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

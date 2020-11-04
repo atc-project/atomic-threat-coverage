@@ -1,10 +1,10 @@
 | Title                    | Powershell AMSI Bypass via .NET Reflection       |
 |:-------------------------|:------------------|
 | **Description**          | Detects Request to amsiInitFailed that can be used to disable AMSI Scanning |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1089: Disabling Security Tools](https://attack.mitre.org/techniques/T1089)</li><li>[T1562.001: Disable or Modify Tools](https://attack.mitre.org/techniques/T1562/001)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1562.001: Disable or Modify Tools](../Triggers/T1562.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Potential Admin Activity</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,12 +25,11 @@ references:
     - https://twitter.com/mattifestation/status/735261176745988096
     - https://www.hybrid-analysis.com/sample/0ced17419e01663a0cd836c9c2eb925e3031ffb5b18ccf35f4dea5d586d0203e?environmentId=120
 tags:
+    - attack.execution
     - attack.defense_evasion
-    - attack.t1089         # an old one
-    - attack.t1562.001
+    - attack.t1086
 author: Markus Neis
 date: 2018/08/17
-modified: 2020/09/01
 logsource:
     category: process_creation
     product: windows
@@ -75,9 +74,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Powershell AMSI Bypass via .NET Reflection",
     "description": "Detects Request to amsiInitFailed that can be used to disable AMSI Scanning",
     "tags": [
+      "attack.execution",
       "attack.defense_evasion",
-      "attack.t1089",
-      "attack.t1562.001"
+      "attack.t1086"
     ],
     "query": "(winlog.event_data.CommandLine.keyword:(*System.Management.Automation.AmsiUtils*) AND winlog.event_data.CommandLine.keyword:(*amsiInitFailed*))"
   },
@@ -126,10 +125,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Powershell AMSI Bypass via .NET Reflection'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

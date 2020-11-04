@@ -1,5 +1,6 @@
 | Title            | LP_0030_windows_audit_file_share                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Audit File Share allows you to audit events related to file  shares: creation, deletion, modification, and access attempts.  Also, it shows failed SMB SPN checks.                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | High                                                                    |

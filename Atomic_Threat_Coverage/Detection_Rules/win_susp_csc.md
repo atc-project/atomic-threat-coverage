@@ -1,10 +1,10 @@
 | Title                    | Suspicious Parent of Csc.exe       |
 |:-------------------------|:------------------|
 | **Description**          | Detects a suspicious parent of csc.exe, which could by a sign of payload delivery |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.005: Visual Basic](https://attack.mitre.org/techniques/T1059/005)</li><li>[T1059.007: JavaScript/JScript](https://attack.mitre.org/techniques/T1059/007)</li><li>[T1500: Compile After Delivery](https://attack.mitre.org/techniques/T1500)</li><li>[T1218.005: Mshta](https://attack.mitre.org/techniques/T1218/005)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.005: Visual Basic](../Triggers/T1059.005.md)</li><li>[T1218.005: Mshta](../Triggers/T1218.005.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1036: Masquerading](../Triggers/T1036.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unkown</li></ul>  |
 | **Development Status**   | experimental |
@@ -25,14 +25,9 @@ references:
     - https://twitter.com/SBousseaden/status/1094924091256176641
 author: Florian Roth
 date: 2019/02/11
-modified: 2020/09/05
 tags:
-    - attack.execution
-    - attack.t1059.005
-    - attack.t1059.007
     - attack.defense_evasion
-    - attack.t1500
-    - attack.t1218.005
+    - attack.t1036
 logsource:
     category: process_creation
     product: windows
@@ -77,12 +72,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Suspicious Parent of Csc.exe",
     "description": "Detects a suspicious parent of csc.exe, which could by a sign of payload delivery",
     "tags": [
-      "attack.execution",
-      "attack.t1059.005",
-      "attack.t1059.007",
       "attack.defense_evasion",
-      "attack.t1500",
-      "attack.t1218.005"
+      "attack.t1036"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\csc.exe* AND winlog.event_data.ParentImage.keyword:(*\\\\wscript.exe OR *\\\\cscript.exe OR *\\\\mshta.exe))"
   },
@@ -131,10 +122,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Parent of Csc.exe'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects PowerShell downgrade attack by comparing the host versions with the actually used engine version 2.0 |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0038_400_engine_state_is_changed_from_none_to_available](../Data_Needed/DN_0038_400_engine_state_is_changed_from_none_to_available.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Penetration Test</li><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -17,6 +17,7 @@
 ### Sigma rule
 
 ```
+action: global
 title: PowerShell Downgrade Attack
 id: 6331d09b-4785-4c13-980f-f96661356249
 status: experimental
@@ -26,10 +27,10 @@ references:
 tags:
     - attack.defense_evasion
     - attack.execution
-    - attack.t1059.001
-    - attack.t1086  # an old one
+    - attack.t1086
 author: Florian Roth (rule), Lee Holmes (idea), Harish Segar (improvements)
 date: 2017/03/22
+modified: 2020/03/20
 logsource:
     product: windows
     service: powershell-classic
@@ -44,7 +45,6 @@ falsepositives:
     - Penetration Test
     - Unknown
 level: medium
-
 ```
 
 
@@ -54,97 +54,20 @@ level: medium
 ### powershell
     
 ```
-Get-WinEvent -LogName Windows PowerShell | where {(($_.ID -eq "400" -and $_.message -match "EngineVersion.*2..*") -and  -not ($_.message -match "HostVersion.*2..*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+
 ```
 
 
 ### es-qs
     
 ```
-((winlog.event_id:"400" AND winlog.event_data.EngineVersion.keyword:2.*) AND (NOT (winlog.event_data.HostVersion.keyword:2.*)))
+
 ```
 
 
 ### xpack-watcher
     
 ```
-curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:9200/_watcher/watch/6331d09b-4785-4c13-980f-f96661356249 <<EOF
-{
-  "metadata": {
-    "title": "PowerShell Downgrade Attack",
-    "description": "Detects PowerShell downgrade attack by comparing the host versions with the actually used engine version 2.0",
-    "tags": [
-      "attack.defense_evasion",
-      "attack.execution",
-      "attack.t1059.001",
-      "attack.t1086"
-    ],
-    "query": "((winlog.event_id:\"400\" AND winlog.event_data.EngineVersion.keyword:2.*) AND (NOT (winlog.event_data.HostVersion.keyword:2.*)))"
-  },
-  "trigger": {
-    "schedule": {
-      "interval": "30m"
-    }
-  },
-  "input": {
-    "search": {
-      "request": {
-        "body": {
-          "size": 0,
-          "query": {
-            "bool": {
-              "must": [
-                {
-                  "query_string": {
-                    "query": "((winlog.event_id:\"400\" AND winlog.event_data.EngineVersion.keyword:2.*) AND (NOT (winlog.event_data.HostVersion.keyword:2.*)))",
-                    "analyze_wildcard": true
-                  }
-                }
-              ],
-              "filter": {
-                "range": {
-                  "timestamp": {
-                    "gte": "now-30m/m"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "indices": [
-          "winlogbeat-*"
-        ]
-      }
-    }
-  },
-  "condition": {
-    "compare": {
-      "ctx.payload.hits.total": {
-        "not_eq": 0
-      }
-    }
-  },
-  "actions": {
-    "send_email": {
-      "throttle_period": "15m",
-      "email": {
-        "profile": "standard",
-        "from": "root@localhost",
-        "to": "root@localhost",
-        "subject": "Sigma Rule 'PowerShell Downgrade Attack'",
-        "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
-        "attachments": {
-          "data.json": {
-            "data": {
-              "format": "json"
-            }
-          }
-        }
-      }
-    }
-  }
-}
-EOF
 
 ```
 
@@ -152,28 +75,28 @@ EOF
 ### graylog
     
 ```
-((EventID:"400" AND EngineVersion.keyword:2.*) AND (NOT (HostVersion.keyword:2.*)))
+
 ```
 
 
 ### splunk
     
 ```
-(source="Windows PowerShell" (EventCode="400" EngineVersion="2.*") NOT (HostVersion="2.*"))
+
 ```
 
 
 ### logpoint
     
 ```
-((event_id="400" EngineVersion="2.*")  -(HostVersion="2.*"))
+
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*(?:.*(?=.*400)(?=.*2\..*)))(?=.*(?!.*(?:.*(?=.*2\..*)))))'
+
 ```
 
 

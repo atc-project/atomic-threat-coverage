@@ -1,7 +1,7 @@
 | Title                    | SCM Database Handle Failure       |
 |:-------------------------|:------------------|
 | **Description**          | Detects non-system users failing to get a handle of the SCM database. |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
+| **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
 | **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
 | **Data Needed**          | <ul><li>[DN_0058_4656_handle_to_an_object_was_requested](../Data_Needed/DN_0058_4656_handle_to_an_object_was_requested.md)</li></ul>  |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
@@ -25,8 +25,6 @@ date: 2019/08/12
 author: Roberto Rodriguez @Cyb3rWard0g
 references:
     - https://github.com/Cyb3rWard0g/ThreatHunter-Playbook/tree/master/playbooks/windows/07_discovery/T1000_local_admin_check/local_admin_remote_check_openscmanager.md
-tags:
-    - attack.discovery
 logsource:
     product: windows
     service: security
@@ -70,9 +68,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   "metadata": {
     "title": "SCM Database Handle Failure",
     "description": "Detects non-system users failing to get a handle of the SCM database.",
-    "tags": [
-      "attack.discovery"
-    ],
+    "tags": "",
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4656\" AND winlog.event_data.ObjectType:\"SC_MANAGER\\ OBJECT\" AND winlog.event_data.ObjectName:\"servicesactive\" AND Keywords:\"Audit\\ Failure\" AND SubjectLogonId:\"0x3e4\")"
   },
   "trigger": {
@@ -120,10 +116,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'SCM Database Handle Failure'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

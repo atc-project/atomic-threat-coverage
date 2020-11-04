@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | This rule detects a DHCP server error in which a specified Callout DLL (in registry) could not be loaded |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li><li>[T1574.002: DLL Side-Loading](https://attack.mitre.org/techniques/T1574/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1073: DLL Side-Loading](https://attack.mitre.org/techniques/T1073)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0046_1031_dhcp_service_callout_dll_file_has_caused_an_exception](../Data_Needed/DN_0046_1031_dhcp_service_callout_dll_file_has_caused_an_exception.md)</li><li>[DN_0047_1032_dhcp_service_callout_dll_file_has_caused_an_exception](../Data_Needed/DN_0047_1032_dhcp_service_callout_dll_file_has_caused_an_exception.md)</li><li>[DN_0049_1034_dhcp_service_failed_to_load_callout_dlls](../Data_Needed/DN_0049_1034_dhcp_service_failed_to_load_callout_dlls.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1574.002: DLL Side-Loading](../Triggers/T1574.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1073: DLL Side-Loading](../Triggers/T1073.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -29,21 +29,20 @@ date: 2017/05/15
 modified: 2019/07/17
 tags:
     - attack.defense_evasion
-    - attack.t1073           # an old one
-    - attack.t1574.002
+    - attack.t1073
 author: "Dimitrios Slamaris, @atc_project (fix)"
 logsource:
     product: windows
     service: system
 detection:
     selection:
-        EventID:
+        EventID: 
             - 1031
             - 1032
             - 1034
-        Source: Microsoft-Windows-DHCP-Server
+        Source: Microsoft-Windows-DHCP-Server            
     condition: selection
-falsepositives:
+falsepositives: 
     - Unknown
 level: critical
 
@@ -77,8 +76,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "This rule detects a DHCP server error in which a specified Callout DLL (in registry) could not be loaded",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1073",
-      "attack.t1574.002"
+      "attack.t1073"
     ],
     "query": "(winlog.event_id:(\"1031\" OR \"1032\" OR \"1034\") AND winlog.event_data.Source:\"Microsoft\\-Windows\\-DHCP\\-Server\")"
   },
@@ -127,10 +125,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'DHCP Server Error Failed Loading the CallOut DLL'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

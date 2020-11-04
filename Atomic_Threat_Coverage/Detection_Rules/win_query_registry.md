@@ -79,7 +79,7 @@ Get-WinEvent | where {($_.message -match "Image.*.*\\reg.exe" -and ($_.message -
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:*\\reg.exe AND winlog.event_data.CommandLine.keyword:(*query* OR *save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*currentVersion\\windows* OR *currentVersion\\runServicesOnce* OR *currentVersion\\runServices* OR *winlogon\\* OR *currentVersion\\shellServiceObjectDelayLoad* OR *currentVersion\\runOnce* OR *currentVersion\\runOnceEx* OR *currentVersion\\run* OR *currentVersion\\policies\\explorer\\run* OR *currentcontrolset\\services*))
+(winlog.event_data.Image.keyword:*\\reg.exe AND winlog.event_data.CommandLine.keyword:(*query* OR *save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*currentVersion\\windows* OR *currentVersion\\runServicesOnce* OR *currentVersion\\runServices* OR *winlogon\* OR *currentVersion\\shellServiceObjectDelayLoad* OR *currentVersion\\runOnce* OR *currentVersion\\runOnceEx* OR *currentVersion\\run* OR *currentVersion\\policies\\explorer\\run* OR *currentcontrolset\\services*))
 ```
 
 
@@ -96,7 +96,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.t1012",
       "attack.t1007"
     ],
-    "query": "(winlog.event_data.Image.keyword:*\\\\reg.exe AND winlog.event_data.CommandLine.keyword:(*query* OR *save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*currentVersion\\\\windows* OR *currentVersion\\\\runServicesOnce* OR *currentVersion\\\\runServices* OR *winlogon\\\\* OR *currentVersion\\\\shellServiceObjectDelayLoad* OR *currentVersion\\\\runOnce* OR *currentVersion\\\\runOnceEx* OR *currentVersion\\\\run* OR *currentVersion\\\\policies\\\\explorer\\\\run* OR *currentcontrolset\\\\services*))"
+    "query": "(winlog.event_data.Image.keyword:*\\\\reg.exe AND winlog.event_data.CommandLine.keyword:(*query* OR *save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*currentVersion\\\\windows* OR *currentVersion\\\\runServicesOnce* OR *currentVersion\\\\runServices* OR *winlogon\\* OR *currentVersion\\\\shellServiceObjectDelayLoad* OR *currentVersion\\\\runOnce* OR *currentVersion\\\\runOnceEx* OR *currentVersion\\\\run* OR *currentVersion\\\\policies\\\\explorer\\\\run* OR *currentcontrolset\\\\services*))"
   },
   "trigger": {
     "schedule": {
@@ -113,7 +113,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.event_data.Image.keyword:*\\\\reg.exe AND winlog.event_data.CommandLine.keyword:(*query* OR *save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*currentVersion\\\\windows* OR *currentVersion\\\\runServicesOnce* OR *currentVersion\\\\runServices* OR *winlogon\\\\* OR *currentVersion\\\\shellServiceObjectDelayLoad* OR *currentVersion\\\\runOnce* OR *currentVersion\\\\runOnceEx* OR *currentVersion\\\\run* OR *currentVersion\\\\policies\\\\explorer\\\\run* OR *currentcontrolset\\\\services*))",
+                    "query": "(winlog.event_data.Image.keyword:*\\\\reg.exe AND winlog.event_data.CommandLine.keyword:(*query* OR *save* OR *export*) AND winlog.event_data.CommandLine.keyword:(*currentVersion\\\\windows* OR *currentVersion\\\\runServicesOnce* OR *currentVersion\\\\runServices* OR *winlogon\\* OR *currentVersion\\\\shellServiceObjectDelayLoad* OR *currentVersion\\\\runOnce* OR *currentVersion\\\\runOnceEx* OR *currentVersion\\\\run* OR *currentVersion\\\\policies\\\\explorer\\\\run* OR *currentcontrolset\\\\services*))",
                     "analyze_wildcard": true
                   }
                 }
@@ -143,10 +143,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Query Registry'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n            Image = {{_source.Image}}\n      CommandLine = {{_source.CommandLine}}\n             User = {{_source.User}}\n        LogonGuid = {{_source.LogonGuid}}\n           Hashes = {{_source.Hashes}}\nParentProcessGuid = {{_source.ParentProcessGuid}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -169,28 +166,28 @@ EOF
 ### graylog
     
 ```
-(Image.keyword:*\\reg.exe AND CommandLine.keyword:(*query* *save* *export*) AND CommandLine.keyword:(*currentVersion\\windows* *currentVersion\\runServicesOnce* *currentVersion\\runServices* *winlogon\\* *currentVersion\\shellServiceObjectDelayLoad* *currentVersion\\runOnce* *currentVersion\\runOnceEx* *currentVersion\\run* *currentVersion\\policies\\explorer\\run* *currentcontrolset\\services*))
+(Image.keyword:*\\reg.exe AND CommandLine.keyword:(*query* *save* *export*) AND CommandLine.keyword:(*currentVersion\\windows* *currentVersion\\runServicesOnce* *currentVersion\\runServices* *winlogon\* *currentVersion\\shellServiceObjectDelayLoad* *currentVersion\\runOnce* *currentVersion\\runOnceEx* *currentVersion\\run* *currentVersion\\policies\\explorer\\run* *currentcontrolset\\services*))
 ```
 
 
 ### splunk
     
 ```
-(Image="*\\reg.exe" (CommandLine="*query*" OR CommandLine="*save*" OR CommandLine="*export*") (CommandLine="*currentVersion\\windows*" OR CommandLine="*currentVersion\\runServicesOnce*" OR CommandLine="*currentVersion\\runServices*" OR CommandLine="*winlogon\\*" OR CommandLine="*currentVersion\\shellServiceObjectDelayLoad*" OR CommandLine="*currentVersion\\runOnce*" OR CommandLine="*currentVersion\\runOnceEx*" OR CommandLine="*currentVersion\\run*" OR CommandLine="*currentVersion\\policies\\explorer\\run*" OR CommandLine="*currentcontrolset\\services*")) | table Image,CommandLine,User,LogonGuid,Hashes,ParentProcessGuid,ParentCommandLine
+(Image="*\\reg.exe" (CommandLine="*query*" OR CommandLine="*save*" OR CommandLine="*export*") (CommandLine="*currentVersion\\windows*" OR CommandLine="*currentVersion\\runServicesOnce*" OR CommandLine="*currentVersion\\runServices*" OR CommandLine="*winlogon\*" OR CommandLine="*currentVersion\\shellServiceObjectDelayLoad*" OR CommandLine="*currentVersion\\runOnce*" OR CommandLine="*currentVersion\\runOnceEx*" OR CommandLine="*currentVersion\\run*" OR CommandLine="*currentVersion\\policies\\explorer\\run*" OR CommandLine="*currentcontrolset\\services*")) | table Image,CommandLine,User,LogonGuid,Hashes,ParentProcessGuid,ParentCommandLine
 ```
 
 
 ### logpoint
     
 ```
-(Image="*\\reg.exe" CommandLine IN ["*query*", "*save*", "*export*"] CommandLine IN ["*currentVersion\\windows*", "*currentVersion\\runServicesOnce*", "*currentVersion\\runServices*", "*winlogon\\*", "*currentVersion\\shellServiceObjectDelayLoad*", "*currentVersion\\runOnce*", "*currentVersion\\runOnceEx*", "*currentVersion\\run*", "*currentVersion\\policies\\explorer\\run*", "*currentcontrolset\\services*"])
+(Image="*\\reg.exe" CommandLine IN ["*query*", "*save*", "*export*"] CommandLine IN ["*currentVersion\\windows*", "*currentVersion\\runServicesOnce*", "*currentVersion\\runServices*", "*winlogon\*", "*currentVersion\\shellServiceObjectDelayLoad*", "*currentVersion\\runOnce*", "*currentVersion\\runOnceEx*", "*currentVersion\\run*", "*currentVersion\\policies\\explorer\\run*", "*currentcontrolset\\services*"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*.*\reg\.exe)(?=.*(?:.*.*query.*|.*.*save.*|.*.*export.*))(?=.*(?:.*.*currentVersion\windows.*|.*.*currentVersion\runServicesOnce.*|.*.*currentVersion\runServices.*|.*.*winlogon\\.*|.*.*currentVersion\shellServiceObjectDelayLoad.*|.*.*currentVersion\runOnce.*|.*.*currentVersion\runOnceEx.*|.*.*currentVersion\run.*|.*.*currentVersion\policies\explorer\run.*|.*.*currentcontrolset\services.*)))'
+grep -P '^(?:.*(?=.*.*\reg\.exe)(?=.*(?:.*.*query.*|.*.*save.*|.*.*export.*))(?=.*(?:.*.*currentVersion\windows.*|.*.*currentVersion\runServicesOnce.*|.*.*currentVersion\runServices.*|.*.*winlogon\.*|.*.*currentVersion\shellServiceObjectDelayLoad.*|.*.*currentVersion\runOnce.*|.*.*currentVersion\runOnceEx.*|.*.*currentVersion\run.*|.*.*currentVersion\policies\explorer\run.*|.*.*currentcontrolset\services.*)))'
 ```
 
 

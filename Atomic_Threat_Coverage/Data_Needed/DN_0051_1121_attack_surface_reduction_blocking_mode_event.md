@@ -1,5 +1,6 @@
 | Title              | DN_0051_1121_attack_surface_reduction_blocking_mode_event       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Event generated when an attack surface reduction rule fires in block mode |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
 | **Mitigation Policy** |<ul><li>[MP_0001_windows_asr_block_credential_stealing_from_lsass](../Mitigation_Policies/MP_0001_windows_asr_block_credential_stealing_from_lsass.md)</li></ul> |

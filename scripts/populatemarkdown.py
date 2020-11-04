@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 
 # Import ATC classes
-from scripts.dataneeded import DataNeeded
 from scripts.detectionrule import DetectionRule
 from scripts.hardeningpolicy import HardeningPolicy
 from scripts.mitigationsystem import MitigationSystem
 from scripts.mitigationpolicy import MitigationPolicy
-from scripts.loggingpolicy import LoggingPolicy
 
 # from triggers import Triggers
-from scripts.enrichment import Enrichment
 from scripts.customer import Customer
+from scripts.usecases import Usecase
 
 # Import ATC Utils
 from scripts.atcutils import ATCutils
@@ -28,12 +26,12 @@ ATCconfig = ATCutils.load_config("config.yml")
 class PopulateMarkdown:
     """Class for populating markdown repo"""
 
-    def __init__(self, lp=False, dn=False, dr=False, en=False, tg=False,
-                 ra=False, rp=False, cu=False, ms=False, mp=False, auto=False,
-                 hp=False, art_dir=False, atc_dir=False, lp_path=False,
-                 dn_path=False, dr_path=False, en_path=False, tg_path=False,
-                 cu_path=False, ms_path=False, mp_path=False, hp_path=False,
-                 init=False):
+    def __init__(self, dr=False, tg=False, ra=False, rp=False, 
+                 cu=False, ms=False, mp=False, uc=False, auto=False,
+                 hp=False, art_dir=False, atc_dir=False,
+                 dr_path=False, tg_path=False, cu_path=False, 
+                 ms_path=False, mp_path=False, hp_path=False,
+                 uc_path=False, init=False):
         """Init"""
 
         # Check if atc_dir provided
@@ -60,32 +58,21 @@ class PopulateMarkdown:
         # Main logic
         if auto:
             self.hardening_policy(hp_path)
-            self.logging_policy(lp_path)
             self.mitigation_system(ms_path)
             self.mitigation_policy(mp_path)
-            self.data_needed(dn_path)
-            self.enrichment(en_path)
             self.triggers(tg_path)
             self.detection_rule(dr_path)
             self.customer(cu_path)
+            self.usecases(uc_path)
 
         if hp:
             self.hardening_policy(hp_path)
-
-        if lp:
-            self.logging_policy(lp_path)
 
         if ms:
             self.mitigation_system(ms_path)
 
         if mp:
             self.mitigation_policy(mp_path)
-
-        if dn:
-            self.data_needed(dn_path)
-
-        if en:
-            self.enrichment(en_path)
 
         if dr:
             self.detection_rule(dr_path)
@@ -95,6 +82,9 @@ class PopulateMarkdown:
 
         if cu:
             self.customer(cu_path)
+
+        if uc:
+            self.usecases(uc_path)
 
     def init_export(self):
         try:
@@ -192,53 +182,6 @@ class PopulateMarkdown:
         print("[+] Triggers populated!")
         return r
 
-    def logging_policy(self, lp_path):
-        """Populate Logging Policies"""
-
-        print("[*] Populating Logging Policies...")
-        if lp_path:
-            lp_list = glob.glob(lp_path + '*.yml')
-        else:
-            lp_dir = ATCconfig.get('logging_policies_dir')
-            lp_list = glob.glob(lp_dir + '/*.yml')
-
-        for lp_file in lp_list:
-            try:
-                lp = LoggingPolicy(lp_file)
-                lp.render_template("markdown")
-                lp.save_markdown_file(atc_dir=self.atc_dir)
-            except Exception as e:
-                print(lp_file + " failed\n\n%s\n\n" % e)
-                print("Err message: %s" % e)
-                print('-' * 60)
-                traceback.print_exc(file=sys.stdout)
-                print('-' * 60)
-
-        print("[+] Logging Policies populated!")
-
-    def data_needed(self, dn_path):
-        """Populate Data Needed"""
-
-        print("[*] Populating Data Needed...")
-        if dn_path:
-            dn_list = glob.glob(dn_path + '*.yml')
-        else:
-            dn_dir = ATCconfig.get('data_needed_dir')
-            dn_list = glob.glob(dn_dir + '/*.yml')
-
-        for dn_file in dn_list:
-            try:
-                dn = DataNeeded(dn_file)
-                dn.render_template("markdown")
-                dn.save_markdown_file(atc_dir=self.atc_dir)
-            except Exception as e:
-                print(dn_file + " failed\n\n%s\n\n" % e)
-                print("Err message: %s" % e)
-                print('-' * 60)
-                traceback.print_exc(file=sys.stdout)
-                print('-' * 60)
-        print("[+] Data Needed populated!")
-
     def detection_rule(self, dr_path):
         """Populate Detection Rules"""
 
@@ -268,29 +211,6 @@ class PopulateMarkdown:
                 print('-' * 60)
         print("[+] Detection Rules populated!")
 
-    def enrichment(self, en_path):
-        """Populate Enrichments"""
-
-        print("[*] Populating Enrichments...")
-        if en_path:
-            en_list = glob.glob(en_path + '*.yml')
-        else:
-            en_dir = ATCconfig.get('enrichments_directory')
-            en_list = glob.glob(en_dir + '/*.yml')
-
-        for en_file in en_list:
-            try:
-                en = Enrichment(en_file)
-                en.render_template("markdown")
-                en.save_markdown_file(atc_dir=self.atc_dir)
-            except Exception as e:
-                print(en_file + " failed\n\n%s\n\n" % e)
-                print("Err message: %s" % e)
-                print('-' * 60)
-                traceback.print_exc(file=sys.stdout)
-                print('-' * 60)
-        print("[+] Enrichments populated!")
-
     def customer(self, cu_path):
         """Populate Customers"""
 
@@ -313,3 +233,26 @@ class PopulateMarkdown:
                 traceback.print_exc(file=sys.stdout)
                 print('-' * 60)
         print("[+] Customers populated!")
+
+    def usecases(self, uc_path):
+        """Populate Use Cases"""
+
+        print("[*] Populating Use Cases...")
+        if uc_path:
+            uc_list = glob.glob(uc_path + '*.yml')
+        else:
+            uc_dir = ATCconfig.get('usecases_directory')
+            uc_list = glob.glob(uc_dir + '/*.yml')
+
+        for uc_file in uc_list:
+            try:
+                uc = Usecase(uc_file)
+                uc.render_template("markdown")
+                uc.save_markdown_file(atc_dir=self.atc_dir)
+            except Exception as e:
+                print(uc_file + " failed\n\n%s\n\n" % e)
+                print("Err message: %s" % e)
+                print('-' * 60)
+                traceback.print_exc(file=sys.stdout)
+                print('-' * 60)
+        print("[+] Use Cases populated!")

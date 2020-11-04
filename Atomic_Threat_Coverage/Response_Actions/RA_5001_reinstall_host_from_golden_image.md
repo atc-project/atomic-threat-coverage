@@ -3,7 +3,7 @@
 | **ID**                      | RA5001            |
 | **Description**             | Reinstall host OS from a golden image   |
 | **Author**                  | name/nickname/twitter        |
-| **Creation Date**           | YYYY/MM/DD |
+| **Creation Date**           | DD.MM.YYYY |
 | **Category**                | General      |
 | **Stage**                   |[RS0005: Recovery](../Response_Stages/RS0005.md)| 
 | **Automation** |<ul><li>thehive</li></ul>|

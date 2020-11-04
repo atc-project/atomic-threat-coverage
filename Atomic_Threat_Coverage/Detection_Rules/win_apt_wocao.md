@@ -1,10 +1,10 @@
 | Title                    | Operation Wocao Activity       |
 |:-------------------------|:------------------|
 | **Description**          | Detects activity mentioned in Operation Wocao report |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1012: Query Registry](https://attack.mitre.org/techniques/T1012)</li><li>[T1036.004: Masquerade Task or Service](https://attack.mitre.org/techniques/T1036/004)</li><li>[T1036: Masquerading](https://attack.mitre.org/techniques/T1036)</li><li>[T1027: Obfuscated Files or Information](https://attack.mitre.org/techniques/T1027)</li><li>[T1053.005: Scheduled Task](https://attack.mitre.org/techniques/T1053/005)</li><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1012: Query Registry](../Triggers/T1012.md)</li><li>[T1027: Obfuscated Files or Information](../Triggers/T1027.md)</li><li>[T1053.005: Scheduled Task](../Triggers/T1053.005.md)</li><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Administrators that use checkadmin.exe tool to enumerate local administrators</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,20 +26,7 @@ description: Detects activity mentioned in Operation Wocao report
 references:
     - https://www.fox-it.com/en/news/whitepapers/operation-wocao-shining-a-light-on-one-of-chinas-hidden-hacking-groups/
     - https://twitter.com/SBousseaden/status/1207671369963646976
-tags:
-    - attack.discovery 
-    - attack.t1012
-    - attack.defense_evasion
-    - attack.t1036.004
-    - attack.t1036  # an old one
-    - attack.t1027
-    - attack.execution
-    - attack.t1053.005
-    - attack.t1053  # an old one
-    - attack.t1059.001
-    - attack.t1086  # an old one
 date: 2019/12/20
-modified: 2020/08/26
 falsepositives:
     - Administrators that use checkadmin.exe tool to enumerate local administrators
 level: high
@@ -69,7 +56,7 @@ detection:
             - ' -exec bypass -enc JgAg'
             - 'type *keepass\KeePass.config.xml'
             - 'iie.exe iie.txt'
-            - 'reg query HKEY_CURRENT_USER\Software\\*\PuTTY\Sessions\'
+            - 'reg query HKEY_CURRENT_USER\Software\*\PuTTY\Sessions\'
     condition: selection
 ```
 
@@ -89,7 +76,7 @@ Get-WinEvent -LogName Security | where {($_.message -match "CommandLine.*.*check
     
 ```
 (winlog.channel:"Security" AND winlog.event_id:"4799" AND winlog.event_data.GroupName:"Administrators" AND winlog.event_data.ProcessName.keyword:*\\checkadmin.exe)
-winlog.event_data.CommandLine.keyword:(*checkadmin.exe\ 127.0.0.1\ \-all* OR *netsh\ advfirewall\ firewall\ add\ rule\ name\=powershell\ dir\=in* OR *cmd\ \/c\ powershell.exe\ \-ep\ bypass\ \-file\ c\:\\s.ps1* OR *\/tn\ win32times\ \/f* OR *create\ win32times\ binPath\=* OR *\\c$\\windows\\system32\\devmgr.dll* OR *\ \-exec\ bypass\ \-enc\ JgAg* OR *type\ *keepass\\KeePass.config.xml* OR *iie.exe\ iie.txt* OR *reg\ query\ HKEY_CURRENT_USER\\Software\\*\\PuTTY\\Sessions\\*)
+winlog.event_data.CommandLine.keyword:(*checkadmin.exe\ 127.0.0.1\ \-all* OR *netsh\ advfirewall\ firewall\ add\ rule\ name\=powershell\ dir\=in* OR *cmd\ \/c\ powershell.exe\ \-ep\ bypass\ \-file\ c\:\\s.ps1* OR *\/tn\ win32times\ \/f* OR *create\ win32times\ binPath\=* OR *\\c$\\windows\\system32\\devmgr.dll* OR *\ \-exec\ bypass\ \-enc\ JgAg* OR *type\ *keepass\\KeePass.config.xml* OR *iie.exe\ iie.txt* OR *reg\ query\ HKEY_CURRENT_USER\\Software\*\\PuTTY\\Sessions\*)
 ```
 
 
@@ -101,19 +88,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   "metadata": {
     "title": "Operation Wocao Activity",
     "description": "Detects activity mentioned in Operation Wocao report",
-    "tags": [
-      "attack.discovery",
-      "attack.t1012",
-      "attack.defense_evasion",
-      "attack.t1036.004",
-      "attack.t1036",
-      "attack.t1027",
-      "attack.execution",
-      "attack.t1053.005",
-      "attack.t1053",
-      "attack.t1059.001",
-      "attack.t1086"
-    ],
+    "tags": "",
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4799\" AND winlog.event_data.GroupName:\"Administrators\" AND winlog.event_data.ProcessName.keyword:*\\\\checkadmin.exe)"
   },
   "trigger": {
@@ -161,10 +136,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Operation Wocao Activity'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -185,20 +157,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   "metadata": {
     "title": "Operation Wocao Activity",
     "description": "Detects activity mentioned in Operation Wocao report",
-    "tags": [
-      "attack.discovery",
-      "attack.t1012",
-      "attack.defense_evasion",
-      "attack.t1036.004",
-      "attack.t1036",
-      "attack.t1027",
-      "attack.execution",
-      "attack.t1053.005",
-      "attack.t1053",
-      "attack.t1059.001",
-      "attack.t1086"
-    ],
-    "query": "winlog.event_data.CommandLine.keyword:(*checkadmin.exe\\ 127.0.0.1\\ \\-all* OR *netsh\\ advfirewall\\ firewall\\ add\\ rule\\ name\\=powershell\\ dir\\=in* OR *cmd\\ \\/c\\ powershell.exe\\ \\-ep\\ bypass\\ \\-file\\ c\\:\\\\s.ps1* OR *\\/tn\\ win32times\\ \\/f* OR *create\\ win32times\\ binPath\\=* OR *\\\\c$\\\\windows\\\\system32\\\\devmgr.dll* OR *\\ \\-exec\\ bypass\\ \\-enc\\ JgAg* OR *type\\ *keepass\\\\KeePass.config.xml* OR *iie.exe\\ iie.txt* OR *reg\\ query\\ HKEY_CURRENT_USER\\\\Software\\\\*\\\\PuTTY\\\\Sessions\\\\*)"
+    "tags": "",
+    "query": "winlog.event_data.CommandLine.keyword:(*checkadmin.exe\\ 127.0.0.1\\ \\-all* OR *netsh\\ advfirewall\\ firewall\\ add\\ rule\\ name\\=powershell\\ dir\\=in* OR *cmd\\ \\/c\\ powershell.exe\\ \\-ep\\ bypass\\ \\-file\\ c\\:\\\\s.ps1* OR *\\/tn\\ win32times\\ \\/f* OR *create\\ win32times\\ binPath\\=* OR *\\\\c$\\\\windows\\\\system32\\\\devmgr.dll* OR *\\ \\-exec\\ bypass\\ \\-enc\\ JgAg* OR *type\\ *keepass\\\\KeePass.config.xml* OR *iie.exe\\ iie.txt* OR *reg\\ query\\ HKEY_CURRENT_USER\\\\Software\\*\\\\PuTTY\\\\Sessions\\*)"
   },
   "trigger": {
     "schedule": {
@@ -215,7 +175,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "winlog.event_data.CommandLine.keyword:(*checkadmin.exe\\ 127.0.0.1\\ \\-all* OR *netsh\\ advfirewall\\ firewall\\ add\\ rule\\ name\\=powershell\\ dir\\=in* OR *cmd\\ \\/c\\ powershell.exe\\ \\-ep\\ bypass\\ \\-file\\ c\\:\\\\s.ps1* OR *\\/tn\\ win32times\\ \\/f* OR *create\\ win32times\\ binPath\\=* OR *\\\\c$\\\\windows\\\\system32\\\\devmgr.dll* OR *\\ \\-exec\\ bypass\\ \\-enc\\ JgAg* OR *type\\ *keepass\\\\KeePass.config.xml* OR *iie.exe\\ iie.txt* OR *reg\\ query\\ HKEY_CURRENT_USER\\\\Software\\\\*\\\\PuTTY\\\\Sessions\\\\*)",
+                    "query": "winlog.event_data.CommandLine.keyword:(*checkadmin.exe\\ 127.0.0.1\\ \\-all* OR *netsh\\ advfirewall\\ firewall\\ add\\ rule\\ name\\=powershell\\ dir\\=in* OR *cmd\\ \\/c\\ powershell.exe\\ \\-ep\\ bypass\\ \\-file\\ c\\:\\\\s.ps1* OR *\\/tn\\ win32times\\ \\/f* OR *create\\ win32times\\ binPath\\=* OR *\\\\c$\\\\windows\\\\system32\\\\devmgr.dll* OR *\\ \\-exec\\ bypass\\ \\-enc\\ JgAg* OR *type\\ *keepass\\\\KeePass.config.xml* OR *iie.exe\\ iie.txt* OR *reg\\ query\\ HKEY_CURRENT_USER\\\\Software\\*\\\\PuTTY\\\\Sessions\\*)",
                     "analyze_wildcard": true
                   }
                 }
@@ -245,10 +205,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Operation Wocao Activity'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -272,7 +229,7 @@ EOF
     
 ```
 (EventID:"4799" AND GroupName:"Administrators" AND ProcessName.keyword:*\\checkadmin.exe)
-CommandLine.keyword:(*checkadmin.exe 127.0.0.1 \-all* *netsh advfirewall firewall add rule name=powershell dir=in* *cmd \/c powershell.exe \-ep bypass \-file c\:\\s.ps1* *\/tn win32times \/f* *create win32times binPath=* *\\c$\\windows\\system32\\devmgr.dll* * \-exec bypass \-enc JgAg* *type *keepass\\KeePass.config.xml* *iie.exe iie.txt* *reg query HKEY_CURRENT_USER\\Software\\*\\PuTTY\\Sessions\\*)
+CommandLine.keyword:(*checkadmin.exe 127.0.0.1 \-all* *netsh advfirewall firewall add rule name=powershell dir=in* *cmd \/c powershell.exe \-ep bypass \-file c\:\\s.ps1* *\/tn win32times \/f* *create win32times binPath=* *\\c$\\windows\\system32\\devmgr.dll* * \-exec bypass \-enc JgAg* *type *keepass\\KeePass.config.xml* *iie.exe iie.txt* *reg query HKEY_CURRENT_USER\\Software\*\\PuTTY\\Sessions\*)
 ```
 
 
@@ -280,7 +237,7 @@ CommandLine.keyword:(*checkadmin.exe 127.0.0.1 \-all* *netsh advfirewall firewal
     
 ```
 (source="WinEventLog:Security" EventCode="4799" GroupName="Administrators" ProcessName="*\\checkadmin.exe")
-(CommandLine="*checkadmin.exe 127.0.0.1 -all*" OR CommandLine="*netsh advfirewall firewall add rule name=powershell dir=in*" OR CommandLine="*cmd /c powershell.exe -ep bypass -file c:\\s.ps1*" OR CommandLine="*/tn win32times /f*" OR CommandLine="*create win32times binPath=*" OR CommandLine="*\\c$\\windows\\system32\\devmgr.dll*" OR CommandLine="* -exec bypass -enc JgAg*" OR CommandLine="*type *keepass\\KeePass.config.xml*" OR CommandLine="*iie.exe iie.txt*" OR CommandLine="*reg query HKEY_CURRENT_USER\\Software\\*\\PuTTY\\Sessions\\*")
+(CommandLine="*checkadmin.exe 127.0.0.1 -all*" OR CommandLine="*netsh advfirewall firewall add rule name=powershell dir=in*" OR CommandLine="*cmd /c powershell.exe -ep bypass -file c:\\s.ps1*" OR CommandLine="*/tn win32times /f*" OR CommandLine="*create win32times binPath=*" OR CommandLine="*\\c$\\windows\\system32\\devmgr.dll*" OR CommandLine="* -exec bypass -enc JgAg*" OR CommandLine="*type *keepass\\KeePass.config.xml*" OR CommandLine="*iie.exe iie.txt*" OR CommandLine="*reg query HKEY_CURRENT_USER\\Software\*\\PuTTY\\Sessions\*")
 ```
 
 
@@ -288,7 +245,7 @@ CommandLine.keyword:(*checkadmin.exe 127.0.0.1 \-all* *netsh advfirewall firewal
     
 ```
 (event_source="Microsoft-Windows-Security-Auditing" event_id="4799" group_name="Administrators" ProcessName="*\\checkadmin.exe")
-CommandLine IN ["*checkadmin.exe 127.0.0.1 -all*", "*netsh advfirewall firewall add rule name=powershell dir=in*", "*cmd /c powershell.exe -ep bypass -file c:\\s.ps1*", "*/tn win32times /f*", "*create win32times binPath=*", "*\\c$\\windows\\system32\\devmgr.dll*", "* -exec bypass -enc JgAg*", "*type *keepass\\KeePass.config.xml*", "*iie.exe iie.txt*", "*reg query HKEY_CURRENT_USER\\Software\\*\\PuTTY\\Sessions\\*"]
+CommandLine IN ["*checkadmin.exe 127.0.0.1 -all*", "*netsh advfirewall firewall add rule name=powershell dir=in*", "*cmd /c powershell.exe -ep bypass -file c:\\s.ps1*", "*/tn win32times /f*", "*create win32times binPath=*", "*\\c$\\windows\\system32\\devmgr.dll*", "* -exec bypass -enc JgAg*", "*type *keepass\\KeePass.config.xml*", "*iie.exe iie.txt*", "*reg query HKEY_CURRENT_USER\\Software\*\\PuTTY\\Sessions\*"]
 ```
 
 
@@ -296,7 +253,7 @@ CommandLine IN ["*checkadmin.exe 127.0.0.1 -all*", "*netsh advfirewall firewall 
     
 ```
 grep -P '^(?:.*(?=.*4799)(?=.*Administrators)(?=.*.*\checkadmin\.exe))'
-grep -P '^(?:.*.*checkadmin\.exe 127\.0\.0\.1 -all.*|.*.*netsh advfirewall firewall add rule name=powershell dir=in.*|.*.*cmd /c powershell\.exe -ep bypass -file c:\s\.ps1.*|.*.*/tn win32times /f.*|.*.*create win32times binPath=.*|.*.*\c\$\windows\system32\devmgr\.dll.*|.*.* -exec bypass -enc JgAg.*|.*.*type .*keepass\KeePass\.config\.xml.*|.*.*iie\.exe iie\.txt.*|.*.*reg query HKEY_CURRENT_USER\Software\\.*\PuTTY\Sessions\\.*)'
+grep -P '^(?:.*.*checkadmin\.exe 127\.0\.0\.1 -all.*|.*.*netsh advfirewall firewall add rule name=powershell dir=in.*|.*.*cmd /c powershell\.exe -ep bypass -file c:\s\.ps1.*|.*.*/tn win32times /f.*|.*.*create win32times binPath=.*|.*.*\c\$\windows\system32\devmgr\.dll.*|.*.* -exec bypass -enc JgAg.*|.*.*type .*keepass\KeePass\.config\.xml.*|.*.*iie\.exe iie\.txt.*|.*.*reg query HKEY_CURRENT_USER\Software\.*\PuTTY\Sessions\.*)'
 ```
 
 

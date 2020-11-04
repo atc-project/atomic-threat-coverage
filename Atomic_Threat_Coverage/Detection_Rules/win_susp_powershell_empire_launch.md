@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects suspicious powershell command line parameters used in Empire |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      |  There are no documented False Positives for this Detection Rule yet  |
 | **Development Status**   | experimental |
@@ -28,23 +28,18 @@ references:
     - https://github.com/EmpireProject/Empire/blob/e37fb2eef8ff8f5a0a689f1589f424906fe13055/data/module_source/privesc/Invoke-EventVwrBypass.ps1#L64
 author: Florian Roth
 date: 2019/04/20
-modified: 2020/07/13
 tags:
-    - attack.execution
-    - attack.t1059.001
-    - attack.t1086          # an old one
+  - attack.execution
+  - attack.t1086
 logsource:
     category: process_creation
     product: windows
 detection:
     selection:
-        CommandLine|contains:
-            - ' -NoP -sta -NonI -W Hidden -Enc '
-            - ' -noP -sta -w 1 -enc '
-            - ' -NoP -NonI -W Hidden -enc '
-            - ' -noP -sta -w 1 -enc'
-            - ' -enc  SQB'
-            - ' -nop -exec bypass -EncodedCommand SQB'
+        CommandLine:
+            - '* -NoP -sta -NonI -W Hidden -Enc *'
+            - '* -noP -sta -w 1 -enc *'
+            - '* -NoP -NonI -W Hidden -enc *'
     condition: selection
 level: critical
 
@@ -57,14 +52,14 @@ level: critical
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "CommandLine.*.* -NoP -sta -NonI -W Hidden -Enc .*" -or $_.message -match "CommandLine.*.* -noP -sta -w 1 -enc .*" -or $_.message -match "CommandLine.*.* -NoP -NonI -W Hidden -enc .*" -or $_.message -match "CommandLine.*.* -noP -sta -w 1 -enc.*" -or $_.message -match "CommandLine.*.* -enc  SQB.*" -or $_.message -match "CommandLine.*.* -nop -exec bypass -EncodedCommand SQB.*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "CommandLine.*.* -NoP -sta -NonI -W Hidden -Enc .*" -or $_.message -match "CommandLine.*.* -noP -sta -w 1 -enc .*" -or $_.message -match "CommandLine.*.* -NoP -NonI -W Hidden -enc .*") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.CommandLine.keyword:(*\ \-NoP\ \-sta\ \-NonI\ \-W\ Hidden\ \-Enc\ * OR *\ \-noP\ \-sta\ \-w\ 1\ \-enc\ * OR *\ \-NoP\ \-NonI\ \-W\ Hidden\ \-enc\ * OR *\ \-noP\ \-sta\ \-w\ 1\ \-enc* OR *\ \-enc\ \ SQB* OR *\ \-nop\ \-exec\ bypass\ \-EncodedCommand\ SQB*)
+winlog.event_data.CommandLine.keyword:(*\ \-NoP\ \-sta\ \-NonI\ \-W\ Hidden\ \-Enc\ * OR *\ \-noP\ \-sta\ \-w\ 1\ \-enc\ * OR *\ \-NoP\ \-NonI\ \-W\ Hidden\ \-enc\ *)
 ```
 
 
@@ -78,10 +73,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects suspicious powershell command line parameters used in Empire",
     "tags": [
       "attack.execution",
-      "attack.t1059.001",
       "attack.t1086"
     ],
-    "query": "winlog.event_data.CommandLine.keyword:(*\\ \\-NoP\\ \\-sta\\ \\-NonI\\ \\-W\\ Hidden\\ \\-Enc\\ * OR *\\ \\-noP\\ \\-sta\\ \\-w\\ 1\\ \\-enc\\ * OR *\\ \\-NoP\\ \\-NonI\\ \\-W\\ Hidden\\ \\-enc\\ * OR *\\ \\-noP\\ \\-sta\\ \\-w\\ 1\\ \\-enc* OR *\\ \\-enc\\ \\ SQB* OR *\\ \\-nop\\ \\-exec\\ bypass\\ \\-EncodedCommand\\ SQB*)"
+    "query": "winlog.event_data.CommandLine.keyword:(*\\ \\-NoP\\ \\-sta\\ \\-NonI\\ \\-W\\ Hidden\\ \\-Enc\\ * OR *\\ \\-noP\\ \\-sta\\ \\-w\\ 1\\ \\-enc\\ * OR *\\ \\-NoP\\ \\-NonI\\ \\-W\\ Hidden\\ \\-enc\\ *)"
   },
   "trigger": {
     "schedule": {
@@ -98,7 +92,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "winlog.event_data.CommandLine.keyword:(*\\ \\-NoP\\ \\-sta\\ \\-NonI\\ \\-W\\ Hidden\\ \\-Enc\\ * OR *\\ \\-noP\\ \\-sta\\ \\-w\\ 1\\ \\-enc\\ * OR *\\ \\-NoP\\ \\-NonI\\ \\-W\\ Hidden\\ \\-enc\\ * OR *\\ \\-noP\\ \\-sta\\ \\-w\\ 1\\ \\-enc* OR *\\ \\-enc\\ \\ SQB* OR *\\ \\-nop\\ \\-exec\\ bypass\\ \\-EncodedCommand\\ SQB*)",
+                    "query": "winlog.event_data.CommandLine.keyword:(*\\ \\-NoP\\ \\-sta\\ \\-NonI\\ \\-W\\ Hidden\\ \\-Enc\\ * OR *\\ \\-noP\\ \\-sta\\ \\-w\\ 1\\ \\-enc\\ * OR *\\ \\-NoP\\ \\-NonI\\ \\-W\\ Hidden\\ \\-enc\\ *)",
                     "analyze_wildcard": true
                   }
                 }
@@ -128,10 +122,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Empire PowerShell Launch Parameters'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -154,28 +145,28 @@ EOF
 ### graylog
     
 ```
-CommandLine.keyword:(* \-NoP \-sta \-NonI \-W Hidden \-Enc * * \-noP \-sta \-w 1 \-enc * * \-NoP \-NonI \-W Hidden \-enc * * \-noP \-sta \-w 1 \-enc* * \-enc  SQB* * \-nop \-exec bypass \-EncodedCommand SQB*)
+CommandLine.keyword:(* \-NoP \-sta \-NonI \-W Hidden \-Enc * * \-noP \-sta \-w 1 \-enc * * \-NoP \-NonI \-W Hidden \-enc *)
 ```
 
 
 ### splunk
     
 ```
-(CommandLine="* -NoP -sta -NonI -W Hidden -Enc *" OR CommandLine="* -noP -sta -w 1 -enc *" OR CommandLine="* -NoP -NonI -W Hidden -enc *" OR CommandLine="* -noP -sta -w 1 -enc*" OR CommandLine="* -enc  SQB*" OR CommandLine="* -nop -exec bypass -EncodedCommand SQB*")
+(CommandLine="* -NoP -sta -NonI -W Hidden -Enc *" OR CommandLine="* -noP -sta -w 1 -enc *" OR CommandLine="* -NoP -NonI -W Hidden -enc *")
 ```
 
 
 ### logpoint
     
 ```
-CommandLine IN ["* -NoP -sta -NonI -W Hidden -Enc *", "* -noP -sta -w 1 -enc *", "* -NoP -NonI -W Hidden -enc *", "* -noP -sta -w 1 -enc*", "* -enc  SQB*", "* -nop -exec bypass -EncodedCommand SQB*"]
+CommandLine IN ["* -NoP -sta -NonI -W Hidden -Enc *", "* -noP -sta -w 1 -enc *", "* -NoP -NonI -W Hidden -enc *"]
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*.* -NoP -sta -NonI -W Hidden -Enc .*|.*.* -noP -sta -w 1 -enc .*|.*.* -NoP -NonI -W Hidden -enc .*|.*.* -noP -sta -w 1 -enc.*|.*.* -enc  SQB.*|.*.* -nop -exec bypass -EncodedCommand SQB.*)'
+grep -P '^(?:.*.* -NoP -sta -NonI -W Hidden -Enc .*|.*.* -noP -sta -w 1 -enc .*|.*.* -NoP -NonI -W Hidden -enc .*)'
 ```
 
 

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects a highly relevant Antivirus alert that reports a password dumper |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1558: Steal or Forge Kerberos Tickets](https://attack.mitre.org/techniques/T1558)</li><li>[T1003.001: LSASS Memory](https://attack.mitre.org/techniques/T1003/001)</li><li>[T1003.002: Security Account Manager](https://attack.mitre.org/techniques/T1003/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0084_av_alert](../Data_Needed/DN_0084_av_alert.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.001: LSASS Memory](../Triggers/T1003.001.md)</li><li>[T1003.002: Security Account Manager](../Triggers/T1003.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unlikely</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -28,14 +28,11 @@ references:
 tags:
     - attack.credential_access
     - attack.t1003
-    - attack.t1558
-    - attack.t1003.001
-    - attack.t1003.002
 logsource:
     product: antivirus
 detection:
     selection:
-        Signature:
+        Signature: 
             - "*DumpCreds*"
             - "*Mimikatz*"
             - "*PWCrack*"
@@ -82,10 +79,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects a highly relevant Antivirus alert that reports a password dumper",
     "tags": [
       "attack.credential_access",
-      "attack.t1003",
-      "attack.t1558",
-      "attack.t1003.001",
-      "attack.t1003.002"
+      "attack.t1003"
     ],
     "query": "winlog.event_data.Signature.keyword:(*DumpCreds* OR *Mimikatz* OR *PWCrack* OR HTool\\/WCE OR *PSWtool* OR *PWDump* OR *SecurityTool* OR *PShlSpy*)"
   },
@@ -134,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Antivirus Password Dumper Detection'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nFileName = {{_source.FileName}}\n    User = {{_source.User}}================================================================================\n{{/ctx.payload.hits.hits}}",

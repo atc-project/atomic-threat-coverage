@@ -1,10 +1,10 @@
 | Title                    | Bloodhound and Sharphound Hack Tool       |
 |:-------------------------|:------------------|
 | **Description**          | Detects command line parameters used by Bloodhound and Sharphound hack tools |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1087.001: Local Account](https://attack.mitre.org/techniques/T1087/001)</li><li>[T1087.002: Domain Account](https://attack.mitre.org/techniques/T1087/002)</li><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li><li>[T1482: Domain Trust Discovery](https://attack.mitre.org/techniques/T1482)</li><li>[T1069.001: Local Groups](https://attack.mitre.org/techniques/T1069/001)</li><li>[T1069.002: Domain Groups](https://attack.mitre.org/techniques/T1069/002)</li><li>[T1069: Permission Groups Discovery](https://attack.mitre.org/techniques/T1069)</li><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1087: Account Discovery](https://attack.mitre.org/techniques/T1087)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1087.001: Local Account](../Triggers/T1087.001.md)</li><li>[T1087.002: Domain Account](../Triggers/T1087.002.md)</li><li>[T1482: Domain Trust Discovery](../Triggers/T1482.md)</li><li>[T1069.001: Local Groups](../Triggers/T1069.001.md)</li><li>[T1069.002: Domain Groups](../Triggers/T1069.002.md)</li><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1087: Account Discovery](../Triggers/T1087.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Other programs that use these command line option and accepts an 'All' parameter</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -28,16 +28,7 @@ date: 2019/12/20
 modified: 2019/12/21
 tags:
     - attack.discovery
-    - attack.t1087.001
-    - attack.t1087.002
-    - attack.t1087  # an old one
-    - attack.t1482
-    - attack.t1069.001
-    - attack.t1069.002
-    - attack.t1069  # an old one
-    - attack.execution
-    - attack.t1059.001
-    - attack.t1086  # an old one
+    - attack.t1087
 logsource:
     category: process_creation
     product: windows
@@ -96,16 +87,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects command line parameters used by Bloodhound and Sharphound hack tools",
     "tags": [
       "attack.discovery",
-      "attack.t1087.001",
-      "attack.t1087.002",
-      "attack.t1087",
-      "attack.t1482",
-      "attack.t1069.001",
-      "attack.t1069.002",
-      "attack.t1069",
-      "attack.execution",
-      "attack.t1059.001",
-      "attack.t1086"
+      "attack.t1087"
     ],
     "query": "(winlog.event_data.Image.keyword:(*\\\\Bloodhound.exe* OR *\\\\SharpHound.exe*) OR winlog.event_data.CommandLine.keyword:(*\\ \\-CollectionMethod\\ All\\ * OR *.exe\\ \\-c\\ All\\ \\-d\\ * OR *Invoke\\-Bloodhound* OR *Get\\-BloodHoundData*) OR (winlog.event_data.CommandLine.keyword:*\\ \\-JsonFolder\\ * AND winlog.event_data.CommandLine.keyword:*\\ \\-ZipFileName\\ *) OR (winlog.event_data.CommandLine.keyword:*\\ DCOnly\\ * AND winlog.event_data.CommandLine.keyword:*\\ \\-\\-NoSaveCache\\ *))"
   },
@@ -154,10 +136,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Bloodhound and Sharphound Hack Tool'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

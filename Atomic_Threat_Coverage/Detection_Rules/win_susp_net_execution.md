@@ -1,10 +1,10 @@
 | Title                    | Net.exe Execution       |
 |:-------------------------|:------------------|
 | **Description**          | Detects execution of Net.exe, whether suspicious or benign. |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1049: System Network Connections Discovery](https://attack.mitre.org/techniques/T1049)</li><li>[T1018: Remote System Discovery](https://attack.mitre.org/techniques/T1018)</li><li>[T1135: Network Share Discovery](https://attack.mitre.org/techniques/T1135)</li><li>[T1201: Password Policy Discovery](https://attack.mitre.org/techniques/T1201)</li><li>[T1069.001: Local Groups](https://attack.mitre.org/techniques/T1069/001)</li><li>[T1069.002: Domain Groups](https://attack.mitre.org/techniques/T1069/002)</li><li>[T1087.001: Local Account](https://attack.mitre.org/techniques/T1087/001)</li><li>[T1087.002: Domain Account](https://attack.mitre.org/techniques/T1087/002)</li><li>[T1021.002: SMB/Windows Admin Shares](https://attack.mitre.org/techniques/T1021/002)</li><li>[T1077: Windows Admin Shares](https://attack.mitre.org/techniques/T1077)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li><li>[TA0007: Discovery](https://attack.mitre.org/tactics/TA0007)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1027: Obfuscated Files or Information](https://attack.mitre.org/techniques/T1027)</li><li>[T1049: System Network Connections Discovery](https://attack.mitre.org/techniques/T1049)</li><li>[T1077: Windows Admin Shares](https://attack.mitre.org/techniques/T1077)</li><li>[T1135: Network Share Discovery](https://attack.mitre.org/techniques/T1135)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1049: System Network Connections Discovery](../Triggers/T1049.md)</li><li>[T1018: Remote System Discovery](../Triggers/T1018.md)</li><li>[T1135: Network Share Discovery](../Triggers/T1135.md)</li><li>[T1201: Password Policy Discovery](../Triggers/T1201.md)</li><li>[T1069.001: Local Groups](../Triggers/T1069.001.md)</li><li>[T1069.002: Domain Groups](../Triggers/T1069.002.md)</li><li>[T1087.001: Local Account](../Triggers/T1087.001.md)</li><li>[T1087.002: Domain Account](../Triggers/T1087.002.md)</li><li>[T1021.002: SMB/Windows Admin Shares](../Triggers/T1021.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1027: Obfuscated Files or Information](../Triggers/T1027.md)</li><li>[T1049: System Network Connections Discovery](../Triggers/T1049.md)</li><li>[T1077: Windows Admin Shares](../Triggers/T1077.md)</li><li>[T1135: Network Share Discovery](../Triggers/T1135.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>Will need to be tuned. If using Splunk, I recommend | stats count by Computer,CommandLine following the search for easy hunting by computer/CommandLine.</li></ul>  |
 | **Development Status**   | experimental |
@@ -28,21 +28,15 @@ references:
     - https://eqllib.readthedocs.io/en/latest/analytics/9b3dd402-891c-4c4d-a662-28947168ce61.html
 author: Michael Haag, Mark Woan (improvements), James Pemberton / @4A616D6573 / oscd.community (improvements)
 date: 2019/01/16
-modified: 2020/08/30
 tags:
-    - attack.discovery
-    - attack.t1049
-    - attack.t1018
-    - attack.t1135
-    - attack.t1201
-    - attack.t1069.001
-    - attack.t1069.002
-    - attack.t1087.001
-    - attack.t1087.002
-    - attack.lateral_movement    
-    - attack.t1021.002
-    - attack.t1077      # an old one
     - attack.s0039
+    - attack.t1027
+    - attack.t1049
+    - attack.t1077
+    - attack.t1135
+    - attack.lateral_movement
+    - attack.discovery
+    - attack.defense_evasion
 logsource:
     category: process_creation
     product: windows
@@ -100,19 +94,14 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Net.exe Execution",
     "description": "Detects execution of Net.exe, whether suspicious or benign.",
     "tags": [
-      "attack.discovery",
+      "attack.s0039",
+      "attack.t1027",
       "attack.t1049",
-      "attack.t1018",
-      "attack.t1135",
-      "attack.t1201",
-      "attack.t1069.001",
-      "attack.t1069.002",
-      "attack.t1087.001",
-      "attack.t1087.002",
-      "attack.lateral_movement",
-      "attack.t1021.002",
       "attack.t1077",
-      "attack.s0039"
+      "attack.t1135",
+      "attack.lateral_movement",
+      "attack.discovery",
+      "attack.defense_evasion"
     ],
     "query": "(winlog.event_data.Image.keyword:(*\\\\net.exe OR *\\\\net1.exe) AND winlog.event_data.CommandLine.keyword:(*\\ group* OR *\\ localgroup* OR *\\ user* OR *\\ view* OR *\\ share OR *\\ accounts* OR *\\ use* OR *\\ stop\\ *))"
   },
@@ -161,10 +150,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Net.exe Execution'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n     ComputerName = {{_source.ComputerName}}\n             User = {{_source.User}}\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

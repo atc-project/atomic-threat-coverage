@@ -29,8 +29,8 @@ date: 2019/10/12
 modified: 2019/11/04
 tags:
     - attack.defense_evasion
+    - attack.execution
     - attack.t1218
-    - attack.execution # an old one
 level: critical
 logsource:
     category: process_creation
@@ -73,8 +73,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "The Devtoolslauncher.exe executes other binary",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1218",
-      "attack.execution"
+      "attack.execution",
+      "attack.t1218"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\devtoolslauncher.exe AND winlog.event_data.CommandLine.keyword:*LaunchForDeploy*)"
   },
@@ -123,10 +123,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Devtoolslauncher.exe Executes Specified Binary'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

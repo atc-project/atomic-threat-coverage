@@ -1,10 +1,10 @@
 | Title                    | Suspicious RDP Redirect Using TSCON       |
 |:-------------------------|:------------------|
 | **Description**          | Detects a suspicious RDP session redirect using tscon.exe |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1563.002: RDP Hijacking](https://attack.mitre.org/techniques/T1563/002)</li><li>[T1076: Remote Desktop Protocol](https://attack.mitre.org/techniques/T1076)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1076: Remote Desktop Protocol](https://attack.mitre.org/techniques/T1076)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1563.002: RDP Hijacking](../Triggers/T1563.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1076: Remote Desktop Protocol](../Triggers/T1076.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,12 +26,12 @@ references:
     - https://medium.com/@networksecurity/rdp-hijacking-how-to-hijack-rds-and-remoteapp-sessions-transparently-to-move-through-an-da2a1e73a5f6
 tags:
     - attack.lateral_movement
-    - attack.t1563.002
-    - attack.t1076      # an old one
+    - attack.privilege_escalation
+    - attack.t1076
     - car.2013-07-002
 author: Florian Roth
 date: 2018/03/17
-modified: 2020/08/29
+modified: 2018/12/11
 logsource:
     category: process_creation
     product: windows
@@ -73,7 +73,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects a suspicious RDP session redirect using tscon.exe",
     "tags": [
       "attack.lateral_movement",
-      "attack.t1563.002",
+      "attack.privilege_escalation",
       "attack.t1076",
       "car.2013-07-002"
     ],
@@ -124,10 +124,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious RDP Redirect Using TSCON'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

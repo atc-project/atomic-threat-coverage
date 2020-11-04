@@ -1,0 +1,59 @@
+title: UC_0002_INITIALACCESS
+usecase_name: Example Use Case to detect Initial Access
+description: >
+  Some text description here. It will be merged into one line.
+dataneeded:
+  - DN_0001_4688_windows_process_creation
+  - DN_0002_4688_windows_process_creation_with_commandline
+loggingpolicy:
+  - LP_0001_windows_audit_process_creation
+  - LP_0002_windows_audit_process_creation_with_commandline
+  - LP_0003_windows_sysmon_process_creation
+detectionrule:
+  - Terminal Service Process Spawn
+  - Possible DNS Rebinding
+  # - Hack Tool User Agent
+  # - CVE-2020-0688 Exploitation via Eventlog
+  # - Failed Logon From Public IP
+  # - Exploited CVE-2020-10189 Zoho ManageEngine
+  # - DNS RCE CVE-2020-1350
+  # - Terminal Service Process Spawn
+  # - Citrix Netscaler Attack CVE-2019-19781
+  # - CVE-2020-5902 F5 BIG-IP Exploitation Attempt
+  # - Oracle WebLogic Exploit
+  # - Confluence Exploitation CVE-2019-3398
+  # - Pulse Secure Attack CVE-2019-11510
+  # - Citrix ADS Exploitation CVE-2020-8193 CVE-2020-8195
+  # - CVE-2020-0688 Exploitation Attempt
+  # - CVE-2020-0688 Exchange Exploitation via Web Log
+  # - Multiple Suspicious Resp Codes Caused by Single Client
+  # - Suspicious SQL Error Messages
+  # - Python SQL Exceptions
+  # - Spring Framework Exceptions
+  # - Django Framework Exceptions
+  # - Ruby on Rails Framework Exceptions
+  # - Suspicious OpenSSH Daemon Error
+  # - Suspicious VSFTPD Error Messages
+  # - Suspicious Named Error
+  # - Failed Logon From Public IP
+  # - USB Device Plugged
+  # - External Disk Drive or USB Storage Device
+  # - Ursnif Malware Download URL Pattern
+  # - Ursnif Malware C2 URL Pattern
+  # - Download EXE from Suspicious TLD
+  # - Exploit for CVE-2017-8759
+  # - Exploit for CVE-2017-0261
+  # - Suspicious HWP Sub Processes
+  # - Droppers Exploiting CVE-2017-11882
+  # - Execution in Outlook Temp Folder
+  # - Suspicious Double Extension
+  # - Windows Registry Trust Record Modification
+  # - External Disk Drive or USB Storage Device
+  # - Octopus Scanner Malware
+  # - AWS Root Credentials
+  # - User Added to Local Administrators
+  # - Failed Logins with Different Accounts from Single Source System
+  # - Interactive Logon to Server Systems
+  # - Account Tampering - Suspicious Failed Logon Reasons
+  # - Failed Logon From Public IP
+  # - Admin User Remote Logon

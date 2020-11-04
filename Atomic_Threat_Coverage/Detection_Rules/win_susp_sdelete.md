@@ -1,10 +1,10 @@
 | Title                    | Secure Deletion with SDelete       |
 |:-------------------------|:------------------|
 | **Description**          | Detects renaming of file while deletion with SDelete tool |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0040: Impact](https://attack.mitre.org/tactics/TA0040)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1107: File Deletion](https://attack.mitre.org/techniques/T1107)</li><li>[T1070.004: File Deletion](https://attack.mitre.org/techniques/T1070/004)</li><li>[T1066: Indicator Removal from Tools](https://attack.mitre.org/techniques/T1066)</li><li>[T1027.005: Indicator Removal from Tools](https://attack.mitre.org/techniques/T1027/005)</li><li>[T1485: Data Destruction](https://attack.mitre.org/techniques/T1485)</li><li>[T1553.002: Code Signing](https://attack.mitre.org/techniques/T1553/002)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1107: File Deletion](https://attack.mitre.org/techniques/T1107)</li><li>[T1066: Indicator Removal from Tools](https://attack.mitre.org/techniques/T1066)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0058_4656_handle_to_an_object_was_requested](../Data_Needed/DN_0058_4656_handle_to_an_object_was_requested.md)</li><li>[DN_0060_4658_handle_to_an_object_was_closed](../Data_Needed/DN_0060_4658_handle_to_an_object_was_closed.md)</li><li>[DN_0062_4663_attempt_was_made_to_access_an_object](../Data_Needed/DN_0062_4663_attempt_was_made_to_access_an_object.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1070.004: File Deletion](../Triggers/T1070.004.md)</li><li>[T1485: Data Destruction](../Triggers/T1485.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1107: File Deletion](../Triggers/T1107.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Legitime usage of SDelete</li></ul>  |
 | **Development Status**   | experimental |
@@ -23,20 +23,14 @@ status: experimental
 description: Detects renaming of file while deletion with SDelete tool
 author: Thomas Patzke
 date: 2017/06/14
-modified: 2020/08/2
 references:
     - https://jpcertcc.github.io/ToolAnalysisResultSheet
     - https://www.jpcert.or.jp/english/pub/sr/ir_research.html
     - https://technet.microsoft.com/en-us/en-en/sysinternals/sdelete.aspx
 tags:
-    - attack.impact
     - attack.defense_evasion
-    - attack.t1107           # an old one
-    - attack.t1070.004
-    - attack.t1066           # an old one
-    - attack.t1027.005
-    - attack.t1485
-    - attack.t1553.002
+    - attack.t1107
+    - attack.t1066
     - attack.s0195
 logsource:
     product: windows
@@ -84,14 +78,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Secure Deletion with SDelete",
     "description": "Detects renaming of file while deletion with SDelete tool",
     "tags": [
-      "attack.impact",
       "attack.defense_evasion",
       "attack.t1107",
-      "attack.t1070.004",
       "attack.t1066",
-      "attack.t1027.005",
-      "attack.t1485",
-      "attack.t1553.002",
       "attack.s0195"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:(\"4656\" OR \"4663\" OR \"4658\") AND winlog.event_data.ObjectName.keyword:(*.AAA OR *.ZZZ))"
@@ -141,10 +130,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Secure Deletion with SDelete'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

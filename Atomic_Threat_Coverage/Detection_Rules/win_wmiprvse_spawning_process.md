@@ -37,7 +37,7 @@ detection:
         ParentImage|endswith: '\WmiPrvSe.exe'
     filter:
         - LogonId: '0x3e7'  # LUID 999 for SYSTEM
-        - User: 'NT AUTHORITY\SYSTEM'  # if we don't have LogonId data, fallback on username detection
+        - Username: 'NT AUTHORITY\SYSTEM'  # if we don't have LogonId data, fallback on username detection
     condition: selection and not filter
 falsepositives:
     - Unknown
@@ -52,14 +52,14 @@ level: critical
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "ParentImage.*.*\\WmiPrvSe.exe" -and  -not ($_.message -match "LogonId.*0x3e7" -or $_.message -match "User.*NT AUTHORITY\\SYSTEM")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "ParentImage.*.*\\WmiPrvSe.exe" -and  -not ($_.message -match "LogonId.*0x3e7" -or $_.message -match "Username.*NT AUTHORITY\\SYSTEM")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.ParentImage.keyword:*\\WmiPrvSe.exe AND (NOT (LogonId:"0x3e7" OR winlog.event_data.User:"NT\ AUTHORITY\\SYSTEM")))
+(winlog.event_data.ParentImage.keyword:*\\WmiPrvSe.exe AND (NOT (LogonId:"0x3e7" OR Username:"NT\ AUTHORITY\\SYSTEM")))
 ```
 
 
@@ -75,7 +75,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.execution",
       "attack.t1047"
     ],
-    "query": "(winlog.event_data.ParentImage.keyword:*\\\\WmiPrvSe.exe AND (NOT (LogonId:\"0x3e7\" OR winlog.event_data.User:\"NT\\ AUTHORITY\\\\SYSTEM\")))"
+    "query": "(winlog.event_data.ParentImage.keyword:*\\\\WmiPrvSe.exe AND (NOT (LogonId:\"0x3e7\" OR Username:\"NT\\ AUTHORITY\\\\SYSTEM\")))"
   },
   "trigger": {
     "schedule": {
@@ -92,7 +92,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.event_data.ParentImage.keyword:*\\\\WmiPrvSe.exe AND (NOT (LogonId:\"0x3e7\" OR winlog.event_data.User:\"NT\\ AUTHORITY\\\\SYSTEM\")))",
+                    "query": "(winlog.event_data.ParentImage.keyword:*\\\\WmiPrvSe.exe AND (NOT (LogonId:\"0x3e7\" OR Username:\"NT\\ AUTHORITY\\\\SYSTEM\")))",
                     "analyze_wildcard": true
                   }
                 }
@@ -122,10 +122,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Wmiprvse Spawning Process'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -148,21 +145,21 @@ EOF
 ### graylog
     
 ```
-(ParentImage.keyword:*\\WmiPrvSe.exe AND (NOT (LogonId:"0x3e7" OR User:"NT AUTHORITY\\SYSTEM")))
+(ParentImage.keyword:*\\WmiPrvSe.exe AND (NOT (LogonId:"0x3e7" OR Username:"NT AUTHORITY\\SYSTEM")))
 ```
 
 
 ### splunk
     
 ```
-(ParentImage="*\\WmiPrvSe.exe" NOT (LogonId="0x3e7" OR User="NT AUTHORITY\\SYSTEM"))
+(ParentImage="*\\WmiPrvSe.exe" NOT (LogonId="0x3e7" OR Username="NT AUTHORITY\\SYSTEM"))
 ```
 
 
 ### logpoint
     
 ```
-(ParentImage="*\\WmiPrvSe.exe"  -(LogonId="0x3e7" OR User="NT AUTHORITY\\SYSTEM"))
+(ParentImage="*\\WmiPrvSe.exe"  -(LogonId="0x3e7" OR Username="NT AUTHORITY\\SYSTEM"))
 ```
 
 

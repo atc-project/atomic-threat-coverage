@@ -139,10 +139,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Antivirus Relevant File Paths Alerts'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nSignature = {{_source.Signature}}\n     User = {{_source.User}}================================================================================\n{{/ctx.payload.hits.hits}}",

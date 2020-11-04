@@ -1,8 +1,8 @@
 | Title                    | Suspicious Access to Sensitive File Extensions       |
 |:-------------------------|:------------------|
-| **Description**          | Detects known sensitive file extensions accessed on a network share |
+| **Description**          | Detects known sensitive file extensions |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0009: Collection](https://attack.mitre.org/tactics/TA0009)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1039: Data from Network Shared Drive](https://attack.mitre.org/techniques/T1039)</li></ul>  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
 | **Data Needed**          | <ul><li>[DN_0032_5145_network_share_object_was_accessed_detailed](../Data_Needed/DN_0032_5145_network_share_object_was_accessed_detailed.md)</li></ul>  |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | medium |
@@ -19,13 +19,11 @@
 ```
 title: Suspicious Access to Sensitive File Extensions
 id: 91c945bc-2ad1-4799-a591-4d00198a1215
-description: Detects known sensitive file extensions accessed on a network share
+description: Detects known sensitive file extensions
 author: Samir Bousseaden
 date: 2019/04/03
-modified: 2020/08/23
 tags:
     - attack.collection
-    - attack.t1039
 logsource:
     product: windows
     service: security
@@ -84,10 +82,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
 {
   "metadata": {
     "title": "Suspicious Access to Sensitive File Extensions",
-    "description": "Detects known sensitive file extensions accessed on a network share",
+    "description": "Detects known sensitive file extensions",
     "tags": [
-      "attack.collection",
-      "attack.t1039"
+      "attack.collection"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:(\"5145\") AND RelativeTargetName.keyword:(*.pst OR *.ost OR *.msg OR *.nst OR *.oab OR *.edb OR *.nsf OR *.bak OR *.dmp OR *.kirbi OR *\\\\groups.xml OR *.rdp))"
   },
@@ -136,10 +133,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious Access to Sensitive File Extensions'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      ComputerName = {{_source.ComputerName}}\n SubjectDomainName = {{_source.SubjectDomainName}}\n   SubjectUserName = {{_source.SubjectUserName}}\nRelativeTargetName = {{_source.RelativeTargetName}}================================================================================\n{{/ctx.payload.hits.hits}}",

@@ -1,5 +1,6 @@
 | Title            | LP_0033_linux_auditd_syscall                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Policy to enable auditd to log of specific system call (syscall)                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | High                                                                    |

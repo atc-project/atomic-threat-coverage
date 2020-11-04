@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detection for mshta.exe suspicious execution patterns sometimes involving file polyglotism |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1140: Deobfuscate/Decode Files or Information](https://attack.mitre.org/techniques/T1140)</li><li>[T1218.005: Mshta](https://attack.mitre.org/techniques/T1218/005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1140: Deobfuscate/Decode Files or Information](https://attack.mitre.org/techniques/T1140)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1140: Deobfuscate/Decode Files or Information](../Triggers/T1140.md)</li><li>[T1218.005: Mshta](../Triggers/T1218.005.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1140: Deobfuscate/Decode Files or Information](../Triggers/T1140.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul>  |
 | **Development Status**   | experimental |
@@ -22,7 +22,7 @@ id: cc7abbd0-762b-41e3-8a26-57ad50d2eea3
 status: experimental
 description: Detection for mshta.exe suspicious execution patterns sometimes involving file polyglotism
 date: 2019/02/22
-modified: 2020/08/23
+modified: 2019/02/22
 author: Diego Perez (@darkquassar), Markus Neis, Swisscom (Improve Rule)
 references:
     - http://blog.sevagas.com/?Hacking-around-HTA-files
@@ -32,7 +32,6 @@ references:
 tags:
     - attack.defense_evasion
     - attack.t1140
-    - attack.t1218.005
 logsource:
     category: process_creation
     product: windows
@@ -84,8 +83,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detection for mshta.exe suspicious execution patterns sometimes involving file polyglotism",
     "tags": [
       "attack.defense_evasion",
-      "attack.t1140",
-      "attack.t1218.005"
+      "attack.t1140"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\mshta.exe AND winlog.event_data.CommandLine.keyword:(*vbscript* OR *.jpg* OR *.png* OR *.lnk* OR *.xls* OR *.doc* OR *.zip*))"
   },
@@ -134,10 +132,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'MSHTA Suspicious Execution 01'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

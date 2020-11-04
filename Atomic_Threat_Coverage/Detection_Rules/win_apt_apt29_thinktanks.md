@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | This method detects a suspicious powershell command line combination as used by APT29 in a campaign against US think tanks |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li><li>[T1059: Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)</li><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -25,12 +25,9 @@ references:
 tags:
     - attack.execution
     - attack.g0016
-    - attack.t1086 # an old one
-    - attack.t1059 # an old one
-    - attack.t1059.001
+    - attack.t1086
 author: Florian Roth
-date: 2018/12/04
-modified: 2020/08/26
+date: 2018/12/04 
 logsource:
     category: process_creation
     product: windows
@@ -73,9 +70,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.execution",
       "attack.g0016",
-      "attack.t1086",
-      "attack.t1059",
-      "attack.t1059.001"
+      "attack.t1086"
     ],
     "query": "winlog.event_data.CommandLine.keyword:*\\-noni\\ \\-ep\\ bypass\\ $*"
   },
@@ -124,10 +119,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'APT29'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

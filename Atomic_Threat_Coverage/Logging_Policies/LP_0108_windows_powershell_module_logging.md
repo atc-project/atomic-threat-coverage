@@ -1,5 +1,6 @@
 | Title            | LP_0108_windows_powershell_module_logging                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Module logging records pipeline execution details as PowerShell executes,  including variable initialization and command invocations.  Module logging will record portions of scripts, some de-obfuscated code,  and some data formatted for output.  This logging will capture some details missed by other PowerShell logging sources,  though it may not reliably capture the commands executed                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | High                                                                    |

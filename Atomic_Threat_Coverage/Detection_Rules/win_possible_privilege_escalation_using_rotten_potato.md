@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detection of child processes spawned with SYSTEM privileges by parents with LOCAL SERVICE or NETWORK SERVICE privileges |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1134: Access Token Manipulation](https://attack.mitre.org/techniques/T1134)</li><li>[T1134.002: Create Process with Token](https://attack.mitre.org/techniques/T1134/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1134: Access Token Manipulation](https://attack.mitre.org/techniques/T1134)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
 | **Enrichment** |<ul><li>[EN_0001_cache_sysmon_event_id_1_info](../Enrichments/EN_0001_cache_sysmon_event_id_1_info.md)</li><li>[EN_0002_enrich_sysmon_event_id_1_with_parent_info](../Enrichments/EN_0002_enrich_sysmon_event_id_1_with_parent_info.md)</li></ul> |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
@@ -26,12 +26,11 @@ references:
     - https://foxglovesecurity.com/2016/09/26/rotten-potato-privilege-escalation-from-service-accounts-to-system/
 tags:
     - attack.privilege_escalation
-    - attack.t1134           # an old one
-    - attack.t1134.002
+    - attack.t1134
 status: experimental
 author: Teymur Kheirkhabarov
 date: 2019/10/26
-modified: 2020/09/01
+modified: 2019/11/11
 logsource:
     category: process_creation
     product: windows
@@ -82,8 +81,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detection of child processes spawned with SYSTEM privileges by parents with LOCAL SERVICE or NETWORK SERVICE privileges",
     "tags": [
       "attack.privilege_escalation",
-      "attack.t1134",
-      "attack.t1134.002"
+      "attack.t1134"
     ],
     "query": "((ParentUser:(\"NT\\ AUTHORITY\\\\NETWORK\\ SERVICE\" OR \"NT\\ AUTHORITY\\\\LOCAL\\ SERVICE\") AND winlog.event_data.User:\"NT\\ AUTHORITY\\\\SYSTEM\") AND (NOT (winlog.event_data.Image.keyword:*\\\\rundll32.exe AND winlog.event_data.CommandLine.keyword:*DavSetCookie*)))"
   },
@@ -132,10 +130,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Detection of Possible Rotten Potato'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

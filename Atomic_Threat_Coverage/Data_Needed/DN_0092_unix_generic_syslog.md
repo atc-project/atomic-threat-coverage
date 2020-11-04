@@ -1,5 +1,6 @@
 | Title              | DN_0092_unix_generic_syslog       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | Unix generic syslog |
 | **Logging Policy** | <ul><li> Not existing </li></ul> |
 | **References**     | <ul><li>[https://github.com/Neo23x0/sigma/blob/master/rules/linux/lnx_buffer_overflows.yml](https://github.com/Neo23x0/sigma/blob/master/rules/linux/lnx_buffer_overflows.yml)</li></ul> |

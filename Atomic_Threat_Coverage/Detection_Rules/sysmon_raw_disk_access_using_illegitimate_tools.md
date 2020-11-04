@@ -141,10 +141,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Raw Disk Access Using Illegitimate Tools'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\nComputerName = {{_source.ComputerName}}\n       Image = {{_source.Image}}\n   ProcessID = {{_source.ProcessID}}\n      Device = {{_source.Device}}================================================================================\n{{/ctx.payload.hits.hits}}",

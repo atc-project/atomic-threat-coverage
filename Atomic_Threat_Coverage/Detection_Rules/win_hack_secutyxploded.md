@@ -2,7 +2,7 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the execution of SecurityXploded Tools |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1555: Credentials from Password Stores](https://attack.mitre.org/techniques/T1555)</li><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1503: Credentials from Web Browsers](https://attack.mitre.org/techniques/T1503)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
 | **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | critical |
@@ -10,7 +10,7 @@
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
 | **References**           | <ul><li>[https://securityxploded.com/](https://securityxploded.com/)</li><li>[https://cyberx-labs.com/blog/gangnam-industrial-style-apt-campaign-targets-korean-industrial-companies/](https://cyberx-labs.com/blog/gangnam-industrial-style-apt-campaign-targets-korean-industrial-companies/)</li></ul>  |
 | **Author**               | Florian Roth |
-
+| Other Tags           | <ul><li>attack.s0005</li></ul> | 
 
 ## Detection Rules
 
@@ -25,12 +25,10 @@ references:
     - https://securityxploded.com/
     - https://cyberx-labs.com/blog/gangnam-industrial-style-apt-campaign-targets-korean-industrial-companies/
 date: 2018/12/19
-modified: 2020/09/01
 tags:
     - attack.credential_access
-    - attack.t1555
-    - attack.t1003  # an old one
-    - attack.t1503  # an old one
+    - attack.t1003
+    - attack.s0005
 logsource:
     category: process_creation
     product: windows
@@ -76,9 +74,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects the execution of SecurityXploded Tools",
     "tags": [
       "attack.credential_access",
-      "attack.t1555",
       "attack.t1003",
-      "attack.t1503"
+      "attack.s0005"
     ],
     "query": "(Company:\"SecurityXploded\" OR winlog.event_data.Image.keyword:*PasswordDump.exe OR OriginalFilename.keyword:*PasswordDump.exe)"
   },
@@ -127,10 +124,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'SecurityXploded Tool'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

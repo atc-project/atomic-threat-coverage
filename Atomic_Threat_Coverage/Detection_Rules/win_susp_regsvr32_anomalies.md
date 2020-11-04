@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects various anomalies in relation to regsvr32.exe |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1218.010: Regsvr32](https://attack.mitre.org/techniques/T1218/010)</li><li>[T1117: Regsvr32](https://attack.mitre.org/techniques/T1117)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1117: Regsvr32](https://attack.mitre.org/techniques/T1117)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.010: Regsvr32](../Triggers/T1218.010.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1117: Regsvr32](../Triggers/T1117.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -23,17 +23,14 @@ status: experimental
 description: Detects various anomalies in relation to regsvr32.exe
 author: Florian Roth
 date: 2019/01/16
-modified: 2020/08/28
 references:
     - https://subt0x10.blogspot.de/2017/04/bypass-application-whitelisting-script.html
 tags:
+    - attack.t1117
     - attack.defense_evasion
-    - attack.t1218.010      
-    - attack.execution  # an old one  
-    - attack.t1117      # an old one  
+    - attack.execution
     - car.2019-04-002
     - car.2019-04-003
-
 logsource:
     category: process_creation
     product: windows
@@ -95,10 +92,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Regsvr32 Anomaly",
     "description": "Detects various anomalies in relation to regsvr32.exe",
     "tags": [
-      "attack.defense_evasion",
-      "attack.t1218.010",
-      "attack.execution",
       "attack.t1117",
+      "attack.defense_evasion",
+      "attack.execution",
       "car.2019-04-002",
       "car.2019-04-003"
     ],
@@ -149,10 +145,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Regsvr32 Anomaly'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

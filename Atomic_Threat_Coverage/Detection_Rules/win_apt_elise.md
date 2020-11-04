@@ -1,10 +1,10 @@
 | Title                    | Elise Backdoor       |
 |:-------------------------|:------------------|
 | **Description**          | Detects Elise backdoor acitivty as used by APT32 |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059: Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)</li><li>[T1059.003: Windows Command Shell](https://attack.mitre.org/techniques/T1059/003)</li></ul>  |
+| **ATT&amp;CK Tactic**    |   This Detection Rule wasn't mapped to ATT&amp;CK Tactic yet  |
+| **ATT&amp;CK Technique** |  This Detection Rule wasn't mapped to ATT&amp;CK Technique yet  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.003: Windows Command Shell](../Triggers/T1059.003.md)</li></ul>  |
+| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -27,12 +27,8 @@ tags:
     - attack.g0030
     - attack.g0050
     - attack.s0081
-    - attack.execution
-    - attack.t1059 # an old one
-    - attack.t1059.003
 author: Florian Roth
 date: 2018/01/31
-modified: 2020/08/26
 logsource:
     category: process_creation
     product: windows
@@ -78,10 +74,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.g0030",
       "attack.g0050",
-      "attack.s0081",
-      "attack.execution",
-      "attack.t1059",
-      "attack.t1059.003"
+      "attack.s0081"
     ],
     "query": "((winlog.event_data.Image:\"C\\:\\\\Windows\\\\SysWOW64\\\\cmd.exe\" AND winlog.event_data.CommandLine.keyword:*\\\\Windows\\\\Caches\\\\NavShExt.dll\\ *) OR winlog.event_data.CommandLine.keyword:*\\\\AppData\\\\Roaming\\\\MICROS\\~1\\\\Windows\\\\Caches\\\\NavShExt.dll,Setting)"
   },
@@ -130,10 +123,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Elise Backdoor'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

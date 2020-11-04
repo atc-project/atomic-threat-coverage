@@ -1,5 +1,6 @@
 | Title            | LP_0048_Passive_DNS_logging                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Configuration to enable logging of all fields logging in Passive DNS                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | High                                                                    |

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects Commandlet names and arguments from the Nishang exploitation framework |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001)</li><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1086: PowerShell](https://attack.mitre.org/techniques/T1086)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0036_4104_windows_powershell_script_block](../Data_Needed/DN_0036_4104_windows_powershell_script_block.md)</li><li>[DN_0037_4103_windows_powershell_executing_pipeline](../Data_Needed/DN_0037_4103_windows_powershell_executing_pipeline.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1059.001: PowerShell](../Triggers/T1059.001.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1086: PowerShell](../Triggers/T1086.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>Penetration testing</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,8 +26,7 @@ references:
     - https://github.com/samratashok/nishang
 tags:
     - attack.execution
-    - attack.t1059.001
-    - attack.t1086  #an old one
+    - attack.t1086
 author: Alec Costello
 logsource:
     product: windows
@@ -144,7 +143,6 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects Commandlet names and arguments from the Nishang exploitation framework",
     "tags": [
       "attack.execution",
-      "attack.t1059.001",
       "attack.t1086"
     ],
     "query": "\\*.keyword:(*Add\\-ConstrainedDelegationBackdoor* OR *Set\\-DCShadowPermissions* OR *DNS_TXT_Pwnage* OR *Execute\\-OnTime* OR *HTTP\\-Backdoor* OR *Set\\-RemotePSRemoting* OR *Set\\-RemoteWMI* OR *Invoke\\-AmsiBypass* OR *Out\\-CHM* OR *Out\\-HTA* OR *Out\\-SCF* OR *Out\\-SCT* OR *Out\\-Shortcut* OR *Out\\-WebQuery* OR *Out\\-Word* OR *Enable\\-Duplication* OR *Remove\\-Update* OR *Download\\-Execute\\-PS* OR *Download_Execute* OR *Execute\\-Command\\-MSSQL* OR *Execute\\-DNSTXT\\-Code* OR *Out\\-RundllCommand* OR *Copy\\-VSS* OR *FireBuster* OR *FireListener* OR *Get\\-Information* OR *Get\\-PassHints* OR *Get\\-WLAN\\-Keys* OR *Get\\-Web\\-Credentials* OR *Invoke\\-CredentialsPhish* OR *Invoke\\-MimikatzWDigestDowngrade* OR *Invoke\\-SSIDExfil* OR *Invoke\\-SessionGopher* OR *Keylogger* OR *Invoke\\-Interceptor* OR *Create\\-MultipleSessions* OR *Invoke\\-NetworkRelay* OR *Run\\-EXEonRemote* OR *Invoke\\-Prasadhak* OR *Invoke\\-BruteForce* OR *Password\\-List* OR *Invoke\\-JSRatRegsvr* OR *Invoke\\-JSRatRundll* OR *Invoke\\-PoshRatHttps* OR *Invoke\\-PowerShellIcmp* OR *Invoke\\-PowerShellUdp* OR *Invoke\\-PSGcat* OR *Invoke\\-PsGcatAgent* OR *Remove\\-PoshRat* OR *Add\\-Persistance* OR *ExetoText* OR *Invoke\\-Decode* OR *Invoke\\-Encode* OR *Parse_Keys* OR *Remove\\-Persistence* OR *StringtoBase64* OR *TexttoExe* OR *Powerpreter* OR *Nishang* OR *EncodedData* OR *DataToEncode* OR *LoggedKeys* OR *OUT\\-DNSTXT* OR *Jitter* OR *ExfilOption* OR *Tamper* OR *DumpCerts* OR *DumpCreds* OR *Shellcode32* OR *Shellcode64* OR *NotAllNameSpaces* OR *exfill* OR *FakeDC* OR *Exploit*)"
@@ -194,10 +192,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Malicious Nishang PowerShell Commandlets'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

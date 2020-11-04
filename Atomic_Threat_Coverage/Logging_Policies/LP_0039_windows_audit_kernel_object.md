@@ -1,5 +1,6 @@
 | Title            | LP_0039_windows_audit_kernel_object                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | This policy setting allows you to audit attempts to access the kernel,  which include mutexes and semaphores. Only kernel objects with a matching  system access control list (SACL) generate security audit events                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | High                                                                    |

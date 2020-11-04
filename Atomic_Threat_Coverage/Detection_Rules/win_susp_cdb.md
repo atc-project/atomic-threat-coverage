@@ -1,10 +1,10 @@
 | Title                    | Possible App Whitelisting Bypass via WinDbg/CDB as a Shellcode Runner       |
 |:-------------------------|:------------------|
-| **Description**          | Launch 64-bit shellcode from a debugger script file using cdb.exe. |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1106: Native API](https://attack.mitre.org/techniques/T1106)</li><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li><li>[T1127: Trusted Developer Utilities Proxy Execution](https://attack.mitre.org/techniques/T1127)</li></ul>  |
+| **Description**          | Launch 64-bit shellcode from the x64_calc.wds file using cdb.exe. |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1218: Signed Binary Proxy Execution](https://attack.mitre.org/techniques/T1218)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1106: Native API](../Triggers/T1106.md)</li><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1218: Signed Binary Proxy Execution](../Triggers/T1218.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Legitimate use of debugging tools</li></ul>  |
 | **Development Status**   | experimental |
@@ -20,19 +20,17 @@
 title: Possible App Whitelisting Bypass via WinDbg/CDB as a Shellcode Runner
 id: b5c7395f-e501-4a08-94d4-57fe7a9da9d2
 status: experimental
-description: Launch 64-bit shellcode from a debugger script file using cdb.exe.
+description: Launch 64-bit shellcode from the x64_calc.wds file using cdb.exe.
 references:
     - https://github.com/LOLBAS-Project/LOLBAS/blob/master/yml/OtherMSBinaries/Cdb.yml
     - http://www.exploit-monday.com/2016/08/windbg-cdb-shellcode-runner.html
 author: Beyu Denis, oscd.community
 date: 2019/10/26
-modified: 2020/09/05
+modified: 2019/11/04
 tags:
-    - attack.execution
-    - attack.t1106
     - attack.defense_evasion
+    - attack.execution
     - attack.t1218
-    - attack.t1127
 level: medium
 logsource:
     category: process_creation
@@ -72,13 +70,11 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
 {
   "metadata": {
     "title": "Possible App Whitelisting Bypass via WinDbg/CDB as a Shellcode Runner",
-    "description": "Launch 64-bit shellcode from a debugger script file using cdb.exe.",
+    "description": "Launch 64-bit shellcode from the x64_calc.wds file using cdb.exe.",
     "tags": [
-      "attack.execution",
-      "attack.t1106",
       "attack.defense_evasion",
-      "attack.t1218",
-      "attack.t1127"
+      "attack.execution",
+      "attack.t1218"
     ],
     "query": "(winlog.event_data.Image.keyword:*\\\\cdb.exe AND winlog.event_data.CommandLine.keyword:*\\-cf*)"
   },
@@ -127,10 +123,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Possible App Whitelisting Bypass via WinDbg/CDB as a Shellcode Runner'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

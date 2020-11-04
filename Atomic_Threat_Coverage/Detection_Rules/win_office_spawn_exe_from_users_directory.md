@@ -1,10 +1,10 @@
 | Title                    | MS Office Product Spawning Exe in User Dir       |
 |:-------------------------|:------------------|
 | **Description**          | Detects an executable in the users directory started from Microsoft Word, Excel, Powerpoint, Publisher or Visio |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1204: User Execution](https://attack.mitre.org/techniques/T1204)</li><li>[T1204.002: Malicious File](https://attack.mitre.org/techniques/T1204/002)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1059: Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)</li><li>[T1202: Indirect Command Execution](https://attack.mitre.org/techniques/T1202)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1204.002: Malicious File](../Triggers/T1204.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1059: Command and Scripting Interpreter](../Triggers/T1059.md)</li><li>[T1202: Indirect Command Execution](../Triggers/T1202.md)</li></ul>  |
 | **Severity Level**       | high |
 | **False Positives**      | <ul><li>unknown</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,13 +26,13 @@ references:
     - https://blog.morphisec.com/fin7-not-finished-morphisec-spots-new-campaign
 tags:
     - attack.execution
-    - attack.t1204          # an old one
-    - attack.t1204.002
+    - attack.defense_evasion
+    - attack.t1059
+    - attack.t1202
     - FIN7
     - car.2013-05-002
 author: Jason Lynch 
 date: 2019/04/02
-modified: 2020/09/01
 logsource:
     category: process_creation
     product: windows
@@ -85,8 +85,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects an executable in the users directory started from Microsoft Word, Excel, Powerpoint, Publisher or Visio",
     "tags": [
       "attack.execution",
-      "attack.t1204",
-      "attack.t1204.002",
+      "attack.defense_evasion",
+      "attack.t1059",
+      "attack.t1202",
       "FIN7",
       "car.2013-05-002"
     ],
@@ -137,10 +138,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'MS Office Product Spawning Exe in User Dir'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}Hit on {{_source.@timestamp}}:\n      CommandLine = {{_source.CommandLine}}\nParentCommandLine = {{_source.ParentCommandLine}}================================================================================\n{{/ctx.payload.hits.hits}}",

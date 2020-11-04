@@ -1,5 +1,6 @@
 | Title              | DN_0007_3_windows_sysmon_network_connection       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | TCP/UDP connections made by a process |
 | **Logging Policy** | <ul><li>[LP_0005_windows_sysmon_network_connection](../Logging_Policies/LP_0005_windows_sysmon_network_connection.md)</li></ul> |
 | **References**     | <ul><li>[https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90003](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90003)</li><li>[https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-3.md](https://github.com/Cyb3rWard0g/OSSEM/blob/master/data_dictionaries/windows/sysmon/event-3.md)</li></ul> |

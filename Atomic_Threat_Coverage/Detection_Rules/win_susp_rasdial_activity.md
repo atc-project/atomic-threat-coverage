@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects suspicious process related to rasdial.exe |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1059: Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)</li><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0001_4688_windows_process_creation](../Data_Needed/DN_0001_4688_windows_process_creation.md)</li><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
+| **ATT&amp;CK Technique** | <ul><li>[T1064: Scripting](https://attack.mitre.org/techniques/T1064)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1064: Scripting](../Triggers/T1064.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>False positives depend on scripts and administrative tools used in the monitored environment</li></ul>  |
 | **Development Status**   | experimental |
@@ -28,15 +28,14 @@ date: 2019/01/16
 tags:
     - attack.defense_evasion
     - attack.execution
-    - attack.t1059
-    - attack.t1064      # an old one 
+    - attack.t1064
 logsource:
     category: process_creation
     product: windows
 detection:
     selection:
-        Image|endswith:
-            - rasdial.exe
+        CommandLine:
+            - rasdial
     condition: selection
 falsepositives:
     - False positives depend on scripts and administrative tools used in the monitored environment
@@ -51,14 +50,14 @@ level: medium
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "Image.*.*rasdial.exe") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "rasdial") } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-winlog.event_data.Image.keyword:(*rasdial.exe)
+winlog.event_data.CommandLine:("rasdial")
 ```
 
 
@@ -73,10 +72,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.defense_evasion",
       "attack.execution",
-      "attack.t1059",
       "attack.t1064"
     ],
-    "query": "winlog.event_data.Image.keyword:(*rasdial.exe)"
+    "query": "winlog.event_data.CommandLine:(\"rasdial\")"
   },
   "trigger": {
     "schedule": {
@@ -93,7 +91,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "winlog.event_data.Image.keyword:(*rasdial.exe)",
+                    "query": "winlog.event_data.CommandLine:(\"rasdial\")",
                     "analyze_wildcard": true
                   }
                 }
@@ -123,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Suspicious RASdial Activity'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -149,28 +144,28 @@ EOF
 ### graylog
     
 ```
-Image.keyword:(*rasdial.exe)
+CommandLine:("rasdial")
 ```
 
 
 ### splunk
     
 ```
-(Image="*rasdial.exe")
+(CommandLine="rasdial")
 ```
 
 
 ### logpoint
     
 ```
-Image IN ["*rasdial.exe"]
+CommandLine IN ["rasdial"]
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*.*rasdial\.exe)'
+grep -P '^(?:.*rasdial)'
 ```
 
 

@@ -1,5 +1,6 @@
 | Title            | LP_0009_windows_sysmon_PipeEvent                                                                     |
 |:-----------------|:--------------------------------------------------------------------------------|
+| **Author**       | @atc_project                                                                      |
 | **Description**  | Enables logging of events related to usage or creation of pipes.                                                               |
 | **Default**      | Not configured                                                                   |
 | **Event Volume** | Low                                                                    |

@@ -3,7 +3,7 @@
 | **ID**                      | RA2205            |
 | **Description**             | Extract observables from an email message   |
 | **Author**                  | @atc_project        |
-| **Creation Date**           | 2019/01/31 |
+| **Creation Date**           | 31.01.2019 |
 | **Category**                | Email      |
 | **Stage**                   |[RS0002: Identification](../Response_Stages/RS0002.md)| 
 | **Automation** |<ul><li>thehive</li></ul>|

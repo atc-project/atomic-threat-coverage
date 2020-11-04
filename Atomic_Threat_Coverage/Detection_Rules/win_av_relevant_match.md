@@ -66,14 +66,14 @@ level: high
 ### powershell
     
 ```
-Get-WinEvent -LogName Application | where {(($_.message -match ".*HTool.*" -or $_.message -match ".*Hacktool.*" -or $_.message -match ".*ASP/Backdoor.*" -or $_.message -match ".*JSP/Backdoor.*" -or $_.message -match ".*PHP/Backdoor.*" -or $_.message -match ".*Backdoor.ASP.*" -or $_.message -match ".*Backdoor.JSP.*" -or $_.message -match ".*Backdoor.PHP.*" -or $_.message -match ".*Webshell.*" -or $_.message -match ".*Portscan.*" -or $_.message -match ".*Mimikatz.*" -or $_.message -match ".*WinCred.*" -or $_.message -match ".*PlugX.*" -or $_.message -match ".*Korplug.*" -or $_.message -match ".*Pwdump.*" -or $_.message -match ".*Chopper.*" -or $_.message -match ".*WmiExec.*" -or $_.message -match ".*Xscan.*" -or $_.message -match ".*Clearlog.*" -or $_.message -match ".*ASPXSpy.*") -and  -not (($_.message -match ".*Keygen.*" -or $_.message -match ".*Crack.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent -LogName Application | where {(($_.message -match "Message.*.*HTool.*" -or $_.message -match "Message.*.*Hacktool.*" -or $_.message -match "Message.*.*ASP/Backdoor.*" -or $_.message -match "Message.*.*JSP/Backdoor.*" -or $_.message -match "Message.*.*PHP/Backdoor.*" -or $_.message -match "Message.*.*Backdoor.ASP.*" -or $_.message -match "Message.*.*Backdoor.JSP.*" -or $_.message -match "Message.*.*Backdoor.PHP.*" -or $_.message -match "Message.*.*Webshell.*" -or $_.message -match "Message.*.*Portscan.*" -or $_.message -match "Message.*.*Mimikatz.*" -or $_.message -match "Message.*.*WinCred.*" -or $_.message -match "Message.*.*PlugX.*" -or $_.message -match "Message.*.*Korplug.*" -or $_.message -match "Message.*.*Pwdump.*" -or $_.message -match "Message.*.*Chopper.*" -or $_.message -match "Message.*.*WmiExec.*" -or $_.message -match "Message.*.*Xscan.*" -or $_.message -match "Message.*.*Clearlog.*" -or $_.message -match "Message.*.*ASPXSpy.*") -and  -not (($_.message -match "Message.*.*Keygen.*" -or $_.message -match "Message.*.*Crack.*"))) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.channel:"Application" AND Message.keyword:(*HTool* OR *Hacktool* OR *ASP\/Backdoor* OR *JSP\/Backdoor* OR *PHP\/Backdoor* OR *Backdoor.ASP* OR *Backdoor.JSP* OR *Backdoor.PHP* OR *Webshell* OR *Portscan* OR *Mimikatz* OR *WinCred* OR *PlugX* OR *Korplug* OR *Pwdump* OR *Chopper* OR *WmiExec* OR *Xscan* OR *Clearlog* OR *ASPXSpy*) AND (NOT (Message.keyword:(*Keygen* OR *Crack*))))
+(winlog.channel:"Application" AND winlog.event_data.Message.keyword:(*HTool* OR *Hacktool* OR *ASP\/Backdoor* OR *JSP\/Backdoor* OR *PHP\/Backdoor* OR *Backdoor.ASP* OR *Backdoor.JSP* OR *Backdoor.PHP* OR *Webshell* OR *Portscan* OR *Mimikatz* OR *WinCred* OR *PlugX* OR *Korplug* OR *Pwdump* OR *Chopper* OR *WmiExec* OR *Xscan* OR *Clearlog* OR *ASPXSpy*) AND (NOT (winlog.event_data.Message.keyword:(*Keygen* OR *Crack*))))
 ```
 
 
@@ -86,7 +86,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Relevant Anti-Virus Event",
     "description": "This detection method points out highly relevant Antivirus events",
     "tags": "",
-    "query": "(winlog.channel:\"Application\" AND Message.keyword:(*HTool* OR *Hacktool* OR *ASP\\/Backdoor* OR *JSP\\/Backdoor* OR *PHP\\/Backdoor* OR *Backdoor.ASP* OR *Backdoor.JSP* OR *Backdoor.PHP* OR *Webshell* OR *Portscan* OR *Mimikatz* OR *WinCred* OR *PlugX* OR *Korplug* OR *Pwdump* OR *Chopper* OR *WmiExec* OR *Xscan* OR *Clearlog* OR *ASPXSpy*) AND (NOT (Message.keyword:(*Keygen* OR *Crack*))))"
+    "query": "(winlog.channel:\"Application\" AND winlog.event_data.Message.keyword:(*HTool* OR *Hacktool* OR *ASP\\/Backdoor* OR *JSP\\/Backdoor* OR *PHP\\/Backdoor* OR *Backdoor.ASP* OR *Backdoor.JSP* OR *Backdoor.PHP* OR *Webshell* OR *Portscan* OR *Mimikatz* OR *WinCred* OR *PlugX* OR *Korplug* OR *Pwdump* OR *Chopper* OR *WmiExec* OR *Xscan* OR *Clearlog* OR *ASPXSpy*) AND (NOT (winlog.event_data.Message.keyword:(*Keygen* OR *Crack*))))"
   },
   "trigger": {
     "schedule": {
@@ -103,7 +103,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Application\" AND Message.keyword:(*HTool* OR *Hacktool* OR *ASP\\/Backdoor* OR *JSP\\/Backdoor* OR *PHP\\/Backdoor* OR *Backdoor.ASP* OR *Backdoor.JSP* OR *Backdoor.PHP* OR *Webshell* OR *Portscan* OR *Mimikatz* OR *WinCred* OR *PlugX* OR *Korplug* OR *Pwdump* OR *Chopper* OR *WmiExec* OR *Xscan* OR *Clearlog* OR *ASPXSpy*) AND (NOT (Message.keyword:(*Keygen* OR *Crack*))))",
+                    "query": "(winlog.channel:\"Application\" AND winlog.event_data.Message.keyword:(*HTool* OR *Hacktool* OR *ASP\\/Backdoor* OR *JSP\\/Backdoor* OR *PHP\\/Backdoor* OR *Backdoor.ASP* OR *Backdoor.JSP* OR *Backdoor.PHP* OR *Webshell* OR *Portscan* OR *Mimikatz* OR *WinCred* OR *PlugX* OR *Korplug* OR *Pwdump* OR *Chopper* OR *WmiExec* OR *Xscan* OR *Clearlog* OR *ASPXSpy*) AND (NOT (winlog.event_data.Message.keyword:(*Keygen* OR *Crack*))))",
                     "analyze_wildcard": true
                   }
                 }
@@ -133,10 +133,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Relevant Anti-Virus Event'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

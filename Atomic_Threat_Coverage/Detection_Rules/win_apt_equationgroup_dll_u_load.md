@@ -1,10 +1,10 @@
 | Title                    | Equation Group DLL_U Load       |
 |:-------------------------|:------------------|
 | **Description**          | Detects a specific tool and export used by EquationGroup |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li><li>[T1218.011: Rundll32](https://attack.mitre.org/techniques/T1218/011)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0002: Execution](https://attack.mitre.org/tactics/TA0002)</li><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1059: Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)</li><li>[T1085: Rundll32](https://attack.mitre.org/techniques/T1085)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1218.011: Rundll32](../Triggers/T1218.011.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1059: Command and Scripting Interpreter](../Triggers/T1059.md)</li><li>[T1085: Rundll32](../Triggers/T1085.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unknown</li></ul>  |
 | **Development Status**   |  Development Status wasn't defined for this Detection Rule yet  |
@@ -21,17 +21,17 @@ title: Equation Group DLL_U Load
 id: d465d1d8-27a2-4cca-9621-a800f37cf72e
 author: Florian Roth
 date: 2019/03/04
-modified: 2020/08/27
 description: Detects a specific tool and export used by EquationGroup
 references:
     - https://github.com/adamcaudill/EquationGroupLeak/search?utf8=%E2%9C%93&q=dll_u&type=
     - https://securelist.com/apt-slingshot/84312/
     - https://twitter.com/cyb3rops/status/972186477512839170
 tags:
+    - attack.execution
     - attack.g0020
+    - attack.t1059
     - attack.defense_evasion
-    - attack.t1085 # an old one
-    - attack.t1218.011
+    - attack.t1085
 logsource:
     category: process_creation
     product: windows
@@ -75,10 +75,11 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Equation Group DLL_U Load",
     "description": "Detects a specific tool and export used by EquationGroup",
     "tags": [
+      "attack.execution",
       "attack.g0020",
+      "attack.t1059",
       "attack.defense_evasion",
-      "attack.t1085",
-      "attack.t1218.011"
+      "attack.t1085"
     ],
     "query": "((winlog.event_data.Image.keyword:*\\\\rundll32.exe AND winlog.event_data.CommandLine.keyword:*,dll_u) OR winlog.event_data.CommandLine.keyword:*\\ \\-export\\ dll_u\\ *)"
   },
@@ -127,10 +128,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Equation Group DLL_U Load'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

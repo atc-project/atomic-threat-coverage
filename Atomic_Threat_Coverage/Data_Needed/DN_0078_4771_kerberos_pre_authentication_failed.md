@@ -1,5 +1,6 @@
 | Title              | DN_0078_4771_kerberos_pre_authentication_failed       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | This event generates every time the Key Distribution Center fails  to issue a Kerberos Ticket Granting Ticket (TGT). This can occur  when a domain controller doesn’t have a certificate installed for  smart card authentication (for example, with a "Domain Controller"  or "Domain Controller Authentication" template), the user’s password  has expired, or the wrong password was provided. This event  generates only on domain controllers |
 | **Logging Policy** | <ul><li>[LP_0038_windows_audit_kerberos_authentication_service](../Logging_Policies/LP_0038_windows_audit_kerberos_authentication_service.md)</li></ul> |
 | **References**     | <ul><li>[https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4771.md](https://github.com/MicrosoftDocs/windows-itpro-docs/blob/master/windows/security/threat-protection/auditing/event-4771.md)</li></ul> |

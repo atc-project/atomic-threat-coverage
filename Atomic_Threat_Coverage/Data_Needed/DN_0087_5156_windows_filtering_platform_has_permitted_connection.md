@@ -1,5 +1,6 @@
 | Title              | DN_0087_5156_windows_filtering_platform_has_permitted_connection       |
 |:-------------------|:------------------|
+| **Author**         | @atc_project        |
 | **Description**    | The Windows Filtering Platform has permitted a connection |
 | **Logging Policy** | <ul><li>[LP_0045_windows_audit_filtering_platform_connection](../Logging_Policies/LP_0045_windows_audit_filtering_platform_connection.md)</li></ul> |
 | **References**     | <ul><li>[https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-5156](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-5156)</li></ul> |

@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Transfering files with well-known filenames (sensitive files with credential data) using network shares |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0006: Credential Access](https://attack.mitre.org/tactics/TA0006)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li><li>[T1003.002: Security Account Manager](https://attack.mitre.org/techniques/T1003/002)</li><li>[T1003.001: LSASS Memory](https://attack.mitre.org/techniques/T1003/001)</li><li>[T1003.003: NTDS](https://attack.mitre.org/techniques/T1003/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1003: OS Credential Dumping](https://attack.mitre.org/techniques/T1003)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0032_5145_network_share_object_was_accessed_detailed](../Data_Needed/DN_0032_5145_network_share_object_was_accessed_detailed.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li><li>[T1003.002: Security Account Manager](../Triggers/T1003.002.md)</li><li>[T1003.001: LSASS Memory](../Triggers/T1003.001.md)</li><li>[T1003.003: NTDS](../Triggers/T1003.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1003: OS Credential Dumping](../Triggers/T1003.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Transfering sensitive files for legitimate administration work by legitimate administrator</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,10 +26,7 @@ references:
     - https://www.slideshare.net/heirhabarov/hunting-for-credentials-dumping-in-windows-environment
 tags:
     - attack.credential_access
-    - attack.t1003           # an old one
-    - attack.t1003.002
-    - attack.t1003.001
-    - attack.t1003.003
+    - attack.t1003
 logsource:
     product: windows
     service: security
@@ -67,7 +64,7 @@ Get-WinEvent -LogName Security | where {($_.ID -eq "5145" -and ($_.message -matc
 ### es-qs
     
 ```
-(winlog.channel:"Security" AND winlog.event_id:"5145" AND RelativeTargetName.keyword:(*\\mimidrv* OR *\\lsass* OR *\\windows\\minidump\\* OR *\\hiberfil* OR *\\sqldmpr* OR *\\sam* OR *\\ntds.dit* OR *\\security*))
+(winlog.channel:"Security" AND winlog.event_id:"5145" AND RelativeTargetName.keyword:(*\\mimidrv* OR *\\lsass* OR *\\windows\\minidump\* OR *\\hiberfil* OR *\\sqldmpr* OR *\\sam* OR *\\ntds.dit* OR *\\security*))
 ```
 
 
@@ -81,12 +78,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Transfering files with well-known filenames (sensitive files with credential data) using network shares",
     "tags": [
       "attack.credential_access",
-      "attack.t1003",
-      "attack.t1003.002",
-      "attack.t1003.001",
-      "attack.t1003.003"
+      "attack.t1003"
     ],
-    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"5145\" AND RelativeTargetName.keyword:(*\\\\mimidrv* OR *\\\\lsass* OR *\\\\windows\\\\minidump\\\\* OR *\\\\hiberfil* OR *\\\\sqldmpr* OR *\\\\sam* OR *\\\\ntds.dit* OR *\\\\security*))"
+    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"5145\" AND RelativeTargetName.keyword:(*\\\\mimidrv* OR *\\\\lsass* OR *\\\\windows\\\\minidump\\* OR *\\\\hiberfil* OR *\\\\sqldmpr* OR *\\\\sam* OR *\\\\ntds.dit* OR *\\\\security*))"
   },
   "trigger": {
     "schedule": {
@@ -103,7 +97,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"5145\" AND RelativeTargetName.keyword:(*\\\\mimidrv* OR *\\\\lsass* OR *\\\\windows\\\\minidump\\\\* OR *\\\\hiberfil* OR *\\\\sqldmpr* OR *\\\\sam* OR *\\\\ntds.dit* OR *\\\\security*))",
+                    "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"5145\" AND RelativeTargetName.keyword:(*\\\\mimidrv* OR *\\\\lsass* OR *\\\\windows\\\\minidump\\* OR *\\\\hiberfil* OR *\\\\sqldmpr* OR *\\\\sam* OR *\\\\ntds.dit* OR *\\\\security*))",
                     "analyze_wildcard": true
                   }
                 }
@@ -133,10 +127,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Transfering Files with Credential Data via Network Shares'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -159,28 +150,28 @@ EOF
 ### graylog
     
 ```
-(EventID:"5145" AND RelativeTargetName.keyword:(*\\mimidrv* *\\lsass* *\\windows\\minidump\\* *\\hiberfil* *\\sqldmpr* *\\sam* *\\ntds.dit* *\\security*))
+(EventID:"5145" AND RelativeTargetName.keyword:(*\\mimidrv* *\\lsass* *\\windows\\minidump\* *\\hiberfil* *\\sqldmpr* *\\sam* *\\ntds.dit* *\\security*))
 ```
 
 
 ### splunk
     
 ```
-(source="WinEventLog:Security" EventCode="5145" (RelativeTargetName="*\\mimidrv*" OR RelativeTargetName="*\\lsass*" OR RelativeTargetName="*\\windows\\minidump\\*" OR RelativeTargetName="*\\hiberfil*" OR RelativeTargetName="*\\sqldmpr*" OR RelativeTargetName="*\\sam*" OR RelativeTargetName="*\\ntds.dit*" OR RelativeTargetName="*\\security*"))
+(source="WinEventLog:Security" EventCode="5145" (RelativeTargetName="*\\mimidrv*" OR RelativeTargetName="*\\lsass*" OR RelativeTargetName="*\\windows\\minidump\*" OR RelativeTargetName="*\\hiberfil*" OR RelativeTargetName="*\\sqldmpr*" OR RelativeTargetName="*\\sam*" OR RelativeTargetName="*\\ntds.dit*" OR RelativeTargetName="*\\security*"))
 ```
 
 
 ### logpoint
     
 ```
-(event_source="Microsoft-Windows-Security-Auditing" event_id="5145" RelativeTargetName IN ["*\\mimidrv*", "*\\lsass*", "*\\windows\\minidump\\*", "*\\hiberfil*", "*\\sqldmpr*", "*\\sam*", "*\\ntds.dit*", "*\\security*"])
+(event_source="Microsoft-Windows-Security-Auditing" event_id="5145" RelativeTargetName IN ["*\\mimidrv*", "*\\lsass*", "*\\windows\\minidump\*", "*\\hiberfil*", "*\\sqldmpr*", "*\\sam*", "*\\ntds.dit*", "*\\security*"])
 ```
 
 
 ### grep
     
 ```
-grep -P '^(?:.*(?=.*5145)(?=.*(?:.*.*\mimidrv.*|.*.*\lsass.*|.*.*\windows\minidump\\.*|.*.*\hiberfil.*|.*.*\sqldmpr.*|.*.*\sam.*|.*.*\ntds\.dit.*|.*.*\security.*)))'
+grep -P '^(?:.*(?=.*5145)(?=.*(?:.*.*\mimidrv.*|.*.*\lsass.*|.*.*\windows\minidump\.*|.*.*\hiberfil.*|.*.*\sqldmpr.*|.*.*\sam.*|.*.*\ntds\.dit.*|.*.*\security.*)))'
 ```
 
 

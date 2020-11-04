@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects potential use of Rubeus via registered new trusted logon process |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li><li>[TA0004: Privilege Escalation](https://attack.mitre.org/tactics/TA0004)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li><li>[T1558.003: Kerberoasting](https://attack.mitre.org/techniques/T1558/003)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1208: Kerberoasting](https://attack.mitre.org/techniques/T1208)</li></ul>  |
 | **Data Needed**          |  There is no documented Data Needed for this Detection Rule yet  |
-| **Trigger**              | <ul><li>[T1558.003: Kerberoasting](../Triggers/T1558.003.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1208: Kerberoasting](../Triggers/T1208.md)</li></ul>  |
 | **Severity Level**       | critical |
 | **False Positives**      | <ul><li>Unkown</li></ul>  |
 | **Development Status**   | experimental |
@@ -26,8 +26,7 @@ references:
 tags:
     - attack.lateral_movement
     - attack.privilege_escalation
-    - attack.t1208          # an old one
-    - attack.t1558.003
+    - attack.t1208
 author: Roberto Rodriguez (source), Ilyas Ochkov (rule), oscd.community
 date: 2019/10/24
 logsource:
@@ -73,8 +72,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.lateral_movement",
       "attack.privilege_escalation",
-      "attack.t1208",
-      "attack.t1558.003"
+      "attack.t1208"
     ],
     "query": "(winlog.channel:\"Security\" AND winlog.event_id:\"4611\" AND winlog.event_data.LogonProcessName:\"User32LogonProcesss\")"
   },
@@ -123,10 +121,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Register new Logon Process by Rubeus'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",

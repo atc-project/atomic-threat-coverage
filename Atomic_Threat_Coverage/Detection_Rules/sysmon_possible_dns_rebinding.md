@@ -1,8 +1,8 @@
 | Title                    | Possible DNS Rebinding       |
 |:-------------------------|:------------------|
 | **Description**          | Detects several different DNS-answers by one domain with IPs from internal and external networks. Normally, DNS-answer contain TTL >100. (DNS-record will saved in host cache for a while TTL). |
-| **ATT&amp;CK Tactic**    |  <ul><li>[TA0001: Initial Access](https://attack.mitre.org/tactics/TA0001)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1189: Drive-by Compromise](https://attack.mitre.org/techniques/T1189)</li></ul>  |
+| **ATT&amp;CK Tactic**    |  <ul><li>[TA0011: Command and Control](https://attack.mitre.org/tactics/TA0011)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1043: Commonly Used Port](https://attack.mitre.org/techniques/T1043)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0085_22_windows_sysmon_DnsQuery](../Data_Needed/DN_0085_22_windows_sysmon_DnsQuery.md)</li></ul>  |
 | **Trigger**              |  There is no documented Trigger for this Detection Rule yet  |
 | **Severity Level**       | medium |
@@ -20,15 +20,16 @@
 title: Possible DNS Rebinding
 id: eb07e747-2552-44cd-af36-b659ae0958e4
 status: experimental
-description: Detects several different DNS-answers by one domain with IPs from internal and external networks. Normally, DNS-answer contain TTL >100. (DNS-record will saved in host cache for a while TTL).
+description: Detects several different DNS-answers by one domain with IPs from internal and external networks. Normally, DNS-answer contain TTL >100. (DNS-record
+    will saved in host cache for a while TTL).
 date: 2019/10/25
-modified: 2020/08/28
+modified: 2019/11/13
 author: Ilyas Ochkov, oscd.community
 references:
     - https://medium.com/@brannondorsey/attacking-private-networks-from-the-internet-with-dns-rebinding-ea7098a2d325
 tags:
-    - attack.initial_access
-    - attack.t1189
+    - attack.command_and_control
+    - attack.t1043
 logsource:
     product: windows
     service: sysmon
@@ -36,9 +37,9 @@ detection:
     dns_answer:
         EventID: 22
         QueryName: '*'
-        QueryStatus: '0'
+        QueryStatus: '0' 
     filter_int_ip:
-        QueryResults|startswith:
+        QueryResults|startswith: 
             - '(::ffff:)?10.'
             - '(::ffff:)?192.168.'
             - '(::ffff:)?172.16.'
@@ -57,7 +58,7 @@ detection:
             - '(::ffff:)?172.29.'
             - '(::ffff:)?172.30.'
             - '(::ffff:)?172.31.'
-            - '(::ffff:)?127.'
+            - '(::ffff:)?127.'        
     timeframe: 30s
     condition: (dns_answer and filter_int_ip) and (dns_answer and not filter_int_ip) | count(QueryName) by ComputerName > 3
 level: medium
@@ -92,8 +93,8 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "title": "Possible DNS Rebinding",
     "description": "Detects several different DNS-answers by one domain with IPs from internal and external networks. Normally, DNS-answer contain TTL >100. (DNS-record will saved in host cache for a while TTL).",
     "tags": [
-      "attack.initial_access",
-      "attack.t1189"
+      "attack.command_and_control",
+      "attack.t1043"
     ],
     "query": "(winlog.channel:\"Microsoft\\-Windows\\-Sysmon\\/Operational\" AND winlog.event_id:\"22\" AND QueryName.keyword:* AND QueryStatus:\"0\" AND QueryResults.keyword:(\\(\\:\\:ffff\\:\\)?10.* OR \\(\\:\\:ffff\\:\\)?192.168.* OR \\(\\:\\:ffff\\:\\)?172.16.* OR \\(\\:\\:ffff\\:\\)?172.17.* OR \\(\\:\\:ffff\\:\\)?172.18.* OR \\(\\:\\:ffff\\:\\)?172.19.* OR \\(\\:\\:ffff\\:\\)?172.20.* OR \\(\\:\\:ffff\\:\\)?172.21.* OR \\(\\:\\:ffff\\:\\)?172.22.* OR \\(\\:\\:ffff\\:\\)?172.23.* OR \\(\\:\\:ffff\\:\\)?172.24.* OR \\(\\:\\:ffff\\:\\)?172.25.* OR \\(\\:\\:ffff\\:\\)?172.26.* OR \\(\\:\\:ffff\\:\\)?172.27.* OR \\(\\:\\:ffff\\:\\)?172.28.* OR \\(\\:\\:ffff\\:\\)?172.29.* OR \\(\\:\\:ffff\\:\\)?172.30.* OR \\(\\:\\:ffff\\:\\)?172.31.* OR \\(\\:\\:ffff\\:\\)?127.*) AND (winlog.event_id:\"22\" AND QueryName.keyword:* AND QueryStatus:\"0\") AND (NOT (QueryResults.keyword:(\\(\\:\\:ffff\\:\\)?10.* OR \\(\\:\\:ffff\\:\\)?192.168.* OR \\(\\:\\:ffff\\:\\)?172.16.* OR \\(\\:\\:ffff\\:\\)?172.17.* OR \\(\\:\\:ffff\\:\\)?172.18.* OR \\(\\:\\:ffff\\:\\)?172.19.* OR \\(\\:\\:ffff\\:\\)?172.20.* OR \\(\\:\\:ffff\\:\\)?172.21.* OR \\(\\:\\:ffff\\:\\)?172.22.* OR \\(\\:\\:ffff\\:\\)?172.23.* OR \\(\\:\\:ffff\\:\\)?172.24.* OR \\(\\:\\:ffff\\:\\)?172.25.* OR \\(\\:\\:ffff\\:\\)?172.26.* OR \\(\\:\\:ffff\\:\\)?172.27.* OR \\(\\:\\:ffff\\:\\)?172.28.* OR \\(\\:\\:ffff\\:\\)?172.29.* OR \\(\\:\\:ffff\\:\\)?172.30.* OR \\(\\:\\:ffff\\:\\)?172.31.* OR \\(\\:\\:ffff\\:\\)?127.*))))"
   },
@@ -129,7 +130,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
           "aggs": {
             "by": {
               "terms": {
-                "field": "winlog.ComputerName",
+                "field": "winlog.computer_name",
                 "size": 10,
                 "order": {
                   "_count": "desc"
@@ -166,10 +167,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Possible DNS Rebinding'",
         "body": "Hits:\n{{#aggregations.agg.buckets}}\n {{key}} {{doc_count}}\n\n{{#by.buckets}}\n-- {{key}} {{doc_count}}\n{{/by.buckets}}\n\n{{/aggregations.agg.buckets}}\n",

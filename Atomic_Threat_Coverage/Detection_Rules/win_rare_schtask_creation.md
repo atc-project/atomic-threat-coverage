@@ -2,9 +2,9 @@
 |:-------------------------|:------------------|
 | **Description**          | This rule detects rare scheduled task creations. Typically software gets installed on multiple systems and not only on a few. The aggregation and count function selects tasks with rare names. |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li><li>[T1053.005: Scheduled Task](https://attack.mitre.org/techniques/T1053/005)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1053: Scheduled Task/Job](https://attack.mitre.org/techniques/T1053)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0035_106_task_scheduler_task_registered](../Data_Needed/DN_0035_106_task_scheduler_task_registered.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1053.005: Scheduled Task](../Triggers/T1053.005.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1053: Scheduled Task/Job](../Triggers/T1053.md)</li></ul>  |
 | **Severity Level**       | low |
 | **False Positives**      | <ul><li>Software installation</li></ul>  |
 | **Development Status**   | experimental |
@@ -20,12 +20,12 @@
 title: Rare Scheduled Task Creations
 id: b20f6158-9438-41be-83da-a5a16ac90c2b
 status: experimental
-description: This rule detects rare scheduled task creations. Typically software gets installed on multiple systems and not only on a few. The aggregation and count function selects tasks with rare names.
+description: This rule detects rare scheduled task creations. Typically software gets installed on multiple systems and not only on a few. The aggregation and count
+    function selects tasks with rare names.
 tags:
     - attack.persistence
-    - attack.t1053           # an old one
+    - attack.t1053
     - attack.s0111
-    - attack.t1053.005
 author: Florian Roth
 date: 2017/03/17
 logsource:
@@ -72,8 +72,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "tags": [
       "attack.persistence",
       "attack.t1053",
-      "attack.s0111",
-      "attack.t1053.005"
+      "attack.s0111"
     ],
     "query": "winlog.event_id:\"106\""
   },
@@ -133,10 +132,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Rare Scheduled Task Creations'",
         "body": "Hits:\n{{#aggregations.by.buckets}}\n {{key}} {{doc_count}}\n{{/aggregations.by.buckets}}\n",

@@ -2,8 +2,8 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects, possibly, malicious unauthorized usage of bcdedit.exe |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0005: Defense Evasion](https://attack.mitre.org/tactics/TA0005)</li><li>[TA0003: Persistence](https://attack.mitre.org/tactics/TA0003)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1070: Indicator Removal on Host](https://attack.mitre.org/techniques/T1070)</li><li>[T1542.003: Bootkit](https://attack.mitre.org/techniques/T1542/003)</li><li>[T1067: Bootkit](https://attack.mitre.org/techniques/T1067)</li></ul>  |
-| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li><li>[DN_0003_1_windows_sysmon_process_creation](../Data_Needed/DN_0003_1_windows_sysmon_process_creation.md)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1070: Indicator Removal on Host](https://attack.mitre.org/techniques/T1070)</li><li>[T1067: Bootkit](https://attack.mitre.org/techniques/T1067)</li></ul>  |
+| **Data Needed**          | <ul><li>[DN_0002_4688_windows_process_creation_with_commandline](../Data_Needed/DN_0002_4688_windows_process_creation_with_commandline.md)</li></ul>  |
 | **Trigger**              | <ul><li>[T1070: Indicator Removal on Host](../Triggers/T1070.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      |  There are no documented False Positives for this Detection Rule yet  |
@@ -29,15 +29,14 @@ tags:
     - attack.defense_evasion
     - attack.t1070
     - attack.persistence
-    - attack.t1542.003
-    - attack.t1067      # an old one
+    - attack.t1067
 logsource:
     category: process_creation
     product: windows
 detection:
     selection:
-        Image: '*\bcdedit.exe'
-        CommandLine:
+        NewProcessName: '*\bcdedit.exe'
+        ProcessCommandLine:
             - '*delete*'
             - '*deletevalue*'
             - '*import*'
@@ -53,14 +52,14 @@ level: medium
 ### powershell
     
 ```
-Get-WinEvent | where {($_.message -match "Image.*.*\\bcdedit.exe" -and ($_.message -match "CommandLine.*.*delete.*" -or $_.message -match "CommandLine.*.*deletevalue.*" -or $_.message -match "CommandLine.*.*import.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
+Get-WinEvent | where {($_.message -match "NewProcessName.*.*\\bcdedit.exe" -and ($_.message -match "ProcessCommandLine.*.*delete.*" -or $_.message -match "ProcessCommandLine.*.*deletevalue.*" -or $_.message -match "ProcessCommandLine.*.*import.*")) } | select TimeCreated,Id,RecordId,ProcessId,MachineName,Message
 ```
 
 
 ### es-qs
     
 ```
-(winlog.event_data.Image.keyword:*\\bcdedit.exe AND winlog.event_data.CommandLine.keyword:(*delete* OR *deletevalue* OR *import*))
+(winlog.event_data.NewProcessName.keyword:*\\bcdedit.exe AND winlog.event_data.ProcessCommandLine.keyword:(*delete* OR *deletevalue* OR *import*))
 ```
 
 
@@ -76,10 +75,9 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
       "attack.defense_evasion",
       "attack.t1070",
       "attack.persistence",
-      "attack.t1542.003",
       "attack.t1067"
     ],
-    "query": "(winlog.event_data.Image.keyword:*\\\\bcdedit.exe AND winlog.event_data.CommandLine.keyword:(*delete* OR *deletevalue* OR *import*))"
+    "query": "(winlog.event_data.NewProcessName.keyword:*\\\\bcdedit.exe AND winlog.event_data.ProcessCommandLine.keyword:(*delete* OR *deletevalue* OR *import*))"
   },
   "trigger": {
     "schedule": {
@@ -96,7 +94,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
               "must": [
                 {
                   "query_string": {
-                    "query": "(winlog.event_data.Image.keyword:*\\\\bcdedit.exe AND winlog.event_data.CommandLine.keyword:(*delete* OR *deletevalue* OR *import*))",
+                    "query": "(winlog.event_data.NewProcessName.keyword:*\\\\bcdedit.exe AND winlog.event_data.ProcessCommandLine.keyword:(*delete* OR *deletevalue* OR *import*))",
                     "analyze_wildcard": true
                   }
                 }
@@ -126,10 +124,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Possible Ransomware or Unauthorized MBR Modifications'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
@@ -152,21 +147,21 @@ EOF
 ### graylog
     
 ```
-(Image.keyword:*\\bcdedit.exe AND CommandLine.keyword:(*delete* *deletevalue* *import*))
+(NewProcessName.keyword:*\\bcdedit.exe AND ProcessCommandLine.keyword:(*delete* *deletevalue* *import*))
 ```
 
 
 ### splunk
     
 ```
-(Image="*\\bcdedit.exe" (CommandLine="*delete*" OR CommandLine="*deletevalue*" OR CommandLine="*import*"))
+(NewProcessName="*\\bcdedit.exe" (ProcessCommandLine="*delete*" OR ProcessCommandLine="*deletevalue*" OR ProcessCommandLine="*import*"))
 ```
 
 
 ### logpoint
     
 ```
-(Image="*\\bcdedit.exe" CommandLine IN ["*delete*", "*deletevalue*", "*import*"])
+(NewProcessName="*\\bcdedit.exe" ProcessCommandLine IN ["*delete*", "*deletevalue*", "*import*"])
 ```
 
 

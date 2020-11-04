@@ -2,12 +2,12 @@
 |:-------------------------|:------------------|
 | **Description**          | Detects the attack technique pass the hash which is used to move laterally inside the network |
 | **ATT&amp;CK Tactic**    |  <ul><li>[TA0008: Lateral Movement](https://attack.mitre.org/tactics/TA0008)</li></ul>  |
-| **ATT&amp;CK Technique** | <ul><li>[T1075: Pass the Hash](https://attack.mitre.org/techniques/T1075)</li><li>[T1550.002: Pass the Hash](https://attack.mitre.org/techniques/T1550/002)</li></ul>  |
+| **ATT&amp;CK Technique** | <ul><li>[T1075: Pass the Hash](https://attack.mitre.org/techniques/T1075)</li></ul>  |
 | **Data Needed**          | <ul><li>[DN_0004_4624_windows_account_logon](../Data_Needed/DN_0004_4624_windows_account_logon.md)</li></ul>  |
-| **Trigger**              | <ul><li>[T1550.002: Pass the Hash](../Triggers/T1550.002.md)</li></ul>  |
+| **Trigger**              | <ul><li>[T1075: Pass the Hash](../Triggers/T1075.md)</li></ul>  |
 | **Severity Level**       | medium |
 | **False Positives**      | <ul><li>Administrator activity</li><li>Penetration tests</li></ul>  |
-| **Development Status**   | stable |
+| **Development Status**   | production |
 | **References**           | <ul><li>[https://github.com/iadgov/Event-Forwarding-Guidance/tree/master/Events](https://github.com/iadgov/Event-Forwarding-Guidance/tree/master/Events)</li><li>[https://blog.binarydefense.com/reliably-detecting-pass-the-hash-through-event-log-analysis](https://blog.binarydefense.com/reliably-detecting-pass-the-hash-through-event-log-analysis)</li><li>[https://blog.stealthbits.com/how-to-detect-pass-the-hash-attacks/](https://blog.stealthbits.com/how-to-detect-pass-the-hash-attacks/)</li></ul>  |
 | **Author**               | Dave Kennedy, Jeff Warren (method) / David Vassallo (rule) |
 
@@ -19,7 +19,7 @@
 ```
 title: Pass the Hash Activity 2
 id: 8eef149c-bd26-49f2-9e5a-9b00e3af499b
-status: stable
+status: production
 description: Detects the attack technique pass the hash which is used to move laterally inside the network
 references:
     - https://github.com/iadgov/Event-Forwarding-Guidance/tree/master/Events
@@ -29,8 +29,7 @@ author: Dave Kennedy, Jeff Warren (method) / David Vassallo (rule)
 date: 2019/06/14
 tags:
     - attack.lateral_movement
-    - attack.t1075          # an old one
-    - attack.t1550.002
+    - attack.t1075
 logsource:
     product: windows
     service: security
@@ -83,8 +82,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
     "description": "Detects the attack technique pass the hash which is used to move laterally inside the network",
     "tags": [
       "attack.lateral_movement",
-      "attack.t1075",
-      "attack.t1550.002"
+      "attack.t1075"
     ],
     "query": "(winlog.channel:\"Security\" AND (winlog.event_id:\"4624\" AND ((winlog.event_data.SubjectUserSid:\"S\\-1\\-0\\-0\" AND winlog.event_data.LogonType:\"3\" AND winlog.event_data.LogonProcessName:\"NtLmSsp\" AND winlog.event_data.KeyLength:\"0\") OR (winlog.event_data.LogonType:\"9\" AND winlog.event_data.LogonProcessName:\"seclogo\"))) AND (NOT (winlog.event_data.AccountName:\"ANONYMOUS\\ LOGON\")))"
   },
@@ -133,10 +131,7 @@ curl -s -XPUT -H 'Content-Type: application/json' --data-binary @- localhost:920
   },
   "actions": {
     "send_email": {
-      "throttle_period": "15m",
       "email": {
-        "profile": "standard",
-        "from": "root@localhost",
         "to": "root@localhost",
         "subject": "Sigma Rule 'Pass the Hash Activity 2'",
         "body": "Hits:\n{{#ctx.payload.hits.hits}}{{_source}}\n================================================================================\n{{/ctx.payload.hits.hits}}",
