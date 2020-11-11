@@ -1,0 +1,19 @@
+site_name: ATC
+docs_dir: Atomic_Threat_Coverage
+site_dir: site/
+
+theme:
+    name: 'windmill'
+
+repo_url: https://github.com/atc-project/atomic-threat-coverage
+# edit_uri: blob/master/docs/
+
+plugins:
+    - search
+    - awesome-pages
+    - exclude:
+        glob:
+            - "*DS_Store"
+            - "*.git"
+            - "*.idea"
+            - "thehive_templates"
