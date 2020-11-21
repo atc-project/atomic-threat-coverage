@@ -51,6 +51,11 @@ def main(c_auth=None):
               "Mitigation Systems", "Mitigation Policies",
               "Hardening Policies", "Use Cases"]
 
+    page_contents = {
+        "Customers": "<p><ac:structured-macro ac:name=\"detailssummary\" ac:schema-version=\"2\" ><ac:parameter ac:name=\"cql\">label = &quot;atc_customer&quot; and space = currentSpace()</ac:parameter></ac:structured-macro></p>",
+        "Use Cases": "<p><ac:structured-macro ac:name=\"detailssummary\" ac:schema-version=\"2\" ><ac:parameter ac:name=\"cql\">label = &quot;atc_usecases&quot; and space = currentSpace()</ac:parameter></ac:structured-macro></p>",
+    }
+
     for page in pages:
         print("Creating %s..." % page)
         data = {
@@ -59,7 +64,7 @@ def main(c_auth=None):
             "parentid": str(ATCutils.confluence_get_page_id(
                 url, auth, confluence_space_name,
                 confluence_name_of_root_directory)),
-            "confluencecontent": content,
+            "confluencecontent": page_contents.get(page, content),
         }
 
         if not ATCutils.push_to_confluence(data, url, auth):
