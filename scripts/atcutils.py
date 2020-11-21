@@ -316,6 +316,10 @@ class ATCutils:
                 }
             }
         }
+
+        if "metadata" in data:
+            dict_payload["metadata"] = data["metadata"]
+
         payload = json.dumps(dict_payload)
 
         response = requests.request(

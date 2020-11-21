@@ -27,7 +27,7 @@ class GenerateESIndex:
 
         dn_path = ATCconfig.get('data_needed_dir')
         lp_path = ATCconfig.get('logging_policies_dir')
-        en_path = ATCconfig.get('enrichments_directory')
+        en_path = ATCconfig.get('enrichments_dir')
         rp_path = ATCconfig.get('response_playbooks_dir')
         ra_path = ATCconfig.get('response_actions_dir')
         cu_path = ATCconfig.get('customers_directory')
