@@ -172,7 +172,7 @@ class ATCutils:
             return ATCConfig(path).config
 
         with open(path) as f:
-            yaml_fields = yaml.load_all(f.read(), Loader=yaml.FullLoader)
+            yaml_fields = yaml.load_all(f.read().replace('&', '&amp;'), Loader=yaml.FullLoader)
 
         buff_results = [x for x in yaml_fields]
         if len(buff_results) > 1:
