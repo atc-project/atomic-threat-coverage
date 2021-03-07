@@ -485,9 +485,10 @@ git submodule foreach git pull origin master
 6. Добавьте клиентов в директорию `customers` ( вы можете создать новые используя [шаблон](customers/customers.yml.template)
 7. Добавьте Response Actions в директорию `response_actions` (вы можете создать новые используя [шаблон](response_actions/respose_action.yml.template))
 8. Добавьте Response Playbooks в директорию `response_playbooks` (вы можете создать новые используя [шаблон](response_playbooks/respose_playbook.yml.template))
-9. Настройте экспорт в Confluence и пути к аналитике  используя файл `scripts/config.yml` (Вы можете взять файл  `scripts/config.default.yml` и изменить в нем параметры, исходя из своих нужд)
-10. Исполните команду `make` в корне репозитория
-11. Предоставьте логин и пароль к Confluence, когда скрипт спросит об этом
+9. Translation needed: Change output templates to fit your needs. Just copy our templates from `scripts/templates/` and adjust `templates_directory` in your `config.yml`
+10. Настройте экспорт в Confluence и пути к аналитике  используя файл `scripts/config.yml` (Вы можете взять файл  `scripts/config.default.yml` и изменить в нем параметры, исходя из своих нужд)
+11. Исполните команду `make` в корне репозитория
+12. Предоставьте логин и пароль к Confluence, когда скрипт спросит об этом
 
 Если вы хотите частично сгенерировать/обновить аналитику, вы можете посмотреть, какие параметры принимает `Makefile` или инструкции меню help в `scripts/main.py`. 
 

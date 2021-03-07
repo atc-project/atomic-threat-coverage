@@ -18,6 +18,7 @@ detection_rules_directories:
   - 'detection_rules/sigma/rules/windows/process_creation'
   - 'detection_rules/sigma/rules/windows/sysmon'
 triggers_directory: 'triggers/atomic-red-team/atomics'
+templates_directory: 'scripts/templates'
 mitigation_systems_directory: 'mitigation/atc-mitigation/mitigation_systems'
 mitigation_policies_directory: 'mitigation/atc-mitigation/mitigation_policies'
 hardening_policies_directory: 'mitigation/atc-mitigation/hardening_policies'

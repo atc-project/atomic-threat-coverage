@@ -10,9 +10,9 @@ import os
 # ############################## Customer ################################### #
 # ########################################################################### #
 
-env = Environment(loader=FileSystemLoader('scripts/templates'))
-
 ATCconfig = ATCutils.load_config("config.yml")
+
+env = Environment(loader=FileSystemLoader(ATCconfig.get('templates_directory', 'scripts/templates')))
 
 dr_dirs = ATCconfig.get('detection_rules_directories')
 
