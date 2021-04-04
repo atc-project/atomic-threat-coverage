@@ -14,7 +14,7 @@ import os
 
 ATCconfig = ATCutils.load_config("config.yml")
 
-env = Environment(loader=FileSystemLoader('scripts/templates'))
+env = Environment(loader=FileSystemLoader(ATCconfig.get('templates_directory', 'scripts/templates')))
 
 class MitigationPolicy:
     """Class for the Mitigation System entity"""

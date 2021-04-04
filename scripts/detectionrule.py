@@ -16,7 +16,7 @@ import re
 
 ATCconfig = ATCutils.load_config('config.yml')
 
-env = Environment(loader=FileSystemLoader('scripts/templates'))
+env = Environment(loader=FileSystemLoader(ATCconfig.get('templates_directory', 'scripts/templates')))
 
 class DetectionRule:
     """Class for the Detection Rule entity"""

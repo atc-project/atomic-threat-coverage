@@ -317,8 +317,9 @@ Jednocześnie wskazuje, które pola mogą być znalezione przy konkretnym Enrich
 5. Dodaj odpowiednie Enrichments do folderu `enrichments` (szablon do tworzenia nowych dostępny jest [tutaj](enrichments/enrichment.yml.template))
 6. Dodaj odpowiednie Response Actions do folderu `response_actions` (szablon do tworzenia nowych dostępny jest [tutaj](response_actions/respose_action.yml.template))
 7. Dodaje odpowiednie Response Playbooks do folderu `response_playbooks` (szablon do tworzenia nowych dostępny jest [tutaj](response_playbooks/respose_playbook.yml.template))
-8. Skonfiguruj ustawienia eksportowania (markdown/confluence) - `scripts/config.py`
-9. Wykonaj polecenie `make` w głównym katalogu repozytorium
+8. Translation needed: Change output templates to fit your needs. Just copy our templates from `scripts/templates/` and adjust `templates_directory` in your `config.yml`
+9. Skonfiguruj ustawienia eksportowania (markdown/confluence) - `scripts/config.py`
+10. Wykonaj polecenie `make` w głównym katalogu repozytorium
 
 Nie musisz tworzyć niczego, aby framework zadziałał w danym środowisku. Wystarczy skonfigurować polityke eksportowania w `scripts/config.yml` i użyć domyślnych ustawień.
 

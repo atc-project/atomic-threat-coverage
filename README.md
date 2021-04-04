@@ -429,9 +429,10 @@ If you just want to make yourself familiar with final result with default datase
 6. Add Customers into `customers` directory (you can create new one using [template](customers/customer.yml.template))
 7. Add Response Actions into `response_actions` directory (you can create new one using [template](response_actions/respose_action.yml.template))
 8. Add Response Playbooks into `response_playbooks` directory (you can create new one using [template](response_playbooks/respose_playbook.yml.template))
-9. Configure your export settings and paths using `config.yml` (create it from `scripts/config.default.yml` and adjust settings)
-10. Execute `make` in root directory of the repository
-11. Provide login and password to Confluence node when script will ask for it
+9. Change output templates to fit your needs. Just copy our templates from `scripts/templates/` and adjust `templates_directory` in your `config.yml`
+10. Configure your export settings and paths using `config.yml` (create it from `scripts/config.default.yml` and adjust settings)
+11. Execute `make` in root directory of the repository
+12. Provide login and password to Confluence node when script will ask for it
 
 If you want to partially regenerate/update analytics you can investigate `Makefile` options or `main.py` help.
 
