@@ -3,7 +3,7 @@ requests
 jinja2
 elasticsearch
 pytest
-stix2
+stix2<3.0
 mkdocs
 mkdocs-awesome-pages-plugin
 mkdocs-exclude

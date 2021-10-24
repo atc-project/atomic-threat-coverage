@@ -189,7 +189,7 @@ class DetectionRule:
             triggers = []
 
             for trigger in technique:
-                if trigger is "None":
+                if trigger == "None":
                     continue
                 trigger_name, trigger_id = trigger
                 # Check if a directory for a technique exists in atomic red team repo
@@ -343,7 +343,7 @@ class DetectionRule:
             triggers = []
 
             for trigger_name, trigger_id in technique:
-                if trigger_id is "None":
+                if trigger_id == "None":
                     continue
 
 
