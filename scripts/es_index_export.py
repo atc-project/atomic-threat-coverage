@@ -244,19 +244,22 @@ class GenerateESIndex:
                     dr_confidence = 'not defined'
                
 
-                for dn in alert_dns:
-                    if dn['title'] not in dn_titles:
-                        dn_titles.append(dn['title'])
-                    if dn['category'] not in dn_categories:
-                        dn_categories.append(dn['category'])
-                    if dn['platform'] not in dn_platforms:
-                        dn_platforms.append(dn['platform'])
-                    if dn['type'] not in dn_types:
-                        dn_types.append(dn['type'])
-                    if dn['channel'] not in dn_channels:
-                        dn_channels.append(dn['channel'])
-                    if dn['provider'] not in dn_providers:
-                        dn_providers.append(dn['provider'])
+                try:
+                    for dn in alert_dns:
+                        if dn['title'] not in dn_titles:
+                            dn_titles.append(dn['title'])
+                        if dn['category'] not in dn_categories:
+                            dn_categories.append(dn['category'])
+                        if dn['platform'] not in dn_platforms:
+                            dn_platforms.append(dn['platform'])
+                        if dn['type'] not in dn_types:
+                            dn_types.append(dn['type'])
+                        if dn['channel'] not in dn_channels:
+                            dn_channels.append(dn['channel'])
+                        if dn['provider'] not in dn_providers:
+                            dn_providers.append(dn['provider'])
+                except:
+                    pass
 
                 for lp in logging_policies:
                     if lp['title'] not in lp_titles:
