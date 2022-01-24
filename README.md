@@ -26,9 +26,8 @@ Atomic Threat Coverage is a framework that provides you with ability to automati
 
 Here are links to our demo environment where you can see the outcome of the framework usage:
 
-1. Automatically generated [Atlassian Confluence knowledge base](https://atomicthreatcoverage.atlassian.net/wiki/spaces/ATC/pages/126025996/WMI+Persistence+-+Script+Event+Consumer)
-2. Automatically generated [Markdown knowledge base](Atomic_Threat_Coverage)
-3. Automatically generated [Kibana dashboard](https://kibana.atomicthreatcoverage.com) (user: demo, password: password).
+- Automatically generated [Atlassian Confluence knowledge base](https://atomicthreatcoverage.atlassian.net/wiki/spaces/ATC/pages/126025996/WMI+Persistence+-+Script+Event+Consumer)
+- Automatically generated [Markdown knowledge base](Atomic_Threat_Coverage)
 
 ### Motivation
 
@@ -319,7 +318,7 @@ Detailed HowTo could be found [here](scripts/atc_visualizations/README.md).
 
 #### atc_es_index.json
 
-Atomic Threat Coverage generates [Elasticsearch](https://www.elastic.co/products/elasticsearch) [index](analytics/generated/atc_es_index.json) with all data mapped to each other for visualisation and analysis of existing data in [Kibana](https://www.elastic.co/products/kibana). Demo of the ATC Analytics Dashboard builded upon public Sigma rules available [here](https://kibana.atomicthreatcoverage.com) (user: demo, password: password).
+Atomic Threat Coverage generates [Elasticsearch](https://www.elastic.co/products/elasticsearch) [index](analytics/generated/atc_es_index.json) with all data mapped to each other for visualisation and analysis of existing data in [Kibana](https://www.elastic.co/products/kibana).
 
 <details>
   <summary>ATC Analytics Dashboard in Kibana (click to expand)</summary>
