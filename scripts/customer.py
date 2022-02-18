@@ -19,17 +19,19 @@ dr_dirs = ATCconfig.get('detection_rules_directories')
 all_rules = []
 all_names = []
 all_titles = []
+all_paths = []
 
 for dr_path in dr_dirs:
     rules, paths = ATCutils.load_yamls_with_paths(dr_path)
     all_rules = all_rules + rules
+    all_paths = all_paths + paths
     names = [path.split('/')[-1].replace('.yml', '') for path in paths]
     all_names = all_names + names
     titles = [rule.get('title') for rule in rules]
     all_titles = all_titles + titles
 
-_ = zip(all_rules, all_names, all_titles)
-rules_by_title = {title: (rule, name) for (rule, name, title) in _}
+_ = zip(all_rules, all_names, all_titles, all_paths)
+rules_by_title = {title: (rule, name, path) for (rule, name, title, path) in _}
 
 uc_dirs = ATCconfig.get('usecases_directory')
 
@@ -137,6 +139,11 @@ class Customer:
         for title in self.detection_rules:
             if title is not None:
                 name = rules_by_title.get(title)[1]
+                path = rules_by_title.get(title)[2]
+                learned_dn = ATCutils.main_dn_calculatoin_func(path)
+                for item in learned_dn:
+                    if item not in self.cu_fields['dataneeded']:
+                        self.cu_fields['dataneeded'].append(item)
             else:
                 name = ''
             dr = (title, name)
