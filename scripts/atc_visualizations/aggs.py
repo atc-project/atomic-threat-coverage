@@ -2,6 +2,7 @@
 
 from scripts.atc_visualizations.base import BaseKibanaAgg
 
+
 # ########################################################################### #
 # ############################ Aggs ######################################### #
 # ########################################################################### #
@@ -35,7 +36,6 @@ class AverageAgg(BaseKibanaAgg):
 class CountAgg(BaseKibanaAgg):
 
     def __init__(self, id, enabled=None):
-
         super().__init__(
             id=id, enabled=enabled, params={}, schema="metric", type="count"
         )
@@ -44,7 +44,6 @@ class CountAgg(BaseKibanaAgg):
 class MaxAgg(BaseKibanaAgg):
 
     def __init__(self, id, field, enabled=None):
-
         super().__init__(
             id=id, enabled=enabled, params={"field": field}, schema="metric",
             type="max"
@@ -58,7 +57,6 @@ class MaxAgg(BaseKibanaAgg):
 class MedianAgg(BaseKibanaAgg):
 
     def __init__(self, id, field, enabled=None):
-
         super().__init__(
             id=id, enabled=enabled, params={
                 "field": field, "percents": [50]
@@ -73,7 +71,6 @@ class MedianAgg(BaseKibanaAgg):
 class MinAgg(BaseKibanaAgg):
 
     def __init__(self, id, field, enabled=None):
-
         super().__init__(
             id=id, enabled=enabled, params={"field": field}, schema="metric",
             type="min"
@@ -104,7 +101,6 @@ class PercentileRanksAgg(BaseKibanaAgg):
 class PercentilesAgg(BaseKibanaAgg):
 
     def __init__(self, id, field, percents=None, enabled=None):
-
         if not percents:
             percents = [1, 5, 25, 50, 75, 95, 99]
 
@@ -123,7 +119,6 @@ class PercentilesAgg(BaseKibanaAgg):
 class StandardDeviationAgg(BaseKibanaAgg):
 
     def __init__(self, id, field, enabled=None):
-
         super().__init__(
             id=id, enabled=enabled, params={
                 "field": field
@@ -138,7 +133,6 @@ class StandardDeviationAgg(BaseKibanaAgg):
 class SumAgg(BaseKibanaAgg):
 
     def __init__(self, id, field, enabled=None):
-
         super().__init__(
             id=id, enabled=enabled, params={
                 "field": field
@@ -178,7 +172,6 @@ sort_order - can be asc or dsc
 class UniqueCountAgg(BaseKibanaAgg):
 
     def __init__(self, id, field, enabled=None):
-
         super().__init__(
             id=id, enabled=enabled, params={
                 "field": field
@@ -193,16 +186,16 @@ class UniqueCountAgg(BaseKibanaAgg):
 class DotSizeAgg(BaseKibanaAgg):
     # TODO: Develop it further
     def __init__(
-        self, id, aggregation_type, field=None, aggregate_with=None, size=None,
-        enabled=None, order=None
+            self, id, aggregation_type, field=None, aggregate_with=None, size=None,
+            enabled=None, order=None
     ):
 
-        if aggregation_type in ["avg", "max", "min", "sum", "cardinality"]\
+        if aggregation_type in ["avg", "max", "min", "sum", "cardinality"] \
                 and not field:
             raise Exception("Field 'field' required for given aggregation " +
                             "type")
 
-        if aggregation_type == "top_hits" and not field and not aggregate_with\
+        if aggregation_type == "top_hits" and not field and not aggregate_with \
                 and not size and not order:
             raise Exception("""For Top Hits following fields are also required:
 * field - valid field for given index/search
@@ -230,7 +223,6 @@ class SplitSlicesTermsAgg(BaseKibanaAgg):
                  other_bucket=None, other_bucket_label=None,
                  missing_bucket=None, missing_bucket_label=None,
                  enabled=None):
-
         super().__init__(
             id=id, enabled=enabled, params={
                 "field": field
@@ -240,6 +232,7 @@ class SplitSlicesTermsAgg(BaseKibanaAgg):
     def validate(self):
         # TODO: Write custom validate (check if field exists in elastic)
         return super().validate()
+
 
 # ########################################################################### #
 # ############################ Buckets ###################################### #
@@ -251,7 +244,6 @@ class DateHistogramAgg(BaseKibanaAgg):
     def __init__(self, id, field, time_range_from, time_range_to,
                  time_range_mode, drop_partial_buckets=False,
                  time_zone="America/Los_Angeles", enabled=None):
-
         super().__init__(
             id=id, enabled=enabled, params={
                 "field": field,

@@ -14,7 +14,7 @@ def create_markdown_dirs():
 
     target_dir_list = [
         'Detection_Rules', 'Logging_Policies', 'Data_Needed',
-        'Triggers', 'Enrichments', 'Customers', 'Mitigation_Systems', 
+        'Triggers', 'Enrichments', 'Customers', 'Mitigation_Systems',
         'Mitigation_Policies', 'Hardening_Policies', 'Use_Cases'
     ]
 

@@ -8,7 +8,10 @@
 
 # Structure
 
-Files consist of both required and optional fields. The structure depends on the object you want to define. All the visualizations and saved searches have to be inside `${ATC}/visualizations/visualizations` directory. Dashboards have to be in `${ATC}/visualizations/dashboards` directory. By default, outputs will be saved to `${ATC}/analytics/generated/visualizations/`.
+Files consist of both required and optional fields. The structure depends on the object you want to define. All the
+visualizations and saved searches have to be inside `${ATC}/visualizations/visualizations` directory. Dashboards have to
+be in `${ATC}/visualizations/dashboards` directory. By default, outputs will be saved
+to `${ATC}/analytics/generated/visualizations/`.
 
 # How to run
 
@@ -42,7 +45,8 @@ Run the following command in the `${ATC}` directory:
 
 `GUI=1 make visualizations`
 
-Next, open Kibana web interface. Navigate to `Management -> Saved Objects` and use `Import` button, select JSON file and correct index ID if there is a non-existing one.
+Next, open Kibana web interface. Navigate to `Management -> Saved Objects` and use `Import` button, select JSON file and
+correct index ID if there is a non-existing one.
 
 ## Saved Search
 
@@ -59,8 +63,11 @@ Configurability:
 
 * `type` has to be `search`
 * `title` is a name which you will see in Kibana as well as the ID of the
-* `index` is the index pattern ID (**not the name** but sometimes that's the same, for example in case of automatically configured by Elastic Beats)
-* `query` is a query, just put it in the quotes or double quotes (you have to escape characters in double quotes by youself):
+* `index` is the index pattern ID (**not the name** but sometimes that's the same, for example in case of automatically
+  configured by Elastic Beats)
+* `query` is a query, just put it in the quotes or double quotes (you have to escape characters in double quotes by
+  youself):
+
 ```
 query: "\\path\\"
 
@@ -68,6 +75,7 @@ or
 
 query: '\path\'
 ```
+
 * `language` is language used for query. Usually it's lucene or kuery (lucene by default)
 * `columns` are the fields which are visible inside dashboard
 
@@ -99,11 +107,13 @@ Configurability:
 
 * `type` has to be `visualization`
 * `name` is the visualization type, has to be one of `['metric', 'pie', 'vbar']`
-* `index` is the index pattern ID (**not the name** but sometimes that's the same, for example in case of automatically configured by Elastic Beats)
+* `index` is the index pattern ID (**not the name** but sometimes that's the same, for example in case of automatically
+  configured by Elastic Beats)
 * `saved_search_id` is the saved search ID
 * `saved_search_name` is the saved search name (we can translate name into ID using Kibana API)
 * `title` is the title used inside Kibana
-* `query` is a query, just put it in the quotes or double quotes (you have to escape characters in double quotes by youself)
+* `query` is a query, just put it in the quotes or double quotes (you have to escape characters in double quotes by
+  youself)
 * `metrics` contains a list of metrics (they are described below)
 
 | Field               | Available values            |
@@ -119,8 +129,10 @@ Configurability:
 
 ### Metrics
 
-> In the vertical bar metric, you can use the `split` parameter with the following available values `x`/`series`/`chart` in order to split X axis, split series or split chart. 
-a
+> In the vertical bar metric, you can use the `split` parameter with the following available values `x`/`series`/`chart`
+> in order to split X axis, split series or split chart.
+> a
+
 * `count`
 
 ```yaml
@@ -149,7 +161,6 @@ a
 | `enabled` | `true`/`false`      |
 | `label`   | `any string`        |
 
-
 * `max`
 
 ```yaml
@@ -164,7 +175,6 @@ a
 | `field`   | `field as a string` |
 | `enabled` | `true`/`false`      |
 | `label`   | `any string`        |
-
 
 * `median`
 
@@ -181,7 +191,6 @@ a
 | `enabled` | `true`/`false`      |
 | `label`   | `any string`        |
 
-
 * `min`
 
 ```yaml
@@ -196,7 +205,6 @@ a
 | `field`   | `field as a string` |
 | `enabled` | `true`/`false`      |
 | `label`   | `any string`        |
-
 
 * `percentile_ranks`
 
@@ -214,7 +222,6 @@ a
 | `percentile_ranks`   | `[1, 2, 9, 22, 99]` |
 | `enabled`            | `true`/`false`      |
 | `label`              | `any string`        |
-
 
 * `percentiles`
 
@@ -318,7 +325,6 @@ a
 | `enabled` | `true`/`false`      |
 | `label`   | `any string`        |
 
-
 # Dashboards
 
 ```yaml
@@ -335,7 +341,8 @@ Configurability:
 * `name` for now it's the same as title
 * `title` is the title used inside Kibana
 * `darktheme` defines if dark theme should be used
-* `query` is a query, just put it in the quotes or double quotes (you have to escape characters in double quotes by youself)
+* `query` is a query, just put it in the quotes or double quotes (you have to escape characters in double quotes by
+  youself)
 * `visualizations` contains a list of metrics (they are described below)
 
 | Field               | Available values            |

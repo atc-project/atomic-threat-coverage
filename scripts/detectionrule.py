@@ -9,7 +9,6 @@ import os
 import subprocess
 import re
 
-
 # ########################################################################### #
 # ########################### Detection Rule ################################ #
 # ########################################################################### #
@@ -17,6 +16,7 @@ import re
 ATCconfig = ATCutils.load_config('config.yml')
 
 env = Environment(loader=FileSystemLoader(ATCconfig.get('templates_directory', 'scripts/templates')))
+
 
 class DetectionRule:
     """Class for the Detection Rule entity"""
@@ -67,7 +67,7 @@ class DetectionRule:
             self.fields.update({'sigma_rule': sigma_rule})
 
             # Define which queries we want from Sigma
-            #queries = ["es-qs", "xpack-watcher", "graylog", "splunk", "logpoint", "grep", "fieldlist"]
+            # queries = ["es-qs", "xpack-watcher", "graylog", "splunk", "logpoint", "grep", "fieldlist"]
             queries = ATCconfig.get('detection_queries').split(",")
 
             # dict to store query key + query values
@@ -79,42 +79,42 @@ class DetectionRule:
                 # (yes, we know)
                 if query == "powershell":
                     cmd = ATCconfig.get('sigmac_path') + " -t " + query + \
-                        " --config  " + ATCconfig.get('powershell_sigma_config') + \
-                        " --ignore-backend-errors " + self.yaml_file
+                          " --config  " + ATCconfig.get('powershell_sigma_config') + \
+                          " --ignore-backend-errors " + self.yaml_file
                 elif query == "es-qs":
                     cmd = ATCconfig.get('sigmac_path') + " -t " + query + \
-                        " --config  " + ATCconfig.get('es-qs_sigma_config') + \
-                        " --ignore-backend-errors " + self.yaml_file
+                          " --config  " + ATCconfig.get('es-qs_sigma_config') + \
+                          " --ignore-backend-errors " + self.yaml_file
                 elif query == "xpack-watcher":
                     cmd = ATCconfig.get('sigmac_path') + " -t " + query + \
-                        " --config  " + ATCconfig.get('xpack-watcher_sigma_config') + \
-                        " --ignore-backend-errors " + self.yaml_file
+                          " --config  " + ATCconfig.get('xpack-watcher_sigma_config') + \
+                          " --ignore-backend-errors " + self.yaml_file
                 elif query == "splunk":
                     cmd = ATCconfig.get('sigmac_path') + " -t " + query + \
-                        " --config  " + ATCconfig.get('splunk_sigma_config') + \
-                        " --ignore-backend-errors " + self.yaml_file
+                          " --config  " + ATCconfig.get('splunk_sigma_config') + \
+                          " --ignore-backend-errors " + self.yaml_file
                 elif query == "logpoint":
                     cmd = ATCconfig.get('sigmac_path') + " -t " + query + \
-                        " --config  " + ATCconfig.get('logpoint_sigma_config') + \
-                        " --ignore-backend-errors " + self.yaml_file
+                          " --config  " + ATCconfig.get('logpoint_sigma_config') + \
+                          " --ignore-backend-errors " + self.yaml_file
                 else:
                     cmd = ATCconfig.get('sigmac_path') + ' --shoot-yourself-in-the-foot -t "' + \
-                        query + '" --ignore-backend-errors "' + self.yaml_file + '"'
-                        #query + " --ignore-backend-errors " + self.yaml_file + \
-                        #" 2> /dev/null"
-                
-                #p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+                          query + '" --ignore-backend-errors "' + self.yaml_file + '"'
+                    # query + " --ignore-backend-errors " + self.yaml_file + \
+                    # " 2> /dev/null"
+
+                # p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
                 query2 = subprocess.getoutput(cmd)
 
                 # Wait for date to terminate. Get return returncode
                 # p_status = p.wait()
-                #p.wait()
+                # p.wait()
 
                 """ Had to remove '-' due to problems with
                 Jinja2 variable naming,
                 e.g es-qs throws error 'no es variable'
                 """
-                det_queries[query] = str(query2)#[2:-3]
+                det_queries[query] = str(query2)  # [2:-3]
 
             # Update detection rules
             self.fields.update({"det_queries": det_queries})
@@ -218,7 +218,7 @@ class DetectionRule:
             sigma_rule = ATCutils.read_rule_file(self.yaml_file)
             self.fields.update({'sigma_rule': sigma_rule})
 
-            #outputs = ["es-qs", "xpack-watcher", "graylog"]
+            # outputs = ["es-qs", "xpack-watcher", "graylog"]
 
             queries = ATCconfig.get('detection_queries').split(",")
 
@@ -228,27 +228,27 @@ class DetectionRule:
             for output in queries:
                 if output == "powershell":
                     cmd = ATCconfig.get('sigmac_path') + " -t " + output + \
-                        " --config  " + ATCconfig.get('powershell_sigma_config') + \
-                        " --ignore-backend-errors " + self.yaml_file
+                          " --config  " + ATCconfig.get('powershell_sigma_config') + \
+                          " --ignore-backend-errors " + self.yaml_file
                 elif output == "es-qs":
                     cmd = ATCconfig.get('sigmac_path') + " -t " + output + \
-                        " --config  " + ATCconfig.get('es-qs_sigma_config') + \
-                        " --ignore-backend-errors " + self.yaml_file
+                          " --config  " + ATCconfig.get('es-qs_sigma_config') + \
+                          " --ignore-backend-errors " + self.yaml_file
                 elif output == "xpack-watcher":
                     cmd = ATCconfig.get('sigmac_path') + " -t " + output + \
-                        " --config  " + ATCconfig.get('xpack-watcher_sigma_config') + \
-                        " --ignore-backend-errors " + self.yaml_file
+                          " --config  " + ATCconfig.get('xpack-watcher_sigma_config') + \
+                          " --ignore-backend-errors " + self.yaml_file
                 elif output == "splunk":
                     cmd = ATCconfig.get('sigmac_path') + " -t " + output + \
-                        " --config  " + ATCconfig.get('splunk_sigma_config') + \
-                        " --ignore-backend-errors " + self.yaml_file
+                          " --config  " + ATCconfig.get('splunk_sigma_config') + \
+                          " --ignore-backend-errors " + self.yaml_file
                 elif output == "logpoint":
                     cmd = ATCconfig.get('sigmac_path') + " -t " + output + \
-                        " --config  " + ATCconfig.get('logpoint_sigma_config') + \
-                        " --ignore-backend-errors " + self.yaml_file
+                          " --config  " + ATCconfig.get('logpoint_sigma_config') + \
+                          " --ignore-backend-errors " + self.yaml_file
                 else:
                     cmd = ATCconfig.get('sigmac_path') + ' --shoot-yourself-in-the-foot -t "' + \
-                        output + '" --ignore-backend-errors "' + self.yaml_file + '"'
+                          output + '" --ignore-backend-errors "' + self.yaml_file + '"'
 
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
                 (query, err) = p.communicate()
@@ -258,9 +258,9 @@ class DetectionRule:
                 # have to remove '-' due to problems with
                 # Jinja2 variable naming,e.g es-qs throws error
                 # 'no es variable'
-                #self.fields.update({output.replace("-", ""): str(query)[2:-3]})
+                # self.fields.update({output.replace("-", ""): str(query)[2:-3]})
                 det_queries[output] = str(query)[2:-3].replace("\\n", "\n")
-                
+
             # Update detection rules
             self.fields.update({"det_queries": det_queries})
             self.fields.update({"queries": queries})
@@ -346,7 +346,6 @@ class DetectionRule:
                 if trigger_id == "None":
                     continue
 
-
                 try:
                     page_name = trigger_id + ": " + trigger_name
                     trigger_page_id = str(ATCutils.confluence_get_page_id(
@@ -374,7 +373,7 @@ class DetectionRule:
         title = os.path.splitext(base)[0]
 
         file_path = atc_dir + self.parent_title + "/" + \
-            title + ".md"
+                    title + ".md"
 
         # Should return True
         return ATCutils.write_file(file_path, self.content)

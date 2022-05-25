@@ -26,10 +26,10 @@ ATCconfig = ATCutils.load_config("config.yml")
 class PopulateMarkdown:
     """Class for populating markdown repo"""
 
-    def __init__(self, dr=False, tg=False, ra=False, rp=False, 
+    def __init__(self, dr=False, tg=False, ra=False, rp=False,
                  cu=False, ms=False, mp=False, uc=False, auto=False,
                  hp=False, art_dir=False, atc_dir=False,
-                 dr_path=False, tg_path=False, cu_path=False, 
+                 dr_path=False, tg_path=False, cu_path=False,
                  ms_path=False, mp_path=False, hp_path=False,
                  uc_path=False, init=False):
         """Init"""

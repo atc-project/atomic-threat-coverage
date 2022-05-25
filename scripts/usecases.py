@@ -5,7 +5,6 @@ from scripts.atcutils import ATCutils
 from jinja2 import Environment, FileSystemLoader
 import os
 
-
 # ########################################################################### #
 # ############################## Use Case ################################### #
 # ########################################################################### #
@@ -74,7 +73,7 @@ class Usecase:
         """ Retruns list of detection rules for usecase
         """
         dr_list_per_usecase = [rules_by_title.get(dr_title)[0]
-                                for dr_title in self.detection_rules]
+                               for dr_title in self.detection_rules]
 
         return dr_list_per_usecase
 
@@ -116,7 +115,7 @@ class Usecase:
 
         # Get proper template
         if template_type == "markdown":
-            template = env\
+            template = env \
                 .get_template('markdown_usecase_template.md.j2')
 
         elif template_type == "confluence":
@@ -125,7 +124,7 @@ class Usecase:
 
             self.uc_fields.update(
                 {'confluence_viewpage_url':
-                    ATCconfig.get('confluence_viewpage_url')})
+                     ATCconfig.get('confluence_viewpage_url')})
 
             if not self.logging_policies:
                 self.logging_policies = ["None", ]
@@ -183,6 +182,6 @@ class Usecase:
         title = os.path.splitext(base)[0]
 
         file_path = atc_dir + self.parent_title + "/" + \
-            title + ".md"
+                    title + ".md"
 
         return ATCutils.write_file(file_path, self.content)

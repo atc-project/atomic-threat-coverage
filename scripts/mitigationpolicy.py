@@ -16,6 +16,7 @@ ATCconfig = ATCutils.load_config("config.yml")
 
 env = Environment(loader=FileSystemLoader(ATCconfig.get('templates_directory', 'scripts/templates')))
 
+
 class MitigationPolicy:
     """Class for the Mitigation System entity"""
 
@@ -242,8 +243,8 @@ class MitigationPolicy:
                         other_tags.append(tag)
 
                     if not tactic_re.match(tag) and not \
-                           technique_re.match(tag) and not \
-                           mitigation_re.match(tag):
+                            technique_re.match(tag) and not \
+                            mitigation_re.match(tag):
                         other_tags.append(tag)
 
                 if len(tactic):
@@ -271,6 +272,6 @@ class MitigationPolicy:
         title = os.path.splitext(base)[0]
 
         file_path = atc_dir + self.parent_title + "/" + \
-            title + ".md"
+                    title + ".md"
 
         return ATCutils.write_file(file_path, self.content)

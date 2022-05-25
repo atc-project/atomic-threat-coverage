@@ -26,9 +26,9 @@ ATCconfig = ATCutils.load_config("config.yml")
 class PopulateConfluence:
     """Desc"""
 
-    def __init__(self, auth, dr=False, tg=False,cu=False, ms=False, 
-                 mp=False, hp=False, uc=False, auto=False, art_dir=False, 
-                 atc_dir=False, dr_path=False, tg_path=False, cu_path=False, 
+    def __init__(self, auth, dr=False, tg=False, cu=False, ms=False,
+                 mp=False, hp=False, uc=False, auto=False, art_dir=False,
+                 atc_dir=False, dr_path=False, tg_path=False, cu_path=False,
                  hp_path=False, ms_path=False, mp_path=False, uc_path=False,
                  init=False):
         """Desc"""
@@ -107,7 +107,7 @@ class PopulateConfluence:
                 tg = Triggers(tg_file)
                 tg.render_template("confluence")
                 title = tg.fields["attack_technique"] + ": " + \
-                    te_mapping.get(tg.fields["attack_technique"])
+                        te_mapping.get(tg.fields["attack_technique"])
                 confluence_data = {
                     "title": title,
                     "spacekey": self.space,
@@ -117,9 +117,9 @@ class PopulateConfluence:
                 }
 
                 res = ATCutils.push_to_confluence(confluence_data, self.apipath,
-                                            self.auth)
+                                                  self.auth)
                 if res == 'Page updated':
-            	    print("==> updated page: TR '" + title + "'")
+                    print("==> updated page: TR '" + title + "'")
                 # print("Done: ", tg.fields["attack_technique"])
             except Exception as err:
                 print(tg_file + " failed")
@@ -154,9 +154,9 @@ class PopulateConfluence:
                 }
 
                 res = ATCutils.push_to_confluence(confluence_data, self.apipath,
-                                            self.auth)
+                                                  self.auth)
                 if res == 'Page updated':
-            	    print("==> updated page: HP '" + hp.hp_parsed_file['title'] + "'")
+                    print("==> updated page: HP '" + hp.hp_parsed_file['title'] + "'")
             except Exception as err:
                 print(hp_file + " failed")
                 print("Err message: %s" % err)
@@ -189,9 +189,9 @@ class PopulateConfluence:
                 }
 
                 res = ATCutils.push_to_confluence(confluence_data, self.apipath,
-                                            self.auth)
+                                                  self.auth)
                 if res == 'Page updated':
-            	    print("==> updated page: MS '" + ms.ms_parsed_file['title'] + "'")
+                    print("==> updated page: MS '" + ms.ms_parsed_file['title'] + "'")
             except Exception as err:
                 print(ms_file + " failed")
                 print("Err message: %s" % err)
@@ -213,7 +213,7 @@ class PopulateConfluence:
         for mp_file in mp_list:
             try:
                 mp = MitigationPolicy(mp_file, apipath=self.apipath,
-                               auth=self.auth, space=self.space)
+                                      auth=self.auth, space=self.space)
                 mp.render_template("confluence")
                 confluence_data = {
                     "title": mp.mp_parsed_file["title"],
@@ -225,9 +225,9 @@ class PopulateConfluence:
                 }
 
                 res = ATCutils.push_to_confluence(confluence_data, self.apipath,
-                                            self.auth)
+                                                  self.auth)
                 if res == 'Page updated':
-            	    print("==> updated page: MP '" + mp.mp_parsed_file['title'] + "'")
+                    print("==> updated page: MP '" + mp.mp_parsed_file['title'] + "'")
             except Exception as err:
                 print(mp_file + " failed")
                 print("Err message: %s" % err)
@@ -268,9 +268,9 @@ class PopulateConfluence:
                 }
 
                 res = ATCutils.push_to_confluence(confluence_data, self.apipath,
-                                            self.auth)
+                                                  self.auth)
                 if res == 'Page updated':
-            	    print("==> updated page: DR '" + dr.fields['title'] + "' (" + dr_file + ")")
+                    print("==> updated page: DR '" + dr.fields['title'] + "' (" + dr_file + ")")
                 # print("Done: ", dr.fields['title'])
             except Exception as err:
                 print(dr_file + " failed")
@@ -305,15 +305,15 @@ class PopulateConfluence:
                     "confluencecontent": cu.content,
                     "metadata": {
                         "labels": [{
-                        "name": "atc_customer"
+                            "name": "atc_customer"
                         }]
                     }
                 }
 
                 res = ATCutils.push_to_confluence(confluence_data, self.apipath,
-                                            self.auth)
+                                                  self.auth)
                 if res == 'Page updated':
-            	    print("==> updated page: CU '" + cu.customer_name + "'")
+                    print("==> updated page: CU '" + cu.customer_name + "'")
                 # print("Done: ", cu.title)
             except Exception as err:
                 print(cu_file + " failed")
@@ -336,7 +336,7 @@ class PopulateConfluence:
         for uc_file in uc_list:
             try:
                 uc = Usecase(uc_file, apipath=self.apipath,
-                              auth=self.auth, space=self.space)
+                             auth=self.auth, space=self.space)
                 uc.render_template("confluence")
 
                 confluence_data = {
@@ -348,13 +348,13 @@ class PopulateConfluence:
                     "confluencecontent": uc.content,
                     "metadata": {
                         "labels": [{
-                        "name": "atc_usecases"
+                            "name": "atc_usecases"
                         }]
                     }
                 }
 
                 res = ATCutils.push_to_confluence(confluence_data, self.apipath,
-                                            self.auth)
+                                                  self.auth)
                 if res == 'Page updated':
                     print("==> updated page: UC '" + uc.usecase_name + "'")
                 # print("Done: ", cu.title)

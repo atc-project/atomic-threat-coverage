@@ -188,7 +188,7 @@ class YamlHandler(base.BaseKibana):
                     _metric = self.handle_metric(
                         _vis.metric_id, metric
                     )
-                elif isinstance(metric, dict)\
+                elif isinstance(metric, dict) \
                         and len(metric) == 1:
                     _option_metric_name = [x for x in metric][0]
                     _metric = self.handle_metric(
@@ -209,7 +209,7 @@ class YamlHandler(base.BaseKibana):
                 "Warning! Setting labels appearance in Area is not supported"
             )
 
-        elif isinstance(vis, visualisation.MetricVisualisation)\
+        elif isinstance(vis, visualisation.MetricVisualisation) \
                 or isinstance(vis, visualisation.PieVisualisation):
             if show_labels:
                 vis.enable_labels()
@@ -271,7 +271,7 @@ class YamlHandler(base.BaseKibana):
         self.append_result(_dashboard)
 
     def handle_metric(self, id, metric_name, args=None):
-        if metric_name not in self._general_metrics\
+        if metric_name not in self._general_metrics \
                 and metric_name not in self._bucket_names:
             raise Exception("Metric/bucket not supported")
 
@@ -534,7 +534,7 @@ def main():
                         required=False, default="api", const="gui",
                         action="store_const")
     parser.add_argument('--vis-output', help="Provide where to save output " +
-                        "for visualisations module")
+                                             "for visualisations module")
 
     args = parser.parse_args()
     YamlHandler(args.i, args.o, args.f, args.e)

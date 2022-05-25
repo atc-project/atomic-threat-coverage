@@ -13,6 +13,7 @@ ATCconfig = ATCutils.load_config("config.yml")
 
 env = Environment(loader=FileSystemLoader(ATCconfig.get('templates_directory', 'scripts/templates')))
 
+
 class Triggers:
     """Class for the Triggers entity"""
 
@@ -58,7 +59,7 @@ class Triggers:
             base = os.path.basename(self.yaml_file)
             trigger = os.path.splitext(base)[0]
             path_md = ATCconfig.get('triggers_directory') + '/' + \
-                trigger + '/' + trigger + '.md'
+                      trigger + '/' + trigger + '.md'
 
             with open(path_md, 'r') as myfile:
                 md_data = myfile.read()
@@ -78,6 +79,6 @@ class Triggers:
         title = os.path.splitext(base)[0]
 
         file_path = atc_dir + self.parent_title + "/" + \
-            title + ".md"
+                    title + ".md"
 
         return ATCutils.write_file(file_path, self.content)

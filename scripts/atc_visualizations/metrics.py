@@ -3,6 +3,7 @@
 import scripts.atc_visualizations.aggs as aggs
 import scripts.atc_visualizations.params as params
 
+
 # ########################################################################### #
 # ############################ Metrics ###################################### #
 # ########################################################################### #
@@ -56,6 +57,7 @@ class AverageMetric(BaseMetric):
             showCircles=showCircles
         )
 
+
 # ########################################################################### #
 # ############################ Count ######################################## #
 # ########################################################################### #
@@ -85,6 +87,7 @@ class CountMetric(BaseMetric):
             id=str(id), enabled=enabled, type=type, label=label,
             valueAxis=valueAxis, mode=mode, showCircles=showCircles
         )
+
 
 # ########################################################################### #
 # ############################ Max ########################################## #
@@ -116,6 +119,7 @@ class MaxMetric(BaseMetric):
             valueAxis=valueAxis, mode=mode, showCircles=showCircles
         )
 
+
 # ########################################################################### #
 # ############################ Median ####################################### #
 # ########################################################################### #
@@ -146,6 +150,7 @@ class MedianMetric(BaseMetric):
             valueAxis=valueAxis, mode=mode, showCircles=showCircles
         )
 
+
 # ########################################################################### #
 # ############################ Min ########################################## #
 # ########################################################################### #
@@ -175,6 +180,7 @@ class MinMetric(BaseMetric):
             id=str(id), field=field, enabled=enabled, type=type, label=label,
             valueAxis=valueAxis, mode=mode, showCircles=showCircles
         )
+
 
 # ########################################################################### #
 # ############################ Percentile Ranks ############################# #
@@ -212,6 +218,7 @@ class PercentileRanksMetric(BaseMetric):
             valueAxis=valueAxis, mode=mode, showCircles=showCircles
         )
 
+
 # ########################################################################### #
 # ############################ Percentiles ################################## #
 # ########################################################################### #
@@ -247,6 +254,7 @@ class PercentilesMetric(BaseMetric):
             valueAxis=valueAxis, mode=mode, showCircles=showCircles
         )
 
+
 # ########################################################################### #
 # ############################ Standard Deviation ########################### #
 # ########################################################################### #
@@ -279,6 +287,7 @@ class StandardDeviationMetric(BaseMetric):
             id=str(id), field=field, enabled=enabled, type=type, label=label,
             valueAxis=valueAxis, mode=mode, showCircles=showCircles
         )
+
 
 # ########################################################################### #
 # ############################ Sum ########################################## #
@@ -313,6 +322,7 @@ class SumMetric(BaseMetric):
             valueAxis=valueAxis, mode=mode, showCircles=showCircles
         )
 
+
 # ########################################################################### #
 # ############################ Top Hits ##################################### #
 # ########################################################################### #
@@ -346,6 +356,7 @@ class TopHitsMetric(BaseMetric):
             id=str(id), field=field, enabled=enabled, type=type, label=label,
             valueAxis=valueAxis, mode=mode, showCircles=showCircles
         )
+
 
 # ########################################################################### #
 # ############################ Unique Count ################################# #

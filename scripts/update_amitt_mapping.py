@@ -35,10 +35,9 @@ class UpdateAmittMapping:
                 tactic_id = object['external_references'][0]['external_id']
                 tactic_name = object['name']
                 tactic_tag = "amitt." + \
-                            object['name'].lower().replace(" ", "_")
+                             object['name'].lower().replace(" ", "_")
                 amitt_tactic_mapping[tactic_tag] = [
-                            tactic_name, tactic_id]
-
+                    tactic_name, tactic_id]
 
         with open(amitt_mapping_url, 'w') as fp:
             fp.write("amitt_tactic_mapping = " +

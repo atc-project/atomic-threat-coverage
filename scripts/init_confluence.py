@@ -7,7 +7,6 @@ import getpass
 
 
 def main(c_auth=None):
-
     try:
         ATCconfig = ATCutils.load_config("config.yml")
         confluence_space_name = ATCconfig.get('confluence_space_name')
@@ -47,9 +46,9 @@ def main(c_auth=None):
                         "Is the parent name correct?")
 
     pages = ["Detection Rules", "Logging Policies",
-              "Data Needed", "Triggers", "Enrichments", "Customers",
-              "Mitigation Systems", "Mitigation Policies",
-              "Hardening Policies", "Use Cases"]
+             "Data Needed", "Triggers", "Enrichments", "Customers",
+             "Mitigation Systems", "Mitigation Policies",
+             "Hardening Policies", "Use Cases"]
 
     page_contents = {
         "Customers": "<p><ac:structured-macro ac:name=\"detailssummary\" ac:schema-version=\"2\" ><ac:parameter ac:name=\"cql\">label = &quot;atc_customer&quot; and space = currentSpace()</ac:parameter></ac:structured-macro></p>",
