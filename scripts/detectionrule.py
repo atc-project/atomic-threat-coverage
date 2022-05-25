@@ -121,7 +121,7 @@ class DetectionRule:
             self.fields.update({"queries": queries})
 
             # Data Needed
-            data_needed = ATCutils.main_dn_calculatoin_func(self.yaml_file)
+            data_needed = ATCutils.main_dn_calculation_func(self.yaml_file)
 
             # if there is only 1 element in the list, print it as a string,
             # without quotes
@@ -266,7 +266,7 @@ class DetectionRule:
             self.fields.update({"queries": queries})
 
             # Data Needed
-            data_needed = ATCutils.main_dn_calculatoin_func(self.yaml_file)
+            data_needed = ATCutils.main_dn_calculation_func(self.yaml_file)
 
             data_needed_with_id = []
 

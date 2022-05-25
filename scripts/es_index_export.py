@@ -106,7 +106,7 @@ class GenerateESIndex:
                 enrichments  = [er for er in enrichments_list if er['title'] in alert.get('enrichment', [{'title':'-'}])]
                 if len(enrichments) < 1:
                     enrichments = [{'title': 'not defined'}]
-                dn_titles = ATCutils.main_dn_calculatoin_func(path)
+                dn_titles = ATCutils.main_dn_calculation_func(path)
                 alert_dns = [data for data in dn_list if data['title'] in dn_titles]
                 if len(alert_dns) < 1:
                     alert_dns = [{'category': 'not defined',
