@@ -133,7 +133,7 @@ class GenerateESIndex:
                     except:
                         pass
                     
-                    if not date_created:
+                    if not "date_created" in locals():
                         try:
                             # in case somebody mixed up month and date, like in "Detection of SafetyKatz"
                             date_created = datetime.datetime.strptime(alert['date'], '%Y/%d/%m').isoformat()                
@@ -154,7 +154,7 @@ class GenerateESIndex:
                     except:
                         pass
                     
-                    if not date_modified:
+                    if not "date_modified" in locals():
                         try:
                             # in case somebody mixed up month and date, like in "Detection of SafetyKatz"
                             date_modified = datetime.datetime.strptime(alert['modified'], '%Y/%d/%m').isoformat()                
