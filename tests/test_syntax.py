@@ -2,7 +2,6 @@ from compileall import compile_file
 import pytest
 from .conftest import SOURCE_DIR
 
-
 py_files = list(SOURCE_DIR.rglob('*.py'))
 
 

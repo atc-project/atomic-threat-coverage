@@ -28,7 +28,7 @@ from yaml.scanner import ScannerError
 DEFAULT_PROJECT_CONFIG_PATH = 'scripts/config.default.yml'
 DEFAULT_CONFIG_PATH = 'config.yml'
 
-#Show warnings only once:
+# Show warnings only once:
 with warnings.catch_warnings():
     warnings.simplefilter("once")
 
@@ -125,9 +125,10 @@ If no local configuration is found on the argument path, a warning will be shown
     def get(self, key):
         """ Maps to 'get' Function of configuration {dict} object """
         return self.config.get(key)
-    
+
     config_local = property(get_config_local, set_config_local)
     config_project = property(get_config_project, set_config_project)
+
 
 ## Initialize global config
 ATCconfig = ATCConfig()
@@ -150,14 +151,13 @@ class ATCutils:
         return rule_text
 
     @staticmethod
-    def get_normalized_field(field):    
+    def get_normalized_field(field):
         # return everything before field modifier (pipe)
         regex = '^(.*?)\|'
         try:
             return re.search(regex, field).group(1)
         except:
             return field
-            
 
     @staticmethod
     def read_yaml_file(path):
@@ -181,7 +181,7 @@ class ATCutils:
         else:
             result = buff_results[0]
         return result
-    
+
     @staticmethod
     def load_config(path):
         """Load the configuration YAML files used ofr ATC into a dictionary 
@@ -203,7 +203,7 @@ class ATCutils:
             join(path, f) for f in listdir(path)
             if isfile(join(path, f))
             if f.endswith('.yaml')
-            or f.endswith('.yml')
+               or f.endswith('.yml')
         ]
 
         result = []
@@ -249,7 +249,7 @@ class ATCutils:
 
         url = apipath + "content"
         space_page_url = url + '?spaceKey=' + space + '&title=' \
-            + title + '&expand=space'
+                         + title + '&expand=space'
 
         response = requests.request(
             "GET",
@@ -354,14 +354,14 @@ class ATCutils:
 
             current_content = resp["body"]["storage"]["value"]
 
-            #if current_content == data["confluencecontent"]:
+            # if current_content == data["confluencecontent"]:
             # compare pages: revert changes in confluence page, remove \n \r \t \s
             conv = {
                 '<ac:structured-macro ac:name="markdown"[^>]*>': '<ac:structured-macro ac:name="markdown">',
                 '<ac:structured-macro ac:name="expand"[^>]*>': '<ac:structured-macroac:name="expand">',
                 '<ac:structured-macro ac:name="code"[^>]*>': '<ac:structured-macroac:name="code">',
-                'â€™': '’', 
-                'Ä€': 'Ā', 
+                'â€™': '’',
+                'Ä€': 'Ā',
                 '\n': '',
                 '\r': '',
                 '\t': '',
@@ -430,7 +430,7 @@ class ATCutils:
         """Get sigma logsource dict and rename key/values into our model,
         so we could use it for Data Needed calculation"""
         if logsource_dict:
-            
+
             sigma_keys = [*sigma_mapping]
             proper_logsource_dict = {}
             for key, val in logsource_dict.items():
@@ -457,7 +457,7 @@ class ATCutils:
                         proper_logsource_dict.update([
                             (key, val)
                         ])
-    
+
             return proper_logsource_dict
         else:
             return {}
@@ -480,7 +480,7 @@ class ATCutils:
                 continue
 
             for val in detection_dict[_field]:
-                if isinstance(val,str):
+                if isinstance(val, str):
                     continue
                 if isinstance(
                         detection_dict[_field],
@@ -584,18 +584,18 @@ class ATCutils:
             if isinstance(_field, str):
                 _field = ATCutils.get_normalized_field(_field)
                 if _field == 'CommandLine' or \
-                   _field == 'ProcessCommandLine' or \
-                   _field == 'ProcesssCommandLine' or \
-                   _field == 'ParentCommandLine':
-                   return True
+                        _field == 'ProcessCommandLine' or \
+                        _field == 'ProcesssCommandLine' or \
+                        _field == 'ParentCommandLine':
+                    return True
 
             if isinstance(_field, dict):
                 for item in _field:
                     item = ATCutils.get_normalized_field(item)
-                    if  item == 'CommandLine' or \
-                        item == 'ProcessCommandLine' or \
-                        item == 'ProcesssCommandLine' or \
-                        item == 'ParentCommandLine':
+                    if item == 'CommandLine' or \
+                            item == 'ProcessCommandLine' or \
+                            item == 'ProcesssCommandLine' or \
+                            item == 'ParentCommandLine':
                         return True
 
         return False
@@ -627,7 +627,6 @@ class ATCutils:
         else:
             return False
 
-
     @staticmethod
     def get_logsource_of_the_document(detection_rule_obj):
         """get logsource for specific document (addition)"""
@@ -646,9 +645,8 @@ class ATCutils:
 
         return logsource
 
-
     @staticmethod
-    def main_dn_calculatoin_func(dr_file_path):
+    def main_dn_calculation_func(dr_file_path):
         """you need to execute this function to calculate DN for DR file"""
 
         dn_list = ATCutils.load_yamls(ATCconfig.get('data_needed_dir'))
@@ -659,7 +657,7 @@ class ATCutils:
 
         """For every Detection Rule we do:
             * calculate Date Needed per logsource or per logsource AND per selection)
-              it depentd on presence of event ID in the document
+              it depends on presence of event ID in the document
                 - if there is event id for specific logsource — we calculate
                   Data Needed Per SELECTION
                 - if there is no event id for specific document — we calculate
@@ -685,7 +683,7 @@ class ATCutils:
         if not detectionrule.get('additions'):
 
             logsource = ATCutils.get_logsource_of_the_document(detectionrule)
-            
+
             event_id_based_dr = ATCutils.check_for_event_ids_presence(detectionrule)
 
             # if this is event id based detection rule we calculate PER SELECTION
@@ -702,7 +700,7 @@ class ATCutils:
                         has_command_line = \
                             ATCutils.check_for_command_line_in_selection(
                                 detectionrule['detection'][_field]
-                        )
+                            )
                         final_list += ATCutils.calculate_dn_for_eventid_based_dr(
                             dn_list, logsource, event_ids, has_command_line
                         )
@@ -719,11 +717,11 @@ class ATCutils:
                             continue
 
                         try:
-                            detection_fields = ATCutils\
-                            .search_for_fields2(detectionrule['detection'][_field])
+                            detection_fields = ATCutils \
+                                .search_for_fields2(detectionrule['detection'][_field])
                         except Exception as e:
-                            detection_fields = ATCutils\
-                            .search_for_fields(detectionrule['detection'])
+                            detection_fields = ATCutils \
+                                .search_for_fields(detectionrule['detection'])
 
                         if detection_fields:
                             for field in detection_fields:
@@ -759,12 +757,12 @@ class ATCutils:
             # check if first document has logsource
             logsource = ATCutils.get_logsource_of_the_document(detectionrule)
             if logsource:
-                
+
                 event_id_based_dr = ATCutils.check_for_event_ids_presence(detectionrule)
 
                 if event_id_based_dr:
                     if detectionrule.get('detection'):
-                    # just in case there are multiple selections in first document
+                        # just in case there are multiple selections in first document
                         for _field in detectionrule.get('detection'):
 
                             if str(_field) in ["condition", "timeframe"]:
@@ -776,9 +774,9 @@ class ATCutils:
                             has_command_line = \
                                 ATCutils.check_for_command_line_in_selection(
                                     detectionrule['detection'][_field]
-                            )
+                                )
                             final_list += ATCutils.calculate_dn_for_eventid_based_dr(
-                                    dn_list, logsource, event_ids, has_command_line
+                                dn_list, logsource, event_ids, has_command_line
                             )
                 else:
                     full_list_of_fields = []
@@ -791,11 +789,11 @@ class ATCutils:
                                 continue
 
                             try:
-                                detection_fields = ATCutils\
-                                .search_for_fields2(detectionrule['detection'][_field])
+                                detection_fields = ATCutils \
+                                    .search_for_fields2(detectionrule['detection'][_field])
                             except Exception as e:
-                                detection_fields = ATCutils\
-                                .search_for_fields(detectionrule['detection'])
+                                detection_fields = ATCutils \
+                                    .search_for_fields(detectionrule['detection'])
 
                             if detection_fields:
                                 for field in detection_fields:
@@ -805,12 +803,11 @@ class ATCutils:
                     final_list += ATCutils.calculate_dn_for_non_eventid_based_dr(
                         dn_list, full_list_of_fields, logsource)
 
-
             # then let's calculate Data Needed per EACH SELECTION of different logsources
             for addition in detectionrule['additions']:
 
                 logsource = ATCutils.get_logsource_of_the_document(addition)
-                
+
                 event_id_based_dr = ATCutils.check_for_event_ids_presence(addition)
 
                 if event_id_based_dr:
@@ -825,9 +822,9 @@ class ATCutils:
                         has_command_line = \
                             ATCutils.check_for_command_line_in_selection(
                                 addition['detection'][_field]
-                        )
+                            )
                         final_list += ATCutils.calculate_dn_for_eventid_based_dr(
-                                dn_list, logsource, event_ids, has_command_line
+                            dn_list, logsource, event_ids, has_command_line
                         )
                 else:
                     full_list_of_fields = []
@@ -836,17 +833,17 @@ class ATCutils:
                     if addition.get('detection'):
                         # just in case there are multiple selections in first document
                         for _field in addition['detection']:
-    
+
                             if str(_field) in ["condition", "timeframe"]:
                                 continue
-    
+
                             try:
-                                detection_fields = ATCutils\
-                                .search_for_fields2(addition['detection'][_field])
+                                detection_fields = ATCutils \
+                                    .search_for_fields2(addition['detection'][_field])
                             except Exception as e:
-                                detection_fields = ATCutils\
-                                .search_for_fields(addition['detection'])
-    
+                                detection_fields = ATCutils \
+                                    .search_for_fields(addition['detection'])
+
                             if detection_fields:
                                 for field in detection_fields:
                                     if field not in full_list_of_fields:
@@ -888,12 +885,11 @@ class ATCutils:
 
             if 'platform' in x and 'channel' in x:
                 if x.get('platform') == y.get('platform') and x.get(
-                          'channel') == y.get('channel'):
+                        'channel') == y.get('channel'):
                     list_of_DN_matched_by_logsource.append(dn)
             else:
                 if x.get('platform') == y.get('platform'):
                     list_of_DN_matched_by_logsource.append(dn)
-
 
         # find all Data Needed which matched by logsource section from
         # Detection Rule AND EventID
@@ -906,14 +902,14 @@ class ATCutils:
                 eventID_from_title = "None"
 
             if has_command_line == True and dn['title'] == \
-                "DN_0001_4688_windows_process_creation":
+                    "DN_0001_4688_windows_process_creation":
                 continue
 
             if isinstance(event_ids, list):
                 for eid in event_ids:
 
                     if eventID_from_title == str(eid):
-                        list_of_DN_matched_by_logsource_and_eventid\
+                        list_of_DN_matched_by_logsource_and_eventid \
                             .append(dn)
             elif eventID_from_title == str(event_ids):
                 list_of_DN_matched_by_logsource_and_eventid.append(dn)
@@ -958,7 +954,6 @@ class ATCutils:
                 # if they are equal, do..
                 list_of_DN_matched_by_fields.append(dn)
 
-
         for matched_dn in list_of_DN_matched_by_fields:
 
             y = matched_dn
@@ -967,11 +962,11 @@ class ATCutils:
             if x.get('category') == "process_creation":
                 # should take care about unix events in future: todo
                 if x.get('platform') == y.get('platform') and "process_creation" \
-                                                           in y.get('title'):
+                        in y.get('title'):
                     list_of_DN_matched_by_fields_and_logsource.append(matched_dn)
             elif 'platform' in x and 'channel' in x:
                 if x.get('platform') == y.get('platform') and x.get(
-                          'channel') == y.get('channel'):
+                        'channel') == y.get('channel'):
                     list_of_DN_matched_by_fields_and_logsource.append(matched_dn)
             else:
                 if x.get('platform') == y.get('platform'):
@@ -992,9 +987,9 @@ class ATCutils:
     @staticmethod
     def populate_tg_markdown(
             art_dir='../' +
-            read_yaml_file.__func__('config.yml').get('triggers_directory'),
+                    read_yaml_file.__func__('config.yml').get('triggers_directory'),
             atc_dir='../' +
-            read_yaml_file.__func__('config.yml').get('md_name_of_root_directory')):
+                    read_yaml_file.__func__('config.yml').get('md_name_of_root_directory')):
         cmd = ('find \'%s/\' -name "T*.md" -exec' +
                ' cp {} \'%sTriggers/\' \;') % (art_dir, atc_dir)
         if subprocess.run(cmd, shell=True, check=True).returncode == 0:

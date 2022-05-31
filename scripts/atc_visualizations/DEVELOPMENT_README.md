@@ -1,6 +1,7 @@
 # General workflow - metrics
 
-1. From the kibana WebUI create metric visualisation (we already have this implemented and that's why we can easily observe what's changing)
+1. From the kibana WebUI create metric visualisation (we already have this implemented and that's why we can easily
+   observe what's changing)
 2. Export JSON file
 3. Create metric visualisation using script, export JSON file and do diff
     ```
@@ -14,7 +15,8 @@
     ```
 4. Depending on the metric, use according agg and param series (for Max metric, use MaxAgg and MaxParamSeries, etc)
 5. You only should overwrite `__init__` method
-6. Once implemented, test your metric. Use `metric_id` when providing `id` metric param. When adding metric, add other required attributes accordingly (in the below example, only id is required).
+6. Once implemented, test your metric. Use `metric_id` when providing `id` metric param. When adding metric, add other
+   required attributes accordingly (in the below example, only id is required).
     ```
     from visualisation import MetricVisualisation
     from metrics import YourMetric
@@ -28,7 +30,8 @@
     with open("test.json", "w+") as f:
         f.write(t.json_export())
     ```
-7. Not only import the JSON file but **open** the visualisation itself. Successful import doesn't mean that it will show anything in the visualisation!
+7. Not only import the JSON file but **open** the visualisation itself. Successful import doesn't mean that it will show
+   anything in the visualisation!
 
 # General workflow - visualisation
 
@@ -36,10 +39,12 @@ This is kinda similar to metrics but one layer above and has no general instruct
 
 1. Generate visualisation from Kibana WebUI
 2. Export JSON file
-3. Investigate what's that and what we are missing from base class (if it requires axis, we have already basic `default_axis` method inside `BaseKibanaVisualizationDoc` - look how it's done in `AreaVisualisation`)
+3. Investigate what's that and what we are missing from base class (if it requires axis, we have already
+   basic `default_axis` method inside `BaseKibanaVisualizationDoc` - look how it's done in `AreaVisualisation`)
 4. Implement it))
 5. Test it
-6. Not only import the JSON file but **open** the visualisation itself. Successful import doesn't mean that it will show anything in the visualisation!
+6. Not only import the JSON file but **open** the visualisation itself. Successful import doesn't mean that it will show
+   anything in the visualisation!
 
 ---
 
@@ -80,8 +85,9 @@ This is kinda similar to metrics but one layer above and has no general instruct
 | DotSize (kind of)     |              |
 
 > DotSize (kind of)
-> 
-> DotSize is specific. I didn't dig into it but it doesn't required series params. Maybe it's the only difference, I don't know at the moment
+>
+> DotSize is specific. I didn't dig into it but it doesn't required series params. Maybe it's the only difference, I
+> don't know at the moment
 
 ---
 

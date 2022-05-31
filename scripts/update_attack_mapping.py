@@ -36,10 +36,9 @@ class UpdateAttackMapping:
                 tactic_id = object['external_references'][0]['external_id']
                 tactic_name = object['name']
                 tactic_tag = "attack." + \
-                            object['name'].lower().replace(" ", "_")
+                             object['name'].lower().replace(" ", "_")
                 ta_mapping[tactic_tag] = [
-                            tactic_name, tactic_id]
-
+                    tactic_name, tactic_id]
 
         with open(attack_mapping_url, 'w') as fp:
             fp.write("ta_mapping = " + json.dumps(ta_mapping, indent=4) + '\n')

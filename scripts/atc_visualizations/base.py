@@ -96,7 +96,7 @@ search_title - string
             total_pages = int()
             current_page = 1
             suffix = "api/saved_objects/_find?" + \
-                "type=%s&fields=title&fields=id" % search_type
+                     "type=%s&fields=title&fields=id" % search_type
 
             r = requests.get(cls.kibana_url + suffix)
 
@@ -107,7 +107,7 @@ search_title - string
                 if r.json().get("saved_objects"):
                     for item in r.json().get("saved_objects"):
                         if item.get("attributes"):
-                            result_dict[item.get("attributes").get("title")] =\
+                            result_dict[item.get("attributes").get("title")] = \
                                 item.get('id')
                 if search_title in result_dict.keys():
                     return result_dict[search_title]
@@ -116,7 +116,7 @@ search_title - string
                     r = requests.get(
                         cls.kibana_url + suffix + "&pages=%s" % current_page
                     )
-            del(result_dict)
+            del (result_dict)
             return None
 
 
@@ -412,7 +412,6 @@ class BaseKibanaDoc(BaseKibana):
     """Base Kibana Doc"""
 
     def __init__(self):
-
         self.type = str()
         self.updated_at = str()
 
@@ -433,7 +432,6 @@ class KibanaDashboardDoc(BaseKibanaDoc):
     """Kibana Visualization Doc"""
 
     def __init__(self):
-
         super().__init__()  # Init Base Class
         self.type = "dashboard"
         self.dashboard = dict()

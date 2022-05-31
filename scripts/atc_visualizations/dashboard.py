@@ -60,10 +60,10 @@ class KibanaDashboardObject(base.BaseKibana):
         _tmp["attributes"]["optionsJSON"] = json.dumps(
             _tmp["attributes"]["optionsJSON"]
         )
-        _tmp["attributes"]["kibanaSavedObjectMeta"]["searchSourceJSON"] =\
+        _tmp["attributes"]["kibanaSavedObjectMeta"]["searchSourceJSON"] = \
             json.dumps(
                 _tmp["attributes"]["kibanaSavedObjectMeta"]["searchSourceJSON"]
-        )
+            )
         _tmp["attributes"].pop("_id", None)
         _tmp["id"] = str(uuid.uuid4())
 
@@ -86,10 +86,10 @@ class KibanaDashboardObject(base.BaseKibana):
         _tmp["_source"]["optionsJSON"] = json.dumps(
             _tmp["_source"]["optionsJSON"]
         )
-        _tmp["_source"]["kibanaSavedObjectMeta"]["searchSourceJSON"] =\
+        _tmp["_source"]["kibanaSavedObjectMeta"]["searchSourceJSON"] = \
             json.dumps(
                 _tmp["_source"]["kibanaSavedObjectMeta"]["searchSourceJSON"]
-        )
+            )
         _tmp["_source"].pop("_id", None)
         _tmp["_id"] = str(uuid.uuid4())
 

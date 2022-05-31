@@ -16,10 +16,10 @@ from os.path import isfile, join
 from yaml.scanner import ScannerError
 from pdb import set_trace as bp
 
-
 ATCconfig = ATCutils.load_config("config.yml")
 exported_analytics_directory = ATCconfig.get('exported_analytics_directory')
 filename = 'atc_es_index.json'
+
 
 class GenerateESIndex:
 
@@ -62,17 +62,17 @@ class GenerateESIndex:
                 dr_raw = alert.copy()
 
                 fields_to_remove_from_raw_dr = [
-                    'title', 
-                    'id', 
-                    'status', 
+                    'title',
+                    'id',
+                    'status',
                     'date',
                     'modified',
-                    'description', 
-                    'references', 
-                    'author', 
-                    'tags', 
-                    'logsource', 
-                    'falsepositives', 
+                    'description',
+                    'references',
+                    'author',
+                    'tags',
+                    'logsource',
+                    'falsepositives',
                     'level'
                 ]
 
@@ -83,7 +83,8 @@ class GenerateESIndex:
 
                 for customer in cu_list:
                     if 'detectionrule' in customer:
-                        if alert['title'] in customer['detectionrule'] and customer['customer_name'] not in list_of_customers:
+                        if alert['title'] in customer['detectionrule'] and customer[
+                            'customer_name'] not in list_of_customers:
                             list_of_customers.append(customer['customer_name'])
 
                 if not isinstance(list_of_customers, list) or len(list_of_customers) == 0:
@@ -92,21 +93,22 @@ class GenerateESIndex:
                 if isinstance(alert.get('tags'), list):
                     try:
                         threats = [tag for tag in alert['tags'] if tag.startswith('attack')]
-                        tactics = [f'{ta_mapping[threat][1]}: {ta_mapping[threat][0]}'  for threat in threats
-                               if threat in ta_mapping.keys() ]
+                        tactics = [f'{ta_mapping[threat][1]}: {ta_mapping[threat][0]}' for threat in threats
+                                   if threat in ta_mapping.keys()]
                     except:
                         pass
-                
+
                     try:
                         threats = [tag for tag in alert['tags'] if tag.startswith('attack')]
                         techniques = [threat for threat in threats if threat.startswith('attack.t')]
-                    except:   
+                    except:
                         pass
 
-                enrichments  = [er for er in enrichments_list if er['title'] in alert.get('enrichment', [{'title':'-'}])]
+                enrichments = [er for er in enrichments_list if
+                               er['title'] in alert.get('enrichment', [{'title': '-'}])]
                 if len(enrichments) < 1:
                     enrichments = [{'title': 'not defined'}]
-                dn_titles = ATCutils.main_dn_calculatoin_func(path)
+                dn_titles = ATCutils.main_dn_calculation_func(path)
                 alert_dns = [data for data in dn_list if data['title'] in dn_titles]
                 if len(alert_dns) < 1:
                     alert_dns = [{'category': 'not defined',
@@ -120,49 +122,50 @@ class GenerateESIndex:
                 for dn in alert_dns:
                     # If there are logging policies in DN that we havent added yet - add them
                     logging_policies.extend([l for l in lp_list if l['title'] in dn['loggingpolicy']
-                                             and l not in logging_policies ])
+                                             and l not in logging_policies])
                     # If there are no logging policices at all - make an empty one just to make one row in csv
                     if not isinstance(logging_policies, list) or len(logging_policies) == 0:
                         logging_policies = [{'title': "not defined", 'eventID': [-1, ]}]
 
                 # we use date of creation to have timelines of progress
                 if 'date' in alert:
-                    
+
                     try:
                         date_created = datetime.datetime.strptime(alert['date'], '%Y/%m/%d').isoformat()
                     except:
                         pass
-                    
-                    if not date_created:
+
+                    if not "date_created" in locals():
                         try:
                             # in case somebody mixed up month and date, like in "Detection of SafetyKatz"
-                            date_created = datetime.datetime.strptime(alert['date'], '%Y/%d/%m').isoformat()                
+                            date_created = datetime.datetime.strptime(alert['date'], '%Y/%d/%m').isoformat()
                         except:
                             # temporary solution to avoid errors. all DRs must have date of creation
-                            print('date in ' + alert['date'] + ' is not in ' + '%Y/%m/%d and %Y/%d/%m formats. Set up current date and time' )
-                            date_created = datetime.datetime.now().isoformat() 
+                            print('date in ' + alert[
+                                'date'] + ' is not in ' + '%Y/%m/%d and %Y/%d/%m formats. Set up current date and time')
+                            date_created = datetime.datetime.now().isoformat()
                 else:
                     # temporary solution to avoid errors. all internal DRs must have date of creation
-                    #date_created = datetime.datetime.now().isoformat() 
+                    # date_created = datetime.datetime.now().isoformat()
                     date_created = '2019-03-01T22:50:37.587060'
-                    
-                            # we use date of creation to have timelines of progress
+
+                    # we use date of creation to have timelines of progress
                 if 'modified' in alert:
-                    
+
                     try:
                         date_modified = datetime.datetime.strptime(alert['modified'], '%Y/%m/%d').isoformat()
                     except:
                         pass
-                    
-                    if not date_modified:
+
+                    if not "date_modified" in locals():
                         try:
                             # in case somebody mixed up month and date, like in "Detection of SafetyKatz"
-                            date_modified = datetime.datetime.strptime(alert['modified'], '%Y/%d/%m').isoformat()                
+                            date_modified = datetime.datetime.strptime(alert['modified'], '%Y/%d/%m').isoformat()
                         except:
                             date_modified = None
                 else:
                     # temporary solution to avoid errors. all internal DRs must have date of creation
-                    #date_created = datetime.datetime.now().isoformat() 
+                    # date_created = datetime.datetime.now().isoformat()
                     date_modified = None
 
                 # we create index document based on DR title, which is unique (supposed to be).
@@ -184,8 +187,8 @@ class GenerateESIndex:
 
                 if techniques:
                     for technique in techniques:
-                        technique_name = technique.replace('attack.t', 'T') + ': ' +\
-                                ATCutils.get_attack_technique_name_by_id(technique.replace('attack.', ''))
+                        technique_name = technique.replace('attack.t', 'T') + ': ' + \
+                                         ATCutils.get_attack_technique_name_by_id(technique.replace('attack.', ''))
                         if technique not in list_of_techniques:
                             list_of_techniques.append(technique_name)
                 else:
@@ -202,7 +205,6 @@ class GenerateESIndex:
                 en_titles = []
                 en_requirements = []
 
-                
                 if 'author' in alert:
                     dr_author = alert['author']
                 else:
@@ -212,7 +214,7 @@ class GenerateESIndex:
                     dr_description = alert['description']
                 else:
                     dr_description = 'not defined'
-                 
+
                 if 'references' in alert:
                     dr_references = alert['references']
                 else:
@@ -227,22 +229,21 @@ class GenerateESIndex:
                     dr_internal_responsible = alert['internal_responsible']
                 else:
                     dr_internal_responsible = 'not defined'
-                
+
                 if 'status' in alert:
                     dr_status = alert['status']
                 else:
                     dr_status = 'not defined'
-                
+
                 if 'level' in alert:
                     dr_severity = alert['level']
                 else:
                     dr_severity = 'not defined'
-                
+
                 if 'confidence' in alert:
                     dr_confidence = alert['confidence']
                 else:
                     dr_confidence = 'not defined'
-               
 
                 for dn in alert_dns:
                     if dn['title'] not in dn_titles:
@@ -272,39 +273,39 @@ class GenerateESIndex:
                             en_requirements.append("not defined")
 
                 _index.update({
-                        "date_created": date_created,
-                        "sigma_rule_path": path[25:],
-                        "date_modified": date_modified,
-                        "description": dr_description,
-                        "references": dr_references,
-                        "customer": list_of_customers,
-                        "tactic": list_of_tactics,
-                        "dr_id": dr_id,
-                        "technique": list_of_techniques,
-                        "raw_detection_rule": dr_raw,
-                        "detection_rule_title": dr_title,
-                        "detection_rule_author": dr_author,
-                        "detection_rule_internal_responsible": dr_internal_responsible,
-                        "detection_rule_development_status": dr_status,
-                        "detection_rule_severity": dr_severity,
-                        "detection_rule_confidence": dr_confidence,
-                        "category": dn_categories,
-                        "platform": dn_platforms,
-                        "type": dn_types,
-                        "channel": dn_channels,
-                        "provider": dn_providers,
-                        "data_needed": dn_titles,
-                        "logging_policy": lp_titles,
-                        "enrichment": en_titles,
-                        "enrichment_requirements": en_requirements
-                    })
+                    "date_created": date_created,
+                    "sigma_rule_path": path[25:],
+                    "date_modified": date_modified,
+                    "description": dr_description,
+                    "references": dr_references,
+                    "customer": list_of_customers,
+                    "tactic": list_of_tactics,
+                    "dr_id": dr_id,
+                    "technique": list_of_techniques,
+                    "raw_detection_rule": dr_raw,
+                    "detection_rule_title": dr_title,
+                    "detection_rule_author": dr_author,
+                    "detection_rule_internal_responsible": dr_internal_responsible,
+                    "detection_rule_development_status": dr_status,
+                    "detection_rule_severity": dr_severity,
+                    "detection_rule_confidence": dr_confidence,
+                    "category": dn_categories,
+                    "platform": dn_platforms,
+                    "type": dn_types,
+                    "channel": dn_channels,
+                    "provider": dn_providers,
+                    "data_needed": dn_titles,
+                    "logging_policy": lp_titles,
+                    "enrichment": en_titles,
+                    "enrichment_requirements": en_requirements
+                })
 
-                index_line = { "index" : {  "_id" : document_id } }
+                index_line = {"index": {"_id": document_id}}
 
                 with open(exported_analytics_directory + '/' + filename, 'a') as fp:
                     json.dump(index_line, fp)
                     fp.write("\n")
                     json.dump(_index, fp)
                     fp.write("\n")
-            
+
         print(f'[+] Created {filename}')

@@ -13,6 +13,7 @@ ATCconfig = ATCutils.load_config("config.yml")
 
 env = Environment(loader=FileSystemLoader(ATCconfig.get('templates_directory', 'scripts/templates')))
 
+
 class MitigationSystem:
     """Class for the Mitigation System entity"""
 
@@ -104,6 +105,6 @@ class MitigationSystem:
         title = os.path.splitext(base)[0]
 
         file_path = atc_dir + self.parent_title + "/" + \
-            title + ".md"
+                    title + ".md"
 
         return ATCutils.write_file(file_path, self.content)

@@ -22,6 +22,6 @@
 
 - [x] not focus
 
-# Saved Search 
+# Saved Search
 
 - [x] it's needed for dashboards (add as object inside dashboard)

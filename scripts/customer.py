@@ -5,7 +5,6 @@ from scripts.atcutils import ATCutils
 from jinja2 import Environment, FileSystemLoader
 import os
 
-
 # ########################################################################### #
 # ############################## Customer ################################### #
 # ########################################################################### #
@@ -159,7 +158,7 @@ class Customer:
 
         # Get proper template
         if template_type == "markdown":
-            template = env\
+            template = env \
                 .get_template('markdown_customer_template.md.j2')
 
         elif template_type == "confluence":
@@ -168,7 +167,7 @@ class Customer:
 
             self.cu_fields.update(
                 {'confluence_viewpage_url':
-                    ATCconfig.get('confluence_viewpage_url')})
+                     ATCconfig.get('confluence_viewpage_url')})
 
             if not self.logging_policies:
                 self.logging_policies = ["None", ]
@@ -240,6 +239,6 @@ class Customer:
         title = os.path.splitext(base)[0]
 
         file_path = atc_dir + self.parent_title + "/" + \
-            title + ".md"
+                    title + ".md"
 
         return ATCutils.write_file(file_path, self.content)

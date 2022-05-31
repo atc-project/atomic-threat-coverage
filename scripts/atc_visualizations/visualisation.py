@@ -7,6 +7,7 @@ import json
 import uuid
 from ast import literal_eval
 
+
 # ########################################################################### #
 # ############################ Base Visualisation ########################### #
 # ########################################################################### #
@@ -121,8 +122,8 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
             kbsvd = tmp_dictionary["visualization"]["kibanaSavedObjectMeta"]
             kbsvd["searchSourceJSON"] = json.dumps(
                 tmp_dictionary.get("visualization")
-                .get("kibanaSavedObjectMeta")
-                .get("searchSourceJSON")
+                    .get("kibanaSavedObjectMeta")
+                    .get("searchSourceJSON")
             )
             tmp_dictionary["_source"] = tmp_dictionary.pop("visualization")
             if return_dict:
@@ -152,8 +153,8 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
             kbsvd = tmp_dictionary["visualization"]["kibanaSavedObjectMeta"]
             kbsvd["searchSourceJSON"] = json.dumps(
                 tmp_dictionary.get("visualization")
-                .get("kibanaSavedObjectMeta")
-                .get("searchSourceJSON")
+                    .get("kibanaSavedObjectMeta")
+                    .get("searchSourceJSON")
             )
             tmp_dictionary["attributes"] = tmp_dictionary.pop("visualization")
             tmp_dictionary["version"] = 1
@@ -169,8 +170,8 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
             if self.search_id_of_title_by_type(
                     search_type="index-pattern", search_title=index_name
             ):
-                self.visualization\
-                    .kibanaSavedObjectMeta["searchSourceJSON"]["index"]\
+                self.visualization \
+                    .kibanaSavedObjectMeta["searchSourceJSON"]["index"] \
                     = index_name
                 self._meta_data_set = True
             else:
@@ -179,8 +180,8 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
                     " Didn't you forget an asterisk?"
                 )
         else:
-            self.visualization\
-                .kibanaSavedObjectMeta["searchSourceJSON"]["index"]\
+            self.visualization \
+                .kibanaSavedObjectMeta["searchSourceJSON"]["index"] \
                 = index_name
             self._meta_data_set = True
 
@@ -202,13 +203,14 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
                 search_type="search", search_title=saved_search_name
             )
         self.visualization.savedSearchId = _id
-        self.visualization.kibanaSavedObjectMeta["searchSourceJSON"]\
+        self.visualization.kibanaSavedObjectMeta["searchSourceJSON"] \
             .pop("index", None)
         self._meta_data_set = True
 
     def set_query(self, query):
         ssjs = self.visualization.kibanaSavedObjectMeta["searchSourceJSON"]
         ssjs["query"]["query_string"]["query"] = str(query)
+
 
 # ########################################################################### #
 # ############################ Area Visualisation ########################### #
@@ -218,7 +220,6 @@ class BaseKibanaVisualizationDoc(base.BaseKibanaDoc):
 class AreaVisualisation(BaseKibanaVisualizationDoc):
 
     def __init__(self, title):
-
         super().__init__(title=title, type="area")
         self.default_axis()
 
@@ -232,7 +233,6 @@ class MetricKibanaParams(base.BaseKibanaParams):
     def __init__(self, type=None, grid=None, categoryAxes=None, valueAxes=None,
                  seriesParams=None, addTooltip=None, addLegend=None,
                  legendPosition=None, times=None, addTimeMarker=None):
-
         super().__init__(
             type=type, grid=grid, categoryAxes=categoryAxes,
             valueAxes=valueAxes, seriesParams=seriesParams,
@@ -274,7 +274,6 @@ class MetricKibanaParams(base.BaseKibanaParams):
 class MetricVisualisation(BaseKibanaVisualizationDoc):
 
     def __init__(self, title):
-
         super().__init__(title=title, type="metric")
         self.visualization.visState.params = MetricKibanaParams(type="metric")
 
@@ -362,7 +361,6 @@ class PieVisualisation(BaseKibanaVisualizationDoc):
 class VerticalBarVisualisation(BaseKibanaVisualizationDoc):
 
     def __init__(self, title):
-
         super().__init__(
             title=title, type="histogram",
             params_grid={
@@ -385,6 +383,7 @@ class VerticalBarVisualisation(BaseKibanaVisualizationDoc):
             "drawLinesBetweenPoints": True,
             "showCircles": True
         })
+
 
 # ########################################################################### #
 # ############################ Vertical Bar Visualisation ################### #
@@ -412,7 +411,7 @@ class SavedSearchVisualisation(BaseKibanaVisualizationDoc):
                     "language": str(language)
                 },
                 "filter": []
-        }
+            }
         self.type = "search"
 
     def validate(self):
@@ -435,14 +434,14 @@ class SavedSearchVisualisation(BaseKibanaVisualizationDoc):
                 tmp_dictionary.pop("columns")
             tmp_dictionary["_source"]["kibanaSavedObjectMeta"] = \
                 tmp_dictionary.pop("kibanaSavedObjectMeta")
-            tmp_dictionary["_id"] = tmp_dictionary["_source"]["title"]\
+            tmp_dictionary["_id"] = tmp_dictionary["_source"]["title"] \
                 .replace(" ", "_")
 
             kbsvd = tmp_dictionary["_source"]["kibanaSavedObjectMeta"]
             kbsvd["searchSourceJSON"] = json.dumps(
                 tmp_dictionary.get("_source")
-                .get("kibanaSavedObjectMeta")
-                .get("searchSourceJSON")
+                    .get("kibanaSavedObjectMeta")
+                    .get("searchSourceJSON")
             )
 
             if return_dict:
@@ -469,14 +468,14 @@ class SavedSearchVisualisation(BaseKibanaVisualizationDoc):
                 tmp_dictionary.pop("columns")
             tmp_dictionary["attributes"]["kibanaSavedObjectMeta"] = \
                 tmp_dictionary.pop("kibanaSavedObjectMeta")
-            tmp_dictionary["id"] = tmp_dictionary["attributes"]["title"]\
+            tmp_dictionary["id"] = tmp_dictionary["attributes"]["title"] \
                 .replace(" ", "_")
 
             kbsvd = tmp_dictionary["attributes"]["kibanaSavedObjectMeta"]
             kbsvd["searchSourceJSON"] = json.dumps(
                 tmp_dictionary.get("attributes")
-                .get("kibanaSavedObjectMeta")
-                .get("searchSourceJSON")
+                    .get("kibanaSavedObjectMeta")
+                    .get("searchSourceJSON")
             )
 
             tmp_dictionary["version"] = 1

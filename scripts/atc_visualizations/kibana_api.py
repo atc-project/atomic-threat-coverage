@@ -37,7 +37,6 @@ class Dashboards(KibanaBaseModel):
 
 
 class KibanaAPI():
-
     visualizations = []
     dashboards = []
 
@@ -89,6 +88,7 @@ if __name__ == "__main__":
     for vis in kapi.visualizations:
         if "Area #1" == vis.title:
             import json
+
             print(vis.title)
             visState = json.loads(vis.data["visualization"]["visState"])
             pprint(visState)

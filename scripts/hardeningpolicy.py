@@ -8,7 +8,6 @@ from jinja2 import Environment, FileSystemLoader
 import re
 import os
 
-
 # ########################################################################### #
 # ######################## Hardening Policies ############################### #
 # ########################################################################### #
@@ -16,6 +15,7 @@ import os
 ATCconfig = ATCutils.load_config("config.yml")
 
 env = Environment(loader=FileSystemLoader(ATCconfig.get('templates_directory', 'scripts/templates')))
+
 
 class HardeningPolicy:
     """Class for the Mitigation System entity"""
@@ -64,7 +64,7 @@ class HardeningPolicy:
             self.hp_parsed_file.update(
                 {'description': self.hp_parsed_file.get('description').strip()}
             )
-            
+
             self.hp_parsed_file.update(
                 {'configuration': self.hp_parsed_file.get('configuration').strip()}
             )
@@ -117,8 +117,8 @@ class HardeningPolicy:
                         other_tags.append(tag)
 
                     if not tactic_re.match(tag) and not \
-                           technique_re.match(tag) and not \
-                           mitigation_re.match(tag):
+                            technique_re.match(tag) and not \
+                            mitigation_re.match(tag):
                         other_tags.append(tag)
 
                 if len(tactic):
@@ -130,7 +130,7 @@ class HardeningPolicy:
                 if len(amitt_technique):
                     self.hp_parsed_file.update({'amitt_techniques': amitt_technique})
                 if len(mitigation):
-                    self.hp_parsed_file.update({'mitigations': mitigation})    
+                    self.hp_parsed_file.update({'mitigations': mitigation})
                 if len(other_tags):
                     self.hp_parsed_file.update({'other_tags': other_tags})
 
@@ -201,8 +201,8 @@ class HardeningPolicy:
                         other_tags.append(tag)
 
                     if not tactic_re.match(tag) and not \
-                           technique_re.match(tag) and not \
-                           mitigation_re.match(tag):
+                            technique_re.match(tag) and not \
+                            mitigation_re.match(tag):
                         other_tags.append(tag)
 
                 if len(tactic):
@@ -230,6 +230,6 @@ class HardeningPolicy:
         title = os.path.splitext(base)[0]
 
         file_path = atc_dir + self.parent_title + "/" + \
-            title + ".md"
+                    title + ".md"
 
         return ATCutils.write_file(file_path, self.content)

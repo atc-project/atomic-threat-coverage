@@ -97,14 +97,13 @@ if __name__ == '__main__':
     group2.add_argument('-UC', '--usecases', action='store_true',
                         help='Build response use case part')
 
-
     # Init capabilities
     parser.add_argument('-i', '--init', action='store_true',
                         help="Build initial pages or directories " +
-                        "depending on the export type")
+                             "depending on the export type")
     # Input
     parser.add_argument('--vis-input', help="Provide input file for " +
-                        "visualisations module")
+                                            "visualisations module")
     # Output
     parser.add_argument('--vis-output-dir', help="""
     Provide directory path where to save output for visualisations module.
@@ -114,16 +113,16 @@ if __name__ == '__main__':
         ${exported_analytics_directory}/dashboards/
 """)
     parser.add_argument('--vis-output-file-name', help="Provide file name " +
-                        "which will be used to save a file in output " +
-                        "directory\nDefault is: [randomstring].yml")
+                                                       "which will be used to save a file in output " +
+                                                       "directory\nDefault is: [randomstring].yml")
     # Force
     parser.add_argument('--vis-force', action='store_true',
                         help="Force visualisations module to not use Kibana")
 
     # Export type
     parser.add_argument('--vis-export-type', help="Switch JSON export type " +
-                        "from api (uploaded using curl) to gui (imported in " +
-                        "kibana)", required=False, default="api", const="gui",
+                                                  "from api (uploaded using curl) to gui (imported in " +
+                                                  "kibana)", required=False, default="api", const="gui",
                         action="store_const")
 
     args = parser.parse_args()
@@ -132,13 +131,13 @@ if __name__ == '__main__':
         UpdateAttackMapping()
         PopulateMarkdown(auto=args.auto, ms=args.mitigationsystem,
                          mp=args.mitigationpolicy, dr=args.detectionrule,
-                         tg=args.triggers, cu=args.customers, uc=args.usecases, 
-                         hp=args.hardeningpolicy,init=args.init)
+                         tg=args.triggers, cu=args.customers, uc=args.usecases,
+                         hp=args.hardeningpolicy, init=args.init)
         ReactPopulateMarkdown(auto=args.auto, ra=args.responseactions,
                               rp=args.responseplaybook, rs=args.responsestage,
                               init=args.init)
         DataPopulateMarkdown(auto=args.auto, lp=args.loggingpolicy,
-                             dn=args.dataneeded,en=args.enrichment,
+                             dn=args.dataneeded, en=args.enrichment,
                              init=args.init)
 
     elif args.confluence:
@@ -150,13 +149,13 @@ if __name__ == '__main__':
         auth = HTTPBasicAuth(mail, password)
         UpdateAttackMapping()
         DataPopulateConfluence(auth=auth, auto=args.auto, lp=args.loggingpolicy,
-                                dn=args.dataneeded,en=args.enrichment,
-                                init=args.init)
-        PopulateConfluence(auth=auth, auto=args.auto, ms=args.mitigationsystem, 
-                            mp=args.mitigationpolicy, dr=args.detectionrule,
-                            tg=args.triggers, cu=args.customers, uc=args.usecases,
-                            hp=args.hardeningpolicy, init=args.init)
-        ReactPopulateConfluence(auth=auth, auto=args.auto, 
+                               dn=args.dataneeded, en=args.enrichment,
+                               init=args.init)
+        PopulateConfluence(auth=auth, auto=args.auto, ms=args.mitigationsystem,
+                           mp=args.mitigationpolicy, dr=args.detectionrule,
+                           tg=args.triggers, cu=args.customers, uc=args.usecases,
+                           hp=args.hardeningpolicy, init=args.init)
+        ReactPopulateConfluence(auth=auth, auto=args.auto,
                                 ra=args.responseactions, rp=args.responseplaybook,
                                 rs=args.responsestage, init=args.init)
     elif args.react_stix:
@@ -209,7 +208,7 @@ if __name__ == '__main__':
                             file[:-4] + ".json", args.vis_force,
                             args.vis_export_type)
                 print("File path: %s" % (output_path + "_" +
-                      file[:-4] + ".json"))
+                                         file[:-4] + ".json"))
         else:
             YamlHandler(args.vis_input, output_path2 + ".json", args.vis_force,
                         args.vis_export_type)
@@ -222,8 +221,8 @@ if __name__ == '__main__':
         print("HINT: Make sure proper directories are " +
               "configured in the config.yml")
         if ATCconfig.get(
-            'response_playbooks_dir',
-            ATCconfig2.get('response_playbooks_dir')) and \
+                'response_playbooks_dir',
+                ATCconfig2.get('response_playbooks_dir')) and \
                 ATCconfig.get(
                     'response_actions_dir',
                     ATCconfig2.get('response_actions_dir')) and \
